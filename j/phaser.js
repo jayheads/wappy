@@ -2652,6 +2652,8 @@ GENMATCH=function(){
 
 // when the board has finished refilling, re-enable player input
        function boardRefilled(){allowInput = true}}
+
+
 SNOW=function(){z()
     //  This example was created by Jens Anders Bakke
 
@@ -2744,13 +2746,14 @@ SNOW=function(){z()
 
 
 
+
 FIRESTARTER=function(){z()
 
 
       game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-    function preload() {g=$G(game).ARC()
+    function preload() {g=$G(game).ARC(150).ccL(0).ccR(0)
 
         g.l.i('space', '/assets/misc/starfield.jpg');
         g.l.i('fire1', '/assets/particles/fire1.png');
@@ -2762,69 +2765,27 @@ FIRESTARTER=function(){z()
 
     function create() {
 
-        g.tSp(0, 0, game.width, game.height, 'space');
+        g.tSp(0, 0, g.w(), g.h(), 'space');
 
-        emitter = g.em(game.world.centerX, game.world.centerY, 400)
-            .mP( [ 'fire1', 'fire2', 'fire3', 'smoke' ] ).grv(200)
+        e=g.em(g.cX(), g.cY(), 400).mP( [ 'fire1', 'fire2', 'fire3', 'smoke' ] ).grv(200).al(1, 0, 3000).sc(0.8, 0, 0.8, 0, 3000).s(false, 3000, 5)
 
-        emitter.setAlpha(1, 0, 3000);
-        emitter.setScale(0.8, 0, 0.8, 0, 3000);
 
-        emitter.start(false, 3000, 5);
+        s=g.sp(0,300,'ball',0).arc()
+        s.an.a('pulse')
+        s.bZ(80,80,0,0).clWB(1).bo(1).v(300, 200).iE(1).drg(1)
+            .oDS(function(){s.mvs(0)}, this).oDSS(function(){s.mvs(1)},this).A()
+            .play('pulse',30,true)
 
-        sprite = g.sp(0, 300, 'ball', 0).arc()
+        createText(16,16,'If you can catch the fireball, drag it around')}
 
-        game.physics.arcade.gravity.y = 150;
-        game.physics.arcade.checkCollision.left = false;
-        game.physics.arcade.checkCollision.right = false;
-
-        sprite.body.setSize(80, 80, 0, 0);
-        sprite.body.collideWorldBounds = true;
-        sprite.body.bounce.set(1);
-        sprite.body.velocity.set(300, 200);
-
-        sprite.inputEnabled = true;
-
-        sprite.input.enableDrag();
-        sprite.events.onDragStart.add(onDragStart, this);
-        sprite.events.onDragStop.add(onDragStop, this);
-
-        sprite.animations.add('pulse');
-        sprite.play('pulse', 30, true);
-
-        sprite.anchor.set(0.5);
-
-        createText(16, 16, 'If you can catch the fireball, drag it around');
-
-    }
-
-    function update() {
-
-        var px = sprite.body.velocity.x;
-        var py = sprite.body.velocity.y;
-
-        px *= -1;
-        py *= -1;
-
-        emitter.minParticleSpeed.set(px, py);
-        emitter.maxParticleSpeed.set(px, py);
-
-        emitter.emitX = sprite.x;
-        emitter.emitY = sprite.y;
-
+    function update(){
+        e.nPS(s.vx()*-1, s.vy()*-1).mPS(s.vx()*-1, s.vy()*-1).eX(s.x).eY(s.y)
         // emitter.forEachExists(game.world.wrap, game.world);
-        game.world.wrap(sprite, 64)}
-
-    function onDragStart() {
-        sprite.body.moves = false}
-
-    function onDragStop() {
-        sprite.body.moves = true;
-    }
+        g.wr(s, 64)}
 
     function createText(x, y, string) {
 
-        var text = game.add.text(x, y, string);
+        var text = g.tx(x, y, string);
         // text.anchor.set(0.5);
         // text.align = 'center';
 
@@ -2842,11 +2803,13 @@ FIRESTARTER=function(){z()
 
     function render() {
 
-        // game.debug.bodyInfo(sprite, 32, 32);
+        // game.debug.bodyInfo(s, 32, 32);
 
     }
 
 }
+
+
 
 
 

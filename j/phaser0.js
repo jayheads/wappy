@@ -57,6 +57,11 @@ $G=function(g){
     g.cm= g.camera
     g.cm.f= g.cm.follow
 
+    g.ccU=   function(a){g.physics.arcade.checkCollision.up= a?true:false;return g}
+    g.ccD= function(a){g.physics.arcade.checkCollision.down=a?true:false;return g}
+    g.ccL= function(a){g.physics.arcade.checkCollision.left=a?true:false;return g}
+    g.ccR=  function(a){g.physics.arcade.checkCollision.right=a?true:false;return g}
+
 
 
 
@@ -71,7 +76,9 @@ $G=function(g){
         g.world.width=a;return g
     }
 
-
+    g.wr=function(){
+        _a(g.world.wrap,arguments, g.world);return g
+    }
     g.h=function(a){if(U(a)){return g.world.height}
         g.world.height=a;return g
     }
@@ -380,52 +387,35 @@ sCu=function(c){
     c.r= c.right
     c.R=  function(){return c.r.isDown}
     return c}
+
+
 sEm=function(e){
 
-         e.mP=function(a){e.makeParticles(a)
+         e.mP=function(a){e.makeParticles(a);return e}
+
+         e.r=e.rt=function(a,b){e.setRotation(a,b);return e}
+
+         e.g=e.grv=function(a){e.gravity=a;return e}
+
+
+         e.a= e.al=function(){_a(e.setAlpha,arguments,e);return e}
+
+
+         e.sc=function(){_a(e.setScale,arguments,e);return e}
+         e.eX=function(a){e.emitX=a;return e}
+         e.eY=function(a){e.emitY=a;return e}
+
+
+         e.eXY=function(a,b){e.emitX=a;e.emitY=b;return e}
+         e.nPS=function(a,b){e.minParticleSpeed.set(a,b);return e}
+         e.mPS=function(a,b){e.maxParticleSpeed.set(a,b);return e}
+
+
+             e.s=function(){_a(e.start,arguments,e);return e}
+
+
+
              return e}
-
-         e.r= e.rt=function(a,b){e.setRotation(a,b)
-             return e}
-
-         e.g=e.grv=function(a){e.gravity=a
-             return e}
-
-
-         e.a= e.al=function(){_a(e.setAlpha,arguments,e)
-             return e}
-
-
-         e.sc=function(){_a(e.setScale,arguments,e)
-             return e}
-
-         e.eX=function(a){e.emitX=a
-             return e}
-
-         e.eY=function(a){
-             e.emitY=a
-             return e}
-
-
-         e.eXY=function(a,b){
-             e.emitX=a
-             e.emitY=b
-             return e}
-
-
-         e.nPS=function(a,b){
-             e.minParticleSpeed.set(a,b)
-             return e}
-
-
-         e.mPS=function(a,b){
-             e.maxParticleSpeed.set(a,b)
-             return e}
-
-
-
-return e
-     }
 
 
 
