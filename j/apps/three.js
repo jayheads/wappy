@@ -119,8 +119,11 @@ THREEE=function(){scene=makeScene()
         sqMesh.rotation.x -= .075
         renderer.render(scene,cam)}
 
-    render()
-}
+    render()}
+
+
+
+
 
 
 
@@ -227,7 +230,9 @@ THREEE=function(){scene=makeScene()
      render()
 
  }
+
 Texture=function(a){return new THREE.ImageUtils.loadTexture(src(a))}
+
 
 THRE5=function(){scene=makeScene()
 
