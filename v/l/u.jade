@@ -1,0 +1,20 @@
+mixin s(a)
+    script(src="/#{a}.js")
+
+mixin S(a)
+    - each b in a
+        +s(b)
+
+mixin j(j)
+    script.
+        #{j}
+
+mixin css(a)
+    link(rel="stylesheet",href="/#{a}.css")
+
+mixin v(i,v)
+    script.
+        #{i}="#{v}"
+
+
+

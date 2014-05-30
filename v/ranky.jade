@@ -1,0 +1,39 @@
+.col-md-2
+.col-md-8.text-center
+    h4
+        a(href='/ranky') ranky&nbsp
+    form(method=false, action=false)
+        label(for='mit')
+            a(href='/ranky')
+        input#mit(name = 'topic', type = 'text')
+        button#sub(type = 'submit') ;)
+    br
+    .well
+        h2
+            span topic:
+            a(href='/ranky/#{t.n}') "#{t.n}"
+        h3
+            span message :
+                a(href='/ranky/#{t.n}/#{m._id}')
+            span &nbsp "#{m.v}"
+        p
+        br
+        form.h3(method='post', action='/ranky/response/po')
+//label(for='topic') new &nbsp
+            +tin('response')
+            +hin('topic',t.n)
+            +hin('msgId',m._id)
+            +bin
+each r in message.r
+    p #{r.vl} (#{r.score}) &nbsp
+        span.glyphicon.glyphicon-arrow-up.up &nbsp
+        span.glyphicon.glyphicon-arrow-down.down &nbsp
+//ranky
+       form.well(method=false, action=false)
+               +mit('topic')
+               +sub('button')
+           each t in topics
+               p
+                   a(href='/ranky/#{t.n}') #{t.n}
+span &nbsp (num of msgs)   &nbsp
+.col-md-4

@@ -1,0 +1,178 @@
+mixin j(j)
+    script.
+        #{j}
+
+mixin s(a)
+    script(src="/#{a}.js")
+
+mixin S(a)
+    - each b in a
+        +s(b)
+mixin css(a)
+    link(rel="stylesheet",href="/#{a}.css")
+
+mixin v(i,v)
+    script.
+        #{i}="#{v}"
+
+mixin fl()
+    if ms
+        if ms.length>0
+            h2.alert.alert-danger
+                each m in ms
+                    p &nbsp #{m}
+
+ mixin btnG(a,b,c)
+    - b=b||a;
+    if c=='green'
+        .btn-group: a.btn.btn-success.btn-lg(data-toggle="modal",href="#"+a) #{b}
+    else
+        .btn-group: a.btn.btn-primary.btn-lg(data-toggle="modal",href="#"+a) #{b}
+
+
+mixin li
+    .btn-toolbar
+        +btnG('signUp','Sign Up!','green')
+        +btnG('login','Login!')
+
+
+
+mixin sm
+    input(type='submit',value='submit')
+
+
+mixin uI
+    form(action="/upload",method="post",enctype="multipart/form-data")
+        input(type="file",name="i")
+        mixin sm
+
+
+mixin bts(bA)
+    each b in bA
+        button(id='#{b}') #{b}
+
+
+
+mixin bff
+    br
+    br
+    br
+    br
+
+mixin chatter
+    #chat
+    input#mit
+    button#sub
+
+
+
+
+
+mixin w(s,t)
+    h4 Welcome to #{s}!
+    h5 ..a place to #{t}
+
+
+
+mixin tin(n)
+    input(type='text',name='#{n}')
+mixin mit(n)
+    inputmit(type='text',name='#{n}')
+mixin bin(v)
+    button(type="submit") #{v||'submit'}
+mixin sub(v)
+    button.sub(type="submit") #{v||'submit'}
+mixin hin(n,v)
+    input(type="hidden",name="#{n}",value="#{v}")
+mixin rin(n,I)
+    each i in I
+        input(type="radio",name="#{n}",value="#{i}")
+        span &nbsp&nbsp#{i}&nbsp&nbsp
+mixin rin2(n,I)
+    each i in I
+        span &nbsp&nbsp#{i}&nbsp&nbsp
+        input(type="radio",name="#{n}",value="#{i}")
+mixin chin(I)
+    each i in I
+        span &nbsp&nbsp#{i}&nbsp&nbsp
+        input(type="checkbox", name="#{i}")
+
+
+
+mixin iF
+    form.well(method=false, action=false)
+        +mit(a)
+        +bin
+
+
+
+mixin buts(bA,po,pre,po2)
+    if pre
+        br
+    each b in bA
+        button(id='#{b}') #{b}
+        if po
+            br
+        if po2
+            br
+//mixin buts(['one','two'],1)
+
+
+mixin i(s,w,h)
+    - w=w||200;h=h||200
+    img(src="#{s}",width="#{w}",height="#{h}")
+
+mixin mf
+    script.
+        mf=#{mf}
+
+mixin p
+    script.
+        p=#{p}
+
+
+
+mixin C(n,w,h,r,l)
+    - n=n||'can';w=w||960;h=h||450;r=r||'blue';
+    if r
+        canvas(id="#{n}",class="#{l}",width="#{w}",height="#{h}",style="background-color:#{r}")
+    else
+        canvas(id="#{n}",class="#{l}",width="#{w}",height="#{h}")
+    script.
+        C("#{n}")
+
+
+mixin tn(i)
+    .col-xs-3
+        .thumbnail
+            a.btn.btn-mini(href='/pics/del/#{i}') x
+            a.btn.btn-mini(href='/transform/#{i}') edit
+            a.btn.btn-mini(href='/set/#{i}') set
+            img(src="/"+i)
+            br
+
+mixin tnT(i)
+    .col-xs-2
+        a.thumbnail(href='/transform/#{i}')
+            img(src='/'+i)
+        br
+
+mixin btD(i,t)
+    a(id='#{i}').btn.btn-danger #{t}
+
+
+
+mixin god
+    .form-group
+        label(for="kind") kind:
+        input#kind.form-control(name = "kind", type="text")
+    .form-group
+        label(for="name") name:
+        input#name.form-control(type="text", name="name")
+    .form-group
+        label(for="age") age:
+        input#age.form-control(type="text", name="age")
+    button.btn.btn-primary(type="submit") submit
+
+
+

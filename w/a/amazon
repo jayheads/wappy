@@ -1,0 +1,15 @@
+i-46292374
+
+
+
+//ssh -i my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
+
+
+
+chmod 400 ~/Desktop/abc1234.pem
+
+
+
+ssh -i ~/Desktop/abc1234.pem ec2-user@ec2-54-245-155-194.us-west-2.compute.amazonaws.com
+
+
