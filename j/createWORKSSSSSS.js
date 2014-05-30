@@ -67,7 +67,7 @@ function SLIDE (event){    var MX1 = event.rawX;     var MY1 = event.rawY;    va
 }
 
 
-   $( function(){
+   $(function(){
 
     qu=new createjs.LoadQueue(true);
     qu.addEventListener("complete", graphicsReady);
@@ -75,7 +75,7 @@ function SLIDE (event){    var MX1 = event.rawX;     var MY1 = event.rawY;    va
 
    })
 
-scl = function(x){ ch.scaleX = x; ch.scaleY = x;   }
+scl = function(x){ch.scaleX = x; ch.scaleY = x}
 
      rawVsStageXY = function(){
          stage.mouseMoveOutside = true;

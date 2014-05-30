@@ -1125,7 +1125,8 @@ WORLDSPRITE=function(){z()
             g.db.spriteCoords(p, 32, 32);
             //g.db.physicsBody(p.body);
 
-        }}
+        }
+}
 
 
 
@@ -1180,7 +1181,8 @@ FIXEDTOCAMERA=function(){z()
 
         function render() {
 
-            g.db.cameraInfo(game.camera, 32, 32)}}
+            g.db.cameraInfo(game.camera, 32, 32)}
+}
 
 
 
@@ -1343,7 +1345,8 @@ PIXELPICKSCROLLING=function(){z()
 
 
 
-       function render(){g.db.spriteInputInfo(b, 32, 32)}}
+       function render(){g.db.spriteInputInfo(b, 32, 32)}
+}
 
 
 
@@ -1479,7 +1482,8 @@ ANGLEPOINTER=function(){z()
 
 
     function render(){
-        g.db.spI(s,32,32)}}
+        g.db.spI(s,32,32)}
+}
 
 
 
@@ -1528,7 +1532,8 @@ ANGLEPOINTER=function(){z()
 
                 game.debug.text("Drag the Sprites", 32, 32);
 
-            }}
+            }
+        }
 
 SNAPONDRAG=function(){z()
       game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
@@ -1555,7 +1560,8 @@ SNAPONDRAG=function(){z()
 
         //  For the atari2 sprite it will snap only when released, not on drag.
 
-    }}
+    }
+}
 
 
 SHOOTPOINTER=function(){z()
@@ -1610,22 +1616,13 @@ SHOOTPOINTER=function(){z()
                var b=bs.getFirstDead()
 
                b.reset(sp.x-8, sp.y-8)
-               g.ph.ac.moveToPointer(b,300)
-
-           }}
+               g.ph.ac.moveToPointer(b,300)}}
 
 
 
        function render(){
            g.db.t('Active Bullets: '+bs.countLiving()+'/'+bs.total,32,32)
            g.db.spI(sp, 32, 450)}}
-
-
-
-
-
-
-
 
 
 
@@ -1711,7 +1708,8 @@ CSVCOLLIDE=function(){z()
 
 
 
-     CALLALLANIMATIONS=function(){z()
+
+CALLALLANIMATIONS=function(){z()
          game=Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create })
          function preload(){g=$G(game)
              g.l.ss('coin','/assets/sprites/coin.png',32,32)}
@@ -1749,9 +1747,13 @@ CALLALL=function(){z()
                   game.debug.text('Tap or click an item to kill it', 160, 500);
                   game.debug.text('Press the Revive button to revive them all.', 160, 520);
 
-              }}
+              }
+}
 
-    DISPLAYORDER=function(){z()
+
+
+
+DISPLAYORDER=function(){z()
 
          game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
@@ -1808,7 +1810,6 @@ EXTENDINGAGROUP=function(){z()
 
            }}
 
-Second=Phaser.Timer.SECOND
 
 GETFIRSTDEAD=function(){z()
 
@@ -1950,7 +1951,8 @@ RECYCLING=function(){z()
         game.debug.text('Notice that you cannot add more than 8 baddies since we only create 8 instance.', 16, 36);
         game.debug.text('Living baddies: ' + (enemies.countLiving()), 340, 420);
 
-    }}
+    }
+}
 TILECALLBACKS=function(){z()
 
     var m,l,s,cu,
@@ -2019,7 +2021,8 @@ TILECALLBACKS=function(){z()
 
 }
 
-            SWAPCHILDREN=function(){z()
+
+SWAPCHILDREN=function(){z()
 
 
 
@@ -2059,7 +2062,8 @@ TILECALLBACKS=function(){z()
                 }}
 
 
-   REMOVEBETWEEN=function(){  z()
+
+REMOVEBETWEEN=function(){  z()
 
 
         game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
@@ -2222,81 +2226,42 @@ MARIO=function(){z()
 
 
 
-
 CONTACTEVENTS=function(){z()
 
+    game=Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+    result='Move with the cursors'
 
+    function preload(){g=$G(game).P2().ru(.9)
+        g.l.i('contra2','/assets/pics/contra2.png')
+        g.l.i('block','/assets/sprites/block.png')
+        g.l.i('wizball','/assets/sprites/wizball.png')
+        g.l.i('t1','/assets/sprites/tetrisblock1.png')
+        g.l.i('t2','/assets/sprites/tetrisblock2.png')
+        g.l.i('t3','/assets/sprites/tetrisblock3.png')
+        g.l.ph('physicsData','/assets/physics/sprites.json')}
 
-        game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+    function create(){
+        g.sp(200,200,'contra2').p2().clS().lP('physicsData', 'contra2')
+        g.sp(500,500,'wizball').p2().sC(45)
+        g.sp(100,450,'t1').p2().clS().lP('physicsData', 'tetrisblock1')
+        g.sp(300,450,'t2').p2().clS().lP('physicsData', 'tetrisblock2')
+        g.sp(650,350,'t3').p2().clS().lP('physicsData', 'tetrisblock3')
+        b=g.sp(500,200,'block').p2().oBC(function(body, shapeA, shapeB, equation){result = 'You last hit: '+body.sprite.key})
+        cu=g.K()}
 
-       function preload() {g=sPhG(game)
+    function update(){b.sZV()
+        if(cu.L()){b.mL(200)}
+        if(cu.R()){b.mR(200)}
+        if(cu.U()){b.mU(200)}
+        if(cu.D()){b.mD(200)}}
 
-           g.l.i('contra2', '/assets/pics/contra2.png')
-           g.l.i('block', '/assets/sprites/block.png')
-           g.l.i('wizball', '/assets/sprites/wizball.png')
-           g.l.i('tetrisblock1', '/assets/sprites/tetrisblock1.png')
-           g.l.i('tetrisblock2', '/assets/sprites/tetrisblock2.png')
-           g.l.i('tetrisblock3', '/assets/sprites/tetrisblock3.png')
+    function render(){g.db.text(result,32,32)}
 
-           g.l.physics('physicsData', '/assets/physics/sprites.json')}
-
-
-       result = 'Move with the cu';
-
-       function create() {
-
-
-           g.ph.s(Phaser.Physics.P2JS)//Enable p2 physics
-           g.ph.p2.restitution=.9
-
-           block=g.a.sp(500,200,'block')
-           contra=g.a.sp(200,200,'contra2')
-           wizball=g.a.sp(500,500,'wizball')
-           tetris1=g.a.sp(100,450,'tetrisblock1')
-           tetris2=g.a.sp(300,450,'tetrisblock2')
-           tetris3=g.a.sp(650,350,'tetrisblock3')
-
-           //	Enable the physics bodies on all the sprites
-           g.ph.p2.enable([contra, block, wizball, tetris1, tetris2, tetris3],false)
-
-           //	The following just loads the polygon data into the objects
-           contra.body.clearShapes();contra.body.loadPolygon('physicsData', 'contra2');
-           wizball.body.setCircle(45);
-           tetris1.body.clearShapes();tetris1.body.loadPolygon('physicsData', 'tetrisblock1');
-           tetris2.body.clearShapes();tetris2.body.loadPolygon('physicsData', 'tetrisblock2');
-           tetris3.body.clearShapes();tetris3.body.loadPolygon('physicsData', 'tetrisblock3');
-
-           cu=g.ip.kb.createCursorKeys()
-
-           //	Check for the block hitting another object
-           block.body.onBeginContact.add(blockHit, this)}
-
-
-       function blockHit(body, shapeA, shapeB, equation){
-
-           //	The block hit something
-           //	This callback is sent: the Body it collides with
-           //	shapeA is the shape in the calling Body involved in the collision
-           //	shapeB is the shape in the Body it hit
-           //	equation is an array with the contact equation data in it
-
-           result='You last hit: '+body.sprite.key}
-
-       function update(){
-           block.body.setZeroVelocity()
-           if(cu.left.isDown){block.body.moveLeft(200)}
-           else if(cu.right.isDown){block.body.moveRight(200)}
-           if(cu.up.isDown){block.body.moveUp(200)}
-           else if(cu.down.isDown){block.body.moveDown(200)}}
-
-       function render(){g.db.t(result,32,32)}
-   }
+}
 
 
 
-
-
-        BRINGGROUPTOTOP=function(){z()
+BRINGGROUPTOTOP=function(){z()
 
              game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
@@ -2355,8 +2320,7 @@ CONTACTEVENTS=function(){z()
             }
         }
 
-One=Phaser.Keyboard.ONE
-Two=Phaser.Keyboard.TWO
+
 MULTIPLEANIMS=function(){z()
 
 
@@ -2466,9 +2430,6 @@ COMBINEDTWEENS=function(){z()
     function theEnd(){
         g.tw(p).t({x:-150},1000,$E.Bounce.Out).s()}
 }
-
-
-
 
 
 
@@ -2779,45 +2740,39 @@ SNOW=function(){z()
 
     function setParticleXSpeed(particle, max){
         particle.body.velocity.x = max - Math.floor(rnd()*30)}}
+
+
+
+
 FIRESTARTER=function(){z()
 
 
-
-    game = new Phaser.Game(800, 600, Phaser.AUTO,
-        'phaser-example', { preload: preload, create: create, update: update, render: render });
+      game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-    function preload() { var g=$G(game)
+    function preload() {g=$G(game).ARC()
 
         g.l.i('space', '/assets/misc/starfield.jpg');
         g.l.i('fire1', '/assets/particles/fire1.png');
         g.l.i('fire2', '/assets/particles/fire2.png');
         g.l.i('fire3', '/assets/particles/fire3.png');
         g.l.i('smoke', '/assets/particles/smoke-puff.png');
-
         g.l.ss('ball', '/assets/particles/plasmaball.png', 128, 128)}
-
 
 
     function create() {
 
-        game.physics.startSystem(pArcade);
+        g.tSp(0, 0, game.width, game.height, 'space');
 
-        game.add.tileSprite(0, 0, game.width, game.height, 'space');
+        emitter = g.em(game.world.centerX, game.world.centerY, 400)
+            .mP( [ 'fire1', 'fire2', 'fire3', 'smoke' ] ).grv(200)
 
-        emitter = game.add.emitter(game.world.centerX, game.world.centerY, 400);
-
-        emitter.makeParticles( [ 'fire1', 'fire2', 'fire3', 'smoke' ] );
-
-        emitter.gravity = 200;
         emitter.setAlpha(1, 0, 3000);
         emitter.setScale(0.8, 0, 0.8, 0, 3000);
 
         emitter.start(false, 3000, 5);
 
-        sprite = game.add.sprite(0, 300, 'ball', 0);
-
-        game.physics.arcade.enable(sprite);
+        sprite = g.sp(0, 300, 'ball', 0).arc()
 
         game.physics.arcade.gravity.y = 150;
         game.physics.arcade.checkCollision.left = false;
@@ -2858,13 +2813,14 @@ FIRESTARTER=function(){z()
         emitter.emitY = sprite.y;
 
         // emitter.forEachExists(game.world.wrap, game.world);
-        g.w.wrap(sprite, 64)}
+        game.world.wrap(sprite, 64)}
 
     function onDragStart() {
         sprite.body.moves = false}
 
-    function onDragStop(){
-        sprite.body.moves=true}
+    function onDragStop() {
+        sprite.body.moves = true;
+    }
 
     function createText(x, y, string) {
 
@@ -2879,51 +2835,46 @@ FIRESTARTER=function(){z()
         text.fill = '#ffffff';
         text.setShadow(2, 2, 'rgba(0, 0, 0, 0.7)', 2);
 
-        return text}
+        return text;
+
+    }
 
 
-    function render() {g.db.bodyInfo(sprite,32,32)}}
+    function render() {
+
+        // game.debug.bodyInfo(sprite, 32, 32);
+
+    }
+
+}
+
+
+
+
 CLICKBURST=function(){z()
 
+    game=Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create })
 
+    function preload() { g=$G(game).ARC().bc(0x337799)
 
+        g.l.i('diamond','/assets/sprites/diamond.png')}
 
-    game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+    function create(){
 
-
-
-    function preload() { g=$G(game)
-
-        g.l.i('diamond', '/assets/sprites/diamond.png');
-
-    }
-
-    function create() {
-
-        g.ph.s(pArcade);
-
-        g.st.backgroundColor = 0x337799;
-
-        emitter = g.a.emitter(0, 0, 100);
-
-        emitter.makeParticles('diamond');
-        emitter.gravity = 200;
-
-        game.input.onDown.add(particleBurst, this);
-
-    }
+        em=g.em(0,0,100).mP('diamond').grv(200)
+        g.oD(particleBurst, this)}
 
     function particleBurst(pointer) {
 
         //  Position the emitter where the mouse/touch event was
-        emitter.x = pointer.x;
-        emitter.y = pointer.y;
+        em.x = pointer.x;
+        em.y = pointer.y;
 
         //  The first parameter sets the effect to "explode" which means all particles are emitted at once
         //  The second gives each particle a 2000ms lifespan
         //  The third is ignored when using burst/explode mode
         //  The final parameter (10) is how many particles will be emitted in this single burst
-        emitter.start(true, 2000, null, 10);
+        em.start(true, 2000, null, 10);
 
     }}
 

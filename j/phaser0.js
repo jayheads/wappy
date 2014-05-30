@@ -1,9 +1,11 @@
 Ph=Phaser
 pArcade=Ph.Physics.ARCADE
 pNinja=Ph.Physics.NINJA
-
+One=Phaser.Keyboard.ONE
+Two=Phaser.Keyboard.TWO
 None=Phaser.Easing.Linear.None
 $E=Phaser.Easing
+Second=Phaser.Timer.SECOND
 
 Spacebar= Phaser.Keyboard.SPACEBAR
 
@@ -45,7 +47,7 @@ $G=function(g){
         return g}
     g.l.ss= g.l.spritesheet
     g.l.a= g.l.at= g.l.atlas
-
+    g.l.ph= g.l.physics
     g.st= g.stage
     g.t= g.time
     g.db= g.debug
@@ -151,21 +153,41 @@ $G=function(g){
     _a(g.input.onTap.addOnce,arguments,g.input.onTap)
     return g}
 
+
+    g.oD=function(f){g.input.onDown.add(f,this);return s}
+
+    g.ru=function(a){
+
+        if(U(a)){return g.physics.p2.restitution}
+        g.physics.p2.restitution = a;return g
+    }
+
+
+
+
     return g}
 
 sSp=function(s){
 
-    if(s.body){
-        s.b=s.body
+    //p2
 
-        s.b.v= s.b.velocity
-        s.b.mT= s.b.moveTo
-        s.b.mF= s.b.moveFrom
-        s.b.mU= s.b.moveUp
-        s.b.mD= s.b.moveDown
-        s.b.mL= s.b.moveLeft
-        s.b.mR= s.b.moveRight
-        s.b.t= s.b.touching}
+
+    s.sC=function(){_a(s.body.setCircle,arguments, s.body)
+        return s}
+    s.clS=function(){s.body.clearShapes();return s}
+    s.lP=function(){
+
+        _a(s.body.loadPolygon,arguments, s.body)
+    return s}
+
+    s.oBC=function(a,b){
+
+       s.body.onBeginContact.add(a,b||this)
+
+        return s}
+
+
+    //
 
 
     s.p= s.ps= s.po= s.position
@@ -220,6 +242,15 @@ sSp=function(s){
     s.rL= s.rtL=function(a){s.body.rotateLeft(a);return s}
     s.rR= s.rtR=function(a){s.body.rotateRight(a);return s}
     s.sZR=function(){s.body.setZeroRotation();return s}
+    s.sZV=function(){s.body.setZeroVelocity();return s}
+
+
+    s.mL=function(){s.body.moveLeft(200);return s}
+    s.mR=function(){s.body.moveRight(200);return s}
+    s.mU=function(){s.body.moveUp(200);return s}
+    s.mD=function(){s.body.moveDown(200);return s}
+
+
 
 
     s.vxy= s.v= function(a,b){s.body.velocity.setTo(a,b);return s}
@@ -238,7 +269,12 @@ sSp=function(s){
     s.sc=function(a,b){s.scale.setTo(a,b);return s}
 
     s.arc=function(){s.game.physics.enable(s,pArcade);return s}
-    s.p2=function(){s.game.physics.p2.enable(s);return s}
+
+    s.p2=function(){
+        game.physics.p2.enable(s);return s}
+
+
+
 
     s.vCF=function(a){s.body.velocity.copyFrom(a); return s}
 
