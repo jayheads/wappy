@@ -6,7 +6,9 @@ Two=Phaser.Keyboard.TWO
 None=Phaser.Easing.Linear.None
 $E=Phaser.Easing
 Second=Phaser.Timer.SECOND
-
+ReturnChild=Phaser.Group.RETURN_CHILD
+clmp=Phaser.Math.clamp
+floor=Phaser.Math.floor
 Spacebar= Phaser.Keyboard.SPACEBAR
 
 Up=Ph.Keyboard.UP
@@ -132,6 +134,9 @@ $G=function(g){
     g.iX=function(){return g.input.activePointer.worldX}
     g.iY=function(){return g.input.activePointer.worldY}
 
+    g.mX=function(){return g.input.mousePointer.x}
+    g.mY=function(){return g.input.mousePointer.y}
+
     g.iK=g.imK= g.imageKeys=function(){return g.cache.getKeys(Phaser.Cache.IMAGE)}
 
 
@@ -144,6 +149,8 @@ $G=function(g){
     g.jR=function(){
             _a(game.input.keyboard.justReleased,arguments,game.input.keyboard)
     return g}
+
+
     g.tx=function(){var t= _a(g.add.text, arguments, g.add); return sTx(t)}
 
     g.bt=function(){
@@ -169,6 +176,10 @@ $G=function(g){
         g.physics.p2.restitution = a;return g
     }
 
+    g.ev=function(){
+
+       _a(g.time.events.add,arguments, g.time.events);return g
+    }
 
 
 
@@ -281,7 +292,15 @@ sSp=function(s){
         game.physics.p2.enable(s);return s}
 
 
+s.fr=function(a){
 
+    if(U(a)){return s.frame}
+    s.frame=a;return s
+}
+
+    s.fT= s.frT=function(){
+        return s.animations.frameTotal
+    }
 
     s.vCF=function(a){s.body.velocity.copyFrom(a); return s}
 

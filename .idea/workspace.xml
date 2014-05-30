@@ -26,11 +26,11 @@
       <file leaf-file-name="phaser0.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/j/phaser0.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.923077" vertical-offset="1240" max-vertical-offset="8720">
-              <caret line="79" column="52" selection-start-line="79" selection-start-column="52" selection-end-line="79" selection-end-column="52" />
+            <state vertical-scroll-proportion="-6.1538463" vertical-offset="0" max-vertical-offset="9100">
+              <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
               <folding>
-                <element signature="e#823#973#0" expanded="false" />
-                <element signature="e#3164#3228#0" expanded="false" />
+                <element signature="e#907#1057#0" expanded="false" />
+                <element signature="e#3248#3312#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -51,11 +51,9 @@
       <file leaf-file-name="phaser.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/j/phaser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6315789" vertical-offset="47484" max-vertical-offset="51210">
-              <caret line="2656" column="0" selection-start-line="2656" selection-start-column="0" selection-end-line="2656" selection-end-column="0" />
-              <folding>
-                <element signature="e#87032#87084#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.03512015" vertical-offset="49818" max-vertical-offset="55138">
+              <caret line="2623" column="0" selection-start-line="2623" selection-start-column="0" selection-end-line="2623" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -199,9 +197,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="126" />
+    <option name="x" value="62" />
     <option name="y" value="119" />
-    <option name="width" value="1219" />
+    <option name="width" value="1324" />
     <option name="height" value="677" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -388,7 +386,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="126" y="119" width="1219" height="677" extended-state="0" />
+    <frame x="62" y="119" width="1324" height="677" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -396,7 +394,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.04842105" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19187209" sideWeight="0.7610526" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.0" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.05578343" sideWeight="0.8950159" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.051359516" sideWeight="0.8950159" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10498409" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -927,22 +925,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/j/phaser0.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.923077" vertical-offset="1240" max-vertical-offset="8720">
-          <caret line="79" column="52" selection-start-line="79" selection-start-column="52" selection-end-line="79" selection-end-column="52" />
+        <state vertical-scroll-proportion="-6.1538463" vertical-offset="0" max-vertical-offset="9100">
+          <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
           <folding>
-            <element signature="e#823#973#0" expanded="false" />
-            <element signature="e#3164#3228#0" expanded="false" />
+            <element signature="e#907#1057#0" expanded="false" />
+            <element signature="e#3248#3312#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/j/phaser.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6315789" vertical-offset="47484" max-vertical-offset="51210">
-          <caret line="2656" column="0" selection-start-line="2656" selection-start-column="0" selection-end-line="2656" selection-end-column="0" />
-          <folding>
-            <element signature="e#87032#87084#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.03512015" vertical-offset="49818" max-vertical-offset="55138">
+          <caret line="2623" column="0" selection-start-line="2623" selection-start-column="0" selection-end-line="2623" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
