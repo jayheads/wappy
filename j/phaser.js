@@ -1,10 +1,154 @@
+meLoad=function(f){
+
+
+}
+
+pG=function(preload,create,update){
+
+
+    wM(function(m){
+        g=game=Game(800,600, Phaser.CANVAS, 'phaser-example',{
+
+            preload:function(){g=$G(g)
+                g.cache.addImage('me',m,im(m))
+                preload()},
+            create:function(){create()},
+            update:function(){update()}})
+    })}
+
+
+
+DATAURL=function(){z()
+
+    bTime=0
+    shoot=function(){var b
+        if(g.n()>bTime){
+            if(b=bs.gFE(0))
+            {b.rs(s.x+6,s.y-8).vy(-300)
+                bTime=g.n(150)}}}
+
+
+    pG(
+      function preload(){
+          g.l.i('phaser', '/assets/sprites/phaser-dude.png')
+          g.l.i('bullet', '/assets/misc/bullet0.png')
+          g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)},
+
+
+        function create(){
+
+                        s=g.sp(400,520,'me').arc().w(80).h(80)
+
+                        vs=g.gr().eB(1).arc()
+                        _t(50,function(){
+                            vs.cr(g.rX(),rnd()*500,'vs',
+                                g.r.integerInRange(0,36))})
+
+                        bs=g.gr().eB(1).arc()
+                        _t(5,function(){
+                            bs.cr(0,0,'bullet').ex(0).cWB(1)
+                                .oOOB(function(b){b.kill()})})
+
+                        cu=g.K() },
+
+
+        function update(){
+          g.ol(bs,vs,
+                            function(b,v){
+                                b.kill();v.kill()},
+                            null,this)
+
+                        s.vxy(0,0)
+                        if(cu.L()){s.vx(-300)}
+                        if(cu.R()){s.vx(300)}
+
+                        if(g.iD(Spacebar)){shoot()}})
+
+
+}
+
+
+DATAURL1=function(){z()
+
+
+
+
+    bTime=0
+    shoot=function(){var b
+        if(g.n()>bTime){
+            if(b=bs.gFE(0))
+            {b.rs(s.x+6,s.y-8).vy(-300)
+                bTime=g.n(150)}}}
+
+    wM(
+
+
+        function(m){
+
+        g=Game(800,600, Phaser.CANVAS, 'phaser-example',
+
+            {
+                preload:function(){
+
+                g=$G(game).bc('red')
+
+
+                g.l.i('phaser', '/assets/sprites/phaser-dude.png')
+
+                g.l.i('bullet', '/assets/misc/bullet0.png')
+                g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)
+
+                g.cache.addImage('me', m, im(m))} ,
+                create: function(){
+
+                    s=g.sp(400,520,'me').arc().w(80).h(80)
+
+                    vs=g.gr().eB(1).arc()
+                    _t(50,function(){
+                        vs.cr(g.rX(),rnd()*500,'vs',
+                            g.r.integerInRange(0,36))})
+
+                    bs=g.gr().eB(1).arc()
+                    _t(5,function(){
+                        bs.cr(0,0,'bullet').ex(0).cWB(1)
+                            .oOOB(function(b){b.kill()})})
+
+                    cu=g.K()
+                    g.kc([Spacebar])},
+                update: function(){
+
+            g.ol(bs,vs,
+                function(b,v){
+                    b.kill();v.kill()},
+                null,this)
+
+            s.vxy(0,0)
+            if(cu.L()){s.vx(-300)}
+            if(cu.R()){s.vx(300)}
+
+            if(g.iD(Spacebar)){shoot()}}
+
+            })
+
+
+    })
+
+
+}
+
+
+
+
 GROUPVSGROUP=function(){z()
-              game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload:preload, create:create, update:update})
+
+    game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload:preload, create:create, update:update})
+
               function preload(){  g=$G(game).bc('red')
 
-                g.l.i('phaser', '/assets/sprites/phaser-dude.png');
-               g.l.i('bullet', '/assets/misc/bullet0.png');
-               g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)}
+
+                  g.l.i('phaser', '/assets/sprites/phaser-dude.png')
+                  g.l.i('bullet', '/assets/misc/bullet0.png')
+                  g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)}
 
               bTime=0
 
@@ -27,23 +171,122 @@ GROUPVSGROUP=function(){z()
 
 
               function update(){
-                  g.ol(bs,vs,function(b,v){b.kill();v.kill()},null,this)
+
+                  g.ol(bs,vs,
+                      function(b,v){
+                          b.kill();v.kill()},
+                      null,this)
+
                   s.vxy(0,0)
                   if(cu.L()){s.vx(-300)}
                   if(cu.R()){s.vx(300)}
+
                   if(g.iD(Spacebar)){shoot()}}
+
+
 
               function shoot(){var b
                   if(g.n()>bTime){
                       if(b=bs.gFE(0))
                       {b.rs(s.x+6,s.y-8).vy(-300)
-                          bTime=g.n(150)}}}}
+                          bTime=g.n(150)}}}
+
+
+
+}
+
+
+
+MASSVELOCITYTEST=function(){ z()
+
+
+ pG(
+    function preload() {
+
+        g.l.i('car', '/assets/sprites/car90.png')
+        g.l.i('baddie', '/assets/sprites/space-baddie.png')
+        g.l.i('face', '/me.png')
+
+    },
+
+    function create(){
+        g.ARC()
+        aliens=g.gr().eB(1)
+        _t(50,function(){
+
+            aliens.cr(g.rX(),g.rY(),'baddie')
+                .clWB(1)
+                .bo(.8,.8).vxy(10+rnd()*40, 10+rnd()*40)})
+
+        p=g.sp(400,300,'me').A(.5).arc().w(80).h(80)
+            .clWB(1)
+            .bo(2).aR(1).im(1)
+
+        m=g.sp(100,100,'face').arc()
+            .clWB(1)
+            .bo(1)
+        cu=g.K()},
+
+
+    function update(){
+
+        g.col([p,aliens],[p,m],[aliens,m ],[aliens,aliens])
+
+        p.vxy(0,0).aV(0)
+
+        if(cu.left.isDown){p.aV(-200)}
+        if(cu.right.isDown){p.aV(200)}
+        if(cu.up.isDown){
+            p.vCF(g.vFA(p.angle,300))}}
+
+
+ )}
+
+
 THRUST=function(){z()
 
+
+
+    pG(
+
+    function preload(){
+        g.bn(0,0,1920,1200).P2().ru(1.2)
+        g.l.i('stars','/assets/misc/starfield.jpg')
+        g.l.i('ship','/assets/sprites/thrust_ship2.png')
+        g.l.i('jets','/assets/sprites/jets.png')},
+
+    function create(){
+        isThrusting=false
+        starfield=g.tSp(0,0,800,600,'stars').fTC(1)
+        trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
+        p=g.sp(200,200,'me').w(80).h(80).p2()
+        g.cm.f(p)
+        cu=g.K()
+    },
+
+    function update(){
+        isThrusting=false
+        if(cu.L()){p.rtL(100)} else if(cu.R()){p.rtR(100)} else{p.sZR()}
+        if(cu.U()){p.thrust(400); isThrusting=true} else if(cu.D()){p.rv(400)}
+        if(!g.lX()){starfield.tilePosition.x+=(p.vx()*16)*g.t.physicsElapsed}
+        if(!g.lY()){starfield.tilePosition.y+=(p.vy()*16)*g.t.physicsElapsed}
+        trail.eXY(p.x,p.y)
+        var px=p.vx()*10,py=p.vy()*10;px *=-1;py *=-1
+        trail.nPS(px, py).mPS(px, py)
+        if(isThrusting||sqr(p.vx()*p.vx()+p.vy()*p.vy())>10){trail.start(true,3000,8)}}
+    )
+
+}
+
+
+THRUST1=function(){z()
+
     isThrusting=false
+
     game=Game(800,600,Phaser.AUTO,'phaser-example',{preload:preload,create:create,update:update,render:render})
 
-    function preload(){g=$G(game).bn(0,0,1920,1200)
+    function preload(){
+        g=$G(game).bn(0,0,1920,1200)
         g.l.i('stars','/assets/misc/starfield.jpg')
         g.l.i('ship','/assets/sprites/thrust_ship2.png')
         g.l.i('jets','/assets/sprites/jets.png')}
@@ -72,8 +315,11 @@ THRUST=function(){z()
         // g.db.t(p.body.velocity.x * 10, 32, 32);
         // g.db.t(p.body.velocity.y * 10, 32, 48);
 
-    }}
-MASSVELOCITYTEST=function(){ z()
+    }
+
+}
+
+MASSVELOCITYTEST1=function(){ z()
 
 
 
@@ -168,9 +414,95 @@ PLATFORMERBASICS=function(){z()
 
 
 
-
-
 STARSTRUCK=function(){z()
+    facing='left'
+    jumpTimer=0
+
+
+    pG(
+
+        function preload(){
+
+        g.l.tilemap('level1', '/assets/games/starstruck/level1.json',  null,  Phaser.Tilemap.TILED_JSON)
+
+        g.l.image('tiles-1', '/assets/games/starstruck/tiles-1.png')
+        g.l.spritesheet('dude', '/assets/games/starstruck/dude.png', 32, 48)
+        g.l.spritesheet('droid', '/assets/games/starstruck/droid.png', 32, 32)
+        g.l.image('starSmall', '/assets/games/starstruck/star.png')
+        g.l.image('starBig', '/assets/games/starstruck/star2.png')
+        g.l.image('background', '/assets/games/starstruck/background2.png')},
+
+        function create(){
+
+        game.physics.startSystem(pArcade)
+
+        game.stage.backgroundColor='#000000'
+
+
+        bg=game.add.tileSprite(0,0,800,600,'background')
+        bg.fixedToCamera = true
+
+        map=game.add.tilemap('level1')
+        map.addTilesetImage('tiles-1')
+
+        map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51 ])
+
+        layer=map.createLayer('Tile Layer 1')
+
+        layer.resizeWorld()
+
+        game.physics.arcade.gravity.y=250
+
+
+        player=g.sp(32,32, 'me').w(60).h(60)
+
+
+            game.physics.enable(player, pArcade);
+
+        player.body.bounce.y = 0.2
+        player.body.collideWorldBounds = true
+        player.body.setSize(20, 32, 5, 16)
+
+        player.animations.add('left', [0,1,2,3],10, true)
+        player.animations.add('right', [5,6,7,8],10, true)
+        player.animations.add('turn', [4],20,true)
+
+        game.camera.follow(player)
+        cu=game.input.keyboard.createCursorKeys()
+        jumpButton=game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)},
+        function update(){game.physics.arcade.collide(player,layer)
+
+        //
+
+        player.body.velocity.x=0
+
+        if(cu.left.isDown){player.body.velocity.x = -150;
+            if(facing != 'left'){player.animations.play('left');facing = 'left'}}
+
+        else if (cu.right.isDown){
+            player.body.velocity.x = 150;
+            if (facing != 'right'){
+                player.animations.play('right');
+                facing = 'right'}}
+        else{
+            if (facing != 'idle'){player.animations.stop();
+                if (facing == 'left'){player.frame = 0}
+                else{player.frame=5}
+                facing='idle'}}
+
+        if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer){
+            player.body.velocity.y = -250;
+            jumpTimer = game.time.now + 750}}
+    )
+
+
+
+
+}
+
+
+
+STARSTRUCK1=function(){z()
     game=new Phaser.Game(800,600,Phaser.CANVAS,'phaser-example',{
         preload:preload,
         create:create,

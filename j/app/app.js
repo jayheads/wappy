@@ -35,7 +35,7 @@ guest=function(){z('r')
             h1('jason yanofski presents..')),
 
         JT(
-            'a graphics-based real-time social gaming creativity web app','hack-and-tell!',bt('log in',lI,'+'),sp(' '),
+            'a graphics-based real-time social gaming creativity web app','woo hoo!',bt('log in',lI,'+'),sp(' '),
             bt('sign up',sU,'+'),
             '+'),
 
@@ -44,10 +44,10 @@ guest=function(){z('r')
             _d()(h4('graphics'),
                 pg('cool cool cool'),
                 h4('social'),
-                pg('cool cool'))),
+                pg('cool cool')))//,  FT('&copy;2013')
 
-        FT('&copy;2013')
     ).pp().drg().c('o').s('a',.9).t(100).l(100)}
+
 home=function(){
     WAPNAV('o')
     qi('uname').T(usr)  //qi('uname').jLoad('/lgd')

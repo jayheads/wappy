@@ -1,6 +1,20 @@
-ang=function(){// var j=$('<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>')
+
+// var j=$('<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>')
+
+ang=function(){
+
     var j=$('<script type="text/javascript" src="/ang.js"></script>')
-    qq(j).a()}
+
+
+    qq(j).a()
+
+
+}
+
+
+
+
+
 ngApp=function(a){
 
     var q=U(a)?
@@ -9,6 +23,10 @@ ngApp=function(a){
 
       return q
 }//depr
+
+
+
+
 bootstrap=function(a){
     angular.element(document).ready(function(){
         angular.bootstrap(document, [a||'myApp'])})}
@@ -347,5 +365,7 @@ ANGMODEL=function(){
     ang()
 
 }
+
+
 
 
