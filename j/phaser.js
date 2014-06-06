@@ -1,24 +1,64 @@
-meLoad=function(f){
+MULTIBALL=function(){z()
 
+    game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render })
 
-}
+    function preload() {
 
-pG=function(preload,create,update){
+        g=$G(game).bc('#2d2d2d').ARC(1400)
 
+        g.l.i('atari', '/assets/sprites/atari130xe.png')
 
-    wM(function(m){
-        g=game=Game(800,600, Phaser.CANVAS, 'phaser-example',{
+        g.l.ss('bs','/assets/sprites/balls.png',17,17)
+        g.tx(16,16,'Left/Right to move',
+            {font:'18px Arial',fill:'#ffffff'})
 
-            preload:function(){g=$G(g)
-                g.cache.addImage('me',m,im(m))
-                preload()},
-            create:function(){create()},
-            update:function(){update()}})
-    })}
+        cu=g.K()}
 
 
 
-DATAURL=function(){z()
+    function create(){
+
+        bs=g.gr().mult(250,'bs',0,false)
+
+        g.eA()
+
+        p=g.sp(300,450,'atari').arc().aGr(0)//.imm(1)
+
+        g.lp(150,
+            function fire(){var b=bs.gFE(0)
+                if(b){b.fr(g.rI(0,6)).ex(1).rs(g.rX(),0).bY(.8)}},
+            this)}
+
+    function update(){
+        g.col(p,bs,null,function reflect(a,b){
+            if(b.y>(p.y+5)){return true}
+            else{
+                b.vx(p.vx())
+                b.vy(b.vy()*-(b.bY()))
+                return false
+            }},
+            this)
+
+
+         p.vx(0).vy(0)
+
+        if(cu.L()){p.vx(-200)}
+        if(cu.R()){p.vx(200)}
+        if(cu.U()){p.vy(-200)}
+        if(cu.D()){p.vy(200)}
+
+        bs.fEA(function checkBounds(b){if(b.y>500){b.k()}},this)}
+
+
+
+
+
+
+
+    function render(){}}
+
+
+GROUPVSGROUP=function(){z()
 
     bTime=0
     shoot=function(){var b
@@ -66,80 +106,7 @@ DATAURL=function(){z()
 
 
 }
-
-
-DATAURL1=function(){z()
-
-
-
-
-    bTime=0
-    shoot=function(){var b
-        if(g.n()>bTime){
-            if(b=bs.gFE(0))
-            {b.rs(s.x+6,s.y-8).vy(-300)
-                bTime=g.n(150)}}}
-
-    wM(
-
-
-        function(m){
-
-        g=Game(800,600, Phaser.CANVAS, 'phaser-example',
-
-            {
-                preload:function(){
-
-                g=$G(game).bc('red')
-
-
-                g.l.i('phaser', '/assets/sprites/phaser-dude.png')
-
-                g.l.i('bullet', '/assets/misc/bullet0.png')
-                g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)
-
-                g.cache.addImage('me', m, im(m))} ,
-                create: function(){
-
-                    s=g.sp(400,520,'me').arc().w(80).h(80)
-
-                    vs=g.gr().eB(1).arc()
-                    _t(50,function(){
-                        vs.cr(g.rX(),rnd()*500,'vs',
-                            g.r.integerInRange(0,36))})
-
-                    bs=g.gr().eB(1).arc()
-                    _t(5,function(){
-                        bs.cr(0,0,'bullet').ex(0).cWB(1)
-                            .oOOB(function(b){b.kill()})})
-
-                    cu=g.K()
-                    g.kc([Spacebar])},
-                update: function(){
-
-            g.ol(bs,vs,
-                function(b,v){
-                    b.kill();v.kill()},
-                null,this)
-
-            s.vxy(0,0)
-            if(cu.L()){s.vx(-300)}
-            if(cu.R()){s.vx(300)}
-
-            if(g.iD(Spacebar)){shoot()}}
-
-            })
-
-
-    })
-
-
-}
-
-
-
-
-GROUPVSGROUP=function(){z()
+GROUPVSGROUP1=function(){z()
 
     game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload:preload, create:create, update:update})
 
@@ -195,130 +162,44 @@ GROUPVSGROUP=function(){z()
 
 }
 
+MASSVELOCITYTEST=function(){
 
+    pG(
 
-MASSVELOCITYTEST=function(){ z()
+        function preload(){
+            g.l.i('car','/assets/sprites/car90.png')
+            g.l.i('baddie','/assets/sprites/space-baddie.png')
+            g.l.i('face','/me.png')
+            g.ARC()
+            cu=g.K()},
 
-
- pG(
-    function preload() {
-
-        g.l.i('car', '/assets/sprites/car90.png')
-        g.l.i('baddie', '/assets/sprites/space-baddie.png')
-        g.l.i('face', '/me.png')
-
-    },
 
     function create(){
-        g.ARC()
+
+
         aliens=g.gr().eB(1)
+
         _t(50,function(){
-
             aliens.cr(g.rX(),g.rY(),'baddie')
-                .clWB(1)
-                .bo(.8,.8).vxy(10+rnd()*40, 10+rnd()*40)})
+                .clWB(1).bo(.8,.8).vxy(  10+rnd()*40,10+rnd()*40  )})
 
-        p=g.sp(400,300,'me').A(.5).arc().w(80).h(80)
-            .clWB(1)
-            .bo(2).aR(1).im(1)
+        p=g.sp(400,300,'car').arc().A(.5).clWB(1).bo(2).aR(1).im(1)
 
-        m=g.sp(100,100,'face').arc()
-            .clWB(1)
-            .bo(1)
-        cu=g.K()},
+        m=g.sp(100,100,'me').w(200).h(200).arc().clWB(1).bo(1)
+
+    },
 
 
     function update(){
 
         g.col([p,aliens],[p,m],[aliens,m ],[aliens,aliens])
-
         p.vxy(0,0).aV(0)
-
-        if(cu.left.isDown){p.aV(-200)}
-        if(cu.right.isDown){p.aV(200)}
-        if(cu.up.isDown){
-            p.vCF(g.vFA(p.angle,300))}}
+        if(cu.L()){p.aV(-200)}
+        if(cu.R()){p.aV(200)}
+        if(cu.U()){p.vCF(g.vFA(p.angle,300))}}
 
 
  )}
-
-
-THRUST=function(){z()
-
-
-
-    pG(
-
-    function preload(){
-        g.bn(0,0,1920,1200).P2().ru(1.2)
-        g.l.i('stars','/assets/misc/starfield.jpg')
-        g.l.i('ship','/assets/sprites/thrust_ship2.png')
-        g.l.i('jets','/assets/sprites/jets.png')},
-
-    function create(){
-        isThrusting=false
-        starfield=g.tSp(0,0,800,600,'stars').fTC(1)
-        trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
-        p=g.sp(200,200,'me').w(80).h(80).p2()
-        g.cm.f(p)
-        cu=g.K()
-    },
-
-    function update(){
-        isThrusting=false
-        if(cu.L()){p.rtL(100)} else if(cu.R()){p.rtR(100)} else{p.sZR()}
-        if(cu.U()){p.thrust(400); isThrusting=true} else if(cu.D()){p.rv(400)}
-        if(!g.lX()){starfield.tilePosition.x+=(p.vx()*16)*g.t.physicsElapsed}
-        if(!g.lY()){starfield.tilePosition.y+=(p.vy()*16)*g.t.physicsElapsed}
-        trail.eXY(p.x,p.y)
-        var px=p.vx()*10,py=p.vy()*10;px *=-1;py *=-1
-        trail.nPS(px, py).mPS(px, py)
-        if(isThrusting||sqr(p.vx()*p.vx()+p.vy()*p.vy())>10){trail.start(true,3000,8)}}
-    )
-
-}
-
-
-THRUST1=function(){z()
-
-    isThrusting=false
-
-    game=Game(800,600,Phaser.AUTO,'phaser-example',{preload:preload,create:create,update:update,render:render})
-
-    function preload(){
-        g=$G(game).bn(0,0,1920,1200)
-        g.l.i('stars','/assets/misc/starfield.jpg')
-        g.l.i('ship','/assets/sprites/thrust_ship2.png')
-        g.l.i('jets','/assets/sprites/jets.png')}
-
-    function create(){
-        starfield=g.tSp(0,0,800,600,'stars').fTC(1)
-        trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
-        g.P2().ru(1.2)
-        p=g.sp(200,200,'ship').p2()
-        g.cm.f(p)
-        cu=g.K()}
-
-    function update(){
-        isThrusting=false
-        if(cu.L()){p.rtL(100)} else if(cu.R()){p.rtR(100)} else{p.sZR()}
-        if(cu.U()){p.thrust(400); isThrusting=true} else if(cu.D()){p.rv(400)}
-        if(!g.lX()){starfield.tilePosition.x+=(p.vx()*16)*g.t.physicsElapsed}
-        if(!g.lY()){starfield.tilePosition.y+=(p.vy()*16)*g.t.physicsElapsed}
-        trail.eXY(p.x,p.y)
-        var px=p.vx()*10,py=p.vy()*10;px *=-1;py *=-1
-        trail.nPS(px, py).mPS(px, py)
-        if(isThrusting||sqr(p.vx()*p.vx()+p.vy()*p.vy())>10){trail.start(true,3000,8)}}
-
-    function render(){
-
-        // g.db.t(p.body.velocity.x * 10, 32, 32);
-        // g.db.t(p.body.velocity.y * 10, 32, 48);
-
-    }
-
-}
-
 MASSVELOCITYTEST1=function(){ z()
 
 
@@ -361,6 +242,85 @@ MASSVELOCITYTEST1=function(){ z()
 
     function render(){}
 }
+
+
+
+
+THRUST=function(){z()
+
+
+
+    pG(
+
+    function preload(){
+        g.bn(0,0,1920,1200).P2().ru(1.2)
+        g.l.i('stars','/assets/misc/starfield.jpg')
+        g.l.i('ship','/assets/sprites/thrust_ship2.png')
+        g.l.i('jets','/assets/sprites/jets.png')},
+
+    function create(){
+        isThrusting=false
+        starfield=g.tSp(0,0,800,600,'stars').fTC(1)
+        trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
+        p=g.sp(200,200,'me').w(80).h(80).p2()
+        g.cm.f(p)
+        cu=g.K()
+    },
+
+    function update(){
+        isThrusting=false
+        if(cu.L()){p.rtL(100)} else if(cu.R()){p.rtR(100)} else{p.sZR()}
+        if(cu.U()){p.thrust(400); isThrusting=true} else if(cu.D()){p.rv(400)}
+        if(!g.lX()){starfield.tilePosition.x+=(p.vx()*16)*g.t.physicsElapsed}
+        if(!g.lY()){starfield.tilePosition.y+=(p.vy()*16)*g.t.physicsElapsed}
+        trail.eXY(p.x,p.y)
+        var px=p.vx()*10,py=p.vy()*10;px *=-1;py *=-1
+        trail.nPS(px, py).mPS(px, py)
+        if(isThrusting||sqr(p.vx()*p.vx()+p.vy()*p.vy())>10){trail.start(true,3000,8)}}
+    )
+
+}
+THRUST1=function(){z()
+
+    isThrusting=false
+
+    game=Game(800,600,Phaser.AUTO,'phaser-example',{preload:preload,create:create,update:update,render:render})
+
+    function preload(){
+        g=$G(game).bn(0,0,1920,1200)
+        g.l.i('stars','/assets/misc/starfield.jpg')
+        g.l.i('ship','/assets/sprites/thrust_ship2.png')
+        g.l.i('jets','/assets/sprites/jets.png')}
+
+    function create(){
+        starfield=g.tSp(0,0,800,600,'stars').fTC(1)
+        trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
+        g.P2().ru(1.2)
+        p=g.sp(200,200,'ship').p2()
+        g.cm.f(p)
+        cu=g.K()}
+
+    function update(){
+        isThrusting=false
+        if(cu.L()){p.rtL(100)} else if(cu.R()){p.rtR(100)} else{p.sZR()}
+        if(cu.U()){p.thrust(400); isThrusting=true} else if(cu.D()){p.rv(400)}
+        if(!g.lX()){starfield.tilePosition.x+=(p.vx()*16)*g.t.physicsElapsed}
+        if(!g.lY()){starfield.tilePosition.y+=(p.vy()*16)*g.t.physicsElapsed}
+        trail.eXY(p.x,p.y)
+        var px=p.vx()*10,py=p.vy()*10;px *=-1;py *=-1
+        trail.nPS(px, py).mPS(px, py)
+        if(isThrusting||sqr(p.vx()*p.vx()+p.vy()*p.vy())>10){trail.start(true,3000,8)}}
+
+    function render(){
+
+        // g.db.t(p.body.velocity.x * 10, 32, 32);
+        // g.db.t(p.body.velocity.y * 10, 32, 48);
+
+    }
+
+}
+
+
 PLATFORMERBASICS=function(){z()
 
 
@@ -410,10 +370,6 @@ PLATFORMERBASICS=function(){z()
 
         }
     }
-
-
-
-
 STARSTRUCK=function(){z()
     facing='left'
     jumpTimer=0
@@ -454,7 +410,7 @@ STARSTRUCK=function(){z()
         game.physics.arcade.gravity.y=250
 
 
-        player=g.sp(32,32, 'me').w(60).h(60)
+        player=g.sp(132,32, 'me').w(60).h(60)
 
 
             game.physics.enable(player, pArcade);
@@ -492,16 +448,12 @@ STARSTRUCK=function(){z()
 
         if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer){
             player.body.velocity.y = -250;
-            jumpTimer = game.time.now + 750}}
-    )
+            jumpTimer = game.time.now + 750}})
 
 
 
 
 }
-
-
-
 STARSTRUCK1=function(){z()
     game=new Phaser.Game(800,600,Phaser.CANVAS,'phaser-example',{
         preload:preload,
@@ -597,69 +549,109 @@ STARSTRUCK1=function(){z()
 
     }}
 
+MAGGOTS=function(){
+
+    pG(
+    function preload(){
+
+        g.l.i( 'maggot', '/assets/sprites/maggot.png')
+
+        pBoundsPad=100
 
 
-
-
-
-
-STATES=function(){z()
-
-        di('game_div').a().s({w:400, margin:'auto', mt:50})
-        // game=new Phaser.Game(400,490,Phaser.AUTO,'')
-        game= Game(400,490,Phaser.AUTO,'game_div')
-
-        state={}
-         state.main=function(){} // Creates a new 'main' state that wil contain the game
-
-         state.main.prototype={
-
-            preload:function(){g.l.i('hello',src('me'))},
-            create:function(){ this.hello_sprite=game.add.sprite(250,300,'hello')},
-            update:function(){this.hello_sprite.angle+=1}}// Function called 60 times per second
-
-
-        game.state.add('main', state.main)
-        game.state.start('main')}
-
-
-MAGGOTS=function(){z()
-
-
-
- game=new Phaser.Game(
-        800,600,
-        Phaser.AUTO,
-        'phaser-example',
-     {preload: preload, create: create, update: update })
-
-    function preload() {g=$G(game)
-
-        g.l.i(
-            'maggot',
-            '/assets/sprites/maggot.png'
-        )}
-
-     
-        pBoundsPad=100,
         pBnds=new Phaser.Rectangle(
             -pBoundsPad,
             -pBoundsPad,
-            800+pBoundsPad*2,
-            600+pBoundsPad*2) 
+                800+pBoundsPad*2,
+                600+pBoundsPad*2)
 
         tick=0
 
+    },
+
+
+
     function create(){
 
-        batch=g.a.spB()
+        batch=g.spB()
 
-        var total=(g.renderType===Phaser.WEBGL)?5000:100
+        var total=(g.renderType===Phaser.WEBGL)?1000:100
+
         for(var i=0;i<total;i++){
-            var p=batch.create(
-                g.w.randomX,
-                g.w.randomY,
-                'maggot')
+
+            var p=batch.create(g.rX(),g.rY(),'m')
+
+            p.width=40;
+            p.height=40
+
+            p.anchor.set(.5)
+            p.scale.set(.8 + rnd()*.3)
+            p.direction = rnd()*PI*2
+            p.turningSpeed = rnd()-.8
+            p.speed=(2+rnd()*2)*.2
+            p.offset=rnd()*100}},
+
+
+    function update(){
+
+        batch.forEach(updateMaggot, this,false)
+        tick+=0.1
+    })
+
+
+    function updateMaggot(p){ p=sSp(p)
+        p.scale.y = 0.95 +  sin(tick + p.offset) * 0.05
+        p.direction += p.turningSpeed * 0.01;
+        p.p.x +=  sin(p.direction) * (p.speed * p.scale.y);
+        p.p.y +=  cos(p.direction) * (p.speed * p.scale.y);
+        p.rotation = -p.direction +  PI;
+
+        // wrap the dudes by testing their bounds..
+
+        if(p.p.x < pBnds.x){p.p.x += pBnds.width}
+        if(p.p.x > pBnds.x + pBnds.width){p.p.x -= pBnds.width}
+        if(p.p.y < pBnds.y){p.p.y += pBnds.height}
+        if(p.p.y > pBnds.y + pBnds.height){p.p.y -= pBnds.height}
+
+
+    }
+
+}
+
+
+
+
+MAGGOTS1=function(){z()
+
+ game= Game(800,600, Phaser.AUTO, 'phaser-example',{preload: preload, create: create, update: update })
+
+    function preload(){g=$G(game)
+
+        g.l.i( 'maggot', '/assets/sprites/maggot.png')
+
+        pBoundsPad=100
+
+
+        pBnds=new Phaser.Rectangle(
+            -pBoundsPad,
+            -pBoundsPad,
+                800+pBoundsPad*2,
+                600+pBoundsPad*2)
+
+        tick=0
+
+    }
+
+     
+
+    function create(){
+
+        batch=g.spB()
+
+        var total=(g.renderType===Phaser.WEBGL)?1000:100
+
+        for(var i=0;i<total;i++){
+            var p=batch.create(g.rX(),g.rY(),'maggot')
 
             p.anchor.set(.5) 
             p.scale.set(.8 + rnd()*.3)
@@ -670,14 +662,13 @@ MAGGOTS=function(){z()
 
 
     function update(){
-        batch.forEach(updateMaggot,
 
-            this,false);tick+=0.1}
+        batch.forEach(updateMaggot, this,false)
+        tick+=0.1
+    }
 
 
-    function updateMaggot(p){
-        p=sPhSp(p)
-
+    function updateMaggot(p){ p=sSp(p)
         p.scale.y = 0.95 +  sin(tick + p.offset) * 0.05
         p.direction += p.turningSpeed * 0.01;
         p.p.x +=  sin(p.direction) * (p.speed * p.scale.y);
@@ -686,15 +677,13 @@ MAGGOTS=function(){z()
 
         // wrap the dudes by testing their bounds..
         
-        if (p.p.x < pBnds.x)
-            p.p.x += pBnds.width;
-        else if (p.p.x > pBnds.x + pBnds.width)
-            p.p.x -= pBnds.width;
+        if(p.p.x < pBnds.x){p.p.x += pBnds.width}
+        if(p.p.x > pBnds.x + pBnds.width){p.p.x -= pBnds.width}
+        if(p.p.y < pBnds.y){p.p.y += pBnds.height}
+        if(p.p.y > pBnds.y + pBnds.height){p.p.y -= pBnds.height}
 
-        if (p.p.y < pBnds.y)
-            p.p.y += pBnds.height;
-        else if (p.p.y > pBnds.y + pBnds.height)
-            p.p.y -= pBnds.height}
+
+    }
 
 }
 
@@ -777,70 +766,44 @@ SWAPTILES=function(){z()
 
 
 
-LAUNCHER=function(){z()
-    catchFlag = false
-    launchVelocity = 0
-
-
-    game =  Game( 800, 600, Phaser.CANVAS, 'phaser-example', {
-                 preload: preload,
-                 create: create,
-                 update: update,
-                 render: render})
+LAUNCHER=function(){
 
 
 
+     pG(
 
-         function preload() {  g=$G(game).bc('#0072bc').ARC(200)
+         function preload(){
+             catchFlag = false
+             launchVelocity = 0
 
-                g.l.i('analog', '/assets/tests/fusia.png')
+             g.bc('#0072bc').ARC(200)
+              g.l.i('analog', '/assets/tests/fusia.png')
               g.l.i('arrow', '/assets/sprites/longarrow2.png')
-              g.l.i('ball', '/assets/sprites/pangball.png')}
-
-
+              g.l.i('ball', '/assets/sprites/pangball.png')
+         },
 
           function create(){
-
-
-              gx=g.a.graphics(0,0)
+              gx=g.add.graphics(0,0)
               gx.beginFill(0x049e0c)
               gx.drawRect(395,350,10,250)
               analog=g.sp(400,350,'analog').arc().w(8).al(0).rt(220).A(.5,0).aGr(0)
-
               arrow=g.sp(400,350,'arrow').arc().A(.1,.5).aGr(0).al(0)
               arrow.body.moves=false
-              ball=g.sp(100,400,'ball').arc().A(.5,.5).clWB(1).bo(.9,.9).iE(1)
+
+              //ball=g.sp(100,400,'ball').arc().A(.5,.5).clWB(1).bo(.9,.9).iE(1)
+
+              ball=g.sp(100,400,'me').arc().A(.5,.5).clWB(1).bo(.9,.9).iE(1).w(100).h(100)
+
               ball.ipS(0,true).oID(set).oIU(launch)
 
-          }
+          },
 
+          function update(){
 
-          function set(ball,pointer){
-              ball.mvs(0).vxy(0,0).aGr(0)
-              catchFlag=true}
+              arrow.rt(g.anB(arrow,ball))
 
-
-    function launch(){
-
-              catchFlag=false
-
-              ball.mvs(1)
-              arrow.al(0)
-              analog.al(0)
-
-              Xvector=(arrow.x-ball.x) * 3;
-              Yvector=(arrow.y-ball.y) * 3;
-              ball.aGr(1).vxy(Xvector, Yvector)}
-
-
-
-
-          function update() {
-
-              arrow.rt( g.anB(arrow, ball) )
-
-              if (catchFlag==true){
-                  //  Track the ball sprite to the mouse
+              if(catchFlag==true){
+                  //Track the ball sprite to the mouse
 
 
                   ball.x=g.iX()
@@ -848,12 +811,10 @@ LAUNCHER=function(){z()
 
                   arrow.al(1)
                   analog.al(.5).rt(arrow.rt()-3.14/2).h(g.dTP(arrow))
+                  launchVelocity=analog.h()}},
 
 
-                  launchVelocity=analog.h()}}
-
-
-          function render() {
+          function render(){
 
               g.db.text("Drag the ball and release to launch", 32, 32);
 
@@ -862,7 +823,104 @@ LAUNCHER=function(){z()
               // g.db.spriteInfo(ball, 32, 64);
               // g.db.text("Launch Velocity: " + parseInt(launchVelocity), 32, 250);
 
-          }}
+          })
+
+    function set(ball,pointer){
+        ball.mvs(0).vxy(0,0).aGr(0)
+        catchFlag=true}
+
+    function launch(){
+
+        catchFlag=false
+        ball.mvs(1)
+        arrow.al(0)
+        analog.al(0)
+        Xvector=(arrow.x-ball.x)*3
+        Yvector=(arrow.y-ball.y)*3
+        ball.aGr(1).vxy(Xvector,Yvector)}
+
+}
+
+LAUNCHER1=function(){
+    z()
+    catchFlag = false
+    launchVelocity = 0
+
+
+    game=Game(800,600,Phaser.CANVAS,'phaser-example',{
+        preload: preload, create: create, update: update, render: render
+
+    })
+
+
+    function preload(){
+        g=$G(game).bc('#0072bc').ARC(200)
+        g.l.i('analog', '/assets/tests/fusia.png')
+        g.l.i('arrow', '/assets/sprites/longarrow2.png')
+        g.l.i('ball', '/assets/sprites/pangball.png')
+    }
+
+
+
+    function create(){
+        gx=g.add.graphics(0,0)
+        gx.beginFill(0x049e0c)
+        gx.drawRect(395,350,10,250)
+        analog=g.sp(400,350,'analog').arc().w(8).al(0).rt(220).A(.5,0).aGr(0)
+        arrow=g.sp(400,350,'arrow').arc().A(.1,.5).aGr(0).al(0)
+        arrow.body.moves=false
+        ball=g.sp(100,400,'ball').arc().A(.5,.5).clWB(1).bo(.9,.9).iE(1)
+        ball.ipS(0,true).oID(set).oIU(launch)
+
+    }
+
+
+    function set(ball,pointer){
+        ball.mvs(0).vxy(0,0).aGr(0)
+        catchFlag=true}
+
+
+    function launch(){
+
+        catchFlag=false
+
+        ball.mvs(1)
+        arrow.al(0)
+        analog.al(0)
+        Xvector=(arrow.x-ball.x)*3
+        Yvector=(arrow.y-ball.y)*3
+        ball.aGr(1).vxy(Xvector,Yvector)
+    }
+
+
+
+
+    function update() {
+
+        arrow.rt(g.anB(arrow,ball))
+
+        if(catchFlag==true){
+            //Track the ball sprite to the mouse
+
+
+            ball.x=g.iX()
+            ball.y=g.iY()
+
+            arrow.al(1)
+            analog.al(.5).rt(arrow.rt()-3.14/2).h(g.dTP(arrow))
+            launchVelocity=analog.h()}}
+
+
+    function render(){
+
+        g.db.text("Drag the ball and release to launch", 32, 32);
+
+        g.db.bodyInfo(ball, 32, 64);
+
+        // g.db.spriteInfo(ball, 32, 64);
+        // g.db.text("Launch Velocity: " + parseInt(launchVelocity), 32, 250);
+
+    }}
 
 
 
@@ -919,18 +977,26 @@ MOVEAROUNDWORLD=function(){z()
 
     function preload(){
         g=$G(game).bc('#007236').bn(-2000,-2000,4000,4000)
+
         g.l.i('m', '/assets/sprites/mushroom2.png')
         g.l.i('p', '/assets/sprites/sonic_havok_sanity.png')}
 
 
-    function create() {
-        g.a.t(600,800,"-phaser-",{font:"32px Arial",fill:"#330088",align:"center"})
+    function create(){
 
-        d=sSp(g.a.sp(0,0,'p')).A()
+        g.tx(
+            600,800,"-phaser-",
+            {font:"32px Arial",fill:"#330088",align:"center"})
 
-        d2=sSp(g.a.sp(-500,-500,'p')).A()
-       _t(100,function(){
-           g.a.sp(g.rX(),g.rY(),'m')})
+
+        d=g.sp0('p').A()
+
+        d2=g.sp(-500,-500,'p').A()
+
+        _t(100,
+            function(){
+                g.spR('m')
+            })
 
         cu=g.K()
 
@@ -954,25 +1020,33 @@ MOVEAROUNDWORLD=function(){z()
             else{g.cm.y+=4}}
 
         if(cu.L()){
-            if(cu.left.shiftKey){g.w.rotation-=.05}
+            if(cu.left.shiftKey){
+                g.w.rotation-=.05}
             else{g.cm.x-=4}}
 
         if(cu.R()){
-            if(cu.right.shiftKey){g.w.rotation+=0.05}
+
+            if(cu.right.shiftKey){
+                g.w.rotation+=0.05}
             else{g.cm.x+= 4}
 
         }}
 
 
+
     function render(){
 
         g.db.cameraInfo(g.cm, 32, 32)}}
+BRINGCHILDTOP=function(){
 
+    z()
 
-
-
-BRINGCHILDTOP=function(){z()
-                 game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+    game=Game(800, 600, Phaser.CANVAS, 'phaser-example',
+        {
+            preload:preload,
+            create:create,
+            render:render
+        })
 
                function preload() {  g=$G(game)
 
@@ -985,13 +1059,24 @@ BRINGCHILDTOP=function(){z()
                    g.l.i('diamond', '/assets/sprites/diamond.png')
                    g.l.i('mushroom', '/assets/sprites/mushroom2.png')}
 
-               function create() {
-                   _t(20,function(){
-                       g.sp(g.rX(),g.rY(),g.rnd.pick(g.imageKeys()))
-                           .iE().drg()})}
+               function create(){
+                   _t(20,
 
-               function render(){g.db.inputInfo(32,32)}
+                       function(){
+
+                       g.sp(
+                           g.rX(),g.rY(),
+                           g.rnd.pick(g.imageKeys())
+                       )
+                           .iE().drg()
+                   })
+               }
+
+                function render(){g.db.inputInfo(32,32)}
            }
+
+
+
 
 
 
@@ -1422,35 +1507,26 @@ WORLDSPRITE=function(){z()
     game= Game(800, 600, Phaser.CANVAS, 'phaser-example', {
               preload: preload, create: create, update: update, render: render })
 
-        function preload(){ g=$G(game)
-
+        function preload(){
+            g=$G(game).bn(0, -500, 1920, 1200)
             g.l.i('backdrop','/assets/pics/remember-me.jpg');
-            g.l.i('card','/assets/sprites/mana_card.png')}
-
-        function create() {
-
-            g.bn(0, -500, 1920, 1200)
-
-            g.a.sp(0,0,'backdrop')
-
-            p = g.a.sp(200, 200, 'card')
-
-            g.cm.f(p)
-
+            g.l.i('card','/assets/sprites/mana_card.png')
             cu=g.K()
         }
 
-        function update(){
+        function create(){
 
-            if(cu.left.isDown){
-                p.x-=4}
-            if(cu.right.isDown){
-                p.x+=4}
-            if(cu.up.isDown){
-                p.y-= 4}
-            if (cu.down.isDown){
-                p.y += 4}
-        }
+            g.sp0('backdrop')
+            p=g.sp(200,200,'card').fw()//g.f(p)
+
+            }
+
+
+        function update(){
+            if(cu.L()){p.x-=4}
+            if(cu.R()){p.x+=4}
+            if(cu.U()){p.y-=4}
+            if(cu.D()){p.y+=4}}
 
         function render(){
             g.db.cameraInfo(g.cm, 500, 32);
@@ -1465,9 +1541,10 @@ WORLDSPRITE=function(){z()
 
 
 FIXEDTOCAMERA=function(){z()
-       game = Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render : render });
+       game = Game(800, 600, Phaser.CANVAS, 'phaser-example',
+           { preload: preload, create: create, update: update, render : render });
 
-        function preload() {  g=$G(game).bc('#007236')
+        function preload() {  g=$G(game).bc('#007236').bn(-1000, -1000, 2000, 2000)
 
             g.l.i('mushroom', '/assets/sprites/mushroom2.png')
             g.l.i('sonic', '/assets/sprites/sonic_havok_sanity.png')
@@ -1476,44 +1553,38 @@ FIXEDTOCAMERA=function(){z()
 
         function create() {
 
-            g.bn(-1000, -1000, 2000, 2000)
 
-            _t(200,function(){g.a.sp(g.rX(), g.rY(),'mushroom')})
+            _t(200,function(){g.spR('mushroom')})
 
-            g.a.t(0,0,"this text scrolls\nwith the background",
+            g.tx(0,0,"this text scrolls\nwith the background",
                 {font:"32px Arial",fill:"#f26c4f",align:"center"})
 
-            logo1=g.a.sp(0,0,'phaser')
-            logo1.fixedToCamera=true
+            logo1=g.sp0('phaser').fTC(1)
+
             logo1.cameraOffset.setTo(100,100)
 
-            logo2=g.a.sp(0,0,'phaser')
-            logo2.fixedToCamera=true
+            logo2=g.sp0('phaser').fTC(1)
+
             logo2.cameraOffset.setTo(500,100)
 
+            t=g.tx(0,0,"this text is fixed to the camera",
+                {font: "32px Arial", fill: "#ffffff", align: "center" })
 
-            var t=g.a.t(0,0,"this text is fixed to the camera",
-                {font: "32px Arial", fill: "#ffffff", align: "center" });
             t.fixedToCamera=true
-            t.cameraOffset.setTo(200, 500);
+            t.cameraOffset.setTo(200, 500)
 
-            g.tw(logo2.cameraOffset).t({y:400},2000,
-                $E.Back.InOut, true,0,2000,true)
+            g.tw(logo2.cameraOffset).t({y:400},2000,$E.Back.InOut, true,0,2000,true)
 
-            cu=g.ip.kb.ck()}
+            cu=g.K()}
 
         function update() {
 
-            if (cu.up.isDown){g.cm.y -= 4}
-            else if (cu.down.isDown){g.cm.y += 4}
+            if (cu.U()){g.cm.y -= 4}
+            if (cu.D()){g.cm.y += 4}
+            if (cu.L()){g.cm.x -= 4}
+            if (cu.R()){g.cm.x += 4}}
 
-            if (cu.left.isDown){g.cm.x -= 4}
-            else if (cu.right.isDown)
-            {game.cm.x += 4}}
-
-        function render() {
-
-            g.db.cameraInfo(game.camera, 32, 32)}
+        function render(){g.db.cameraInfo(g.camera, 32, 32)}
 }
 
 
@@ -1522,85 +1593,6 @@ FIXEDTOCAMERA=function(){z()
 
 
 
-MULTIBALL=function(){z()
-
-       game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render })
-
-      function preload() {
-
-          g=$G(game).bc('#2d2d2d').ARC(1400)
-
-          g.l.i('atari', '/assets/sprites/atari130xe.png')
-          g.l.ss('bs', '/assets/sprites/balls.png', 17, 17)}
-
-
-
-    function create(){
-
-
-        bs=g.group().make(250,'bs',0,false)
-
-
-        p=g.a.sp(300,450,'atari')
-
-
-        //  Enable physics on everything added to the world so far
-        // the true parameter makes it recurse down into children
-
-        g.ph.arcade.enable(
-            g.w,
-            true
-        )
-
-
-
-        sSp(p)
-
-        p.b.allowGravity=0
-        p.b.immovable=true
-        cu=g.K()
-        g.t.events.loop(150,fire,this)
-        g.a.t(16,16,'Left/Right to move',{font:'18px Arial',fill:'#ffffff'})}
-
-
-      function fire(){var b=bs.getFirstExists(false)
-          if(b){
-              b.frame=g.rnd.integerInRange(0,6)
-              b.exists=true
-              b.reset(g.w.randomX,0)
-              b.body.bounce.y=0.8
-          }}
-
-
-
-      function reflect(a,b){
-          if (b.y>(p.y+5)){return true}
-          else{
-              b.body.velocity.x=  p.body.velocity.x
-              b.body.velocity.y*= -(b.body.bounce.y)
-              return false}}
-
-
-
-      function update(){
-
-          g.ph.arcade.collide(p,bs,
-              null,reflect,this)
-
-          p.b.v.x=0
-
-          if (cu.left.isDown){p.b.v.x=-200}
-          else if (cu.right.isDown){p.b.v.x=200}
-
-          bs.forEachAlive(checkBounds,this)}
-
-
-
-
-
-      function checkBounds(b){if(b.y>500){b.kill()}}
-
-      function render(){}}
 
 
 
@@ -1611,7 +1603,9 @@ PIXELPICKSCROLLING=function(){z()
        game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', {
            preload: preload, create: create, update: update, render: render });
 
-       function preload() {g=$G(game)
+       function preload() {
+
+           g=$G(game).A().bn(0,0, 4000, 2000)
 
            g.l.ss('mummy', '/assets/sprites/metalslug_mummy37x45.png', 37, 45, 18)
            g.l.i('stars', '/assets/misc/starfield.jpg')}
@@ -1622,15 +1616,12 @@ PIXELPICKSCROLLING=function(){z()
 
        function create() {
 
-           game.ARC()
 
-
-           game.bn(0,0, 4000, 2000)
 
            //  Scrolling background
            s = g.a.tileSprite(0, 0, 4000, 600, 'stars');
 
-           g.ARC(b=sSp(g.a.sp(0, 300, 'mummy')))
+            b=g.sp(0, 300, 'mummy').arc()
 
 
            b.scale.set(10)
@@ -1819,53 +1810,27 @@ ANGLEPOINTER=function(){z()
 
 
 
-        INPUTPRIORITY=function(){z()
 
-            var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+INPUTPRIORITY=function(){z()
 
-            function preload() {
+            var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example',
+                {preload:preload,create:create})
 
-                g.l.i('manga', 'assets/pics/manga-girl.png');
-                g.l.i('disk', 'assets/sprites/copy-that-floppy.png');
-                g.l.i('card', 'assets/sprites/mana_card.png');
+            function preload(){g=$G(game)
+                g.l.i('manga','/assets/pics/manga-girl.png')
+                g.l.i('disk','/assets/sprites/copy-that-floppy.png')
+                g.l.i('card','/assets/sprites/mana_card.png')}
 
-            }
+            function create(){
 
-            function create() {
+               g.sp(100,100,'manga').iE(1).drg().pr(2).drag()
+               g.sp(200,200,'disk').iE(1).pr(1).drag()
+               g.sp(300,300,'card').iE(1).pr(0).drag()}
 
-                game.stage.backgroundColor = '#4b0049';
 
-                //  Note the input.priorityID values below.
-
-                //  Even though the card and disk sprites visually appear on-top of the manga sprite,
-                //  because they have lower priorityIDs the manga sprite gets priority in all input events.
-
-                //  Without the priorityID, input priority is given to the sprite at the top of the display list
-                //  (in this case to card).
-
-                var manga = game.add.sprite(100, 100, 'manga');
-                manga.inputEnabled = true;
-                manga.input.enableDrag();
-                manga.input.priorityID = 2;
-
-                var disk = game.add.sprite(200, 200, 'disk');
-                disk.inputEnabled = true;
-                disk.input.enableDrag();
-                disk.input.priorityID = 1;
-
-                var card = game.add.sprite(300, 300, 'card');
-                card.inputEnabled = true;
-                card.input.enableDrag();
-                card.input.priorityID = 0;
-
-            }
-
-            function render() {
-
-                game.debug.text("Drag the Sprites", 32, 32);
-
-            }
         }
+
+
 
 SNAPONDRAG=function(){z()
       game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
@@ -2087,15 +2052,13 @@ CALLALL=function(){z()
 
 DISPLAYORDER=function(){z()
 
-         game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+         game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
         function preload() {  g=$G(game)
 
-            game.load.image('atari1', '/assets/sprites/atari130xe.png')
-            game.load.image('atari2', '/assets/sprites/atari800xl.png')
-            game.load.image('card', '/assets/sprites/mana_card.png')}
-
-
+            g.l.i('atari1', '/assets/sprites/atari130xe.png')
+            g.l.i('atari2', '/assets/sprites/atari800xl.png')
+            g.l.i('card', '/assets/sprites/mana_card.png')}
 
         function create() {
 
@@ -2105,9 +2068,12 @@ DISPLAYORDER=function(){z()
             items.cr(280,100,'atari2')
 
             g.oT1(function(){
-                    card.kill()
+                    card.k()
                     g.oT1(function(){
-                        items.getFirstDead().revive()},this)
+
+                        items.gFD().revive()
+
+                    },this)
                 },this)}
     }
 
@@ -2157,7 +2123,7 @@ GETFIRSTDEAD=function(){z()
         g.rp(Second,20,resurrect,this)}
 
     function resurrect(){
-        var i=veg.getFirstDead()
+        var i=veg.gFD()
         if(i){i.reset(g.rX(),g.rY());i.frame = g.rI(0,36)}}
 
     function update(){}
@@ -2173,65 +2139,68 @@ GETFIRSTDEAD=function(){z()
 
 GROUPTRANSFORM=function(){z()
 
+    var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-              game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+    var robot;
 
+    function preload() {
 
+        game.load.image('eye', '/assets/sprites/robot/eye.png');
+        game.load.image('body', '/assets/sprites/robot/body.png');
+        game.load.image('arm-l', '/assets/sprites/robot/arm-l.png');
+        game.load.image('arm-r', '/assets/sprites/robot/arm-r.png');
+        game.load.image('leg-l', '/assets/sprites/robot/leg-l.png');
+        game.load.image('leg-r', '/assets/sprites/robot/leg-r.png');
 
-                   function preload(){  g=$G(game)
+    }
 
-                       game.load.image('eye', '/assets/sprites/robot/eye.png');
-                       game.load.image('body', '/assets/sprites/robot/body.png');
-                       game.load.image('arm-l', '/assets/sprites/robot/arm-l.png');
-                       game.load.image('arm-r', '/assets/sprites/robot/arm-r.png');
-                       game.load.image('leg-l', '/assets/sprites/robot/leg-l.png');
-                       game.load.image('leg-r', '/assets/sprites/robot/leg-r.png');
+    function create() {
 
-                   }
+        game.stage.backgroundColor = '#124184';
 
-                   function create() {
+        // Use groups of sprites to create a big robot.
+        // Robot itself, you can subclass group class in a real game.
+        robot = game.add.group();
 
-                      // game.stage.backgroundColor = '#124184';
+        // Robot components.
+        robot.create(90, 175, 'arm-l');
+        robot.create(549, 175, 'arm-r');
+        robot.create(270, 325, 'leg-l');
+        robot.create(410, 325, 'leg-r');
+        robot.create(219, 32, 'body');
+        robot.create(335, 173,'eye');
 
-                       // Use groups of sprites to create a big robot.
-                       // Robot itself, you can subclass group class in a real game.
-                       robot = g.gr()
+        //  Make them all input enabled
+        robot.setAll('inputEnabled', true);
 
-                       // Robot components.
-                       robot.cr(90, 175, 'arm-l');
-                       robot.cr(549, 175, 'arm-r');
-                       robot.cr(270, 325, 'leg-l');
-                       robot.cr(410, 325, 'leg-r');
-                       robot.cr(219, 32, 'body');
-                       robot.cr(335, 173,'eye');
+        //  And allow them all to be dragged
+        robot.callAll('input.enableDrag', 'input');
 
+    }
 
-                       robot.setAll('inputEnabled',true)
-                       robot.callAll('input.enableDrag','input')
+    function render() {
 
-                   }
+        game.debug.text('The robot is a group and every component is a sprite.', 16, 20);
+        game.debug.text('Drag parts to re-position them. ', 16, 40);
 
-                   function render() {
+    }
 
-                       game.debug.text('The robot is a group and every component is a sprite.', 16, 20);
-                       game.debug.text('Drag parts to re-position them. ', 16, 40);
-
-                   }
 
                }
 
 
+
 RECYCLING=function(){z()
-    var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+     game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
     var enemies;
 
-    function preload() {
+    function preload() {g=$G(game)
 
-        game.load.image('baddie', '/assets/sprites/space-baddie.png');
-        game.load.spritesheet('button', '/assets/buttons/baddie-buttons.png', 224, 70);
+        g.l.i('baddie', '/assets/sprites/space-baddie.png');
+        g.l.ss('button', '/assets/buttons/baddie-buttons.png', 224, 70)}
 
-    }
+
 
     function create() {
 
@@ -2285,6 +2254,11 @@ RECYCLING=function(){z()
 
     }
 }
+
+
+
+
+
 TILECALLBACKS=function(){z()
 
     var m,l,s,cu,
@@ -2358,12 +2332,12 @@ SWAPCHILDREN=function(){z()
 
 
 
-                 game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+                 game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
                 function preload() {g=$G(game)
 
-                    game.load.image('atari1', '/assets/sprites/atari130xe.png');
-                    game.load.image('atari2', '/assets/sprites/atari800xl.png');
+                    g.l.i('atari1', '/assets/sprites/atari130xe.png');
+                   g.l.i('atari2', '/assets/sprites/atari800xl.png');
 
                 }
 
@@ -2373,21 +2347,22 @@ SWAPCHILDREN=function(){z()
                 function create() {
 
                     //  Items are rendered in the depth order in which they are added to the Group
-                    atari1 = game.add.sprite(100, 100, 'atari1');
-                    atari2 = game.add.sprite(250, 90, 'atari2');
+                    atari1 = g.sp(100, 100, 'atari1');
+                    atari2 = g.sp(250, 90, 'atari2');
 
-                    game.input.onTap.add(swapSprites, this);
+                    g.oT(swapSprites, this);
 
        }
 
                 function swapSprites() {
 
                     //The 2 Sprites are in the global world Group (World class extends the Group class), but this will work for any Group:
-                    game.world.swap(atari1, atari2);
+
+                    game.world.swap(atari1, atari2)
 
                 }
 
-                function render () {
+                function render(){
 
                     game.debug.text('Tap screen to swap the children and therefore swap their indexes.', 10, 280);
 
@@ -2398,37 +2373,28 @@ SWAPCHILDREN=function(){z()
 REMOVEBETWEEN=function(){  z()
 
 
-        game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+        game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
        function preload() {  g=$G(game)
 
-           game.load.image('wasp', '/assets/sprites/wasp.png');
-           game.load.image('sonic', '/assets/sprites/sonic_havok_sanity.png');
-           game.load.image('phaser', '/assets/sprites/phaser.png')}
+           g.l.i('wasp', '/assets/sprites/wasp.png');
+           g.l.i('sonic', '/assets/sprites/sonic_havok_sanity.png');
+           g.l.i('phaser', '/assets/sprites/phaser.png')}
 
        var sprites;
 
        function create() {
 
-           sprites = game.add.group();
+           sprites = g.gr()
 
            //  First we'll create 10 'wasp' sprites
-           for (var i = 0; i < 10; i++)
-           {
-               sprites.create(game.world.randomX, game.world.randomY, 'wasp');
-           }
+           for (var i = 0; i < 10; i++){sprites.cr(g.rX(), g.rY(), 'wasp')}
 
            //  Next we'll create 10 'sonic' sprites
-           for (var i = 0; i < 10; i++)
-           {
-               sprites.create(game.world.randomX, game.world.randomY, 'sonic');
-           }
+           for (var i = 0; i < 10; i++){sprites.cr(g.rX(), g.rY(), 'sonic')}
 
            //  Finally we'll create 10 'phaser' sprites
-           for (var i = 0; i < 10; i++)
-           {
-               sprites.create(game.world.randomX, game.world.randomY, 'phaser');
-           }
+           for (var i = 0; i < 10; i++){sprites.create(g.rX(), g.rY(), 'phaser')}
 
            this.input.onDown.addOnce(remove, this);
 
@@ -2451,20 +2417,20 @@ REMOVEBETWEEN=function(){  z()
 
 REMOVE=function(){z()
 
-             game=new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+             game= Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
 
 
              function preload() {g=$G(game)
 
-                 game.load.spritesheet('item', '/assets/buttons/number-buttons-90x90.png', 90, 90);
-                 game.load.image('rect', '/assets/tests/200x100corners.png')}
+                 g.l.ss('item', '/assets/buttons/number-buttons-90x90.png', 90, 90);
+                 g.l.i('rect', '/assets/tests/200x100corners.png')}
 
 
-             function create() {
+             function create(){
 
                  // Create item container group.
-                 items = game.add.group();
+                 items=g.gr()
 
                  // Add some items and add them to the container group,
                  // then you can drag and drop them to remove.
@@ -2493,7 +2459,7 @@ REMOVE=function(){z()
                  // Create a rectangle drop it at this rectangle to
                  // remove it from origin group normally or
                  // cut it from the group's array entirely.
-                 var rect = game.add.sprite(390, 0, 'rect');
+                 var rect = g.sp(390, 0, 'rect');
                  rect.scale.setTo(2.0, 3.0);
 
              }

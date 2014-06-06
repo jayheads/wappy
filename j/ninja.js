@@ -71,70 +71,126 @@ ONEWAY=function(){z()
 
 
 
+IMPACTEVENTS=function(){z()
 
+    game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-NINJATILEMAP=function(){z()
+    function preload() {g=$G(game).P2().ru(.9)
 
-    game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update})
+        g.l.i('stars', '/assets/misc/starfield.jpg');
+        g.l.ss('ship', '/assets/sprites/humstar.png', 32, 32);
+        g.l.i('panda', '/assets/sprites/spinObj_01.png')
+        g.l.i('sweet', '/assets/sprites/spinObj_06.png')
 
-
-    function preload() {g=sPhG(game)
-
-        game.load.tilemap('map', '/assets/tilemaps/maps/ninja-tilemap.json', null, Phaser.Tilemap.TILED_JSON)
-        game.load.image('ball', '/assets/sprites/shinyball.png')
-        game.load.image('sky', '/assets/skies/sky2.png')
-        game.load.image('kenney', '/assets/tilemaps/tiles/kenney.png')}
+    }
 
 
 
     function create() {
 
-        var sky = game.add.image(0, 0, 'sky');
-        sky.fixedToCamera = true;
 
-        //  Activate the Ninja physics system
-        game.physics.startSystem(Phaser.Physics.NINJA);
+        starfield = g.tSp(0, 0, 800, 600, 'stars').fTC(1)
+        panda = g.sp(g.rX(), g.rY(), 'panda').p2().sR(40, 40, 0, 0);
+        sweet = g.sp(g.rX(), g.rY(), 'sweet').p2().sR(40, 40, 0, 0);
+        ship = g.sp(200, 200, 'ship').p2().sc(2).sm(0)
 
-        map = game.add.tilemap('map')
+        ship.an.add('fly', [0,1,2,3,4,5], 10, true);
+        ship.play('fly');
 
-        map.addTilesetImage('kenney')
+        //  Create our physics body - a 28px radius circle. Set the 'false' parameter below to 'true' to enable debugging
 
-        layer = map.createLayer('Tile Layer 1')
+        ship.sC(28).fRt(1)
 
-        layer.resizeWorld()
-
-        var slopeMap = { '32': 1, '77': 1, '95': 2, '36': 3, '137': 3, '140': 2 }
-
-        tiles = game.physics.ninja.convertTilemap(map, layer, slopeMap)
-
-        sprite1 = game.add.sprite(50, 50, 'ball')
-
-        game.physics.ninja.enableCircle(sprite1, sprite1.width / 2)
-
-        //  A little more bounce
-        sprite1.body.bounce = 0.5
-
-        game.camera.follow(sprite1)
-
-        cursors = game.input.keyboard.createCursorKeys()}
+        g.f(ship)
 
 
+        //  Here we create a Body specific callback.
+        //  Note that only impact events between the ship and the panda are used here,
+        // the sweet/candy object is ignored.
+
+        ship.cBC(panda,
+
+            function hitPanda(body1, body2) {
+
+            //  body1 is the space ship (as it's the body that owns the callback)
+            //  body2 is the body it impacted with, in this case our panda
+            //  As body2 is a Phaser.Physics.P2.Body object, you access its own (the sprite) via the sprite property:
+            body2.sprite.alpha -= 0.1},
+
+            this)
 
 
-    function update() {
+        //  And before this will happen, we need to turn on impact events for the world
+        game.sIE(1)
 
-        for (var i = 0; i < tiles.length; i++)
-        {
-            sprite1.body.circle.collideCircleVsTile(tiles[i].tile)}
 
-        if (cursors.left.isDown){
-            sprite1.body.moveLeft(20)}
-        else if (cursors.right.isDown){
-            sprite1.body.moveRight(20);}
+        cu  = g.K()
 
-        if (cursors.up.isDown){
-            sprite1.body.moveUp(20)}
-        else if (cursors.down.isDown){sprite1.body.moveUp(20)}}}
+    }
+
+
+
+    function update(){
+
+        ship.sZV()
+
+        if(cu.L()){ship.mL(200)}
+        if(cu.R()){ship.mR(200)}
+        if(cu.U()){ship.mU(200)}
+        if(cu.D()){ship.mD(200)}
+
+        if (!g.lX()){starfield.tX(ship.vx()*16 * g.pE())}
+        if (!g.lY()){starfield.tY(ship.vy()*16 * g.pE())}
+
+    }
+
+    function render() {g.db.text('Collide with the Panda!', 32, 32)}
+
+}
+
+
+
+
+
+
+NINJATILEMAP=function(){
+
+
+pG(
+    function preload(){
+        g.Nj()
+        g.l.tm('map','/assets/tilemaps/maps/ninja-tilemap.json', null, Phaser.Tilemap.TILED_JSON)
+        g.l.i('ball','/assets/sprites/shinyball.png')
+        g.l.i('sky','/assets/skies/sky2.png')
+        g.l.i('kenney','/assets/tilemaps/tiles/kenney.png')
+        cu=g.K()},
+
+    function create(){
+        sky=g.im0('sky').fTC(1)
+        tiles=g.cTm(
+            map=g.tm('map').aTSI('kenney'),
+            layer=map.cL('Tile Layer 1','+'),
+            slopeMap={'32':1,'77':1,'95':2,'36':3,'137':3,'140':2})
+        p=g.sp(50,50,'me').w(80).h(80)//'ball'
+        p.eC(p.w()/2).bo(.5) //g.physics.ninja.enableCircle(p, p.width / 2)
+        g.f(p)},
+
+
+    function update(){
+       _e(tiles,
+           function(t){
+               p.cCVT(t.tile)})//for(var i=0;i< tiles.length;i++){p.cCVT(tiles[i].tile)}
+        if(cu.L()){p.mL(20)}
+        if(cu.R()){p.mR(20)}
+        if(cu.U()){p.mU(20)}
+        if(cu.D()){p.mD(20)}
+    })
+
+
+}
+
+
+
 
 
 
@@ -143,7 +199,7 @@ NINJAIMPACT=function(){z()
 
     game=new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
 
-    function preload(){g=sPhG(game)
+    function preload(){g=$G(game)
 
         g.l.ss('ninja-tiles','/assets/physics/ninja-tiles128.png',128,128,34)
         g.l.i('a','/assets/sprites/firstaid.png')}
@@ -199,84 +255,71 @@ NINJAIMPACT=function(){z()
 AABBAABB=function(){z()
 
 // var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
-      game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+      game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-    function preload() {g=sPhG(game)
-
-        game.load.image('block', '/assets/sprites/block.png')
-        game.load.spritesheet('ninja-tiles',
+    function preload(){
+        g=$G(game)
+        g.Nj()
+        cu=g.K()
+        g.l.i('block','/assets/sprites/block.png')
+        g.l.ss('ninja-tiles',
             '/assets/physics/ninja-tiles128.png', 128, 128, 34)}
 
-
-    function create() {
-
-        game.physics.startSystem(Phaser.Physics.NINJA);
-
-        sprite1 = game.add.sprite(100, 450, 'block');
-        sprite1.name = 'blockA';
-
-        b = game.add.sprite(600, 450, 'block');
-        b.name = 'blockB';
-        b.tint = Math.random() * 0xffffff;
-
-        game.physics.ninja.enableAABB([sprite1, b])
-        cursors=game.input.keyboard.createCursorKeys()}
-
-
-
-
+    function create(){
+        p=g.sp(100,450,'block').nm('blockA')
+        b=g.sp(600,450,'block').nm('blockB').tn(rnd()*0xffffff)
+        g.physics.ninja.enableAABB([p,b])}
 
     function update(){
+        g.colN(p,b)
+        if(cu.L()){p.mL(20)}
+        if(cu.R()){p.mR(20)}
+        if(cu.U()){p.mU(30)}}
 
-        game.physics.ninja.collide(sprite1, b);
+    function render(){
 
-
-        if(cursors.left.isDown){sprite1.body.moveLeft(20)}
-        else if (cursors.right.isDown){sprite1.body.moveRight(20)}
-
-        if (cursors.up.isDown){sprite1.body.moveUp(30)}}
-
-    function render() {
-
-        g.db.text('left: ' + sprite1.body.touching.left, 32, 32);
-        g.db.text('right: ' + sprite1.body.touching.right, 256, 32);
-        g.db.text('up: ' + sprite1.body.touching.up, 32, 64);
-        g.db.text('down: ' + sprite1.body.touching.down, 256, 64);
+        g.db.text('left: ' + p.body.touching.left, 32, 32);
+        g.db.text('right: ' + p.body.touching.right, 256, 32);
+        g.db.text('up: ' + p.body.touching.up, 32, 64);
+        g.db.text('down: ' + p.body.touching.down, 256, 64);
 
     }}
 
 
+
+
+
 AABBTILE=function(){ z()
 
-      game=new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+      game= Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-    function preload(){g=sPhG(game)
+    function preload(){
+        g=$G(game).Nj()
         g.l.i('block', '/assets/sprites/block.png')
-        g.l.ss('ninja-tiles', '/assets/physics/ninja-tiles128.png',128,128,34)}
-
-
+        g.l.ss('ninja-tiles', '/assets/physics/ninja-tiles128.png',128,128,34)
+        cu=g.K()
+    }
 
     function create(){
-        g.ph.s(pNinja)
 
-        sp1=g.a.sp(600,100,'block')
-        sp1.name='blockA'
-        g.ph.ninja.enableAABB(sp1) // Enable ninja on the sprite and creates an AABB around it
-        sp1=sPhSp(sp1)
+        sp1=g.sp(600,100,'block').nm('blockA')
 
-        t=g.a.sp(300,480,'ninja-tiles', 5)
+        g.physics.ninja.enableAABB(sp1) // Enable ninja on the sprite and creates an AABB around it
+
+        t=g.sp(300,480,'ninja-tiles', 5)
+
         g.ph.ninja.enableTile(t, t.frame)
 
-        cu=g.ip.kb.ck()
-        cu=sCu(cu)}
+
+    }
 
 
 
 function update(){
-    g.ph.ninja.collide(sp1,t)
-    if(cu.L.isDown){sp1.b.mL(20)}
-    else if(cu.R.isDown){sp1.b.mR(20)}
-    if(cu.U.isDown){sp1.b.mU(30)}}
+    g.physics.ninja.collide(sp1,t)
+    if(cu.L()){sp1.mL(20)}
+    else if(cu.R()){sp1.mR(20)}
+    if(cu.U()){sp1.mU(30)}}
 
 
 function render(){
@@ -289,35 +332,33 @@ function render(){
 
 NINJALAB=function(){z()
 
-    var game = new Phaser.Game(
+    game =  Game(
         800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
     function preload() {
-
-        game.load.spritesheet('ninja-tiles',
+g=$G(game).Nj()
+        g.l.ss('ninja-tiles',
             '/assets/physics/ninja-tiles32.png', 32, 32, 34);
         game.load.json('level', '/assets/physics/ninja-test-level.json')
-        game.load.image('ball', '/assets/sprites/shinyball.png')
-        game.load.image('sky', '/assets/skies/sky2.png')
+        g.l.i('ball', '/assets/sprites/shinyball.png')
+        g.l.i('sky', '/assets/skies/sky2.png')
 
     }
 
 
     function create() {
 
-        var sky = game.add.image(0, 0, 'sky');
-        sky.fixedToCamera = true;
+         sky = g.im0(0, 0, 'sky').fTC(1)
 
-        //	Activate the Ninja physics system
-        game.physics.startSystem(Phaser.Physics.NINJA);
 
-        sprite1 = game.add.sprite(100, 0, 'ball');
+
+        s = g.sp(100, 0, 'ball');
 
         //  Enable the physics body for the Ninja physics system
-        game.physics.ninja.enableCircle(sprite1, sprite1.width / 2);
+        g.physics.ninja.enableCircle(s, s.width / 2)
 
         //	A little more bounce
-        sprite1.body.bounce = 0.5;
+        s.body.bounce = 0.5;
 
         //  We'll just create the tiles from the JSON data
         var layer = game.cache.getJSON('level').layers[0];
@@ -329,51 +370,37 @@ NINJALAB=function(){z()
         //	Resize the world to match
         game.world.setBounds(0, 0, width * 32, height * 32);
 
-        tiles = game.add.group();
+        tiles = g.gr();
 
         var tile;
 
-        for (var y = 0; y < height; y++)
-        {
+        for (var y = 0; y < height; y++){
             for (var x = 0; x < width; x++)
             {
                 if (data[i] > 0)
                 {
-                    tile = tiles.create(x * 32, y * 32, 'ninja-tiles', data[i] - 1);
-                    game.physics.ninja.enableTile(tile, tile.frame);
+                    tile = tiles.cr(x * 32, y * 32, 'ninja-tiles', data[i] - 1);
+                    g.physics.ninja.enableTile(tile, tile.frame);
                 }
 
                 i++;
             }
         }
 
-        cursors = game.input.keyboard.createCursorKeys();
+        cu = g.K()
 
-        game.camera.follow(sprite1);
+        g.f(s)
 
     }
 
     function update() {
 
-        game.physics.ninja.collide(sprite1, tiles);
+        g.colN(s, tiles)
 
-        if (cursors.left.isDown)
-        {
-            sprite1.body.moveLeft(20);
-        }
-        else if (cursors.right.isDown)
-        {
-            sprite1.body.moveRight(20);
-        }
-
-        if (cursors.up.isDown)
-        {
-            sprite1.body.moveUp(20);
-        }
-        else if (cursors.down.isDown)
-        {
-            sprite1.body.moveUp(20);
-        }
+        if(cu.L()){s.mL(20)}
+        if(cu.R()){s.mR(20)}
+        if(cu.D()){s.mD(20)}
+        if(cu.U()){s.mU(20)}
 
     }
 

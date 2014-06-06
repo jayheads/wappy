@@ -16,7 +16,9 @@ Left=Ph.Keyboard.LEFT
 Down= Phaser.Keyboard.DOWN
 Right=Phaser.Keyboard.RIGHT
 
-Game=function(a,b,c,d,e,f,g){return  new Phaser.Game(a,b,c,d,e,f,g)}
+
+
+Game=function(a,b,c,d,e,f,g){return new Phaser.Game(a,b,c,d,e,f,g)}
 
 $G=function(g){
     g.ph=g.physics
@@ -36,6 +38,7 @@ $G=function(g){
     //g.a.t= g.a.text
     //g.a.tm= g.a.tilemap
     //g.a.em= sEm(g.a.emitter)
+
     g.W=g.world
     g.l=g.load
     g.l.i= function(a){
@@ -50,6 +53,9 @@ $G=function(g){
     g.l.ss= g.l.spritesheet
     g.l.a= g.l.at= g.l.atlas
     g.l.ph= g.l.physics
+    g.l.tm= g.l.tilemap
+
+
     g.st= g.stage
     g.t= g.time
     g.db= g.debug
@@ -58,6 +64,11 @@ $G=function(g){
     g.r= g.rnd
     g.cm= g.camera
     g.cm.f= g.cm.follow
+
+    g.f=function(a){
+       g.camera.follow(a)
+
+    return g}
 
     g.ccU=   function(a){g.physics.arcade.checkCollision.up= a?true:false;return g}
     g.ccD= function(a){g.physics.arcade.checkCollision.down=a?true:false;return g}
@@ -102,10 +113,20 @@ $G=function(g){
 
         return g}
     g.anB=function(){return _a(g.physics.arcade.angleBetween,arguments, g.physics.arcade)}
+
+
     g.col=function(a){
         if(A(a)){_e(arguments,function(ag){_a(g.physics.arcade.collide, ag, g.physics.arcade)})}
         else{_a(g.physics.arcade.collide, arguments, g.physics.arcade)}
         return g}
+
+    g.colN=function(a){
+        if(A(a)){_e(arguments,function(ag){
+            _a(g.physics.ninja.collide, ag, g.physics.ninja)})}
+        else{_a(g.physics.ninja.collide, arguments, g.physics.ninja)}
+        return g}
+
+
     g.vFA= g.vfa=function(a,b){return g.physics.arcade.velocityFromAngle(a,b)}
     g.ol=function(){_a(g.physics.arcade.overlap  ,arguments, g.physics.arcade); return g}
 
@@ -118,8 +139,12 @@ $G=function(g){
 
     g.dTP=function(a){return g.physics.arcade.distanceToPointer(a)}
 
+    g.pE=function(){return  g.time.physicsElapsed}
 
-    g.P2=function(){g.ph.s(Phaser.Physics.P2JS); return g}
+    g.P2=function(){g.physics.startSystem(Phaser.Physics.P2JS); return g}
+
+    g.Nj=function(){
+        g.physics.startSystem(Phaser.Physics.NINJA); return g}
 
     g.cA=function(){
         _a(g.world.callAll, arguments, g.world);return g
@@ -143,8 +168,37 @@ $G=function(g){
     g.sp=g.spr=g.sprite=function(){var s= _a(g.add.sprite , arguments, g.add); return sSp(s)}
 
     g.spR=function(a){
-          return  g.sp(g.rX(),g.rY(), a)
+        return  g.sp(g.rX(),g.rY(), a)}
+
+    g.tm=function(){
+        var s= _a(g.add.tilemap , arguments, g.add); return sTM(s)}
+
+
+    g.im=function(){
+        var s= _a(g.add.image , arguments, g.add);
+        return sIm(s)}
+
+
+    g.cT= g.cTM= g.cTm=function(){
+
+       return _a(g.physics.ninja.convertTilemap,arguments,
+            g.physics.ninja)
+}
+
+    g.im0=function(a){
+                var s= g.im(0,0,a)
+                return s}
+
+
+
+    g.sp0=function(a){
+        return  g.sp(0,0, a)
     }
+
+    g.eA=function(){
+        g.physics.arcade.enable(g.W,true)
+
+    return g}
 
     g.jR=function(){
             _a(game.input.keyboard.justReleased,arguments,game.input.keyboard)
@@ -161,29 +215,53 @@ $G=function(g){
     g.tw=function(){var w= _a(g.add.tween,arguments,g.add);return sTw(w)}
     g.tSp=function(){var ts=_a(g.add.tileSprite,arguments, g.add); return sTS(ts)}
 
+    g.spB=function(){
+        var ts=_a(g.add.spriteBatch,arguments, g.add); return sSB(ts)}
+
     g.em=function(){var e=_a(g.add.emitter,arguments, g.add); return sEm(e)}
 
-    g.oT1=function(){
-    _a(g.input.onTap.addOnce,arguments,g.input.onTap)
-    return g}
+
+
+    g.ru=function(a){
+        if(U(a)){return g.physics.p2.restitution}
+        g.physics.p2.restitution = a;return g}
 
 
     g.oD=function(f){g.input.onDown.add(f,this);return s}
+    g.oT=function(){
+        _a(g.input.onTap.add,arguments,g.input.onTap)
+        return g}
 
-    g.ru=function(a){
 
-        if(U(a)){return g.physics.p2.restitution}
-        g.physics.p2.restitution = a;return g
+    g.oT1=function(){
+        _a(g.input.onTap.addOnce,arguments,g.input.onTap)
+        return g}
+
+
+    g.lp=function(){
+
+        _a(g.time.events.loop, arguments, g.time.events)
+
+        return g
     }
+
+
+
 
     g.ev=function(){
-
-       _a(g.time.events.add,arguments, g.time.events);return g
-    }
+        _a(g.time.events.add, arguments, g.time.events);return g}
 
 
+g.sIE=function(a){
+    g.physics.p2.setImpactEvents(a?true:false)
 
     return g}
+
+    return g}
+
+
+
+
 
 sSp=function(s){
 
@@ -192,6 +270,11 @@ sSp=function(s){
 
     s.sC=function(){_a(s.body.setCircle,arguments, s.body)
         return s}
+
+    s.fR= s.fRt=function(a){
+        s.fixedRotation=a?true:false
+    return s}
+
     s.clS=function(){s.body.clearShapes();return s}
     s.lP=function(){
 
@@ -207,16 +290,27 @@ sSp=function(s){
 
     //
 
-
+s.cCVT=function(){
+    _a(s.body.circle.collideCircleVsTile, arguments,s.body.circle)
+return s}
     s.p= s.ps= s.po= s.position
 
     s.bTT=function(){
             _a(s.bringToTop,arguments,s)
     return s}
-    s.drg= s.drag=function(){
-        s.input.enableDrag(false,true);
+    s.k=function(){s.kill();return s}
+    s.drg=function(){
+        s.input.enableDrag(false, true)
         return s}
 
+     s.drag=function(){
+        s.input.enableDrag()
+        return s}
+
+
+    s.fw=function(){
+        s.game.camera.follow(s)
+        return s}
     s.snp=s.snap=function(a,b,c,d){s.input.enableSnap(a,b,c,d);return s}
 
     s.rs=function(a,b){
@@ -228,9 +322,21 @@ sSp=function(s){
 
         return s}
 
+    s.sm=function(a){
+        s.smoothed=a?true:false
+        return s}
+
+    s.sR=function(a,b,c,d){
+        s.body.setRectangle(a,b,c,d)
+        return s}
+
+    s.im= s.imm=function(a){
+        s.body.immovable= a?true:false;
+
+        return s}
 
 
-    s.im=function(a){s.body.immovable= a?true:false;return s}
+
 
     s.aR=function(a){s.body.allowRotation= a?true:false;return s}
 
@@ -245,7 +351,12 @@ sSp=function(s){
     s.clWB =function(a){s.body.collideWorldBounds= a?true:false;return s}
 
     s.vs=  function(a){s.visible= a?true:false;return s}
-    s.ex=  function(a){s.exists=a?true:false;return s}
+
+    s.ex=  function(a){
+        s.exists=a?true:false;
+        return s}
+
+
 
     s.A=function(a,b){s.anchor.setTo(N(a)?a:.5,N(b)?b:.5);return s}
     s.rt=s.r= function(a){if(U(a)){return s.rotation};s.rotation=a;return s}
@@ -255,6 +366,14 @@ sSp=function(s){
 
     s.ang=function(a){if(U(a)){return s.angle};s.angle=a;return s}
     s.nm=function(a){if(U(a)){return s.name};s.name=a;return s}
+    s.tn=function(a){if(U(a)){return s.tint};s.tint=a;return s}
+
+    s.pr=function(a){
+        if(U(a)){return s.input.priorityID}
+        s.input.priorityID=a;
+        return s}
+
+
 
 
     s.rL= s.rtL=function(a){s.body.rotateLeft(a);return s}
@@ -276,12 +395,31 @@ sSp=function(s){
     s.vy=function(a){if(U(a)){return s.body.velocity.y};s.body.velocity.y=a;return s}
     s.aV=function(a){s.body.angularVelocity=a;return s}
 
-    s.bo=function(a,b){s.body.bounce.setTo(a,b);return s}
+    s.bo=function(a,b){
+        if(!b){s.body.bounce=a}
+        else{s.body.bounce.setTo(a,b)}
+        return s}
+
+    s.bX=function(a){
+        if(U(a)){return s.body.bounce.x}
+        s.body.bounce.x=a;return s
+    }
+
+    s.bY=function(a){
+        if(U(a)){return s.body.bounce.y}
+        s.body.bounce.y=a;
+        return s
+    }
 
     s.ccU= s.cU = s.colU = function(a){s.body.checkCollision.up= a?true:false;return s}
     s.ccD=s.cD=s.colD=function(a){s.body.checkCollision.down=a?true:false;return s}
     s.ccL=s.cL=s.colL=function(a){s.body.checkCollision.left=a?true:false;return s}
     s.ccR= s.cR=s.colR=function(a){s.body.checkCollision.right=a?true:false;return s}
+
+    s.eC=function(rad,children){
+        s.game.physics.ninja.enableCircle(s, rad,children)
+    return s}
+
 
 
     s.sc=function(a,b){s.scale.setTo(a,b);return s}
@@ -307,6 +445,12 @@ s.fr=function(a){
     s.aGr=function(a){s.body.allowGravity=a?true:false;return s}
     s.thrust= s.thr= s.th=function(a){s.body.thrust(a);return s}
     s.rv= s.rev=function(a){s.body.reverse(a);return s}
+
+
+s.cBC=function(){
+    _a(s.body.createBodyCallback,arguments, s.body)
+return s}
+
 
     s.iE=s.ipE=function(){s.inputEnabled=true;return s}
     s.oR=function(f){s.events.onRevived.add(f,this);return s}
@@ -343,9 +487,16 @@ sGr=function(gr){
 
     gr.ea=function(){_a(gr.forEach,arguments,gr);return gr}
 
-    gr.gFE =function(a){var s=gr.getFirstExists(a?true:false);return s}
+    gr.gFE =function(a){
+        var s=gr.getFirstExists(a?true:false);
+        return sSp(s)}
 
-    gr.mult=  gr.make=function(){_a(gr.createMultiple, arguments, gr);return gr}
+
+
+    gr.gFD =function(){var s=gr.getFirstDead();return s}
+
+    gr.mult=  gr.make=function(){
+        _a(gr.createMultiple, arguments, gr);return gr}
 
     gr.cr=function(){return sSp(_a(gr.create,arguments,gr))}
        gr.crR=function(c,d,e){
@@ -440,12 +591,39 @@ sEm=function(e){
 
 sTS=function(ts){
     ts.f= ts.ftc = ts.fTC=function(a){ts.fixedToCamera=a?true:false;return ts}
-    ts.tX=ts.tpX=function(){return ts.tilePosition.x}
-    ts.tY=ts.tpY=function(){return ts.tilePosition.y}
+
+    ts.tX=ts.tpX=function(a){
+        if(U(a)){return ts.tilePosition.x}
+        ts.tilePosition.x+=a;return ts
+    }
+
+    ts.tY=ts.tpY=function(a){
+        if(U(a)){return ts.tilePosition.y}
+        ts.tilePosition.y+=a;return ts
+    }
+
+
+
     return ts}
 
+sTM=function(m) {
+
+    m.aTSI = m.aTI = function (a) {
+        m.addTilesetImage(a)
+        return m
+    }
 
 
+    m.cL=function(a,b){
+        var l=m.createLayer(a)
+
+        if(b=='+'){l.resizeWorld()}
+return l}
+
+
+
+    return m}
+sSB=function(b){return b}
 
 sTx=function(t){
     t.t= t.tx=  function(a){if(U(a)){return t.text}t.text=a;return t}
@@ -455,5 +633,120 @@ sTx=function(t){
     t.A=function(a,b){t.anchor.setTo(N(a)?a:.5,N(b)?b:.5);return t}
     return t}
 
+sIm=function(i){
+
+    i.fTC=function(a){
+        i.fixedToCamera=a?true:false
+    return i}
+
+    return i}
 
 
+
+pG=function(preload,create,update,render){
+
+    render=render||function(){}
+z()
+    wM(function(m){
+        g=game=Game(800,600, Phaser.CANVAS, 'phaser-example',{
+
+            preload:function(){g=$G(g)
+                g.cache.addImage('me',m,im(m))
+                g.cache.addImage('m',m,im(m))
+
+                preload()},
+            create:function(){create()},
+            update:function(){update()}
+                , render:render
+            }
+        )
+    })}
+
+
+DATAURL=function(){z()
+
+
+
+
+    bTime=0
+    shoot=function(){var b
+        if(g.n()>bTime){
+            if(b=bs.gFE(0))
+            {b.rs(s.x+6,s.y-8).vy(-300)
+                bTime=g.n(150)}}}
+
+    wM(
+
+
+        function(m){
+
+            g=Game(800,600, Phaser.CANVAS, 'phaser-example',
+
+                {
+                    preload:function(){
+
+                        g=$G(game).bc('red')
+
+
+                        g.l.i('phaser', '/assets/sprites/phaser-dude.png')
+
+                        g.l.i('bullet', '/assets/misc/bullet0.png')
+                        g.l.ss('vs', '/assets/sprites/fruitnveg32wh37.png', 32, 32)
+
+                        g.cache.addImage('me', m, im(m))} ,
+                    create: function(){
+
+                        s=g.sp(400,520,'me').arc().w(80).h(80)
+
+                        vs=g.gr().eB(1).arc()
+                        _t(50,function(){
+                            vs.cr(g.rX(),rnd()*500,'vs',
+                                g.r.integerInRange(0,36))})
+
+                        bs=g.gr().eB(1).arc()
+                        _t(5,function(){
+                            bs.cr(0,0,'bullet').ex(0).cWB(1)
+                                .oOOB(function(b){b.kill()})})
+
+                        cu=g.K()
+                        g.kc([Spacebar])},
+                    update: function(){
+
+                        g.ol(bs,vs,
+                            function(b,v){
+                                b.kill();v.kill()},
+                            null,this)
+
+                        s.vxy(0,0)
+                        if(cu.L()){s.vx(-300)}
+                        if(cu.R()){s.vx(300)}
+
+                        if(g.iD(Spacebar)){shoot()}}
+
+                })
+
+
+        })
+
+
+}
+
+
+STATES=function(){z()
+
+    di('game_div').a().s({w:400, margin:'auto', mt:50})
+    // game=new Phaser.Game(400,490,Phaser.AUTO,'')
+    game= Game(400,490,Phaser.AUTO,'game_div')
+
+    state={}
+    state.main=function(){} // Creates a new 'main' state that wil contain the game
+
+    state.main.prototype={
+
+        preload:function(){g.l.i('hello',src('me'))},
+        create:function(){ this.hello_sprite=game.add.sprite(250,300,'hello')},
+        update:function(){this.hello_sprite.angle+=1}}// Function called 60 times per second
+
+
+    game.state.add('main', state.main)
+    game.state.start('main')}
