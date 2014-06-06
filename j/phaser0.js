@@ -10,12 +10,14 @@ ReturnChild=Phaser.Group.RETURN_CHILD
 clmp=Phaser.Math.clamp
 floor=Phaser.Math.floor
 Spacebar= Phaser.Keyboard.SPACEBAR
+TopDown=Phaser.Camera.FOLLOW_TOPDOWN
 
 Up=Ph.Keyboard.UP
 Left=Ph.Keyboard.LEFT
 Down= Phaser.Keyboard.DOWN
 Right=Phaser.Keyboard.RIGHT
 
+Rectangle=function(a,b,c,d){return new Phaser.Rectangle(a,b,c,d)}
 
 
 Game=function(a,b,c,d,e,f,g){return new Phaser.Game(a,b,c,d,e,f,g)}
@@ -128,6 +130,8 @@ $G=function(g){
 
 
     g.vFA= g.vfa=function(a,b){return g.physics.arcade.velocityFromAngle(a,b)}
+    g.vFR= g.vfa=function(a,b){return g.physics.arcade.velocityFromRotation(a,b)}
+
     g.ol=function(){_a(g.physics.arcade.overlap  ,arguments, g.physics.arcade); return g}
 
     g.mTO=   function(){return _a(g.physics.arcade.moveToObject,arguments, g.physics.arcade)}
@@ -156,11 +160,16 @@ $G=function(g){
 
 
     g.aP=function(){return g.input.activePointer}
+    g.aPD=function(){return g.input.activePointer.isDown }
     g.iX=function(){return g.input.activePointer.worldX}
     g.iY=function(){return g.input.activePointer.worldY}
 
     g.mX=function(){return g.input.mousePointer.x}
     g.mY=function(){return g.input.mousePointer.y}
+
+
+
+
 
     g.iK=g.imK= g.imageKeys=function(){return g.cache.getKeys(Phaser.Cache.IMAGE)}
 
@@ -227,7 +236,14 @@ $G=function(g){
         g.physics.p2.restitution = a;return g}
 
 
-    g.oD=function(f){g.input.onDown.add(f,this);return s}
+    g.oD=function(){
+        _a(g.input.onDown.add, arguments, g.input.onDown)
+        return g}
+
+    g.oDR=function(){
+        _a(g.input.onDown.remove, arguments, g.input.onDown)
+        return g}
+
     g.oT=function(){
         _a(g.input.onTap.add,arguments,g.input.onTap)
         return g}
@@ -247,7 +263,10 @@ $G=function(g){
 
 
 
+    g.aTP=function(a){
+        return    g.physics.arcade.angleToPointer(a)
 
+    }
     g.ev=function(){
         _a(g.time.events.add, arguments, g.time.events);return g}
 
@@ -421,6 +440,12 @@ return s}
     return s}
 
 
+    s.dr=function(a ){s.direction=a;return s}
+
+    s.sp=function(a){s.speed=a;return s}
+    s.tSp=function(a){s.turningSpeed=a;return s}
+    s.os=function(a){s.offset=a;return s}
+
 
     s.sc=function(a,b){s.scale.setTo(a,b);return s}
 
@@ -452,12 +477,27 @@ s.cBC=function(){
 return s}
 
 
+    s.rtP=function(){
+
+        s.rt(s.game.physics.arcade.angleToPointer(s))
+
+    return s}
+
+
+
     s.iE=s.ipE=function(){s.inputEnabled=true;return s}
     s.oR=function(f){s.events.onRevived.add(f,this);return s}
     s.oRFG=function(f){s.events.onRemovedFromGroup.add(f,this);return s}
     s.oOOB=function(f){s.events.onOutOfBounds.add(f,this);return s}
     s.oK=function(f){s.events.onKilled.add(f,this);return s}
-    s.oIU=function(f){s.events.onInputUp.add(f,this);return s}
+
+    s.oIU=function(){
+        _a(s.events.onInputUp.add, arguments, s.events.onInputUp)
+        return s}
+
+
+
+
     s.oIV=function(f){s.events.onInputOver.add(f,this);return s}
     s.oIO=function(f){s.events.onInputOut.add(f,this);return s}
     s.oID=function(f){s.events.onInputDown.add(f,this);return s}
@@ -493,7 +533,9 @@ sGr=function(gr){
 
 
 
-    gr.gFD =function(){var s=gr.getFirstDead();return s}
+    gr.gFD =function(){
+        var s=gr.getFirstDead();return sSp(s)}
+
 
     gr.mult=  gr.make=function(){
         _a(gr.createMultiple, arguments, gr);return gr}
@@ -548,14 +590,21 @@ return w}
 sCu=function(c){
 
     c.u=  c.up
-    c.U=function(){return c.u.isDown}
-
     c.d=  c.down
-    c.D=    function(){return c.d.isDown}
     c.l= c.left
-    c.L=  function(){return c.l.isDown}
     c.r= c.right
-    c.R=  function(){return c.r.isDown}
+
+    c.U=function(){return c.u.isDown}
+    c.D=function(){return c.d.isDown}
+    c.L=function(){return c.l.isDown}
+    c.R=function(){return c.r.isDown}
+
+    c.UU=function(){return c.u.shiftKey}
+    c.DD=function(){return c.d.shiftKey}
+    c.LL=function(){return c.l.shiftKey}
+    c.RR=function(){return c.r.shiftKey}
+
+
     return c}
 
 
@@ -645,7 +694,9 @@ sIm=function(i){
 
 pG=function(preload,create,update,render){
 
+    update=update||function(){}
     render=render||function(){}
+
 z()
     wM(function(m){
         g=game=Game(800,600, Phaser.CANVAS, 'phaser-example',{

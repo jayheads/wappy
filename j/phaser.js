@@ -558,16 +558,10 @@ MAGGOTS=function(){
 
         pBoundsPad=100
 
+        pBnds= Rectangle(
+            -pBoundsPad, -pBoundsPad, 800+pBoundsPad*2, 600+pBoundsPad*2)
 
-        pBnds=new Phaser.Rectangle(
-            -pBoundsPad,
-            -pBoundsPad,
-                800+pBoundsPad*2,
-                600+pBoundsPad*2)
-
-        tick=0
-
-    },
+        tick=0},
 
 
 
@@ -581,15 +575,16 @@ MAGGOTS=function(){
 
             var p=batch.create(g.rX(),g.rY(),'m')
 
-            p.width=40;
-            p.height=40
+            p=sSp(p).w(20).h(200)
 
-            p.anchor.set(.5)
-            p.scale.set(.8 + rnd()*.3)
-            p.direction = rnd()*PI*2
-            p.turningSpeed = rnd()-.8
-            p.speed=(2+rnd()*2)*.2
-            p.offset=rnd()*100}},
+
+            .A(.5).sc(.8+rnd()*.3)
+                .dr(rnd()*PI*2).tSp(rnd()-.8).sp((2+rnd()*2)*.2).os(rnd()*100)
+
+
+        }
+
+    },
 
 
     function update(){
@@ -920,66 +915,27 @@ LAUNCHER1=function(){
         // g.db.spriteInfo(ball, 32, 64);
         // g.db.text("Launch Velocity: " + parseInt(launchVelocity), 32, 250);
 
-    }}
-
-
-
-
-
-
-PFALL=function(){z()
-
-    game=Game(800,600, Phaser.CANVAS, 'phaser-example', {preload: preload, create: create, update: update, render: render })
-
-    function preload(){
-        g=$G(game).bc('#007236').bn(
-            -2000,-2000,
-            4000,4000)
-
-        g.l.i('m', '/assets/sprites/mushroom2.png')
-        g.l.i('p', '/assets/sprites/sonic_havok_sanity.png')}
-
-
-    function create() {
-        g.a.t(600,800,"-phaser-",{font:"32px Arial",fill:"#330088",align:"center"})
-
-        d=sSp(g.a.sp(0,0,'p')).A()
-        _t(100,function(){g.a.sp(g.rX(),g.rY(),'m')})
-
-        cu=g.K()
-
-        g.cm.f(d)
-
-        d.checkWorldBounds=true}
-
-
-    function update(){
-
-        d.angle +=1000
-        d.y+=10
-
-        if(cu.up.isDown){d.y-=20}
-        if(cu.left.isDown){d.x-=10}
-        if(cu.right.isDown){d.x+=10}
     }
+}
 
 
-    function render(){
 
-        g.db.cameraInfo(g.cm, 32, 32)}}
+
 
 
 
 
 MOVEAROUNDWORLD=function(){z()
 
-    game=Game(800,600, Phaser.CANVAS, 'phaser-example', {preload: preload, create: create, update: update, render: render })
 
-    function preload(){
+    pG(
+
+
+        function preload(){
         g=$G(game).bc('#007236').bn(-2000,-2000,4000,4000)
 
-        g.l.i('m', '/assets/sprites/mushroom2.png')
-        g.l.i('p', '/assets/sprites/sonic_havok_sanity.png')}
+        g.l.i('mush', '/assets/sprites/mushroom2.png')
+        g.l.i('p', '/assets/sprites/sonic_havok_sanity.png')},
 
 
     function create(){
@@ -989,54 +945,52 @@ MOVEAROUNDWORLD=function(){z()
             {font:"32px Arial",fill:"#330088",align:"center"})
 
 
-        d=g.sp0('p').A()
+        d=g.sp0('m').A()
 
         d2=g.sp(-500,-500,'p').A()
 
         _t(100,
             function(){
-                g.spR('m')
+                g.spR('mush')
             })
 
         cu=g.K()
 
         //g.cm.f(d2)
        // d2.checkWorldBounds=true
-    }
+    },
 
 
     function update(){
 
-        d.angle +=1000
+        //d.angle +=1000 //d2.x+=10;d2.y+=10
 
-        d2.x+=10
-        d2.y+=10
         if(cu.U()){
-            if(cu.up.shiftKey){d.angle++}
+            if(cu.UU()){d.angle++}
             else{g.cm.y-=4}}
 
         if(cu.D()){
-            if(cu.down.shiftKey){d.angle--}
+            if(cu.DD()){d.angle--}
             else{g.cm.y+=4}}
 
         if(cu.L()){
-            if(cu.left.shiftKey){
-                g.w.rotation-=.05}
+            if(cu.LL()){g.W.rotation-=.05}
             else{g.cm.x-=4}}
 
         if(cu.R()){
-
-            if(cu.right.shiftKey){
-                g.w.rotation+=0.05}
+            if(cu.RR()){g.W.rotation+=0.05}
             else{g.cm.x+= 4}
 
-        }}
-
-
+        }},
 
     function render(){
 
-        g.db.cameraInfo(g.cm, 32, 32)}}
+        g.db.cameraInfo(g.cm, 32, 32)})
+
+
+}
+
+
 BRINGCHILDTOP=function(){
 
     z()
@@ -1084,8 +1038,8 @@ TANKS=function(){z()
 
        EnemyTank=function(index,game,player,bs){
 
-           var x=g.w.randomX,
-               y=g.w.randomY,
+           var x=g.rX(),
+               y=g.rY(),
                t=this
 
            t.g=t.game=g
@@ -1097,9 +1051,9 @@ TANKS=function(){z()
            t.nextFire = 0
            t.alive = true
 
-           t.shadow=g.a.sp(x,y,'enemy','shadow')
-           t.tank=g.a.sp(x,y,'enemy','tank1')
-           t.turret=g.a.sp(x,y,'enemy','turret')
+           t.shadow=g.sp(x,y,'enemy','shadow')
+           t.tank=g.sp(x,y,'enemy','tank1')
+           t.turret=g.sp(x,y,'enemy','turret')
 
            t.shadow.anchor.set(.5)
            t.tank.anchor.set(.5)
@@ -1113,7 +1067,8 @@ TANKS=function(){z()
 
            t.tank.angle = g.rnd.angle()
 
-           g.ph.ac.velocityFromRotation(t.tank.rotation, 100, t.tank.body.velocity)}
+           g.physics.arcade.velocityFromRotation(
+               t.tank.rotation, 100, t.tank.body.velocity)}
 
 
     EnemyTank.prototype.damage=function(){
@@ -1127,7 +1082,7 @@ TANKS=function(){z()
                return true}
            return false}
 
-       EnemyTank.prototype.update=function() {
+    EnemyTank.prototype.update=function(){
 
            var t=this
            t.shadow.x=t.tank.x
@@ -1150,7 +1105,7 @@ TANKS=function(){z()
                        t.game.physics.arcade.moveToObject(b,t.player,500)}}}
 
 
-        game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+        game=Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
        function preload(){g=$G(game)
 
@@ -1161,42 +1116,40 @@ TANKS=function(){z()
            g.l.i('earth','/assets/games/tanks/scorched_earth.png')
            g.l.ss('kaboom', '/assets/games/tanks/explosion.png', 64, 64, 23)}
 
-       var land,shadow,tank,turret,enemies,enemyBullets,enemiesTotal = 0,enemiesAlive = 0,explosions,logo,currentSpeed = 0,cu,bs,fireRate = 100,nextFire = 0;
+       var land,shadow,tank,turret,enemies,enemyBullets,
+           enemiesTotal = 0,enemiesAlive = 0,explosions,
+           logo,currentSpeed = 0,cu,bs,fireRate = 100,nextFire = 0;
 
        function create () {
 
            //  Resize our game world to be a 2000 x 2000 square
-           g.w.setBounds(-1000, -1000, 2000, 2000);
+           g.bn(-1000, -1000, 2000, 2000);
 
            //  Our tiled scrolling background
-           land = g.a.tSp(0, 0, 800, 600, 'earth');
+           land = g.tSp(0,0,800,600,'earth')
            land.fixedToCamera = true;
 
            //  The base of our tank
-           tank = g.a.sp(0, 0, 'tank', 'tank1');
-           tank.anchor.setTo(0.5, 0.5);
-           tank.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
+           tank = g.sp(0, 0, 'tank', 'tank1').A().arc()
+
+           tank.an.a('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
 
            //  This will force it to decelerate and limit its speed
-           game.physics.enable(tank, pArcade);
+
            tank.body.drag.set(0.2);
            tank.body.maxVelocity.setTo(400, 400);
-           tank.body.collideWorldBounds = true;
+           tank.clWB(1)
 
            //  Finally the turret that we place on-top of the tank body
-           turret = g.a.sp(0,0,'tank','turret')
-           turret.anchor.setTo(0.3, 0.5);
+           turret = g.sp(0,0,'tank','turret').A()
 
            //  The enemies bullet group
-           enemyBullets = game.add.group();
-           enemyBullets.enableBody = true;
-           enemyBullets.physicsBodyType = pArcade;
-           enemyBullets.createMultiple(100, 'bullet');
+           enemyBullets = g.gr().eB(1).pBT(pArcade)
 
-           enemyBullets.setAll('anchor.x', 0.5);
-           enemyBullets.setAll('anchor.y', 0.5);
-           enemyBullets.setAll('outOfBoundsKill', true);
-           enemyBullets.setAll('checkWorldBounds', true);
+           enemyBullets.mult(100, 'bullet')
+
+           enemyBullets.sA('anchor.x', 0.5).sA('anchor.y', 0.5)
+            .sA('outOfBoundsKill', true).sA('checkWorldBounds', true);
 
 
            enemies=[]
@@ -1204,69 +1157,72 @@ TANKS=function(){z()
            enemiesTotal=20
            enemiesAlive=20
 
-           for(var i = 0; i < enemiesTotal; i++){enemies.push(new EnemyTank(i, game, tank, enemyBullets))}
+           for(var i = 0; i < enemiesTotal; i++){
+               enemies.push(new EnemyTank(i, g, tank, enemyBullets))}
 
            //  A shadow below our tank
-           shadow=game.add.sprite(0,0,'tank','shadow')
-           shadow.anchor.setTo(.5,.5)
+           shadow=g.sp(0,0,'tank','shadow').A()
+
 
            //  Our bullet group
-           bs = game.add.group();
-           bs.enableBody = true;
+           bs = g.gr().eB(1)
+
            bs.physicsBodyType = pArcade;
-           bs.createMultiple(30, 'bullet', 0, false)
-           bs.setAll('anchor.x', 0.5)
-           bs.setAll('anchor.y', 0.5)
-           bs.setAll('outOfBoundsKill', true)
-           bs.setAll('checkWorldBounds', true)
+           bs.mult(30, 'bullet', 0, false)
+           .sA('anchor.x', 0.5)
+            .sA('anchor.y', 0.5)
+          .sA('outOfBoundsKill', true)
+           .sA('checkWorldBounds', true)
 
            //  Explosion pool
-           explosions = game.add.group();
+           explosions = g.gr();
 
            for(var i = 0; i < 10; i++){
-               var explosionAnimation = explosions.create(0, 0, 'kaboom', [0], false);
-               explosionAnimation.anchor.setTo(.5,.5)
-               explosionAnimation.animations.add('kaboom')}
+               var explosionAnimation = explosions.cr(0, 0, 'kaboom', [0], false).A()
+
+               explosionAnimation.an.a('kaboom')}
 
            tank.bringToTop()
            turret.bringToTop()
 
-           logo = g.a.sp(0,200,'logo')
+           logo = g.sp(0,200,'logo')
            logo.fixedToCamera=true
 
-           g.input.onDown.add(removeLogo, this);
-
-           g.cm.f(tank)
-           g.cm.deadzone=new Ph.Rectangle(150, 150, 500, 300);
+           g.f(tank).oD(removeLogo, this)
+           g.cm.deadzone= Rectangle(150, 150, 500, 300)
            g.cm.focusOnXY(0,0)
 
-           cu=g.ip.kb.ck()}
+           cu=g.K()}
 
        function removeLogo(){
-           game.input.onDown.remove(removeLogo, this);
+
+           game.oDR(removeLogo, this);
+
            logo.kill()}
 
        function update () {
 
-           g.ph.ac.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
+           g.ol(enemyBullets, tank, bulletHitPlayer, null, this);
 
            enemiesAlive=0
 
            for (var i=0; i < enemies.length; i++){if (enemies[i].alive)
                {
                    enemiesAlive++;
-                   g.ph.ac.collide(tank, enemies[i].tank);
-                   g.ph.ac.overlap(bs, enemies[i].tank, bulletHitEnemy, null, this);
+                   g.col(tank, enemies[i].tank);
+                   g.ol(bs, enemies[i].tank, bulletHitEnemy, null, this);
                    enemies[i].update()}}
 
-           if (cu.left.isDown){tank.angle -= 4}
-           else if (cu.right.isDown){tank.angle += 4}
+           if (cu.L()){tank.angle -= 4}
+           if (cu.R()){tank.angle += 4}
 
-           if (cu.up.isDown){currentSpeed = 300}//  The speed we'll travel at
+           if (cu.U()){currentSpeed = 300}//  The speed we'll travel at
 
            else{if (currentSpeed > 0){currentSpeed -= 4}}
 
-           if (currentSpeed > 0){game.physics.arcade.velocityFromRotation(tank.rotation, currentSpeed, tank.body.velocity)}
+           if (currentSpeed > 0){
+               game.physics.arcade.velocityFromRotation(
+                   tank.rotation, currentSpeed, tank.body.velocity)}
 
            land.tilePosition.x = -game.camera.x;
            land.tilePosition.y = -game.camera.y;
@@ -1280,6 +1236,7 @@ TANKS=function(){z()
            turret.y=tank.y
            turret.rotation = game.physics.arcade.angleToPointer(turret)
            if (game.input.activePointer.isDown){fire()}}
+
 
        function bulletHitPlayer (tank, bullet){bullet.kill()}
 
@@ -1296,8 +1253,8 @@ TANKS=function(){z()
 
        function fire () {
 
-           if (game.time.now > nextFire && bs.countDead() > 0){
-               nextFire = game.time.now + fireRate;
+           if (g.n() > nextFire && bs.countDead() > 0){
+               nextFire = g.n(fireRate)
 
                var bullet = bs.getFirstExists(false);
 
@@ -1600,18 +1557,19 @@ FIXEDTOCAMERA=function(){z()
 
 PIXELPICKSCROLLING=function(){z()
 
-       game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', {
-           preload: preload, create: create, update: update, render: render });
+       game =  Game(800, 600, Phaser.CANVAS, 'phaser-example',
+           {preload: preload, create: create,  update: update,
+               render: render });
 
        function preload() {
-
-           g=$G(game).A().bn(0,0, 4000, 2000)
+           camSpeed=4
+           g=$G(game).ARC().bn(0,0, 4000, 2000)
 
            g.l.ss('mummy', '/assets/sprites/metalslug_mummy37x45.png', 37, 45, 18)
            g.l.i('stars', '/assets/misc/starfield.jpg')}
 
 
-        camSpeed = 4
+
 
 
        function create() {
@@ -1619,34 +1577,34 @@ PIXELPICKSCROLLING=function(){z()
 
 
            //  Scrolling background
-           s = g.a.tileSprite(0, 0, 4000, 600, 'stars');
-
+           s = g.tSp(0, 0, 4000, 600, 'stars')
             b=g.sp(0, 300, 'mummy').arc()
 
 
            b.scale.set(10)
            b.smoothed = false
            b.an.a('walk')
-           b.an.p('walk', 5, true)
+           b.play('walk', 5, true)
 
 
-           b.b.v.setTo(50, 0)
+           b.vxy(50, 0)
 
            //  Listen for input events on this sprite
            b.inputEnabled = true
 
            //  Check the pixel data of the sprite
-           b.ip.pixelPerfectClick=true
+           b.input.pixelPerfectClick=true
 
            b.events.onInputDown.add(tint,this)}
 
        function tint() {b.tint=rnd()*0xffffff}
 
-       function update() {
+       function update(){
 
            if (g.iD(Left)){
                g.cm.x-=camSpeed
-               if(!g.cm.atLimit.x){s.tilePosition.x += camSpeed}}
+               if(!g.cm.atLimit.x){
+                   s.tilePosition.x += camSpeed}}
 
            if (g.iD(Right)){
                g.cm.x += camSpeed;
@@ -1675,9 +1633,9 @@ PIXELPICKSCROLLING=function(){z()
 
 LAUNCHERFOLLOW=function(){z()
 
-                  game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+                  game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-                  function preload(){g=sPhG(game)
+                  function preload(){g=$G(game).ARC().bn(0,0,3400,1000)
 
                       g.l.i('background','/assets/misc/starfield.jpg')
                       g.l.i('player','/assets/sprites/phaser-dude.png')
@@ -1685,32 +1643,26 @@ LAUNCHERFOLLOW=function(){z()
                       g.l.i('arrow', '/assets/sprites/longarrow2.png')}
 
 
-                   catchFlag = false
-                 launchVelocity = 0
+
+    catchFlag=false
+
+    launchVelocity=0
 
                   function create() {
 
-                      g.ph.startSystem(pArcade)
 
-                      g.world.setBounds(0, 0, 3400, 1000);
-                      g.add.tileSprite(0, 0, 3400, 1000, 'background')
+                      g.tSp(0,0,3400,1000,'background')
 
-                      analog = g.add.sprite(200, 450, 'analog')
-                      analog.width = 8;
-                      analog.rotation = 220;
-                      analog.alpha = 0;
-                      analog.anchor.setTo(0.5, 0.0);
+                      analog = g.sp(200, 450, 'analog').w(8).rt(220).al(0).A(0.5, 0.0);
 
-                      arrow = g.add.sprite(200, 450, 'arrow')
-                      arrow.anchor.setTo(0.1, 0.5)
-                      arrow.alpha = 0;
+                      arrow = g.sp(200, 450, 'arrow').A(0.1, 0.5).al(0)
 
-                      p = g.add.sprite(150, 320, 'player')
 
-                      g.ph.enable([p], pArcade);
+                      p = g.sp(150, 320, 'player').arc()
 
-                      p.anchor.set(0.5);
-                      p.body.collideWorldBounds = true;
+                      p.anchor.set(0.5)
+
+                      p.clWB(1)
                       p.body.bounce.set(0.9);
                       p.body.drag.set(20, 20);
 
@@ -1720,7 +1672,8 @@ LAUNCHERFOLLOW=function(){z()
                       p.events.onInputDown.add(set);
                       p.events.onInputUp.add(launch);
 
-                      g.camera.follow(p, Phaser.Camera.FOLLOW_TOPDOWN)}
+
+                      g.camera.follow(p, TopDown)}
 
                   function set(p,pointer){
                       catchFlag=true
@@ -1734,7 +1687,7 @@ LAUNCHERFOLLOW=function(){z()
 
                       catchFlag = false;
                       p.body.moves = true;
-                      g.camera.follow(p, Phaser.Camera.FOLLOW_TOPDOWN);
+                      g.camera.follow(p, TopDown);
 
                       arrow.alpha = 0;
                       analog.alpha = 0;
@@ -1772,63 +1725,39 @@ LAUNCHERFOLLOW=function(){z()
 
 
 
-
-
-ANGLEPOINTER=function(){z()
-
-
-    g= Game(800,600,Phaser.CANVAS,'phaser-example',{
-        preload:preload,
-        create:create,
-        update:update,
-        render:render})
-
-
-    function preload(){
-
-        g=$G(g).bc('blue').ARC()
-        g.l.i('ar','/assets/sprites/arrow.png')}
-
+ANGLEPOINTER=function(){pG(
+    function preload(){g.l.i('ar','/assets/sprites/arrow.png')},
     function create(){
+        g.ARC()
+        s=g.sp(400,300,'ar').A()},
+    function update(){s.rtP()},
+    function render(){g.db.spI(s,32,32)}
 
-
-           s=sSp(g.a.sp(400,300,'ar')).A()
-    }
-
-    function update(){
-
-        s.rotation=g.ph.ac.angleToPointer(s)}
-
-    //This will update the sprite.rotation so that it points
-    // to the currently active pointer //
-    // On a Desktop that is the mouse, on mobile the most recent finger press.
-
-
-    function render(){
-        g.db.spI(s,32,32)}
-}
+)}
 
 
 
 
-INPUTPRIORITY=function(){z()
 
-            var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example',
-                {preload:preload,create:create})
 
-            function preload(){g=$G(game)
+
+INPUTPRIORITY=function(){pG(
+
+            function(){
                 g.l.i('manga','/assets/pics/manga-girl.png')
                 g.l.i('disk','/assets/sprites/copy-that-floppy.png')
-                g.l.i('card','/assets/sprites/mana_card.png')}
+                g.l.i('card','/assets/sprites/mana_card.png')},
 
-            function create(){
-
+            function(){
                g.sp(100,100,'manga').iE(1).drg().pr(2).drag()
                g.sp(200,200,'disk').iE(1).pr(1).drag()
                g.sp(300,300,'card').iE(1).pr(0).drag()}
 
+    )}
 
-        }
+
+
+
 
 
 
@@ -1863,9 +1792,9 @@ SNAPONDRAG=function(){z()
 
 SHOOTPOINTER=function(){z()
 
-       var game = Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+        game = Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-       function preload() {g=sPhG(game)
+       function preload() {g=$G(game).ARC()
 
            g.l.i('ar', '/assets/sprites/arrow.png');
            g.l.i('bullet', '/assets/sprites/purple_ball.png')}
@@ -1875,45 +1804,36 @@ SHOOTPOINTER=function(){z()
     nextFire=0
 
        function create(){
+           sp=g.sp(400,300,'ar').arc().A(0.5,1).aR(0)
+           bs=g.gr().arc().eB(1).mult(50,'bullet').sA('checkWorldBounds',true).sA('outOfBoundsKill',true)
+       }
 
-           g.ARC()
-
-
-           bs=g.a.gr()
-
-           bs.enableBody = true
-           bs.physicsBodyType = pArcade
-
-           bs.createMultiple(50,'bullet')
-
-
-           bs.setAll('checkWorldBounds', true)
-           bs.setAll('outOfBoundsKill', true)
-
-           sp=g.a.sp(400,300,'ar')
-           sp.anchor.set(.5)
-           g.ph.enable(sp,pArcade)
-           sp.body.allowRotation=false}
 
 
        function update(){
 
-           sp.rotation = g.ph.ac.angleToPointer(sp);
-           if (g.ip.activePointer.isDown){fire()}
+           //sp.rt(g.aTP(sp))
+
+           sp.rtP()
+
+           if(g.aPD()){
+
+               if(
+                   g.n()>nextFire && bs.countDead()>0){
+
+                   nextFire=g.n(fireRate)
+                   var b=bs.gFD()
+
+                   b.reset(sp.x-8, sp.y-8)
+
+                   g.mTP(b,300)
+               }}
 
        }
 
 
-       function fire(){
-           if(
-               g.t.now>nextFire && bs.countDead()>0
-               ){
 
-               nextFire=g.t.now + fireRate
-               var b=bs.getFirstDead()
 
-               b.reset(sp.x-8, sp.y-8)
-               g.ph.ac.moveToPointer(b,300)}}
 
 
 
@@ -2016,12 +1936,14 @@ CALLALLANIMATIONS=function(){z()
              coins.cA('an.add','an','spin',[0,1,2,3,4,5],10,true).cA('an.play','an','spin')}}
 
 
+
+
 CALLALL=function(){z()
 
 
                game=Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-              function preload() { g=$G(game)
+              function preload() {g=$G(game)
 
                   g.l.ss('item', '/assets/buttons/number-buttons-90x90.png', 90, 90)
                   g.l.i('reviveBtn', '/assets/buttons/revive-button.png')}
@@ -2029,15 +1951,11 @@ CALLALL=function(){z()
               function create(){
 
                     _t(3,function(i){
-                        g.sp(290,98*(i+1),'item',i).iE(1).oIU(kill)
-                        g.sp(388,98*(i+1),'item',i+3).iE(1).oIU(kill)})
+                        g.sp(290,98*(i+1),'item',i).iE(1).oIU(function(i){i.kill()})
+                        g.sp(388,98*(i+1),'item',i+3).iE(1).oIU(function(i){i.kill()})})
 
-                  g.bt(270,400,'reviveBtn',function(){g.cA('revive')},this,0,0,0)}
-
-              function kill(i){i.kill()}
-
-
-
+                  g.bt(270,400,'reviveBtn',function(){
+                      g.cA('revive')},this,0,0,0)}
 
               function render(){
 
@@ -2109,29 +2027,42 @@ EXTENDINGAGROUP=function(){z()
            }}
 
 
+
 GETFIRSTDEAD=function(){z()
 
+pG(
 
- game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+    function preload(){
 
-    function preload(){  g=$G(game)
-
-        g.l.ss('veg', '/assets/sprites/fruitnveg32wh37.png', 32, 32)}
+        g.l.ss('veg', '/assets/sprites/fruitnveg32wh37.png', 32, 32)},
 
     function create(){
+
         veg=game.gr().mult(20,'veg',0,false)
-        g.rp(Second,20,resurrect,this)}
 
-    function resurrect(){
-        var i=veg.gFD()
-        if(i){i.reset(g.rX(),g.rY());i.frame = g.rI(0,36)}}
+        g.rp(Second,20,function(){
+            var i=veg.gFD()
+            if(i){
+                i.reset(g.rX(),g.rY())
 
-    function update(){}
+                i.frame=g.rI(0,36)
+
+             //  i.oIU(function(){i.kill()})
+
+            }
+
+        },this)},
+
+
+
+    function update(){},
 
     function render() {
         game.debug.text('One item will be resurrected every second', 32, 32);
         game.debug.text('Living: ' + veg.countLiving() + '   Dead: ' + veg.countDead(), 32, 64)}
-}
+)}
+
+
 
 
 
