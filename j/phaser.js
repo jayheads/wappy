@@ -1281,7 +1281,7 @@ BREAKOUT=function(){z()
         game =  Game(800, 600, Phaser.AUTO, 'phaser-example',
             { preload: preload, create: create, update: update });
 
-      function preload() { var g=$G(game)
+      function preload() {   g=$G(game).ARC()
 
           g.l.at('breakout', '/assets/games/breakout/breakout.png', '/assets/games/breakout/breakout.json');
           g.l.i('starfield', '/assets/misc/starfield.jpg')}
@@ -1291,41 +1291,30 @@ BREAKOUT=function(){z()
 
       function create() {
 
-          game.physics.startSystem(pArcade);
+
 
           //  We check bounds collisions against all walls other than the bottom one
           game.physics.arcade.checkCollision.down = false;
 
-          s = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+          s = g.tSp(0, 0, 800, 600, 'starfield');
 
-          bricks = game.add.group();
-          bricks.enableBody = true;
-          bricks.physicsBodyType = pArcade;
+          bricks = g.gr().eB(1).arc()
 
 
 
           for (var y = 0; y < 4; y++){
               for (var x = 0; x < 15; x++)
-              {brick = bricks.create(120 + (x * 36), 100 + (y * 52),
+              {brick = bricks.cr(120 + (x * 36), 100 + (y * 52),
                   'breakout', 'brick_' + (y+1) + '_1.png');
                   brick.body.bounce.set(1)
                   brick.body.immovable=true}}
 
-          paddle = g.a.sp(g.w.centerX,
-              500, 'breakout', 'paddle_big.png');
-          paddle.anchor.setTo(0.5, 0.5);
-
-          game.physics.enable(paddle, pArcade);
-
+          paddle = g.sp(g.cX(), 500, 'breakout', 'paddle_big.png').A().arc()
           paddle.body.collideWorldBounds = true;
           paddle.body.bounce.set(1);
           paddle.body.immovable = true;
 
-          ball = game.add.sprite(game.world.centerX, paddle.y - 16, 'breakout', 'ball_1.png');
-          ball.anchor.set(0.5);
-          ball.checkWorldBounds = true;
-
-          game.physics.enable(ball, pArcade);
+          ball = g.sp(g.cX(), paddle.y - 16, 'breakout', 'ball_1.png').A().chWB(1).arc()
 
           ball.body.collideWorldBounds = true;
           ball.body.bounce.set(1);
@@ -1352,9 +1341,10 @@ BREAKOUT=function(){z()
 
           if (ballOnPaddle)
           {ball.body.x = paddle.x}
+
           else{
-              game.physics.arcade.collide(ball, paddle, ballHitPaddle, null, this)
-              game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this)} }
+              g.col(ball, paddle, ballHitPaddle, null, this)
+              g.col(ball, bricks, ballHitBrick, null, this)} }
 
       function releaseBall () {
 
@@ -1415,13 +1405,6 @@ BREAKOUT=function(){z()
               _ball.body.velocity.x = 2 + rnd() * 8}}}
 
 
-
-
-
-
-
-
-
 TWEENRELATIVE=function(){z()
 
         game= Game(800,600,Phaser.CANVAS,'phaser-example', {
@@ -1453,7 +1436,8 @@ TWEENRELATIVE=function(){z()
             if(s.x===100||s.x===400){
                 g.db.t('Click sprite to tween',32,32)}
             g.db.t('x: ' + a1.x, a1.x, a1.y - 4)
-            g.db.t('x: ' + a2.x, a2.x, a2.y - 4)}}
+            g.db.t('x: ' + a2.x, a2.x, a2.y - 4)}
+}
 
 
 
@@ -1631,6 +1615,8 @@ PIXELPICKSCROLLING=function(){z()
 
 
 
+
+
 LAUNCHERFOLLOW=function(){z()
 
                   game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -1804,8 +1790,13 @@ SHOOTPOINTER=function(){z()
     nextFire=0
 
        function create(){
-           sp=g.sp(400,300,'ar').arc().A(0.5,1).aR(0)
+
            bs=g.gr().arc().eB(1).mult(50,'bullet').sA('checkWorldBounds',true).sA('outOfBoundsKill',true)
+           sp=g.sp(400,300,'ar').arc().aR(0).A()
+
+
+
+
        }
 
 
@@ -1819,14 +1810,14 @@ SHOOTPOINTER=function(){z()
            if(g.aPD()){
 
                if(
-                   g.n()>nextFire && bs.countDead()>0){
+                   g.n()>nextFire && bs.cD()>0){
 
                    nextFire=g.n(fireRate)
-                   var b=bs.gFD()
 
-                   b.reset(sp.x-8, sp.y-8)
+                  bs.gFD().rs(sp.x-8,sp.y-8).mTP(500)// g.mTP(b,300)
 
-                   g.mTP(b,300)
+                   sp.mTP(200)
+
                }}
 
        }
@@ -1840,6 +1831,8 @@ SHOOTPOINTER=function(){z()
        function render(){
            g.db.t('Active Bullets: '+bs.countLiving()+'/'+bs.total,32,32)
            g.db.spI(sp, 32, 450)}}
+
+
 
 
 
@@ -1941,7 +1934,8 @@ CALLALLANIMATIONS=function(){z()
 CALLALL=function(){z()
 
 
-               game=Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
+
+    game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload: preload, create: create, render: render });
 
               function preload() {g=$G(game)
 
@@ -1951,8 +1945,11 @@ CALLALL=function(){z()
               function create(){
 
                     _t(3,function(i){
-                        g.sp(290,98*(i+1),'item',i).iE(1).oIU(function(i){i.kill()})
-                        g.sp(388,98*(i+1),'item',i+3).iE(1).oIU(function(i){i.kill()})})
+                        g.sp(290,98*(i+1),'item',i).iE(1)
+                            .oIU(function(i){i.kill()})
+
+                        g.sp(388,98*(i+1),'item',i+3).iE(1)
+                            .oIU(function(i){i.kill()})})
 
                   g.bt(270,400,'reviveBtn',function(){
                       g.cA('revive')},this,0,0,0)}
@@ -1981,15 +1978,18 @@ DISPLAYORDER=function(){z()
         function create() {
 
             items=g.gr()
+
             items.cr(64,100,'atari1')
             card=items.cr(240,80,'card')
             items.cr(280,100,'atari2')
 
-            g.oT1(function(){
-                    card.k()
-                    g.oT1(function(){
 
-                        items.gFD().revive()
+            g.oT1(function rc(){
+                    card.k()
+
+                g.oT1(function(){
+
+                        items.gFD().re()
 
                     },this)
                 },this)}
@@ -1998,11 +1998,16 @@ DISPLAYORDER=function(){z()
 
 
 
+
+
+
 EXTENDINGAGROUP=function(){z()
 
 
            MonsterGroup = function(g,im,act){
-               Phaser.Group.call(this,g)
+
+               Phaser.Group.call(this, g)
+
                for (var i = 0; i < 30; i++){
                    var s=this.create(g.rX(),g.rY(),im)
                    if(act=='bounce'){g.tw(s).to({y:s.y-100},2000,$E.Elastic.Out,true,0,1000, true)}
@@ -2028,26 +2033,23 @@ EXTENDINGAGROUP=function(){z()
 
 
 
+
+
 GETFIRSTDEAD=function(){z()
 
 pG(
 
-    function preload(){
-
-        g.l.ss('veg', '/assets/sprites/fruitnveg32wh37.png', 32, 32)},
+    function preload(){g.l.ss('veg', '/assets/sprites/fruitnveg32wh37.png', 32, 32)},
 
     function create(){
 
         veg=game.gr().mult(20,'veg',0,false)
 
         g.rp(Second,20,function(){
-            var i=veg.gFD()
-            if(i){
-                i.reset(g.rX(),g.rY())
+            var i=veg.gFD(1)
+            if(i){i.rs().fr(g.rI(0,36))
 
-                i.frame=g.rI(0,36)
 
-             //  i.oIU(function(){i.kill()})
 
             }
 
@@ -2058,8 +2060,8 @@ pG(
     function update(){},
 
     function render() {
-        game.debug.text('One item will be resurrected every second', 32, 32);
-        game.debug.text('Living: ' + veg.countLiving() + '   Dead: ' + veg.countDead(), 32, 64)}
+        g.db.text('One item will be resurrected every second', 32, 32);
+        g.db.text('Living: ' + veg.cL() + '   Dead: ' + veg.cD(), 32, 64)}
 )}
 
 
@@ -2068,7 +2070,7 @@ pG(
 
 
 
-GROUPTRANSFORM=function(){z()
+XXGROUPTRANSFORM=function(){z()
 
     var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
@@ -2124,64 +2126,34 @@ GROUPTRANSFORM=function(){z()
 RECYCLING=function(){z()
      game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-    var enemies;
+
 
     function preload() {g=$G(game)
 
         g.l.i('baddie', '/assets/sprites/space-baddie.png');
         g.l.ss('button', '/assets/buttons/baddie-buttons.png', 224, 70)}
 
-
-
     function create() {
 
-        // Create a enemies group to store the baddies
-        enemies = game.add.group();
+        enemies=g.gr()
+        _t(8,function(){enemies.cr(360+rnd()*200, 120+rnd()*200, 'baddie')}) // Since the getFirstExists() which we'll use for recycling // cannot allocate new objects, create them manually here.
 
-        // Create some enemies.
-        for (var i = 0; i < 8; i++)
-        {
-            // Since the getFirstExists() which we'll use for recycling
-            // cannot allocate new objects, create them manually here.
-            enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'baddie');
-        }
+        g.bt(16,50,'button', function createBaddie(){// Recycle using getFirstExists(false)// Notice that this method will not create new objects if there's no one // available, and it won't change size of this group.
+            var enemy = enemies.gFE(0)
+            if(enemy){enemy.revive()}},this,0,0,0)
 
-        // Create buttons to create and kill baddies.
-        game.add.button(16, 50, 'button', createBaddie,this, 0, 0, 0);
-        game.add.button(16, 130, 'button', killBaddie,this, 1, 1, 1);
+        g.bt(16,130,'button',function killBaddie() {
+            var baddie=enemies.gFA(1)
+            if(baddie){baddie.k()}},this,1,1,1)}
 
-    }
 
-    function killBaddie() {
 
-        var baddie = enemies.getFirstAlive();
-
-        if (baddie)
-        {
-            baddie.kill();
-        }
-
-    }
-
-    function createBaddie() {
-
-        // Recycle using getFirstExists(false)
-        // Notice that this method will not create new objects if there's no one
-        // available, and it won't change size of this group.
-        var enemy = enemies.getFirstExists(false);
-
-        if (enemy)
-        {
-            enemy.revive();
-        }
-
-    }
 
     function render() {
 
-        game.debug.text('Recycle baddies from a group using getFirstExists.', 16, 24);
-        game.debug.text('Notice that you cannot add more than 8 baddies since we only create 8 instance.', 16, 36);
-        game.debug.text('Living baddies: ' + (enemies.countLiving()), 340, 420);
+        g.db.text('Recycle baddies from a group using getFirstExists.', 16, 24);
+        g.db.text('Notice that you cannot add more than 8 baddies since we only create 8 instance.', 16, 36);
+        g.db.text('Living baddies: ' + (enemies.countLiving()), 340, 420);
 
     }
 }
@@ -2190,71 +2162,79 @@ RECYCLING=function(){z()
 
 
 
-TILECALLBACKS=function(){z()
+TILECALLBACKS=function(){pG(
 
-    var m,l,s,cu,
 
-        g=new Phaser.Game(800,600,Phaser.CANVAS,'phaser-example',{
-            preload:function(){
-                g.load.tilemap('map','/assets/tilemaps/maps/tile_collision_test.json',null,
-                    Phaser.Tilemap.TILED_JSON)
-                g.load.image('ground_1x1','/assets/tilemaps/tiles/ground_1x1.png')
-                g.load.image('phaser','/assets/sprites/arrow.png')
-                g.load.spritesheet('coin','/assets/sprites/coin.png',32,32)},
+    function(){
 
-            create:function(){g=sPhG(g)
+        g.l.tm('map',
+                    '/assets/tilemaps/maps/tile_collision_test.json',
+                    null,
+            TiledJSON)
 
-                g.p.startSystem(pArcade)
-                m=g.a.tilemap('map')
-                m.addTilesetImage('ground_1x1')
-                m.addTilesetImage('coin')
-                m.setCollisionBetween(1,12)
-                m.setTileIndexCallback(26, hitCoin, this) //This will set Tile ID 26 (the coin) to call the hitCoin function when collided with
-                m.setTileLocationCallback(2, 0, 1, 1, hitCoin, this) //This will set the map location 2, 0 to call the function
-                l=m.createLayer('Tile Layer 1')
-                l.resizeWorld()
-                s=g.a.sprite(260,100,'phaser')
-                s.anchor.set(.5)
-                g.p.enable(s)
+        g.l.i('ground_1x1','/assets/tilemaps/tiles/ground_1x1.png')
 
-        s.body.setSize(16,16,8,8)
-        s.body.maxAngular=500 //We'll set a lower max angular velocity here to keep it from going totally nuts
-        s.body.angularDrag=50 //Apply a drag otherwise the sprite will just spin and never slow down
+        g.l.i('phaser','/assets/sprites/arrow.png')
 
-        g.c.follow(s)
+        g.l.ss('coin','/assets/sprites/coin.png',32,32)
 
-        cu=g.i.keyboard.createCursorKeys()}, update:function(){
-
-        g.p.arcade.collide(s,l)
-
-        s.body.velocity.x=0
-        s.body.velocity.y=0
-        s.body.angularVelocity=0
-
-        if (cu.left.isDown){s.body.angularVelocity=-200}
-        else if (cu.right.isDown){s.body.angularVelocity=200}
-
-        if(cu.up.isDown){
-            g.p.arcade.velocityFromAngle(s.angle, 200, s.body.velocity)}},
-            render:function(){g.db.body(s)} })
+        cu=g.K()},
 
 
 
+    function(){g.ARC()
+
+        m=g.tm('map').aTSI('ground_1x1').aTSI('coin')
+            .sCB(1,12).sTIC(26,hitCoin,this).sTLC(2,0,1,1, hitCoin, this) //This will set the map location 2, 0 to call the function //This will set Tile ID 26 (the coin) to call the hitCoin function when collided with
 
 
+        l=m.cL('Tile Layer 1','+')
 
 
+        s=g.sp(260,100,'phaser').arc().bZ(16,16,8,8).fw().A() // s.anchor.set(.5)
+
+        s.health=1000
+        coins=0
 
 
+      //  s.body.maxAngular=500 //We'll set a lower max angular velocity here to keep it from going totally nuts
+      //  s.body.angularDrag=50 //Apply a drag otherwise the sprite will just spin and never slow down
 
-  hitCoin=function(sprite,tile){tile.alpha=.2
-                  l.dirty=true
-                  return false}
-
-
-
+       // g.f(s)
+    },
 
 
+    function(){
+
+        g.col(s,l,function(){s.health-=2
+
+        if(s.health<0){s.k()}})
+
+        s.vxy(0,0).aV(
+            cu.L()?-200:cu.R()?200:0
+        ).vFA(200)   //if(cu.U()){s.vFA(200) }     // s.vxy( g.vFA(s.ang(), 400)//, s.body.velocity
+
+    },
+
+
+    function(){
+
+        game.debug.text('health: '+s.health, 450, 60);
+        game.debug.text('coins: '+coins, 300, 60);
+
+        g.db.body(s)})
+
+
+  hitCoin=function(sprite,tile){
+
+
+      if(tile.alpha==1){coins++}
+      tile.alpha=.2
+      l.dirty=true
+
+      return false
+
+  }
 
 }
 
@@ -2346,6 +2326,9 @@ REMOVEBETWEEN=function(){  z()
        }
    }
 
+
+
+
 REMOVE=function(){z()
 
              game= Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
@@ -2354,69 +2337,49 @@ REMOVE=function(){z()
 
              function preload() {g=$G(game)
 
-                 g.l.ss('item', '/assets/buttons/number-buttons-90x90.png', 90, 90);
-                 g.l.i('rect', '/assets/tests/200x100corners.png')}
+                 g.l.ss('item','/assets/buttons/number-buttons-90x90.png', 90, 90);
+                 g.l.i('rect','/assets/tests/200x100corners.png')}
 
 
              function create(){
 
-                 // Create item container group.
                  items=g.gr()
 
-                 // Add some items and add them to the container group,
-                 // then you can drag and drop them to remove.
                  var item;
 
-                 for (var i = 0; i < 6; i++)
-                 {
+                 for (var i=0;i<6;i++) {
                      // Directly create sprites from the group.
-                     item = items.create(90, 16 + 90 * i, 'item', i);
+                     item = items.cr(90, 16 + 90 * i, 'item', i).nm('block' + i).iE(1).drag()
 
-                     item.name = 'block' + i;
+                     item.input.enableSnap(90, 90, false, true)
 
-                     // Enable input detection, then it's possible be dragged.
-                     item.inputEnabled = true;
-
-                     // Make this item draggable.
-                     item.input.enableDrag();
-
-                     // Then we make it snap to 90x90 grids.
-                     item.input.enableSnap(90, 90, false, true);
-
-                     // Add a handler to remove it using different options when dropped.
-                     item.events.onDragStop.add(dropHandler, this);
+                     item.oDSS(function(item,pointer){
+                         if(item.x<90){item.x=90}
+                         if(item.x>400){items.remove(item)}
+                     }, this)
                  }
 
-                 // Create a rectangle drop it at this rectangle to
-                 // remove it from origin group normally or
-                 // cut it from the group's array entirely.
-                 var rect = g.sp(390, 0, 'rect');
-                 rect.scale.setTo(2.0, 3.0);
+                  g.sp(390, 0, 'rect').sc(2,3)
 
              }
 
-             function render() {
+             function render(){
 
                  game.debug.text('Group size: ' + items.total, 74, 580);
                  game.debug.text('Drop here to remove item from the Group', 394, 24);
 
              }
 
-             function dropHandler(item, pointer) {
 
-                 if (item.x < 90)
-                 {
-                     item.x = 90;
-                 }
-                 else if (item.x > 400)
-                 {
-                     //  Remove the item from the Group.
-                     items.remove(item);
-                 }
 
-             }
+
 
          }
+
+
+
+
+
 MARIO=function(){z()
 
     game= Game(800, 600, Phaser.AUTO, 'phaser-example', {
@@ -2548,6 +2511,9 @@ BRINGGROUPTOTOP=function(){z()
                 game.debug.inputInfo(32, 32);
             }
         }
+
+
+
 
 
 MULTIPLEANIMS=function(){z()
@@ -3024,11 +2990,6 @@ SNOW=function(){z()
 
     function setParticleXSpeed(particle, max){
         particle.body.velocity.x = max - Math.floor(rnd()*30)}}
-
-
-
-
-
 FIRESTARTER=function(){z()
 
 
@@ -3090,12 +3051,6 @@ FIRESTARTER=function(){z()
     }
 
 }
-
-
-
-
-
-
 CLICKBURST=function(){z()
 
     game=Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create })
@@ -3122,4 +3077,3 @@ CLICKBURST=function(){z()
         em.start(true, 2000, null, 10);
 
     }}
-
