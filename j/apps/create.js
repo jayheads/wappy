@@ -27,28 +27,12 @@ EDIT=function(){
 
     return s}
 
-
-
-
-
-
-
-
-
-
-
-
-
 AVATAR=function(){var s=St(400),d=_d();
     CT(d,s).o('$$',
         sav(s,'avatar') )
     eaI(function(v){
         d(xc(v.d,1,function(){ s.bm(v.d,TR,'+')}))})
     return s}
-
-
-
-
 PAINT=function(){
     var r='#0FF',sz=2,oX=0,oY=0
 
@@ -74,6 +58,8 @@ PAINT=function(){
 
                 if(oX){sh.gs(r).gss(sz,'round')
                 .mt(oX,oY).lt(e.X,e.Y)}}})}
+
+
 FILTERS=function(){
     s=St(1000).a()
     wMb(function(b){b.xy(-100,-50)
@@ -185,10 +171,6 @@ TRANSFORM=function(){format()
 
         wMb(function(b,s){TR(b); b.rgc(); rg1(b);  reggy(b)}, s)}),
         br(2))}
-
-
-
-
 SHOWCASE=function(){format()
     s2(_s().id('pics'))
     s2( x=cx('y',500,500) )

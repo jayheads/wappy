@@ -651,11 +651,17 @@ xx=function xx(c){
 
     x.clip=function(){x.x.clip();return x}
     x.closePath=x.cp=function(){x.x.closePath();return x}
+
     x.dots=function(){
         x.DOTS=[]
-        x.$(function(X,Y){x.cir(X,Y)
+        x.dats=[]
+        x.$(function(X,Y){
+            x.cir(X,Y)
                 x.DOTS.push([X,Y])
+            x.dats.push(pI(X))
+            x.dats.push(pI(Y))
                 x.ln(x.DOTS)})
+
         x.$$(function(X,Y){var du
 
             x.S()
@@ -671,9 +677,6 @@ xx=function xx(c){
             x.bc('w')})
 
         return x}
-
-
-
 
 
 

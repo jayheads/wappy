@@ -2,30 +2,32 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
     $N=Number
 
-   gU= agU=function(u,f){$a.g(u, $w.u ,f)}
-   pU= apU=function(u,f){$a.p(u, $w.u ,f)}
 
+    gU= agU=function(u,f){$a.g(u, $w.u ,f)}
+    pU= apU=function(u,f){$a.p(u, $w.u ,f)}
+
+    qU=function(q){return {u:q.u}}
     qu=function(q){return {u:q.u}}
-
+    qqU=function(q){return {u:q.q.u}}
     qbu=function(q){return {u:q.b.u}}
+    qI=function(q){return  {u:q.I}}
+
 
     pjd=function(p,s){
+        return function(z,d){S(s)?p.j(d[s]):p.j(d)}}
 
-        return function(z,d){
-
-           S(s)? p.j(d[s]) : p.j(d)}}
-
-    qqU=function(q){return {u:q.q.u}}
     pjd0=function(p){return function(z,d){p.j(d[0])}}
+
 
     quc=function(q){
         return {
             u:q.u,
-            c:q.b.c
-        }}
+            c:q.b.c}}
+
     fi=find=function(m,o,f){
         if(!F(f)){f=pjd(f)}
         $m[m].find(o,f)}
+
     create=function(m,q,p){$m[m].create(quc(q),pjd(p))}
 
     all=function(m,f){
@@ -33,30 +35,23 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
         $m[m].find(f)}
     createF=function(a){return function(q,p){create(a,q,p)}}
     createP=function(a){apU('/'+a, createF(a))}
+
+
     rec=function(a,b,f){
         if(!F(f)){f=pjd(f)}
-
         $m[a].find(b).sort({dt:-1}).execFind(f)}
-
-
     rec1=function(a,b,f){
 
         $m[a].findOne(b).sort({dt:-1}).execFind(f)}
 
-    f1=function(m,o,f){
-        if(!F(f)){f=pjd(f)}
+    f1=function(m,o,f){if(!F(f)){f=pjd(f)}
         $m[m].findOne(o,f)}
+
     fById=function(m, o, f){
-
-
         $m[m].findById(o,
+        F(f)? f: pjd(f))}
 
-        F(f)? f: pjd(f)
-
-        )}
     ALL=function(r,m){  $a.g(r, function(q,p,n){ all(m,p)    })}
-    qI=function(q){return  {u:q.I}}
-    qU=function(q){return {u:q.u}}
 
 
     rmById=function(m,i,f){
@@ -73,41 +68,25 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
+
     $a.g('/',function(q,p){p.r('wap')})
+
     $a.g('/wap',function(q,p){p.r('wap')})
 
-
-
-
-    $a.g('/wap/workerFile', function(q,p){
-
-        $l('yo')
-
-        p.send('/workerFile.js')
-
-    })
-
-
-
+    $a.g('/wap/workerFile', function(q,p){p.send('/workerFile.js')})
 
     $a.g('/wap/:app/:pam?',
         function(q,p){
-
             p.r('wap',{
                 app:q.params.app,
-                pam:q.params.pam
-
-            })})
+                pam:q.params.pam})})
 
 
 
+    agU('/lgd', function(q,p,n){p.j(q.u)})
+    $a.p('/rmU',function(q,p,n){rem('user', q.b,  pjd(p) )})
 
 
-    agU('/lgd', function(q,p,n){
-            p.j(q.u)  })
-
-
-    $a.p('/rmU',function(q,p,n){  rem('user', q.b,  pjd(p) )})
 
 
     $a.p('/nU',function(q,p,n){cre('user',q.b,
@@ -115,6 +94,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
                     $d(z);p.j('error');n(z)}
             else{q.s.u=u.u;q.s.li=true
                     q.s.save(function(){p.j(u.u)})}})})
+
+
     $a.p('/li',  function(q,p,n){f1('user', {u:q.b.u,p:q.b.p },
 
         function(z,u){
@@ -132,6 +113,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             p.j('false')
         })}) //logout
 
+
+
     $a.g('/gU',function(q,p,n){
 
        find('user',{},function(z,u){
@@ -139,7 +122,10 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             p.j(_.map(u,function(u){
                 return {
                 u:u.u, m:u.m, i:u.i}}))}})})//sends user list
-   apU('/upl',function(q,p,n){if(q.f.png){q.f.i=q.f.png}
+
+
+
+    apU('/upl',function(q,p,n){if(q.f.png){q.f.i=q.f.png}
        var i=q.f.i, op=i.path
        cre('pic',{u:q.I,n:i.name,s:i.size,m:i.lastModifiedDate,e:pt.e(op)||'.png'},
             function(z,i){i.p=pt.r(op,'../../p/',i._id.toString())+i.e;$d(i.p)
@@ -158,7 +144,15 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
                         i.save(function(z){if(z){n(z)}
                             else{p.d('back')}})})})})})
 
-    apU('/nImg',function(q,p,n){ cre('img', {u:q.u,d:q.b.d}, p) })  //new image
+
+
+    apU('/nImg',function(q,p,n){
+        var iOb={u:q.u,d:q.b.d,dats: q.b.dats}
+       l(iOb)
+        cre('img', iOb
+            ,p) })  //new image
+
+
 
     $a.p('/rmI',function(q,p,n){rmById('img',q.b,p)})  //cutouts
     $a.p('/rmP',function(q,p,n){rem('pic',q.b,p)}) //files
@@ -166,6 +160,7 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
     $a.g('/pix',function(q,p,n){
         all('pic',p)})
+
 
 
  agU('/mypix', function(q,p,n){
@@ -181,21 +176,34 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
-    agU('/gMg',function(q,p,n){p.j(q.U.m)})
+
+//GET MUG ID
+    agU('/gMg',
+        function(q,p,n){
+            p.j(q.U.m)})
     //return user THEIR mug ob (if im) or mugID
     //$a.g('/gMg2',$w.u,function(q,p,n){$m.img.findById(q.U.m, function(m){p.j(m)})})
 
 
-    $a.p('/dud', function(q,p,n){
+
+    $a.p('/dud',
+        function(q,p,n){
         fById('img',  q.b.d,
-
-            function(z,d){   if(O(d)){  p.j( d.d )   }  }) })
-
+            function(z,d){   if(O(d)){  p.j(d.d)   }  }) })
             //get a durl from an img-ob id
 
 
 
-    apU('/chMg',function(q,p,n){q.U.m=q.b.m;q.U.save(  pjd(p,'m') )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
+
+    $a.p('/dats',
+        function(q,p,n){
+            fById('img',  q.b.d,
+                function(z,d){   if(O(d)){  p.j(d)   }  }) })
+    //get a durl from an img-ob id
+
+
+    apU('/chMg',function(q,p,n){
+        q.U.m=q.b.m;q.U.save(  pjd(p,'m') )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
 
     $a.p('/mug',
         function(q,p,n){
@@ -211,12 +219,14 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
-    pU('/tpc',function(q,p,n){cre('tpc',{u:q.u,t:q.b.c},p)})
+    pU('/tpc',function(q,p,n){
+        cre('tpc',{u:q.u,t:q.b.c},p)
+    })
+
+
     ALL('/tpc','tpc')
 
     $a.g('/tpc1',function(q,p,n){f1('tpc', {t: q.q.t} ,p)})
-
-
 
 
 
@@ -227,9 +237,6 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             {t:q.b.t},
 
             function(z,t){   // if(q.b.dr=='u'){
-
-
-
 
 
 
@@ -291,12 +298,13 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
     ALL('/users','user')
+
     createP('sts')
+
+
     gU('/sts',function(q,p,n){
 
         rec('sts',qU(q),p)})
-
-
 
 
 
@@ -314,10 +322,6 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
-
-
-
-
     pU('/pst',function(q,p,n){
 
         cre('pst',{
@@ -328,11 +332,6 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             du:q.b.du
 
         },p)})
-
-
-
-
-
 
 
 
@@ -417,6 +416,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             })})
 
 
+
+
     pU('/buds',function(q,p,n){
 
         $m.user.findOne(q.b,
@@ -444,8 +445,6 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
     pU('/sMsg',function(q,p,n){cre('msg',{m: q.b.m,to: q.b.to,fr: q.u},p)})
-
-
     gU('/MsgS',function(q,p,n){
 
         var o = {};
@@ -496,10 +495,7 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
         function(q,p,n){$l(q.params)
 
-            p.j(q.params.u)
-
-
-        })
+            p.j(q.params.u)})
 
 
 

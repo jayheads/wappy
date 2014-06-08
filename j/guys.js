@@ -18,12 +18,6 @@ moveGuy=function(){
 
 
 
-
-
-
-
-
-
 mapGuys=function(sGs){
 
     upsert=function(g,s,f){Gs=$w['Gs']||[]
@@ -50,9 +44,6 @@ mapGuys=function(sGs){
     _e(sGs,function(g){if(mGs[g.un]){mGs[g.un]}})
 
     _e(m,function(c,n){upsert({n:n,x:c.x,y:c.y})})}
-
-
-
 
 
 Guys=function(){

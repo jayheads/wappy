@@ -111,7 +111,9 @@ ipt=function(t,a,u,o,f){
         h1(t),
         g.p?ip2(a,u,f): g.n?ip0(a,u,o,f):  ip1(a,u,f),
         hr())}
+
 joinSelf=function(){ke('j',usr)}
+
 
 iMsg=function(t,m){ke('iMsg',{m:m,t:t,f:usr})}
 
@@ -159,19 +161,11 @@ win=function(a,c,i){//title/ob?,color,id
     return w
 }
 
-
-
-
 priv=function(a){
     cbox(a);
     ke('j',a)
 
 }
-
-
-
-
-
 
 cbox=function(t,c,i){
 
@@ -270,9 +264,7 @@ pop=function(a,o){
 
         var m=MCT()
         _e(arguments, function(a){S(a)? m(_d()(a)): m(a) })
-        return MFADE(MDIALOG(m))
-
-    }
+        return MFADE(MDIALOG(m))}
 
 
     var g=G(arguments),mm,
@@ -298,35 +290,29 @@ pop=function(a,o){
     return m}
 
 
-
-
 dang=function(t,e){//random cool text input/alert
 
     var g=G(arguments),f
 
-
     if(g.n){
 
         f=_s().xb()(
-            h2(g.f).k('a ad') //alert-danger
-        ).pp()}
 
-    else {
+            h2(g.f).k('a ad') //alert-danger
+
+        ).pp()} else {
 
         f=form()(
-
-
             dv(['b'],t).f(30),
             tx(),
             sp(' ')
 
-
         ).f(20).k('tc').c('o')}
 
-
-
     if(F(e)){f.o('s',e)}
+
     if(g.p){f.drg().s({nw:200})}
+
     return f}
 
 

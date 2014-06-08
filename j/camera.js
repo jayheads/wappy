@@ -49,6 +49,7 @@ target	//Phaser.Sprite - If the camera is tracking a Sprite, this is a reference
 
 view	Phaser.Rectangle
 Camera view. The view into the world we wish to render (by default the game dimensions).
+
 The x/y values are in world coordinates, not screen coordinates,
     the width/height is how many pixels to render.
     Objects outside of this view are not rendered if set to camera cull.

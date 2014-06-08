@@ -25,6 +25,16 @@ wM=function(f){
         qP('/dud',{d:m},f)})}
 
 
+
+wMD=function(f){
+    f=f||function(m){mg=m}//run function with YOUR mug-data-url
+    gMg(function(m){
+        qP('/dats',{d:m},f)})
+}
+
+
+
+
 Ct$=function(a){
     return new C$.Container(a)}
 

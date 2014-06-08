@@ -144,7 +144,8 @@ cut=function(m){//fresh()
     x.dots()
 
     s1(
-        bt('save sprite',function(){sv(x);fresh();EDIT()}),br(2),
+        bt('save sprite',function(){
+            sv(x);fresh();EDIT()}),br(2),
         bt('restart cut',function(){cut(m)}),br(2),
         bt('file uploads', ldr('uploads')))
 
@@ -191,6 +192,11 @@ UPLOADS=function(){format()
             })
 
         })}
+
+
+
+
+
 
 
 
@@ -281,7 +287,13 @@ UPLOAD=function(){
 
 sv=function(x,f){
     qP('/nImg',{
-        d:xx(C(x)).u()},f)}
+
+        d:xx(C(x)).u(),
+        dats:x.dats
+
+    },f)}
+
+
 
 
 

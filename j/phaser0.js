@@ -17,11 +17,13 @@ Up=Ph.Keyboard.UP
 Left=Ph.Keyboard.LEFT
 Down= Phaser.Keyboard.DOWN
 Right=Phaser.Keyboard.RIGHT
-
+qIn=Phaser.Easing.Quadratic.In
+qOut=Phaser.Easing.Quadratic.Out
 Rectangle=function(a,b,c,d){return new Phaser.Rectangle(a,b,c,d)}
 
 
 Game=function(a,b,c,d,e,f,g){return new Phaser.Game(a,b,c,d,e,f,g)}
+
 
 $G=function(g){
     g.ph=g.physics
@@ -68,10 +70,11 @@ $G=function(g){
     g.cm= g.camera
     g.cm.f= g.cm.follow
 
-    g.f=function(a){
-       g.camera.follow(a)
+    g.f=function(){
+       _a(g.camera.follow,arguments, g.camera)
 
     return g}
+
 
     g.ccU=   function(a){g.physics.arcade.checkCollision.up= a?true:false;return g}
     g.ccD= function(a){g.physics.arcade.checkCollision.down=a?true:false;return g}
@@ -123,11 +126,22 @@ $G=function(g){
         else{_a(g.physics.arcade.collide, arguments, g.physics.arcade)}
         return g}
 
+
+
+
     g.colN=function(a){
         if(A(a)){_e(arguments,function(ag){
             _a(g.physics.ninja.collide, ag, g.physics.ninja)})}
         else{_a(g.physics.ninja.collide, arguments, g.physics.ninja)}
         return g}
+
+
+    g.colP=function(a){
+        if(A(a)){_e(arguments,function(ag){
+            _a(g.physics.p2.collide, ag, g.physics.p2)})}
+        else{_a(g.physics.p2.collide, arguments, g.physics.p2)}
+        return g}
+
 
 
     g.vFA= g.vfa=function(a,b){return g.physics.arcade.velocityFromAngle(a,b)}
@@ -147,7 +161,16 @@ $G=function(g){
 
     g.pE=function(){return  g.time.physicsElapsed}
 
-    g.P2=function(){g.physics.startSystem(Phaser.Physics.P2JS); return g}
+    g.P2=function(a){
+        g.physics.startSystem(Phaser.Physics.P2JS);
+        if(N(a)){
+            g.physics.p2.gravity.y=a
+        }
+
+
+        return g}
+
+
 
     g.Nj=function(){
         g.physics.startSystem(Phaser.Physics.NINJA); return g}
@@ -169,6 +192,21 @@ $G=function(g){
     g.mX=function(){return g.input.mousePointer.x}
     g.mY=function(){return g.input.mousePointer.y}
 
+    g.dB=function(){
+     return _a(
+          g.ph.arcade.distanceBetween,
+          arguments,
+          g.ph.arcade
+      )
+
+    }
+
+
+    g.cRC=function(){return _a(g.physics.p2.createRevoluteConstraint,arguments, g.physics.p2)}
+
+    g.cLC=function(){return _a(g.physics.p2.createLockConstraint,arguments, g.physics.p2)}
+
+    g.cS=function(){return _a(g.physics.p2.createSpring,arguments, g.physics.p2)}
 
 
 
@@ -224,6 +262,16 @@ $G=function(g){
 
 
     g.gr=g.group=function(){return sGr(g.add.group())}
+
+    g.gx=function(){
+        return sGx( _a(g.add.graphics,arguments, g.add) )
+    }
+
+
+
+    g.gI=function(a){return g.cache.getImage(a)}
+
+
     g.tw=function(){var w= _a(g.add.tween,arguments,g.add);return sTw(w)}
     g.tSp=function(){var ts=_a(g.add.tileSprite,arguments, g.add); return sTS(ts)}
 
@@ -289,6 +337,17 @@ sSp=function(s){
 
     //p2
 
+    s.cCl=function(){
+       _a( s.body.clearCollision,arguments, s.body)
+    return s}
+
+
+    s.rtB=function(a){
+
+        s.rt(s.game.physics.arcade.angleBetween(s, a) )
+
+
+        return s}
 
     s.sC=function(){_a(s.body.setCircle,arguments, s.body)
         return s}
@@ -321,13 +380,17 @@ return s}
             _a(s.bringToTop,arguments,s)
     return s}
     s.k=function(){s.kill();return s}
-    s.drg=function(){
+
+
+    s.drg=function(a,b){
+        if(N(a,b)){s.body.drag.set(a,b);return s}
         s.input.enableDrag(false, true)
         return s}
 
      s.drag=function(){
         s.input.enableDrag()
         return s}
+
 
 
     s.fw=function(){
@@ -340,10 +403,18 @@ return s}
     s.rs=function(a,b){
 
         if(U(a)){return s.rs(s.game.world.randomX, s.game.world.randomY      )}
-        if(O(a)){return s.rs(a.body.x, a.body.y)}
+
+        if(O(a)){return s.rs(a.x||a.body.x, a.y||a.body.y)}
 
         s.reset(a,b)
         return s}
+
+
+
+    s.uBr=function(a){s.unbreakable=a?true:false;return s}
+
+
+    s.stc=function(a){s.body.static =a?true:false;return s}
 
 
 
@@ -410,7 +481,9 @@ return s}
 
     s.rL= s.rtL=function(a){s.body.rotateLeft(a);return s}
     s.rR= s.rtR=function(a){s.body.rotateRight(a);return s}
+
     s.sZR=function(){s.body.setZeroRotation();return s}
+
     s.sZV=function(){s.body.setZeroVelocity();return s}
 
 
@@ -422,6 +495,7 @@ return s}
     s.mTP=function(a){
 
         s.game.physics.arcade.moveToPointer(s,a)
+
         return s
 
     }
@@ -447,9 +521,13 @@ return s}
     s.aV=function(a){s.body.angularVelocity=a;return s}
 
     s.bo=function(a,b){
-        if(!b){s.body.bounce=a}
+        if(!b){
+            //s.body.bounce=a
+            s.body.bounce.set(a)
+        }
         else{s.body.bounce.setTo(a,b)}
         return s}
+
 
     s.bX=function(a){
         if(U(a)){return s.body.bounce.x}
@@ -479,12 +557,20 @@ return s}
     s.os=function(a){s.offset=a;return s}
 
 
-    s.sc=function(a,b){s.scale.setTo(a,b);return s}
+    s.sc=function(a,b){
+        if(O(a)){s.scale=a}
+       else{s.scale.setTo(a,b)}
+        return s}
+
 
     s.arc=function(){s.game.physics.enable(s,pArcade);return s}
 
-    s.p2=function(){
-        game.physics.p2.enable(s);return s}
+
+    s.p2=function(a){
+
+        game.physics.p2.enable(s, a?true:false);
+        return s}
+
 
 
 s.fr=function(a){
@@ -509,9 +595,11 @@ s.cBC=function(){
 return s}
 
 
-    s.rtP=function(){
+    s.rotateToPointer=s.rtP= s.rTP=function(){
 
-        s.rt(s.game.physics.arcade.angleToPointer(s))
+        s.rt(
+            s.game.physics.arcade.angleToPointer(s)
+        )
 
     return s}
 
@@ -745,6 +833,20 @@ sIm=function(i){
     return i}
 
 
+sGx=function(gx){
+
+gx.mT=function(){
+    _a(gx.moveTo,arguments,gx)
+    return gx}
+
+
+    gx.lT=function(){_a(gx.lineTo,arguments,gx);return gx}
+    gx.lS=function(){_a(gx.lineStyle,arguments,gx);return gx}
+
+    return gx}
+
+
+
 
 pG=function(preload,create,update,render){
 
@@ -752,13 +854,20 @@ pG=function(preload,create,update,render){
     render=render||function(){}
 
 z()
-    wM(function(m){
-        g=game=Game(800,600, Phaser.CANVAS, 'phaser-example',{
 
-            preload:function(){g=$G(g)
-                g.cache.addImage('me',m,im(m))
-                g.cache.addImage('m',m,im(m))
 
+wMD(
+
+    function(m){
+
+    g=game=Game(1400,600, Phaser.CANVAS, 'phaser-example',{
+
+            preload:function(){
+                g=$G(g)
+
+                g.cache.addImage('me',m, im(m.d))
+                g.cache.addImage('m',m, im(m.d))
+                dats= m.dats
                 preload()},
             create:function(){create()},
             update:function(){update()}
@@ -837,6 +946,7 @@ DATAURL=function(){z()
 }
 
 
+
 STATES=function(){z()
 
     di('game_div').a().s({w:400, margin:'auto', mt:50})
@@ -855,3 +965,12 @@ STATES=function(){z()
 
     game.state.add('main', state.main)
     game.state.start('main')}
+
+
+m100=function(cu,s){
+    if(cu.L()){s.mL(100)}
+    if(cu.R()){s.mR(100)}
+    if(cu.U()){s.mU(100)}
+    if(cu.D()){s.mD(100)}
+
+}

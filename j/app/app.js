@@ -3,18 +3,24 @@ lc=function(a){if(D(a)){$w.location=a}; return $w.location}
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
 
 qPd=function(u,o){qP(u,o,function(da){d=da})  }// to test qP
+
+
 qJ=function rc(u,d,f){var g,u,d,f
     if(U(d)){return _p(rc,u)}
     g=G(arguments);u=g[0];d=g[1];f=g[2]
     if(F(d)){f=d;d={}}
     $.getJSON(u,d,g.P?f:function(ss){
         _e(ss,function(s){f(s,ss)})})}
+
+
 qP=function rc(u,d,f){var g,u,d,f
     if(U(d)){return _p(rc,u)}
     g=G(arguments);u=g[0];d=g[1];f=g[2]
     if(F(d)){f=d;d={}}
     $.post(u,d,g.P?f:function(ss){
         _e(ss,function(s){f(s,ss)})})}
+
+
 qG=function rc(u,d,f){var g,u,d,f
     if(U(d)){return _p(rc,u)}
     g=G(arguments);u=g[0];d=g[1];f=g[2]
@@ -203,6 +209,8 @@ lgr=function(){
         }).$()
 
 }//depr?
+
+
 
 lgrBar=function(){
     di('lgr').pp().c('b').o({

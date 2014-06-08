@@ -175,20 +175,11 @@ g.u=function(){
 
 }
 
-
-
-
-
-
-
 //c=function(){cv =document.getElementById('canvas');ct =canvas.getContext('2d')}
 
 
 //gl=function(x, y) {var bbox=canvas.getBoundingClientRect();return{x: x - bbox.left * (canvas.width / bbox.width), y:y - bbox.top * (canvas.height / bbox.height) }; }
 //cl=function(){ct.clearRect(0,0,cv.width,cv.height)}
-
-
-
 
 anX=function(animate){
     update()
