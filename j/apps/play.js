@@ -1,3 +1,311 @@
+
+isolated=function(){
+r= b.row;
+    c= b.col
+    if(
+        //grid[r+1] &&grid[r+1][c] && grid[r+1][c].wasOn
+            //&&  grid[r-1] &&grid[r-1][c] && grid[r-1][c].wasOn
+        grid[r+1] &&grid[r+1][c] && grid[r+1][c].wasOn
+        ){return true}
+}
+
+
+
+//pass in colors or default to white/black
+//makes a tile
+isoTile=function(a,a2){
+    a=a||'w'
+    a2=a2||'z'
+
+    var h=Hx().f(a).s(a2).xy(300).ry(0).rx(40)//.dx(1).dy(1)
+    h.g.mt(0,0).lt(40,-20).lt(80,0).lt(40,20).lt(0,0)
+    h.coin=false
+
+    h.bTo=function(){
+        if(h.wasOn==true){
+            //ISO()
+            location=location}
+
+        b.x(h.x()-20)
+        b.y(h.y()-50)
+        b.tile=h
+        b.col=h.col
+        b.row=h.row
+        if(h.coin){h.coin.XX()}
+        if(h.bad){location=location}
+        h.wasOn=true
+
+    //if(isolated()){alert('!')}
+    }
+
+    h.addCoin=function(){
+
+        h.coin= tileCoin()
+        s.a(h.coin)
+        h.coin.x(h.x()-0)
+        h.coin.y(h.y()-10)
+
+    }
+
+
+
+    h.addBad=function(){
+
+        h.bad= tileBad()
+        s.a(h.bad)
+        h.bad.x(h.x()-0)
+        h.bad.y(h.y()-10)
+
+    }
+
+    return h}
+
+
+
+tileCoin=function(){
+    var h=Hx().f('y').s('z')//.ry(15).rx(15)
+    h.g.dc(0,0,15)
+    return h}
+
+tileBad=function(){
+    var h=Hx().f('g').s('z')//.ry(15).rx(15)
+    h.g.dc(0,0,15)
+    return h}
+
+
+
+isoRow=function(r,n,x,y){
+    x=x||0;
+    y=y||0
+    var row=[]
+    _t(n,function(i){
+        x=x+ 40
+        y=y- 20
+        var t=isoTile().xy(x,y);s.a(t);SL(t)
+        t.col=i
+        t.row=r
+    row.push(t)
+
+    })
+
+return row}
+
+
+
+
+isoGrid=function(n1,n2,x,y){
+    x=x||0;
+    y=y||0
+
+    var grid=[]
+
+    _t(n2,function(i){
+        x=x+40
+        y=y+20
+
+        var tile=isoRow(i,n1,x,y)
+
+
+
+        grid.push(tile)
+
+    })
+
+
+
+
+return grid}
+
+
+
+
+
+ISO=function(levNum){z()
+
+    s=St(900,500).a()
+
+   // h=Hx().f('o').s('z').xy(100).ry(20).rx(20)//.dx(1).dy(1)
+    //h.g.mt(0,0).lt(0,40).lt(40,40).lt(40,0).lt(0,0);s.a(h)
+
+
+    grid=isoGrid(10,10,0,240)
+
+
+    //s.a(TR(isoTile()))
+    //s.a(TR(isoTile()))
+
+    s.b('me',function(me){
+        b=me
+        b.sxy(.2).xy(220,70);SL(b)
+
+        b.right=function(){
+            b.tile.XX()
+            grid[b.row][b.col]=null
+            grid[b.row][b.col+1].bTo()
+        }
+
+        b.left=function(){
+
+            b.tile.XX()
+            b.tile.exists=false
+            //b.tile=null
+            grid[b.row][b.col]=null
+            grid[b.row][b.col-1].bTo()
+        }
+
+        b.down=function(){
+            b.tile.XX()
+            grid[b.row+1][b.col].bTo()}
+
+        b.up=function(){
+            b.tile.XX()
+            grid[b.row-1][b.col].bTo()}
+
+        grid[5][5].bTo()
+
+
+        kD('u','b.up()')
+        kD('d','b.down()')
+        kD('l','b.left()')
+        kD('r','b.right()')
+
+kD('s','location=location')
+
+    })
+
+
+
+lev1=function(){
+    grid[3][5].XX()
+    grid[4][4].XX()
+    grid[6][6].XX()
+    grid[7][1].XX()
+    grid[0][3].addCoin()
+    grid[1][3].addCoin()
+    grid[3][4].addCoin()
+    grid[5][2].addCoin()
+    grid[8][8].addCoin()
+}
+lev2=function(){
+    grid[0][0].addCoin()
+    grid[0][9].addCoin()
+        grid[0][3].addCoin()
+        grid[1][3].addCoin()
+    grid[1][6].addCoin()
+    grid[2][1].addCoin()
+        grid[3][4].addCoin()
+        grid[3][8].addCoin()
+    grid[4][7].addCoin()
+    grid[5][2].addCoin()
+    grid[6][5].addCoin()
+    grid[6][9].addCoin()
+    grid[8][8].addCoin()
+    grid[8][2].addCoin()
+
+
+    grid[8][4].addCoin()
+    grid[9][0].addCoin()
+    killTile=function(a,b){
+        grid[a][b].XX()
+        grid[a][b].wasOn=true
+
+    }
+
+    killTile(1,2)
+    killTile(2,2)
+    killTile(2,6)
+    killTile(2,7)
+    killTile(2,8)
+    killTile(4,0)
+    killTile(4,3)
+
+    killTile(4,4)
+    killTile(4,6)
+    killTile(4,9)
+    killTile(6,1)
+    killTile(6,2)
+    killTile(7,1)
+    killTile(7,3)
+
+    killTile(7,4)
+    killTile(7,9)
+
+    killTile(8,6)
+    killTile(8,7)
+    killTile(8,9)
+
+
+
+
+
+
+
+    }
+lev3=function(){
+
+        grid[0][0].addBad()
+        grid[0][9].addBad()
+        grid[0][3].addBad()
+
+        grid[1][6].addBad()
+        grid[2][1].addBad()
+        grid[3][4].addBad()
+        grid[3][8].addBad()
+
+        grid[5][2].addBad()
+        grid[6][5].addBad()
+        grid[6][9].addBad()
+        grid[8][8].addBad()
+        grid[8][2].addBad()
+
+    }
+
+
+lev4=function(){
+
+
+        grid[2][9].addCoin()
+    grid[5][0].addCoin()
+
+        grid[2][3].addCoin()
+        grid[5][6].addCoin()
+    grid[9][3].addCoin()
+    grid[3][1].addCoin()
+        grid[4][4].addCoin()
+        grid[0][8].addCoin()
+        grid[6][7].addCoin()
+    grid[5][8].addCoin()
+    grid[9][6].addCoin()
+    grid[2][2].addBad()
+        grid[0][0].addBad()
+        grid[0][9].addBad()
+        grid[5][3].addBad()
+    grid[2][6].addBad()
+    grid[4][5].addBad()
+    grid[9][0].addBad()
+    grid[9][7].addBad()
+        grid[3][8].addBad()
+
+
+        grid[6][5].addBad()
+        grid[6][9].addBad()
+
+        grid[8][2].addBad()
+
+    }
+
+    if(levNum){$w['lev'+levNum]()}
+    else if(pam){$w['lev'+pam]()}
+
+//lev1()
+
+}
+
+
+
+
+
+
 SPACE=function(){wMs(function(b,s){
     s.wh(2000).bgi('/space.jpg')
     b.sxy(.2).fn(RT,SL)})}
@@ -24,13 +332,20 @@ BOXES=function(){CT(ROW(s=St(800,600),
 
 }
 
+
+
+
 ship=function(s){
+
     var t=Hx().f('o').s('z').xy(100).ry(20).dx(1).dy(1);
 
     t.g.mt(0,0).lt(0,40).lt(80,20).lt(0,0)
+
      //kD('d',function(){t.rt(6,'+')})
     //kD('u',function(){t.rt(6,'-')})
+
     if(s){
+
         t.ap(s)
 
         s.o('D', function(s,e){

@@ -144,7 +144,10 @@ $G=function(g){
 
 
 
-    g.vFA= g.vfa=function(a,b){return g.physics.arcade.velocityFromAngle(a,b)}
+    g.vFA= g.vfa=function(a,b){
+        return g.physics.arcade.velocityFromAngle(a,b)}
+
+
 
     g.vFR= g.vfa=function(a,b){return g.physics.arcade.velocityFromRotation(a,b)}
 
@@ -295,6 +298,7 @@ $G=function(g){
         _a(g.input.onDown.remove, arguments, g.input.onDown)
         return g}
 
+
     g.oT=function(){
         _a(g.input.onTap.add,arguments,g.input.onTap)
         return g}
@@ -318,6 +322,7 @@ $G=function(g){
         return    g.physics.arcade.angleToPointer(a)
 
     }
+
     g.ev=function(){
         _a(g.time.events.add, arguments, g.time.events);return g}
 
@@ -331,15 +336,46 @@ g.sIE=function(a){
 
 
 
-
-
 sSp=function(s){
+    s.inputEnabled=true
+    s.mOver=false
+    s.mDown=false
+
+    s.events.onInputOver.add(function(){s.mOver=true  })
+
+    s.events.onInputOut.add(function(){s.mOver=false  })
+
+    s.events.onInputDown.add(function(){
+
+        s.downX= g.input.x
+        s.downY= g.input.y
+
+        s.delX= s.x-g.input.x
+        s.delY= s.y-g.input.y
+
+
+        s.mDown=true
+
+    })
+
+
+
+    s.events.onInputUp.add(function(){s.mDown=false  })
+
+
+
+
+
+
+
+
 
     //p2
 
     s.cCl=function(){
-       _a( s.body.clearCollision,arguments, s.body)
+       _a(s.body.clearCollision,arguments, s.body)
     return s}
+
 
 
     s.rtB=function(a){
@@ -373,7 +409,7 @@ sSp=function(s){
 
 s.cCVT=function(){
     _a(s.body.circle.collideCircleVsTile, arguments,s.body.circle)
-return s}
+    return s}
     s.p= s.ps= s.po= s.position
 
     s.bTT=function(){
@@ -510,15 +546,26 @@ return s}
 
     s.vFA=function(n){
 
-        s.vxy(s.game.physics.arcade
+        s.vxy(
+            s.game.physics.arcade
             .velocityFromAngle(s.ang(), n))
 
 
         return s}
 
+
+
+
+
     s.vx=function(a){if(U(a)){return s.body.velocity.x};s.body.velocity.x=a;return s}
     s.vy=function(a){if(U(a)){return s.body.velocity.y};s.body.velocity.y=a;return s}
-    s.aV=function(a){s.body.angularVelocity=a;return s}
+
+    s.aV=function(a){
+
+        if(U(a)){return s.body.angularVelocity}
+        s.body.angularVelocity=a;return s
+    }
+
 
     s.bo=function(a,b){
         if(!b){
@@ -602,6 +649,17 @@ return s}
         )
 
     return s}
+
+
+    s.xy=function(a,b){
+        if(O(a)){return s.xy(a.x, a.y)}
+
+
+        s.x=a
+        s.y=b
+
+
+return s}
 
 
 
@@ -690,7 +748,18 @@ sGr=function(gr){
 
 
 
+PhP=Pnt=function(a,b){
+    var p= new Phaser.Point(a,b)
+    p.sT=function(a,b){
+        if(O(a)){return p.sT(a.x, a.y)}
 
+
+        p.setTo( a,b )
+
+        return p}
+
+
+    return p}
 
 sTw=function(w){
     w.t= w.to

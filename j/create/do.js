@@ -1,16 +1,93 @@
+sJE=sEventObj=function(e){
+
+    return {
+
+
+        P:function(){e.preventDefault()},
+
+        R:function(){e.remove()},
+
+        S:function(){e.stopPropagation()},
+
+        SI:function(){
+            e.stopImmediatePropagation()
+        },
+
+
+        t: e.type,
+        b: e.bubbles,
+        c: e.cancelable,
+        r: e.removed,
+        ts: e.timeStamp,
+        n:e.nativeEvent ,
+        i:e.pointerID ,
+        pr:e.primary ,
+        g: e.target,
+        cg: e.currentTarget,
+        p: e.paused,
+        d: e.delta,///1000,
+        dp: e.defaultPrevented,
+
+        ph: e.eventPhase,
+        ps: e.propagationStopped,
+        ips: e.immediatePropagationStopped,
+
+        //S: e.time,//1000,
+
+        s: e.runTime,//1000,
+
+        x:e.stageX,
+        y:e.stageY ,
+
+        X:e.rawX,
+        Y:e.rawY ,
+
+        u: function(s){
+
+            return s.uP(e)
+        }
+
+
+
+    }}
 
 
 Do=function(ob,f){
+
+    //you decide the function object, or get a blank one
     var o=F(f)?f:function(){};
+
+    //the passed on obj reached at .ob
     o.ob=ob
 
+    //pass in a stage, and the obj will be appended to it
+    o.ap=function(s){
+        s.a(o);return o}
+
+    //not sure
+    o.fn=function(){
+        var g=G(arguments);
+        _e(g,
+            function(f){f(o)});return o}
 
 
-    o.ap=function(s){s.a(o);return o}
-    o.fn=function(){var g=G(arguments);_e(g,function(f){f(o)});return o}
-    o.bgi=function(a){o.bm(a,function(b){o.ob.setChildIndex(b.ob,0)});return o}
+    o.bgi=function(a){
+
+        o.bm(a,function(b){
+            o.ob.setChildIndex(b.ob,0)})
+
+        return o}
+
+
+    //dispatch event
     o.dE=function(a,b,c){ob.dispatchEvent(a,b,c);return a}
-    o.o=function(a,b,c,d,e){var g=G(arguments),a=g[0],b=g[1],c=g[2],d=g[3],e=g[4]
+
+
+    //on
+    o.o=function(a,b,c,d,e){
+
+        var g=G(arguments),a=g[0],b=g[1],c=g[2],d=g[3],e=g[4]
+
         if(O(a)&&!F(a)){$l('o.o')
 
             _e(a,
@@ -22,18 +99,60 @@ Do=function(ob,f){
         return o}
         if(!Oo('e',a)){
             return o.o('$',a,b,c,d)}
-        var f=ob.on(oE(a),b.handleEvent?b:b.ob?b.ob:b.st?b.st:function(e,data){var j=sJE(e)
 
-                b(Do(j.g),j,e)
+        var f=ob.on(oE(a),
+            b.handleEvent?b
+                :b.ob?b.ob
+                :b.st?b.st
+                :function(e,data){
+
+                    var j=sJE(e)
+
+                    b(Do(j.g),j,e)
+
+                //stop propogation
+
                 if(g.n){j.S()}
-                if(g.d){j.R()}},c,d,o,e)
-        return function(){o.O(a,f)
-            return _p(o.o,a,b,c,d,e)}}
 
-    o.n=function(n){o.ob.name=n;return o}
+                //if '/', then call 'remove', which nixes the listener
+                // so it makes it a 'once' call?
+                if(g.d){j.R()}},c,d,o,e)
+
+
+
+        return function(){o.O(a,f)
+            return _p(o.o,a,b,c,d,e)
+
+        }}
+
+
+
+
+
+
+
+
+    //name
+    o.n= o.nm=function(n){o.ob.name=n;return o}
+
+    //set
     o.s=function(a){o.ob.set(a);return o}
-    o.t=function(a,b,c,d){if(U(a)){
-        Ed(T$).t(o);return o};return o.o('t',a,b,c,d)}
+
+
+    //something with ticker
+    o.t=function(a,b,c,d){
+
+        if(U(a)){
+            Ed(T$).t(o)
+            return o}
+
+        return o.o('t',
+            a,b,c,d)
+
+    }
+
+
+
 
 
     o.x=function(a){var g=G(arguments)
@@ -44,6 +163,7 @@ Do=function(ob,f){
         else if(g.d){ob.x=ob.x/a}
         else{ob.x=a}
         return o}
+
     o.y=function(a){var g=G(arguments)
         if(U(a)){return ob.y}
         if(g.p){ob.y=ob.y+a}
@@ -56,6 +176,7 @@ Do=function(ob,f){
         return o}
 
 
+    //off
     o.O=function(t,f){var g=G(arguments),
         t=g[0],
         f=g[1]
@@ -74,17 +195,27 @@ Do=function(ob,f){
 
         return o}
 
+    //has listener
     o.hl=function(a,b){return o.ob.hasEventListener(oO('e',a))}
+
+    //will trigger
     o.wt=function(ty){return o.ob.willTrigger(ty)}
+
+    //on click
     o.$=function(a,b,c,d){return o.o('$', a,b,c,d)}
+
+    //on dblclick
     o.$$=function(a,b,c,d){return o.o('$$',a,b,c,d)}
 
 
+    //line to
     o.lt=function(a,b){
         o.g.lt(a,b)
         return o
     }
 
+
+    //move to
     o.mt=function(a,b){
         o.g.mt(a,b)
         return o
@@ -94,26 +225,25 @@ Do=function(ob,f){
     o.gf=function(a){o.g.f(a);return o}
     o.gss=function(a,b,c){o.g.ss(a,b,c);return o}
 
-
+//to string
     o.str=function(){return o.ob.toString()}
 
-    o.pa=function(n){var g=G(arguments),p,n=g[0]
+    //parent
+    o.pa=function(n){
+        var g=G(arguments),p,n=g[0]
         if(g.p){return St(o.ob.getStage())}
         p=o.ob.parent
         if(n==2){return o.pa(o.pa())}
         return iSt(p)?St(p):Ct(p)}
 
+    //remove
     o.XX=function(){
         o.O()
         o.pa().ob.removeChild(o.ob)}
 
 
-
-
-
-
-
     o.MV=function(a){o.pa('+').M(a||10);return o}
+
 
     o.xy=function(a,b){var g=G(arguments)
         a=g[0];b=g[1]
@@ -144,6 +274,7 @@ Do=function(ob,f){
         o.kx(a)
         o.ky(N(b)?b:a)
         return o}
+
     o.sx=function(a){
         var g=G(arguments)
         if(U(a)){return ob.scaleX}
@@ -161,6 +292,8 @@ Do=function(ob,f){
         else if(g.d){ob.scaleY=ob.ScaleY/a}
         else {ob.scaleY=a}
         return o}
+
+
     o.sxy=function(a,b){
         var g=G(arguments)
 
@@ -173,6 +306,8 @@ Do=function(ob,f){
         else if(g.d){o.sx(o.sx()/a);o.sy(o.sy()/b)}
         else{o.sx(a);o.sy(b)}
         return o}
+
+
     o.rx=function(a){var g=G(arguments)
         a=g[0]
         b=g[1]
@@ -184,7 +319,9 @@ Do=function(ob,f){
 
 
         return o}
-    o.rgc=function(){var g=G(arguments),x=o.w()/2,y=o.h()/2
+
+    o.rgc=function(){var g=G(arguments),
+        x=o.w()/2, y=o.h()/2
 
         if(g[0]===0){
             if(g.p){o.rxy(0,0,'+')}
@@ -192,9 +329,12 @@ Do=function(ob,f){
 
         else{
             if(g.p){o.rxy(x,y,'+')}
-            else{o.rxy(x,y)}}
+            else{o.rxy(x,y)
+            }}
 
         return o}
+
+
     o.ry=function(a){ var g=G(arguments)
         a=g[0]
         b=g[1]
@@ -248,7 +388,7 @@ Do=function(ob,f){
 
 
 
-
+    //bounds
     o.bn=function(a,b,c,d){
         var g=G(arguments),
 
@@ -277,12 +417,12 @@ Do=function(ob,f){
         o.sx(o.sx()*a/o.w())}
     o.h=function(a){if(U(a)){return o.bn().height * o.sy()}
         o.sy(o.sy()*a/o.h())}
-
     o.wh=function(a,b){
         if(U(a)){return {w:o.w(),h:o.h()}}
         o.w(a||0)
         o.h(N(b)?b:a)
         return o}
+
     o.cx=function f(a){
         if(U(a)){return o.x()+o.w()/2 }
         return o.x(a-o.w()/2)}
@@ -294,6 +434,7 @@ Do=function(ob,f){
         o.cx(a)
         o.cy(N(b)?b:a)
         return o}
+
     o.vx=0
     o.vy=0
 
@@ -333,6 +474,7 @@ Do=function(ob,f){
         o.vx=0
         o.vy=0}
 
+    //ticker
     o.tk=function(f){
         o.o('t',
             function(g,e){
@@ -353,45 +495,63 @@ Do=function(ob,f){
                 o.mv()
             })}
 
-        return o.xy(
-            o.vx,
-            o.vy,
-            '+'
-        )}
+        return o.xy( o.vx, o.vy, '+' )}
 
 
+    //?
     o.ctr=function(n){n=N(n)?n:200
         o.st().o('sd',function(e){
             o.dxy((e.X-o.x())/n,(e.Y-o.y())/n,'+')})
         return o.mv('+')}
 
+
+    //clone
     o.cl=function(){return o.ob.clone()}
+
+
+    //composite operation
     o.gc=function(co){if(U(co)){return o.ob.compositeOperation  }
         o.ob.compositeOperation=oO('g',co)
         return o}
+
+    //id
     o.id=function(i){if(U(i)){return o.ob.id  }
         o.ob.id=i;return o}
+
+    //shadow
     o.sd=function(s){if(U(s)){return o.ob.shadow}
         o.ob.shadow=s;return o}
+
+    //mask
     o.ma=function(m){if(U(m)){return o.ob.mask  }
         o.ob.mask=m;return o}
+
+    //tickEnabled
     o.tE=function(){var g=G(arguments)
         if(g.p){o.ob.tickEnabled=true;return o}
         if(g.n){o.ob.tickEnabled=false;return o}
         return o.ob.tickEnabled}
+
+    //mouseEnabled
     o.mE=function(){var g=G(arguments)
         if(g.p){o.ob.mouseEnabled=true;return o}
         if(g.n){o.ob.mouseEnabled=false;return o}
         return o.ob.mouseEnabled}
 
+    //visible
     o.vs=function(){
         var g=G(arguments)
         if(g.p){o.ob.visible=true;return o}
         if(g.n){o.ob.visible=false;return o}
         return o.ob.visible}
+
+
+    //cursor
     o.cu=function(cu){if(U(cu)){return o.ob.cursor  }
         o.ob.cursor=oO('u',co)
         return o}
+
+    //cache
     o.cc=function(x,y,w,h,s){var g=G(arguments)
         if(g.n){o.ob.uncache();return o}
         if(g.p){o.ob.updateCache(g[0]);return o}
@@ -406,6 +566,9 @@ Do=function(ob,f){
         o.ob.cache(x,y,w,h,s)
 
         return o}
+
+
+    //filters
     o.fl=function(a){var g=G(arguments)
 
         o.ob.filters=o.ob.filters||[]
@@ -422,6 +585,8 @@ Do=function(ob,f){
 
         o.ob.filters=g[0]
         return o}
+
+
     o.clMF=function(a){
         var g=G(arguments),a=g[0],
 
@@ -429,11 +594,11 @@ Do=function(ob,f){
             :a=='w'?CM().b(100).C(-60)
             :a=='g'?CM().h(180).s(-100)
         :a
-
-
         o.fl(clMF(cm),'+');
         if(g.p){o.cc('+')}
         return o}
+
+    //matrix
     o.gm=function(m){var g=G(arguments),m=g[0]
         return g.p? o.ob.getConcatenatedMatrix(m)
             :o.ob.getMatrix(m)}
@@ -490,21 +655,13 @@ Do=function(ob,f){
     o.bnc=function(n){
         n=N(n)?n:0
 
-        var p=o.pa('+'),
-            dm=p.wh(),  h=dm.h,  w=dm.w
+        var p=o.pa('+'), dm=p.wh(),  h=dm.h,  w=dm.w
 
         p.t(function(){
 
             var x=o.x(),  y=o.y()
 
-
-
-           if(
-               x>w-o.w()-n  || x<(n )
-
-               ){
-               o.dx('-')
-           }
+           if( x>w-o.w()-n  || x<(n ) ){ o.dx('-') }
 
              if(y>h-o.h()-(n)||y<(n )){  o.dy('-')  }
         })
@@ -514,9 +671,8 @@ Do=function(ob,f){
 
 
 
-    o.tw=function(){g=G(arguments)}
-
-
+    o.tw=function(){
+        var g=G(arguments)}
 
 
     return o}

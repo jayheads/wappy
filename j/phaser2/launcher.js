@@ -257,12 +257,6 @@ LAUNCHER1=function(){
 }
 
 
-
-
-
-
-
-
 LAUNCHERFOLLOW=function(){z()
 
     game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });

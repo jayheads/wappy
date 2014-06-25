@@ -207,10 +207,6 @@ FLAPPYYOU=function(){
             else{g.col(bird,  pipes, collisionHappened, null, this)}})
 
     }
-
-
-
-
 FLAPPYYOU1=function(){
     z()
 
@@ -404,6 +400,9 @@ FLAPPYYOU1=function(){
 
 
 }
+
+
+
 
 
 SPACEGAME=function(){z()

@@ -5,19 +5,25 @@ cycle=function(){
 
     // s.a(c1)
 
-    c1.mg(function(mg){m=mg
+    c1.mg(
+
+        function(mg){m=mg
 
         m.sxy(.4)
 
         //c1.cI(m,0)
 
-        c1.bm('uni',
+        c1.bm('uni',function(b){
 
-            function(b){
-                b.n('uni')
-                b.sx(-.8).xy(-20,200).rxy(240,80)
-                TR(m,c1)
-                RT(b,c1)})})
+                b.nm('uni')
+                    .sx(-.8).xy(-20,200).rxy(240,80)
+
+            TR(m,c1)
+
+            RT(b,c1)
+
+            })}
+    )
 
     return c1}
 
@@ -26,32 +32,38 @@ cycle=function(){
 
 
 
+flame=function(){
 
-flame=function(){var c=Ct().fn(SL)
+    var c=Ct().fn(SL)
 
 
-    c.bm('flame',function(b){shY(b)
+    c.bm('flame',
+
+        function(b){
+
+            shY(b)
 
             wMb(function(b){
 
                 c.a(b);b.rgc()
+
                 shX(rott(b))
+
                 c.b('flame',shX)
 
             })
 
             c.o('$$',function(){
+
                 c.b('flame',
                     function(b){
                         b.sxy(.2)
                         prod(b)})
 
-
                 c.b('flame',
                     function(b){
                         b.sxy(.2)
                         prod(b,'-')
-
 
 
                     })})})
@@ -62,9 +74,7 @@ flame=function(){var c=Ct().fn(SL)
 
 
 bod1=function(){
-        var c1=Ct(),
-            cL=Ct()
-
+        var c1=Ct(), cL=Ct()
 
         SL(c1)
 
@@ -83,7 +93,9 @@ bod1=function(){
 
 
             })
+
             cL.rx(40).ry(100).x(40).y(120)
+
             cL.b('uparm', function(b){
 
                 b.n('lu')
@@ -91,6 +103,7 @@ bod1=function(){
                 b.sx(.8).xy(80,180).rxy(200,80)
 
                 RT(b,cL)})
+
             cL.b('forearm',  function(b){
 
                 b.n('lf')
@@ -165,8 +178,6 @@ lpunch=function(lf){tw(lf,
         [{r:10,s:1},800],
         [{r:-140,s:2.5},600,'eO'],
         [{s:.8,r:0},1600])}
-
-
 
 BOD=function(){
     var b1=bod1(),

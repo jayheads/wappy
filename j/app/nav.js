@@ -45,11 +45,9 @@ WAPNAV=function(a){
 
 
 
-        '+'),
+        '+')//,lik(gl('t','-clear'),home)
 
-
-
-    lik(gl('t','-clear'),home)),
+        ),
 
 
 

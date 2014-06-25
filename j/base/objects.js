@@ -58,53 +58,7 @@ Events={
 
 
 
-sJE=sEventObj=function(e){
-    return {
 
-
-        P:e.preventDefault,
-        R:function(){e.remove()},
-
-        S:e.stopPropagation,
-
-        SI:function(){
-            e.stopImmediatePropagation()
-        },
-
-        t: e.type,
-        b: e.bubbles,
-        c: e.cancelable,
-        r: e.removed,
-        ts: e.timeStamp,
-        n:e.nativeEvent ,
-        i:e.pointerID ,
-        pr:e.primary ,
-        g: e.target,
-        cg: e.currentTarget,
-        p: e.paused,
-        d: e.delta,///1000,
-        dp: e.defaultPrevented,
-
-        ph: e.eventPhase,
-        ps: e.propagationStopped,
-        ips: e.immediatePropagationStopped,
-        S: e.time,//1000,
-        s: e.runTime,//1000,
-
-        x:e.stageX,
-        y:e.stageY ,
-
-        X:e.rawX,
-        Y:e.rawY ,
-
-        u: function(s){
-
-           return s.uP(e)
-        }
-
-
-
-    }}
 
 JMET={
 

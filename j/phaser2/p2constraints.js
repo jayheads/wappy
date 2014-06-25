@@ -75,7 +75,9 @@ REVC=function(){z()
         s=g.sp(400,200,'ar').p2(1)//.cCl(true,true)
         v=g.sp(400,300,'vu').p2(1)//.cCl(true,true)
 
-        g.cRC(s,[50,100],v,[0,0],{})}
+        cons=g.cRC(s,[50,100],v,[0,0],{})
+
+    }
 
 
     function update(){

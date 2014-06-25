@@ -1,3 +1,5 @@
+
+
 Hx=function(a,b){
 
     if(O(a)){return Do(H$(a))}
@@ -11,7 +13,9 @@ Hx=function(a,b){
     if(iSt(b)){b.a(h)}
 
 
-    h.f=function(a){h.g.f(oC(a));return h}
+    h.f=function(a){
+        h.g.f(oC(a));
+        return h}
 
     h.s=function(a){h.g.s(oC(a))
         return h}
@@ -125,11 +129,11 @@ ball=function(z,fc,sc){
 
 
 box=function(w,h,fc,sc){
-    w=w||200;h=h||w
+    w=w||200;
+    h=h||w
 
     var b=rct(
-        0-w/2,0-h/2,w,h,fc,sc
-    )
+        0-w/2,0-h/2,w,h,fc,sc)
 
     b.wr=w/2
     b.hr=h/2
@@ -139,19 +143,34 @@ box=function(w,h,fc,sc){
 
     b.T=function(a){
         if(U(a)){return b.y()-b.hr}
-        b.y(a+ b.hr);return b}
-    b.B=function(a){if(U(a)){return b.y()+b.hr}
-        b.y(a-b.hr);return b}
-    b.L=function(a){if(U(a)){return b.x()-b.wr}
-        b.x(a+b.wr);return b}
+        b.y(a+ b.hr);
+        return b}
+
+
+    b.B=function(a){
+        if(U(a)){return b.y()+b.hr}
+        b.y(a-b.hr);
+        return b}
+
+
+    b.L=function(a){
+        if(U(a)){return b.x()-b.wr}
+        b.x(a+b.wr);
+        return b}
+
+
     b.R=function(a){if(U(a)){return b.x()+b.wr}
         b.x(a- b.wr);return b}
+
+
     b.fall=function(){
 
         b.t(function(){
             if(b.F){b.y(40,'+')}  //****
             if(ballBox(b,r)){b.F=0}})}
+
     return b}
+
 
 
 

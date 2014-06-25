@@ -10,11 +10,6 @@ ang=function(){
 
 
 }
-
-
-
-
-
 ngApp=function(a){
 
     var q=U(a)?
@@ -24,9 +19,6 @@ ngApp=function(a){
       return q
 }//depr
 
-
-
-
 bootstrap=function(a){
     angular.element(document).ready(function(){
         angular.bootstrap(document, [a||'myApp'])})}
@@ -34,17 +26,7 @@ myApp=function(a){return angular.module(a||'myApp', [])}
 Ctr=ngContDv=function(a){return _d().ngCont(a)}
 Clk=ngClickBt=function(a,b){return bt(a).ngClick(b)}
 Shw=ngShowForm=function(a){return form().ngShow(a||'visible')}
-
-Mdl=ngModelTx=function(a,b){
-
-    return tx().ngModel(a).nm(b)
-
-
-}
-
-
-
-
+Mdl=ngModelTx=function(a,b){return tx().ngModel(a).nm(b)}
 ANGlong=function(){z()
 
     qq('div ng-app')(
@@ -56,16 +38,6 @@ ANGlong=function(){z()
     ).a()()
 
     ang()}
-
-
-
-
-
-
-
-
-
-
 
 
 ANGBOOT=function(){z()

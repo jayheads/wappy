@@ -140,8 +140,11 @@ Ct=function(o){var g=G(arguments),o=g[0]
 
 
 
-St=function(n1,n2,c){var g=G(arguments),st=iCt(g[0])?g[0]:C(g[0])?S$(C(g[0])):S$(C(_a(can,g))),
-    o=Ct(st)
+St=function(n1,n2,c){
+    var g=G(arguments),
+        st=iCt(g[0])?g[0]:C(g[0])?S$(C(g[0])):S$(C(_a(can,g))),
+        o=Ct(st)
+
     o.st=o.ob//o.st=st
     o.C=o.ob.canvas
     o.X=xx(o.C)
@@ -154,17 +157,44 @@ St=function(n1,n2,c){var g=G(arguments),st=iCt(g[0])?g[0]:C(g[0])?S$(C(g[0])):S$
         if(a==='0'){st.autoClear = false}
         if(a==='1'){st.autoClear = true}
         return o}
+
     o.du=function(){return o.ob.toDataURL()}
+
     o.mx=function(){return o.ob.mouseX}
+
     o.my=function(){return o.ob.mouseY}
-    o.M=function(a){var g=G(arguments), a=g[0]  //if undefined, and pass back {x:y:}//*** is mouse over CANVAS
+
+    // pass nothing: if mouseInBounds (is mouse over CANVAS), get x,y. o/w get false
+    // +: mouseMoveOutside=true
+    // -: mouseMoveOutside=true
+    // ?: is mouseMoveOutside
+    // num: enableMouseOver(num)
+
+    o.M=function(a){var g=G(arguments), a=g[0]
+
         if(U(a)){
-            if(g.p){o.ob.mouseMoveOutside=true;return o}
-            if(g.n){o.ob.mouseMoveOutside=false;return o}
-            if(o.ob.mouseInBounds){return {x:o.mx(),y:o.my()}}
+
+            if(g.p){
+                o.ob.mouseMoveOutside=true;return o}
+
+            if(g.n){
+                o.ob.mouseMoveOutside=false;return o}
+
+            if(o.ob.mouseInBounds){
+                return {x:o.mx(),y:o.my()}}
+
             return false}
-        if(a=='?'){return o.ob.mouseMoveOutside}
-        if(N(a)){o.ob.enableMouseOver(a);return o}}
+
+        //if(a=='?'){return o.ob.mouseMoveOutside}
+
+        if(N(a)){o.ob.enableMouseOver(a)
+            return o}}
+
+
+
+
+
+
     o.nS=function(a){
         if(U(a)){return o.ob.nextStage}
         o.ob.nextStage=a;
@@ -223,12 +253,34 @@ St=function(n1,n2,c){var g=G(arguments),st=iCt(g[0])?g[0]:C(g[0])?S$(C(g[0])):S$
 
 
     o.sv=function(f){sv(o.X);if(f){if(S(f)){f=ldr(f)};sec(f)};return o}
-    o.ct=function(f){var g=G(arguments),f=g[0],
+
+
+
+
+
+    //add a container to a stage, and then run function:
+    //f(container, stage)
+    //option: make container draggable
+    o.ct=function(f){
+        var g=G(arguments),
+        f=g[0],
+
         c=Ct()
+
         o.a(c)
+
         f(c,o)
+
         if(g.p){SL(c)}
         return o}
+
+
+
+
+
+
+
+
     o.bgi=function(a){o.bm(a,function(b){
         o.ob.setChildIndex(b.ob, 0)});return o}
 

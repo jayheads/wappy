@@ -188,7 +188,18 @@ _e(['/p/d',// css, fonts, js (bs, cjs, jq, string, us)
     '/../j/lib',
     '/../j/base',
 
+
     '/../j/phaserjs',
+
+    '/../j/phaser2',
+    '/../j/melon',
+    '/../j/mvc',
+    '/../j/three',
+    '/../j/box2d',
+    '/../j/beta',
+
+
+
 
     '/../j/g'],function(a){
 

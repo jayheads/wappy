@@ -168,9 +168,6 @@ lik=function(a,b){//dep by li (+/*)
     if(g.p){l.k('A')}
     return l}
 
-
-
-
 ol=function(o,b){var g=G(arguments),
     e=qq('o')
     _e(g,function(v){
@@ -179,17 +176,14 @@ ol=function(o,b){var g=G(arguments),
         else {e(v)}})
     return e}
 
-
-
 td=function(){return qq('td')}
-tr=function(){return qq('tr')}
+
+ tr=function(){return qq('tr')}
 
 bo=function(a,k){
     var g=G(arguments),
         h=g.p?'&nbsp;'+a:a;
     return qq('B').H(h).k(k)}
-
-
 
 
 ifra=function(){z()

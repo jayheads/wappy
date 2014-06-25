@@ -109,6 +109,80 @@ GROUPVSGROUP=function(){z()
 }
 
 
+
+SNAKE=function(){z()
+
+      game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload: preload, create: create, update: update,render : render });
+
+
+     section = []
+    snakePath = []
+    numSections=20
+    spacer=2
+
+    function preload(){g=$G(game).ARC(200).bn(0,0,800,600); cu=g.K()
+        g.l.i('ball','/me.png')
+
+    g.l.i('guy','/guy.png')}
+
+    function create(){
+
+        head=g.sp(400,300,'ball').arc().A().sc(.1,.1).clWB(1)
+
+        guy=g.sp(200,200,'guy').arc().A().sc(1,1).clWB(1).bo(.8)
+        me=g.sp(400,400,'ball').arc().A().sc(1,1).aGr(0)
+
+
+        for(var i=1; i<=numSections-1; i++){
+
+            section[i]=g.sp(400,300,'ball').arc().A().sc(.1,.1)
+        }
+
+       // section[9].sc(.5,.5)
+
+        for(var i=0; i<=numSections*spacer; i++){snakePath[i]=Pnt(400,300)}
+
+    }
+
+
+    function update(){
+
+        //for(var i=1; i<=numSections-1; i++){g.col(guy,section[i])}
+        me.vxy(0,0)
+        g.col(guy,me)
+        g.col(guy,head)
+
+
+        head.vxy(0,0)
+
+
+        head.aV(cu.L()?-300:cu.R()?300:0)
+
+      //  if(cu.U()){
+
+            snakePath.unshift(  snakePath.pop().sT(head.vFA(300))  )
+
+
+            for(var i=1; i<= numSections-1; i++){
+
+                section[i].vxy(head.vx(),head.vy())
+               section[i].xy(snakePath[ i*spacer ])
+                g.col(guy, section[i])
+            }
+    //    }
+
+    }
+
+
+
+
+    function render(){g.db.spriteInfo(head, 32, 32)}
+
+
+}
+
+
+
 GROUPVSGROUP1=function(){z()
 
     game=Game(800, 600, Phaser.CANVAS, 'phaser-example', {preload:preload, create:create, update:update})
@@ -591,10 +665,9 @@ WORLDSPRITE=function(){z()
 
 FIXEDTOCAMERA=function(){z()
        game = Game(800, 600, Phaser.CANVAS, 'phaser-example',
-           { preload: preload, create: create, update: update, render : render });
+           {preload: preload, create: create, update: update, render : render });
 
         function preload() {  g=$G(game).bc('#007236').bn(-1000, -1000, 2000, 2000)
-
             g.l.i('mushroom', '/assets/sprites/mushroom2.png')
             g.l.i('sonic', '/assets/sprites/sonic_havok_sanity.png')
             g.l.i('phaser', '/assets/sprites/phaser1.png')}
@@ -625,18 +698,104 @@ FIXEDTOCAMERA=function(){z()
             g.tw(logo2.cameraOffset).t({y:400},2000,$E.Back.InOut, true,0,2000,true)
 
             cu=g.K()}
-
-        function update() {
-
-            if (cu.U()){g.cm.y -= 4}
-            if (cu.D()){g.cm.y += 4}
-            if (cu.L()){g.cm.x -= 4}
-            if (cu.R()){g.cm.x += 4}}
-
+        function update(){
+            if (cu.U()){
+                g.cm.y -= 4}
+            if (cu.D()){
+                g.cm.y += 4}
+            if (cu.L()){
+                g.cm.x -= 4}
+            if (cu.R()){
+                g.cm.x += 4}}
         function render(){g.db.cameraInfo(g.camera, 32, 32)}
 }
 
 
+
+
+
+CANNONBALLS=function(){
+
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+    function preload() {
+
+        game.load.image('arrow', '/assets/sprites/arrow.png');
+        game.load.image('chunk', '/assets/sprites/chunk.png');
+        game.load.spritesheet('bullets', '/assets/sprites/balls.png', 17, 17);
+
+    }
+
+    var cannon;
+    var bullets;
+    var angle = 0;
+    var fireRate = 100;
+    var nextFire = 0;
+
+    function create() {
+
+        game.stage.backgroundColor = '#2d2d2d';
+
+        game.physics.startSystem(Phaser.Physics.P2JS);
+
+        game.physics.p2.gravity.y = 170;
+        game.physics.p2.restitution = 0.8;
+        game.physics.p2.friction = 0.1;
+
+        bullets = game.add.group();
+        bullets.createMultiple(500, 'bullets', 0, false);
+
+        cannon = game.add.sprite(50, 500, 'arrow');
+        cannon.anchor.set(0, 0.5);
+
+    }
+
+    function fire() {
+
+        if (game.time.now > nextFire)
+        {
+            nextFire = game.time.now + fireRate;
+
+            var bullet = bullets.getFirstExists(false);
+
+            if (bullet)
+            {
+                bullet.frame = game.rnd.integerInRange(0, 6);
+                bullet.exists = true;
+                bullet.position.set(cannon.x, cannon.y);
+
+                game.physics.p2.enable(bullet);
+
+                bullet.body.rotation = cannon.rotation + game.math.degToRad(-90);
+
+                var magnitude = 500;
+                var angle = bullet.body.rotation + Math.PI / 2;
+
+                bullet.body.velocity.x = magnitude * Math.cos(angle);
+                bullet.body.velocity.y = magnitude * Math.sin(angle);
+            }
+        }
+
+    }
+
+    function update() {
+
+        var dx = game.input.activePointer.worldX - cannon.x;
+        var dy = game.input.activePointer.worldY - cannon.y;
+        cannon.rotation = Math.atan2(dy, dx);
+
+        if (game.input.activePointer.isDown)
+        {
+            fire();
+        }
+
+    }
+
+    function render() {
+
+    }
+
+}
 
 
 PIXELPICKSCROLLING=function(){z()

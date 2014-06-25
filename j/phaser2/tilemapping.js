@@ -1,20 +1,56 @@
 
-TILECALLBACKS=function(){pG(
+TEST1=function(){pG(
+
+
+    function(){
+        g.ARC()
+        cu=g.K()
+
+        g.l.tm('map','/assets/tilemaps/maps/test1.json',null,TiledJSON)
+
+        g.l.i('phaser_tiles','/assets/tilemaps/tiles/phaser_tiles.png')
+
+        g.l.i('phaser','/assets/sprites/arrow.png')
+
+    },
+
 
 
     function(){
 
-        g.l.tm('map','/assets/tilemaps/maps/tile_collision_test.json',null,TiledJSON)
+        m=g.tm('map').aTSI('phaser_tiles').sCB(1,600)
 
-        g.l.i('ground_1x1','/assets/tilemaps/tiles/ground_1x1.png')
+        l=m.cL('Tile Layer 1','+')
+        s=g.sp(260,100,'phaser').arc().bZ(16,16,8,8).fw().A(.5,0)
 
-        g.l.i('phaser','/assets/sprites/arrow.png')
-
-        g.l.ss('coin','/assets/sprites/coin.png',32,32)
-
-        cu=g.K()
 
     },
+
+
+    function(){
+
+        g.col(s,l,function(){
+            $l(3)})
+
+
+        s.vxy(0,0).aV(cu.L()?-200:cu.R()?200:0).vFA(200)})
+
+
+
+
+
+}
+
+
+TILECALLBACKS=function(){pG(
+
+
+    function(){cu=g.K()
+
+        g.l.tm('map','/assets/tilemaps/maps/tile_collision_test.json',null,TiledJSON)
+        g.l.i('ground_1x1','/assets/tilemaps/tiles/ground_1x1.png')
+        g.l.i('phaser','/assets/sprites/arrow.png')
+        g.l.ss('coin','/assets/sprites/coin.png',32,32)},
 
 
 
@@ -48,14 +84,10 @@ TILECALLBACKS=function(){pG(
         g.col(s,l,function(){
             s.health-=2
 
-            if(s.health<0){s.k()}
-
-        })
+            if(s.health<0){s.k()}})
 
 
-        s.vxy(0,0).aV(
-            cu.L()?-200:cu.R()?200:0
-        ).vFA(200)},
+        s.vxy(0,0).aV(cu.L()?-200:cu.R()?200:0).vFA(200)},
 
 
     function(){
@@ -75,8 +107,6 @@ TILECALLBACKS=function(){pG(
         return false}
 
 }
-
-
 
 
 
@@ -167,6 +197,8 @@ PLATFORMERBASICS=function(){z()
 
     }
 }
+
+
 STARSTRUCK=function(){z()
     facing='left'
     jumpTimer=0

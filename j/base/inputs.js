@@ -30,6 +30,9 @@ lb=function lb(l,f,n,p){
 
 
 
+//el
+_n=function(a){if(U(a)){return qq('b')}}//btn
+_N=function(a){if(U(a)){return qq('N')}}//nav
 
 
 

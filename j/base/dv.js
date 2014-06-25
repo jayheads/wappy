@@ -1,13 +1,10 @@
 
-
-
-
 _d=function(a,b){
     var g=G(arguments),
         d=qq('d')
 
-    _e(g,function(g){
-        d(g)})
+    _e(g.r, function(g){ d(g) })
+
     return d}
 
 
@@ -33,7 +30,13 @@ dz=function(z,C,c,f,h){
 
 
 
+ddd=function(){z()
+    d=dva(500)(
+        e=dv(100),
+        c=sCan()
 
+    )
+}
 dv=function f(r,w,h,p){
 
 //div -auto- (padding 10)

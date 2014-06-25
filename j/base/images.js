@@ -1,4 +1,7 @@
 
+//img
+crs=function(a){return _b(_a(a,'/'),'.png')}
+
 
 src=function f(e){
 
