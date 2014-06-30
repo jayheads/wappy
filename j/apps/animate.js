@@ -64,10 +64,22 @@ TWEENART=function(a){
             b.rgc(); //centers it's reg point?
             SK(b)
 
-            tw([b,'l'],
+            tw(
+                [b,'l'],
+
+
                 {sxy:.5},
+
                 [{sxy:.7},500],
-                [{sxy:.5},500])
+
+                [{sxy:.5},500]
+
+
+            )
+
+
+
+
 
             wMb(function(b){s.a(b)//manual add necessary?
 
@@ -106,7 +118,7 @@ EASING=function(){
             tw([b,'l'],
                 [{x:800},2000],
                 [{x:50},2000]
-            )})
+        )})
 
 
 
@@ -156,7 +168,6 @@ SPRITE=function(sprite){sprite=sprite||SS
         s:function(){s.s()},
         p:function(){s.p()},
         t:function(a,b){ W$.get(bj(s)).to(a,b) }
-
     }
 
 
@@ -185,11 +196,7 @@ PACK=function(){
 
     p = spr(jss(Pack)).rgc().xy(10).fn(TR).p()
         .fr(6).xy(400,460).sxy(1.2).ap(s)
-
-
 }
-
-
 
 
 
@@ -306,6 +313,61 @@ SL(m)
 
 }
 
+
 SPINNER=function(){z()
     spinner()
 }
+
+
+
+RECTS=function(){z()
+
+    s=St(500).a()  //.drg()
+
+    //m$$("s.a(rct(30,30,30,30))")  //r=rct(30,30,'r'); TR(r)
+
+    //h.fC('o'); h.sC('z')
+
+
+    x=20
+    y=20
+
+    h0=Hx().rec(-20,-20,x+40,y+40,'y','y')
+    h1=Hx().rec(-10,-10,x+20,y+20,'z','z')
+    h2=Hx().rec(0,0,x,y,'o','z')
+
+    s.a(h0).a(h1).a(h2)
+
+
+    SL(h2)
+    SL(h2,h1)
+    SL(h2,h0)
+
+RT(h1)
+    RT(h1,h2)
+    RT(h1,h0)
+
+
+    SC(h0)
+    SC(h0,h2)
+    SC(h0,h1)
+    a=function(){
+        x+=20; y+=20
+        h1.clr()
+        h2.clr()
+
+        h1.rec(-10,-10,x+20,y+20,'z','z')
+
+        h2.rec(0,0,x,y,'o','X')
+    }
+
+    //h.rec(50,50,30,30,'z','o')
+
+
+
+
+
+}
+
+
+

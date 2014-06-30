@@ -1,8 +1,9 @@
 
 
 
-GEAR=function(){
+GEAR=function(){z()
     boxMouseSetup()
+
     setupDebugDraw()
     makeGround2()
     makeShapeOnDblClk()
@@ -105,10 +106,6 @@ PRISM=function(){z()
 
 
 
-
-
-
-
 BGUN=function(){z()
 
     force=false
@@ -169,28 +166,48 @@ REVOLUTE=function(){z()
     })
 
     setupDebugDraw()
-    makeGround2()
+    setFixtures()
+    makeWalls()
+
+
+    bWh=w.a(
+        bx2=bDf(dB, 200/30, 400/30),
+
+        fD.s(cSh(30)))
+
+
+    fWh=w.a(
+
+        bDf(dB, 300/30, 400/30),
+        fD.s(cSh(30)))
+
+    car=w.a(
+
+        bDf(dB, 240/30, 350/30),
+
+        fD.s(pSh(90,30))
+    )
+
+
+    fwJ=rJt().i(car,fWh,fWh.c())
+    w.cJ(fwJ)
+
+    bwJ=rJt().i(car,bWh,bWh.c()).mMT(100000).mMS(100000)
+    w.cJ(bwJ)
+
+    bwJ.eMt(1)
 
 
 
 
-    bWh=w.a(bx2=bD.t(dB).xy(200/30,400/30), fD.s(circ(1)))
-    fWh=w.a(bD.t(dB).xy(300/30,400/30),fD.s(circ(1)))
-    car=w.a(bD.t(dB).xy(240/30, 350/30), fD.s(poly(3,1)))
+   // fwJ.maxMotorTorque=100000
+   // fwJ.maxMotorSpeed=100000
+   // fwJ.enableMotor=true
 
-    w.cj(bwJ=rJt().i(car,bWh,bWh.c()))
-    w.cj(fwJ=rJt().i(car,fWh,fWh.c()))
+    bWh.aV(10000).fR(10000)
 
-    bwJ.maxMotorTorque=100000
-    bwJ.maxMotorSpeed=100000
-    bwJ.enableMotor=true
 
-    fwJ.maxMotorTorque=100000
-    fwJ.maxMotorSpeed=100000
-    fwJ.enableMotor=true
 
-    bWh.SetAngularVelocity(10000)
-    bWh.SetFixedRotation(10000)
     makeShapeOnDblClk()
     b=Ball()
 }
@@ -199,7 +216,25 @@ REVOLUTE=function(){z()
 
 
 
-BOX2D=function(){z()
+
+
+BOX2D=function(a){
+
+  makeWorld()
+
+
+    makeStructure()
+    makePlatform()
+
+    addTenShapes()
+    ball=Ball()
+
+}
+
+
+
+
+BOX2D1=function(){z()
     boxMouseSetup()
     setupDebugDraw()
     makeGround()
@@ -208,8 +243,6 @@ BOX2D=function(){z()
     addTenShapes()
     makeShapeOnDblClk()
     ball=Ball()}
-
-
 
 
 WHEEL=function(){ z()
@@ -232,7 +265,10 @@ HEADS=function(){z()
     boxMouseSetup()
     setupDebugDraw()
     makeGround()
-    x.$$(Ball)}
+    x.$$(Ball)
+}
+
+
 
 
 IMPULSE=function(){z()
@@ -242,273 +278,37 @@ IMPULSE=function(){z()
     setupDebugDraw()
     makeGround()
 
+    w.a(
+        bDf(dB).ang(2).fR(0).xy(),
 
-    bD=bB()
-
-    bD.type=dB
-
-
-    //b= w.a(bD.xy(), fD.s(circ(1)) )
-    b=w.a(bD.xy(), fD.s(poly(1,1)) )
-
-    wc=b.GetWorldCenter()
+        fD.s( pSh(1,1) )
+    )
 
 
 
-    aI=function(){
+    b=w.a( bD=bDf(dB).ang(1).fR(.2).xy(), fD.s(pSh(1,1)) )
 
-        b.ApplyImpulse(bV(10,-30), wc)
+
+    wc=b.wC()
+    test={
+    i:function(){b.ApplyImpulse(bV(10,-30), wc)},
+
+    v:function(){b.SetLinearVelocity( bV(10,-60) )},
+
+    f:function() {
+        I(function () {
+            b.ApplyForce(bV(0, -3), wc)
+        }, 100)
+
     }
-
-
-
-    sLV=function(){
-
-        b.SetLinearVelocity( bV(10,-60) )
-    }
-
-
-    aF=function(){
-        b.ApplyForce(bV(100,-30),  b.GetWorldCenter())
     }
 
 }
 
 
 
-BOXGAME=function(){
 
-    var mX,mY, mDown,
-        selectedBody,
-        mouseJoint,
-        cvPx
 
-
-    z()
-    c=cx(600,400).a();c.q.id('canvas')  // why not just c.id('canvas')?
-    s=St(c);STOP(); x=xx(c);s.ob.autoClear=false  //why not s.autoClear(0)?
-    oMM=function(e){
-        e=sE(e);
-        mX=(e.cx- cvPx.x)/30;
-        mY=(e.cy- cvPx.y)/30}
-    w=bW(bV(0,40),true) //gravity, and allowSleep
-    //start the ticker
-    I(function(){
-        setupMouse()
-        w.st(1/60,10,10)
-        w.ddd().cf()
-        s.u()},1000/60)
-    //set cvPx to canvas position
-    gEP=getElementPosition=function(elem){
-
-        var tagname='',
-            x=0,y= 0,e=elem
-
-        while(
-            O(e)&&D(e.tagName)){
-
-            y+=osT(e);
-            x+=osL(e)
-            tagname=uC(e.tagName)
-            if(tagname=='BODY'){e=0}
-            if(O(e)){if(O(osP(e))){e=osP(e)}}}
-        return {x:x,y:y}}
-    cvPx=getElementPosition(did()) //mouse
-    // on key of 'd' : start mouse move listener
-    dL('d',function(e){
-        mDown=true
-        oMM(e)
-        dL('m',oMM,true)},b1)
-    // on key of 'u' : remove mouse move listener
-    dL('u',function(){
-
-        dR('m',oMM,true)
-
-        mDown=false
-        tUd(mX,mY)},true)
-    setupMouse=function(){ if(mDown&&!mouseJoint){
-
-        var body=getBodyAtMouse(mX,mY)
-
-        if(body){
-
-            var md=b2MJD()
-            md.bodyA=w.ggb()
-            md.bodyB=body
-
-            md.target.Set(mX,mY)
-            md.cc(true).mf(300*body.GetMass())
-
-            mouseJoint = w.cj(md)
-            body.SetAwake(true)}}
-
-
-        if(mouseJoint){
-            if(mDown){mouseJoint.SetTarget(bV(mX,mY))}
-
-            else{
-                w.dj(mouseJoint)
-                mouseJoint=null}}
-    }
-    setupDebugDraw()
-
-
-
-    fD=bF().d(1).f(.5).r(.8)
-
-    bD=b2BD()
-
-
-    //create ground
-    bD.type = sB
-    fD.shape = poly()
-    fD.sab(20, 2)
-    bD.ps(10, 400 / 30 + 1.8)
-    w.a(bD,fD)
-
-    bD.ps(10, -1.8)
-    w.a(bD,fD)
-    fD.sab(2, 14)
-    bD.ps(-1.8, 13)
-    w.a(bD,fD)
-
-    bD.ps(21.8, 13)
-    w.a(bD,fD)
-
-
-    //create some objects
-    bD.type=dB
-
-    pgs=new b2PolygonShape
-
-    pgs.SetAsBox(r1(),r1())
-
-
-    w.a( bD.xy(), pgs )
-
-
-
-    ball=Ball()
-}
-
-BOXWORLD=function(){var mX,mY,v,mDown,sb,mJnt
-
-
-    z()
-
-    cx('#333333',800).q.id('canvas').a()()
-
-    w=bW(bV(0,1),b1)
-
-    fD=bF().d(1) //density
-        .f(.5)  //friction
-        .r(.5) //how bouncy
-        .s(poly())  //shape
-    fD.z(5,.8) //Gr-len,-thick
-
-    w.cb(bD=b2BD().t(sB).ps(13,20)).cf(fD)//Gr-x,y
-
-    fD.z(2,20)//gen-w,h
-    w.cb(bD.ps(2,12)).cf(fD)//lft-wid,lft-y
-    w.cb(bD.ps(25,8)).cf(fD)//rt x,y
-
-    fD.z(10,3)//gen-w,h
-    w.cb(bD.ps(20,12)).cf(fD)//rt x,y
-
-    bD.t(dB)
-
-    _t(10,function(){
-
-        w.a( bD.xy(), fix() )
-
-    })
-
-
-
-
-    w.sdd( b=b2DD().ss(xid()).sds(20).sfa(.5).slt(1).sf(shB||jB) )
-
-
-
-
-
-    cvPx=elPx(did())
-
-
-    oMM=function(e){
-        mX=(e.clientX-cvPx.x)/30;
-        mY=(e.clientY-cvPx.y)/30}
-
-
-    dL('d', //document.addListener('mousedown')
-
-        function(e){mDown=true
-            dL('m',oMM,true)   //document.addListener('mousemove')
-            oMM(e)},true)
-
-    dL('u',function(){
-        dR('m',oMM,true)
-        mDown=false
-        mX=undefined
-        mY=undefined},true)
-
-
-
-
-
-    update=function(fx){
-
-        if(isStat(fx)){return true}
-
-        if(txPt(fx,v)){
-            sb=gBod(fx) }
-
-    }
-
-
-
-
-    I(
-        function(){
-
-            var b,d
-            if(mDown&&!mJnt){$l('mDown && !mJnt ')
-
-                v=bV(mX,mY)
-                sb=null
-
-                w.q(update,  AB(mX-oo1,mY-oo1,mX+oo1,mY+oo1))
-
-                b=sb
-
-                if(b){
-
-
-                    m=b2MJD()
-
-                    m.bodyA=w.ggb()
-
-                    m.bodyB=b
-
-                    m.ts(mX,mY)
-
-                    mJnt = w.cj(
-                        m.cc(true).mf(300*b.GetMass()  )  )
-
-                    b.SetAwake(true)}
-            }
-
-
-            if(mJnt){
-                if(mDown){
-                    mJnt.st(bV(mX,mY))}
-
-                else {w.dj(mJnt)
-                    mJnt=null}}
-            w.st(1/60,10,10).ddd().cf()},
-
-        16
-    )}
 
 BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
     s=St(c);STOP();x=xx(c);s.ob.autoClear=false
@@ -631,8 +431,8 @@ BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
 
     r.cf(fD)
 
-
 }
+
 
 
 ramp=function(){

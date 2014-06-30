@@ -239,6 +239,12 @@ GROUPVSGROUP1=function(){z()
 
 }
 
+
+
+
+
+
+
 MASSVELOCITYTEST=function(){
 
     pG(
@@ -261,7 +267,6 @@ MASSVELOCITYTEST=function(){
                 .clWB(1).bo(.8,.8).vxy(  10+rnd()*40,10+rnd()*40  )})
 
         p=g.sp(400,300,'car').arc().A(.5).clWB(1).bo(2).aR(1).im(1)
-
         m=g.sp(100,100,'me').w(200).h(200).arc().clWB(1).bo(1)
 
     },
@@ -277,6 +282,16 @@ MASSVELOCITYTEST=function(){
 
 
  )}
+
+
+
+
+
+
+
+
+
+
 MASSVELOCITYTEST1=function(){ z()
 
 

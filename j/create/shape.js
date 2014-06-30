@@ -1,5 +1,6 @@
 
 
+
 Hx=function(a,b){
 
     if(O(a)){return Do(H$(a))}
@@ -13,15 +14,18 @@ Hx=function(a,b){
     if(iSt(b)){b.a(h)}
 
 
-    h.f=function(a){
-        h.g.f(oC(a));
-        return h}
-
-    h.s=function(a){h.g.s(oC(a))
+    h.f= h.fC=function(a){
+        h.g.f(oC(a))
         return h}
 
 
-    h.c=function(x,y,r,c,d){
+
+    h.s= h.sC=function(a){h.g.s(oC(a))
+        return h}
+
+    h.clr=function(){h.g.clear()
+        return h}
+    h.c= h.cir=function(x,y,r,c,d){
         if(!N(r)){return h.c(0,0,x,y,r)}
         if(c){h.f(c)}
         if(d){h.s(d)}
@@ -29,14 +33,16 @@ Hx=function(a,b){
         return h}
 
 
-    h.r=function l(x,y,wd,ht,fc,sc){
+    h.r= h.rec=function l(x,y,wd,ht,fc,sc){
         if(!N(wd)){return l(0,0,x,y,wd,ht)}
         x=x||0;y=y||0;wd=wd||100; h=h||wd;
-        fc=oC(fc||'x');sc=oC(sc||'y')
+        fc=oC(fc||'x');
+        sc=oC(sc||'y')
         if(fc){h.f(fc)}
         if(sc){h.s(sc)}
         h.g.r(x,y,wd,ht)
         return h}
+
 
     h.ss=function(a,b,c,d){
         h.g.ss(a,b,c,d);return h
@@ -45,14 +51,35 @@ Hx=function(a,b){
     return h}
 
 
+
+
+
+
+
+
+
 rct=function l(x,y,w,h,fc,sc){
+
     if(!N(w)){return l(0,0,x,y,w,h)}
-    x=x||0;y=y||0;w=w||100;
-    h=h||w; fc=oC(fc||'x');
+
+    x=x||0;
+    y=y||0;
+    w=w||100;
+    h=h||w;
+
+    fc=oC(fc||'x');
     sc=oC(sc||'y')
-    var sh=Hx().fn(SL),g=sh.g
-    g.f(fc).s(sc).r(x,y,w,h)
+
+    var sh=Hx()//.fn(SL)
+
+    sh.g.f(fc).s(sc).r(x,y,w,h)
+
     return sh}
+
+
+
+
+
 
 Gx=function(st){
 

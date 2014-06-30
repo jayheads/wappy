@@ -50,12 +50,21 @@ xx=function xx(c,w,h,t,l){
     x.p=xP(x.x)
     x.m=xM(x.x)
 
+
     //inherit from q
     x.q=qq(x.c)
     x.o=function(a,b,c){x.q.o(a,b,c);return x}
     x.a=function(){x.q.a();return x}
     x.ox=function(){return x.q.q.offset().left}
     x.oy=function(){return x.q.q.offset().top}
+
+
+    x.id=function(a){
+        if(U(a)){return x.q.id()}
+        x.q.id(a)
+    return x}//////////////////////
+
+
 
     x.l=function(n){if(!n){
         return osl(x.q)}
