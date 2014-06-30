@@ -1,4 +1,60 @@
 
+makeGround=function(){$l('makeGround')
+
+    bD=bDf().t(sB)
+    fD=fDf().d(1).f(.5).r(.8).sh(  pSh()  )
+
+
+
+    g1=w.a(  bD.ps(10,  400/30 +1.8), fD.sAB(20,2)  )
+
+
+    g2=w.a(  bD.ps(10, -1.8), fD)
+
+
+    g3=w.a(  bD.ps(-1.8, 13), fD.sAB(2,14) )
+
+
+    g4= w.a(  bD.ps(21.8, 13), fD)
+
+}
+
+makeGround2=function(){
+
+    bD=bDf().t(sB).ps(10, 800/30 + 1.8)
+
+    fD=fDf().d(1).f(.5).r(.8).sP().sAB(20,2)
+
+
+    w.a( bD, fD )
+
+    w.a( bD.ps(1,-1.8), fD )
+
+    w.a( bD.ps(-1.8,13), fD.sAB(2, 24) )
+
+    w.a( bD.ps(21.8,13), fD )
+
+}
+
+makePlatform=function(){
+    brick(300,300,200,20)
+    brick(300,300,20,80)
+}
+makePlatform1=function(){
+
+    w.a(
+
+        bDf(sB).p(300,300,'-'),
+
+        pFx(3000,300 )
+    )
+
+    w.a(
+        bDf(sB).p(300,300,'-'),
+        fP(300,1200 ))
+}
+
+
 
 //this class is for making rectangles
 //pass w=20,h=w,x=0,y=x,degrees=0
@@ -11,22 +67,17 @@ fPS=function(a,b,c,d,e){
         return fP(a,b)}
 
     e=e||0
-    d=N(c)?c:d
+
+    d=N(d)?d:c
 
    return fP().s(
        pSh().sAB(a,b,bV(c,d,'-'),e))
 
     }
-
-
-
-dBf=function(x,y){return bDf(dB).p(300,200)}
-sBf=function(x,y){return bDf(sB).p(300,200)}
-
-
-
-
-
+dBf=function(x,y){
+    return bDf(dB).p(N(x)?x:300, N(y)?y:300)}
+sBf=function(x,y){
+    return bDf(sB).p(N(x)?x:300, N(y)?y:300)}
 
 
 
@@ -63,76 +114,57 @@ strStar=function(){
     )
 
 }
-
-strFrict=function(){
-
-    return w.a(
-
-        dBf(300,200),
-
-        [fPS(10,10),
-            a=fPS(20,40,0,0, 90).f(0),
-            b=fPS(20,40,0,0,180).f(1),])
-
-}
-
-
-
-strBouncy=function(){
-
-    return w.a(
-        dBf(300,200),
-        [fPS(10,10),
-            a=fPS(20,40,0,0, 90).r(0),
-            b=fPS(20,40,0,0,180).r(1),])
-
-}
-
-
-
 fricky=function(){
 
     return w.a(
         dBf(300,200),
         [fPS(10,10),
-            a=fPS(20,40,0,0, 90).f(0),
-            b=fPS(20,40,0,0,180).f(0),])
+            a=fPS(20,40,0,0, 90).f(0).r(0),
+            b=fPS(20,40,0,0,180).f(0).r(0),])
 
 }
-
-
-massy=function(){
-
-    return w.a(
-        dBf(300,200),
-        [fPS(10,10),
-            a=fPS(20,40,0,0, 90).m(0),
-            b=fPS(20,40,0,0,180).m(5),])
-
-}
-
-
-
 bouncy=function(){
 
     return w.a(
         dBf(300,200),
         [fPS(10,10),
-            a=fPS(20,40,0,0, 90).r(1),
-            b=fPS(20,40,0,0,180).r(1),])
+            a=fPS(20,40,0,0, 90).r(.9).f(1),
+            b=fPS(20,40,0,0,180).r(.9).f(1),])
 
 }
+massy=function(){
 
+    return w.a(
+        dBf(300,200),
+        [fPS(10,10),
+            a=fPS(20,40,0,0, 90).d(2).f(1),
+            b=fPS(20,40,0,0,180).d(2).f(1),])
 
+}
+fluffy=function(){
 
+    return w.a(
 
+        dBf(300,200),
 
+        [
+            fPS(10,10),
+            a=fPS(20,40,0,0, 90).d(.1).f(1),
+            b=fPS(20,40,0,0,180).d(.1).f(1),])
 
+}
+cup=function(x,y){
 
+    return w.a(
 
+        dBf(x||300,y||800),[
 
+            fPS(10,10).d(5),
+            fPS(50,20,0,40,0),
+            fPS(100,20,-80,-40,260) ,
+            fPS(100,20,80,-40,-80)]
 
-
+    )}
 
 makeStruct=function(){
 
@@ -157,11 +189,6 @@ makeStruct=function(){
     )
 
 }
-
-
-
-
-
 makeStructure=function(){
 
     return w.a(

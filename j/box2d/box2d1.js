@@ -1,8 +1,5 @@
 AB001=function(a,b){return AB( a-.001,b-.001, a+.001, b+.001)}
 
-
-
-
 gBAM  =getBodyAtMouse=function(mX,mY){var slBody
 
 
@@ -22,7 +19,6 @@ gBAM  =getBodyAtMouse=function(mX,mY){var slBody
 
 }
 
-
 elPx=function(e){ee=e
 
     var t='',x=0,y=0;
@@ -40,10 +36,6 @@ elPx=function(e){ee=e
 
     return {x:x,y:y}}
 
-
-
-
-
 DbD =dbD =DebugDraw =bDD=b2DD=function(){var d=new b2DebugDraw()
     d.sSp = d.sS=d.ss=function(a){d.SetSprite(a);return d}
     d.sDS =d.sDrSc =d.sds=function(a){d.SetDrawScale(a);return d}
@@ -51,8 +43,6 @@ DbD =dbD =DebugDraw =bDD=b2DD=function(){var d=new b2DebugDraw()
     d.sLT =d.slt=function(a){d.SetLineThickness(a);return d}
     d.sF  =d.sf=function(a){d.SetFlags(a);return d}
     return d}
-
-
 
 fix=function(){
 
@@ -70,31 +60,10 @@ fix=function(){
 
 }
 
-
-
-brick=function(x,y,W,H){
-
-    x=N(x)?x:60
-    y=N(y)?y:100
-    W=N(W)?W:30
-    H=N(H)?H:W
-
-    var br=bDf(sB).XY(x, y)
-
-    var f=fDf().s( pSh(W/2, H/2)   )
-
-
-   return w.a(br,f)
-
-}
-
-
 setFixtures=function() {
     bD = bDf().t(sB)
     fD = fDf().d(1).f(.5).r(.8).sh(pSh())
 }
-
-
 
 makeWalls=function() {
     brick(10, 300, 20, 600) //left
@@ -104,13 +73,34 @@ makeWalls=function() {
     brick(300, 0, 1200, 20)//top
     brick(300, 590, 1200, 20)//bottom
 }
-
-
-
 //DEMO: add 10 dynamic sq or cir to world
+
 mBodies=function(){var bD=bDf(dB)
     _t(10,
         function(){w.a(bD.xy(), fix())})}
+
+
+brk=brick=function(x,y,W,H){
+
+    x=N(x)?x:60
+    y=N(y)?y:x
+    W=N(W)?W:30
+    H=N(H)?H:W
+
+    var br=bDf(sB).XY(x, y)
+
+    var f=fDf().s( pSh(W/2, H/2)   )
+
+    return w.a(br,f)
+
+}
+bal=function(x,y,r){
+    x=N(x)?x:100
+    y=N(y)?y:x
+    r=r||20
+    var br=bDf(sB).XY(x, y)
+    var f=fDf().s(cSh(r))
+    return w.a(br,f)}
 
 
 
@@ -126,92 +116,7 @@ mBody=function(){
 
 
     })}
-
-
-
-
-
 //Demo
-makeGround=function(){$l('makeGround')
-
-    bD=bDf().t(sB)
-    fD=fDf().d(1).f(.5).r(.8).sh(  pSh()  )
-
-
-
-     g1=w.a(  bD.ps(10,  400/30 +1.8), fD.sAB(20,2)  )
-
-
-     g2=w.a(  bD.ps(10, -1.8), fD)
-
-
-     g3=w.a(  bD.ps(-1.8, 13), fD.sAB(2,14) )
-
-
-     g4= w.a(  bD.ps(21.8, 13), fD)
-
-    }
-
-
-
-
-
-
-
-//Demo
-makeGround2=function(){
-
-    bD=bDf().t(sB).ps(10, 800/30 + 1.8)
-
-    fD=fDf().d(1).f(.5).r(.8).sP().sAB(20,2)
-
-
-    w.a( bD, fD )
-
-    w.a( bD.ps(1,-1.8), fD )
-
-    w.a( bD.ps(-1.8,13), fD.sAB(2, 24) )
-
-    w.a( bD.ps(21.8,13), fD )
-
-}
-
-
-
-
-
-
-
-
-//Demo
-
-makePlatform=function(){
-        brick(300,300,200,20)
-        brick(300,300,20,80)
-}
-
-
-
-
-makePlatform1=function(){
-
-    w.a(
-
-        bDf(sB).p(300,300,'-'),
-
-        pFx(3000,300 )
-    )
-
-    w.a(
-        bDf(sB).p(300,300,'-'),
-        fP(300,1200 ))
-}
-
-
-
-
-
-
 
 
 
@@ -228,15 +133,10 @@ addShapes=addTenShapes=function(n){n=n||10
 
         )})  // w.a( bD.xy(), fD.s(circ(r1())) )
 }
-
-
-
-
 //Demo
 // on doubleclk:randomly return a dynamic OR
 // static bodyDef
 // (at the specified location)
-
 
 makeShapeOnDblClk=function(bodyDf){
 
@@ -257,13 +157,6 @@ makeShapeOnDblClk=function(bodyDf){
         )
 
     })}
-
-
-
-
-
-
-
 setupDebugDraw=function(){
 
     w.sdd(
@@ -278,11 +171,6 @@ setupDebugDraw=function(){
 
     )
 }
-
-
-
-
-
 Ball=function(x,y){var g=G(arguments)
 
     x=g[0]||100
@@ -318,15 +206,6 @@ Ball=function(x,y){var g=G(arguments)
                 jj.rt(b.b.GetAngle())},100)})
 
     return b}
-
-
-
-
-
-
-
-
-
 makeStage=function(X,Y){
 
     c=cx(X,Y).a()
@@ -341,9 +220,6 @@ makeStage=function(X,Y){
 
     cvPx=gEP(did())
 }
-
-
-
 gEP=getElementPosition=function(e){
 
     var tagname='',  x=0,y= 0
@@ -357,7 +233,6 @@ gEP=getElementPosition=function(e){
         if(tagname=='BODY'){e=0}
         if(O(e)){if(O(osP(e))){e=osP(e)}}}
     return {x:x,y:y}}
-
 setupMouse=function(){var b
 
     if(mDown&&!mJoint){
@@ -384,7 +259,6 @@ setupMouse=function(){var b
             mJoint=null
         }}
 }
-
 oMM=function(e){e=sE(e)
     mX=(e.cx-  cvPx.x)/30;
     mY=(e.cy- cvPx.y)/30}
@@ -440,9 +314,7 @@ handleJoints=function() {
         jointExists()
     }
 }
-debugWorld=function(){ w.st(1/60,10,10).dDD().clF()}
-
-
+debugWorld=function(){w.st(1/60,10,10).dDD().clF()}
 startLoop=function(cb) {
     I(function () {//start the ticker
         handleJoints()
@@ -452,10 +324,6 @@ startLoop=function(cb) {
         }
         s.u()
     }, 1000 / 60)}
-
-
-
-
 boxMouseSetup=function(cb){var slBody
     makeStage(1000,600)
 
@@ -465,13 +333,10 @@ boxMouseSetup=function(cb){var slBody
     w=bW(bV(0,40),true)  //gravity, and allowSleep
    
     startLoop(cb)
-    checkMouseDown()}
+    checkMouseDown()
 
 
-
-
-
-
+return w}
 boxMouseSetupNoGravity=function(cb){var slBody
 
     mJoint=0
@@ -480,7 +345,6 @@ boxMouseSetupNoGravity=function(cb){var slBody
     w=bW(bV(0,0),true) //gravity, and allowSleep
     startLoop(cb)
     checkMouseDown()}
-
 boxMouseSetupNoGravity1=function(){var mX,mY, mDown,   slBody,   mJoint, cvPx
 
     c=cx(600,400).a();c.q.id('canvas')  // why not just c.id('canvas')?

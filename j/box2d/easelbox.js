@@ -1,195 +1,61 @@
-EASBOX=function(){z()
+//brilliant!!!!
+
+ba=fCS=function(x,y,r){
+    x=x||100
+    y=N(y)?y:x
+    r=r||20
+
+    return w.a(
+
+        dBf(x,y), cFx(r)
+
+    )
 
 
-    //the stage
-    s=St('y',800,600).a()
-    s.ob.canvas.id='canvas'
-
-    SCALE=30
-
-    //setup physics
-    w=bW(bV(0,50),true)
-
-    bD=bDef().t(sB).p(400/SCALE, 600/SCALE)
-
-    fD=fDef().d(1).f(.5)
-    fD.shape=poly()
-    fD.sab(400/SCALE,20/SCALE)
-
-    w.a(bD,fD)
-
-    w.sdd(b2DD().ss(xid()).sds(30).sfa(.5).slt(1).sf(shB||jB) )
-
-    s.t(function(){
-       $l('tick!')
-        w.st(1/60,10,10).ddd().cf()
-
-
-    })
-
-
-    makeShapeOnDblClk()
 }
+baa=ba2=fCS=function(x,y,r){
+    x=x||100
+    y=N(y)?y:x
+    r=r||20
 
+    return w.a(
 
+        sBf(x,y), cFx(r)
 
+    )
 
-
-EASBOX1=function(){z()
-
-        var mX,mY,
-            mDown,
-            selectedBody,
-            mouseJoint,
-            cvPx
-
-    goRight=true
-
-
-    s=St(c=sCan().id('canvas').wh(800,600).a())
-
-    s.bm('me', function(bm){m=bm
-
-            SL(m)
-
-            s.t(function(){
-
-                if(goRight){m.x(10,'+')}else{m.x(10 ,'-')}
-               })
-            s.t(function(){
-                if(m.x()>500){goRight=false}
-                else if(m.x()<0){goRight=true}
-            })
-            s.t(function(){
-                m.x(r.x())
-                m.y(r.y())
-            })
-
-
-
-
-
-        })
-
-    x=xx(c)
-
-    s.ob.autoClear=false
-
-
-    oMM=function(e){
-        e=sE(e)
-        mX=(e.cx-cvPx.x)/30;
-        mY=(e.cy-cvPx.y)/30}
-
-        w=bW(bV(0,40),true)
-
-
-
-    s.t(function(){
-
-
-        setupMouse=function(){
-
-            if(mDown && !mouseJoint){
-                var body=getBodyAtMouse(mX,mY)
-                if(body){
-                    var md= b2MJD ()
-                    md.bodyA=w.ggb()
-                    md.bodyB=body
-                    md.target.Set(mX,mY)
-                    md.cc(true).mf(300*body.GetMass())
-                    mouseJoint = w.cj(md) //mJ = //world createJoint crJ
-                    body.SetAwake(true)//body sAw
-                }}
-
-
-            if(mouseJoint){
-
-                if(mDown){
-                    mouseJoint.SetTarget( bV(mX,mY) )} //sTg}
-
-                else{
-
-                    w.dj(mouseJoint)
-                    mouseJoint=null}}
-        }
-
-        setupMouse()
-
-        w.st(1/60,10,10).ddd().cf()
-
-    })
-
-    gEP=getElementPosition=function(elem){
-
-            var tagname='',   x=0,y= 0,e=elem
-
-            while(
-                O(e)&&D(e.tagName)){
-
-                y+=osT(e);
-                x+=osL(e)
-                tagname=uC(e.tagName)
-                if(tagname=='BODY'){e=0}
-                if(O(e)){if(O(osP(e))){e=osP(e)}}}
-            return {x:x,y:y}}
-
-
-    cvPx=getElementPosition(did())
-
-
-
-    dL('d',function(e){
-            mDown=true
-            oMM(e)
-            dL('m',oMM,true)},b1)
-    dL('u',function(){
-
-            dR('m',oMM,true)
-
-            mDown=false
-            tUd(mX,mY)},true)
-
-
-
-
-        w.sdd(
-            debugDraw=b2DD().ss(
-                xid()
-            ).sds(30).sfa(.5).slt(1).sf(shB||jB) )
-
-
-    makeGround()
-
-    r=makeStructure()
-
-
-    //makePlatform()
-    //addTenShapes()
-    makeShapeOnDblClk()
-    //ball=Ball()
 
 }
 
 
 
-EASBOX0=function(){z()
+bi=brk=brick=function(x,y,W,H) {
 
-    c=sCan().id('canvas').wh(800,600).a()
+    x = N(x) ? x : 60
+    y = N(y) ? y : x
+    W = N(W) ? W : 30
+    H = N(H) ? H : W
 
-    s=St(c)
+    var br = bDf(dB).XY(x, y)
 
-    s.bm('me', function(bm){
-        m=bm
+    var f = fDf().s(pSh(W / 2, H / 2))
 
-
-        SL(m)
-
-        s.t(function(){ m.x( 1,'+') })
-
-    })
+    return w.a(br, f)
 
 
-   makeShapeOnDblClk()
+}
+
+bii=brk2=brick=function(x,y,W,H){
+
+    x=N(x)?x:60
+    y=N(y)?y:x
+    W=N(W)?W:30
+    H=N(H)?H:W
+
+    var br=bDf(sB).XY(x, y)
+
+    var f=fDf().s( pSh(W/2, H/2)   )
+
+    return w.a(br,f)
 
 }

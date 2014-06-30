@@ -1,6 +1,7 @@
 
-
-
+MAKEWORLD=function(){
+    return makeWorld()
+}
 GEAR=function(){z()
     boxMouseSetup()
 
@@ -44,7 +45,6 @@ GEAR=function(){z()
 
 
 }
-
 GEAR2=function(){  z()
     boxMouseSetup()
     setupDebugDraw()
@@ -67,7 +67,6 @@ GEAR2=function(){  z()
 
 
 }
-
 PRISM=function(){z()
 
     force=false
@@ -103,9 +102,6 @@ PRISM=function(){z()
 
     makeShapeOnDblClk()
   }
-
-
-
 BGUN=function(){z()
 
     force=false
@@ -148,13 +144,6 @@ BGUN=function(){z()
 
 
 }
-
-
-
-
-
-
-
 REVOLUTE=function(){z()
 
     force=false
@@ -211,13 +200,6 @@ REVOLUTE=function(){z()
     makeShapeOnDblClk()
     b=Ball()
 }
-
-
-
-
-
-
-
 BOX2D=function(a){
 
   makeWorld()
@@ -230,10 +212,6 @@ BOX2D=function(a){
     ball=Ball()
 
 }
-
-
-
-
 BOX2D1=function(){z()
     boxMouseSetup()
     setupDebugDraw()
@@ -243,8 +221,6 @@ BOX2D1=function(){z()
     addTenShapes()
     makeShapeOnDblClk()
     ball=Ball()}
-
-
 WHEEL=function(){ z()
 
 
@@ -259,18 +235,12 @@ WHEEL=function(){ z()
     Ball('-')
 
 }
-
-
 HEADS=function(){z()
     boxMouseSetup()
     setupDebugDraw()
     makeGround()
     x.$$(Ball)
 }
-
-
-
-
 IMPULSE=function(){z()
 
     boxMouseSetupNoGravity()
@@ -304,12 +274,6 @@ IMPULSE=function(){z()
     }
 
 }
-
-
-
-
-
-
 BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
     s=St(c);STOP();x=xx(c);s.ob.autoClear=false
     var mX,mY,mV,mDn,slB,mJt,
@@ -432,9 +396,6 @@ BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
     r.cf(fD)
 
 }
-
-
-
 ramp=function(){
     sc=30
     bsM={}
@@ -457,7 +418,6 @@ ramp=function(){
 
     r.cf(fD)
 }
-
 bTest=function(iR,a,w,h,s){
     iR=pI(iR)
     a=a
@@ -535,7 +495,212 @@ bTest=function(iR,a,w,h,s){
 
 
     return t}
+SCALECIRC=function(){
+    makeWorld()
 
+    r=50
+    x=400
+    y=440
+    v={x:0,y:0}
+
+    f1=function(){
+        fd=fDf().s(cSh(r/30))
+        a=newDB(x,y)
+        a.lV(v)
+        f=a.cF(fd)
+
+
+    }
+
+
+
+
+
+
+    f2=function(){
+        a.dF(f)
+        r+=10
+        x=a.x()
+        y=a.y()
+
+        v=a.lV()
+        f1()
+    }
+
+    f1()
+    I(f2,400)
+
+
+
+}
+RORC=function(){
+    makeWorld()
+    bouncy()
+    bouncy()
+    bouncy()
+    fricky()
+    fricky()
+    fricky()}
+CUPS=function(){
+    makeWorld()
+    cup(300,50)
+    cup(600,50)
+    fluffy()}
+EASBOX=function(){z()
+
+    var mX,mY,
+        mDown,
+        selectedBody,
+        mouseJoint,
+        cvPx
+
+    goRight=true
+
+
+    s=St(c=sCan().id('canvas').wh(800,600).a())
+
+    s.bm('me', function(bm){m=bm
+
+        SL(m)
+
+        s.t(function(){
+
+            if(goRight){m.x(10,'+')}else{m.x(10 ,'-')}
+        })
+        s.t(function(){
+            if(m.x()>500){goRight=false}
+            else if(m.x()<0){goRight=true}
+        })
+        s.t(function(){
+            m.x(r.x())
+            m.y(r.y())
+        })
+
+
+
+
+
+    })
+
+    x=xx(c)
+
+    s.ob.autoClear=false
+
+
+    oMM=function(e){
+        e=sE(e)
+        mX=(e.cx-cvPx.x)/30;
+        mY=(e.cy-cvPx.y)/30}
+
+    w=bW(bV(0,40),true)
+
+
+
+    s.t(function(){
+
+
+        setupMouse=function(){
+
+            if(mDown && !mouseJoint){
+                var body=getBodyAtMouse(mX,mY)
+                if(body){
+                    var md= b2MJD ()
+                    md.bodyA=w.ggb()
+                    md.bodyB=body
+                    md.target.Set(mX,mY)
+                    md.cc(true).mf(300*body.GetMass())
+                    mouseJoint = w.cj(md) //mJ = //world createJoint crJ
+                    body.SetAwake(true)//body sAw
+                }}
+
+
+            if(mouseJoint){
+
+                if(mDown){
+                    mouseJoint.SetTarget( bV(mX,mY) )} //sTg}
+
+                else{
+
+                    w.dj(mouseJoint)
+                    mouseJoint=null}}
+        }
+
+        setupMouse()
+
+        w.st(1/60,10,10).ddd().cf()
+
+    })
+
+    gEP=getElementPosition=function(elem){
+
+        var tagname='',   x=0,y= 0,e=elem
+
+        while(
+            O(e)&&D(e.tagName)){
+
+            y+=osT(e);
+            x+=osL(e)
+            tagname=uC(e.tagName)
+            if(tagname=='BODY'){e=0}
+            if(O(e)){if(O(osP(e))){e=osP(e)}}}
+        return {x:x,y:y}}
+
+
+    cvPx=getElementPosition(did())
+
+
+
+    dL('d',function(e){
+        mDown=true
+        oMM(e)
+        dL('m',oMM,true)},b1)
+    dL('u',function(){
+
+        dR('m',oMM,true)
+
+        mDown=false
+        tUd(mX,mY)},true)
+
+
+
+
+    w.sdd(
+        debugDraw=b2DD().ss(
+            xid()
+        ).sds(30).sfa(.5).slt(1).sf(shB||jB) )
+
+
+    makeWalls()
+
+    r=makeStructure()
+
+
+    //makePlatform()
+    //addTenShapes()
+    makeShapeOnDblClk()
+    //ball=Ball()
+
+}
+MOVEHEAD=function(){z()
+
+    c=sCan().id('canvas').wh(800,600).a()
+
+    s=St(c)
+
+    s.bm('me', function(bm){
+        m=bm
+
+
+        SL(m)
+
+        s.t(function(){ m.x( 1,'+') })
+
+    })
+
+
+    makeShapeOnDblClk()
+
+}
 
 
 

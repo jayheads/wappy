@@ -55,17 +55,19 @@ BXJ=BXD.Joints
 makeWorld=function(a){
 
     if(a!='-'){z()}
-    boxMouseSetup()
+
+    var w=boxMouseSetup()
+
     setupDebugDraw()
     setFixtures()
     makeWalls()
     makeShapeOnDblClk()
 
-}
+return w}
 
 
 
-sBd=function(b){
+sBd  =function(b){
 
     b.cF=b.f=function(a){
 
@@ -169,7 +171,7 @@ b.dF=function(a){
 
     return b}
 
-sFx=function(f){
+sFx  =function(f){
 
     f.d=function(a){f.density=a;return f}
     f.f=function(a){f.friction=a;return f}
@@ -194,7 +196,7 @@ sFx=function(f){
     }
 
 
-    f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return f.s(poly())}
+    f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return f.s(pSh())}
 
     f.set=function(x,y){
         f.shape.Set(x,y)
@@ -228,10 +230,6 @@ f.tP=f.txPt=function(m,y){
 
     return f}
 
-
-
-
-
 bV   =function(a,b,c){
     var g=G(arguments),
         a=g[0],b=g[1],
@@ -244,15 +242,39 @@ bV   =function(a,b,c){
 
 
 
+//makes body defs (to pass to world (w.a(body def)))
+
 bDf    =       bDef=bB=b2BD=function rc(a,x,y){
 
     var b=a
 
+
+    //check if b is an instantiated body def
+    //by making sure it is an object
+
     if(!O(b)){
+
+
+        //if it is NOT an object,
+        //then it could be pams
+
         b=rc(new b2BodyDef)
+        //insantiate a new body def
+
         if(N(a)){b.t(a)}
-        if(N(y)){b.xy(x,y)}}
- 
+        //if a is a Number, it is actually representing a type
+        //(either sB or dB)
+        //so set the type
+
+        if(N(y)){b.xy(x,y)}
+        //if y is a number,
+        //set the location
+
+    }
+
+
+    //assume b is an instantiated body def
+
     b.t=function(a){
         if(U(a)){return b.type}
         b.type=a;
@@ -291,7 +313,6 @@ bDf    =       bDef=bB=b2BD=function rc(a,x,y){
 
     b.p=b.ps=function(x,y){
         var g=G(arguments),x=x||r10(),y=y||r10()
-
          x/=30;y/=30
         b.position.Set(x,y);
         return b}
@@ -314,11 +335,9 @@ bDf    =       bDef=bB=b2BD=function rc(a,x,y){
 
 
 
-fDf    =fDef=Fixt=FixtureDef=bF=function(){//=b2FD
+fDf       =fDef=Fixt=FixtureDef=bF=function(){//=b2FD
     var f=new b2FixtureDef
     return sFx(f)}
-
-
 
 
 bW    =World=function(a,b){b=b||true
@@ -387,7 +406,7 @@ bW    =World=function(a,b){b=b||true
     w.q=function(a,b){w.QueryAABB(a,b);return w}
 
     return w}//=b2W
-AB=function(a,b,c,d){
+AB   =function(a,b,c,d){
     var ab=new b2AABB()
     ab.lowerBound.Set(a,b)
     ab.upperBound.Set(c,d)
@@ -395,10 +414,12 @@ AB=function(a,b,c,d){
 }//get rectangle by two coords
 
 
-sSh=function(s){
+//super shape
+sSh   =function(s){
 
 
-    s.tPt=s.tP=s.tp=function(a,b){return s.TestPoint(a,b)}
+    s.tP=  s.tPt=s.tp=function(a,b){return s.TestPoint(a,b)}
+
 
 
     return s}
@@ -406,7 +427,9 @@ sSh=function(s){
 
 
 
-pSh=function(x,y,P,A){
+
+//poly shape
+pSh   =function(x,y,P,A){
 
     var p=new b2PolygonShape
 
@@ -439,7 +462,9 @@ pSh=function(x,y,P,A){
     return p}
 
 
-cSh=function(a){
+
+//circleShape
+cSh   =function(a){
     var s=new b2CircleShape(a/30)
     return sSh(s)}
 
@@ -447,7 +472,10 @@ cSh=function(a){
 
 
 
-pFx=fP=function(w,h,P,A){
+
+
+
+pFx=fP   =function(w,h,P,A){
 
     var g=G(arguments),
         w=g[0]||r1(),
