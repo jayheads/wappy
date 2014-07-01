@@ -324,13 +324,14 @@ startLoop=function(cb) {
         }
         s.u()
     }, 1000 / 60)}
+
 boxMouseSetup=function(cb){var slBody
     makeStage(1000,600)
 
     mJoint=0
     mDown=0
 
-    w=bW(bV(0,40),true)  //gravity, and allowSleep
+    w=bW(bV(0,40), false)  //gravity, and allowSleep
    
     startLoop(cb)
     checkMouseDown()

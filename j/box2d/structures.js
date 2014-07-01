@@ -154,6 +154,8 @@ fluffy=function(){
 
 }
 cup=function(x,y){
+    x=N(x)?x:100
+    y=N(y)?y:x
 
     return w.a(
 
@@ -225,3 +227,49 @@ makeStructure=function(){
 
 
 
+cup2=function(x,y){
+    x=N(x)?x:100
+    y=N(y)?y:x
+
+    return w.a(
+
+        dBf(x||300,y||800),
+
+        [
+
+            fPS(10,10).d(5),
+            fPS(50,20,0,40,0),
+            fPS(100,20,-80,-40,260) ,
+            fPS(100,20,80,-40,-80),
+
+            cFx(100)
+
+        ]
+
+    )}
+
+
+
+
+cup3=function(x,y){
+    x=N(x)?x:100
+    y=N(y)?y:x
+
+    return w.a(
+
+        dBf(x||300,y||800),
+
+        [
+
+            fPS(10,10).d(5),
+            fPS(50,20,0,40,0),
+            fPS(100,20,-80,-40,260) ,
+            fPS(100,20,80,-40,-80),
+
+            cFx(34,-80,-130),
+
+            cFx(34,80,-130)
+
+        ]
+
+    )}

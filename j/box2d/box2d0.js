@@ -139,7 +139,6 @@ sBd  =function(b){
 
     b.gTf= b.tf= b.GetTransform
 
-
     b.aV=function(a){
 
         if(U(a)){return b.GetAngularVelocity()}
@@ -226,6 +225,25 @@ f.tP=f.txPt=function(m,y){
         if(D(a)){return t==a}
 
     return t}
+
+
+    f.gI=function(a){
+        if(U(a)){return f.filter.groupIndex}
+        f.filter.groupIndex=a; return f}
+
+    f.cB=function(a){
+        if(U(a)){return f.filter.categoryBits}
+        f.filter.categoryBits=a; return f}
+
+    f.mB=function(a){
+        if(U(a)){return f.filter.maskBits}
+        f.filter.maskBits=a; return f}
+
+    f.iS=function(a){
+        if(U(a)){return f.isSensor}
+        f.isSensor =a?true:false
+        return f}
+
 
 
     return f}
@@ -340,7 +358,8 @@ fDf       =fDef=Fixt=FixtureDef=bF=function(){//=b2FD
     return sFx(f)}
 
 
-bW    =World=function(a,b){b=b||true
+bW    =World=function(a,b){
+    b=D(b)?b:false
 
     var w=new b2World(a,b)
 
@@ -384,8 +403,8 @@ bW    =World=function(a,b){b=b||true
 
 
 
-
-
+    w.sCF=w.SetContactFilter
+    w.sCL=  w.SetContactListener
 
 
     w.cJ=w.j=w.cj=function(a){var j=w.CreateJoint(a)
@@ -395,6 +414,7 @@ bW    =World=function(a,b){b=b||true
         return sJt(j)}
 
 
+    w.dB= function(a){w.DestroyBody(a);return w}
 
 
     w.dJ=w.dj=function(a){w.DestroyJoint(a);return w}
@@ -493,11 +513,23 @@ pFx=fP   =function(w,h,P,A){
 }
 
 
-cFx=fC=function(a){
+
+
+
+cFx=fC=function(a,x,y){
 a=a||r1()
+x=N(x)?x:0
+    y=N(y)?y:x
+
+    dafi=cSh(a)
+
+    dafi.SetLocalPosition(bV(x/30,y/30))
+
 
     return fDf().s(
-        cSh(a)
+
+        dafi
+
     ).d(1).f(.5).r(.8)
 }
 

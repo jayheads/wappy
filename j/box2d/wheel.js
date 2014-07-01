@@ -498,7 +498,11 @@ bTest=function(iR,a,w,h,s){
 SCALECIRC=function(){
     makeWorld()
 
-    r=50
+    baa(400,300,40);
+    baa(290,350,40);
+    baa(280,220,40)
+
+    r=350
     x=400
     y=440
     v={x:0,y:0}
@@ -541,11 +545,21 @@ RORC=function(){
     fricky()
     fricky()
     fricky()}
+
 CUPS=function(){
     makeWorld()
-    cup(300,50)
-    cup(600,50)
-    fluffy()}
+    cup(280,50)
+    cup2(400,50)
+    cup3(700,50)
+    fluffy()
+    ba()
+    ba()
+    ba()
+
+    bii(150,220,50)
+}
+
+
 EASBOX=function(){z()
 
     var mX,mY,
