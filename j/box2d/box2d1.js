@@ -66,13 +66,14 @@ setFixtures=function() {
 }
 
 makeWalls=function() {
-    brick(10, 300, 20, 600) //left
 
-    brick(990, 300, 20, 600)//right
-
-    brick(300, 0, 1200, 20)//top
-    brick(300, 590, 1200, 20)//bottom
+    bii(10, 300, 20, 600) //left
+    bii(990, 300, 20, 600)//right
+    bii(300, 0, 1200, 20)//top
+    bii(300, 590, 1200, 20)//bottom
 }
+
+
 //DEMO: add 10 dynamic sq or cir to world
 
 mBodies=function(){var bD=bDf(dB)

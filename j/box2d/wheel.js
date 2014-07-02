@@ -274,6 +274,7 @@ IMPULSE=function(){z()
     }
 
 }
+
 BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
     s=St(c);STOP();x=xx(c);s.ob.autoClear=false
     var mX,mY,mV,mDn,slB,mJt,
@@ -560,6 +561,8 @@ CUPS=function(){
 }
 
 
+
+
 EASBOX=function(){z()
 
     var mX,mY,
@@ -718,5 +721,101 @@ MOVEHEAD=function(){z()
 
 
 
+//triggers listeners!
+LISTENER=function(){
+    _bC=0
+    _eC=0
+    _pS=0
+    _PS=0
+
+    makeWorld()
+
+    ba()
+    b1=function(){bi()}
+
+    var bb=bCL()
+        .bC(function(){
+
+            b1()
+            // $l('bC: '+_bC++)
+
+        })
+        .eC(function(){
+            // $l('eC: '+_eC++)
+            //ba()
+        })
+        .pS(function(){
+            // $l('pS: '+_pS++)
+            // ba()
+        })
+        .PS(function(){
+            // bi()
+            //    $l('PS: '+_PS++)
+        })
+
+    w.sCL(bb)
+
+}
+LISTENER1=function(){makeWorld()
+
+    w.sCL(
+
+        bCL().bC(function(s){
+
+        sss=s
+
+    }))
+
+    ba()
+
+}
+
+
+
+
+
+
+//only breaks at high impulse
+POSTSOLVE=function(){makeWorld();ba()
+    newB=false
+    s.t(function(){if(newB){ba()}; newB=false})
+    w.sCL(bCL().P(function(c,i){if($l(i.n()[0])>100){newB=true}}))}
+
+
+//shows category and mask bits
+//the big circles dont collide??
+
+PRESOLVE=function(){makeWorld();ba()
+    newB=false
+    s.t(function(){if(newB){ba()}; newB=false})
+    w.sCL(bCL().p(function(c,m){
+        if($l(i.n()[0])>100){newB=true}
+
+    }))}
+
+
+CONTACTS=function(){
+
+    makeWorld()
+
+    f1=cFx(80).cB(2).mB(1)
+    f2=cFx(60).cB(3).mB(1|3)
+
+    f3=pFx(60,90,0,40,10).iS(1)
+    f4=cFx(100).iS(1)
+
+    w.a( dBf(300,300),  f1)
+    w.a( dBf(400,300),  f1)
+
+
+    t1= w.a( dBf(500,300), [f2,f3]).aV(100)
+
+    t2= w.a( dBf(700,300), [f2,f4]).aV(100)
+
+
+
+
+
+}
 
 

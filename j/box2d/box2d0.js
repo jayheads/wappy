@@ -69,6 +69,14 @@ return w}
 
 sBd  =function(b){
 
+
+    b.uD=function(a){
+
+        var f= b.gFL()
+        if(U(a)){return f.GetUserData()}
+        f.SetUserData(a);
+        return b}
+
     b.cF=b.f=function(a){
 
         a=a||fix()
@@ -134,6 +142,7 @@ sBd  =function(b){
         return b}
 
 
+    b.gFL=function(){return sFx(b.GetFixtureList())}
 
     b.gT= b.gTy= b.ty=b.GetType
 
@@ -159,8 +168,9 @@ sBd  =function(b){
     b.sFR= b.fR=function(a){b.SetFixedRotation(a)
     return b}
 
+    b.n= b.gN=function(){return sBd(b.GetNext())}
 
-b.dF=function(a){
+    b.dF=function(a){
     b.DestroyFixture(a)
 
     return b
@@ -208,10 +218,7 @@ sFx  =function(f){
 
         else{ f.shape.SetAsOrientedBox(a/30,b/30,p,A)}
         return f}
-
-
-
-f.tP=f.txPt=function(m,y){
+    f.tP=f.txPt=function(m,y){
        if(N(y)){m=bV(m,y)}
 
         return f.gSh().tPt(  f.gB().gTf(), m)
@@ -244,7 +251,9 @@ f.tP=f.txPt=function(m,y){
         f.isSensor =a?true:false
         return f}
 
-
+    f.uD=function(a){
+        if(U(a)){return f.GetUserData()}
+        f.SetUserData(a);return f}
 
     return f}
 
@@ -356,32 +365,43 @@ bDf    =       bDef=bB=b2BD=function rc(a,x,y){
 fDf       =fDef=Fixt=FixtureDef=bF=function(){//=b2FD
     var f=new b2FixtureDef
     return sFx(f)}
-
-
-bW    =World=function(a,b){
+ 
+bW=World=function(a,b){
     b=D(b)?b:false
 
     var w=new b2World(a,b)
 
-    w.qAB=  w.QueryAABB
+
+
+
+
+    w.e= w.eB=w.cb=function(f){//for each body
+        var a=w.gBL();
+        _t(w.gBC()-1,  function(){  f(a) ;    a=a.n()       })
+
+    return w}
+
+    aII=function(a){ a.aI(100,100) }
+    bXX=function(a){if(a.uD()=='remove'){w.dB(a)}}
+
+
+
+    w.q=w.qAB=w.QueryAABB
+
+    w.gBC=function(){return w.GetBodyCount()}
 
     w.sDD=w.sdd=function(a){w.SetDebugDraw(a);return w}
-
-    w.st =function(){var g=G(arguments)
+    w.st=function(){var g=G(arguments)
          _a(w.Step,g,w);return w}
+    w.dDD=w.ddd=function(){w.DrawDebugData();return w}
+    w.clF=w.cf=function(){w.ClearForces();return w}
 
-    w.dDD =w.ddd=function(){w.DrawDebugData();return w}
-    w.clF =w.cf=function(){w.ClearForces();return w}
 
-
-    w.cB = w.b= function(def){//=w.cb
+    w.b=w.cB=function(def){//=w.cb
         def=def||bDf()
         var b=w.CreateBody(def)
         b=sBd(b)
         return b}
-
-
-
     w.a=function(b,f){
 
         b=w.cB(b)
@@ -401,22 +421,16 @@ bW    =World=function(a,b){
         return b}
 
 
-
-
     w.sCF=w.SetContactFilter
-    w.sCL=  w.SetContactListener
+    w.sCL=w.SetContactListener
 
 
-    w.cJ=w.j=w.cj=function(a){var j=w.CreateJoint(a)
+    w.j=w.cJ=w.j=w.cj=function(a){var j=w.CreateJoint(a)
 
 
 
         return sJt(j)}
-
-
-    w.dB= function(a){w.DestroyBody(a);return w}
-
-
+    w.dB=function(a){w.DestroyBody(a);return w}
     w.dJ=w.dj=function(a){w.DestroyJoint(a);return w}
 
     w.gGB=w.ggb=function(){
@@ -425,8 +439,22 @@ bW    =World=function(a,b){
 
     w.q=function(a,b){w.QueryAABB(a,b);return w}
 
+    w.gBL=function(){
+       return sBd(w.GetBodyList())}
+
     return w}//=b2W
-AB   =function(a,b,c,d){
+
+aII=function(a){a.aI(100,100)}//for w.e testing
+bXX=function(a){if(a.uD()=='remove'){w.dB(a)}}
+bXXX=function(){w.e(bXX)}
+bXXXX=function(){s.t(bXXX)}
+
+
+
+
+
+
+AB=function(a,b,c,d){
     var ab=new b2AABB()
     ab.lowerBound.Set(a,b)
     ab.upperBound.Set(c,d)
