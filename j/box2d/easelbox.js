@@ -1,66 +1,76 @@
-ba    =fCS=function(x,y,r){
+//single fixture(shape) bodies!!!
+
+
+//dynamic circle
+ba     =function(x,y,r){//fCS=
+
     x=x||100
     y=N(y)?y:x
     r=r||20
 
-    return w.a(
-
-        dBf(x,y), cFx(r)
-
-    )
-
+    return w.a( dBD(x,y),  cFx(r)  )
 
 }
-baa   =ba2 =function(x,y,r){
+
+
+
+
+//static circle
+baa    =function(x,y,r){//=ba2
     x=x||100
     y=N(y)?y:x
     r=r||20
 
+    return w.a( sBD(x,y), cFx(r) )
+
+}
+
+//dynamic rect
+bi     =function(x,y,W,H){//=brk=brick=
+
+    x = N(x) ? x : 60; y = N(y) ? y : x
+    W = N(W) ? W : 30; H = N(H) ? H : W
+
     return w.a(
 
-        sBf(x,y), cFx(r)
-
-    )
-
+        dBD(x,y),    pFx(W/2, H/2))
 
 }
-bi    =brk=brick=function(x,y,W,H) {
 
-    x = N(x) ? x : 60
-    y = N(y) ? y : x
-    W = N(W) ? W : 30
-    H = N(H) ? H : W
 
-    var br = bDf(dB).XY(x, y)
 
-    var f = fDf().s(pSh(W / 2, H / 2))
+//static rect
+bii    =function(x,y,W,H){//brk2=brick=
 
-    return w.a(br, f)
+    x=N(x)?x:60; y=N(y)?y:x
+    W=N(W)?W:30; H=N(H)?H:W
 
+    return w.a(  sBD(x,y),   pFx(W/2, H/2) )
 
 }
-bii    =brk2=brick=function(x,y,W,H){
 
-    x=N(x)?x:60
-    y=N(y)?y:x
-    W=N(W)?W:30
-    H=N(H)?H:W
 
-    var br=bDf(sB).XY(x, y)
 
-    var f=fDf().s( pSh(W/2, H/2)   )
 
-    return w.a(br,f)
 
-}
 tenBalls=function(){_t(10, function(i){ ba(100 + (i*80), 200) })}
 hundBalls=function(){_t(100, function(i){ ba( 100  +(i*8),  50, 10) })}
 
+//FORCES
+
+//forces - impulse
 sImp=function(i){
     i.n= i.nI=function(){return i.normalImpulses}
     i.t= i.tI=function(){return i.tangentImpulses}
     return i}
 
+
+
+
+
+//CONTACTS AND SENSORS
+
+//contact
 sCon=function(c){
     c.fFF=function(){c.FlagForFiltering(); return c}// Flag this contact for filtering.// Filtering will occur the next time step.
     c.A=function(){return sFx(c.GetFixtureA())}
@@ -81,6 +91,7 @@ sCon=function(c){
     c.sS=function(a){c.SetSensor(a?true:false);return c}// Change this to be a sensor or-non-sensor contact.
     return c}
 
+//advanced
 sMf=function(m){
     m.lPN=m.m_localPlaneNormal
     m.lP=m.m_localPoint
@@ -109,22 +120,17 @@ bCL=function(){var l= new BXD.b2ContactListener
 
 
     return l}
-
-
-
 bCM=function(){var m= new BXD.b2ContactManager
     m.c= m.cl= m.Collide
     m.a= m.aP=m.AddPair
     m.f= m.fNC= m.FindNewContacts
     m.d= m.ds= m.Destroy
     return m}
-
 bCF=function(){
     var f=new BXD.b2ContactFilter
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
-
 bFD=function(d){var d= new BXD.b2FilterData
 
     d.gI=function(a){
@@ -170,4 +176,188 @@ bi()
         // if($l(i.n()[0])>100){newB=true}
 
     }))
+}
+
+bindr=function(im,spr,sxy,rt){
+    sxy=N(sxy)?sxy:.4
+    rt=N(rt)?rt:6
+
+    s.b(im, function(b){
+
+        b.rgc('+').sxy(sxy).rt(rt)
+
+        s.t(function(){
+            b.xy(spr.x(),spr.y())
+        })})
+}
+
+makeMe=function(){
+    p = bi(100, 100, 60, 110)
+    p.direction = 1
+    p.dr = function (a) {
+        if (U(a)) {
+            return p.direction
+        }
+        p.direction = a;
+        return p}
+    p.speed = 40
+    p.mv = function (n) {
+        if (n == '-') {
+            return p.mv(-p.speed)
+        }
+
+        n = N(n) ? n : p.speed
+
+        if (p.dr() == "1") {//p.x(p.x()+n)
+
+//p.aI(3,0)
+
+            p.lV(10, 0)
+        }
+        else {//p.x(p.x()-n)
+
+            //p.aI(-3,0)
+            p.lV(-10, 0)
+        }
+
+
+        return p
+    }
+    p.gFL().SetFriction(1)
+    bindr('me', p)
+}
+
+
+makeTim=function(n){
+
+    if(U(n)){  var b=ba()
+
+        bindr('guy', b,.3)
+   return b }
+
+
+
+    _t(n,function(){
+var b=ba()
+        bindr('guy', b,.3)})
+
+
+}
+control=function(p){
+
+    kD('l',function(){p.dr(0);p.mv()})
+    kD('r',function(){p.dr(1); p.mv() })
+    kD('u',function(){
+        if(p.dr()==1){p.aI(5,-12)}
+        if(p.dr()==0){p.aI(-5,-12)}})
+
+
+return p}
+
+SAVETIM=function(){makeWorld() // s.b('me', function(mm){m=mm.rgc('+').sxy(.4).rt(6);s.t(function(){m.xy(p.x(),p.y())})})
+    makeTim(10);  control(p)}
+
+
+
+PLAYER=function(){makeWorld() // s.b('me', function(mm){m=mm.rgc('+').sxy(.4).rt(6);s.t(function(){m.xy(p.x(),p.y())})})
+
+    makeTim(3)
+
+    kD('l', function(){p.dr(0);p.mv() })
+    kD('r',function(){ p.dr(1); p.mv() })
+    kD('u',function(){
+
+        if(p.dr()==1){p.aI(5,-12)}
+        if(p.dr()==0){p.aI(-5,-12)}  })
+
+    kD('d',function(){p.dr(1); p.mv() })
+
+}
+POOl=function(){z()
+
+    var w=boxMouseSetup({g:0})
+
+
+    setupDebugDraw()
+    setFixtures()
+
+
+
+    bii(10, 300, 20, 460) //left
+
+
+    bii(990,300, 20, 460)//right
+
+
+    bii(250, 0, 400, 20)//top
+    bii(730, 0, 400, 20)//top
+
+    bii(250, 590, 400, 20)//b
+    bii(730, 590, 400, 20)//b
+
+
+
+
+    makeShapeOnDblClk()
+    //makeMe()
+    //makeTim(500)
+
+}
+
+SHIPBOX=function(){z()
+
+    var w=boxMouseSetup({g:0})
+
+
+    setupDebugDraw()
+    setFixtures()
+
+
+
+        bii(10, 300, 20, 460) //left
+
+
+    bii(990,300, 20, 460)//right
+
+
+    bii(250, 0, 400, 20)//top
+    bii(730, 0, 400, 20)//top
+
+    bii(250, 590, 400, 20)//b
+    bii(730, 590, 400, 20)//b
+
+
+
+
+    makeShapeOnDblClk()
+    //makeMe()
+    //makeTim(500)
+
+}
+
+
+RAGD=function(){makeWorld()
+
+
+    w.cJ(spring(
+        b11=ba(100,100,30),
+        b22=ba(100,200,40)
+    ))
+
+
+    w.cJ(rod(
+        b33=bi(100,400,30),
+        b44=bi(100,500,40)
+    ))
+
+
+
+    makeMe()
+    w.cJ(spring(b11,p))
+
+    w.cJ(spring(b33,p))
+
+
+
+
 }

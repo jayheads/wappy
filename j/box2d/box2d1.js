@@ -95,13 +95,17 @@ brk=brick=function(x,y,W,H){
     return w.a(br,f)
 
 }
+
 bal=function(x,y,r){
     x=N(x)?x:100
     y=N(y)?y:x
     r=r||20
+
     var br=bDf(sB).XY(x, y)
     var f=fDf().s(cSh(r))
-    return w.a(br,f)}
+    return w.a(br,f)
+
+}
 
 
 
@@ -138,6 +142,8 @@ addShapes=addTenShapes=function(n){n=n||10
 // on doubleclk:randomly return a dynamic OR
 // static bodyDef
 // (at the specified location)
+
+
 
 makeShapeOnDblClk=function(bodyDf){
 
@@ -234,6 +240,8 @@ gEP=getElementPosition=function(e){
         if(tagname=='BODY'){e=0}
         if(O(e)){if(O(osP(e))){e=osP(e)}}}
     return {x:x,y:y}}
+
+
 setupMouse=function(){var b
 
     if(mDown&&!mJoint){
@@ -326,19 +334,26 @@ startLoop=function(cb) {
         s.u()
     }, 1000 / 60)}
 
-boxMouseSetup=function(cb){var slBody
+
+boxMouseSetup=function(o){var slBody
+
+    o=ob(o)
+    o.g= N(o.g)? o.g: 40
     makeStage(1000,600)
 
     mJoint=0
     mDown=0
 
-    w=bW(bV(0,40), false)  //gravity, and allowSleep
+    w=bW( bV(0, o.g), false)  //gravity, and allowSleep
    
-    startLoop(cb)
+    startLoop(o.cb)
     checkMouseDown()
 
 
 return w}
+
+
+
 boxMouseSetupNoGravity=function(cb){var slBody
 
     mJoint=0

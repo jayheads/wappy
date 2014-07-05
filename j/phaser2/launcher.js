@@ -119,7 +119,9 @@ LAUNCHER=function(){
             gx=g.add.graphics(0,0)
             gx.beginFill(0x049e0c)
             gx.drawRect(395,350,10,250)
+
             analog=g.sp(400,350,'analog').arc().w(8).al(0).rt(220).A(.5,0).aGr(0)
+
             arrow=g.sp(400,350,'arrow').arc().A(.1,.5).aGr(0).al(0)
             arrow.body.moves=false
 
@@ -131,6 +133,7 @@ LAUNCHER=function(){
 
         },
 
+
         function update(){
 
             arrow.rt(g.anB(arrow,ball))
@@ -138,16 +141,20 @@ LAUNCHER=function(){
             if(catchFlag==true){
                 //Track the ball sprite to the mouse
 
-
                 ball.x=g.iX()
                 ball.y=g.iY()
 
                 arrow.al(1)
                 analog.al(.5).rt(arrow.rt()-3.14/2).h(g.dTP(arrow))
-                launchVelocity=analog.h()}},
+                launchVelocity=analog.h()
+            }
+
+        },
 
 
-        function render(){
+
+
+    function render(){
 
             g.db.text("Drag the ball and release to launch", 32, 32);
 
@@ -162,17 +169,33 @@ LAUNCHER=function(){
         ball.mvs(0).vxy(0,0).aGr(0)
         catchFlag=true}
 
+
     function launch(){
 
         catchFlag=false
         ball.mvs(1)
         arrow.al(0)
         analog.al(0)
+
         Xvector=(arrow.x-ball.x)*3
         Yvector=(arrow.y-ball.y)*3
-        ball.aGr(1).vxy(Xvector,Yvector)}
+
+
+        ball.aGr(1).vxy(Xvector,Yvector)
+
+    }
+
+
 
 }
+
+
+
+
+
+
+
+
 
 LAUNCHER1=function(){
     z()

@@ -1,24 +1,29 @@
-
 MAKEWORLD=function(){
     return makeWorld()
 }
+
+
 GEAR=function(){z()
-    boxMouseSetup()
 
-    setupDebugDraw()
-    makeGround2()
-    makeShapeOnDblClk()
+    makeWorld()
 
-    car=w.a(bD.t(dB).xy(240/30, 350/30),fD.s(poly(6,3)))
+    car=w.a(
 
-    bWh=w.a(bx2=bD.t(dB).xy(200/30,400/30), fD.s(circ(1)))
+        bDf().t(dB).xy(240,350), fD.s(pSh(6,3) )
+
+    )
+
+
+
+
+    bWh=w.a(bx2=bD.t(dB).xy(200 ,400 ), fD.s(cSh(1)))
 
     rj=rJt().i(car,bWh,bWh.c())
 
     w.j(rj)
 
 
-    Wh=w.a(bx2=bD.t(dB).xy(200/30,400/30), fD.s(poly(2,2)))
+    Wh=w.a(bx2=bD.t(dB).xy(200 ,400 ), fD.s(pSh(2,2)))
 
     pj=prJt()
     pj.i(car, Wh,car.c(), bV(1,0)  )
@@ -38,17 +43,14 @@ GEAR=function(){z()
     gj.bodyB = Wh
 
 
-    w.j(gj)
+    w.j(gj)}
 
 
 
-
-
-}
 GEAR2=function(){  z()
     boxMouseSetup()
     setupDebugDraw()
-    makeGround2()
+    makeWalls()
     makeShapeOnDblClk()
 
 
@@ -67,41 +69,39 @@ GEAR2=function(){  z()
 
 
 }
-PRISM=function(){z()
 
-    force=false
+PRISM=function(){makeWorld()
 
-    boxMouseSetup(function(){if(force){car.aF(0,30000)}})
+    bWh=w.a(dBD(500,200), pFx(60,60))
 
-    setupDebugDraw()
-    makeGround2()
+    car=w.a(sBD(540,150), pFx(180,90))
 
+    p=  prJt()
 
-    bWh=w.a(bx2=bD.t(dB).xy(200/30,400/30), fD.s(poly(2,2)))
-    car=w.a(bD.t(dB).xy(240/30, 350/30), fD.s(poly(6,3)))
+    p.i(car,bWh, car.c(), bV(1,0.3)  )//.l(1).f(3).d(.1)
 
-    p=prJt()
-
-    p.i(car,bWh,  car.c(), bV(1,0)  )//.l(1).f(3).d(.1)
-
-    p.lowerTranslation = -5.0
+    p.lowerTranslation = -12.0
     p.upperTranslation = 2.5
     p.enableLimit = true;
     p.maxMotorForce = 10
 
-    p.enableMotor = true;
-    p.motorSpeed =10
+   // p.enableMotor = true;
+   // p.motorSpeed =10
 
     p.localAnchorA = {x:car.c().x,y:car.c().y+5} // a point in body A to keep on the axis line
 
     p.localAnchorB =bWh.c()// a point in body B to keep on the axis line
 
     //p.ratio =.8
-    w.j(p)
 
+    j=sJt(w.j(p))
 
-    makeShapeOnDblClk()
+    j.mS(100000).eM(1)
+
   }
+
+
+
 BGUN=function(){z()
 
     force=false
@@ -111,7 +111,7 @@ BGUN=function(){z()
     )
 
     setupDebugDraw()
-    makeGround2()
+    makeWalls()
 
 
     box=w.a(bx2=bD.t(sB).xy(200/30,400/30), fD.s(poly(2,2)))
@@ -144,62 +144,29 @@ BGUN=function(){z()
 
 
 }
-REVOLUTE=function(){z()
 
-    force=false
-
-    boxMouseSetup(function(){
-
-        if(force){car.aF(0,30000)}
-
-    })
-
-    setupDebugDraw()
-    setFixtures()
-    makeWalls()
+REVOLUTE=function(){makeWorld()
 
 
-    bWh=w.a(
-        bx2=bDf(dB, 200/30, 400/30),
+    bWh=w.a(dBD(200,400), cFx(30))
+    fWh=w.a(dBD(300,400), cFx(30))
+    car=w.a(dBD(240,350), pFx(90,30))
 
-        fD.s(cSh(30)))
+    w.cJ( rJt().i(car, fWh, fWh.c()) )
 
+     j=w.cJ( rJt().i(car,bWh, bWh.c()) )
 
-    fWh=w.a(
+         .mS(10).mMT(20).mMS(100000).eM(1)
 
-        bDf(dB, 300/30, 400/30),
-        fD.s(cSh(30)))
+     //bWh.aV(10000).fR(10000)
 
-    car=w.a(
+    d=spinner(500,400).sL(20,240).eL(1).mS(40).mMT(100).eM(1)
 
-        bDf(dB, 240/30, 350/30),
-
-        fD.s(pSh(90,30))
-    )
-
-
-    fwJ=rJt().i(car,fWh,fWh.c())
-    w.cJ(fwJ)
-
-    bwJ=rJt().i(car,bWh,bWh.c()).mMT(100000).mMS(100000)
-    w.cJ(bwJ)
-
-    bwJ.eMt(1)
-
-
-
-
-   // fwJ.maxMotorTorque=100000
-   // fwJ.maxMotorSpeed=100000
-   // fwJ.enableMotor=true
-
-    bWh.aV(10000).fR(10000)
-
-
-
-    makeShapeOnDblClk()
-    b=Ball()
 }
+
+
+
+
 BOX2D=function(a){
 
   makeWorld()
@@ -223,12 +190,8 @@ BOX2D1=function(){z()
     ball=Ball()}
 WHEEL=function(){ z()
 
+makeWorld()
 
-
-    boxMouseSetup()
-    setupDebugDraw()
-    makeGround2()
-    // fiveJoints()
     fivePrisms()
 
     Ball();
@@ -274,7 +237,6 @@ IMPULSE=function(){z()
     }
 
 }
-
 BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
     s=St(c);STOP();x=xx(c);s.ob.autoClear=false
     var mX,mY,mV,mDn,slB,mJt,
@@ -546,7 +508,6 @@ RORC=function(){
     fricky()
     fricky()
     fricky()}
-
 CUPS=function(){
     makeWorld()
     cup(280,50)
@@ -559,10 +520,6 @@ CUPS=function(){
 
     bii(150,220,50)
 }
-
-
-
-
 EASBOX=function(){z()
 
     var mX,mY,
@@ -719,8 +676,6 @@ MOVEHEAD=function(){z()
 
 }
 
-
-
 //triggers listeners!
 LISTENER=function(){
     _bC=0
@@ -770,17 +725,11 @@ LISTENER1=function(){makeWorld()
 
 }
 
-
-
-
-
-
 //only breaks at high impulse
 POSTSOLVE=function(){makeWorld();ba()
     newB=false
     s.t(function(){if(newB){ba()}; newB=false})
     w.sCL(bCL().P(function(c,i){if($l(i.n()[0])>100){newB=true}}))}
-
 
 //shows category and mask bits
 //the big circles dont collide??
@@ -792,8 +741,6 @@ PRESOLVE=function(){makeWorld();ba()
         if($l(i.n()[0])>100){newB=true}
 
     }))}
-
-
 CONTACTS=function(){
 
     makeWorld()
@@ -810,12 +757,124 @@ CONTACTS=function(){
 
     t1= w.a( dBf(500,300), [f2,f3]).aV(100)
 
-    t2= w.a( dBf(700,300), [f2,f4]).aV(100)
+    t2= w.a( dBf(700,300), [f2,f4]).aV(100)}
+PULLEY=function(){makeWorld()
+
+    x=500
+    y=200
+
+    b11= bi(300,300,200,10)
+
+    b22= bi(500,300,200,10)
+
+    p=pJt().i(
+        b11,
+        b22,
+        bV(15,1), bV(25,2),
+        b11.c(),b22.c(),
+        1)
+
+        .lA(8).lB(4).mLA(10).mLB(5)
+
+    w.cJ(p)
+
+    makeMe()
+    makeTim(10)
+
+}
+BRIDGE=function(){makeWorld()
+
+
+
+    bridge(100,200)
+    bridge(500,200)
 
 
 
 
 
 }
+DIST=function(){makeWorld()
 
 
+    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(.01) )
+    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(2) )
+
+
+    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(.1) )
+    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(2) )
+
+
+
+
+    //  w.cJ( dJt().i(ba(),ba()).l(4).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(8).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(16).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(32).f(1).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(200).f(1).d(.8) )
+
+
+    cup2()
+
+
+
+}
+CANCOLLIDE=function(){
+
+    makeWorld()
+
+    w.cJ(
+
+        dJt().i(ba(200,200,50),
+
+            ba(300,200,40))
+
+            .l(50).f(3).d(.1)
+    )
+
+
+    w.cJ(
+
+        dJt().i(ba(200,200,50),ba(300,200,60))
+            .l(50).f(3).d(.1).cC(1)
+
+    )
+
+
+    w.cJ(
+        dJt().i(bi(200,200,50),bi(300,200,40))
+            .l(50).f(3).d(.1))
+
+
+    w.cJ(
+
+        dJt().i(bi(200,200,50),bi(300,200,60))
+            .l(50).f(3).d(.1).cC(1)
+
+    )
+
+}
+
+
+
+
+WINDMILL=function(){
+    makeWorld()
+
+    anc=bi(400,300,60,60)
+    lev=bi(400,300,300,20)
+
+    w.cJ(
+
+        rJt().i(
+            anc,lev,anc.c(),lev.c()
+        ).cC(false)//.l(1).f(3).d(.1)
+
+    )
+
+
+
+
+
+
+}

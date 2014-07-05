@@ -62,9 +62,9 @@ fPS=function(a,b,c,d,e){
 
 
     if(U(c)){
-        a=a||20;
-        b=N(b)?b:a
-        return fP(a,b)}
+
+        return fP(a||20,N(b)?b:a)
+    }
 
     e=e||0
 
@@ -74,10 +74,11 @@ fPS=function(a,b,c,d,e){
        pSh().sAB(a,b,bV(c,d,'-'),e))
 
     }
-dBf=function(x,y){
-    return bDf(dB).p(N(x)?x:300, N(y)?y:300)}
-sBf=function(x,y){
-    return bDf(sB).p(N(x)?x:300, N(y)?y:300)}
+
+
+
+
+
 
 
 
