@@ -25,10 +25,9 @@ owh=function(d){
 
 
 
-osP=function(a){return a.offsetParent}
-osT=function(a){return a.offsetTop}
-
-osL=function(a){return a.offsetLeft}
+osP=function(a){return O(a) && a.offsetParent}
+osT=function(a){return O(a) && a.offsetTop}
+osL=function(a){return O(a) && a.offsetLeft}
 
 
 

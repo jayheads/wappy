@@ -1,6 +1,50 @@
+sJD=function(j){
+    j.i=function(){
+        var g=G(arguments)
+        _a(j.Initialize,g,j)
+        return j}
+    j.A=function(a){j.bodyA=a; return j}
+    j.B=function(a){j.bodyB=a; return j}
+    j.cC=function(a){j.collideConnected=a?true:false; return j}
 
-//
+    //pops
+    j.sT    =j.tg=j.sTg=j.st=function(a,b){
+        if(!O(a)){a=bV(a,b)}
+        j.SetTarget(a)
 
+        return j}
+    j.f=function(a){j.frequencyHz=a;return j}
+    j.l=function(a){j.length=a/30;return j}
+    j.d=function(a){j.dampingRatio=a;return j}
+    j.rA=function(a){j.referenceAngle= tRad(a);return j}
+    j.lAA=function(a){j.localAnchorA=a; return j}
+    j.lAB=function(a){j.localAnchorB=a; return j}
+    j.r=function(a){j.ratio=a; return j}
+    j.lXA=function(a){j.localAxisA=a; return j}
+
+    //MOTOR
+    j.mMS=function(a){j.maxMotorSpeed=a;return j}
+    j.mMT=function(a){
+        j.maxMotorTorque=a
+        return j}
+    j.mMF=function(a){j.maxMotorForce=a;return j}
+    j.mS=function(a){j.motorSpeed=a; return j}
+    j.eM=function(a){j.enableMotor=a?true:false; return j}
+
+    //LIMITS
+    j.lA=function(a){j.lowerAngle=tRad(a);return j}
+    j.uA=function(a){j.upperAngle=tRad(a);return j}
+    j.lT=function(a){j.lowerTranslation=a;return j}
+    j.uT=function(a){j.upperTranslation=a;return j}
+    j.eL=function(a){j.enableLimit=a?true:false;return j}
+
+    j.i=function(){var g=G(arguments)
+        _a(j.Initialize,g,j)
+        return j}
+
+
+
+    return j}
 
 sJt=function(j){
 
@@ -13,10 +57,10 @@ sJt=function(j){
 
     j.cC=function(a){j.collideConnected=a?true:false; return j}
 
-j.i1=function(){
-    var g=G(arguments)
-    _a(j.Initialize,g,j);
-    return j}
+    j.i1=function(){
+        var g=G(arguments)
+        _a(j.Initialize,g,j);
+        return j}
 
     //pops
     j.sT    =j.tg=j.sTg=j.st=function(a,b){
@@ -47,7 +91,7 @@ j.i1=function(){
 
     j.eM=function(a){
         j.EnableMotor( a?true:false)
-    return j}
+        return j}
 
 
     j.mMT=j.mT=function(a,b,c){j.SetMaxMotorTorque(a,b,c); return j}
@@ -55,7 +99,7 @@ j.i1=function(){
 
 
     j.sL=function(a,b){
-         a=N(a)?a:20
+        a=N(a)?a:20
         b=N(b)?b:180
         j.SetLimits(tRad(a),tRad(b))
 
@@ -73,67 +117,7 @@ j.i1=function(){
 
 
 
-sJD=function(j){
-
-
-    //shared
-    j.i  =function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j)
-        return j}
-
-    j.cC=function(a){j.collideConnected=a?true:false; return j}
-
-    j.i1=function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j);
-        return j}
-
-    //pops
-    j.sT    =j.tg=j.sTg=j.st=function(a,b){
-        if(!O(a)){a=bV(a,b)}
-        j.SetTarget(a)
-
-        return j}
-    j.f  =function(a){j.frequencyHz=a;return j}
-    j.l  =function(a){j.length=a/30;return j}
-    j.d  =function(a){j.dampingRatio=a;return j}
-
-    //motor
-    j.eM=function(a){
-        bwJ.enableMotor=a?true:false
-        return j}
-    j.mMS=function(a){
-        j.maxMotorSpeed=a
-        return j}
-
-    j.mMT=function(a){
-        j.maxMotorTorque=a
-        return j}
-
-
-
-
-    j.lT=function(a){j.lowerTranslation=a;return j}
-    j.uT=function(a){j.upperTranslation=a;return j}
-
-    j.eL=function(a){j.enableLimit=a;return j}
-    j.mMF=function(a){j.maxMotorForce=a;return j}
-    j.mS=function(a){j.motorSpeed=a; return j}
-    j.eM=function(a){j.enableMotor=a; return j}
-    j.lAA=function(a){j.localAnchorA=a; return j}
-    j.lAB=function(a){j.localAnchorB=a; return j}
-    j.r=function(a){j.ratio=a; return j}
-
-    return j
-}
-
-//
-
-
-
-
-
+//DISTANCE JOINTS
 //makes a distance joint def
 dJt =function(o){
 
@@ -167,22 +151,8 @@ dJt =function(o){
 
 
     return j}
-
-
-
-
-rod =function(a,b){return dJt().i(a,b)    }
-
-
-spring =function(a,b){
-
-    return dJt().i(a,b).l(1) .f(3) .d(.1)
-
-}
-
-
-
-
+rod =function(a,b){return dJt().i(a,b)}
+spring =function(a,b){return dJt().i(a,b).l(1) .f(3) .d(.1)}
 sDJ=function(x,y){
     w.cJ(
 
@@ -194,176 +164,8 @@ sDJ=function(x,y){
 
     ))
 }
-
-
-
-
 mDJ=function(){x.$$(sDJ)}
-
-
-
-prJt =function(){
-
-
-
-    var j=sJD(new BXJ.b2PrismaticJointDef())
-
-    j.i=function(){var g=G(arguments)
-        _a(j.Initialize,g,j)
-        return j}
-
-    return j}
-
-sPrJ =function(x,y){
-    x=N(x)?x:100
-    y=N(y)?y:x
-
-    b11=w.a(bx1=dBD(x,y),fix())
-    b22=w.a(bx2=bDD(x,y),fix())
-
-    p=prJt().i(b11,b22,b11.c(), bV(1,0))
-        .lT(-5.0).uT(2.5).eL(true).mMF(1).mS(0)
-        .eM(true).lAA(b11.c()).lAB(b22.c()).r(.8)
-
-   j=sJt( w.cJ(p) )
-
-}
-
-
-
-
-mPrJ=function(){  x.$$(sPrJ )}
-
-
-
-
-
-
-
-
-pJt =function(){
-
-    bPJD =BXJ.b2PulleyJointDef
-    bPJ =BXJ.b2PulleyJoint
-
-    var j=sJt(new bPJD())
-    j.i=function(){var g=G(arguments)
-        _a(j.Initialize,g,j)
-        return j}
-
-    j.lA=function(a){j.lengthA=a;return j}
-    j.lB=function(a){j.lengthB=a;return j}
-    j.mLA=function(a){j.maxLengthA=a;return j}
-    j.mLB=function(a){j.maxLengthB=a;return j}
-
-
-
-    return j}
-
-
-sPJ= function(x,y){
-    x=N(x)?x:100
-    y=N(y)?y:x
-
-    b11=w.a(bx1= dBD(x,y),fix())
-    b22=w.a(bx2= dBD(x,y),fix())
-
-    p=pJt().i(b11,b22,bV(15,1),bV(15,2),b11.c(),b22.c(),1)
-        .lA(8).lB(4).mLA(10).mLB(5)
-
-    w.cJ(p)}
-
-
-
-
-mPJ=function(){x.$$(sPJ)}
-
-
-
-
-wJt =function(a,b,c,d,e){
-
-    var j=sJt(new BXJ.b2WeldJointDef())
-
-    j.i=function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j)
-        return j}
-
-    if(a){j.bodyA=a}
-    if(b){j.bodyB=b}
-    if(c){j.localAnchorA=c}
-    if(d){j.localAnchorB=d}
-    if(N(e)){j.referenceAngle = tRad(e)}
-
-    return j}
-
-sWJ=function(x,y){
-    x=N(x)?x:100
-    y=N(y)?y:x
-
-    b11=w.a(dBD(x,y),fix())
-
-    b22=w.a(dBD(x,y),fix())
-
-    j=wJt(b11,b22, bV(-.5,-.5), bV(.5,.5), 9)
-
-    w.cJ(j)}
-
-
-
-
-
-
-mWJ=function(){x.$$(sWJ)}
-
-
-
-
-
-gJt =function(){
-    bGJ=BXJ.b2GearJoint
-    bGJD=BXJ.b2GearJointDef
-
-    var j=sJt(new bGJD())
-    j.i=function(){var g=G(arguments)
-
-        _a(j.Initialize,g,j)
-        return j}
-
-    return j}
-
-mJD  =MouseJDef=b2MJD=function(a,b){
-
-    var j=new b2MouseJointDef()
-
-    j.tgS=j.tS=j.ts=function(a,b){
-        j.target.Set(a,b)
-        return j}
-
-
-    j.clC= j.clCn=  j.cC=j.cc=function(a){
-        j.collideConnected=a;return j}
-
-    j.mF=j.mf=function(a){
-        j.maxForce=a;return j}
-
-    j.A=function(a){j.bodyA=a;return j}
-    j.B=function(b){j.bodyB=b;return j}
-
-    if(a){j.A(a)}
-    if(b){j.B(b)}
-
-
-
-
-    return j}
-
-
-
-
-
-bridge =function(x,y){
+bridge=function(x,y){
 
     x=N(x)?x:400
     y=N(y)?y:300
@@ -390,9 +192,116 @@ bridge =function(x,y){
     w.cJ(dJt().i(b8, b9).l(10).f(5).d(2))
     w.cJ(dJt().i(b9, b10).l(10).f(5).d(2))
 }
+BRIDGE=function(){makeWorld()
 
 
-//just sets up click listeners
-fiveJoints=function(){mDJ();mRJ();mPrJ();mPJ();mWJ()}
-fivePrisms=function(){mPrJ();mPrJ();mPrJ();mPrJ();mPrJ()}
+
+    bridge(100,200)
+    bridge(500,200)
+
+
+
+
+
+}
+DIST=function(){makeWorld()
+
+
+    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(.01) )
+    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(2) )
+
+
+    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(.1) )
+    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(2) )
+
+
+
+
+    //  w.cJ( dJt().i(ba(),ba()).l(4).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(8).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(16).f(3).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(32).f(1).d(.1) )
+    //  w.cJ( dJt().i(ba(),ba()).l(200).f(1).d(.8) )
+
+
+    cup2()
+
+
+
+}
+CANCOLLIDE=function(){makeWorld()
+    w.cJ(dJt().i(ba(200,200,50),
+        ba(300,200,40))
+        .l(50).f(3).d(.1))
+    w.cJ(dJt().i(ba(200,200,50),ba(300,200,60))
+        .l(50).f(3).d(.1).cC(1))
+    w.cJ(dJt().i(bi(200,200,50),bi(300,200,40))
+        .l(50).f(3).d(.1))
+    w.cJ(dJt().i(bi(200,200,50),bi(300,200,60))
+        .l(50).f(3).d(.1).cC(1))}
+
+
+//PULLEY JOINTS
+pJt =function(){
+
+    bPJD =BXJ.b2PulleyJointDef
+    bPJ =BXJ.b2PulleyJoint
+
+    var j=sJt(new bPJD())
+    j.i=function(){var g=G(arguments)
+        _a(j.Initialize,g,j)
+        return j}
+
+    j.lA=function(a){j.lengthA=a;return j}
+    j.lB=function(a){j.lengthB=a;return j}
+    j.mLA=function(a){j.maxLengthA=a;return j}
+    j.mLB=function(a){j.maxLengthB=a;return j}
+
+
+
+    return j}
+sPJ= function(x,y){
+    x=N(x)?x:100
+    y=N(y)?y:x
+
+    b11=w.a(bx1= dBD(x,y),fix())
+    b22=w.a(bx2= dBD(x,y),fix())
+
+    p=pJt().i(b11,b22,bV(15,1),bV(15,2),b11.c(),b22.c(),1)
+        .lA(8).lB(4).mLA(10).mLB(5)
+
+    w.cJ(p)}
+mPJ=function(){x.$$(sPJ)}
+ 
+
+//MOUSE JOINTS
+mJD=function(a,b){//MouseJDef=b2MJD=
+    $l('mmmmmm')
+    var j=new b2MouseJointDef()
+
+    j.sT=function(a,b){//=j.tS=    j.tg=j.tgS=j.ts=
+        j.target.Set(a,b)
+        return j}
+
+
+    j.cC=   j.clC= j.clCn=  j.cc=function(a){
+        j.collideConnected=a?true:false
+        return j}
+
+    j.mF=j.mf=function(a){
+        j.maxForce=a;return j}
+
+    j.A=function(a){
+        j.bodyA=a;
+        return j}
+
+    j.B=function(b){
+        j.bodyB=b;
+        return j}
+
+    if(a){j.A(a)}
+    if(b){j.B(b)}
+
+    return j}
+
 

@@ -10,11 +10,12 @@ sSh   =function(s){
 //handles both box and set as box!
 //x,y -> box
 //x,y,P,A -> oriented box
-pSh   =function(x,y,P,A){
+//x,y,p1,p2,A ->oriented box
+pSh   =function(x,y,P,A,A2){
 
     var p=sSh(new b2PolygonShape)
 
-    p.sAB  =p.z=p.sab=function(a,b,P,A){
+    p.sAB=function(a,b,P,A,A2){//p.z=p.sab=
 
         var g=G(arguments),
             a=g[0], b=g[1]||a,
@@ -22,18 +23,20 @@ pSh   =function(x,y,P,A){
 
         if(A){A=tRad(A)}
 
-        if(!P){p.SetAsBox(a/30,b/30)}
+        if(U(P)){p.SetAsBox(a/30/2,b/30/2)}
+
+        else if(N(P)){p.SetAsOrientedBox(a/30, b/30, bV(P/30,A/30), A2)}
+
         else {p.SetAsOrientedBox(a/30,b/30, P, A)}
 
         return p}
+
     p.sAA=p.saa=function(a,b){
 
         p.SetAsArray(a,b)
         return p}  //if(P){p.z(x,y,P,A);return p}
 
-    if(x){
-        p.sAB(x,y,P,A)
-    }
+    if(N(x)){p.sAB(x,y,P,A,A2)}
 
 
     return p}
@@ -50,12 +53,6 @@ cSh   =function(a){
 
 aSh=function(){var g=arguments
     return pSh().sAA(g)}
-
-aFx=function(){
-   return fDf( _a(aSh,
-       _m(arguments,function(a){return bV(a[0]/30, a[1]/30)})
-   ))
-}
 
 tri=function(x,y){
     x=N(x)?x:400
