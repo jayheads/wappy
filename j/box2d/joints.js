@@ -239,7 +239,31 @@ CANCOLLIDE=function(){makeWorld()
         .l(50).f(3).d(.1))
     w.cJ(dJt().i(bi(200,200,50),bi(300,200,60))
         .l(50).f(3).d(.1).cC(1))}
+RAGD=function(){makeWorld()
 
+
+    w.cJ(spring(
+        b11=ba(100,100,30),
+        b22=ba(100,200,40)
+    ))
+
+
+    w.cJ(rod(
+        b33=bi(100,400,30),
+        b44=bi(100,500,40)
+    ))
+
+
+
+    makeMe()
+    w.cJ(spring(b11,p))
+
+    w.cJ(spring(b33,p))
+
+
+
+
+}
 
 //PULLEY JOINTS
 pJt =function(){
@@ -272,7 +296,31 @@ sPJ= function(x,y){
 
     w.cJ(p)}
 mPJ=function(){x.$$(sPJ)}
- 
+
+PULLEY=function(){makeWorld()
+
+    x=500
+    y=200
+
+    b11= bi(300,300,200,10)
+
+    b22= bi(500,300,200,10)
+
+    p=pJt().i(
+        b11,
+        b22,
+        bV(15,1), bV(25,2),
+        b11.c(),b22.c(),1)
+
+        .lA(8).lB(4).mLA(10).mLB(5)
+
+    w.cJ(p)
+
+    makeMe()
+    makeTim(10)
+
+}
+
 
 //MOUSE JOINTS
 mJD=function(a,b){//MouseJDef=b2MJD=

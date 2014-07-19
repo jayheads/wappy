@@ -1,9 +1,17 @@
 //CONTACTS AND SENSORS
 
+pair=function(c, p1, p2){
+
+    var a=c.A(), b=c.B(), aD=a.uD(), bD= b.uD()
+
+    return  (p1==aD && p2==bD) || (p1==bD && p2==aD)
+
+}
 
 
 //super contact
 sCon=function(c){
+    c.pair=function(a,b){return pair(c,a,b)}
     c.fFF=function(){c.FlagForFiltering(); return c}// Flag this contact for filtering.// Filtering will occur the next time step.
     c.A=function(){return sFx(c.GetFixtureA())}
     c.B=function(){return sFx(c.GetFixtureB())}
@@ -74,17 +82,21 @@ LAVA=function(){makeWorld()
         if(hit){ba(300,40).uD('ball'); hit=0}})
 
     w.sCL(
-        bCL().b(function(c){var d1=c.A().uD(), d2=c.B().uD()
+        bCL().b(function(c){
+            var d1=c.A().gB().uD(),
+                d2=c.B().gB().uD()
         if((d1=='ball' && d2=='platform')||(d2=='ball' && d1=='platform')){
             hit=1
             $l('hit')}}))}
 
 
 //only breaks at high impulse
-POSTSOLVE=function(){makeWorld();ba()
+POSTSOLVE=function(){
+    makeWorld();ba()
     newB=false
     s.t(function(){if(newB){ba()}; newB=false})
-    w.sCL(bCL().P(function(c,i){if($l(i.n()[0])>100){newB=true}}))}
+    w.sCL(bCL().P(function(c,i){if($l(i.n()[0])>100){newB=true}}))
+}
 
 
 //triggers listeners!
@@ -122,22 +134,6 @@ LISTENER=function(){
     w.sCL(bb)
 
 }
-
-
-LISTENER1=function(){makeWorld()
-
-    w.sCL(
-
-        bCL().bC(function(s){
-
-            sss=s
-
-        }))
-
-    ba()
-
-}
-
 
 
 
@@ -241,9 +237,7 @@ GROUPINDEX=function(){
         w.a(dBD(300,300),cir)
         w.a(dBD(400,300),cir)
         w.a(dBD(300,300),rec)
-        w.a(dBD(400,300),rec)
-
-    }
+        w.a(dBD(400,300),rec)}
 
 
 

@@ -4,57 +4,42 @@ this.createjs=this.createjs||{},function(){"use strict";var a=function(a,b,c,d){
 
 BINDINGS={
     vs:'visible',
+
     t:'text',
-    h:'html',
-    s:'css',
-    y:'style',
-    a:'attr',
 
-    E:'foreach',
-    fe:'foreach',
+    h:'html',s:'css',
+    y:'style', a:'attr',
 
-    i:'if',
-    I:'ifnot',
+    E:'foreach', fe:'foreach',
+
+    i:'if', I:'ifnot',
+
     w:'with',
+
     $:'click',
+
     e:'event',
+
     S:'submit',
-    ea:'enable',
-    da:'disable',
+
+    ea:'enable', da:'disable',
+
     v:'value',
     V:'value',
     vu:'valueUpdate',
+
     hf:'hasFocus',
+
+    ch:'checked',
     c:'checked',
+
     o:'options',
     so:'selectedOptions',
     ot:'optionsText',
     un:'uniqueName',
-    T:'template'}
+    T:'template'
+}
 
-
-
-
-
-Events={
-    $:'click',
-    $$:'dblclick',
-    d:'mousedown',
-
-    o:'mouseout',v:'mouseover',
-    ro:'rollout',rv:'rollover',
-
-    m:'pressmove', u:'pressup',
-
-    e:"mouseenter", l:"mouseleave",
-
-    sd:"stagemousedown",
-    sm:"stagemousemove",su:"stagemouseup",
-
-
-    de:"drawend",ds:"drawstart",
-    t:'tick',te:"tickend",
-    ts:"tickstart"}
 
 
 
@@ -423,8 +408,12 @@ Events={
 
 EVENT={
 
-    '1':'one','/':'change',b:'blur',
-    kd:'keydown',ku:'keyup', kp:'keypress',
+    '1':'one',
+    '/':'change',
+    b:'blur',
+    kd:'keydown',
+    ku:'keyup',
+    kp:'keypress',
 
 
     '$':'click', '$$':'dblclick',
@@ -439,9 +428,7 @@ EVENT={
     pm:'pressmove',
     pu:'pressup',
 
-    D:"stagemousedown",
-    M:"stagemousemove",
-    U:"stagemouseup",
+    D:"stagemousedown",  M:"stagemousemove",  U:"stagemouseup",
 
 
     m:'mousemove',
@@ -451,13 +438,9 @@ EVENT={
     e:'mouseenter',
     l:'mouseleave',
 
-
-
-
-
-    f:'focus', fi:'focusin',fo:'focusout',
-
-
+    f:'focus',
+    fi:'focusin',
+    fo:'focusout',
 
     de:"drawend",ds:"drawstart",
     t:'tick',te:"tickend",ts:"tickstart",
@@ -471,6 +454,7 @@ EVENT={
     z:'resize'
 
 }
+
 
 
 
@@ -981,9 +965,6 @@ ooo={
         t:'i', //type->input
        ds:'os' //border-style->outline-style
     }}
-
-
-
 
 
 

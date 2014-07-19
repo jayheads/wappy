@@ -285,13 +285,6 @@ MASSVELOCITYTEST=function(){
 
 
 
-
-
-
-
-
-
-
 MASSVELOCITYTEST1=function(){ z()
 
 
@@ -725,10 +718,6 @@ FIXEDTOCAMERA=function(){z()
         function render(){g.db.cameraInfo(g.camera, 32, 32)}
 }
 
-
-
-
-
 CANNONBALLS=function(){
 
     var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -812,7 +801,6 @@ CANNONBALLS=function(){
 
 }
 
-
 PIXELPICKSCROLLING=function(){z()
 
        game =  Game(800, 600, Phaser.CANVAS, 'phaser-example',
@@ -886,9 +874,6 @@ PIXELPICKSCROLLING=function(){z()
 
        function render(){g.db.spriteInputInfo(b, 32, 32)}
 }
-
-
-
 
 INPUTPRIORITY=function(){pG(
 

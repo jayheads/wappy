@@ -197,10 +197,6 @@ box=function(w,h,fc,sc){
             if(ballBox(b,r)){b.F=0}})}
 
     return b}
-
-
-
-
 ballBox=function(bl,bx,buff){ buff=buff||100
     var b= bl.B()>=bx.T()  && bl.T()<=bx.T()+buff  &&
 
@@ -209,8 +205,6 @@ ballBox=function(bl,bx,buff){ buff=buff||100
     if(b){bl.B(bx.T())}
 
     return b}
-
-
 
 TX=function(a,r,f,x,y){var g=G(arguments),
 

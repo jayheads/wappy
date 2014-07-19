@@ -3,52 +3,63 @@ sss=function(){var g=G(arguments)
     z()
 
 
-    s=St(600).a()
+    s = St(600).a()
 
 
-    if(g.f){s.a(g.f)
+    if(g.f){
 
-        _e(g.r,function(v){
+        s.a(g.f)
 
-            if(F(v)){v(g.f)
-            }
+        _e(g.r,
 
-        })}
+            function(v){ if(F(v)){ v(g.f) }  })
+    }
+
     return s}
 
 
-stg=function(){var g=G(arguments)
+stg=function(){
+
+    var g=G(arguments)
 
     c=Ct().fn( SL )
 
-    s=St(1000)(c)
+    s=St(1000)(
+        c
+    )
 
     ct=CT(s)
 
-    _e(g,function(g){
-        c(g)})
+    _e(g,function(g){ c(g) })
 
     return c}
 
 
 
 tSt=function(s){
+
     if(!O(s)){return}
     if(iSt(s.ob)){return s}
-    if(iSt(s)){return St(s)}}
+    if(iSt(s)){return St(s)}
+}
 
 
 ap=function(a,s){
+
     if(tSt(s)){tSt(s)(a)}
     if(iCt(s)){s(a)}
+
     return a}
 
 
 
 iSt=function(a){if(D(a)){return F(a.update)}}
-iCt=function(a){if(!O(a)){return}
+
+iCt=function(a){
+    if(!O(a)){return}
     if(a.ob){return iCt(a.ob)}
-    if(D(a)){return F(a.addChild)}}
+    if(D(a)){return F(a.addChild)}
+}
 
 
 
@@ -57,12 +68,14 @@ Ct=function(o){var g=G(arguments),o=g[0]
     if(!iCt(o)){
         return g.p?
 
-            Ct(Ct$(),'+'):Ct(Ct$())
-    }
+            Ct(Ct$(),'+'):Ct(Ct$())}
+
     o=Do(g.f,function o(){var g=G(arguments)
         _e(g,function(v){o.a(v)})
         return o})
+
     o._ch=o.ob.children
+
 
     o.a=function(a,b){var g=G(arguments),a=g[0],b=g[1];if(U(a)){o.Q().a();return o}
         if(A(a)){_e(a,  function(v){  o.b(v,function(a){  SL(a)}) }); return o}
@@ -70,6 +83,7 @@ Ct=function(o){var g=G(arguments),o=g[0]
         if(N(b)){o.ob.addChildAt(a,b)}
         o.ob.addChild(a)
         return o}
+
     o.wC=function(f){
         //iterates over Do(children)
         var a=arguments,g=G(arguments),f=g[0]
@@ -78,6 +92,8 @@ Ct=function(o){var g=G(arguments),o=g[0]
             if(D(_r(a)[0])){_a(b[f],_r(a))}
             else{b[f]()}});return o}
         return o}
+
+
     o.ch=function(a,b){var g=G(arguments),a=g[0],b=g[1]
         if(g.n){
             if(U(a)){o.ob.removeAllChildren()}
@@ -89,80 +105,151 @@ Ct=function(o){var g=G(arguments),o=g[0]
         if(a=='#'){return o.ob.getNumChildren()}
         if(a=='?'){return o.ob.contains(bj(b))}
         if(N(b)){o.ob.swapChildrenAt(a,b);return o}//*** bottom-most=0
+
         if(N(a)){return Do(o.ob.getChildAt(a))}//***
+
         if(O(b)){return o.ob.swapChildren(a,b)}
-        if(N(b)){o.ob.setChildIndex(bj(a),b)}
+
+        if(N(b)){
+
+            o.ob.setChildIndex(bj(a), b)
+        }
+
+
+
         if(O(a)){return o.ob.getChildIndex(bj(a))}
+
         if(S(a)){return Do(o.ob.getChildByName(a))}
 
         return o}
+
+
 
     o.mC=function(m){var g=G(arguments),m=g[0]
         if(U(m)){return o.ob.mouseChildren}
         o.ob.mouseChildren=g.n?false:true
         return o}
+
     o.tC=function(m){var g=G(arguments),m=g[0]
         if(U(m)){return o.ob.tickChildren}
         o.ob.tickChildren=g.n?false:true
         return o}
+
+
     o.uP=function(x,y,f){var g=G(arguments),x=g[0],y=g[1],f=g[2],ob
         if(O(x)){return o.uP(x.X, x.Y)}
         if(g.p){return _m(o.ob.getObjectsUnderPoint(x,y),Do)}
         ob=o.ob.getObjectUnderPoint(x,y)
         if(ob){ob=Do(ob)}
         return ob}
-    o.b=o.bm=function(a,b){var g=G(arguments),
-        a=g[0],b=g[1]
-        if(A(a)){_e(a,function(v){o.b(v,function(a){if(g.p){SL(a)}})})
-            return o}
-        if(O(a)&&S(a.d)){a=a.d}
-        if(O(a)){a=bj(a)
-            if(N(b)){o.ob.addChildAt(a,b)}
-            o.ob.addChild(a)
-            return o}
-        Bm(a,function(bm){
-            if(g.N){o.a(bm)}
-            if(S(b)){$w[b]=bm}
-            if(F(b)){b(bm)}
-            if(g.p){bm.rgc('+')}})
+
+
+    o.bgi=function(a){
+
+        o.bm(a, function(b){ o.ch(b, 0) }) //o.ob.setChildIndex(b.ob,0)
+
+
         return o}
+
+
+
+    o.b =o.bm=function(a,b){
+        var g=G(arguments), a=g[0],b=g[1]
+
+        if(A(a)){
+            _e(a,function(v){
+                o.b(v,function(a){
+                    if(g.p){SL(a)}})})
+            return o}
+
+        if( O(a) && S(a.d) ){ a=a.d } // ?
+
+        if( O(a) ){
+
+            a=bj(a)
+
+            if(N(b)){o.ob.addChildAt(a,b)}
+
+            o.ob.addChild(a)
+
+            return o}
+
+
+        if(S(a)){} //this is where you pass lambda?
+
+
+        Bm(a,function(bm){
+
+            if(g.N){o.a(bm)}
+
+            if(S(b)){$w[b]=bm}
+
+            if(F(b)){b(bm)}
+
+            if(g.p){bm.rgc('+')}
+
+        })
+
+        return o}
+
+
     o.mg=function(f){
 
         wMb(function(m){
+
             o.b(m)
-            f(m,o)})
+            f(m,o)
+        })
 
         return o}
 
-    _e(g.r,function(v){o.b(v)})
+    _e(g.r, function(v){o.b(v)})
+
     if(g.p){SL(o)}
+
     return o}
 
 
 
+
+//stage has no size.. it is just associated with a canvas
+//s.o('e', f) -> on mouse enter canvas
+
+
+
 St=function(n1,n2,c){
+
     var g=G(arguments),
-        st=iCt(g[0])?g[0]:C(g[0])?S$(C(g[0])):S$(C(_a(can,g))),
+
+        st=iCt(g[0])?g[0]:
+            C(g[0])?S$(C(g[0])):
+                S$(C(_a(can,g))),
+
         o=Ct(st)
 
-    o.st=o.ob//o.st=st
+    o.st=o.ob //o.st=st
+
     o.C=o.ob.canvas
+
     o.X=xx(o.C)
+
     o.Q=qq(o.C)
 
 
     o.u=function(a){
         if(U(a)){st.update()}
+
         if(a==='!'){st.clear()}
         if(a==='0'){st.autoClear = false}
         if(a==='1'){st.autoClear = true}
         return o}
 
+
     o.du=function(){return o.ob.toDataURL()}
 
     o.mx=function(){return o.ob.mouseX}
-
     o.my=function(){return o.ob.mouseY}
+
 
     // pass nothing: if mouseInBounds (is mouse over CANVAS), get x,y. o/w get false
     // +: mouseMoveOutside=true
@@ -174,7 +261,7 @@ St=function(n1,n2,c){
 
         if(U(a)){
 
-            if(g.p){
+            if(g.p){//error? cant be pos if undef?
                 o.ob.mouseMoveOutside=true;return o}
 
             if(g.n){
@@ -189,12 +276,6 @@ St=function(n1,n2,c){
 
         if(N(a)){o.ob.enableMouseOver(a)
             return o}}
-
-
-
-
-
-
     o.nS=function(a){
         if(U(a)){return o.ob.nextStage}
         o.ob.nextStage=a;
@@ -205,6 +286,7 @@ St=function(n1,n2,c){
         return o.ob.handleEvent}
         o.ob.handleEvent=a;
         return o}//x
+
     o.eDE=function(){//this is a function
         var g=G(arguments)
         o.ob.enableDOMEvents(g.n?false:true)
@@ -213,32 +295,41 @@ St=function(n1,n2,c){
     o.c=function(c){
         if(U(c)){return o.X.bc()}
         o.X.bc(c);return o}
-    o.w=function(a){
-        if(U(a)){return o.X.w()}
+
+    o.w=function(a){if(U(a)){return o.X.w()}
         o.X.w(a)
         return o}
-    o.h=function(a){
-        if(U(a)){return o.X.h() }
+
+    o.h=function(a){if(U(a)){return o.X.h() }
         o.X.h(a)
         return o}
+
     o.wh=function(w,h){
         if(N(w)){o.w(w);o.h(N(h)?h:w);return o}
         return {w:o.C.width,h:o.C.height}}
-    o.drg=function(){o.Q.drg();return o}
+
+
+    o.drg=function(){
+        //this drags the canvas, not just the stage
+        o.Q.drg();return o}
+
+
+
+
     o.op=function(a){o.Q.op(a);return o}
+
     o.hide=function(){
         _e(ob.children,
             function(a){Do(a).vs('-')
             });return o}
 
-
     o.ts=function(j,f){
 
         return o.t(function(o,e){
 
-
             if(!N(j.ts)){j.ts=0
                 j.lts=e.ts}
+
 
             else{
                 j.ts=e.ts-j.lts
@@ -246,11 +337,6 @@ St=function(n1,n2,c){
                 f(j.ts)}
 
         })}
-
-
-
-
-
 
     o.sv=function(f){sv(o.X);if(f){if(S(f)){f=ldr(f)};sec(f)};return o}
 
@@ -276,23 +362,23 @@ St=function(n1,n2,c){
 
 
 
-
-
-
-
-
     o.bgi=function(a){o.bm(a,function(b){
         o.ob.setChildIndex(b.ob, 0)});return o}
 
     o.D=function(a,b,c,d){
+
         return o.o('D',a,b,c,d)
+
     }
 
 
 
     if(g.M){o.t()}
+
     if(g.n){z()}
+
     if(g.p){o.a()}
+
     return o}
 
 
@@ -300,14 +386,6 @@ St=function(n1,n2,c){
 
 
 ///////////////////////////////
-
-
-
-
-
-
-
-
 
 
 fromSt=function(){

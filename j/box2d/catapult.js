@@ -39,7 +39,7 @@ ROPE=function(){
 
         var last_link = ceiling,
             last_anchor_point = bV(0, -.5),
-            revolute_joint = rJt(),
+            revolute_joint = rev(),
             r_height = 1.1 //height of rope elements, in metres ofcourse
 
         //rope
@@ -203,7 +203,7 @@ CATAPULT=function(){
 
 
     joint=w.cJ(
-        rJt(cat,cat_arm,bV(0,0)))
+        rev(cat,cat_arm,bV(0,0)))
         .eM(1).eL(1)
         .lAA(bV(-80,-90))
         .lAB(bV(60,0))

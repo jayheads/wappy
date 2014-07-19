@@ -1,359 +1,51 @@
-MAKEWORLD=function(){
-    return makeWorld()
-}
+//DEMO
+IMPULSE =function(){mW({g:0})
 
 
-BGUN=function(){z()
+    w.a(dBD(100,500).rt(2).fR(0) , pFx(30,30))
 
-    force=false
-
-    boxMouseSetup(
-        function(){if(force){car.aF(0,30000)}}
-    )
-
-    setupDebugDraw()
-    makeWalls()
+    b=w.a(dBD(300,500).rt(1).fR(.2) ,  pFx(30,30) )
 
 
-    box=w.a(bx2=bD.t(sB).xy(200/30,400/30), fD.s(poly(2,2)))
-
-    car=w.a(bD.t(dB).xy(240/30, 250/30), fD.s(poly(3,1)))
-
-
-    w.cj(bwJ=rJt().i(car,box,
-
-        bV(4,13)))
-    x.$$(function(){
-
-        p=car.GetPosition()
-
-        bBod=w.b( bDef().xy(p.x+4, p.y-2).t(dB) )
-
-        bBod.f(bF().s(circ(.4)))
-
-       // b=w.a(bb)
-
-        bBod.aI(40,40)
-
-    })}
-
-BOX2D=function(a){
-
-  makeWorld()
-
-
-    makeStructure()
-    makePlatform()
-
-    addTenShapes()
-    ball=Ball()
-
-}
-
-
-BOX2D1=function(){z()
-    boxMouseSetup()
-    setupDebugDraw()
-    makeGround()
-    makeStructure()
-    makePlatform()
-    addTenShapes()
-    makeShapeOnDblClk()
-    ball=Ball()}
-
-HEADS=function(){z()
-    boxMouseSetup()
-    setupDebugDraw()
-    makeGround()
-    x.$$(Ball)
-}
-
-IMPULSE=function(){z()
-
-    boxMouseSetupNoGravity()
-
-    setupDebugDraw()
-    makeGround()
-
-    w.a(
-        bDf(dB).ang(2).fR(0).xy(),
-
-        fD.s( pSh(1,1) )
-    )
-
-
-
-    b=w.a( bD=bDf(dB).ang(1).fR(.2).xy(), fD.s(pSh(1,1)) )
-
-
-    wc=b.wC()
     test={
-    i:function(){b.ApplyImpulse(bV(10,-30), wc)},
+    i:function(){b.ApplyImpulse(bV(10,-30), b.wC())},
 
-    v:function(){b.SetLinearVelocity( bV(10,-60) )},
+    v:function(){
+        b.SetLinearVelocity( bV(10,-60) )},
 
-    f:function() {
-        I(function () {
-            b.ApplyForce(bV(0, -3), wc)
+    f:function(){
+        I(function(){
+            b.ApplyForce(bV(0, -3), b.wC())
         }, 100)
 
     }
     }
 
 }
-BOXDATA=function(){z();c=cx(600,400).a();c.q.id('canvas')
-    s=St(c);STOP();x=xx(c);s.ob.autoClear=false
-    var mX,mY,mV,mDn,slB,mJt,
-        cvPx={x:osT(c.c),y:osL(c.c)},
-        xC=cvPx.x,
-        yC=cvPx.y
-
-    w=bW(bV(0,40),true)
-    w.a(bD=bB().t(sB).ps(10,400/30+1.8),
-        fD=bF().d(1).f(.5).r(.8).sP().sab(20,2))
-
-    w.a(bD.ps(10,-1.8),fD)
-    w.a(bD.ps(-1.8,13),fD.sab(2,14))
-    w.a(bD.ps(21.8,13),fD)
-
-
-
-    _t(10,function(){
-        w.a(bD.t(dB).xy(),
-            fix())})
-
-    //x.$$(function(x,y){var b=bD.t(yn()?dB:sB);w.a(b.xy(x/30,y/30),fix())})
-
-
-    x.$$(function(x,y){
-
-        var b=bD.t(dB), f=fix()
-
-        b.xy(x/30,y/30)
-
-        w.a(b,f)
-
-
-
-
-    })
-
-
-
-
-
-    w.sdd(b2DD().ss(xid()).sds(30).sfa(.5).slt(1).sf(shB||jB))
-
-
-
-
-
-    I(function(){
-        mV=b2V(mX,mY);slB=null
-        w.q(function(f){if(!iSB(f)){return true}
-                if(iPtM(f,mV)){slB=gBd(f)}},
-            AB(mX-oo1,mY-oo1,mX+oo1,mY+oo1))
-
-
-
-        if(mDn&&!mJt&&slB){
-            mJt=w.cj(mJD().A(
-                    w.ggb()).B(
-                    slB.a()
-                ).ts(mX,mY).cc(true).mf(
-                    300*slB.m()))}
-
-        if(mJt){if(mDn){mJt.st(bV(mX,mY))} else{w.dj(mJt);mJt=null}}
-        w.st(1/60,10,10).ddd().cf();s.u()
-    },1000/60)
-
-
-
-
-
-
-
-
-    oMM=function(e){
-        e=sE(e)
-        mX=(e.cx-xC)/30
-        mY=(e.cy-yC)/30}
-
-
-    dL('d',function(e){mDn=b1
-
-            oMM(e)
-
-            dL('m',oMM,b1)},
-
-        b1)
-
-
-    dL('u',function(){mDn=b0
-
-            dR('m',oMM,b1)
-
-            tUd(mX,mY)},
-
-        b1)
-
-    ball=Ball()
-
-
-
-    sc=30
-    bsM={}
-
-
-
-    bD.t(sB).xy(100/2/sc,100/2/sc).a((45*PI)/180).ud('__BODY__')
-
-
-
-    fD.shape=poly()
-
-    fD.sab((100-(100*0.1)/sc)/2,(10/sc)/2)
-
-
-
-    r=w.cb(bD)
-
-    bsM[r.GetUserData()]=r
-
-    r.cf(fD)
-
-}
-
-
-ramp=function() {
-
-    bsM = {}
-
-    r = w.a(
-        sBD(100 / 2, 100 / 2).a((45 * PI) / 180).ud('__BODY__'),
-        pFx((100 - (100 * 0.1)) / 2, (10) / 2))
-
-    bsM[r.GetUserData()] = r
-
-return bsM}
-
-
-
-BTEST=function(iR,a,w,h,s){
-    iR=pI(iR)
-    a=a
-    W=w||100
-    H=h||100
-    sc=s
-    bsM={}
-
-
-    fD=b2FD().d(1).f(.5).r(.2)
-
-    update=function(){
-        var start=Date.now(),
-            stepRate=(t.a)?(now- lastTimestamp)/1000:(1/ iR)
-        w.st(stepRate,10,10).cf()
-        return(Date.now()-start)}
-
-    getState=function(){var s={}
-        for(var b=w.GetBodyList();b;
-            b=b.m_next){b.gud=b.GetUserData
-            if(b.IsActive() && D(b.gud())&&b.gud()!=null){
-                s[b.gud()]= getBodySpec(b)}}
-        return s}
-
-
-    // a body method
-    getBodySpec=function(b){
-        b.gp=b.GetPosition
-        b.gwc=b.GetWorldCenter
-
-        return {
-            x:b.gp().x,
-            y:b.gp().y,
-            a:b.GetAngle(),
-            c:{x:b.gwc().x, y:b.gwc().y}}
-    }
-
-
-
-
-
-
-    setBodies=function(be){var bD=bDef()
-
-        for(var id in be){var e=be[id]
-            e.r=e.radius
-            e.a=e.angle
-
-            bD.t(e.id=='ground'?sB
-                :dB).xy(e.x,e.y).ud(e.id).a(e.a)
-
-            var b=rgB(bD)
-
-            if(e.r){fD.shape=circ(e.r);
-                b.cf(fD)}
-
-            else if(e.polys){
-
-                _t(_z(e.polys),function(j){var p=e.polys[j],vs=[]
-
-                    _e(p,function(p,i){var v=b2V()
-                        v.Set(p.x,p.y);vs[i]=v})})
-
-                fD.shape=poly()
-                fD.shape.saa(vs,_z(vs))
-
-                b.cf(fD)}
-
-            else{fD.shape=poly()
-                fD.sab(e.halfWidth,e.halfHeight);
-                b.cf(fD)}}
-        ready=true}
-
-
-
-    addJoint=function(b1i,b2i){
-
-        var b1=bsM[b1i],
-            b2=bsM[b2i],
-
-            j=rJD().i(b1,b2,b1.GetWorldCenter())
-
-        w.cj(j)}
-
-
-    return t}
-
-
-
-
-
-SCALECIRC=function(){
-    makeWorld()
+SCALECIRC =function(){
+    mW()
 
     baa(400,300,40);
     baa(290,350,40);
     baa(280,220,40)
 
-    r=350
+    r=10
     x=400
     y=440
     v={x:0,y:0}
 
     f1=function(){
 
-        b= w.a(
-            d=dBD(x,y)//.lV(v)
+        b=w.a(
+             dBD(x,y)//.lV(v)
             ,
-            f=b.cF(cFx(r)))
-    }
-
+             f=cFx(r)
+        )}
 
     f2=function(){
-        b.dF(f)
-        r+=10
+
+        b.dF( b.gFL() )//b.dF(f)
+        r+=.1
         x=b.x()
         y=b.y()
         v=b.lV()
@@ -362,212 +54,357 @@ SCALECIRC=function(){
     }
 
      f1()
-  //  I(f2,400)
+    s.t(f2)
 
+}
+
+
+bindr=function(im,spr,sxy,rt){
+    sxy= sxy||.4
+
+
+    rt= N(rt)?rt:6
+
+
+    s.b(im,
+
+        function(b){
+
+            b.rgc('+')
+
+            if (A(sxy)){ b.sx(sxy[0]).sy(sxy[1]) } else { b.sxy(sxy) }
+
+            b.rt(rt)
+
+            s.t(function(){ b.xy(spr.x(),spr.y()); b.rt(rt + spr.rt() )})
+
+            spr.kS=function(){b.XX()}
+
+        })
 
 
 }
 
 
-RORC=function(){
-    makeWorld()
-    bouncy()
-    bouncy()
-    bouncy()
-    fricky()
-    fricky()
-    fricky()}
-CUPS=function(){
-    makeWorld()
-    cup(280,50)
-    cup2(400,50)
-    cup3(700,50)
-    fluffy()
-    ba()
-    ba()
-    ba()
 
-    bii(150,220,50)
-}
-EASBOX=function(){z()
+control=function(p){
 
-    var mX,mY,
-        mDown,
-        selectedBody,
-        mouseJoint,
-        cvPx
+    kD('l',function(){
+        p.dr(0);p.mv()})
 
-    goRight=true
+    kD('r',function(){
+        p.dr(1); p.mv()
+    })
+
+    kD('u',function(){
+        if(p.dr()==1){p.aI(5,-12)}
+        if(p.dr()==0){p.aI(-5,-12)}})
 
 
-    s=St(c=sCan().id('canvas').wh(800,600).a())
-
-    s.bm('me', function(bm){m=bm
-
-        SL(m)
-
-        s.t(function(){
-
-            if(goRight){m.x(10,'+')}else{m.x(10 ,'-')}
-        })
-        s.t(function(){
-            if(m.x()>500){goRight=false}
-            else if(m.x()<0){goRight=true}
-        })
-        s.t(function(){
-            m.x(r.x())
-            m.y(r.y())
-        })
+    return p}
 
 
 
+
+dirPush=function(){
+    pushRight=0
+    pushLeft=0
+    pushUp=0
+    pushDown=0
+    kD('l',function(e){
+        ee=e
+        pushLeft=1})
+    kU('l',function(){pushLeft=0})
+    kD('r',function(){pushRight=1})
+    kU('r',function(){pushRight=0})
+    kD('u',function(){pushUp=1})
+    kU('u',function(){pushUp=0})
+    kD('d',function(){pushDown=1})
+    kU('d',function(){pushDown=0})}
+
+
+
+makeTim=function(n){
+    if(U(n)){
+        var b=ba().uD('tim')
+        bindr('guy',b,.3)
+        return b}
+
+    _t(n,function(){
+        var b=ba().uD('tim')
+        bindr('guy',b,.3)})}
+
+makeMe=function(){
+
+    p= w.a(dBD(100,100),[
+        pFx(50,100).r(0).d(),
+        pFx(10,30,0,40).iS(1).uD('feet')
+    ]).uD('guy')
+
+    p.direction=1
+    p.dr=function(a){
+        if(U(a)){return p.direction}
+        p.direction = a;
+        return p}
+    p.speed=40
+    p.mv=function(n){
+        if (n=='-'){  return p.mv(-p.speed)}
+        n = N(n) ? n : p.speed
+
+        if (p.dr()) {  p.aI(3,0) }
+        else {  p.aI(-3,0) }
+        return p}
+    p.gFL().SetFriction(1)
+    bindr('me',p)
+
+    return p}
+
+
+PLAYER=function(){mW({w:'makeWallsFull',g:0, $$:0})
+
+    p=makeMe().aD(10000)
+    makeTim(3)
+
+    //mouse control
+    m$(function(){var xdif= MX -p.x(),  ydif= MY -p.y(), po=p.wP(0,-75)
+        //thrust ship
+        p.aI(xdif/20,ydif/20)
+        //rotate ship
+        p.rt(tDeg($M.atan(ydif/xdif))+(xdif >0?90:270))
+        //shoot
+        ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')})
+
+    //destroy bullets and guys
+    w.oB(function(c){var a= c.A(),b=c.B()
+        if((a.gB().uD()=='bul'||b.gB().uD()=='bul')&&!(a.gB().uD()=='guy'||b.gB().uD()=='guy')){
+            if(a.gB().uD()=='bul'){
+                a.gB().uD('destroy')
+                if(b.gB().uD()=='tim'){
+                    b.gB().uD('destroy')}}
+            else {b.gB().uD('destroy')
+                if(a.gB().uD()=='tim'){a.gB().uD('destroy')}}}})
+
+    s.t(function(){w.e(function(b){if(b.uD()=='destroy'){w.dB(b)}})})}
+
+
+PLAYER1=function(){mW({w:'makeWallsFull',g:0, $$:0,bg:'space.jpg'})
+
+    p=makeMe().aD(10000)
+    makeTim(3)
+
+
+    w.oB(function(c){
+        var a= c.A(),
+            b= c.B()
+
+        if(
+
+            (a.gB().uD()=='bul' ||  b.gB().uD()=='bul' )
+
+            && !(  a.gB().uD()=='guy' ||  b.gB().uD()=='guy' )
+
+            )
+
+
+        {
+
+
+            if(a.gB().uD()=='bul'){
+                a.gB().uD('destroy')
+
+                if(b.gB().uD()=='tim'){
+                    b.gB().uD('destroy')}}
+
+            else {b.gB().uD('destroy')
+                if(a.gB().uD()=='tim'){
+
+                    a.gB().uD('destroy')}
+
+            }}
 
 
     })
 
-    x=xx(c)
+    s.t(function(){
+        w.e(function(b){
 
-    s.ob.autoClear=false
+            if(b.uD()=='destroy'){
 
+                b.kS()
+                w.dB(b)
 
-    oMM=function(e){
-        e=sE(e)
-        mX=(e.cx-cvPx.x)/30;
-        mY=(e.cy-cvPx.y)/30}
+            }})})
 
-    w=bW(bV(0,40),true)
-
+    dirPush()
 
 
     s.t(function(){
+        if(pushLeft){p.rt(p.rt()-2)}
+        if(pushRight){p.rt(p.rt()+2)}
+        if(pushUp){var v= p.GetWorldVector(bV(0,-100))
+            p.aI(v.x/100, v.y/100 )}
+        if(pushDown){var v= p.GetWorldVector(bV(0,-100))
+            p.aI(-v.x/40, -v.y/40 )}})
 
 
-        setupMouse=function(){
+   kD('s', function(){
+       var v= p.GetWorldVector(bV(0,-100)),
+           po= p.wP(0,-75),
 
-            if(mDown && !mouseJoint){
-                var body=getBodyAtMouse(mX,mY)
-                if(body){
-                    var md= b2MJD ()
-                    md.bodyA=w.ggb()
-                    md.bodyB=body
-                    md.target.Set(mX,mY)
-                    md.cc(true).mf(300*body.GetMass())
-                    mouseJoint = w.cj(md) //mJ = //world createJoint crJ
-                    body.SetAwake(true)//body sAw
-                }}
+           b=ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul')
+
+       bindr('me',b,.1)
+
+   })
 
 
-            if(mouseJoint){
+   // s.sx(2).sy(2)
+   // s.t(function(){s.xy( 250-p.x() , -50-p.y()  )})
 
-                if(mDown){
-                    mouseJoint.SetTarget( bV(mX,mY) )} //sTg}
+}
 
-                else{
-
-                    w.dj(mouseJoint)
-                    mouseJoint=null}}
+footListener=function(){feetTouch=0
+    w.sCL(bCL().b(function (c) {
+        var a = c.A(), b = c.B()
+        if (a.uD() == 'feet' || b.uD() == 'feet') {
+            feetTouch = 1
         }
-
-        setupMouse()
-
-        w.st(1/60,10,10).ddd().cf()
-
+    }).e(function (c) {
+        var a = c.A(), b = c.B();
+        if (a.uD() == 'feet' || b.uD() == 'feet') {
+            feetTouch = 0
+        }
+    }))
+}
+moveListener=function(){
+    s.t(function () {
+        p.rt(0)
+        w.e(function (b) {
+            if (b.uD() == 'destroy') {
+                w.dB(b)
+            }
+        })
+        if (feetTouch) {
+            if (pushUp) {
+                if (pushRight) {
+                    p.aI(0, -10)
+                }
+                else if (pushLeft) {
+                    p.aI(0, -10)
+                }
+                else {
+                    p.aI(0, -10)
+                }
+            }
+            else {
+                if (pushLeft) {
+                    p.dr(0);
+                    p.aI(-5, 0)
+                }
+                if (pushRight) {
+                    p.dr(1);
+                    p.aI(5, 0)
+                }
+            }
+        } else {
+            if (pushLeft) {
+                p.dr(0);
+                p.aI(-1, 0)
+            }
+            if (pushRight) {
+                p.dr(1);
+                p.aI(1, 0)
+            }
+        }
     })
-
-    gEP=getElementPosition=function(elem){
-
-        var tagname='',   x=0,y= 0,e=elem
-
-        while(
-            O(e)&&D(e.tagName)){
-
-            y+=osT(e);
-            x+=osL(e)
-            tagname=uC(e.tagName)
-            if(tagname=='BODY'){e=0}
-            if(O(e)){if(O(osP(e))){e=osP(e)}}}
-        return {x:x,y:y}}
-
-
-    cvPx=getElementPosition(did())
-
-
-
-    dL('d',function(e){
-        mDown=true
-        oMM(e)
-        dL('m',oMM,true)},b1)
-    dL('u',function(){
-
-        dR('m',oMM,true)
-
-        mDown=false
-        tUd(mX,mY)},true)
-
-
-
-
-    w.sdd(
-        debugDraw=b2DD().ss(
-            xid()
-        ).sds(30).sfa(.5).slt(1).sf(shB||jB) )
-
-
-    makeWalls()
-
-    r=makeStructure()
-
-
-    //makePlatform()
-    //addTenShapes()
-    makeShapeOnDblClk()
-    //ball=Ball()
-
-}
-MOVEHEAD=function(){z()
-
-    c=sCan().id('canvas').wh(800,600).a()
-
-    s=St(c)
-
-    s.bm('me', function(bm){
-        m=bm
-
-
-        SL(m)
-
-        s.t(function(){ m.x( 1,'+') })
-
-    })
-
-
-    makeShapeOnDblClk()
-
 }
 
 
 
-PULLEY=function(){makeWorld()
+PLAYER2=function(){
 
-    x=500
-    y=200
+    mW()
 
-    b11= bi(300,300,200,10)
+    p=makeMe().aD(10000)
 
-    b22= bi(500,300,200,10)
+    dirPush()
+    footListener()
+    moveListener()
 
-    p=pJt().i(
-        b11,
-        b22,
-        bV(15,1), bV(25,2),
-        b11.c(),b22.c(),
-        1)
+    bindr('guy', bii(300,200,100),[.4,1.2])
+    bindr('guy',bii(300,500,60,30),[.4,1.2])
+    bindr('guy', bii(150,400,60,30))
+   // bindr('guy',
+        bii(800,300,100)
+       // ,[.4,1.2])
+    //bindr('guy',
+        bii(260,240,40)
+    //)
+    //bindr('guy',
+        bii(550,250,100)
+            //,[1.8,1.2])
 
-        .lA(8).lB(4).mLA(10).mLB(5)
+    //bindr('guy',
+        bii(1350,550,100),[1.8,1.2]
+    //)
 
-    w.cJ(p)
-
-    makeMe()
-    makeTim(10)
+    //s.sx(2).sy(2)
+   // s.t(function(){  // s.x( 450-p.x()  )  //  if(s.x() > 0){s.x(0) }  // s.y( -50-p.y()  ) })
 
 }
+
+
+PLAYER3=function(){mW()
+    warpping=false
+    p=makeMe().aD(10000)
+    dirPush()
+    warpp =function(){ p.sY(100);p.sX(200) }
+    s.t(function(){if(warpping){warpp(); warpping=false}})
+    w.sCL(bCL()
+        .b(function(c){
+        var a=c.A(),b=c.B()
+        if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=1}
+        if(c.pair('feet','tramp')){p.aI(0,-150)}
+        if(c.pair('feet','warp')){warpping=true}})
+        .e(function(c){var a=c.A(),b=c.B();
+        if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=0}}))
+
+    moveListener()
+    makeTim(15)
+    bii(500,600,30,200)
+    bii(600,600,30,200)
+
+    w.a(sBD(550,580), pFx(100,20).uD('warp'))
+    w.a(dBD(650,580), pFx(100,20).uD('tramp'))}
+
+
+
+PLAYER4=function(){mW()
+    warpping=false
+    p=makeMe().aD(10000)
+    dirPush()
+    warpp =function(){ p.sY(100);p.sX(200) }
+    s.t(function(){if(warpping){warpp(); warpping=false}})
+    w.sCL(bCL()
+
+        .b(function(c){
+            var a=c.A(),b=c.B()
+            if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=1}
+            if(c.pair('feet','tramp')){p.aI(0,-150)}
+            if(c.pair('feet','warp')){warpping=true}
+        })
+
+        .e(function(c){var a=c.A(),b=c.B();
+            if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=0}
+        }))
+
+    moveListener()
+
+
+    makeCar()
+
+}
+
+
+
+

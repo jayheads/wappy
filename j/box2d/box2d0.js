@@ -1,3 +1,4 @@
+
 bV =function(a,b){var g=G(arguments),a=g[0],b=g[1]
     if(g.n){a/=30;b/=30}
     return new BXc.Math.b2Vec2(a,b)}
@@ -10,7 +11,6 @@ AB=function(a,b,c,d){
     ab.upperBound.Set(c,d)
     return ab
 }//get rectangle by two coords
-
 
 
 AB001 =function(a,b){return AB( a-.001,b-.001, a+.001, b+.001)}
@@ -46,7 +46,6 @@ dbD  =function(){var d=new b2DebugDraw()//dbD =DebugDraw =bDD=b2DD=
     //append flags
     //clear flags
     return d}
-
 
 
 bW   =World=function(a,b){
@@ -121,6 +120,10 @@ bW   =World=function(a,b){
         w.sCL(bCL().b(f))
         return w}
 
+    w.oE=function(f){
+        w.sCL(bCL().e(f))
+        return w}
+
 
 
     w.j=w.cJ=function(a){var j=w.CreateJoint(a)
@@ -141,8 +144,13 @@ bW   =World=function(a,b){
 
     return w}//=b2W
 
-aII=function(a){a.aI(100,100)}//for w.e testing
-bXX=function(a){if(a.uD()=='remove'){w.dB(a)}}
+
+aII=function(a){
+    a.aI(100,100)}//for w.e testing
+
+bXX=function(a){
+    if(a.uD()=='remove'){w.dB(a)}
+}
 
 bXXX=function(){w.e(bXX)}
 bXXXX=function(){s.t(bXXX)}

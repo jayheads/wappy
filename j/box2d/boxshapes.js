@@ -4,8 +4,6 @@ sSh   =function(s){
     s.tP    =s.tPt=s.tp=function(a,b){return s.TestPoint(a,b)}
     return s}
 
-
-
 //poly shape maker
 //handles both box and set as box!
 //x,y -> box

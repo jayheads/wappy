@@ -436,20 +436,37 @@ qq=function(e,b,c,d){
 
 
 
-    q.knockoutBind=q.b=function(a,b){
+    q.b=  q.knockoutBind=function(a,b){
+
         var o=[]
 
         if(O(a)){
-            _e(a,function(v,k){o.push(oO('b',k)+':'+v)})
-            q.at({b:o.join()})}
+
+            _e(a,function(v,k){
+
+                o.push(oO('b',k)+':'+v)
+
+            })
+
+            q.at({b:o.join()})
+
+        }
 
 
-        else{
+        else {
 
-            q.at({b:oO('b',a)+':'+b})}
+            q.at({
+
+                b: oO('b', a)+':'+b
+
+            })}
 
 
         return q}
+
+
+
+
 
     q.bd=q.knockoutBind2=function(a){var g=G(arguments),a=g[0]
         if(g.p){a='text: '+a}
@@ -458,6 +475,7 @@ qq=function(e,b,c,d){
         if(g.d){a='checked: '+a}
         q.at({b:a})
         return q}
+
 
 
     q.pt=function(a){if(U(a)){return ss(q,'gt')};q.s('gt',a);return q}

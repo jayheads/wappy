@@ -186,11 +186,22 @@ bo=function(a,k){
     return qq('B').H(h).k(k)}
 
 
-ifra=function(){z()
+ifra=function(){
+
+    z()
     d=dva()
     ifr=qq($('<iframe>'))
     ifr.w(1000).h(1000).c('b')
     ifr.q[0].src='http://www.playboy.com'
-    d(ifr).P(30)}
+    d(ifr).P(30)
+
+}
 
 
+ th=function(a){
+
+     var h = qq($('<th>'))
+
+     if(a){h(a)}
+
+     return h}

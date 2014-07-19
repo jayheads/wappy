@@ -10,6 +10,8 @@ ang=function(){
 
 
 }
+
+
 ngApp=function(a){
 
     var q=U(a)?
@@ -19,14 +21,20 @@ ngApp=function(a){
       return q
 }//depr
 
+
 bootstrap=function(a){
     angular.element(document).ready(function(){
-        angular.bootstrap(document, [a||'myApp'])})}
+        angular.bootstrap(document, [a||'myApp'])})
+}
+
+
 myApp=function(a){return angular.module(a||'myApp', [])}
+
 Ctr=ngContDv=function(a){return _d().ngCont(a)}
 Clk=ngClickBt=function(a,b){return bt(a).ngClick(b)}
 Shw=ngShowForm=function(a){return form().ngShow(a||'visible')}
 Mdl=ngModelTx=function(a,b){return tx().ngModel(a).nm(b)}
+
 ANGlong=function(){z()
 
     qq('div ng-app')(
@@ -46,14 +54,21 @@ ANGBOOT=function(){z()
 
     ang()
 
-
     a=myApp()
 
+    a.run(function($rootScope){
 
-    a.run(function($rootScope){$rootScope.greetMe='afsd'})
+        $rootScope.greetMe='afsd'
 
+    })
 
     bootstrap()}
+
+
+
+
+
+
 ANGCONT=function(){z()
 
     ang()
@@ -67,6 +82,7 @@ ANGCONT=function(){z()
     sp('test {{blank}}').ngCont('cont').a()
 
     bootstrap()}
+
 ANGFILT=function(){z()
 
     ang()
@@ -78,6 +94,9 @@ ANGFILT=function(){z()
     sp("{{'World'|greet}}").a()
 
     bootstrap()}
+
+
+//?
 ANGBLOG=function(){z();ang()
 
     a=myApp()
@@ -112,8 +131,9 @@ ANGBLOG=function(){z();ang()
     bootstrap()}
 
 
-
+//?
 ANGMOD=function(){z();ang()
+
     a=myApp()
 
     a.provider('Post',function(){
@@ -171,11 +191,7 @@ bootstrap()}
 
 
 
-
-
-
-
-
+//works
 ANGSCOPE=function(){z();ang()
 
     a=myApp()
@@ -189,9 +205,7 @@ ANGSCOPE=function(){z();ang()
             bt('Add').ngClick('add()'),
             h2('Contacts'),
 
-        ul()(
-            li('{{ contact }}').ngRepeat('contact in contacts'))
-    ).a()
+        ul()( li('{{ contact }}').ngRepeat('contact in contacts')) ).a()
 
     a.controller('ContactController',function($scope){
 
@@ -211,20 +225,28 @@ ANGSCOPE=function(){z();ang()
    bootstrap()}
 
 
-ANGUSER=function(){z();ang();a=myApp()
+
+
+//works!
+ANGUSER=function(){
+
+    z();ang();a=myApp()
 
     uid=1
 
-
     _d().ngCont('ContactController')(
 
+
     form()(
+
         lb('Name'),Mdl('newcontact.name','name'),
         lb('Email'),Mdl('newcontact.email','email'),
         lb('Phone'),br(),Mdl('newcontact.phone','phone'),
         ip('h').ngModel('newcontact.id'),
         bt('Save').ngClick('saveContact()')
+
     ),
+
 
 
         _t()(
@@ -246,19 +268,25 @@ ANGUSER=function(){z();ang();a=myApp()
     a.controller('ContactController',
         function($scope){
 
-        $scope.contacts=[
-            {id:0,'name':'Viral','email':'hello@gmail.com','phone':'123-2343-44'}
-        ]
+
+            $scope.contacts=[ {id:0,'name':'Viral','email':'hello@gmail.com','phone':'123-2343-44'} ]
 
 
-        $scope.saveContact=function(){
-            if($scope.newcontact.id==null){
-                $scope.newcontact.id=uid++
-                $scope.contacts.push($scope.newcontact)}
-            else{for(i in $scope.contacts){
+
+            $scope.saveContact=function(){
+
+                if($scope.newcontact.id==null){
+
+                    $scope.newcontact.id=uid++
+
+                    $scope.contacts.push($scope.newcontact)}
+
+                else {for(i in $scope.contacts){
                 if($scope.contacts[i].id==$scope.newcontact.id){
                     $scope.contacts[i]=$scope.newcontact}}}
-            $scope.newcontact={}}
+            $scope.newcontact={}
+
+            }
 
 
         $scope.delete=function(id){
@@ -271,20 +299,21 @@ ANGUSER=function(){z();ang();a=myApp()
             if($scope.contacts[i].id==id){
                 $scope.newcontact=angular.copy($scope.contacts[i])}}}})
 
-bootstrap()}
+
+    bootstrap()
+
+}
 
 
 
 
 
+//show
 ANGSHOW=function(){z();
 
     ang()
     a=myApp()
     a.Ctr=a.C=a.controller
-
-
-
 
     a.Ctr('MainCtrl',function($scope){
         $scope.visible=false})
@@ -309,21 +338,7 @@ bootstrap()}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//works
 ANGMODEL=function(){
 
     z()

@@ -1,10 +1,11 @@
-rev1=function() {
-    gg = G(arguments)
-
-}
-
 
 rev =function(a,b, c,d, e,f){var g=G(arguments)
+
+    //pass in body1, body2, world-bV
+    //world-bV defaults to body1-center
+    //can also pass body1, body2, world-x, world-y
+    //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
+
 
     var j=sJD(new BXJ.b2RevoluteJointDef())
 
@@ -12,35 +13,30 @@ rev =function(a,b, c,d, e,f){var g=G(arguments)
         _a(j.Initialize,g,j)
         return j}
 
+
     j.mt=function(a,b,c){
         j.mS(a)
         j.mMT(N(b)?b:100)
         if(c!='-'){j.eM(1)}
         return j}
 
-    j.lm=function(a,b,c){
-        j.lA(a).uA(b)
-
+    j.lm=function(a,b,c){j.lA(a).uA(b)
         if(c!='-'){j.eL(1)}
         return j}
 
     if(U(c)){c=a.c()}
+
     if(O(c)){j.i(a,b,c)}
 
-    else if(N(e)){
-        j.A(a).B(b)
-            .lAA(bV(c/30,d/30)).lAB(bV(e/30,f/30))}
+    else if(N(e)){ j.A(a).B(b).lAA( bV(c/30,d/30)).lAB( bV(e/30,f/30)) }
 
-    else if(N(c)){j.i(a,b,bV(c/30,d/30))}
+    else if(N(c)){ j.i(a,b, bV(c/30,d/30)) }
 
-    return sJD(j)
+    sJD(j)
 
-}
+    return j}
 
-
-
-
-rJt =function(o){//rJD=
+rJtX=function(o){//rJD=
 
     var j=sJD(new BXJ.b2RevoluteJointDef())
 
@@ -89,94 +85,79 @@ rJt =function(o){//rJD=
 }
 
 
-
-REVYY=function(){makeWorld()
-    a=ba()
-    b=bi()
-
-   r=rJt({i:[a,b ]})
+revJoint=function(){return w.j(rev(ba(),bi()))}
+revJoint1=function(){return w.j( rev(baa(400,200),bi(400,200,200)).mt(200 ) )}
+revJoint2=function(){return w.j( rev(bi(400,50,50), bi(400,50,50)).mt(10 ) )}
+revJoint3=function(){return w.j( rev(bi(400,30,30,50), bi(400,30,30,50)).mt(10 ) )}
 
 
-    c=baa(400,200)
-    d=bi(400,200,200)
 
 
-    r0 = rev(c,d)
+revJoint4=function(){
 
-    //r0.lm(-50,100)
+    return w.j(
 
-     r0.mt(200 )
+        rev(
 
-    r1=w.cJ( r0 )
+            bi(400,30,10,80),   bi(400,30,20,160)
 
-}
+        ).mt(10 )
 
 
-REVDEMO=function(){makeWorld()
 
-    w.j(rev( baa(100,100), bi(100,100,200,40)) .mt(5,1))
-    w.j(rev( baa(250,100), bi(250,100,200,40)) .mt(5,2))
-    w.j(rev( baa(400,100), bi(400,100,200,40)) .mt(5,10000))
-    w.j(rev( baa(550,100), bi(550,100,200,40)) .mt(20,5))
-    w.j(rev( baa(700,100), bi(700,100,200,40)) .mt(20,10))
-    w.j(rev( baa(850,100), bi(850,100,200,40)) .mt(20,10000))
 
-    w.j(rev( baa(100,220), bi(100,220,200,40)).lm(0,0) )
-    w.j(rev( baa(250,220), bi(250,220,200,40)).lm(0,10)  )
-    w.j(rev( baa(400,220), bi(400,220,200,40)).lm(0,180)  )
-    w.j(rev( baa(550,220), bi(550,220,200,40)).lm(-180,0)  )
-    w.j(rev( baa(700,220), bi(700,220,200,40)).lm(-360,180)  )
-    w.j(rev( baa(850,220), bi(850,220,200,40)).lm(0,1000)  )
+    )
 
-    w.j(rev( baa(100,340), bi(100,340,200,40)).lm(0,0).mt(5,1) )
-    w.j(rev( baa(250,340), bi(250,340,200,40)).lm(0,10).mt(5,2)  )
-    w.j(rev( baa(400,340), bi(400,340,200,40)).lm(0,180).mt(5,10000)  )
-    w.j(rev( baa(550,340), bi(550,340,200,40)).lm(-180,0).mt(20,5)  )
-    w.j(rev( baa(700,340), bi(700,340,200,40)).lm(-360,180).mt(20,10)  )
-    w.j(rev( baa(850,340), bi(850,340,200,40)).lm(0,1000).mt(20,10000)  )
 
-    w.j(rev( baa(100,460), bi(100,460,200,40)).lm(0,0).mt(-5,1) )
-    w.j(rev( baa(250,460), bi(250,460,200,40)).lm(0,10).mt(-5,2)  )
-    w.j(rev( baa(400,460), bi(400,460,200,40)).lm(0,180).mt(-5,10000)  )
-    w.j(rev( baa(550,460), bi(550,460,200,40)).lm(-180,0).mt(-20,5)  )
-    w.j(rev( baa(700,460), bi(700,460,200,40)).lm(-360,180).mt(-20,10)  )
-    w.j(rev( baa(850,460), bi(850,460,200,40)).lm(0,1000).mt(-20,10000)  )
+
 
 }
 
 
-spinner=function(x,y){x=N(x)?x:500;y=N(y)?y:200
-
-    dial=w.a(dBD(x,y), pFx(200,40))
-    rock=w.a(sBD(x,y), pFx(10,10))
-
-    return w.cJ(
-
-        rJt({
-
-            i:[rock, dial, dial.c()],
-            eM:1,
-            mS:-10,
-            mMT:100
 
 
 
-        })
 
 
-    )}
-spinner1=function(x,y){x=N(x)?x:500;y=N(y)?y:x
 
-    dial=w.a(dBD(x,y), pFx(200,40))
-    rock=w.a(sBD(x,y), pFx(10,10))
+
+
+
+
+spinner=function(x,y,s,t){
+    $l('spinner')
+
+    x=N(x)?x:500
+    y=N(y)?y:200
+    s=N(s)?s: 100
+    t=N(t)?t: 100
+
+    dial= bi(x,y,200,40)//w.a(dBD(x,y), pFx(200,40))
+    rock= bii(x,y,10,10)//w.a(sBD(x,y), pFx(10,10))
 
     return w.cJ(
 
-        rJt().i(rock,dial, dial.c())
-
+        rev( dial, rock ).mt(s,t) // rJt({  i:[rock, dial, dial.c()],  eM:1,  mS:-10,  mMT:100  })
 
     )}
-sRJ=function(x,y){
+seesaw=function(){
+
+    anc=bi(400,300,60,60)
+    lev=bi(400,300,300,20)
+
+    w.j(
+
+        rev(
+
+            anc,  lev,  anc.c(),  lev.c()
+
+        ).cC(0)
+
+    )
+
+
+}
+refFix=function(x,y){
     x=N(x)?x:100
     y=N(y)?y:x
 
@@ -184,147 +165,116 @@ sRJ=function(x,y){
 
     b22=w.a(  bx2= dBD(x ,y ) ,fix())
 
-    w.cJ(
+    w.j(
 
-        rJt().i( b11,b22,  b11.c(),b22.c() )//.l(10).f(3).d(.1)//.cC(1)
+        rev( b11,b22,  b11.c(),b22.c() )//.l(10).f(3).d(.1)//.cC(1)
 
     )
 
 }
-mRJ=function(){x.$$(sRJ)}
-REVOLUTE=function(){makeWorld()
+makeCar=function(){
+    var car = w.a(dBD(240, 350), pFx(90,30)),
+        bWh = w.a(dBD(200, 400), cFx(30)),
+        fWh = w.a(dBD(300, 400), cFx(30))
+
+    w.j(rev(fWh, car))
+    w.j(rev(bWh, car).mt(-10, 20))
+
+    return car}
 
 
-    bWh=w.a(dBD(200,400), cFx(30))
-    fWh=w.a(dBD(300,400), cFx(30))
-    car=w.a(dBD(240,350), pFx(90,30))
+RABBIT=function(){
 
-    w.cJ( rJt().i(car, fWh, fWh.c()) )
+    mW()
 
-    j=w.cJ( rJt().i(car,bWh, bWh.c()) )
+    w.j( rev(
 
-        .mS(10).mMT(20).mMS(100000).eM(1)
+        baa(300,300,100),
 
-    //bWh.aV(10000).fR(10000)
+            w.a(
+                dBD(300,300),
+                [cFx(50) ,
+                pFx(10,80,20,160)]
+            )
 
-    d=spinner(500,400).sL(20,240).eL(1).mS(40).mMT(100).eM(1)
+
+        )
+
+
+    )
+
 
 }
-WHEEL=function(){ z()
+REVDEMO=function(){makeWorld()
 
-    makeWorld()
+    w.j(rev( baa(100,100), bi(100,100,100,40)) .mt(5,1))
+    w.j(rev( baa(250,100), bi(250,100,100,40)) .mt(5,2))
+    w.j(rev( baa(400,100), bi(400,100,100,40)) .mt(5,10000))
+    w.j(rev( baa(550,100), bi(550,100,100,40)) .mt(20,5))
+    w.j(rev( baa(700,100), bi(700,100,100,40)) .mt(20,10))
+    w.j(rev( baa(850,100), bi(850,100,100,40)) .mt(20,10000))
 
-    fivePrisms()
+    w.j(rev( baa(100,220), bi(100,220,100,40)).lm(0,0) )
+    w.j(rev( baa(250,220), bi(250,220,100,40)).lm(0,10)  )
+    w.j(rev( baa(400,220), bi(400,220,100,40)).lm(0,180)  )
+    w.j(rev( baa(550,220), bi(550,220,100,40)).lm(-180,0)  )
+    w.j(rev( baa(700,220), bi(700,220,100,40)).lm(-360,180)  )
+    w.j(rev( baa(850,220), bi(850,220,100,40)).lm(0,1000)  )
 
-    Ball();
-    Ball('-')
+    w.j(rev( baa(100,340), bi(100,340,100,40)).lm(0,0).mt(5,1) )
+    w.j(rev( baa(250,340), bi(250,340,100,40)).lm(0,10).mt(5,2)  )
+    w.j(rev( baa(400,340), bi(400,340,100,40)).lm(0,180).mt(5,10000)  )
+    w.j(rev( baa(550,340), bi(550,340,100,40)).lm(-180,0).mt(20,5)  )
+    w.j(rev( baa(700,340), bi(700,340,100,40)).lm(-360,180).mt(20,10)  )
+    w.j(rev( baa(850,340), bi(850,340,100,40)).lm(0,1000).mt(20,10000)  )
+
+    w.j(rev( baa(100,460), bi(100,460,100,40)).lm(0,0).mt(-5,1) )
+    w.j(rev( baa(250,460), bi(250,460,100,40)).lm(0,10).mt(-5,2)  )
+    w.j(rev( baa(400,460), bi(400,460,100,40)).lm(0,180).mt(-5,10000)  )
+    w.j(rev( baa(550,460), bi(550,460,100,40)).lm(-180,0).mt(-20,5)  )
+    w.j(rev( baa(700,460), bi(700,460,100,40)).lm(-360,180).mt(-20,10)  )
+    w.j(rev( baa(850,460), bi(850,460,100,40)).lm(0,1000).mt(-20,10000)  )}
+CAR=function(){mW()
+
+    makeCar()
+
+    d=spinner(500,400)
+        .sL(20,240).eL(1)
+        .mS(40).mMT(100).eM(1)
+
 
 }
+
+
 gear=function(bA, bB, ratio){
+
     ratio=N(ratio)?ratio:1
 
     j= new BXJ.b2GearJointDef()
+
     j.joint1=bA
     j.joint2=bB
     j.ratio=ratio
 
     j.bodyA= bA.GetBodyA()
-        j.bodyB= bB.GetBodyA()
+    j.bodyB= bB.GetBodyA()
+
     return j}
-GEARRY=function(){makeWorld()
-
-    j1=w.j(rev( baa(100,220), bi(100,220,200,40)))
-
-
-    j2=w.j(rev( baa(250,220), bi(250,220,200,40)))
-
+GEARDEMO=function(){makeWorld()
 
     w.j(
-        gear(j1,j2,1)
+        gear(
 
-    )
+            j1=w.j(rev( baa(100,220), bi(100,220,100,20))),
 
+            j2=w.j(rev( baa(250,220), bi(250,220,100,20))),
 
-}
-GEAR=function(){z()
-
-    makeWorld()
-
-    car=w.a(
-
-        bDf().t(dB).xy(240,350), fD.s(pSh(6,3) )
-
-    )
-
-    bWh=w.a(bx2=bD.t(dB).xy(200 ,400 ), fD.s(cSh(1)))
-
-    rj=rJt().i(car,bWh,bWh.c())
-
-    w.j(rj)
-
-
-    Wh=w.a(bx2=bD.t(dB).xy(200 ,400 ), fD.s(pSh(2,2)))
-
-    pj=prJt()
-    pj.i(car, Wh,car.c(), bV(1,0)  )
-    pj.localAnchorA = {x:car.c().x,y:car.c().y+5}
-    pj.localAnchorB =Wh.c()
-    w.j(pj)
-
-
-    gj=gJt()
-
-
-
-
-    gj.joint1 = rj
-    gj.joint2 = pj
-    gj.bodyA = bWh
-    gj.bodyB = Wh
-
-
-    w.j(gj)}
-GEAR2=function(){  z()
-    boxMouseSetup()
-    setupDebugDraw()
-    makeWalls()
-    makeShapeOnDblClk()
-
-
-
-    Wh=w.a(bx2=bD.t(dB).xy(200/30,400/30), fD.s(poly(2,2)))
-
-    pj=prJt()
-    pj.i(g1, Wh, g1.c(), bV(1,0)  )
-    pj.localAnchorA = g1.c()
-    pj.localAnchorB =Wh.c()
-    w.j(pj)
+            1
+    ))}
 
 
 
 
 
-
-}
-WINDMILL=function(){
-    makeWorld()
-
-    anc=bi(400,300,60,60)
-    lev=bi(400,300,300,20)
-
-    w.cJ(
-
-        rJt().i(
-            anc,lev,anc.c(),lev.c()
-        ).cC(false)//.l(1).f(3).d(.1)
-
-    )
-
-
-
-
-
-
-}
 
 

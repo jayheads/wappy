@@ -7,7 +7,6 @@ prJt=function(a,b,c,d,e,f){
         _a(j.Initialize,g,j)
         return j}
 
-
     j.mt=function(a,b,c){
         j.mS(a)
         j.mMF(N(b)?b:100)
@@ -20,20 +19,17 @@ prJt=function(a,b,c,d,e,f){
         if(c!='-'){j.eL(1)}
         return j}
 
-
-
-
-
     if(D(a)){j.A(a)}
     if(D(b)){j.B(b)}
+
     j.lXA(D(c)?c:bV(0,1))
     j.lAA(D(d)?d:a.c())
     j.lAB(D(e)?e:b.c())
     if(D(f)){j.rA(f)}
 
-
-
     return j}
+
+
 
 PRISM=function(){makeWorld()
 
@@ -80,12 +76,36 @@ BUMPER=function(){mW()
 
     w.j(
         prJt(
-            ride=w.a(dBD(200,500), cFx(40)),
+            ride=w.a(dBD(200,500), cFx(40)).uD('ride'),
             cart=w.a(sBD(200,500), pFx(40).uD('cart'))
         ).lm(-1,2).mt(-100,1000))
 
+
+    w.j(
+        prJt(
+              w.a(dBD(400,500), cFx(40)).uD('ride'),
+              w.a(sBD(400,500), pFx(40).uD('cart'))
+        ).lm(-1,2).mt(-100,1000))
+
+    w.j(
+        prJt(
+            w.a(dBD(600,500), cFx(40)).uD('ride'),
+            w.a(sBD(600,500), pFx(40).uD('cart'))
+        ).lm(-1,2).mt(-100,1000))
+
     w.oB(function(c){
-            if(c.uD('cart')){ride.aI(0,-1000)}})
+            if(c.uD('cart')){
+
+                w.e(function(b){
+                        if(b.uD()=='ride'){
+                            b.aI(0,-1000)
+                        }}
+
+                )
+
+               // ride.aI(0,-1000)
+
+            }})
 
     ba(200,200,100)}
 

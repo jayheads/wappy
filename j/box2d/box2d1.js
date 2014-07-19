@@ -1,128 +1,200 @@
 
+//BRAIN GAMES
+MEMORY=function(){z()
+
+    grid=[
+
+        ['guy','me',0,0],
+        [0,'me',0,0],
+        [0,0,0,0],
+        [0,'me','chicks','me']
+
+    ]
+
+wGuy=function(){
+    var x=0,y=0
+    _e(grid,  function(row,i){
+        _e(row,function(cell,j){if(cell=='guy'){ x=j, y=i}})})
+
+
+return {x:x,y:y}}
+
+
+    dGuy=function(){
+
+        var p=wGuy()
+
+        grid[p.y][p.x]=0
+
+        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
+        else if( grid[p.y+1][p.x]==0){
+            grid[p.y+1][p.x]='guy'
+            playerGrid()
+
+        } else {alert('lose!')}}
 
 
 
-makeWallsTiny=function(){
+    rGuy=function(){
+        var p=wGuy()
+        grid[p.y][p.x]=0
 
-    bii(10, 300, 20, 600) //left
-    bii(990, 300, 20, 600)//right
-    bii(300, 0, 1200, 20)//top
-    bii(300, 590, 1200, 20)//bottom
-}
-
-
-addShapes=addTenShapes=mBodies=function(n){
-    _t(n||10,function(){ w.a(dBD().xy(), fix()) })}
-
-
-
-
-
-Ball=function(x,y){var g=G(arguments)
-
-    x=g[0]||100
-    y=g[1]||100
-
-    var b={}
-
-    bD=g.n? sBD(): dBD()
-
-    b.v = bm('me').wh(100).rxy(100,170)
-
-    x=100
-    y=100
-
-    b.b=w.a(
-        bD.xy(
-                x/30,
-                y/30
-        ),
-
-        fD.s(cSh(50/30)
-
-        )
-    )
-
-
-    s.bm('me',
-        function(jj){j=jj
-            jj.wh(100).rxy(100,170).xy(200)
-            I(function(){
-                jj.xy(b.b.ps().x *30, b.b.ps().y*30)
-                jj.rt(b.b.GetAngle())},100)})
-
-    return b}
+        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
+        else if( grid[p.y][p.x+1]==0) {
+            grid[p.y][p.x+1]= 'guy'
+            playerGrid()} else {alert('lose!')}}
 
 
 
 
+    s=St(1000,1000).a()
+
+    s.a(ct=Ct())
+
+    _e(grid, function(row,i){
+        _e(row, function(cell,j){
+            ct.a(rct().xy(j*100+100,i*100+100))
+                if(cell=='me'){
+                    ct.b('me',
+                        function(b){  b.xy(j*100+100,  i*100+100 ).sxy(.1)})}})})
 
 
 
 
-boxMouseSetupNoGravity=function(cb){var slBody
+    playerGrid=function(){  _e(grid, function(row,i){
 
-    mJoint=0
-    mDown=false
-    makeStage(600,800)
-    w=bW(bV(0,0),true) //gravity, and allowSleep
-    startLoop(cb)
-    checkMouseDown()}
+        _e(row, function(cell,j){
 
-setupMouse=function(){var b
+            ct.a(rct().xy(j*100+100,i*100+100))
 
-    if(mDown&&!mJoint){
-
-        if(b=gBAM(mX,mY)){
-
-            mJoint=mouseJoint(b)
-
-
-        }}
-
-
-    if(mJoint){
-        $l('jjj')
-        if(mDown){
-            m=mJoint
-            mJoint.sT(bV(mX,mY))
-
-        }
-
-        else{
-            w.dJ(mJoint)
-            mJoint=null
-        }}
-}
-
-bindr=function(im,spr,sxy,rt){
-    sxy=N(sxy)?sxy:.4
-
-    rt=N(rt)?rt:6
-
-    s.b(im, function(b){
-
-        b.rgc('+').sxy(sxy).rt(rt)
-
-        s.t(function(){
-
-            b.xy(  spr.x(), spr.y() )
+            if(cell=='guy'||cell=='chicks'){  ct.b(cell, function(b){ b.xy(  j*100+100,  i*100+100 ).sxy(.1)})}
 
         })})}
 
 
-fix=function(){
+     T( function(){ ct.XX()
 
-    return fD.s(
+              s.a(ct=Ct())
+             playerGrid()},  3000)
 
-        yn()?  pSh(
 
-                r1()*30,
-                r1()*30
 
-        )
 
-            : cSh( r1()*30 )
-    )
+    kD('d',dGuy)
+
+    kD('r',rGuy)
+
+
+
+}
+
+
+PINBALL=function(){
+    mW({w:'makeWallsPinball'})
+
+baa(215,520,30)
+
+bii(215,100,100,10)
+    ba(215,90)
+
+
+   j1= w.j(
+        rev(
+            r1=baa(100,430),
+            r2=bi(100,430, 100,25),
+            0,0,
+            40,0
+        ).lm(150,250)
+   )
+
+
+j2= w.j(
+    rev(
+        r1b=baa(330,430),
+
+        r2b=bi(330,430, 100,25),
+
+        0,0,
+        40,0
+
+    ).lm(-70,30)
+)
+    bii(420,400,20,2000)
+
+    //makeTim(10)
+    //ba(300,200,50)
+
+
+flip=function(){
+    r2.aI(100, 0)
+
+    r2b.aI(-100,0)
+}
+
+
+    kD('u',flip)
+    kD('d', function(){
+        ba(rnd()*300+40  ,140,20)} )
+}
+
+
+
+SLING=function(){
+
+
+
+    startpoint={}
+
+
+    slingshot=Shape.new()
+
+     addChild(self.slingshot)
+
+
+    onMouseDown=function(event){
+
+           if(ball.hitTestPoint(event.x, event.y)){
+               mouseJoint = w.j( b2.createMouseJointDef(self.ground, self.ball.body, event.x, event.y, 100000) )
+
+               startpoint.x = event.x
+               startpoint.y = event.y
+
+           }
+       }
+
+
+    onMouseMove=function(event){
+         if(mouseJoint !=null){
+
+             mouseJoint.setTarget(event.x, event.y)
+             slingshot.clear()
+             self.slingshot.setLineStyle(5, 0xff0000, 1)
+             self.slingshot.beginPath()
+             self.slingshot.moveTo(self.startpoint.x, self.startpoint.y)
+             self.slingshot.lineTo(event.x, event.y)
+             self.slingshot.endPath()}
+     }
+
+
+    onMouseUp=function(event){
+
+
+
+    if (mouseJoint != null){
+            w.dJ( mouseJoint)
+
+            mouseJoint = null
+
+     slingshot.clear()
+
+     strength = 1
+
+    xVect = ( startpoint.x-event.x)*strength
+    yVect = ( startpoint.y-event.y)*strength
+
+     ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
+
+        }
+        }
 
 }

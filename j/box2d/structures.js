@@ -1,7 +1,6 @@
 //single fixture(shape) bodies!!!
 
-//dynamic circle
-ba     =function(x,y,r){//fCS=
+ba   =function(x,y,r){//fCS=
 
     x=x||100
     y=N(y)?y:x
@@ -9,43 +8,35 @@ ba     =function(x,y,r){//fCS=
 
     return w.a( dBD(x,y),  cFx(r)  )
 
-}
-
-//static circle
-baa    =function(x,y,r){//=ba2
+}//dynamic circle
+baa  =function(x,y,r){//=ba2
     x=x||100
     y=N(y)?y:x
     r=r||20
 
     return w.a( sBD(x,y), cFx(r) )
 
-}
-
-//dynamic rect
-bi     =function(x,y,W,H){//=brk=brick=
+}//static circle
+bi   =function(x,y,W,H){//=brk=brick=
 
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
 
     return w.a(
 
-        dBD(x,y),    pFx(W/2, H/2))
+        dBD(x,y),    pFx(W, H).r(0))
 
-}
+}//dynamic rect
 
-//static rect
-bii    =function(x,y,W,H){//brk2=brick=
+bii  =function(x,y,W,H){//brk2=brick=
 
     x=N(x)?x:60;
     y=N(y)?y:x
     W=N(W)?W:30; H=N(H)?H:W
 
-    return w.a(sBD(x,y),   pFx(W/2, H/2) )
+    return w.a(sBD(x,y),   pFx(W, H).r(0) )
 
-}
-
-tenBalls=function(){_t(10, function(i){ ba(100 + (i*80), 200) })}
-hundBalls=function(){_t(100, function(i){ ba( 100  +(i*8),  50, 10) })}
+}//static rect
 
 str1=function(){return w.a(dBD(300,200),
     [pFx(50,10),
@@ -119,11 +110,127 @@ cup3=function(x,y){x=N(x)?x:100;y=N(y)?y:x
             cFx(34,-80,-130),
             cFx(34,80,-130)])}
 
+makeWalls2=function(){
+    bii(10, 300, 20, 460) //left
+    bii(990,300, 20, 460)//right
+    bii(250, 0, 400, 20)//top
+    bii(730, 0, 400, 20)//top
+    bii(250, 590, 400, 20)//b
+    bii(730, 590, 400, 20)//b
+
+}
+makeWallsTiny=function(){
+
+    bii(10, 300, 20, 600) //left
+    bii(990, 300, 20, 600)//right
+    bii(300, 0, 1200, 20)//top
+    bii(300, 590, 1200, 20)//bottom
+}
+makeWallsFull=function(){
 
 
+    bii(10, 300, 20, 1200) //left
+    bii(990, 300, 20, 1200)//right
+    bii(300, 0, 3000, 20)//top
+    bii(300, 590, 3000, 20)//bottom
+}
 
-//makes a dynamic body at given x,y
-//dBf=function(x,y){return bDf(dB).p(N(x)?x:300,N(y)?y:300)}
-//makes a static body at a given x,y
-//sBf=function(x,y){return bDf(sB).p(  N(x)?x:300, N(y)?y:300 )}
+makeWallsLong=function(){
+
+
+    bii(10, 300, 20, 1200) //left
+    bii(1600, 300, 20, 1200)//right
+    bii(300, 0, 3000, 20)//top
+    bii(300, 590, 3000, 20)//bottom
+}
+
+
+BILLIARDS=function(){z()
+
+    mJoint=0;mDown=0;
+    w=bW(bV(0,0))
+    makeStage(1000,600)
+    cvPx=gEP(did())
+
+    startLoop()
+    checkMouseDown()
+    setupDebugDraw()
+
+    bii(10,300,40,920) //left
+    bii(990,300, 40, 920)//right
+    bii(250, 0, 800, 40)//top
+    bii(730, 0, 800, 40)//top
+    bii(250, 590, 800, 40)//b
+    bii(730, 590, 800, 40)//b
+
+    makeMe()
+    makeTim(15)
+
+}
+MAKEWORLD=function(){return makeWorld()}
+BOX2D=function(a){
+
+    makeWorld()
+
+
+    str1()
+    platform()
+
+    addTenShapes()
+    makeMe()
+
+}
+RORC=function(){mW()
+    bouncy()
+    bouncy()
+    bouncy()
+    fricky()
+    fricky()
+    fricky()}
+CUPS=function(){
+    makeWorld()
+    cup(280,50)
+    cup2(400,50)
+    cup3(700,50)
+    fluffy()
+    ba()
+    ba()
+    ba()
+
+    bii(150,220,50)
+}
+
+tenBalls=function(){_t(10, function(i){ ba(100 + (i*80), 200) })}
+hundBalls=function(){_t(100, function(i){ ba( 100  +(i*8),  50, 10) })}
+addShapes=addTenShapes=mBodies=function(n){ _t(n||10,function(){ w.a(dBD().xy(), fix()) })}
+fix=function(){
+
+    return fD.s(
+
+        yn()?  pSh(
+
+                r1()*30,
+                r1()*30
+
+        )
+
+            : cSh( r1()*30 )
+    )
+
+}
+
+
+STAIRS=function(){mW()
+
+    bii(500,500,600,100)
+
+    bii(500,400,500,100)
+    bii(500,300,500,100)
+
+    bii(500,350,450,100)
+    bii(320,400,50,600)
+    ba()
+
+
+}
 
