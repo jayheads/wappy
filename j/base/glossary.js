@@ -2,11 +2,11 @@ $J=JSON
 $A=Array
 $B=Boolean
 $N=Number
-$O=Object;
-$F=Function;
-$S=String;
-$w=window;
-$$w=$($w);
+$O=Object
+$F=Function
+$S=String
+$w=window
+$$w=$($w)
 s$=S
 
 
@@ -17,18 +17,9 @@ A=function(a,b,c){
         :$(a).append(b,c)//
 }
 
-
-
-
-
-
 AA=function(a){return A(a)&&A(a[0])}
+
 B=function(a){return _.isBoolean(a)}
-
-
-
-
-
 
 
 _a=function(a,b,c,d,e){//U(a)? qq('a')
@@ -40,20 +31,12 @@ _a=function(a,b,c,d,e){//U(a)? qq('a')
 }
 
 
-
-
-
-
 _b=function(a,b,c){
     return  U(a)? qq($('body'))//--
         :F(a)?_.bind(a,b,c)//
         :S(a)? a.split(b||'.')[0] //before('.')
         :_.bindAll(a,b,c)//
 }
-
-
-
-
 
 
 C=function c(a){
@@ -66,8 +49,6 @@ _C=function(a,b){
     return U(a)? _c()[0]
         :A(a)? _.compact(a)//dep
         :a.connect(b)}
-
-
 
 
 _c=function(a,b){
@@ -89,7 +70,7 @@ _c=function(a,b){
 
 
 
-cL=function(a){console.log(a);return a}
+//cL=function(a){console.log(a);return a}
 
 
 
@@ -258,15 +239,20 @@ L=function(a,b){var g=G(arguments)
 
 $l=function(a){var g=G(arguments)
     _e(g,function(a){
-        cL(Q(a)?_o(Q(a))
+
+        console.log(
+            Q(a)?_o(Q(a))
             :F(a)?_S(a)
             :O(a)?J(a)
-            :a)})
+            :a
+        )
+    })
+
     return a}
 
 
 ll=function(a,b){
-    if(S(b)){cL(a+': '+b)}
+    if(S(b)){console.log(a+': '+b)}
     else {
         $l(a+' ->')
         $l(b)}
@@ -398,6 +384,13 @@ _r=function r(a,b,c,d){
         :S(a)? a.replace(b||'#', c||'')
         :_.rest(a,b)
 }
+
+
+
+
+
+
+
 
 
 

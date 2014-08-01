@@ -1270,7 +1270,11 @@ hits=function(){
             if (xyc(b.x,b.y,a)){delete Bs[B]
                 delete As[A]
                 As.push(bad())}})})}
-startGame=function(st){
+
+
+
+
+startGameX=function(st){
 
     z('w')
     st=st||St('b',500).a().t()
@@ -1284,7 +1288,9 @@ startGame=function(st){
     Bm('guy',function(guy){st.a(guy=a);xy(guy,200)})
     _t(10,function(){Cs.push(coin())})
     _t(15,function(){As.push(bad())})}
-updateGame=function(){if(game){
+
+
+updateGameX=function(){if(game){
     g.dx += cap(-5,5)( (e.x()-g.x)/300 )
     g.dy += cap(-5,5)( (e.y()-g.y)/300 )
     bul(g.x,g.y,g.dx,g.dy)}
@@ -1303,17 +1309,22 @@ else{
     I(function(){x.X(); b.u().d();g.u().d()}, 30)
     ball={x:1, y:0, vx:0, vy:0}
     _e($d(cat(Bs,Cs,As)),function(a){a.d()
-        a.u()})}
-updateScreen=function(){
+        a.u()})
+}
+
+
+updateScreenX=function(){
     updateBall()
     x.X();x('b')('m',0,500)('l', 300,600)('s')
     drawBall()}
-updateBall=guy.u=function(){
+
+
+updateBallX= function(){
     sXY(guy,.001,'-')
     XY(guy,0.5,'+')
     XY(ball,ball.vx,ball.vy,'+')
     ball.vy+=.04}
-drawBall=guy.d=function d(px,py){
+drawBallX =function d(px,py){
     px=px||ball
     if(O(px)){return d(px.x, px.y)}
     x('b')

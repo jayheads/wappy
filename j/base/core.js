@@ -30,16 +30,16 @@ $m=function f(i,x,m,g){ //=met
 
 ss=function ss(q,b,c){
 
-    if(U(b)){return cL(_p(ss,q))}
+    if(U(b)){return $l(_p(ss,q))}
 
     var s=function(a,b,c){
 
-        if(U(c)){return cL(a.css(oO('s',b)))
+        if(U(c)){return $l(a.css(oO('s',b)))
 }
 
         a.css(oO('s',b), $o(b,c,'R'))
 
-        cL(s(a,b) )
+       $l(s(a,b) )
 
         return q
     }
@@ -94,7 +94,7 @@ kl=function(q){q=qq(q)
         else if(g.n){q.at('k', oO('k',k) )  }
         else {_e(_S(k,' '),function(k){
             q.q.addClass (oO('k',k))})}
-        cL(kl())
+        $l(kl())
         return kl}}
 
 $f=FO=function(a,b){
@@ -118,11 +118,11 @@ $f=FO=function(a,b){
 
 OL=function OL(o,o2,o3){if(Oo('c',o)){o={c:o,w:o2,s:o3}}
     if(S(o)){o=o.split(' ')
-        return cL(_j([$r('c',o[0]),_p(oO('ow',o[1]||5)),
+        return $l(_j([$r('c',o[0]),_p(oO('ow',o[1]||5)),
             oO('os',o[2]||'-') ]))}
     if(N(o)){o={w:o}};
     o=ob(o)
-    return cL(_j([$r('c',o.c),N(o.w)?_p(o.w):$r('ow',o.w),
+    return $l(_j([$r('c',o.c),N(o.w)?_p(o.w):$r('ow',o.w),
         $r('os',o.s)]))}
 
 qs=function f(a,b){var o={},s=function(o,a,b){

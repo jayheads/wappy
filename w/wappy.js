@@ -172,10 +172,18 @@ g('/w/:p',function(q,p,n){p.r('p/'+q.p('p'))})
 
 q('./routes')()
 q('./bookRoutes')()
+q('./restRoutes')()
+
+
+
 
 u(a.r)
 
-_e(['/p/d',// css, fonts, js (bs, cjs, jq, string, us)
+
+
+_e([
+
+    '/p/d',// css, fonts, js (bs, cjs, jq, string, us)
     '/p/d/css', //css
     'p/d/js', //js
     '/p/p',  //user pics
@@ -187,30 +195,26 @@ _e(['/p/d',// css, fonts, js (bs, cjs, jq, string, us)
     '/../j/apps',
     '/../j/lib',
     '/../j/base',
-
-
     '/../j/phaserjs',
-
     '/../j/phaser2',
     '/../j/melon',
     '/../j/mvc',
     '/../j/three',
     '/../j/box2d',
     '/../j/beta',
+    '/../j/g'
+
+],function(a){
+
+    u(e.st(p.j(__dirname, a)))
+
+})
 
 
-
-
-    '/../j/g'],function(a){
-
-    u(e.st(p.j(__dirname, a)))})
 
 SV=h.s(a)
 
 ls(SV,8080,smile)
-
-
-
 
 
 ball={x:100,y:100}

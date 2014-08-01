@@ -44,7 +44,10 @@ bbR=function(o){o=ob(o)
         return a}
         return a}
 }
+
+
 bbH=function(){Bb.history.start()}
+
 
 
 
@@ -140,6 +143,8 @@ bbM=function(a){a=ob(a)
     if(a.v){a.validate=a.v}
     if(a.V){a.validate=a.V}
 
+    a.idAttribute= "_id"
+
     var m=Backbone.Model.extend(a)
 
     sMd(m)
@@ -151,6 +156,8 @@ bbM=function(a){a=ob(a)
 
      return o}
 }
+
+
 
 bbV=function(a){a=ob(a)
 
@@ -166,7 +173,6 @@ bbV=function(a){a=ob(a)
 
     a.g=function(m){return this.model.get(m)}
     a.H=function(a){this.$el.html(a);return this}
-
 
     a.J=function(){return this.model.toJSON()}
     //a.cl= a.collection
@@ -187,12 +193,14 @@ bbV=function(a){a=ob(a)
 
         var z=new v(a)
         z.cl= z.collection
+        z.e=function(a,b){return z.cl.each(a,b)}
+        z.q= qq(z.$el)
+        z.r=function(){return z.render()}
         return  z
 
-    }
+    }}
 
 
-}
 
 
 sCl=function(c){

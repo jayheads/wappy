@@ -12,6 +12,12 @@ qJ=function rc(u,d,f){var g,u,d,f
     $.getJSON(u,d,g.P?f:function(ss){
         _e(ss,function(s){f(s,ss)})})}
 
+qJE=function rc(u,d,f){var g,u,d,f
+    if(U(d)){return _p(rc,u)}
+    g=G(arguments);u=g[0];d=g[1];f=g[2]
+    if(F(d)){f=d;d={}}
+    $.getJSON(u,d, function(ss){
+        _e(ss,function(s){f(s,ss)})})}
 
 qP=function rc(u,d,f){var g,u,d,f
     if(U(d)){return _p(rc,u)}
@@ -21,12 +27,30 @@ qP=function rc(u,d,f){var g,u,d,f
         _e(ss,function(s){f(s,ss)})})}
 
 
-qG=function rc(u,d,f){var g,u,d,f
+qPE=function rc(u,d,f){var g,u,d,f
+    if(U(d)){return _p(rc,u)}
+    g=G(arguments);u=g[0];d=g[1];f=g[2]
+    if(F(d)){f=d;d={}}
+    $.post(u,d, function(ss){
+        _e(ss,function(s){f(s,ss)})})}
+
+qG=function rc(u,d,f){
+    var g,u,d,f
     if(U(d)){return _p(rc,u)}
     g=G(arguments);u=g[0];d=g[1];f=g[2]
     if(F(d)){f=d;d={}}
     $.get(u,d,g.P?f:function(ss){
         _e(ss,function(s){f(s,ss)})})}
+
+
+qGE=function rc(u,d,f){
+    var g,u,d,f
+    if(U(d)){return _p(rc,u)}
+    g=G(arguments);u=g[0];d=g[1];f=g[2]
+    if(F(d)){f=d;d={}}
+    $.get(u,d,function(ss){
+        _e(ss,function(s){f(s,ss)})})}
+
 
 load=function(a){lc('/wap/'+a)}
 
@@ -58,6 +82,8 @@ home=function(){
     WAPNAV('o')
     qi('uname').T(usr)  //qi('uname').jLoad('/lgd')
     if($w[app=uC(app)]){$w[app]()}}
+
+
 sU=function(){
    var nU=function(a,b,c){//new user
         if(S(a)){return nU({u:a,p:b},c)}

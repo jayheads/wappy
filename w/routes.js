@@ -1,45 +1,106 @@
-module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
+module.exports=function(){
+
+    $a=a;a.p=a.post;a.g= a.get;
 
     $N=Number
 
 
-    gU= agU=function(u,f){$a.g(u, $w.u ,f)}
-    pU= apU=function(u,f){$a.p(u, $w.u ,f)}
+    gU= agU= function(u,f){
 
-    qU=function(q){return {u:q.u}}
-    qu=function(q){return {u:q.u}}
-    qqU=function(q){return {u:q.q.u}}
-    qbu=function(q){return {u:q.b.u}}
-    qI=function(q){return  {u:q.I}}
+        $a.g(u, $w.u ,f)
+
+    }
 
 
-    pjd=function(p,s){
-        return function(z,d){S(s)?p.j(d[s]):p.j(d)}}
+    pU= apU= function(u,f){$a.p(u, $w.u ,f)}
 
-    pjd0=function(p){return function(z,d){p.j(d[0])}}
+    qU=qu= function(q){
+        return {u: q.u}
+    }
+
+    qqU=function(q){return {u: q.q.u}}
+    qbu=function(q){return {u: q.b.u}}
+    qI=function(q){return  {u: q.I}}
 
 
-    quc=function(q){
+    jD=pjd=function(p, s){
+
+        return function(z, d){
+
+            S(s)? p.j(d[s])
+                : p.j(d)
+        }
+
+    }
+
+
+
+    pjd0=function(p){
+        return function(z,d){
+            p.j(d[0])}
+    }
+
+
+     quc=function(q){
+
         return {
-            u:q.u,
-            c:q.b.c}}
+
+            u: q.u,
+
+            c: q.b.c
+        }
+    }
+
 
     fi=find=function(m,o,f){
-        if(!F(f)){f=pjd(f)}
-        $m[m].find(o,f)}
 
-    create=function(m,q,p){$m[m].create(quc(q),pjd(p))}
+        if( !F(f) ){ f=pjd(f) }
+
+        $m[m].find(o,f)
+    }
 
     all=function(m,f){
         if(!F(f)){f=pjd(f)}
         $m[m].find(f)}
-    createF=function(a){return function(q,p){create(a,q,p)}}
-    createP=function(a){apU('/'+a, createF(a))}
+
+
+    create=function(m,q,p){
+
+        $m[m].create(
+
+            quc(q), jD(p)
+
+        )
+
+    }
+
+
+
+
+
+
+
+
+    createP=function(a){
+
+        pU( '/'+a,
+
+            function(q,p){
+
+                create(a,q,p)
+
+            })
+    }
+
 
 
     rec=function(a,b,f){
         if(!F(f)){f=pjd(f)}
-        $m[a].find(b).sort({dt:-1}).execFind(f)}
+        $m[a].find(b).sort({dt:-1}).execFind(f)
+    }
+
+
+
     rec1=function(a,b,f){
 
         $m[a].findOne(b).sort({dt:-1}).execFind(f)}
@@ -61,9 +122,12 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
     rem=function(m,o,f){
 
         $m[m].remove(o,f)}
+
+
     cre=function(m,o,f){
         if(!F(f)){f=pjd(f)}
-        $m[m].create(o,f)}
+        $m[m].create(o,f)
+    }
 
 
 
@@ -153,9 +217,13 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             ,p) })  //new image
 
 
+    $a.p('/rmI',function(q,p,n){
+        rmById('img',q.b,p)})  //cutouts
 
-    $a.p('/rmI',function(q,p,n){rmById('img',q.b,p)})  //cutouts
-    $a.p('/rmP',function(q,p,n){rem('pic',q.b,p)}) //files
+
+    $a.p('/rmP',function(q,p,n){
+        rem('pic',q.b,p)
+    }) //files
 
 
     $a.g('/pix',function(q,p,n){
@@ -224,17 +292,19 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
     })
 
 
-    ALL('/tpc','tpc')
+    ALL('/tpc', 'tpc')
 
-    $a.g('/tpc1',function(q,p,n){f1('tpc', {t: q.q.t} ,p)})
+
+    $a.g('/tpc1',
+        function(q,p,n){
+            f1('tpc', {t: q.q.t} ,p)})
 
 
 
 
     pU('/vte', function(q,p,n){
 
-        f1('tpc',
-            {t:q.b.t},
+        f1('tpc', {t:q.b.t},
 
             function(z,t){   // if(q.b.dr=='u'){
 
@@ -282,43 +352,37 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
+    ALL('/users', 'user')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ALL('/users','user')
 
     createP('sts')
 
+    gU('/sts', function(q,p,n){
 
-    gU('/sts',function(q,p,n){
-
-        rec('sts',qU(q),p)})
-
+        rec('sts', qU(q),p)})
 
 
-    gU('/sts1',function(q,p,n){
-                       $l(q.q)
-        $m.sts.findOne(
-            {u:q.q.u}).sort({dt:-1}).execFind(
+
+
+    gU('/sts1', function(q,p,n){
+
+        $l(q.q)
+
+        $m.sts.findOne({u:q.q.u})
+            .sort({dt:-1})
+            .execFind(
+
             function(z,d){
-
-                if(A(d)){p.j(d[0])}
+                if(A(d)){
+                    p.j(d[0])
+                }
             })
 
-
     })
+
+
+
 
 
 
@@ -586,22 +650,22 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
     pU('/nBk', function(q,p,n){cre('status',{u:q.u,t:q.b.t,c:q.b.c},p)})
 
     pU('/itm',function(q,p,n){f1('tpc',{t:q.b.t},function(z,d){
-        d.i.push({t:q.b.c,s:0}); d.save(pjd(p))})})
+        d.i.push({t:q.b.c,s:0});
+        d.save(pjd(p))})})
 
 
 
-    pU('/srt', function(q,p,n){cre('srt',{u:q.u,t:q.b.c},p)})
+    pU('/srt', function(q,p,n){
+
+        cre('srt',{u:q.u,t:q.b.c},p)
+
+    })
 
 
     gU('/srt',function(q,p,n){fi('srt',{u:q.u},p)})
 
 
-
-
-
     $a.g('/ball',function(q,p){p.j(ball)})
-
-
 
     $a.p('/ball',function(q,p){
         l(q.b)
@@ -610,7 +674,9 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
         p.j(ball)})
 
 
-    $a.g('/gz',function(q,p){p.j(gz)})
+    $a.g('/gz',
+        function(q,p){p.j(gz)})
+
 
 
 

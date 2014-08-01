@@ -22,10 +22,10 @@ co=function co(a,b){
 
 
 _o=function(a,b,c){
-    if(A(a)){return _e(a,"cL(E(v).outerHTML)")}
+    if(A(a)){return _e(a,"$l(E(v).outerHTML)")}
     return U(a)?
         qq('op')
-        :E(a)? cL(E(a).outerHTML)
+        :E(a)? $l(E(a).outerHTML)
         :a.open(b,c)
 }
 
@@ -138,16 +138,20 @@ li=function(){var g=G(arguments),
     if(g.n){l.k('dd')}//dropdown
     return l}
 
-lk=function(a,f){
-    var g=G(arguments),
-        a=g[0],f=g[1],
-        l=qq('a').id(a)(a)
 
-    if(F(f)){l.o(f)}else{l.hr(f||'#')}
+
+lk=function(a,f){
+    var g=G(arguments), a=g[0], f=g[1],
+        l=qq('a').id(a)(a)
+    if(F(f)){l.o(f)} else {l.hr(f||'#')}
     if(g.n){l.dd()}
     if(g.p){l=li(l)}
     if(g.m){l=li(l).k('A')}
     return l}
+
+
+
+
 
 ul=function(){
     var tLi=function(a){
@@ -176,7 +180,12 @@ ol=function(o,b){var g=G(arguments),
         else {e(v)}})
     return e}
 
-td=function(){return qq('td')}
+
+td=function(){
+    return qq('td')
+}
+
+
 
  tr=function(){return qq('tr')}
 

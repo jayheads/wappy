@@ -1,31 +1,73 @@
 
+//used for LISTING things (blog posts, etc)
+blp=function(s,d){
+    var g=G(arguments), s=g[0],  d=g[1],
+
+
+        sp=_s()
+
+    if(g.p){
+
+        sp(
+
+            bt('topic: '+ s.t,
+
+                function(){
+
+                    topic=s.t;
+
+                    tab4.load()
+                }
+            ),
+
+            h5( dt(s.dt).dt() ),
+            h3( s.c)
+
+        )}
+
+
+    else if(g.n){
+
+        sp(
+            bt('user: '+s.u, function(){from=s.u;tab3.load()}),  br(),
+
+            bt('topic: '+s.t, function(){topic=s.t;tab4.load()}),
+
+            h5(dt(s.dt).dt()),h3(s.c))}
+
+    else if(g.d){
+
+        sp(
+            bt('user: '+s.u,function(){from=s.u;tab3.load()}),  br(),
+
+
+            h5(s.dt),h3(s.c))}
+
+    else {
+
+        sp(
+
+            h4( dt(s.dt).dt() ),
+
+            h1(s.c)
+        )
+
+    }
 
 
 
 
 
-john=function(){
+    if(s.du){
+        sp(
+        cx(400).f(s.du).bc('-')
 
+    )}
 
+    sp(hr())
 
-    var o={}
+    return D(d)? d(sp): sp
 
-
-
-    o.d=3
-
-    o.a=function(){o.d++}
-
-    o.g=function(){return o.d}
-
-return o}
-
-
-fred=function(){
-    var o = john();
-
-    o.m =function(){o.d--}
-    return o
 }
 
 
@@ -33,86 +75,103 @@ fred=function(){
 
 
 
-//used for LISTING things (blog posts, etc)
+//api calls
+wUSt=function(u,f){//with first status?
+    qG('/sts1',
+        {u:u},function(s){
+            f(s.c)})
+}
 
-blp=function(s,d){
-    var g=G(arguments),s=g[0],d=g[1],sp=_s()
+btMail=function(ms,u){
 
-    if(g.p){
+   return bt('mail',
+       function(){qP('/sMsg',{m:ms.V(), to:u.u})})
 
-        sp(
+}
 
-            //h1(s.t),
-            bt('topic: '+s.t,function(){topic=s.t;tab4.load()}),
+btChat=function(u,ms){return bt('chat',function(){iMsg(u.u,ms.V())})}
 
-            h5(dt(s.dt).dt()),h3(s.c))}
+btRq=function(u){
+    return  bt('buddy-request',function(){qP('/sRq',{to:u.u})})}
 
-    else if(g.n){
-
-        sp(//h1(s.t),
-            bt('user: '+s.u,function(){from=s.u;tab3.load()}),  br(),
-
-            bt('topic: '+s.t,function(){topic=s.t;tab4.load()}),
-
-            h5(dt(s.dt).dt()),h3(s.c))}
-
-    else if(g.d){
-
-        sp(//h1(s.t),
-            bt('user: '+s.u,function(){from=s.u;tab3.load()}),  br(),
+btPst=function(){return bt('see posts',function(){})  }
 
 
-            h5(s.dt),h3(s.c))}
-    else {sp(h4(dt(s.dt).dt()),h1(s.c))}
+c3=function(a){return xc().w(300).h(300).f(a) }
+
+stat=function(u,d){wUSt(u,function(s){d(h3('STATUS: '+s))})}
 
 
-    if(s.du){sp(
-        cx(400).f(s.du).bc('-')
-
-    )}
-
-    sp(hr())
-    return D(d)?d(sp):sp}
 POSTS=function(){format()
 
+    s1(
 
-    s1( dd=ipt('new post','post', '/pst',  home,  '+'),
-           h2('attach:'),
-        bt('pic',function(){
+        dd=ipt('new post', 'post', '/pst',  home,
+            '+'),
 
-        m=pop(ps=_d()(
+        h2('attach:'),
 
-            h3('pic select'))
 
-        )//,)
+        bt('pic', function(){
 
-           imgs(function(p){
-               _e(p,function(p){
+            m=pop(
 
-                   ps(
-                       qq(im(p.d)).Z(1).o(
+                ps=_d()( h3('pic select')  )
 
-                           function(){
-                                   attached.E(
+            )
 
-                                       qq( im(p.d)).Z(2))
-                               m.q.modal('hide')
-                           }
-                       )
-                   ) })})
 
-        }),attached=_d())
 
-    tab2=['buds',function(){  TABS.E(h1('bud posts'))  }]
+            imgs( function(p){  _e(p, function(p){
 
-    tab1=['all',function(){
 
-        TABS.E(h1('public posts'))
+                ps(
+                    qq(
+                        im(p.d)
+                    ).Z(1).o(
 
-        qG('/psts',function(i){  blp(i, TABS, '-')
+                            function(){
 
-        },'+')}]
+                                attached.E( qq( im(p.d) ).Z(2) )
 
+                                m.q.modal( 'hide' )
+
+                            }
+                        )
+                    )
+
+
+                    })
+
+                })
+
+        }),
+
+        attached=_d()
+    )
+
+
+
+    tab2=[
+
+        'buds',
+
+        function(){  TABS.E( h1('bud posts') )  }
+
+    ]
+
+
+
+    tab1=['all',
+
+        function(){
+
+            TABS.E(h1('public posts'))
+
+            qG('/psts', function(i){  blp(i, TABS, '-')}, '+')
+
+        }
+    ]
 
 
 
@@ -137,42 +196,24 @@ POSTS=function(){format()
 
 
 
-    tab5=['yours',function(){
-        TABS.E(h1('your posts'))
-        qG('/pst', function(i){blp(i,TABS,'+')},'+')}]
+    tab5=['yours',
+
+        function(){
+
+            TABS.E(h1('your posts'))
+
+            qG('/pst', function(i){blp(i,TABS,'+')},'+')
+
+        }]
+
 
     s2(t=tabs(tab1,tab2,tab3,tab4,tab5))
 
-    t.load()}
-
-
-//api calls
-wUSt=function(u,f){//with first status?
-    qG('/sts1',
-        {u:u},function(s){
-            f(s.c)})
-}
-
-btMail=function(ms,u){
-
-   return bt('mail',
-       function(){qP('/sMsg',{m:ms.V(), to:u.u})})
+    t.load()
 
 }
 
 
-
-btChat=function(u,ms){return bt('chat',function(){iMsg(u.u,ms.V())})}
-
-btRq=function(u){return  bt('buddy-request',function(){qP('/sRq',{to:u.u})})
-  }
-
-btPst=function(){return   bt('see posts',function(){})  }
-
-
-c3=function(a){return xc().w(300).h(300).f(a) }
-
-stat=function(u,d){wUSt(u,function(s){d(h3('STATUS: '+s))})}
 
 
 
@@ -261,9 +302,6 @@ USERS=function(){format()
     s2(t=tabs(tab1,tab2,tab3,tab4))
     t.load()}
 
-
-
-
 prof=function(a,d){a=a||'a'
 
 
@@ -277,8 +315,6 @@ prof=function(a,d){a=a||'a'
             h4('my best feature'),h5(o.best))
 
     } })}
-
-
 
 PROFILES=function(){format()
     u=pam
@@ -350,50 +386,104 @@ PROFILES=function(){format()
 
 }
 
-
-
-
-
 STATUS=function(o){var things, words,about,want,best
+
     format()
 
-    s1(ipt('status','post','/sts',function(){})  )
 
+    s1(
 
-
-    tab1=tab('status',
-
-        function(){
-
-            TABS.E(h1('status'))
-
-         qG('/sts', function(i){  blp(i, TABS,'+')},'+')
-
-        }
+        ipt(
+            'status',
+            'post',
+            '/sts',
+            function(){}
+        )
     )
+
+
+
+Status=function(i){
+    return _s()(
+
+        h5( dt(i.dt).dt() ),
+        h3( i.c),
+        hr()
+
+    )
+}
+
+
+
+    tab1=tab('status', function(){
+
+
+            TABS.E(h1('status'), hr())
+
+            qGE('/sts', function(i){
+
+                  TABS( Status(i) )
+
+                })
+
+        })
+
+
+
+
 
 
     tab2=['profile',function(){
 
-        TABS.E(h1('profile'))
+        TABS.E(
+
+            h1('profile')
+
+        )
 
 
         f=fo(
-            lb('things you like'),things=tx('things you like..'),br(),
-            lb('words that describe you'), words=tx('words that describe you'),br(),
-            lb('about you'), about=ta(),  br(),
-            lb('what you want'), want=ta(),  br(),
-            lb('your best feature'), best=tx('..')   )
+
+            lb('things you like'),
+
+            things=tx('things you like..'),
+
+            br(),
+            lb('words that describe you'),
+            words=tx('words that describe you'),
+
+
+            br(),
+            lb('about you'),
+            about=ta(),
+
+
+            br(),
+            lb('what you want'),
+            want=ta(),
+
+
+            br(),
+            lb('your best feature'),
+            best=tx('..')
+
+        )
 
         if(O(o)){
+
             things.V(o.things)
             words.V(o.words)
             about.V(o.about)
             want.V(o.want)
-            best.V(o.best)}
+            best.V(o.best)
 
-        else{f(bt('submit',
-            function(){
+        }
+
+        else {
+
+            f(bt('submit',
+
+                function(){
 
                 pro={things:things.V(),words:words.V(),about:about.V(),want:want.V(),best:best.V()}
 
@@ -419,70 +509,4 @@ STATUS=function(o){var things, words,about,want,best
 
 
 
-
-
-
-REQUESTSX=function(){var c=CT(),d=dv('y',800,600)
-    c(d(h1('Buddy requests'),br(),
-        MB=_d().w(600).h(500)( )).$$(function(){d.drg()}))
-    qG('/gRq',function(msgs){_e(msgs,function(msg){MB(_d()(
-        h6('from '+msg.fr+' on '+msg.dt),
-        h5(msg.m),
-        bt('accept',function(){qP('/yRq',{u:msg.fr})}),bt('deny'),hr()))})})}
-USERSX=function(){
-
-    CT(h1('Users: '),br(),rr=row())
-    usrs(function(u){
-
-
-
-
-        _e(u,function(u){  qP('/dud',{d:u.m}, function(m){
-            rr(tn(pg(u.u),br(),m).o(function(){
-                win(_d()(br(),hr(),h3('User: '+ u.u), br(),
-                    xc().w(300).h(300).f(m), s=h1(),  d=_d(),
-                    ms=ta().c('w','z'),bt('mail',function(){qP('/sMsg',{m:ms.V(),to:u.u})}),
-                    bt('chat',function(){iMsg(u.u,ms.V())}),
-                    bt('buddy-request',function(){qP('/sRq',{to:u.u})})))
-
-                prof(u.u, d)
-
-                wUSt(u.u,function(s){
-                    d(h1('STATUS: '+s))
-                    d(bt('comment',function(){iMsg(u.u,ms.V())}),
-                        bt('see feed',function(){iMsg( u.u, ms.V())}),
-                        bt('see blog',function(){BLOG(u.u)}),
-                        bt('challenge',function(){qP('/sRq',{to:u.u})}))})}))})})})
-
-
-
-    tab1=['users',function(){
-
-
-    }]
-
-    tab2=['a',function(){}]
-    tab3=['a',function(){}]
-    tab4=['a',function(){}]
-
-    s2(t=tabs(tab1,tab2,tab3,tab4))
-    t.load()
-
-}
-
-
-
-
-
-BLOGX=function(u){
-
-    z()
-    WAPNAV()
-
-    format()
-
-    s1(h1('user '+u+' blog'))
-
-
-    qG('/pstu',{u:u}, function(i){blp(i, s2, '+')},'+')}
 

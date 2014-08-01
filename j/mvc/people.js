@@ -1,3 +1,7 @@
+show=function(a){a=a||'welcome'
+    $b().H('')(h1(a))}
+
+
 PEOPLE=function(){$l('people');z()
     Quiz0=function(title){
 
@@ -169,9 +173,6 @@ TASKS=function(){z()
 
 }
 
-show=function(a){a=a||'welcome'
-    $b().H('')(h1(a))
-}
 
 ITEMS=function(){z()
 
@@ -223,5 +224,303 @@ ITEMS=function(){z()
 
 }
 
+TWEETS=function(){}
+
+
+
+
+
+AVAIL1=function(){z()
+
+    tx('new avail').id('newAvail').a()
+
+    bt('ok',function(){
+        Ap.M.Avail({c:qiv('newAvail')}).save()
+        v.render()}).a()
+
+    di('availsDiv').a()
+
+
+
+    Ap={ M:{},C:{},V:{},T:{} }
+
+    Ap.T.Avail=function(model){
+        return _d().w(400).h(100).M(20).c('g')(
+            h4(model.g('c')).id('avail').c('y','r'),
+            br(),sp('delete').id('deleteAvail'),
+            sp(' '),sp('edit').id('editAvail'),
+            sp(' '),cb2().id('selAvail')).q}
+
+    Ap.M.Avail=bbM({urlRoot: '/avail'})
+
+    Ap.C.Avails=bbC({model: Ap.M.Avail, url: '/avail'})
+
+
+    Ap.V.Avail=bbV({
+
+        R:function(){
+            this.$el.append( Ap.T.Avail(this.model) )
+            return this},
+
+        events:{
+            'click #deleteAvail':'deleteAvail',
+            'click #editAvail':'editAvail',
+            'blur #avail':'changeAvail'},
+
+        changeAvail:function(){
+            qq( this.$el.find('#avail') ).at('contenteditable','false')
+            var newAvail=this.$el.find('#avail').text()
+            this.model.s('c', newAvail)
+            this.model.save()},
+
+        deleteAvail:function(){
+            this.model.destroy()
+            this.$el.remove()},
+
+        editAvail:function(){
+            qq(this.$el.find('#avail')).at('contenteditable','true')}
+
+    })
+
+
+    Ap.V.Avails =bbV({
+        el:'#availsDiv',
+        I:function(){this.render()},
+
+        R:function(){
+            var t=this
+
+            t.collection.fetch({
+
+                success:function(){
+
+                    t.$el.html('')
+
+                    t.$el.append("<h1>Avails List</h1>")
+
+                    t.collection.each(function(m){
+                        t.$el.append( Ap.V.Avail({model:m}).render().el )
+                        return t},t)
+
+                }})
+        }})
+
+
+
+    avs=Ap.C.Avails()
+
+    v=Ap.V.Avails({collection:avs})//.render()
+
+    avs.on('destroy',function(aa){$l('destroy!!!!')})
+
+
+
+}
+
+
+
+
+
+AVAIL=function(){z()
+
+    tx('new avail').id('newAvail').a()
+
+
+    bt('ok',function(){
+
+       var m= Ap.M.Avail({
+           c:qiv('newAvail') })
+
+        m.save()
+
+        m.on('destroy', function(){
+            alert('i am the model and i was destroyed')
+
+        })
+
+        v.render()
+
+    }).a()
+
+    di('availsDiv').a()
+
+
+
+    Ap={ M:{},C:{},V:{},T:{} }
+
+    Ap.T.Avail=function(model){
+        return _d().w(400).h(100).M(20).c('g')(
+
+            h4(model.g('c')).id('avail').c('y','r'),
+
+            br(),   sp('delete').id('deleteAvail'),
+            sp(' '), sp('edit').id('editAvail'),
+            sp(' '), cb2().id('selAvail')).q}
+
+
+    Ap.M.Avail=bbM({urlRoot: '/avail'})
+
+    Ap.C.Avails=bbC({model: Ap.M.Avail, url: '/avail'})
+
+    Ap.V.Avail=bbV({
+
+        R:function(){
+            this.q(Ap.T.Avail(this.model) )
+            return this
+        },
+
+
+        events:{
+
+            'click #deleteAvail':'deleteAvail',
+            'click #editAvail':'editAvail',
+            'blur #avail':'changeAvail'
+        },
+
+
+        changeAvail:function(){
+            qq( this.$el.find('#avail') ).cE(0)
+            var newAvail=this.$el.find('#avail').text()
+            this.model.s('c', newAvail)
+            this.model.save()
+        },
+
+
+        deleteAvail:function(){
+            this.model.destroy()
+            this.$el.remove()},
+
+
+        editAvail:function(){
+
+          qq(this.$el.find('#avail')).cE(1)
+
+        }
+
+    })
+
+
+    Ap.V.Avails =bbV({
+        el:'#availsDiv',
+        I:function(){this.render()},
+
+        R:function(){var t=this
+
+            t.collection.fetch({
+
+                success:function(){
+
+                    t.q.H('')
+
+                    t.q(h1('Avails List'))
+
+                    t.e(
+                        function(m){
+                        t.q(
+                            Ap.V.Avail({m:m}).r().el )
+                        return t},t)
+
+                }})
+        }})
+
+
+
+    avs=Ap.C.Avails()
+
+
+    avs.on('destroy',
+
+        function(j){
+            alert('i am col and i was destroyed')
+
+            v.trigger('modelDeleted')
+
+        })
+
+
+
+
+
+    v=Ap.V.Avails({cl:avs})
+
+
+    v.on('modelDeleted', function(){alert('modDel')})
+
+
+    a=bbM({
+
+        defaults:{ prop:3 },
+
+        test:function(){ console.log( this.get('prop') ) },
+
+
+
+
+        test2:function(a){
+
+
+            console.log(
+
+                (function(){return this.get('prop')}) ()
+
+            )
+
+
+        },
+
+
+        happy:function(a){
+
+            this.test2(a)
+        }
+
+    })
+
+
+    f=a()
+
+
+}
+
+//f.happy('prop')
+
+
+
+
+
+
+
+
+
+
+
+BBSORT=function(){
+
+
+    Chapter  = Backbone.Model
+
+    chapters = new Backbone.Collection
+
+    chapters.comparator =
+        //'page'
+        function(a){return _z(a)}
+
+    chapters.add(
+        new Chapter({page: 9, title: "The End"}))
+
+
+    chapters.add(
+        new Chapter({page: 5, title: "The Middle"}))
+
+
+    chapters.add(
+        new Chapter({page: 1, title: "The Beginning"}))
+
+
+
+    $l(chapters.pluck('title'))
+
+
+}
 
 

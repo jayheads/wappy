@@ -296,6 +296,8 @@ v2=function(x,y){
     v.set=function(x,y){v.x=x;v.y=y}
 
     return v}
+
+
 particle=function(pos){
     var p={}
 
@@ -306,8 +308,6 @@ particle=function(pos){
     p.u=function(td){
         p.p.iadd(p.v.muls(td))}
     return p}
-
-
 
 
 

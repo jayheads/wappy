@@ -44,22 +44,109 @@ xyx=function xy(o,x,y){
     if(O(x)){return xy(o,x.x,x.y)};
     o.x=x;o.y=y;
     return o}
+
+
+
+
 //logic
-rat=function r(f,i){f=f||_v('_b().c()')
-    var z=function z(){var g=G(arguments)
-        if(z.z){if(g.P){_c(z.z);z.z=0}}
-        else{if(g.N){z.z=I(f, z.i)}}}
+rat=function r(f,i){
+
+    var sampleFunc=_v('_b().c()')
+
+    f=f||sampleFunc
+
+    var z=function z(){
+
+        var g=G(arguments)
+
+        if(z.z){
+
+            if(g.P){
+
+                clearInterval(z.z)
+
+                z.z=0
+            }
+
+        }
+
+        else {
+
+            if(g.N){
+
+                z.z = I(f, z.i)
+            }
+
+        }
+
+
+    }
+
+
     z.i=i||1000
     z.z=I(f,z.i)
+
     return z}
 
 
-rc=function r(f,a){  //****
-    if(U(a)&&N(f)){return r(function(a){return f*100}) }
-    if(U(a)){return _p(r, f)}
-    return _m(a,function(a){
-        if(A(a)){return r(f,a)}
-        return f(a)})}//rcMini=function r(f,a){return U(a)?_p(r,f):_m(a,function(a){return A(a)?r(f,a):f(a)})}//test later.. its sugar
+
+
+
+
+
+
+
+
+//recursive map function
+//pass a function and array.  it maps the array,
+// but if it finds another array, it recursively maps it
+
+rc=function self(f,a){
+
+
+    if(_.isUndefined(a)){return _.partial(self, f)}
+
+    else return _.map(a, function(a){
+
+        if(A(a)){return self(f,a)}
+
+        else return f(a)
+
+    })
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 $r=function(a,b){a=a||'c';return Oo(a,b)

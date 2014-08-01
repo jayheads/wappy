@@ -347,11 +347,17 @@ ANGMODEL=function(){
     ngApp()(
 
         tx('Enter name').ngModel('n'),
+
         h1('Ah {{n}}!')).a()
 
     ang()
 
 }
+
+
+
+
+
 
 
 

@@ -1,10 +1,10 @@
 //random helpers
 
-iV=function(){
-    return $('input').val()}
 
-pD=function(e){
-    return e.preventDefault(true)}
+iV=function(){return $('input').val()}// # ?
+
+pD=function(e){return e.preventDefault(true)}
+
 
 
 
@@ -22,7 +22,9 @@ add=function rc(M,a){var g=G(arguments)
     else{_e(g,function(v){M(br(),msg(v))})}}
 
 //runs a fn on the qq of all obs of certain class
-all=function(s,f){_e($('.'+s),function(m){f(qq(m))})}
+all=function(s,f){
+    _e($('.'+s),function(m){f(qq(m))})
+}
 
 
 //fetches JSON, and takes the 'n.pop' from list and passes those
@@ -40,25 +42,54 @@ gMsgs=function rc(u,M){
 // if two, creates {t:?,c:?}
 dV=function(t,c){
     var d={}
-    if(U(c)){return dV(null,t)}
+
+    if(U(c)){return dV(null, t)}
+
     d.c=c.V()
     if(t){d.t=t.V()}
     return d}
 
 
-//just tx?
+
+
+
+//just tx
 ip0=function(a,u,o,f){
+
+    //a is what the button says
+    // is a function
+    // o is for adding more pops to post-ob,
+    // or pass function early
+
+
     u=u||'/';
 
-    if(F(o)){f=o;o={}}
+    if(F(o)){
+        f=o;
+        o={}
+    }
+
     f=f||home
 
-    var s=_s(), c=tx(),
-        b=bt(a,function(){
-            qP(u, D(dV(c),o) ,f)
-        })
-    return s(c,b)}
+    var s=_s(),  c=tx(),
 
+        b=bt(a, function(){
+
+            qP(
+                u,  D(dV(c), o),
+
+                f )
+
+        })
+
+
+    //return a span with the tx and a bt
+    //when u click the bt, get the value and post it to a url
+
+    return s(c, b)
+
+
+}
 
 //just ta
 ip1=function(a,u,f){u=u||'/';f=f||home
@@ -68,7 +99,6 @@ ip1=function(a,u,f){u=u||'/';f=f||home
         c=ta(),
         b=bt(a,function(){qP(u,dV(c),f)})
     return s(c,b)}
-
 
 //tx and ta
 ip2=function(a,u,f){
@@ -81,13 +111,11 @@ ip2=function(a,u,f){
 
     return s(t,c,b)}
 
+
 //get a [tx, bt], where bt posts tx-val to url and runs ack-fn
 //get a dva with [h1, taP, hr]
 inpt=function(t,a,u,f){
-    var g=G(arguments),
-        t=g[0], a=g[1],u=g[2], f=g[3]//ttl, butName, url, fn
-
-
+    var g=G(arguments),t=g[0], a=g[1],u=g[2], f=g[3]//ttl, butName, url, fn
 
     return dva(4)(
         h1(t),
@@ -95,22 +123,37 @@ inpt=function(t,a,u,f){
             :g.n?ip0(a,u,f)
             :ip1(a,u,f),hr())}
 
+
+
+
 //get a dv with [h1, taP, hr]
 ipt=function(t,a,u,o,f){
-    var g=G(arguments),
-
-        t=g[0],
-        a=g[1],
-        u=g[2],
-        o=g[3],
-        f=g[4]     //ttl, butName, url, fn
+    var g=G(arguments),t=g[0],a=g[1],u=g[2],o=g[3],f=g[4]     //ttl, butName, url, fn
 
     if(F(o)){f=o;o={}}
 
     return dv(4).auto()(
+
         h1(t),
-        g.p?ip2(a,u,f): g.n?ip0(a,u,o,f):  ip1(a,u,f),
-        hr())}
+
+        g.p? ip2(a, u, f)
+
+            :g.n? ip0(a,u,o,f)
+
+            :ip1(a,u,f),
+
+        hr()
+
+    )}
+
+
+
+
+
+
+
+
+
 
 joinSelf=function(){ke('j',usr)}
 
@@ -125,11 +168,14 @@ imBox=function(f){
 
 
 msgI=function(m){
-    var t=m.t,
-        f=m.f,
-        m=m.m,
+
+    var t=m.t, f=m.f, m=m.m,
+
         w=$w['im_'+f]=$w['im_'+f]||imBox(f);
-    w(h1(m))}
+
+    w(h1(m))
+}
+
 
 
 
@@ -137,6 +183,7 @@ msgI=function(m){
 
 
 win=function(a,c,i){//title/ob?,color,id
+
     var z,w,t,bp,bm,bx
 
     bp=btr('>',function(){w.Z(4);bm.sh();bp.hd()})
@@ -151,8 +198,10 @@ win=function(a,c,i){//title/ob?,color,id
     if(N(a)){z=a}
     if(O(a)){w(a)}
     if(t){
+
         w(
-        pg(t).f(24).cen().c('X')
+
+            pg(t).f(24).cen().c('X')
             .s({ml:10,mr:10,pr:30,pl:30}),
         hr().c(c||'z').f(10))
     }
@@ -160,6 +209,25 @@ win=function(a,c,i){//title/ob?,color,id
     if(i){w.id(i)}
     return w
 }
+
+
+
+
+//    _d( h1('hello') ).a()
+
+//    <div> <h1> hello </h1>  </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 priv=function(a){
     cbox(a);
@@ -252,10 +320,6 @@ cbox=function(t,c,i){
         b:function(m){chM(h5(m).s({c:'w'}))},
         s:function(m){chM(h5(m).s({c:'z'}))}}
 }
-
-
-
-
 
 pop=function(a,o){
     if(S(o)){return pop(o,{t:a})}

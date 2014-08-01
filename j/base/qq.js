@@ -477,6 +477,14 @@ qq=function(e,b,c,d){
         return q}
 
 
+    q.cE=function(a){
+
+       return q.at('contenteditable', a?'true':'false')
+
+    }
+
+
+
 
     q.pt=function(a){if(U(a)){return ss(q,'gt')};q.s('gt',a);return q}
     q.pb=function(a){if(U(a)){return ss(q,'gb')};q.s('gb',a);return q}
@@ -641,7 +649,9 @@ qq=function(e,b,c,d){
 
     if(O(b)){q.s(b)}
     if(O(c)){q.at(c)}
+
     if(S(d)){q.H(d)}
+
     if(F(d)){q.$(d)}
 
     return q}

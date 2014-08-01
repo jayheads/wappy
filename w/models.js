@@ -56,11 +56,29 @@ var S=String, N=Number, O=Object, D=Date, t=true,
     guy:{n:SQ, m:S,  x:N, y:N}, //map:{n:S, guys:O},
     //book:{u:{type:oid,ref:'user',required:t},t:S,c:[chapter]},
     srt:{ u:SQ,   dt:DATE,  t:S, i: ARD},
+
     sts:{dt:DATE,  u:SQ,  c:S},
+
+
+
+
+     avail: {c:S},
+
+
+
     pst:{dt:DATE,  u:SQ,  t:S, c:S, du:S},
+
     msg:{fr:SQ, to:SQ, dt:DATE,  m:S,  c:S},
+
     req:{fr:SQ,  to:SQ, dt:DATE},
-    tpc:{t:S,i:ARD}}
+
+    tpc:{t:S,i:ARD},
+
+     course:{
+         title:S,
+         url:S}
+
+ }
 
 
 cL('models:')
