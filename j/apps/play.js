@@ -60,8 +60,6 @@ isoTile=function(a,a2){
 
     return h}
 
-
-
 tileCoin=function(){
     var h=Hx().f('y').s('z')//.ry(15).rx(15)
     h.g.dc(0,0,15)
@@ -71,8 +69,6 @@ tileBad=function(){
     var h=Hx().f('g').s('z')//.ry(15).rx(15)
     h.g.dc(0,0,15)
     return h}
-
-
 
 isoRow=function(r,n,x,y){
     x=x||0;
@@ -89,9 +85,6 @@ isoRow=function(r,n,x,y){
     })
 
 return row}
-
-
-
 
 isoGrid=function(n1,n2,x,y){
     x=x||0;
@@ -115,10 +108,6 @@ isoGrid=function(n1,n2,x,y){
 
 
 return grid}
-
-
-
-
 
 ISO=function(levNum){z()
 
@@ -303,9 +292,6 @@ lev4=function(){
 
 
 
-
-
-
 SPACE=function(){wMs(function(b,s){
     s.wh(2000).bgi('/space.jpg')
     b.sxy(.2).fn(RT,SL)})}
@@ -479,19 +465,18 @@ SHOOTY=function(){
 
     })}
 
-HIT=function(){
 
+
+HIT=function(){z()
 //hitTest ( x  y ) Boolean
-//Defined in hitTest:1012
-//Tests whether the display object intersects the specified local point (ie. draws a pixel with alpha > 0 at the specified position). This ignores the alpha, shadow and compositeOperation of the display object, and all transform properties including regX/Y.
+
+//Tests whether the display object intersects the specified local point
+// (ie. draws a pixel with alpha > 0 at the specified position).
+// This ignores the alpha, shadow and compositeOperation of the display object,
+// and all transform properties including regX/Y.
     //  Example
 
 
-
-
-
-//Please note that shape-to-shape collision is not currently supported by EaselJS.
-    //  Parameters:
 
 //x Number
 //The x position to check in the display object's local coordinates.
@@ -501,95 +486,110 @@ HIT=function(){
 
     //Boolean: A Boolean indicting whether a visible portion of the DisplayObject intersect the specified local Point.
 
-    s=St(1000).a()
+    stage=St(1000).a()
 
-    s.mg(function(b){
-        m=b
-        SL(m)
+    stage.mg(function(mug){
 
-
-        s.b('flame',function(b){f=b
-
-            f.sxy(.1)
+        SL(mug)
 
 
+        stage.b('flame', function(fireBall){
 
-            SL(f)
+            SL(fireBall)
 
-            f.rx(f.w()/2 )
-            f.ry(500)
-            f.xy(400)
+            fireBall.sxy(.1).rx(fireBall.w()/2).ry(500).xy(400)
+
+
+
+            //this works, but must click on SOMETHING on the stage
+            stage.o('$$', function(g, e){
+                fireBall.xy(e.X, e.Y)
+            })
+
+
+            stage.o('D', function(g,e){
+
+                localCoords= mug.gTL(e.X, e.Y)
+
+                hit = mug.ht(localCoords.x, localCoords.y)
+
+                if( $l(hit) ){   stage.c('r'); $l(e.X+ ' '+ e.Y)   }
+
+                else {stage.c('y')}
+            })
+
+            stage.o('M', function(g,e) {
+
+
+                localCoords= mug.gTL(fireBall.x(), fireBall.y())
+
+                hit = mug.hT(localCoords.x, localCoords.y)
+
+                if( $l(hit)  ){ stage.c('r'); $l(e.X+ ' '+ e.Y)}
+
+                else {stage.c('y')}
+
+            })
+
+
         })
 
-        s.o('$$',function(g,e){
-
-            f.xy(e.X, e.Y)
-
-
-        })
-
-        s.o('D', function(g,e) {
-
-
-            gl= m.gl(e.X, e.Y)
-
-            h = m.ht(gl.x, gl.y)
-
-            $l(h)
-
-            if(h){
-
-                s.c('r')
-                $l(e.X+ ' '+ e.Y)
-            }
-            else{s.c('y')}
-        })
-
-
-        s.o('M', function(g,e) {
-
-
-            gl= m.gl(f.x(), f.y())
-
-            h = m.ht(gl.x, gl.y)
-
-            $l(h)
-
-            if(h){ s.c('r')
-                $l(e.X+ ' '+ e.Y)
-            }
-            else{s.c('y')}
-        })
     })
 
-
-
-
-    s.b('me',
-
-        function(b){
+    stage.b('me', function(b){
             b.sxy(.4).xy(300)
 
             b=b.ob
 
             C$.Tween.get(b, {loop:true})
                 .wait(100)
-                // .call(b.gotoAndStop, [1], b)
                 .wait(300)
-                .to({x:450}, 1200, C$.Ease.backInOut) // move
-                // .call(yar.gotoAndStop, [0], b)
+                .to({x:450}, 1200, C$.Ease.backInOut)
                 .wait(100)
-                // .call(yar.gotoAndStop, [1], b)
                 .wait(300)
                 .to({x:50}, 1200, C$.Ease.backInOut)
-            //  .call(yar.gotoAndStop, [0], b)
 
-            // C$.Tween.get(b, {loop:true}).to({y:20}, 500, C$.Ease.quadInOut).to({y:0}, 500, C$.Ease.quadInOut)
+        })
+}
+
+HITCIRCLES=function(){
 
 
+    stage=St(1000).a()
+
+    holder = stage.addChild(new createjs.Container())
 
 
-        })}
+    holder.x = holder.y = 150
+
+                        for (var i=0; i<25; i++) {
+                        var shape = new createjs.Shape();
+                        shape.graphics.beginFill(createjs.Graphics.getHSL(Math.random()*360,100,50)).drawCircle(0,0,30);
+                        shape.x = Math.random()*300-150;
+                        shape.y = Math.random()*300-150;
+                        holder.addChild(shape)}
+
+                        createjs.Ticker.on("tick", tick)
+
+
+                    function tick(event) {
+                        holder.rotation += 3;
+                        var l = holder.getNumChildren();
+                        for (var i = 0; i < l; i++) {
+                            var child = holder.getChildAt(i);
+                            child.alpha = 0.1;
+                            var pt = child.globalToLocal(stage.mouseX, stage.mouseY);
+                            if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) {
+                                child.alpha = 1;
+                            }
+                        }
+
+                        stage.update(event);
+
+
+}
+}
+
 
 canon=function(r,x,y){
 
@@ -598,7 +598,9 @@ canon=function(r,x,y){
 
 
 
-    var vx,vy,  c=ball(12).xy(x,y).ap(s)
+    var vx,vy,
+
+        c = ball(12).xy(x,y).ap(s)
 
 
     if(r.rt()>0){
@@ -612,13 +614,23 @@ canon=function(r,x,y){
 
 
     s.t(function(){
+
         vy-=.5
+
         c.x(vx,'+')
-        c.y(vy,'-')})
+
+        c.y(vy,'-')
+
+
+    })
 
 }
 
-CANON=function(){s=St(1000,600).a()
+
+
+CANON=function(){
+
+    s=St(1000,600).a()
 
     r=box(20,100).ap(s).x(500).B(600)
 

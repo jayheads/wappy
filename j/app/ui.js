@@ -37,118 +37,211 @@ gMsgs=function rc(u,M){
             m.$$(pof('/nMsg',{n:m.T()},rc))})})}
 
 
+
+
+
 // get value from an input el OR two input els
 // if one, creates {c:?}
 // if two, creates {t:?,c:?}
-dV=function(t,c){
-    var d={}
+dataValue=dV=function rc(title, content){
+    if( U(content) ){return rc(null, title)}
+    var data={}
+    data.c=data.content=data.message=content.V()
+    if(title){data.t =data.title =data.topic=title.V()}
 
-    if(U(c)){return dV(null, t)}
-
-    d.c=c.V()
-    if(t){d.t=t.V()}
-    return d}
-
+    return data}
 
 
 
 
-//just tx
-ip0=function(a,u,o,f){
-
-    //a is what the button says
-    // is a function
-    // o is for adding more pops to post-ob,
-    // or pass function early
 
 
-    u=u||'/';
 
-    if(F(o)){
-        f=o;
-        o={}
-    }
+// ob is for adding more pops to post-ob,
+// or just pass function early
 
-    f=f||home
+textInputSpan =ip0=function(
+    buttonText,
+    url,
+    ob,
+    func
+    ){
 
-    var s=_s(),  c=tx(),
+    url=url||'/'
 
-        b=bt(a, function(){
+    if(F(ob)){func=ob;  ob={}}
 
-            qP(
-                u,  D(dV(c), o),
+    func=func||home
 
-                f )
 
-        })
+    var theSpan = _s(),  theTextInput=tx(),
+
+        theButton=bt(buttonText,
+
+            function(){
+
+                qP(  url,
+
+                    _.defaults( dataValue(theTextInput),  ob),
+
+                    func  )
+            })
 
 
     //return a span with the tx and a bt
     //when u click the bt, get the value and post it to a url
 
-    return s(c, b)
+    return theSpan(theTextInput, theButton)
 
 
 }
 
-//just ta
-ip1=function(a,u,f){u=u||'/';f=f||home
-    var s=_s(),
+//this makes a span with a textarea and a button
+//pass button text, url(/), and function
+//when button clicked:
+//      the  value of the text area
+//      will be posted to the url
+//      (passing the function)
+
+textAreaInputSpan=ip1=function(buttonText,url,func){
+
+    url=url||'/';
+
+    func=func||home
+
+    var theSpan=_s(),
+
+        theTextArea=ta(),
+
+        theButton=bt(buttonText, function(){
+
+            qP(url, dV(theTextArea), func)
+
+        })
+
+    return theSpan(theTextArea, theButton)}
 
 
-        c=ta(),
-        b=bt(a,function(){qP(u,dV(c),f)})
-    return s(c,b)}
 
 //tx and ta
-ip2=function(a,u,f){
+textAndTextAreaSpan=ip2=function(buttonText,url,func){
 
-    u=u||'/'; f=f||home
+    url=url||'/'; func=func||home
 
-    var s=_s(), t=tx(), c=ta(), b=bt(a,function(){
+    var theSpan=_s(),
+        theTextInput=tx(),
+        theTextArea=ta(),
+        theButton=bt(buttonText,function(){
 
-        qP(u, dV(t,c), f)})
+        qP(
+            url,
+            dataValue(theTextInput, theTextArea),
+            func) })
 
-    return s(t,c,b)}
+    return theSpan(theTextInput, theTextArea, theButton)}
 
 
-//get a [tx, bt], where bt posts tx-val to url and runs ack-fn
-//get a dva with [h1, taP, hr]
-inpt=function(t,a,u,f){
-    var g=G(arguments),t=g[0], a=g[1],u=g[2], f=g[3]//ttl, butName, url, fn
+
+
+inptDep=function(h1Title, buttonText, url, func){
+
+    var g=G(arguments),
+        h1Title=g[0], buttonText=g[1], url=g[2],  func=g[3]
 
     return dva(4)(
-        h1(t),
-        g.p?ip2(a,u,f)
-            :g.n?ip0(a,u,f)
-            :ip1(a,u,f),hr())}
+
+        h1(h1Title),
 
 
+        g.p? textAndTextAreaSpan(buttonText,url,func):
+            g.n? textInputSpan(buttonText,url,func):
+                textAreaInputSpan(buttonText,url,func),
+        hr()
+    )}
 
+ipt=function(h1Title, buttonText, url, ob, func){
 
-//get a dv with [h1, taP, hr]
-ipt=function(t,a,u,o,f){
-    var g=G(arguments),t=g[0],a=g[1],u=g[2],o=g[3],f=g[4]     //ttl, butName, url, fn
+    var g=G(arguments),
+        h1Title=g[0],
+        buttonText=g[1],
+        url=g[2],
+        ob=g[3],
+        func=g[4]
 
-    if(F(o)){f=o;o={}}
+    if(F(ob)){ func=ob; ob={} }
 
     return dv(4).auto()(
 
-        h1(t),
+        h1( h1Title),
 
-        g.p? ip2(a, u, f)
+        g.p? textAndTextAreaSpan(buttonText, url, func)
 
-            :g.n? ip0(a,u,o,f)
+            :g.n? textInputSpan(buttonText,url,ob,func)
 
-            :ip1(a,u,f),
-
-        hr()
+            :textAreaInputSpan(buttonText,url,func)
+       // ,  hr()
 
     )}
 
 
 
 
+
+inputBox=function(ob){
+    ob=ob||{}
+
+    var func=ob.func,
+        url=ob.url || '/',
+        boxTitle=ob.boxTitle,
+        inputType=ob.inputType,
+        defaults=ob.defaults||{},
+        buttonText = ob.buttonText || 'submit',
+        inputType=ob.inputType||'text'
+
+    var theDiv = dv(4).auto()
+
+    if(boxTitle){theDiv(h1(boxTitle))}
+
+    if(inputType == 'text') {
+
+        var theTextInput=tx()
+
+        theDiv(theTextInput)
+
+        theDiv(
+
+            bt(buttonText, function(){
+                qP(url, _.defaults(dataValue(theTextInput),defaults), func)
+            }))}
+
+    if(ob.inputType == 'textArea') {
+
+        var theTextAreaInput = ta()
+
+        theDiv(
+            theTextAreaInput,
+            bt(buttonText, function () {
+                qP(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
+        )}
+
+    if(ob.inputType == 'textAndTextArea') {
+
+        var theTextInput = tx(),
+            theTextAreaInput = ta()
+
+        theDiv(theTextInput, theTextAreaInput)
+
+        theDiv(
+
+            bt(buttonText, function () {
+                qP(url,
+                    _.defaults(dataValue(theTextInput,theTextAreaInput), defaults),
+                    func)}))}
+
+
+    //z(); theDiv.a()
+
+    return theDiv}
 
 
 

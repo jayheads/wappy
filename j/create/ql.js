@@ -20,11 +20,15 @@ Ql=function(a){
 
 
     q.c=function(a,b,c){q.on("complete",
-        function(){a(q.i)},b,c)
+
+        function(){
+            a(q.i)
+        },b,c)
+
         return q}
 
-    q.gr=function(a){return q.getResult(a)}
-    q.gi=function(a){return q.getItem(a)}
+    q.gR=q.gr=function(a){return q.getResult(a)}
+    q.gI=q.gi=function(a){return q.getItem(a)}
 
 
 
@@ -37,6 +41,9 @@ Ql=function(a){
     if(a){q.l(a)}
 
     return q}
+
+
+
 Mf=function(a){var g=G(arguments),mf=[]
     _e(g, function(v){
         mf.push({

@@ -113,35 +113,64 @@ tw=function(a,b){if(U(b)){return twg(a)}
     })
 
     return Tw(a)}
+tweens={}
 
+tweens.rpunch=function(arm){
 
-shY=function(a){return tw([a,'l'],
-    [{y:-10},500],  [{y:10},500],  [{y:-10},500])}
-shX=function(a){return tw([a,'l'],
-    [{x:-20},50],[{x:20},50],[{x:-20},50])}
-rott=function(a){return tw(a,
-    [{r:180,y:200,sxy:.5},500])}
-prod=function(a){
+    //arm=arm|| c1.g('arm')
 
-    if(G(arguments).N){tw(
+    return tw(arm,
+        [{r:100,sx:-1 },800],
+        [{r:-20,sx:-2,sy:2},400,'eO'],
+        [{r:0,sy:1,sx: -.8},200])}
 
+tweens.lpunch=function(lf){
+
+    return tw(lf,
+
+        [{r:10,s:1},800],
+
+        [{r:-140,s:2.5}, 600, 'eO'],
+
+        [{s:.8, r:0}, 1600])
+
+}
+
+tweens.shakeY=function(a){return tw([a,'l'],[{y:-10},500],[{y:10},500],[{y:-10},500])}
+tweens.shakeX=function(a){return tw([a,'l'],[{x:-20},50],[{x:20},50],[{x:-20},50])}
+
+tweens.rott=function(a){
+
+    return tw(
         a,
-        {x:-100,y:200},
-        [{x:10,s:.5,y:-200},500],
-        [{x:100,s:1.2,y:200,a:.5},10000,'eO'],
-        {a:0})}
+        [
+            {r:180,y:200,sxy:.5},
+            500
+        ]
+    )
+}
 
 
-    else{tw(
+
+
+tweens.prod1=function(a){return tw(
+
+    a,
+    {x:-100,y:200},
+    [{x:10,s:.5,y:-200},500],
+    [{x:100,s:1.2,y:200,a:.5},10000,'eO'],
+    {a:0})}
+
+tweens.prod2=function(a){
+
+    return tw(
         a,
         {x:100,y:200},
         [{x:10,s:.5,y:200},500],
         [{x:-100,s:1.2,y:200,a:.5},10000,'eO'],
         {a:0}
-    )}
-
-
-    return a}
+    )
+}
 
 
 

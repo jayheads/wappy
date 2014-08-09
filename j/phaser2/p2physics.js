@@ -1,3 +1,5 @@
+
+//*** amazing thing i did here//
 CONTACTEVENTS=function(){
 
     result='Move with the cursors'
@@ -60,6 +62,8 @@ CONTACTEVENTS=function(){
     function render(){g.db.text(result,32,32)})
 
 }
+
+
 
 
 CONTACTEVENTS1=function(){z()

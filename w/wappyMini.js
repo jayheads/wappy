@@ -113,10 +113,7 @@ models  =$m=require('./models')
 //$t=require('./task')
 
 
-$g.connect(
-    "mongodb://localhost/brain",smile
-)
-
+$g.connect("mongodb://localhost/brain",smile)
 
 require('./mong')
 
@@ -140,30 +137,22 @@ fs.ul=fs.unlink
 fs.rn=fs.rename
 
 
-express   = e=require('express')
+express=e=require('express')
 
 
-mongoStore =  st=new(require('connect-mongo')(e))({db:'brain'})
+mongoStore = st=new(require('connect-mongo')(e))({db:'brain'})
 
 
-a=express()
-
+a=e()
 a.l=a.locals
-
 a.r=a.router
 
-middleware   =$w=w=require('./MW')
+middleware=$w=w=require('./MW')
 
 
-
-a.set('port', process.env.PORT||4000)
-
-a.set('view engine' ,'jade')
-
-console.log('dirname: '+ __dirname)
-
-a.set('views'       ,__dirname + '/../v/')
-
+s({'port'        :process.env.PORT||4000,
+   'view engine' :'jade',
+   'views'       :__dirname+'/../v/'})
 
 
 
@@ -172,8 +161,7 @@ a.use( express.logger('dev') )
 
 
 
-if(a.get('env')=="development"){
-    a.use(express.errorHandler())}
+if(a.get('env')=="development"){a.use(express.errorHandler())}
 
 
 cookieParser =  express.cookieParser('xyz')
@@ -192,16 +180,14 @@ a.use(
 a.use(cookieParser)
 
 a.use(express.session({
-
     store:mongoStore,
-
     secret:'xyz'
-
 }))
 
 
 a.use(
-    require('connect-flash')())
+    require('connect-flash')()
+)
 
 
 a.use(express.favicon())
@@ -210,28 +196,26 @@ a.use(middleware)
 
 
 
+a.get('/w/:p', function(req, res, next){
 
-//render a jade page
+    res.render('p/' + req.params.p)
 
-a.get(
+})
 
-    '/render/:page',
 
-    function(req, res, next){
-        res.render(req.params.page)}
-    )
+
+
+
+
+
 
 
 require('./routes')()
 require('./bookRoutes')()
 require('./restRoutes')()
 
-
-
-
-
-
 a.use(a.router)
+
 
 
 _.each([
@@ -257,23 +241,18 @@ _.each([
     '/../j/beta',
     '/../j/g'
 
-],
+], function(a){
 
-    function(dir){
-
-   a.use(
-
-       express.static(
-           path.join(__dirname, dir))
-   )
+    u(e.static(p.j(__dirname, a)))
 
 })
 
 
 
+httpServer = h.s(a)
 
 
-httpServer = http.createServer(a)
+
 
 
 httpServer.listen( 8080, smile)
@@ -293,7 +272,10 @@ sio = require('session.socket.io')
 
 require('./sockets')(
     io,
-    new sio(io,mongoStore,cookieParser)
+    new sio(io,st,cookieParser)
 )
+
+
+
 
 

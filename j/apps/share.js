@@ -106,8 +106,18 @@ POSTS=function(){format()
 
     s1(
 
-        dd=ipt('new post', 'post', '/pst',  home,
-            '+'),
+        //dd= ipt('new post', 'post', '/pst',  home, '+'),
+
+        dd=inputBox({
+
+            boxTitle:'new post',
+            url:'/pst',
+            buttonText:'post',
+            func:home,
+            inputType:'textAndTextArea'
+        }),
+
+
 
         h2('attach:'),
 
@@ -505,6 +515,11 @@ Status=function(i){
 
 
 
+hello=3
+
+//avail=bbM({url:'/sts'})
+
+//avails=bbC({model:avail, url:'/sts'})
 
 
 

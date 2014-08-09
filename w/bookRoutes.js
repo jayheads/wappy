@@ -91,7 +91,7 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
     MC=q('mongodb').MongoClient
 
-    pU('/newObj',function(q,p,n){
+    $a.post('/newObj', $w.u, function(q,p,n){
 
         var o={
 
@@ -127,8 +127,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
-
-    gU('/objs',function(q,p,n){
+    $a.get('/objs',
+        $w.u,function(q,p,n){
 
 
 
@@ -146,6 +146,71 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             })
 
     })
+
+
+
+
+    $a.p('/messages', function(q,p,n){
+
+        var topic=q.body.topic
+        console.log(topic)
+
+        var message=q.body.message
+        console.log(message)
+
+        $m['Message'].create(
+            {topic:topic, message:message},
+            function(err, message){
+
+                p.j(message)})
+
+    })
+
+
+
+    $a.g('/messages', function(q,p,n){
+
+        var topic=  q.params['topic']
+        console.log(
+            topic
+        )
+
+
+        $m['Message'].find({},
+
+            function(err, messages){
+
+                if(err){console.log(err)}
+                console.log(messages.length)
+
+                p.j(messages)
+            })
+
+    })
+
+
+    $a.g('/topics/:topic', function(q,p,n){
+
+        var topic=  q.params['topic']
+        console.log(
+          topic
+        )
+
+
+        $m['Message'].find({topic:topic},
+
+            function(err, messages){
+
+                if(err){console.log(err)}
+                console.log(messages.length)
+
+                p.j(messages)
+            })
+
+    })
+
+
+
 
 
 

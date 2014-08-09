@@ -154,13 +154,32 @@ Ct=function(o){var g=G(arguments),o=g[0]
 
 
     o.b =o.bm=function(a,b){
-        var g=G(arguments), a=g[0],b=g[1]
+
+        var g=G(arguments),
+            a=g[0],b=g[1]
 
         if(A(a)){
             _e(a,function(v){
                 o.b(v,function(a){
                     if(g.p){SL(a)}})})
             return o}
+
+
+        //this is for when returning the mug
+        //it is a dataUrl, but for some reason,
+        //i must run parseJSON on it
+
+   //    if(S(a)){ if( a.indexOf('data') ){ a= im($.parseJSON(a)) }}
+
+
+        if(I(a)){
+            a=B$(a)
+
+            o.ob.addChild(a)
+
+            return Do(a)
+        }
+
 
         if( O(a) && S(a.d) ){ a=a.d } // ?
 
@@ -178,7 +197,7 @@ Ct=function(o){var g=G(arguments),o=g[0]
         if(S(a)){} //this is where you pass lambda?
 
 
-        Bm(a,function(bm){
+        Bm(a, function(bm){
 
             if(g.N){o.a(bm)}
 
@@ -191,6 +210,11 @@ Ct=function(o){var g=G(arguments),o=g[0]
         })
 
         return o}
+
+
+    o.bData=function(data){
+       return o.b(im(  $.parseJSON(data) ))
+    }
 
 
     o.mg=function(f){

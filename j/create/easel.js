@@ -47,12 +47,17 @@ rX =function(a){return a.rawX}
 rY =function(a){return a.rawY}
 
 
-gMg=function(f){
+gMg=function(func){
     //should it try websocket first?
-    qG('/gMg',
-        f)
+    qG('/gMg',  func)
 
 }//get YOUR mug id
+
+getMug=function(func){
+
+    qG('/getMug',  func)
+}
+
 
 
 
@@ -62,10 +67,12 @@ wM=function(f){
 
     gMg(function(m){
 
-        qP( '/dud', {d:m}, f )
-
+        qP('/dud', {d:m}, f )
 
     })
+
+
+
 }
 
 

@@ -574,9 +574,12 @@ Do=function(ob,f){
 
     o.ll=function(x,y,t){return o.ob.localToLocal(x,y, t.ob)}
     o.lg=function(x,y){return o.ob.localToGlobal(x,y)}
-    o.gl=function(x,y){return o.ob.globalToLocal(x,y)}
+
+    o.gTL=o.gl=function(x,y){return o.ob.globalToLocal(x,y)}
+
 
     o.hT =o.ht=function(x,y){return o.ob.hitTest(x,y)}
+
 
     //bm's center goes wherever u click on the stg
     o.moo=function(){

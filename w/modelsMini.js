@@ -9,16 +9,15 @@ var S=String, N=Number, O=Object, D=Date, t=true,
         var g=G(arguments),
 
         o={
+
             type:oid,
+
             ref:ref
         }
 
-        if(g.p){
-            o.required=true}
+        if(g.p){o.required=true}
 
         return o},
-
-
 
     OBD={type:O, default:{}},
 
@@ -96,20 +95,28 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     //default:{s:[{h:'sec1',v:'myS'}]}
 
+
+
+
  MODELS={
 
     user:{
 
         u:SQ,   //username
+
         p:S,    //password
+
         pf:O,   //profile
+
+
 
         m:{     //mug
 
             type:S,
-
             default:'/me.png'
         },
+
+
 
         buds:[S]  // array of usernames?
 
@@ -119,17 +126,12 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
 
      pic:{
-
          u:OID('user','+'),
-
          m:D,
-
          d:DATE,
 
          s:N,
-
          n:S,
-
          o:S,
 
          e:S, //ext?

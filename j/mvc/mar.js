@@ -5,17 +5,18 @@ MAR=function(){z()
     d=_d().w(500).h(500).c('b').id('content').a()
 
 
+
     MyApp=new Bb.Ma.Application()
+
 
     MyApp.addRegions({
         mainRegion: "#content"})
 
+
     AngryCat=bbM({})
 
 
-    AngryCats=bbC({
-        model:AngryCat
-    })
+    AngryCats=bbC({  model:AngryCat  })
 
 
    //Temp(  'angry_cats-template', [thead()( tr().k('header')( th()('Name') ) ),  tbody()]  ).a()
@@ -36,7 +37,8 @@ MAR=function(){z()
         className: 'angry_cat'})
 
 
-   catsV=Bb.Ma.CpV.extend({
+
+    catsV=Bb.Ma.CpV.extend({
 
        tagName: "table",
 
@@ -62,8 +64,6 @@ MAR=function(){z()
 
 
 
-
-
     MyApp.start({cats:new AngryCats([
             {name:'Wet Cat' },
             {name:'Bitey Cat'},
@@ -75,6 +75,8 @@ MAR=function(){z()
 
 
 }
+
+
 
 MARTREE=function(){z()
 

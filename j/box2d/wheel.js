@@ -160,31 +160,131 @@ makeMe=function(){
     return p}
 
 
-PLAYER=function(){mW({w:'makeWallsFull',g:0, $$:0})
+
+PLAYER=function(){
+
+    mW({w:'makeWallsFull',g:0, $$:0})
 
     p=makeMe().aD(10000)
-    makeTim(3)
+
+
+    makeTim(30)
+
 
     //mouse control
-    m$(function(){var xdif= MX -p.x(),  ydif= MY -p.y(), po=p.wP(0,-75)
+    m$(
+        function(){
+            var xdif= MX -p.x(),
+                ydif= MY -p.y(),
+                po=p.wP(0,-75)
+
         //thrust ship
-        p.aI(xdif/20,ydif/20)
+        p.aI(xdif/20, ydif/20)
+
+
+
+
         //rotate ship
-        p.rt(tDeg($M.atan(ydif/xdif))+(xdif >0?90:270))
+        p.rt(
+                tDeg($M.atan(ydif/xdif))+(xdif >0?90:270) )
+
+
         //shoot
-        ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')})
+        ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')
+
+
+        }
+
+    )
+
+
+
+
+
 
     //destroy bullets and guys
-    w.oB(function(c){var a= c.A(),b=c.B()
-        if((a.gB().uD()=='bul'||b.gB().uD()=='bul')&&!(a.gB().uD()=='guy'||b.gB().uD()=='guy')){
-            if(a.gB().uD()=='bul'){
-                a.gB().uD('destroy')
-                if(b.gB().uD()=='tim'){
-                    b.gB().uD('destroy')}}
-            else {b.gB().uD('destroy')
-                if(a.gB().uD()=='tim'){a.gB().uD('destroy')}}}})
+    w.oB(
 
-    s.t(function(){w.e(function(b){if(b.uD()=='destroy'){w.dB(b)}})})}
+        function(c){
+
+            var a= c.A(),b=c.B()
+
+        //if either obj is a bullet an neither is tim ('guy')
+
+        if(
+
+            (
+                a.gB().uD()=='bul' || b.gB().uD()=='bul'  )
+
+
+            &&!
+
+
+            (
+                a.gB().uD()=='guy'||
+
+                    b.gB().uD()=='guy'
+                )
+
+
+
+            )
+
+
+        {
+
+
+            //if it is a bullet
+            //destroy it
+            //if the other is tim, destory tim, too
+
+            if(a.gB().uD()=='bul'){
+
+                a.gB().uD('destroy')
+
+                if(b.gB().uD()=='tim'){
+
+                    b.gB().uD('destroy')
+
+                }
+            }
+
+
+            //if it is not a bullet
+            //destrory it
+            //if the other is tim, destory tim, too
+
+            else {
+                b.gB().uD('destroy')
+                if(a.gB().uD()=='tim'){
+
+                    a.gB().uD('destroy')
+
+                }
+            }}
+
+    })
+
+
+
+
+
+    s.t(
+        //actully do the destroying
+        function(){
+
+            w.e(function(b){if(b.uD()=='destroy'){
+
+        w.dB(b)
+
+    }})})
+
+}
+
+
+
+
+
 
 
 PLAYER1=function(){mW({w:'makeWallsFull',g:0, $$:0,bg:'space.jpg'})

@@ -2,13 +2,13 @@
 
 <head>
 
-<link rel="stylesheet" href="/bootstrap.css">
-<link rel="stylesheet" href="/bootstrap-themes.css">
-<script src="/jq.js"></script>
-<script src="/bs.js"></script>
-<script src="/us.js"></script>
-<script src="/bb.js"></script>
-<script src="/bbmn.js"></script>
+<link rel="stylesheet" href="/p/d/css/bootstrap.css">
+<link rel="stylesheet" href="/p/d/css/bootstrap-themes.css">
+<script src="/p/d/js/jq.js"></script>
+<script src="/p/d/js/bs.js"></script>
+<script src="/p/d/js/us.js"></script>
+<script src="/p/d/js/bb.js"></script>
+<script src="/p/d/js/bbmn.js"></script>
 
 </head>
 
@@ -80,8 +80,14 @@
             App.Directory.addForm()},
 
         contactsRemove: function(id){
-            App.Contacts.remove(id)
-            App.Directory.addFormHide()}
+
+            var contact=App.Contacts.get(id)
+            if(contact){contact.destroy()}
+            //App.Contacts.remove(id)
+
+
+            App.Directory.addFormHide()
+        }
 
     })
 
@@ -105,7 +111,10 @@
 
 
     App.Collections.Contact=Backbone.Collection.extend({
-        model:App.Models.Contact})
+        model:App.Models.Contact,
+        url:'/contacts'
+
+    })
 
 
     App.Views.Contact=Backbone.View.extend({
@@ -145,7 +154,11 @@
         events:{'click .delete':'remove'},
 
         remove:function(){
-            App.Browser.navigate('contacts/remove/'+this.model.cid)
+
+            App.Browser.navigate('contacts/remove/'+
+                  this.model.get('id') //  this.model.cid
+            )
+
             this.model.destroy()}
 
     })
@@ -213,9 +226,19 @@
 
 
             if(newContact.isValid()){
+
                 App.Contacts.add(newContact)
+
+                newContact.save({}, {
+
+                    success: function(){$l('success')}
+
+                })
+
                 this.addFormHide() //$form.hide()
-                $('input[type=text]', $form).val('').blur()}
+
+                $('input[type=text]', $form).val('').blur()
+            }
 
             else {alert(newContact.validationError)}
         }
@@ -229,58 +252,72 @@
 
     $(function(){
 
-        tom=new App.Models.Contact({
-            firstName:'Thomas',
-            lastName:'Hunger',
-            phoneNumber:'2332232',
-            email:'sd@gads.com'})
-        App.Contacts = new App.Collections.Contact()
-        App.Contacts.add(tom)
-        App.Contacts.add({firstName:'rup',lastName:'stx', phoneNumber:'2323',email:'asd@fd.com'})
-        App.Contacts.add({})
+        App.Contacts=new App.Collections.Contact()
 
-        App.Directory=new App.Views.Directory({el:$('#display')})
+
+        App.Directory=new App.Views.Directory({
+
+            el: $('#display')
+
+        })
+
+
         App.Directory.render()
-        App.Contacts.on('add remove',function(){
+
+        App.Contacts.on('add remove', function(){
             App.Directory.render()})
 
-
         App.Browser=new App.Routers.Contact
+
         Backbone.history.start()
 
+        App.Contacts.fetch()
 
 
 
-        testC=function(){
 
-            App.Contacts.get('c1').set('lastName','Wiggum')
+        extra=function(){
+           addModels = function () {
+               tom = new App.Models.Contact({
+                   firstName: 'Thomas',
+                   lastName: 'Hunger',
+                   phoneNumber: '2332232',
+                   email: 'sd@gads.com'})
+               App.Contacts.add(tom)
+               App.Contacts.add({firstName: 'rup', lastName: 'stx', phoneNumber: '2323', email: 'asd@fd.com'})
+               App.Contacts.add({})
+           }
+           testC = function () {
 
-        }
-        testA=function(){
-            App.Contacts.add({
-                firstName:'Wed',lastName:'adams',phoneNumber:'2332',email:'a@g.com'
-            })}
-        testP=function(){App.Contacts.pop()}
-        partOne=function() {
-            contactListing = ''
-            App.Contacts.each(function (contact) {
-                contactListing += "<div>" +
-                        contact.get('firstName') + " " +
-                        contact.get('lastName') + " "
-                if (contact.isValid()) {
-                    contactListing += "(valid)"
-                }
-                else {
-                    contactListing += "(invalid)"
-                }
-                contactListing += "</div>"
-            })
+               App.Contacts.get('c1').set('lastName', 'Wiggum')
 
-            $('#display .listing').html(contactListing)
-        }
+           }
+           testA = function () {
+               App.Contacts.add({
+                   firstName: 'Wed', lastName: 'adams', phoneNumber: '2332', email: 'a@g.com'
+               })
+           }
+           testP = function () {
+               App.Contacts.pop()
+           }
+           partOne = function () {
+               contactListing = ''
+               App.Contacts.each(function (contact) {
+                   contactListing += "<div>" +
+                           contact.get('firstName') + " " +
+                           contact.get('lastName') + " "
+                   if (contact.isValid()) {
+                       contactListing += "(valid)"
+                   }
+                   else {
+                       contactListing += "(invalid)"
+                   }
+                   contactListing += "</div>"
+               })
 
-
-    })
+               $('#display .listing').html(contactListing)
+           }
+       }})
 
 
 

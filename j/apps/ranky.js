@@ -1,56 +1,208 @@
-
-
 RANKY=function(tp){
 
     format()
 
+    s1( h1('topics!'),
 
-    s1(h1('topics!'), ipt('new topic','post', '/tpc') ,
+       // ipt('new topic', 'post', '/tpc') ,
+
+
+        collection=inputBox({
+
+            boxTitle:'new topic',
+            url:'/tpc',
+            buttonText:'post',
+            func:home,
+            inputType:'textArea' }),
+
+
         h4('recent: '))
 
 
-    qG('/tpc',
+    qGE('/tpc',   function(topic){
 
-        function(t){
+            s1(
 
-            s1(bt(t.t,  function(){  ranky(t)   }),br(2))
+                bt(topic.t,  function(){ ranky(topic) }),
 
-        },'+')
+                br(2))
+    })
 
+
+
+//ranky takes a topic model from the database
+//(which includes all its items already)
+//this is messed up
+
+ranky=function(topic){//var collection
+
+    s2.E(
+
+        h1('topic page: '+ topic.t),
+
+
+        bt('live chat',function(){ priv(topic.t) }),
+        //ipt('new item', 'post','/itm', {t: t.t}, function(){qG('/tpc1', {t: t.t},function(t){ranky(t)})}, '-'),
+
+
+        inputBox({
+
+            boxTitle:'new item',
+            url:'/itm',
+            buttonText:'post',
+            defaults:{t: topic.t},
+            func:function(){
+                qG('/tpc1', {t: topic.t}, function(t){ranky(t)})},
+            inputType:'text'
+
+        }),
+
+        collection=dv())
+
+
+
+     itemCollection=new ItemCollection()
+
+
+     _e(topic.i, function(i){
+
+             if(O(i)){
+
+                 var itemModel=new ItemModel({
+
+                     topic:topic.t,
+                     text: i.t,
+                     score: i.s
+
+                 })
+
+                 itemCollection.add(itemModel)
+
+                // var itemView=new ItemView({model: itemModel}).render().el
+                // collection(itemView)
+                // itemCollection.render()
+             }
+
+
+    })
+
+
+     itemsView=new ItemsView({  collection:itemCollection  })
+
+     itemsView.render()
+
+
+
+ }
+ItemModel=Backbone.Model.extend({initialize:function(){}})
+ItemCollection=Backbone.Collection.extend({
+    model:ItemModel,
+    comparator:'score',
+
+    render:function(){
+
+        collection.E()
+
+
+        _.each(
+
+            this.models, function(itemModel){
+
+                var itemView=new ItemView({model: itemModel}).render()
+
+                collection(itemView.el)
+            }
+
+        )
+
+
+    }})
+ItemsView=Backbone.View.extend({
+
+
+    initialize:function(){
+        var self=this
+
+     this.collection.on('change', function(){
+
+        // alert(3)
+
+         this.sort()
+         self.render()
+     })
+
+    },
+
+
+
+    render:function(){
+
+        collection().E()
+
+
+        this.collection.each(function(model){
+
+            var itemView=new ItemView({model: model}).render()
+
+            collection(itemView.el)
+
+        })
+    }
+
+})
+ItemView=Backbone.View.extend({
+    initialize:function(){this.listenTo(this.model, 'change', function(){this.render()})},
+    render:function(){
+        var self=this
+        var topic=this.model.get('topic')
+        var score=this.model.get('score')
+        var text=this.model.get('text')
+
+        qq(this.el).E(
+
+            h1(text),
+            h4('score: '+ String(score)),
+
+            bt('up',  function(){
+
+                qP('/vte',  {t:topic, i:text, dr:'u'}, function(){
+
+                    self.model.set('score', self.model.get('score')+1)
+
+                })
+
+            }),
+
+            bt('down',function(){
+
+                qP('/vte', {t: topic ,  i: text,   dr:'d'},
+
+
+                    function(){
+
+                        self.model.set('score', self.model.get('score')-1)
+
+                    }
+                //    function(){ranky(topic)}
+
+                )}))
+
+        return this}})
+
+}
+
+test=function(){
+
+    itemModel=new ItemModel({topic:'yano', text:'hi', score:0})
+
+    z()
+
+    $('body').append(
+        new ItemView({model: itemModel}).render().el
+    )
 
 
 }
- ranky=function(t){var dd
-
-    s2.E()
-
-    s2(h1('topic page: '+ t.t),
-        bt('live chat',function(){ priv(t.t) }),
-
-        ipt('new item',
-
-            'post','/itm', {t: t.t},function(){
-
-
-                qG('/tpc1', {t: t.t},function(t){
-
-                    ranky(t)})}, '-'),
-
-        dd=dv())
-
-
-    _e(t.i,function(i){
-        if(O(i)){dd( h1(i.t),
-                h4('score: '+i.s),
-                bt('up',function(){qP('/vte',{t: t.t,i: i.t,dr:'u'})}),
-
-
-
-                bt('down',function(){
-                    qP('/vte',{t: t.t, i: i.t,dr:'d'},
-
-                        function(){ranky(t)})}))}})}
-
 
 
 
@@ -93,3 +245,162 @@ OBJECT=function(){
 
 
 }
+
+
+
+DIRTPAGE=function(){
+
+    MessageModel=Backbone.Model.extend({
+
+
+    })
+
+
+    MessageCollection=Backbone.Collection.extend({
+        model:'MessageModel'
+    })
+
+
+
+    MessageView=Backbone.View.extend({
+    })
+
+
+
+    MessagesView=Backbone.View.extend({
+    })
+
+
+
+    z()
+
+    h1( lk(  'Dirtpage', '/wap/dirtpage/' ) ).a()
+
+
+
+    dv().a().id('content')
+
+
+    if(!pam){
+      var newMessageBox=dv(4).auto()(
+            h1('new message'),
+            tx().id('newTopic'),
+            tx().id('newMessage'),
+            bt('ok', function(){
+
+                var newTopic = $('#newTopic').val()
+
+                var newMessage = $('#newMessage').val()
+
+                qP('/messages',
+                    {topic:newTopic,
+                        message:newMessage}, function(){})}))
+
+
+
+      var searchBox=dv(4).auto()(
+            h1('search'),
+            tx().id('searchInput'),
+            bt('ok', function(){
+
+                window.location=   '/wap/dirtpage/'+$('#searchInput').val()
+
+
+                var searchInput = $('#searchInput').val()
+
+                qG('/topics/' + searchInput, function(messages){
+
+
+                    qi('results').E(   h5('length: '+messages.length)  )
+
+
+
+                    _.each(messages,
+
+                        function(message){
+
+                            qi('results')( h6( message.message ))
+
+                        })
+
+
+
+
+                })
+
+            }))
+
+        dv().id('results').a()
+
+        qi('content')(newMessageBox, searchBox)
+
+
+
+        qG('/messages', function(messages){
+
+            _.each(messages, function(message){
+
+
+                qi('results')(
+
+                    h2(lk('topic: '+message.topic,'/wap/dirtpage/'+message.topic)),
+
+
+
+                   h3( 'message: '+message.message)
+                )
+            })
+
+
+        })
+
+
+
+    }
+
+
+
+
+    else {
+
+
+        var newMessageBox=dv(4).auto()(
+            h1('new message'),
+            tx().id('newMessage'),
+            bt('ok', function(){
+
+
+                var newMessage = $('#newMessage').val()
+
+                qP('/messages' ,
+                    {topic:pam, message:newMessage},
+                    function(){
+
+                       loadResults()
+
+                })
+
+            }))
+
+
+    qi('content')(
+        h1('the '+ pam + ' page'),
+        newMessageBox,
+        di('results'))
+
+
+        loadResults=function(){
+        qG('/topics/' + pam, function(messages){
+            qi('results').E( h5('length: '+messages.length)  )
+            _.each(messages,
+                function(message){
+                    qi('results')( h6( message.message ))
+                        })})}
+
+        loadResults()
+
+    }
+
+
+}
+

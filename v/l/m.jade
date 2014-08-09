@@ -4,6 +4,7 @@ mixin bff
     br
     br
 
+
 mixin mf
     script.
         mf=#{mf}
@@ -51,6 +52,8 @@ mixin i(s,w,h)
     - w=w||200;h=h||200
     img(src="#{s}",width="#{w}",height="#{h}")
 
+
+
 mixin C(n,w,h,r,l)
     - n=n||'can';w=w||960;h=h||450;r=r||'blue';
     if r
@@ -61,6 +64,7 @@ mixin C(n,w,h,r,l)
         C("#{n}")
 
 
+
 mixin tn(i)
     .col-xs-3
         .thumbnail
@@ -69,6 +73,9 @@ mixin tn(i)
             a.btn.btn-mini(href='/set/#{i}') set
             img(src="/"+i)
             br
+
+
+
 mixin tnT(i)
     .col-xs-2
         a.thumbnail(href='/transform/#{i}')

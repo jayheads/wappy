@@ -1,116 +1,101 @@
 module.exports=function(){
 
-    $a=a;a.p=a.post;a.g= a.get;
+    $a=a;  a.p=a.post;  a.g= a.get;
 
     $N=Number
 
-
-    gU= agU= function(u,f){
-
-        $a.g(u, $w.u ,f)
-
-    }
-
-
-    pU= apU= function(u,f){$a.p(u, $w.u ,f)}
-
-    qU=qu= function(q){
-        return {u: q.u}
-    }
-
-    qqU=function(q){return {u: q.q.u}}
-    qbu=function(q){return {u: q.b.u}}
-    qI=function(q){return  {u: q.I}}
+    //  gU= agU= function(u,f){ $a.get(u, $w.u ,f)  }
+   // pU= apU= function(u,f){  $a.post(u, $w.u ,f) }
+        //qU=qu= function(q){  return {u: q.u} }
+ //   qqU=function(q){return {u: q.q.u}}
+ //   qbu=function(q){return {u: q.b.u}}
+//    qI=function(q){return  {u: q.I}}
+    //pjd0=function(res){return function(err, data){res.json(data[0])}}
+    //quc=function(q){return {u: q.u, c: q.b.c }}
 
 
-    jD=pjd=function(p, s){
+    jD=pjd=function(res, str){
 
-        return function(z, d){
+        return function(err, data){
 
-            S(s)? p.j(d[s])
-                : p.j(d)
+            S(str)? res.json(data[str])   : res.json(data)
         }
 
     }
-
-
-
-    pjd0=function(p){
-        return function(z,d){
-            p.j(d[0])}
-    }
-
-
-     quc=function(q){
-
-        return {
-
-            u: q.u,
-
-            c: q.b.c
-        }
-    }
-
-
-    fi=find=function(m,o,f){
+    find=function(m,o,f){
 
         if( !F(f) ){ f=pjd(f) }
 
-        $m[m].find(o,f)
+        $m[m].find(o, f)
     }
-
     all=function(m,f){
-        if(!F(f)){f=pjd(f)}
-        $m[m].find(f)}
+
+        if(!F(f)){
+
+            f=pjd(f)
+
+        }
 
 
-    create=function(m,q,p){
+        $m[m].find(f)
 
-        $m[m].create(
+    }
+    create=function(model,req,res){
 
-            quc(q), jD(p)
+        $m[model].create(
+
+          {u: req.u,  c: req.b.c},
+
+            function(err, data){res.json(data)}
 
         )
 
     }
-
-
-
-
-
-
-
-
     createP=function(a){
 
-        pU( '/'+a,
+        $a.post( '/'+a, $w.u,   function(q,p){    create(a,q,p)  })
 
-            function(q,p){
+    }
+    cre=function(model, o,  f){
 
-                create(a,q,p)
+        if(!F(f)){  f=pjd(f)  }
 
-            })
+
+        $m[model].create(o, f)
+
     }
 
+    //it performs a find on a model, and returs results sorted by 'dt:-1'
+    //date time from most recently stamped
 
+    rec=function(model,criteria,func){
 
-    rec=function(a,b,f){
-        if(!F(f)){f=pjd(f)}
-        $m[a].find(b).sort({dt:-1}).execFind(f)
+        func=F(func)
+            ?func
+            :function(err,data){res.json(data)}
+
+        $m[model].find(criteria).sort(
+            {dt:-1}).execFind(func)
+
     }
-
-
 
     rec1=function(a,b,f){
 
         $m[a].findOne(b).sort({dt:-1}).execFind(f)}
 
-    f1=function(m,o,f){if(!F(f)){f=pjd(f)}
+    f1=function(m,o,f){
+        if(!F(f)){f=pjd(f)}
         $m[m].findOne(o,f)}
 
     fById=function(m, o, f){
         $m[m].findById(o,
-        F(f)? f: pjd(f))}
+
+            F(f)? f:
+
+                pjd(f)
+        )
+
+    }
 
     ALL=function(r,m){  $a.g(r, function(q,p,n){ all(m,p)    })}
 
@@ -119,330 +104,36 @@ module.exports=function(){
         if(O(i)){i= i._id}
         if(!F(f)){f=pjd(f)}
         $m[m].findByIdAndRemove(i,f)}
-    rem=function(m,o,f){
 
-        $m[m].remove(o,f)}
+    remove=function(m,o,f){
 
+        $m[m].remove(o,f)
 
-    cre=function(m,o,f){
-        if(!F(f)){f=pjd(f)}
-        $m[m].create(o,f)
     }
 
 
 
 
 
-    $a.g('/',function(q,p){p.r('wap')})
 
-    $a.g('/wap',function(q,p){p.r('wap')})
 
-    $a.g('/wap/workerFile', function(q,p){p.send('/workerFile.js')})
+    $a.get('/', function(req,res){
 
-    $a.g('/wap/:app/:pam?',
-        function(q,p){
-            p.r('wap',{
-                app:q.params.app,
-                pam:q.params.pam})})
-
-
-
-    agU('/lgd', function(q,p,n){p.j(q.u)})
-    $a.p('/rmU',function(q,p,n){rem('user', q.b,  pjd(p) )})
-
-
-
-
-    $a.p('/nU',function(q,p,n){cre('user',q.b,
-            function(z,u){if(z){$l(z.code==11000?'!!':'!')
-                    $d(z);p.j('error');n(z)}
-            else{q.s.u=u.u;q.s.li=true
-                    q.s.save(function(){p.j(u.u)})}})})
-
-
-    $a.p('/li',  function(q,p,n){f1('user', {u:q.b.u,p:q.b.p },
-
-        function(z,u){
-
-            if(z){n(z)}
-            if(!u){p.j('guest')} else{
-                q.s.u=u.u
-                q.s.li=true;
-                q.s.save(function(){
-                    p.j(u.u)})}})})
-    agU('/lo', function(q,p,n){
-        q.s.u=null
-        q.s.li=false
-        q.s.save(function(){
-            p.j('false')
-        })}) //logout
-
-
-
-    $a.g('/gU',function(q,p,n){
-
-       find('user',{},function(z,u){
-           if(u){
-            p.j(_.map(u,function(u){
-                return {
-                u:u.u, m:u.m, i:u.i}}))}})})//sends user list
-
-
-
-    apU('/upl',function(q,p,n){if(q.f.png){q.f.i=q.f.png}
-       var i=q.f.i, op=i.path
-       cre('pic',{u:q.I,n:i.name,s:i.size,m:i.lastModifiedDate,e:pt.e(op)||'.png'},
-            function(z,i){i.p=pt.r(op,'../../p/',i._id.toString())+i.e;$d(i.p)
-                fs.r(op,function(z,f){fs.w(i.p,f,function(z){i.save(function(z){
-                    if(z){n(z)} else{p.d('back')}})})})})})    //upload pic
-
-
-    apU('/uplI', function(q,p,n){
-        if(q.f.png){q.f.i=q.f.png}
-        var i=q.f.i,op=i.path
-         cre('img', {u:q.I,d:q.du},
-            function(z,i){$d(i)
-                i.p=pt.r(op,'../../p/',i._id.toString())+i.e;$d(i.p)
-                fs.r(op,function(z,f){
-                    fs.w(i.p,f,function(z){
-                        i.save(function(z){if(z){n(z)}
-                            else{p.d('back')}})})})})})
-
-
-
-    apU('/nImg',function(q,p,n){
-        var iOb={u:q.u,d:q.b.d,dats: q.b.dats}
-       l(iOb)
-        cre('img', iOb
-            ,p) })  //new image
-
-
-    $a.p('/rmI',function(q,p,n){
-        rmById('img',q.b,p)})  //cutouts
-
-
-    $a.p('/rmP',function(q,p,n){
-        rem('pic',q.b,p)
-    }) //files
-
-
-    $a.g('/pix',function(q,p,n){
-        all('pic',p)})
-
-
-
- agU('/mypix', function(q,p,n){
-     fi('pic', qI(q), p) })
-
-
-    agU('/img',function(q,p,n){
-        fi('img',qu(q),p)})
-
-
-
-        //ART->  // send user THEIR image objects (including durls)
-
-
-
-
-//GET MUG ID
-    agU('/gMg',
-        function(q,p,n){
-            p.j(q.U.m)})
-    //return user THEIR mug ob (if im) or mugID
-    //$a.g('/gMg2',$w.u,function(q,p,n){$m.img.findById(q.U.m, function(m){p.j(m)})})
-
-
-
-    $a.p('/dud',
-        function(q,p,n){
-        fById('img',  q.b.d,
-            function(z,d){   if(O(d)){  p.j(d.d)   }  }) })
-            //get a durl from an img-ob id
-
-
-
-
-    $a.p('/dats',
-        function(q,p,n){
-            fById('img',  q.b.d,
-                function(z,d){   if(O(d)){  p.j(d)   }  }) })
-    //get a durl from an img-ob id
-
-
-    apU('/chMg',function(q,p,n){
-        q.U.m=q.b.m;q.U.save(  pjd(p,'m') )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
-
-    $a.p('/mug',
-        function(q,p,n){
-
-            f1('user', q.b,
-                function(z,u){
-                    $l(u)
-
-                    fById('img', u.m,
-                pjd(p,'d') )})})
-                //function(z,d){  p.j(d.d) }//get a user's durl by a username id
-
-
-
-
-    pU('/tpc',function(q,p,n){
-        cre('tpc',{u:q.u,t:q.b.c},p)
-    })
-
-
-    ALL('/tpc', 'tpc')
-
-
-    $a.g('/tpc1',
-        function(q,p,n){
-            f1('tpc', {t: q.q.t} ,p)})
-
-
-
-
-    pU('/vte', function(q,p,n){
-
-        f1('tpc', {t:q.b.t},
-
-            function(z,t){   // if(q.b.dr=='u'){
-
-
-
-              //  var ti = _.map(t.i, function(i){
-              //      if(O(i) && i.t==q.b.i){
-              //          if(q.b.dr=='u'){i.s=i.s+1}
-              //          if(q.b.dr=='d'){i.s=i.s-1}}
-              //     return i})
-
-
-                var ti = _.map(t.i, function(i){
-
-                    if(O(i) && i.t==q.b.i){
-
-                        if(q.b.dr=='u'){i.s=i.s+1}
-
-                        if(q.b.dr=='d'){i.s=i.s-1}}
-
-                    return i
-                })
-
-
-
-
-                t.i=[]
-
-                t.i= ti;
-
-                t.save( function(z,d){
-
-                       $l('error ob:');$l(z)
-                       $l('suc ob:');$l(d)
-                       p.j(d)}
-
-
-                )
-
-
-            })
-
+        res.render('wap')
 
     })
+    $a.get('/wap', function(req,res){
 
-
-
-    ALL('/users', 'user')
-
-
-
-    createP('sts')
-
-    gU('/sts', function(q,p,n){
-
-        rec('sts', qU(q),p)})
-
-
-
-
-    gU('/sts1', function(q,p,n){
-
-        $l(q.q)
-
-        $m.sts.findOne({u:q.q.u})
-            .sort({dt:-1})
-            .execFind(
-
-            function(z,d){
-                if(A(d)){
-                    p.j(d[0])
-                }
-            })
+        res.render('wap')
 
     })
+    $a.get('/wap/:app/:pam?', function(req,res){
 
+        res.render('wap', {
 
+            app:req.params.app,
 
-
-
-
-    pU('/pst',function(q,p,n){
-
-        cre('pst',{
-
-            u:q.u,
-            t:q.b.t,
-            c:q.b.c,
-            du:q.b.du
-
-        },p)})
-
-
-
-    gU('/psts',
-        function(q,p,n){
-            rec('pst',
-                {},p)})
-
-    gU('/pst',
-        function(q,p,n){
-            rec('pst',
-                qu(q),p)})
-
-    gU('/pstu',
-        function(q,p,n){ $l(q.q)
-            rec('pst', {u:q.q.u}, p)})
-
-
-    gU('/pstt',
-        function(q,p,n){ $l(q.q)
-            rec('pst', {t:q.q.t}, p)})
-
-
-
-    pU('/uPf',function(q,p,n){
-
-        q.U.pf=q.b;
-        q.U.save(pjd(p))
-
-    })
-
-
-
-
-    pU('/gPf',function(q,p,n){ $l(q.b)
-
-        f1('user',
-
-            {u:q.b.u},
-
-            function(z,u){
-                 $l(u)
-              ////******
-
-               if(u.pf){u.pf.u=u.u}
-
-                p.j(u.pf)
+            pam:req.params.pam
 
         })})
 
@@ -450,54 +141,437 @@ module.exports=function(){
 
 
 
+    $a.post('/nU', function(req,res,next){
 
-    pU('/sRq',function(q,p,n){cre('req',{to:q.b.to,fr:q.u},p)})
+        cre('user',
 
+            req.b,
 
+            function(err,u){
 
+                if(err){
 
-
-    pU('/yRq',function(q,p,n){(q.U.buds=q.U.buds||[]).push(q.b.u)
-        f1('user',{u:q.b.u},function(z,u){(u.buds||[]).push(q.u)
-                 u.save()})
-
-        q.U.save()})
-
+                    $l(err.code==11000?'!!':'!'); $d(err)
 
 
-    gU('/gRq',function(q,p,n){fi('req',{to:q.u},p)})
+                    res.j('error'); next(err)
+
+                } else {
+
+                    //set session u=u.u (user name= user.username)
+                    req.s.u=u.u
+
+                    //set session li=true (loggedIn=true)
+                    req.s.li=true
+
+                    //save session and send back a json obj of username -so a string? huh?
+                    req.s.save(function(){res.j(u.u)})
+                }
 
 
 
-    gU('/buds',function(q,p,n){
+            })
+    })
+    //get all users //sends user list
+    //delete user
+    $a.post('/rmU', function(req, res, next){
 
-        all('user',function(z,u){
+            remove( 'user', req.b,  pjd(res) )
 
-                p.j(_.filter(u,function(u){
+        })
+    //create(post new) user
+    //trims it down so you only get the username, mugId, and userId
 
-                return _.contains(q.U.buds, u.u)}))
+    $a.get('/gU', function(req, res, next){
+
+       find('user', {}, function(err, user){
+
+           if(user){
+
+            res.j(_.map(user, function(user){
+
+                return {
+
+                    u:user.u,  m:user.m,   i:user.i
+
+                }
+
+            }))}})
+
+
+    })
+
+    ALL('/users', 'user')
+
+    //login
+    $a.p('/li',  function(req,res,next){
+
+        f1('user',
+
+            {
+                u:req.b.u,
+                p:req.b.p
+            },
+
+
+            function(err, user){
+
+                if(err){next(err)}
+
+                if(!user){res.j('guest')}
+
+
+                //if user
+                else {
+
+                    req.s.u=user.u
+
+                    req.s.li=true;
+
+                    req.s.save(function(){
+
+                        res.j(user.u)
+
+                    })}
+
+            }
+
+
+        )})
+    //logout (a command)
+    $a.get('/lo', $w.u, function(req,res){
+
+        req.s.u=null
+
+        req.s.li=false
+
+        req.s.save(function(){
+
+            res.j('false')
+
+        })})
+    //is logged in?
+    $a.get('/lgd', $w.u, function(req, res){
+        res.j(req.u)
+    })
+
+
+
+
+
+
+
+
+
+
+    ////
+    ////
+    ////IMAGE FILES and CUTOUTS
+    //upload photo (png?)
+    $a.post('/upl', $w.u, function(req,res,next){
+
+            var img=req.f.png? req.f.png: req.f.i
+
+
+        cre('pic',  {u:req.I,
+                n:img.name,
+                s:img.size,
+                m:img.lastModifiedDate,
+                e:pt.e(img.path)||'.png'},  function(err, img){
+
+               //file read
+               fs.r(img.path,   function(err, file){
+
+                        //file write
+                        fs.w(//path.resolve
+
+                            $d(pt.r(img.path,  '../../p/', img._id.toString())  +  img.e  ),
+
+                            file,
+
+                            function(err){
+
+                                img.save(
+                                    function(err){
+                                        if(err){next(err)}
+                                        else {res.d('back')}
+                                    })
+
+                            })
+
+                })
+
+           }
+
+        )})
+    //remove a pic
+    $a.post('/rmP', function(req,res){
+
+        remove('pic',
+
+            req.b, res)
+
+    }) //files
+    //get all pics (everyone's)
+    $a.get('/pix', function(req, res){  all('pic', res)  })
+    //find all User's pics
+    $a.get('/mypix',  $w.u, function(req,res){
+
+     find('pic', {u: req.I}, res)
+
+ })
+ ///////////////////
+    ////
+    //
+    //upload a dataUrl!!
+    $a.post('/uplI', $w.u, function(req,res,next){
+
+        //if(req.f.png){req.f.i= q.f.png}
+
+        // var i=req.f.i
+
+        cre('img',  {u:req.I, d:req.du},  function(err, img){
+
+            $d(img)
+
+            fs.r(img.path, function(err, file){
+
+
+                fs.w(
+
+                    $d(pt.r(img.path,'../../p/', img._id.toString())+img.e),
+
+                    file,
+
+                    function(err){
+
+                        img.save(function(err){if(err){next(err)} else {res.d('back')}})
+
+                    })})
+
+        })})
+    //newDataUrl but with 'dads' (see CONTACTEVENTS)
+    $a.post('/nImg', $w.u,  function(req, res, next){
+
+        cre(
+
+            'img',
+
+            l({u:req.u,   d:req.b.d,  dats: req.b.dats}),
+
+            res
+
+
+
+        ) })  //new image
+    //remove an image (by id) //cutouts?
+    $a.post('/rmI', function(req,res){
+
+        rmById('img', req.b,  res)
+
+    })
+    //find all User's images
+    $a.get('/img', $w.u,function(req, res){
+        find('img', {u: req.u}, res)})
+    ////
+    ////
+    ////MUGS
+    //get User's image ID
+    // GET MUG ID
+    //return user THEIR mug ob (if im) or mugID
+    //$a.g('/gMg2',$w.u,function(q,p,n){$m.img.findById(q.U.m, function(m){p.j(m)})})
+    $a.get('/gMg',  $w.u,  function(req, res){
+
+        res.j( req.U.m )
+
+    })
+
+    //need to deprecate
+    //get a durl from an img-ob id
+    $a.post('/dud',   function(req,res,next){
+
+            fById('img', req.b.d, function(err, data){
+                    if(O(data)){
+                        res.j(data.d)   }  })
+
+        })
+
+    //** get a dataUrl from an img-ob id ++++ physics!
+    //can dep by using oid's??
+
+    $a.post('/dats', function(req,res){
+        fById('img',  req.b.d, function(err, data){
+
+            if(O(data)){
+                res.j(data)
+                }
+            })
+    })
+    //get User's ACTUAL IMAGE (data-url) (by id)
+    $a.get('/getMug',  $w.u,
+        function(req,res,next){
+            fById('img',  $l(req.U.m),  function(err, data){$l(data)
+                    if(O(data)){res.j(data.d)}})})
+    //change a user's mug (dataUrl id)
+    //make this an oid?
+    $a.post('/chMg', $w.u, function(req,res){
+
+        req.U.m = req.b.m
+
+        req.U.save(
+
+            pjd(res,'m')
+
+        )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
+    //
+    //get a sp. user's mug data-Url
+    $a.post('/mug', function(req, res){  f1('user',   req.b,
+
+                function(err, u){  //$l(u)
+
+                    fById('img',  u.m,  pjd(res, 'd'))
+
+                })})
+
+                //function(z,d){  p.j(d.d) }//get a user's durl by a username id
+
+
+////////////////
+    //////
+    ////
+    ///
+
+
+
+
+
+
+    //create new status
+    createP('sts')
+    //get status
+    $a.get('/sts',  $w.u, function(req,res){
+        rec('sts', {u: req.u},   res)  })
+  //get most recent status
+    $a.get('/sts1',  $w.u, function(req, res){//$l(req.q)
+        $m.sts.findOne({u:req.q.u})
+            .sort({dt:-1})
+            .execFind(
+            function(err,data){
+                if(A(data)){
+                    res.j(data[0])
+                }
 
             })})
 
 
 
 
-    pU('/buds',function(q,p,n){
+    //create new post
+    $a.post('/pst', $w.u, function(q,p,n){
 
-        $m.user.findOne(q.b,
+        cre(
 
-            function(z,uu){ $l(uu.u)
+            'pst',
 
-            all('user',  function(z,u){
+            {  u:q.u,  t:q.b.t,  c:q.b.c,  du:q.b.du  },
 
-                p.j(_.filter(u, function(u){
+            p
+        )
 
-                    return _.contains(
-                        uu.buds, u.u)}))
 
-            })
+    })
+    //get posts
+    $a.get('/psts',   $w.u,  function(req,res){
+
+            rec('pst', {}, res)
 
         })
+    $a.get('/pst', $w.u,  function(req,res){
+
+            rec('pst',  {u: req.u},  res  )
+
+        })
+    $a.get('/pstu', $w.u, function(req,res){ //$l(req.q)
+        rec('pst', {u: req.q.u}, res)
+    })
+    $a.get('/pstt', $w.u,function(req,res){ //$l(req.q)
+            rec('pst', {t:req.q.t},  res)})
+
+
+
+
+
+
+
+
+
+
+// $a.g('/wap/profile/:u', function(q,p,n){ p.j(q.params.u)  })
+    $a.get('/profile/:u?', function(q,p,n){$l(q.params)
+
+        p.j(q.params.u)})
+    $a.post('/uPf', $w.u, function(q,p,n){
+        q.U.pf=q.b;
+        q.U.save( pjd(p) )})
+    $a.post('/gPf',  $w.u, function(q,p,n){ $l(q.b)
+
+        f1('user',
+
+            {u:q.b.u},
+
+            function(z,u){
+                $l(u)
+                ////******
+
+                if(u.pf){u.pf.u=u.u}
+
+                p.j(u.pf)
+
+            })})
+
+
+
+
+
+
+
+    $a.post('/sRq', $w.u, function(q,p,n){
+
+        cre('req', {to:q.b.to,  fr:q.u}, p)
+
+    })
+    $a.post('/yRq',$w.u,function(q,p,n){(q.U.buds=q.U.buds||[]).push(q.b.u)
+        f1('user',{u:q.b.u},function(z,u){(u.buds||[]).push(q.u)
+            u.save()})
+
+        q.U.save()})
+    $a.get('/gRq',$w.u,function(q,p,n){find('req',{to:q.u},p)})
+
+
+    $a.get('/buds',$w.u,function(req,res,next){all('user', function(err, u){
+
+            res.j(_.filter(u, function(u){
+
+                return _.contains(req.U.buds, u.u)}))
+
+        })})
+    $a.post('/buds',$w.u,function(req,res){
+
+        $m.user.findOne(req.b,
+
+            function(err, uu){
+
+                $l(uu.u)
+
+                all('user',  function(err, u){
+
+                    res.j(_.filter(u, function(u){
+
+                        return _.contains(  uu.buds,   u.u    )}))
+
+                })
+
+            })
 
 
 
@@ -508,10 +582,12 @@ module.exports=function(){
 
 
 
-    pU('/sMsg',function(q,p,n){cre('msg',{m: q.b.m,to: q.b.to,fr: q.u},p)})
-    gU('/MsgS',function(q,p,n){
+
+    $a.post('/sMsg',$w.u,function(q,p,n){cre('msg',{m: q.b.m,to: q.b.to,fr: q.u},p)})
+    $a.get('/MsgS',$w.u,function(q,p,n){
 
         var o = {};
+
         o.map = function(){emit(this.to, {m:this.m, dt:this.dt, fr:this.fr})}
 
 
@@ -519,12 +595,14 @@ module.exports=function(){
 
 
             var d
+
             vals.forEach(function(v){
 
 
                 if(!d){d={dt: v.dt,  m: v.m, to:k,fr: v.fr }  }
 
                 else if(v.dt> d.dt){
+
                     d={dt:v.dt, fr: v.fr, m:v.m, to:k } } })
 
             return d}
@@ -547,97 +625,67 @@ module.exports=function(){
 
             })
     })
-
-
-
-
-   // $a.g('/wap/profile/:u', function(q,p,n){ p.j(q.params.u)  })
-
-
-
-    $a.g('/profile/:u?',
-
-        function(q,p,n){$l(q.params)
-
-            p.j(q.params.u)})
-
-
-
-    gU('/gMsg',function(q,p,n){
+    $a.get('/gMsg',$w.u, function(q,p,n){
 
         var o = {};
         o.map = function(){
             emit(this.fr, {
-                m:this.m, dt:this.dt})}
+                m:this.m, dt:this.dt
+            })}
 
-
-        o.reduce = function(k,vals){
-
+        o.reduce = function(k, vals){
 
             var d
+
             vals.forEach(function(v){
 
 
                 if(!d){d={dt: v.dt,  m: v.m, fr:k }  }
 
-               else if(v.dt> d.dt){ d={  dt: v.dt,  m: v.m, fr:k } } })
+                else if(v.dt> d.dt){ d={  dt: v.dt,  m: v.m, fr:k } } })
 
-             return d  }
-
+            return d  }
 
 
         $m.msg.mapReduce(o,
 
 
-            function(z,r){$l(r)
-                r=_.map(r,function(v){return v.value})
+            function(err, r){
+
                 $l(r)
+                r=_.map(r, function(val){return val.value})
+
+                $l(r)
+
                 p.j(r)
 
 
 
             })
     })
+    // get mail FROM User, TO a sp. user
+    $a.get('/gMsgF',$w.u,function(req,res,next){
 
+        $m.msg.find({
 
+            to:req.u,
 
+            fr:req.q.u
 
-
-
-
-
-
-    gU('/gMsgF',function(q,p,n){
-
-        $m.msg.find({to:q.u,
-            fr:q.q.u}, pjd(p))})
-
-
-
-    gU('/gMsgW',function(q,p,n){
+        }, pjd(res))})
+    //get all mail TO ===or==== FROM user
+    $a.get('/gMsgW',  $w.u,  function(req, res){
 
         $m.msg.find(
-            {$or : [
-                {to:q.u,fr:q.q.u},
-                {to:q.q.u,fr:q.u}]},
-            pjd(p))
+
+            {$or : [ {to:req.u,  fr:req.q.u}, {to:req.q.u, fr:req.u} ]},
+
+            pjd(res))
     })
+    //get all mail sent FROM User
+    $a.get('/gMsgSx', $w.u, function(req,res,next){  $l('gMsgS')  // $m.msg.find({fr:q.u}, {sort:{dt: -1 }}).distinct('fr',  pjd(p))
 
-
-
-
-    gU('/gMsgSx',function(q,p,n){
-
-        $l('gMsgS')
-
-       // $m.msg.find({fr:q.u}, {sort:{dt: -1 }}).distinct('fr',  pjd(p))
-
-
-      $m.msg.find(
-
-          {fr:q.u},
-          pjd(p)
-      )
+        $m.msg.find( {fr:req.u},  pjd(res) )
 
     })
 
@@ -646,37 +694,134 @@ module.exports=function(){
 
 
 
-    gU('/bk',function(q,p,n){rec('post',qu(q),p)})
-    pU('/nBk', function(q,p,n){cre('status',{u:q.u,t:q.b.t,c:q.b.c},p)})
+    //create new topic
+    $a.post( '/tpc',    $w.u,   function(req, res){
 
-    pU('/itm',function(q,p,n){f1('tpc',{t:q.b.t},function(z,d){
-        d.i.push({t:q.b.c,s:0});
-        d.save(pjd(p))})})
+        cre('tpc', {
+
+                u:req.u, t:req.b.c
+
+            },
+
+
+            res) })
+    //get all topics
+    ALL('/tpc', 'tpc')
+    //get topic 1 ? by t?
+    $a.get('/tpc1', function(req, res){f1('tpc',    {t: req.q.t},    res   )})
+    //post vote
+    $a.post('/vte', $w.u, function(req,res){
+
+        f1('tpc', {t:req.b.t},
+
+
+            function(err, t){   // if(q.b.dr=='u'){
 
 
 
-    pU('/srt', function(q,p,n){
+                //  var ti = _.map(t.i, function(i){
+                //      if(O(i) && i.t==q.b.i){
+                //          if(q.b.dr=='u'){i.s=i.s+1}
+                //          if(q.b.dr=='d'){i.s=i.s-1}}
+                //     return i})
 
-        cre('srt',{u:q.u,t:q.b.c},p)
+
+                var ti = _.map(t.i,
+
+                    function(i){
+
+                        if(O(i) && i.t==req.b.i){
+
+                            if(req.b.dr=='u'){i.s=i.s+1}
+
+                            if(req.b.dr=='d'){i.s=i.s-1}}
+
+                        return i
+                    })
+
+                t.i=[]
+
+                t.i= ti;
+
+
+                t.save(
+
+                    function(err,data){
+
+
+                        $l('error ob:');  $l(err)
+
+                        $l('suc ob:');  $l(data)
+
+                        res.j(data)
+
+                    }
+
+
+                )
+
+
+            })
+
 
     })
 
+    //get book
+    $a.get('/bk', $w.u, function(req,res,next){
+        rec('post', {u: req.u}, res)
+    })
+    //post new book
+    $a.post('/nBk', $w.u,function(req,res,next){
 
-    gU('/srt',function(q,p,n){fi('srt',{u:q.u},p)})
+        cre('status',{u:req.u,  t:req.b.t,  c:req.b.c},
+
+            res)})
+
+    //post a user's item
+    $a.post('/itm',$w.u,function(req,res,next){
+        f1('tpc',{t:req.b.t},function(z,d){
+        d.i.push({t:req.b.c,s:0});
+        d.save(pjd(res))})})
+
+    //post a user's sort  //should refernce a parent sort?!  :)
+    $a.post('/srt',$w.u, function(req,res){
+        cre('srt', {u:req.u, t:req.b.c},  res)  })
+    //get a user's sort!
+    $a.get('/srt',  $w.u,  function(req,res){
+
+        find('srt', {u:req.u}, res)})
 
 
-    $a.g('/ball',function(q,p){p.j(ball)})
 
-    $a.p('/ball',function(q,p){
+
+
+
+
+
+
+
+
+
+
+    $a.get('/ball', function(req, res){ res.j(ball) })
+    $a.post('/ball',function(q,p){
         l(q.b)
         ball.x=$N(q.b.x)
         ball.y=$N(q.b.y)
         p.j(ball)})
+    $a.get('/gz',function(req,res){
+
+            res.j(gz)
+
+        })
 
 
-    $a.g('/gz',
-        function(q,p){p.j(gz)})
 
+    $a.get('/wap/workerFile', function(req,res){
+
+        res.send('/workerFile.js')
+
+    })
 
 
 

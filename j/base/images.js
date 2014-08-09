@@ -57,20 +57,27 @@ sI=function(i){i=i||_I()
 
 im=function(a,b){
 
-    var g=G(arguments),
-        i=sI()
+    var g=G(arguments), i=sI()
 
+
+    //_k -> obj and complete
     if(_k(E(a))){
         a=sI(E(a))
         if(b){b(a)}
         return a}
+
+
+    //this is for when returning the mug
+    //it is a dataUrl, but for some reason,
+    //i must run parseJSON on it
+    // if( (a).indexOf('data') ){a= $.parseJSON(a)}
+
 
     if(b){i.r(b)}
 
     i.s(a||(g.N?'me':''))
 
     if(g.p){$b(i)}
-
 
     return i}
 

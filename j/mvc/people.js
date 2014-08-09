@@ -401,7 +401,9 @@ AVAIL=function(){z()
 
 
     Ap.V.Avails =bbV({
+
         el:'#availsDiv',
+
         I:function(){this.render()},
 
         R:function(){var t=this

@@ -34,8 +34,6 @@ G=function(a){
 
     })}
 
-
-
 cL=function(a){console.log(a);return a}
 cD=function(a){console.dir(a);return a}
 $l=function(a,b){if(!b){return cL(a)} cL('{'+a+':'+b+'}');return b}
@@ -65,13 +63,20 @@ ls=function(a,b,c){
 
 
 
-s=function s(kO,v){
-    if(O(kO)){
-        _e(kO,function(v,k){
+set=s=function set(kO,v){
 
-            s(k,v)})
+    if(O(kO)){
+
+        _.each(kO, function(v,k){
+
+            set(k,v)})
     return}
-    a.set(kO,v)}
+
+    app.set(kO,v)
+
+    return app
+}
+
 
 
 
@@ -99,40 +104,30 @@ gz={health:100, x:5000,  y:5000}
 
 
 
-mongoose  =$g=db=d=  require('mongoose')
+mongoose =$g=db=d= require('mongoose');     $g.s = $g.Schema; $g.m = $g.model; $g.c = $g.connect
+
+models =$m=require('./models')
 
 
-$g.s = $g.Schema
-
-$g.m = $g.model
-
-$g.c = $g.connect
-
-models  =$m=require('./models')
-
-//$t=require('./task')
 
 
-$g.connect(
-    "mongodb://localhost/brain",smile
-)
+mongoose.connect("mongodb://localhost/brain", smile)
+
+q('./mong')
+
+http =ht=h=q('http')
 
 
-require('./mong')
+http.s =ht.createServer
 
-http=ht=h=require('http')
-
-
-ht.s=ht.createServer
-
-path=pt=p=require('path')
+path=pt=p=q('path')
 pt.b=pt.basename
 pt.j=pt.join
 pt.e=pt.extname
 pt.r=pt.resolve
 
 
-fs=f=require('fs')
+fs=f=q('fs')
 fs.rds=fs.readdirSync
 fs.r=fs.rf=fs.readFile
 fs.w=fs.wf=fs.writeFile
@@ -140,98 +135,90 @@ fs.ul=fs.unlink
 fs.rn=fs.rename
 
 
-express   = e=require('express')
+express=e=q('express')
+e.eh=e.errorHandler
+e.l=e.logger
+
+e.bp=e.bodyParser
+e.s=e.session
+e.f=e.favicon
+e.st=e.static
 
 
-mongoStore =  st=new(require('connect-mongo')(e))({db:'brain'})
+
+mongoStore=st=new(
+
+    q('connect-mongo')(e)
+
+    )({db:'brain'})
 
 
-a=express()
 
+app=a=express()
 a.l=a.locals
-
 a.r=a.router
 
-middleware   =$w=w=require('./MW')
+middleware=$w=w=q('./MW')
 
 
-
-a.set('port', process.env.PORT||4000)
-
-a.set('view engine' ,'jade')
-
-console.log('dirname: '+ __dirname)
-
-a.set('views'       ,__dirname + '/../v/')
+app.set('port', process.env.PORT||4000)
+app.set('view engine', 'jade')
+app.set('views',      __dirname + '/../v/')
 
 
+app.use(express.l('dev'))
+
+if(
+    app.get('env')=="development"
+
+    ){app.use(express.errorHandler())}
+
+cookieParser = cp=express.cookieParser('xyz')
 
 
-
-a.use( express.logger('dev') )
-
-
-
-if(a.get('env')=="development"){
-    a.use(express.errorHandler())}
-
-
-cookieParser =  express.cookieParser('xyz')
-
-
-
-a.use(
-    express.bodyParser(
-        {
-            keepExtensions:true,
-            uploadDir:__dirname+"/p/u"
-        }
-    ))
-
-
-a.use(cookieParser)
-
-a.use(express.session({
-
-    store:mongoStore,
-
-    secret:'xyz'
+app.use(express.bodyParser({
+    keepExtensions:true,
+    uploadDir:__dirname+"/p/u"
 
 }))
 
 
-a.use(
+app.use(cookieParser)
+
+
+app.use(
+    express.session({
+        store:mongoStore,
+        secret:'xyz'
+    }))
+
+
+
+app.use(
     require('connect-flash')())
 
+app.use(
+    express.favicon())
 
-a.use(express.favicon())
-
-a.use(middleware)
-
+app.use(
+    middleware)
 
 
 
-//render a jade page
+app.get('/w/:p',
 
-a.get(
+    function(req,res,next){
 
-    '/render/:page',
+        path.resolve('p/' + req.p('p')) })
 
-    function(req, res, next){
-        res.render(req.params.page)}
-    )
 
 
 require('./routes')()
 require('./bookRoutes')()
 require('./restRoutes')()
 
+app.use( app.router )
 
-
-
-
-
-a.use(a.router)
 
 
 _.each([
@@ -259,41 +246,32 @@ _.each([
 
 ],
 
-    function(dir){
 
-   a.use(
+    function(a){
 
-       express.static(
-           path.join(__dirname, dir))
-   )
+    app.use(
+        express.static(
+            path.join(__dirname, a)
+        ))
 
 })
 
 
 
 
+httpServer = http.createServer(app)
 
-httpServer = http.createServer(a)
-
-
-httpServer.listen( 8080, smile)
-
-
+httpServer.listen(8080, smile)
 
 ball = {x:100, y:100}
 
+io=require('socket.io').listen(httpServer)
 
-io =  require('socket.io').listen(httpServer)
+io.set('log level', 1)
 
-io.set('log level',1)
+sio=require('session.socket.io')
 
+require('./sockets')( io, new sio(io, mongoStore, cookieParser) )
 
-sio = require('session.socket.io')
-
-
-require('./sockets')(
-    io,
-    new sio(io,mongoStore,cookieParser)
-)
 
 
