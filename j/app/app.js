@@ -128,7 +128,7 @@ home=function(){
 
     //load navigator
 
-    WAPNAV('g')
+    WappyNav('g')
 
     //update user name on UI dash
 
@@ -357,7 +357,7 @@ buds=function(f){qG('/buds',f)}
 
 rmU=function(a,b){if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
 
-fresh=function(){z();WAPNAV()}
+fresh=function(){z();WappyNav()}
 
 
 

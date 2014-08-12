@@ -271,10 +271,16 @@ td=function(){
  tr=function(){return qq('tr')}
 
 
-bold=bo=function(a,k){
+$bold=bold=bo=function(a,k){
+
     var g=G(arguments),
         h=g.p?'&nbsp;'+a:a;
-    return qq('B').H(h).k(k)}
+    return qq('B').H(h).k(k)
+
+}
+
+
+
 
 
 

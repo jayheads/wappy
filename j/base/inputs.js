@@ -82,7 +82,7 @@ fo=function(a){var g=G(arguments),f=form()
 
 
 
-$input = ip=function(typ, val, C, c){
+TextInput= $input = ip=function(typ, val, C, c){
 
     var g=G(arguments),
 
