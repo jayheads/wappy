@@ -37,15 +37,33 @@ _N=function(a){if(U(a)){return qq('N')}}//nav
 
 
 
+$form=function(){
+    return qq('f')
+}
+
+
 fc=function(a){
     return ip(a).k('fc')}
 
-form=function(c,a){var g=G(arguments),c=g[0],a=g[1],
-    f=_f().k('f').at({r:'form'})
+form=function(c,a){
+
+    var g=G(arguments),c=g[0],a=g[1],
+    f=$form().k('f').at({r:'form'})
+
     if(g.N){f.at({m:'post'})}
+
     if(D(c)){f.c(c)}
+
     if(a){f.at({a:a})}
-    return f}
+
+    return f
+
+}
+
+
+
+
+
 
 fo=function(a){var g=G(arguments),f=form()
     if(a=='i'){return fo(['fi fg'])}
@@ -63,15 +81,36 @@ fo=function(a){var g=G(arguments),f=form()
 
 
 
-ip=function(t,v,C,c){
+
+$input = ip=function(typ, val, C, c){
+
     var g=G(arguments),
-        i=qq('i').at({t:t||'t',v:v})
-    if(g.p){i.k('fc')}
-    if(C){i.s('C',C)}
-    if(c){i.s('c',c)}
+
+
+        i=qq('i').at({
+
+            type: typ || 't',
+
+            value: val
+
+        })
+
+
+    if(g.p){  i.k('form-control') }
+
+    if(C){ i.s('C', C) }
+
+    if(c){ i.s('c', c) }
+
+
     return i
+
     //"<input type="text">"
 }
+
+
+
+
 
 
 

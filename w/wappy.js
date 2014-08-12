@@ -148,9 +148,9 @@ mongoStore =  st=new(require('connect-mongo')(e))({db:'brain'})
 
 a=express()
 
-a.l=a.locals
+a.l = a.locals
 
-a.r=a.router
+a.r = a.router
 
 middleware   =$w=w=require('./MW')
 
@@ -222,9 +222,23 @@ a.get(
     )
 
 
-require('./routes')()
-require('./bookRoutes')()
-require('./restRoutes')()
+
+
+require('./routes/routes')()
+
+require('./routes/social')()
+
+require('./routes/bookRoutes')()
+
+require('./routes/restRoutes')()
+
+
+
+
+
+
+
+
 
 
 

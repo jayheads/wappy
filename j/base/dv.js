@@ -1,11 +1,14 @@
 
-_d=function(a,b){
+$div = _d=function(a,b){
     var g=G(arguments),
         d=qq('d')
 
     _e(g.r, function(g){ d(g) })
 
     return d}
+
+
+
 
 
 di=function(i){return _d().id(i)}

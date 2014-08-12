@@ -127,10 +127,23 @@ F=function f(a,b,c){
     if(_.isFunction(a)){return a.prototype||true}}
 
 
-_f=function(a,b,c){return U(a)? qq('f')
+
+_f=function(a, b, c){
+
+    return U(a)? qq('f') // need to deprecate this
+
         :F(b)? _.find(a,b,c)
 
-            :_.first(a,b)}
+            :_.first(a,b)
+
+}
+
+
+
+
+
+
+
 
 
 

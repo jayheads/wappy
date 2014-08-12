@@ -268,27 +268,61 @@ CUTOUTS=function(){format()
 
 
 
-fup=function(l,h){
+fup=function(labelText, text){
 
-    var d=fg(
-        lb(D(l)?l:'upload file','upl').k('ctl').f(20),
-        ip('f').id('upl').nm('i'))
 
-    if(h){d(pg(['hb'],h))}
+    var theFormGroup = fg(
 
-    return d}
+
+        lb(
+
+            D(labelText) ? labelText  : 'upload file',
+
+            'upl'
+
+        ).k('ctl').f(20),
+
+
+
+        ip('file').id('upl').nm('i')
+
+
+    )
+
+
+
+
+    if(text){
+
+        theFormGroup(
+
+            pg(['help-block'], text) )}
+
+    return theFormGroup }
+
+//<div class="form-group">
+//      <label style="font-size: 20px;" class="control-label" for="upl">
+//              upload file
+//      </label>
+//      <input name="i" id="upl" type="f">
+// </div>
+
+
 
 
 
 UPLOAD=function(){
 
-    pop(
+    pop(   form().mpfd().act('/upl')( fup(''),
 
-        form().mpfd().act('/upl')(
-            fup(''),sm('ok')),
-        {t:'upload a new pic'}
+            //sm('ok')
 
-    ).drg()}
+            $input().k("show").ty('submit').V('ok')  ),   {t:'upload a new pic'}
+
+    ).drg()
+
+}
+
 
 
 

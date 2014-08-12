@@ -1,15 +1,29 @@
-module.exports=function() { $a = a;   a.p = a.post;  a.g = a.get;
+module.exports=function() { $a = a
 
 
 
 
-    $a.get('/avail', function(q,p,n){
-        $m.avail.find(function(z,avails){
-            $l(avails);p.j(avails)   })})
+    $a.get('/avail', function(req, res){
+
+        $m.avail.find(function(err, avails){
+
+
+            res.j(  $l(avails)   )   })
+
+    })
+
+
+
+
 
     $a.post('/avail', function(q,p,n){    l('pposting..');l(q.b)
-            $m.avail.create({c: q.b.c},
-                function(z,course){  if(z){l(z)} else {p.j(course)}   })})
+
+        $m.avail.create({c: q.b.c},
+                function(z,course){
+                    if(z){l(z)} else {p.j(course)}
+
+                })})
+
 
     $a.put('/avail/:id', function(q,p,n){
 
@@ -27,24 +41,9 @@ module.exports=function() { $a = a;   a.p = a.post;  a.g = a.get;
 
     })
 
-
-
-
-
-
-
     $a.del('/avail/:id', function(q,p,n) {l(q.params)
         $m.avail.findByIdAndRemove(q.params.id,
             function (z, avail) {if(z){l(z)} else {p.j(avail)}})})
-
-
-
-
-
-
-
-
-
 
     $a.put('/sts/:id', function(q,p,n){
 
@@ -90,10 +89,6 @@ module.exports=function() { $a = a;   a.p = a.post;  a.g = a.get;
 
             })
     })
-
-
-
-
 
 
 

@@ -36,13 +36,15 @@ _q=function(a){return $('<ol>') }
 
 
 rq=function(s){return s+' &raquo'}
-dgM=function(a){return a.at({dg:'modal'})}
+
+ dgM=function(a){return a.at({dg:'modal'})}
  tN=function(a){return a.tagName}
 
 
 
 thead=function(){return _a( qq($('<thead>')),arguments)}
-tbody=function(){return _a( qq($('<tbody>')),arguments)}
+
+ tbody=function(){return _a( qq($('<tbody>')),arguments)}
 
 
 _B=function(){
@@ -83,28 +85,37 @@ h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
 h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
 h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
 
-br=function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
+$br =br =function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
 
-pg=function(a){var g=G(arguments),p=_p()
+$pg = pg=function(a){var g=G(arguments),p=_p()
     _e(g,function(v){if(A(v)){p.k(v[0])} else{ if(S(v)){v=sp(v)};p(v)}});return p}
 
 
 
 
-sp=function(){
 
-    var g=G(arguments),
-        s=qq('s'),
-        str=''
+$span = sp=function(){
 
-    _e(g,function(v){
-        if(A(v)){s.k(v[0])}
-        else if(S(v)){str+=v}
-        else {s.a(v)}})
+    var g=G(arguments),     theSpan=qq('s'),     str=''
 
-    if(str){s.T(str)}
+    _.each(g,
 
-    return s}
+        function(val){
+
+            if(A(val)){theSpan.k(val[0])}
+
+            else if(S(val)){str+= val }
+
+            else {theSpan.a( val )}})
+
+    if(str){ theSpan.T(str) }
+
+    return theSpan}
+
+
+
+
+
 
 
 sc=function(a,b){return qq($('<section>')).id(a).s(b)}
@@ -140,20 +151,26 @@ li=function(){var g=G(arguments),
 
 
 
-lk=function(a,f){
+$a= lk=function(a,f){
+
     var g=G(arguments), a=g[0], f=g[1],
         l=qq('a').id(a)(a)
+
     if(F(f)){l.o(f)} else {l.hr(f||'#')}
+
     if(g.n){l.dd()}
+
     if(g.p){l=li(l)}
+
     if(g.m){l=li(l).k('A')}
+
     return l}
 
 
 
 
 
-ul=function(){
+$ul = ul=function(){
     var tLi=function(a){
         var iLi=function(a){return _h('HTMLLIElement', E(a))}
         return iLi(a)?a:li(a)}
@@ -166,13 +183,77 @@ ul=function(){
     if(g.p){e.k('n nbn')}//navbar nav
     return e}
 
-lik=function(a,b){//dep by li (+/*)
-    var g=G(arguments),
-        a=g[0], b=g[1],l=lk(a,b,'+')
-    if(g.p){l.k('A')}
-    return l}
 
-ol=function(o,b){var g=G(arguments),
+
+
+ $li = li=function(){var g=G(arguments),
+     l=qq('li')
+
+     //klass or add
+     _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
+     if(g.p){l.k('A')}//active
+     if(g.n){l.k('dd')}//dropdown
+     return l}
+
+
+
+ $ax =function(textAndId, hrefOrFunc){
+
+     var args=G(arguments), a=args[0], hrefOrFunc=args[1],
+
+         theEl = qq('a').id(textAndId)(textAndId)
+
+     if (F(hrefOrFunc)) {theEl.o(hrefOrFunc)}
+
+     else {theEl.hr(hrefOrFunc||'#')}
+
+     return (args.n)? theEl.k("dropdown-toggle")
+
+
+         //  "<div data-toggle="dropdown" class="dropdown-toggle"></div>"
+
+
+         :(args.m)? li(theEl).k('active') :(args.p)? li(theEl)
+
+         :theEl}
+
+
+
+ $a = lk=function(a, func){
+     var g=G(arguments), a=g[0], f=g[1],
+
+         theEl=qq('a').id(a)(a)
+
+     if(F(func)){theEl.o(func)} else {theEl.hr(func||'#')}
+
+     if(g.n){theEl.dd()}
+
+   //  "<div data-toggle="dropdown" class="dropdown-toggle"></div>"
+
+     if(g.p){theEl=li(theEl)}
+
+
+
+     if(g.m){theEl=li(theEl).k('active')}
+
+     return theEl}
+
+
+ $liA = lik=function(a,b){//dep by li (+/*)
+
+     var args=G(arguments), a=args[0], b=args[1],
+
+         theEl= $li( $a(a, b) )
+
+     if(args.p){theEl.k('active')}
+
+     return theEl}
+
+
+
+
+
+ ol=function(o,b){var g=G(arguments),
     e=qq('o')
     _e(g,function(v){
         if(A(v)){
@@ -189,10 +270,13 @@ td=function(){
 
  tr=function(){return qq('tr')}
 
-bo=function(a,k){
+
+bold=bo=function(a,k){
     var g=G(arguments),
         h=g.p?'&nbsp;'+a:a;
     return qq('B').H(h).k(k)}
+
+
 
 
 ifra=function(){

@@ -1,4 +1,8 @@
-lc=function(a){if(D(a)){$w.location=a}; return $w.location}
+lc=function(a){
+    if(D(a)){$w.location=a}; return $w.location}
+
+
+
 
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
 
@@ -52,73 +56,190 @@ qGE=function rc(u,d,f){
         _e(ss,function(s){f(s,ss)})})}
 
 
-load=function(a){lc('/wap/'+a)}
 
-guest=function(){z('r')
-    CT(
+
+load=function(a){
+
+    $w.location='/wap/'+a
+}
+
+
+
+
+guest=function(){
+
+
+    z('r')
+
+  var content=  CT(
 
         HD(
-            ul().k('n np pr')(
-                lik('home','+'),
-                lik('About'),
-                lik('Contact')),
-            h1('jason yanofski presents..')),
+
+            ul().k('n np pr')(  lik('home',  '+'),    lik('About'),   lik('Contact')   ),
+
+
+            h1('jason yanofski presents..')
+
+        ),
+
+
 
         JT(
-            'a graphics-based real-time social gaming creativity web app','woo hoo!',bt('log in',lI,'+'),sp(' '),
-            bt('sign up',sU,'+'),
-            '+'),
+
+            'a graphics-based real-time social gaming creativity web app','woo hoo!',
+
+            bt('log in',  lI,  '+'), sp(' '),
+
+            bt('sign up',  sU,  '+'),
+
+            '+'
+
+        ),
+
 
         ROW(
-            h1('fun!'),
-            _d()(h4('graphics'),
-                pg('cool cool cool'),
-                h4('social'),
-                pg('cool cool')))//,  FT('&copy;2013')
 
-    ).pp().drg().c('o').s('a',.9).t(100).l(100)}
+            h1('fun!'),  _d()(   h4('graphics'),  pg('cool cool cool'),  h4('social'),      pg('cool cool')  )
+
+        )  //,  FT('&copy;2013')
+
+
+    )
+
+
+
+
+
+    content.pp()
+
+    content.drg()
+
+    content.c('o').s('a',.9).t(100).l(100)
+
+
+}
+
+
+
+
+
 
 home=function(){
-    WAPNAV('o')
-    qi('uname').T(usr)  //qi('uname').jLoad('/lgd')
-    if($w[app=uC(app)]){$w[app]()}}
+
+    //load navigator
+
+    WAPNAV('g')
+
+    //update user name on UI dash
 
 
-sU=function(){
-   var nU=function(a,b,c){//new user
+
+    qi('uname').T(     usr     )
+
+
+
+
+
+
+    //qi('uname').jLoad('/lgd')
+
+
+    app = uC(app) // should be passed in?
+
+
+    if(  $w [app] ){   $w[app]()   }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+signUpForm  = sU=function(){
+
+    var nU=function(a,b,c){//new user
+
         if(S(a)){return nU({u:a,p:b},c)}
+
         qP('/nU',a,b)}
 
 
     var f={
 
-        u:fg(lb('uname: ','uname'), fc().id('uname'))
+        u:fg(
+
+            lb('uname: ','uname'),
+
+            fc().id('uname')
+        )
+
             .f(20).nm('u'),
-        p:fg(lb('pword: ','pword'), fc('p').id('pword'))
-            .f(20).nm('p'),
+
+
+
+        p: fg(
+
+            lb('pword: ','pword'),
+
+            fc('p').id('pword')
+
+        ).f(20).nm('p'),
+
+
         s: sm('sign up!').f(16),  //~m
 
 
         v:function(){
-            return {u:qq(f.u.ch(1)).V(), p:qq(f.p.ch(1)).V()}}}
+
+            return {
+
+                u:qq(f.u.ch(1)).V(),
+
+                p:qq(f.p.ch(1)).V()
+
+            }
+
+        }
+    }
 
 
-    f.f=_f().P(4).c('o')(
+    f.f= _f().P(4).c('o')(
+
         f.u,
         f.p,
-        f.s)
+        f.s
+
+    )
+
+
 
     pop(f.f).id('mod').drg()
 
     f.f.o('s', function(q,e){pD(e.e)
 
+
         qP('/nU', f.v(),
+
 
             function(d){
 
-                if(d==='guest'){
+
+                if(d === 'guest'){
+
                     qi('mod').m()
-                    pop('try again.. idiot')}
+
+                    pop('try again.. idiot')
+
+                }
+
 
                 else {
 
@@ -126,39 +247,104 @@ sU=function(){
 
                     WAPNAV()
 
-                    pop('welcome '+d+'!')
-                    qi('uname').jLoad('/lgd')//uplog()
+                    pop( 'welcome ' + d + '!' )
+
+                    qi('uname').jLoad( '/lgd' )//uplog()
 
 
-                }})})
+                }
+
+            })})
 
     return f}
-lI=function(){var u,p,s,f,
+
+
+
+
+logInForm = lI = function(){
+
+    var u, p, s, f,
 
         verifyLogin=function(d){
-            if(d==='guest'){qi('mod').m();pop('try again.. idiot')}
-            else{home();pop('welcome '+d+'!')}}
+
+            if(d==='guest'){
+
+                //close the login form
+                qi('mod').m()
+
+
+                //pop a UI alert message
+                pop('try again.. idiot')
+
+            }
+
+            else {
+
+
+                home()
+
+                pop('welcome '+d+'!')
+            }
+        }
+
+
 
     pop(
 
-        f=_f().P(4).c('g')(
+        f = _f().P(4).c('g')(
 
-                u=fg(lb('uname: ','uname'),fc().id('uname')).f(20).nm('u'),
-                p=fg(lb('pword: ','pword'),fc('p').id('pword')).f(20).nm('p'),
-                s=sm('log in!').f(16))
+                u=fg(
 
-            .o('s',function(q,e){
-                pD(e.e)
-                if(u){qP(
-                    '/li',
-                    {u:qq(u.ch(1)).V(),p:qq(p.ch(1)).V()},
-                    verifyLogin
-                )}})
+                    lb('uname: ','uname'),
+
+                    fc().id('uname')
+
+                ).f(20).nm('u'),
+
+
+
+            p=fg(  lb('pword: ', 'pword'),  fc('p').id('pword')  ).f(20).nm('p'),
+
+
+            s =   $input().V('log in').ty('submit').f(16)
+
+
+
+        )
+
+            .o('s',
+
+            function(q,e){  pD(e.e)
+
+                if(u){  qP(  '/li',
+
+                    {
+                        u: qq( u.ch(1) ).V(),
+
+                        p: qq( p.ch(1) ).V()
+
+                    },   verifyLogin)   }
+            })
+
+
 
 
     ).drg().id('mod')
 
-    return {}}
+
+
+    return {}
+
+}
+
+
+
+
+
+
+
+
+
 lO=function(){qJ('/lo',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
 usrs=function(f){qG('/users',f)}
@@ -176,16 +362,25 @@ fresh=function(){z();WAPNAV()}
 
 
 $(function(){
+
+
     qJ('/lgd',
         function(d){
             usr=d
-            if(d=='guest'||!d){guest()}
+            if(d=='guest'||!d){
+
+                guest()}
+
             else{
                 ke('id', usr)
                 joinSelf()
                 wM(function(m){mug=m})
                 home()
-            }})})
+            }})
+
+
+
+})
 
 
 

@@ -1,41 +1,43 @@
 //bs
-elip=function(a){return a+'&hellip;'}
-ex=function(){return '&times;'}
+elip =function(a){return a+'&hellip;'}
+
+ex = function(){return '&times;'}
+
+
 
 
 //"<div class="form-group"></div>"
-fg=function(a){
-    return _a(dk('fg'),
-        G(arguments))}
+
+FormGroup=formGroup=fg=function(a){
+
+    return _a(  $div().k('form-group'),  G(arguments))
+
+}
 
 
 
 //put items in a qq(div).k(row)
 
-row=function(n){
+Row = row=function(n){
 
-    var g=G(arguments),
-        d=dk('row')
+    var theDiv=$div().k('row')
 
-    _e(g,function(v){
-        d(v)
-    })
+    _.each(G(arguments), function(arg){ theDiv(arg) })
 
-    return d}
+    return theDiv}
 
 
 
 //pass in size, and then args(contents) as a list (or as an array)
-col=function(){var g=G(arguments),
-    d=dk('m'+g[0]),
+Col = col = function(){var args=G(arguments),
 
-    iter=A(g[1])?
-        g[1]:g.r
+    theDiv=$div().k('m' + args[0]),
 
-    _e(iter,function(v){
-        d(v)})
+    iter = A(args[1])?  args[1] : args.r
 
-    return d}
+    _e(iter, function(v){theDiv(v)})
+
+    return theDiv}
 
 
 
@@ -47,8 +49,8 @@ row3=function(a,b,c){return row(col(4,a),col(4,b),col(4,c))}
 row4=function(a,b,c,d){return row(col(3,a),col(3,b),col(3,c),col(3,d))}
 row84=function(a,b){return row(col(8,a),col(4,b))}
 
-row48=function(a,b){return row(col(4,a),col(8,b))}//
-row39=function(a,b){return row(col(3,a),col(9,b))}//
+row48=function(a,b){return row(col(4,a), col(8,b))}//
+row39=function(a,b){return row(col(3,a), col(9,b))}//
 
 row210=function(a,b){return row(col(2,a),col(10,b))}//
 row111=function(a,b){return row(col(1,a),col(11,b))}//
@@ -69,6 +71,7 @@ row363=function(a,b,c){
     return row(col(3,a),col(6,b),col(3,c))}
 
 ROW=function(a,b,c,d){
+
     var g=G(arguments),
 
         z=g.z
@@ -90,41 +93,87 @@ ROW=function(a,b,c,d){
 
 
 
-FT=function(){var g=G(arguments),j=dk('F')
-    _e(g,function(v){if(S(v)){v=pg(v)}
-        j(v)})
-    if(g.p){j.cen()}
-    return j.id('footer')}
+FT=function(){
+
+    var args = G(arguments),
+
+        theDiv = $div().k('footer')
+
+
+    _.each(args,  function(arg){
+
+        theDiv(
+
+            S(arg)?  pg(arg): arg
+
+        )})
+
+    if(args.p){theDiv.cen()}
+    return theDiv.id('footer')
+
+}
+
+
 
 HD=function(){
     var g=G(arguments),
         j=dk('H')
-    _e(g,function(v){if(S(v)){v=h3(v)}
+
+    _e(g,function(v){
+        if(S(v)){v=h3(v)}
         j(v)})
+
     if(g.p){j.cen()}
     return j.id('header').mb(20)}
 
-JT=function(){var g=G(arguments),j=dk('j')
+
+JT=function(){
+    var g=G(arguments),j=dk('j')
     j(h1(g.f))
     _e(g.r,function(v){if(S(v)){v=h3(v)}
         j(v)})
     if(g.p){j.cen()}
-    return j.id('jumbo')}
+    return j.id('jumbo')
+}
 
-tn=function(a){var d=dk('tn')
-    _e(arguments,function(a){
-        if(S(a)){a=im(a)}
-        d(a)})
-    return dk('x2 s1')(d)}
 
-tnr=function(g){z()
-    var g=G(arguments),r=row()
-    _e(g,function(a){r(tn(a))})
-    return r.a()}
 
-tnt=function(n){var a=[]
-    _t(n||20,function(){a.push('me')})
-    _a(tn,a)}
+thumbnail = tn=function(a){
+
+    var theDiv=$div().k('thumbnail')
+
+    _.each(arguments, function(arg){
+
+        theDiv(S(arg)? im(arg): arg  )
+
+    })
+
+
+    return $div().k('x2 s1')(theDiv)
+
+}
+
+
+
+thumbnailRow= tnr=function(g){z()
+
+    var theRow = row()
+
+    _.each(G(arguments),
+        function(a){
+            theRow(thumbnail(a))
+        })
+
+    return theRow.a()
+}
+
+
+thumbnailTimes=tnt=function(num){
+    var arr=[]
+    _.times(num||20,
+        function(){
+            arr.push('me')})
+    _a(thumbnail,arr)}
 
 
 
@@ -136,15 +185,17 @@ tnt=function(n){var a=[]
 
 
 //pils
-pil=function(o){var g=G(arguments),p=ul();p.k('n np');p.c('y')
+Pill=pil=function(o){var g=G(arguments),p=ul();p.k('n np');p.c('y')
     if(O(o)){_e(o,function(v,k){var l=A(k)?lik(k[0],'+'):lik(k);l.o('$',v);p(l)})}
     else{_e(g,function(v){if(A(v)){p(lik(v[0],'+'))} else{p(lik(v))}})};return p}
 
 //login pils
-logi=function(){pil({'log in':lI,'log out':lO}).pp()}
+LoginPill=logi=function(){pil({'log in':lI,'log out':lO}).pp()}
 
 
-gl=function(){var g=G(arguments),str,
+
+
+Glyph=Glyphicon=glyphicon=gl=function(){var g=G(arguments),str,
     s=_s().k('glyphicon').k('glyphicon-'+oO('gl',g[0]))
     if(O(g[1])){s.a(g[1])}
     if(S(g[1])){s(g[1])}
@@ -152,19 +203,94 @@ gl=function(){var g=G(arguments),str,
     return s}
 
 
-MFOOT=function(){var g=G(arguments), d=_d().k('mf');_e(g, function(v){d(v)});return d}
-MBODY=function(){var g=G(arguments), d=_d().k('mb');_e(g,function(v){d(v)});return d}
-MHEAD=function(){var g=G(arguments),d=_d().k('mh');_e(g,function(v){d(v)});return d}
-MCT=function(){var g=G(arguments), d=_d().k('mc');_e(g,function(v){d(v)});return d}
-MDIALOG=function(){var g=G(arguments),d=_d().k('md');_e(g,function(v){d(v)});return d}
-MFADE=function(){var g=G(arguments), d=_d().k('m f');_e(g,function(v){d(v)});return d}
-MODAL=function(a,b,c){var ft=MFOOT(bt({t:'close'}).at({t:'submit',dd:'modal'}))
-    if(c){ft(c)};return MFADE(MDIALOG(MCT(
-        MHEAD(bt({t:ex}).k('close').at({dd:'modal'}),h4(a).k('mt')),
-        MBODY(b),ft)))}
+ModalFooter = MFOOT=function(){
+
+    var theDiv = $div().k('modal-footer')
+
+    _.each(G(arguments),
+        function(arg){theDiv(arg)})
+
+    return theDiv}
+
+ModalBody = MBODY= function(){
+
+    var theDiv = $div().k('modal-body')
+
+    _.each(G(arguments),
+        function(arg){theDiv(arg)})
+
+    return theDiv}
+
+ModalHeader = MHEAD= function(){
+
+    var theDiv = $div().k('modal-header')
+
+    _.each(G(arguments),
+        function(arg){theDiv(arg)})
+
+    return theDiv}
+
+ModalContent =MCT=function(){
+    var theDiv=$div().k('modal-content')
+
+    _.each(
+        G(arguments),
+        function(arg){theDiv(arg)})
+
+    return theDiv}
 
 
 
+
+ModalDialog =MDIALOG=function(){
+    var theDiv=$div().k('modal-dialog')
+    _.each(G(arguments),function(arg){theDiv(arg)});
+    return theDiv}
+
+
+ModalForm =MFADE = function(){
+    var theDiv=$div().k('modal form')
+    _.each(G(arguments),function(arg){theDiv(arg)});
+    return theDiv}
+
+
+
+
+
+
+MODAL=function(a,b,contents){
+
+    var footer=ModalFooter(
+
+
+        bt({t:'close'}).at({
+            type:'submit',
+            'data-dismiss':'modal'
+        })
+
+    )
+
+
+
+    if(contents){ footer(contents) }
+
+    return ModalForm(//Fade?
+
+        ModalDialog(
+
+            ModalContent(
+
+                ModalHeader(
+
+                    bt({t: ex}).k('close').at({'data-dismiss':'modal'}),
+
+
+                    h4(a).k('modal-title')
+                ),
+
+                ModalBody(b), footer))
+    )
+}
 
 
 

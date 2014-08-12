@@ -332,7 +332,7 @@ TAG={
 
 
 }
-INPUT={b:"button",c:"checkbox",f:"file",g:'range',e:'email',h:"hidden",i:"image",p:"password",r:"radio",R:"reset",s:"submit",t:"text"}
+INPUT={b:"button",c:"checkbox", f:"file",g:'range',e:'email',h:"hidden",i:"image",p:"password",r:"radio",R:"reset",s:"submit",t:"text"}
 ATTRIBUTE={
     a:'action',
     d:'disabled',

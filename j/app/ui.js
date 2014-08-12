@@ -1,9 +1,9 @@
 //random helpers
 
 
-iV=function(){return $('input').val()}// # ?
+iV=function(){ return $('input').val() }// # ?
 
-pD=function(e){return e.preventDefault(true)}
+pD=function(e){ return e.preventDefault(true) }
 
 
 
@@ -27,10 +27,13 @@ all=function(s,f){
 }
 
 
+
+
 //fetches JSON, and takes the 'n.pop' from list and passes those
 //in as messages?
 // on dblclick of .msg,// post its text to newMessage and run gMsgs?
-gMsgs=function rc(u,M){
+
+getMessages = gMsgs=function rc(u,M){
     qJ(u,
         function(d){ add(M,d)
         all('msg', function(m){
@@ -120,6 +123,7 @@ textAreaInputSpan=ip1=function(buttonText,url,func){
         })
 
     return theSpan(theTextArea, theButton)}
+
 
 
 
@@ -272,36 +276,78 @@ msgI=function(m){
 
 
 
+win = function(  a, c,  id ){//title/ob?,color,id
+
+    var size,  theWindow,  text,  moreButton,  lessButton, closeButton
+
+
+    moreButton = btr('>', function(){
+
+            theWindow.Z(4)
+
+            lessButton.sh()
+
+            moreButton.hd()  })
+
+
+    lessButton= btr('<',function(){
+
+        theWindow.auto();
+        moreButton.sh();lessButton.hd()}).hd()
+
+    closeButton = btl('X',function(){theWindow.X()})
 
 
 
-win=function(a,c,i){//title/ob?,color,id
+    theWindow=dva(size||4).s({ C:'b', a:.9,  of:'a' })
 
-    var z,w,t,bp,bm,bx
-
-    bp=btr('>',function(){w.Z(4);bm.sh();bp.hd()})
-    bm=btr('<',function(){
-        w.auto();bp.sh();bm.hd()}).hd()
-    bx=btl('X',function(){w.X()})
-    w=dva(z||4).s({C:'b',a:.9,of:'a'})
         .P(10).B(4).bs('-').bc('o').auto()
-        (bp,bm.hd(),bx).drg().a()
 
-    if(S(a)){t=a}
-    if(N(a)){z=a}
-    if(O(a)){w(a)}
-    if(t){
 
-        w(
+    (  moreButton,  lessButton.hd(), closeButton  ).drg().a()
 
-            pg(t).f(24).cen().c('X')
-            .s({ml:10,mr:10,pr:30,pl:30}),
-        hr().c(c||'z').f(10))
+
+
+    if(S(a)){ text= a }
+
+    if(N(a)){ size= a }
+
+    if(O(a)){ theWindow(a) }
+
+
+    if(text){
+
+        theWindow(
+
+            pg(text)
+
+                .f(24).cen().c('X')
+
+                .s({
+
+                    'margin-left':10,
+                    'margin-right':10,
+
+                    pr:30,
+                    pl:30
+
+                }),
+
+
+            hr().c(c||'z').f(10)
+
+        )
     }
 
-    if(i){w.id(i)}
-    return w
+
+
+    if(id){ theWindow.id(id) }
+
+    return theWindow
+
 }
+
+
 
 
 
@@ -313,22 +359,11 @@ win=function(a,c,i){//title/ob?,color,id
 
 
 
+privateChatBox = priv=function(a){
+    chatBox(a);
+    ke('j',a)}
 
-
-
-
-
-
-
-
-
-priv=function(a){
-    cbox(a);
-    ke('j',a)
-
-}
-
-cbox=function(t,c,i){
+chatBox = cbox =function(t,c,i){
 
     t=t||'chatbox';c=c||'b';i=i||'cbo';
     var chI=tx(),
@@ -414,38 +449,88 @@ cbox=function(t,c,i){
         s:function(m){chM(h5(m).s({c:'z'}))}}
 }
 
-pop=function(a,o){
-    if(S(o)){return pop(o,{t:a})}
+
+pop=function(a, o){
+
+    if(S(o)){return pop(o, { t: a } )}
+
 
     _pop=function(){
 
-        var m=MCT()
-        _e(arguments, function(a){S(a)? m(_d()(a)): m(a) })
+        var m = MCT() // <div class="modal-content"></div>
+
+
+        _e(arguments,
+
+            function(a){
+
+                S(a)? m( _d()(a) ) : m(a) })
+
+
         return MFADE(MDIALOG(m))}
 
 
-    var g=G(arguments),mm,
-        a=a||'pop pop',
-        m=_pop( mm=MBODY(h2(a)) )
+    var g=G(arguments),
+
+        modalBody,
+
+        a = a||'pop pop',
+
+        m = _pop( modalBody = MBODY(h2(a))),
+
+        theModal = m
 
     o=ob(o)
-    if(!o.h){m.m()}
-    if(o.t){mm.a(
-        hr().c(o.hc||'z').s({h:2}),
-        h1(o.t).s('c',o.tc||'z').q,'-')}
 
-    if(o.b){mm.a(bt(o.b))}
-    if(o.d){m.drg()}
-    if(o.a){m.s({a:o.a})}
+
+    if(!o.h){theModal.m()}
+
+
+    if(o.t){
+
+        modalBody.a(
+
+
+            hr().c( o.hc|| 'z')
+                .s({height: 2}),
+
+
+            h1(o.t).s('c', o.tc||'z').q,
+
+
+            '-')
+
+    }
+
+
+
+
+    if(o.b){
+
+        modalBody.a( $button(o.b) )}
+
+
+    if(o.d){     theModal.drg() }
+
+
+    if(o.a){   theModal.s( {opacity: o.a} ) }
+
 
     if(o.c){
-        if(o.c=='*'){I(function(){mm.c()},100)}
-        else {m.s({c:o.c})}}
 
-    if(o.C){mm.s({C:o.C})}
-    if(o.bc){m.s({C:o.bc})}
-    return m}
+        if(o.c=='*'){ I( function(){ modalBody.c() }, 100) }
 
+        else { theModal.s({c: o.c}) }
+    }
+
+
+
+    if(o.C){ modalBody.s({C:o.C})}
+
+
+    if(o.bc) {theModal.s({C:o.bc})}
+
+    return theModal}
 
 dang=function(t,e){//random cool text input/alert
 

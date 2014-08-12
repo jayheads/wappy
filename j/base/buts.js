@@ -1,5 +1,6 @@
 
-bt=function(t,f,C,c){
+$button = bt=function(t,f,C,c){
+
     var g=G(arguments),
         t=g[0],f=g[1],C=g[2],c=g[3],
         t=t||'ok',
@@ -13,6 +14,17 @@ bt=function(t,f,C,c){
     if(f){b.o(f)}
     if(g.n){b.dd()}//dropdown
     return b}
+
+
+
+SubmitButton=function(){
+
+    var args=G(arguments),
+
+        button = bt.apply(0, args)
+
+   return button.ty('s')}
+
 
 
 
