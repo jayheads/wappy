@@ -164,20 +164,68 @@ signIn=function(){return MODAL('signin',
         sm().at({value:'jason'}).k('pull-right'))
 
 )}
-login=function(){return MODAL('signin',
 
 
-    fo(['/security'],
+login=function(){
+
+    return Modal(
+
+        'signin',
+
+
+    fo(
+        ['/security'],
+
         lb('username','un','u'),
+
         lb('password','pw','p'),
 
-        bt({t:'login'}).at({dd:'modal'}).k('tc').auto()))}
+        bt({t:'login'}).at({dd:'modal'}).k('tc').auto()
+
+    ))
+
+}
+
+
+
+
+
+
+
 newAccount=function(){
-    return MODAL('new account',
-        fo(['/users/po'],
-            lb('username', 'un','u','something funky'),
-            lb('password', 'pw','p','something tricky'),
-            bt({t:'signup'}).at({dd:'modal'}).k('tc')))}
+
+    //pams: name, form
+
+    //the form: has an url
+
+
+    return Model(
+
+        'new account',
+
+        fo(
+
+            [ '/users/po' ],
+
+            lb( 'username',  'un',  'u',  'something funky' ),
+
+            lb( 'password',  'pw',  'p',  'something tricky' ),
+
+            bt({t:'signup'}) // ?
+                .at({'data-dismiss':'modal'}).k('text-center')
+
+        )
+    )
+}
+
+
+
+
+
+
+
+
+
 god=function(){
 
     return _d().k('m f')(_d().k('md')(_d().k('mc')(
@@ -404,29 +452,28 @@ showPics=function(){
 
 
 UPLOAD=function(){
+
     dva().w(400).h(400).l(800).c('u')(
-        _d()('upload: ').f(30).c('w','z'), br(),
-        uform())}
+
+        $div()('upload: ').f(30).c('w','z'), br(),
+
+        uform()
+    )
+}
+
+
 
 
 
 fIp=fileInput=function(){
+
     return ip('f').nm('i').c('y','g')}
 
 
-mF=function(){return fo().at({
-    enctype:'multipart/form-data'}).at({a:'/upl'})  }
+//mF=function(){return fo().at({  enctype:'multipart/form-data'}).at({a:'/upl'})  }
 
 
-uF=function(){
-
-    return mF()(
-
-        fIp(),
-
-        sm()
-
-    )}
+//uF=function(){  return mF()(  fIp(),  sm()   )}
 
 
 
@@ -439,22 +486,34 @@ MESSAGES=function(){
     showPics()
 
 
-    CT(row(col(4)( M=messages()),
+    CT(
+
+        row(col(4)(   M=messages()  ),
 
         col(4)(
 
-            IB=fo(tx(),ip('s'))
+            IB=fo(tx(),  ip('s')   )   ))
 
-        ))).a()
+    ).a()
 
 
-    sub(IB, function(q,e){
-        pD(e.e)
-        qP('/newMessage',{n:iV()}, function(){getMessages()})})
+    sub(   IB,
 
-    getMessages()
+        function(q,e){
 
-}
+            pD(e.e)
+
+
+            qP('/newMessage',  { n: iV() },
+
+                function(){ getMessages() })}
+
+    )
+
+
+    getMessages()}
+
+
 
 
 

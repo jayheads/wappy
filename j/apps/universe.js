@@ -92,6 +92,9 @@ UNIVERSE=function(){
 
         return theGuy}
 
+
+
+
    updateGuy = upd=function(u){
 
         var guyLocation=function(){
@@ -116,7 +119,7 @@ UNIVERSE=function(){
   startUniverse = function(u){//ply=
 
         if(!getGuy(u)){
-            fetchMugByUsername(u,function(m){
+            pMug(u,function(m){
 
                 UNI(function(){
                 Bm(m,function(b){
@@ -130,21 +133,10 @@ UNIVERSE=function(){
 
     guys=[]
 
-
-
-
-
-
-
-
-    var func=function(playerBitmap, s){
-
+    var func=function(b,s){
         uni=s
-
-        you = player(playerBitmap).fn(SL)
-
-
-        guys.push({u:usr, b:you})
+        you=player(b).fn(SL)
+        guys.push({u:usr,b:you})
 
         I(updateGuy,100)
 
@@ -199,6 +191,8 @@ UNIVERSE=function(){
 
 
 
-    wMs(func, 1000,800,'/beach.jpg')}
+
+
+    wMs(func,  1000,800,'/beach.jpg')}
 
 

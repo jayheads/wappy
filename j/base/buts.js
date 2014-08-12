@@ -8,12 +8,15 @@ $button = bt=function(t,f,C,c){
         C=C||'b',
         c=c||'y'
 
-    b=_n().ty('b').k('b').k(k).c(C,c)
+
+    b=qq('b').ty('b').k('b').k(k).c(C,c)
 
     b(t)
     if(f){b.o(f)}
     if(g.n){b.dd()}//dropdown
-    return b}
+    return b
+
+}
 
 
 

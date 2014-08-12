@@ -25,7 +25,7 @@ WappyNav = WAPNAV=function(a){
                 'shooty', 'bod',  'connect','matrix', 'space', 'ship',
                 'circle','hit','boxes','solar','canon','fullcan' ),
 
-            DropdownLoader(Glyph('glass','work'), 'knocks', 'book','site','sorty','elements' ,'api' ,'object' ),
+            DropdownLoader(Glyph('glass','work'), 'dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object' ),
 
             DropdownLoader(Glyph('glass','share'),
                 'users', 'status' , 'messages','posts','chatbox','universe','ranky','profiles' ),

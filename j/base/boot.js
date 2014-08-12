@@ -250,19 +250,11 @@ ModalForm =MFADE = function(){
 
 
 
-MODAL=function(a,b,contents){
+Modal = MODAL=function(a,b,contents){
 
     var footer=ModalFooter(
 
-
-        bt({t:'close'}).at({
-            type:'submit',
-            'data-dismiss':'modal'
-        })
-
-    )
-
-
+        bt({t: 'close' }).at({  type:'submit',  'data-dismiss':'modal'  }) )
 
     if(contents){ footer(contents) }
 
@@ -274,15 +266,15 @@ MODAL=function(a,b,contents){
 
                 ModalHeader(
 
-                    bt({t: ex}).k('close').at({'data-dismiss':'modal'}),
+                    bt({t: ex}).k('close')
 
+                        .at({'data-dismiss':'modal'}),
 
                     h4(a).k('modal-title')
                 ),
 
                 ModalBody(b), footer))
-    )
-}
+    )}
 
 
 

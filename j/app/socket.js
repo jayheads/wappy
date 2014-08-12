@@ -136,7 +136,10 @@ kk.on('invite',function(invitation){
 
                         h1('chat with '+ invitation.f+'?'),
 
-                        $button('ya', function(){
+
+
+
+                        $button('ya',function(){
 
                             pop.m()
 
@@ -145,10 +148,7 @@ kk.on('invite',function(invitation){
                             accept(invitation.f) }),
 
 
-                        $button('na', function(){
-
-                            //close modal
-                        })
+                        $button('na', function(){} )
 
 
 

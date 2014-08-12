@@ -3,7 +3,7 @@
 //if empty, return qq-label
 // lb(label-text=, for=)
 
-lb=function lb(l,f,n,p){
+$label = lb=function lb(l,f,n,p){
 
     var g=G(arguments),
         sl=qq('lb'),
@@ -16,11 +16,17 @@ lb=function lb(l,f,n,p){
 
 
 
-    st=tx().at({id:f,n:n,ph:p||'...'})
+    st=tx().at({
 
-    if(g.N){
-        st.k('fc')
-    }
+        id:f,
+
+        n:n,
+
+        ph:p||'...'
+
+    })
+
+    if(g.N){st.k('form-control')}
 
     return sp()(sl,st)
 
@@ -30,77 +36,124 @@ lb=function lb(l,f,n,p){
 
 
 
+
+
+
 //el
-_n=function(a){if(U(a)){return qq('b')}}//btn
-_N=function(a){if(U(a)){return qq('N')}}//nav
+//_n=function(a){if(U(a)){return qq('b')}}//btn
+//_N=function(a){if(U(a)){return qq('N')}}//nav
 
 
 
 
-$form=function(){
-    return qq('f')
-}
+$form=function(){return qq('f')}
 
 
-fc=function(a){
-    return ip(a).k('fc')}
-
-form=function(c,a){
-
-    var g=G(arguments),c=g[0],a=g[1],
-    f=$form().k('f').at({r:'form'})
-
-    if(g.N){f.at({m:'post'})}
-
-    if(D(c)){f.c(c)}
-
-    if(a){f.at({a:a})}
-
-    return f
-
-}
+//fc=function(a){   return TextInput(a).k('form-control') }
 
 
 
 
 
 
-fo=function(a){var g=G(arguments),f=form()
-    if(a=='i'){return fo(['fi fg'])}
-    if(a=='f'){return fo(['w']).at({m:false,a:false}) }
-    if(a=='r'){return fo(['nbf nbr'])}
+Form = form=function(color, action){
 
-    _e(g,function(v){
-        if(A(v)){f.k(v[0])}
-        else{f(v)}
-    })
-
-    if(g.p){f(sm().v('ok'))}
-    return f.c('b')}
-
-
-
-
-
-TextInput= $input = ip=function(typ, val, C, c){
 
     var g=G(arguments),
 
+        color =g[0],
 
-        i=qq('i').at({
+        action =g[1],
 
-            type: typ || 't',
+        theForm=$form().k('form').at({role:'form'})
+
+
+   // if(g.N){
+        theForm.at({ method: 'post' })
+    //}
+
+    if(D(color)){theForm.c(color)}
+
+    if(action){
+
+
+        theForm.at({ action: action})
+
+    }
+
+    return theForm
+
+}
+
+
+GetForm=function(color, action){
+
+    var g=G(arguments),
+
+        color =g[0],  action =g[1],
+
+        theForm=$form().k('form').at({role:'form', method:'get'})
+
+    if(D(color)){theForm.c(color)}
+
+    if(action){theForm.at({ action: action})  }
+
+    return theForm}
+
+fo=function(a){
+
+    var args=G(arguments),
+
+        theForm=form().c('b')
+
+    if(a=='i'){return fo().k('form-inline form-group')    }
+
+
+    if(a=='f'){
+
+        return fo()  .k('form well')  .at({ method: false,  action: false })
+    }
+
+    if(a=='r'){  return fo()  .k('form navbar-form navbar-right')   }
+
+    _.each(args, function(arg){
+
+        //supports ['class']
+
+        if(A(arg)){ theForm.k(arg[0])} else {theForm(arg)} })
+
+
+    if(args.p){  theForm(
+
+        sm().v('ok')
+
+
+    )}
+
+
+    return  theForm
+
+}
+
+
+
+TextInput =$input=ip=function(typ, val, Color, color){
+
+    var args=G(arguments),
+
+
+        i=qq('i').at({type: typ || 't',
 
             value: val
 
         })
 
 
-    if(g.p){  i.k('form-control') }
+    if(args.p){  i.k('form-control') }
 
-    if(C){ i.s('C', C) }
+    if(Color){ i.s('C', Color)}
 
-    if(c){ i.s('c', c) }
+    if(color){ i.s('c', color)}
 
 
     return i
@@ -110,44 +163,36 @@ TextInput= $input = ip=function(typ, val, C, c){
 
 
 
+tx=function(widthOrPlaceHolderValue, id){
+
+    var g=G(arguments),
+
+        theTextInput = TextInput()
+
+    //first arg either sets th width or the placeholder value
+    if( N(g[0])){ theTextInput.w(g[0]) }  else{ theTextInput.ph(g[0]) }
+
+    //second arg sets the id
+    theTextInput.id( g[1] )
+
+    if( g.N ){ theTextInput.k( 'form-control' ) }
+
+    return theTextInput }
 
 
 
 
-
-tx=function(){
-    var g=G(arguments),t=ip()
+$password =pw=function(p){return ip('p')}
 
 
-    if(N(g[0])){t.w(g[0])}
-   else{t.ph(g[0])}
-
-
-    t.id(g[1])
-    if(g.N){t.k('fc')}
-
-    return t}
-
-
-
-
-
-
-
-
-//password
-pw=function(p){return ip('p')}
-
-
-//range
-rg=function(){return ip('g')}
+$range = rg=function(){return ip('g')}
 
 
 
 
 
 //text area.. +- k='fc', specify rows, cols, C,c
-ta=function(r,c,Cl,cl){
+$textarea =ta=function(r,c,Cl,cl){
     _ta=function(){return qq($('<textarea>'))}
 
 
@@ -155,7 +200,7 @@ ta=function(r,c,Cl,cl){
 
     Cl=Cl||'x'
     cl=cl||'z'
-    if(g.N){t.k('fc')}
+    if(g.N){t.k('form-control')}
     if(N(r)){t.at({R:r})}
     if(N(c)){t.at({C:c})}
     return t.c(Cl,cl)}
@@ -172,7 +217,7 @@ gCh=function(n){
     return i.val()}
 
 
-rb=function(n,v,l){
+$radiobox =rb=function(n,v,l){
     var g=G(arguments),
         checked,n=g[0],v=g[1],l=g[2]
 
@@ -190,14 +235,14 @@ rb=function(n,v,l){
       :r}
 
 
-rbg=function(n,v){var g=G(arguments),n=g[0],v=g[1],s=sp()
+RadioboxGroup =rbg=function(n,v){var g=G(arguments),n=g[0],v=g[1],s=sp()
        if(g.p){_e(v,function(v){s(rb(n,v,'+'))})}
      else{_e(v,function(v){s(rb(n,v))})}
        return s.id(n)}
 
 
 //checkboxes
-cb=function(n,v,l){
+$checkbox =cb=function(n,v,l){
     var g=G(arguments),
         checked,n=g[0],v=g[1],l=g[2]
 
@@ -214,10 +259,11 @@ cb=function(n,v,l){
         :g.N?sp(r,lb(V,I))
         :r}
 
-cbg=function(n,v){var g=G(arguments),n=g[0],v=g[1],s=sp()
+CheckBoxGroup=cbg=function(n,v){var g=G(arguments),n=g[0],v=g[1],s=sp()
     if(g.p){_e(v,function(v){s(cb(n,v,'+'))})}
     else{_e(v,function(v){s(cb(n,v))})}
     return s.id(n)}
+
 cbx=function(n,v,i){var g=G(arguments),
     c=ip('c'),
     s=_s()
@@ -231,6 +277,8 @@ cbx=function(n,v,i){var g=G(arguments),
     c.id(i).nm(n).v(v)
     return g.n? dk('cb')(lb()(n).pp(cb()))
         :g.p?c.po('c',true):c}
+
+
 cbl=function(n,v,i){var g=G(arguments)
     return sp(
         _a(cb,g),
@@ -369,7 +417,9 @@ DIRT=function(){z()
     p2=push2
     newComment=function(comments,comment){comments.push({comment:comment})}
 
-    spb=function(a){return sp().b('t',a)}
+
+
+    TextBindingSpan = spb=function(a){return sp().b('text', a) }
 
 
 
@@ -378,20 +428,39 @@ DIRT=function(){z()
 
         h1().s('c','y')(
 
-            spb('message'),sp(' '),
-            spb('score'),
+            TextBindingSpan('message'),
+
+            sp(' '),
+
+            TextBindingSpan('score'),
 
             p1(h2(
-                tx(400),bt('new r'))),
+
+                tx(400),
+
+                bt('new r')
+
+            )),
+
 
             h2().feD('responses').s('c','r')(
 
-                p1(spb('response')),
-                p2(h4(tx(400),bt('new c'))),
+                p1(TextBindingSpan('response')),
 
-                h4().s('c','b').feD('comments')(p2(spb('comment'))))),
+                p2(
 
-        br(),  br()
+                    h4(tx(400), $button('new c'))
+
+                ),
+
+                h4().s('c','b').feD('comments')(p2(
+
+                    TextBindingSpan('comment'))))),
+
+
+       br(),
+
+       br()
 
         ).a()
 
@@ -522,7 +591,7 @@ SEL=function(n,i){
 
         s=_y().nm(n).id(i)
 
-    if(g.N){s.k('fc')}
+    if(g.N){s.k('form-control')}
     if(g.p){s.at({mutiple:true})}
 
     return s}
