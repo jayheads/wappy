@@ -138,7 +138,7 @@ JT=function(){
 
 
 
-thumbnail = tn=function(a){
+Thumbnail=thumbnail = tn=function(a){
 
     var theDiv=$div().k('thumbnail')
 
@@ -155,7 +155,7 @@ thumbnail = tn=function(a){
 
 
 
-thumbnailRow= tnr=function(g){z()
+ThumbnailRow=thumbnailRow= tnr=function(g){z()
 
     var theRow = row()
 
@@ -168,7 +168,7 @@ thumbnailRow= tnr=function(g){z()
 }
 
 
-thumbnailTimes=tnt=function(num){
+ThumbnailTimes=thumbnailTimes=tnt=function(num){
     var arr=[]
     _.times(num||20,
         function(){
@@ -205,13 +205,11 @@ Glyph=Glyphicon=glyphicon=gl=function(){var g=G(arguments),str,
 
 ModalFooter = MFOOT=function(){
 
-    var theDiv = $div().k('modal-footer')
+    var theDiv=$div().k('modal-footer')
 
-    _.each(G(arguments),
-        function(arg){theDiv(arg)})
+    _.each(G(arguments),function(arg){theDiv(arg)})// :)
 
     return theDiv}
-
 ModalBody = MBODY= function(){
 
     var theDiv = $div().k('modal-body')
@@ -220,7 +218,6 @@ ModalBody = MBODY= function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
-
 ModalHeader = MHEAD= function(){
 
     var theDiv = $div().k('modal-header')
@@ -229,7 +226,6 @@ ModalHeader = MHEAD= function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
-
 ModalContent =MCT=function(){
     var theDiv=$div().k('modal-content')
 
@@ -238,10 +234,6 @@ ModalContent =MCT=function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
-
-
-
-
 ModalDialog =MDIALOG=function(){
     var theDiv=$div().k('modal-dialog')
     _.each(G(arguments),function(arg){theDiv(arg)});

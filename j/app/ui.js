@@ -450,24 +450,36 @@ chatBox = cbox =function(t,c,i){
 }
 
 
+
+
+
+_pop=function(){
+
+    var modalContent = MCT() // <div class="modal-content"></div>
+
+    _.each(arguments,  function(a){
+
+             modalContent( S(a)? $div()(a): a )  })
+
+
+    return MFADE( MDIALOG( modalContent ))
+
+}
+
+
+
+
+
+
+
+
+
 pop=function(a, o){
 
-    if(S(o)){return pop(o, { t: a } )}
+    if(S(o)){ return pop(o, { t: a } ) }
 
 
-    _pop=function(){
 
-        var m = MCT() // <div class="modal-content"></div>
-
-
-        _e(arguments,
-
-            function(a){
-
-                S(a)? m( _d()(a) ) : m(a) })
-
-
-        return MFADE(MDIALOG(m))}
 
 
     var g=G(arguments),
@@ -531,6 +543,13 @@ pop=function(a, o){
     if(o.bc) {theModal.s({C:o.bc})}
 
     return theModal}
+
+
+
+
+
+
+
 
 dang=function(t,e){//random cool text input/alert
 

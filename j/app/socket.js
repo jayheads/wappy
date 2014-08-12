@@ -1,46 +1,72 @@
 kk=io.connect("http://localhost")
 
 var e=function(a,b){return kk.emit(a,b)},
+
     o=function(a,b){return kk.on(a,b)},
+
     b=function(a,b){return kk.broadcast.emit(a,b)
 
     }
 
 
-o('a',function(a){alert(a)})
 
-o('l',function(d){  $l(d)  })
-
-
-
-
-o( 'dpop', function(d,n){ dud(d,n)  })
-o('d',function(d){$l('SERVER: %j',d)})
-o('notice', function (d) {  $l('SERVER NOTICE: %s', d);  })
-o('p',function(e){pop(e)})
-o('roo',function(d){roo=d})
-o('res',function(d){res=d})
-o('newImgAck',function(d){xx().f(d.u)})
-
-
-o('im', function(d){ xx().f(d) })
+kk.on(  'a',function(a){alert(a)})
+kk.on(  'alert',  function(a){alert(a)})
 
 
 
 
-dnm=function(d){
-    return  d.n+': '+d.m
-}
+kk.on('l',function(d){  $l(d)  })
+kk.on('log',function(d){  $l(d)  })
 
 
 
 
-o('newChat',function(d){CH.b(dnm(d))})
 
-o('youChat',function(d){CH.s(dnm(d))})
+kk.on( 'dpop', function(d,n){ dud(d,n)  })
+
+kk.on( 'dudPop', function(d,n){ dud(d,n)  })
 
 
-o('chatx',function(d){
+
+kk.on('d',function(d){$l('SERVER: %j',d)})
+kk.on('dir',function(d){$l('SERVER: %j',d)})
+
+kk.on('notice', function (d) {  $l('SERVER NOTICE: %s', d);  })
+
+kk.on('p',function(e){pop(e)})
+kk.on('pop',function(e){pop(e)})
+
+
+kk.on('roo',function(d){roo=d})  // ?
+
+kk.on('res', function(d){res=d})  // ?
+
+
+kk.on('newImgAck', function(d){xx().f(d.u)})
+
+
+kk.on('im', function(d){ xx().f( d ) })
+
+
+
+
+dnm=function(d){ return  d.n+': '+ d.m }
+
+
+
+kk.on('newChat',
+    function(d){
+
+        CH.b(dnm(d))
+
+    })
+
+kk.on('youChat',
+    function(d){CH.s(dnm(d))})
+
+
+kk.on('chatx',function(d){
 
 
     $w['chat_'+ d.t].s( dnm(d)
@@ -53,56 +79,94 @@ o('chatx',function(d){
 
 
 
-o('bub',function(d){ $l('bub: '+d)
+kk.on('bub',
+    function(d){
+        $l('bub: '+d)
 
 
 
 
 if(gg(d.u)){bub(d.t, d.x, d.y)}})
 
-o('frog',function(){
-
-pop('frog')})
+kk.on('frog',function(){pop('frog')})
 
 
 
-
-o('upd',function(d){ upd(d)})
-
+kk.on('upd', function(guy){ upd(guy)})
 
 
-
-o('accept',function(d){dd=d
-    if(usr==d.t){ply(d.f)}})
+kk.on('updateGuy', function(guy){ updateGuy(guy)})
 
 
 
 
 
-o('invite',function(d){
+kk.on('accept',function(d){
     dd=d
-    if(usr==d.t){
 
-      pMug(d.f,function(m){p=pop(_d()(
-              im(m).w(200).h(200),
-              h1('chat with '+ d.f+'?'),
-              bt('ya',function(){
-                  p.m();
-                  ply(d.f)
+    if(usr == d.t){ startUniverse(d.f)  }
 
-                  accept(d.f)}),
-
-              bt('na',function(){})))})}})
+})
 
 
 
 
 
-    o('iMsg',function(m){msgI(m)})
+
+kk.on('invite',function(invitation){
+
+    dd=invitation
+
+    if(usr==invitation.t){
+
+
+        fetchMugByUsername(
+
+            invitation.f,
+
+
+            function(userMug){
+
+                pop(
+
+
+                    $div()(
+
+                        im(userMug).w(200).h(200),
+
+                        h1('chat with '+ invitation.f+'?'),
+
+                        $button('ya', function(){
+
+                            pop.m()
+
+                            startUniverse(invitation.f)
+
+                            accept(invitation.f) }),
+
+
+                        $button('na', function(){
+
+                            //close modal
+                        })
 
 
 
-o('inRm',function(u){
+                    )
+
+          )})}
+
+})
+
+
+
+
+
+kk.on('iMsg',function(m){msgI(m)})
+
+
+
+kk.on('inRm',function(u){
     $l('inRm')
     var rm='chat_'+u.r
 
@@ -161,7 +225,9 @@ sendPopBox=function(){
     qk('pop').o(function(){
         ke('pop',{
             t:qk('pt').v,
-            b:qk('pb').v})})}
+            b:qk('pb').v})})
+}
+
 
 
 kf=function(a,b,c){
@@ -177,22 +243,25 @@ chan=function(a,f){var c= io.connect('http://localhost/'+a)
 
 
 chaz=function(){
-    var b1=bte('msg','chat'),
-        b2=bt('room', function(){
-            var ch=chan('chat',ffl('chat'))
-            ch.on('al',pop)})
 
-    dva()(b1,b2).lt(300)}
+    var b1=bte('msg', 'chat'),
+
+        b2=$button('room', function(){
+
+            var theChannel = chan('chat', ffl('chat'))
+
+            theChannel.on('al', pop)
+
+        })
+
+
+    dva()(b1,b2).lt(300)
+
+}
 
 
 
-
-
-dud=function(d,n){
-
-    qP('/dud',{d:d},
-
-        function(u){   upop(u,n)  })}
+dud=function(d,n){  qP('/dud', {d:d}, function(u){   upop(u,n)  })}
 
 
 

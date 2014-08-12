@@ -1,34 +1,60 @@
-mugb=function(u,f){ qP('/dud', {d:u.m}, f) }
+fetchMugByMugId=mugb=function(user, func){
 
-pMug=function(u,f){ qP('/mug', {u:u}, function(m){ if(m){f(m)} } ) }
+    qP('/dud', {d: user.m}, func)
 
+}
 
+fetchMugByUsername = pMug=function(user, func){
+
+    qP('/mug', {u:user}, function(mug){
+
+    if(mug){ func(mug) }
+
+    })
+
+}
+
+SuperPlayer = PlayerBitmap=player=function(playerBitmap){
+
+    bm = playerBitmap
+
+    playerBitmap.rgc().xy(600).sxy(.4);
+
+    playerBitmap.o('$$', function(bm){
+
+        bm.XX()
+
+        ke('X', usr)
+
+    })
+
+    //only works local
+
+    return playerBitmap}
 
 
 UNIVERSE=function(){
 
-    plyr=function(b){
 
-        bm=b
+    UNI = function(func){
 
-        b.rgc().xy(600).sxy(.4);
+        if($w['uni']){func()}
 
-        b.o('$$',function(bm){
-            bm.XX()
-            ke('X',usr)
-        }) //only works local
+        else {UNIVERSE(func)}
 
-        return b}
-
-    UNI=function(f){if($w['uni']){f()}else{UNIVERSE(f)}}
+    }
 
 
-    accept=function(t){
+
+    acceptUniverseInvitation = accept=function(t){
+
         ke('bc',
             'accept',
-            {f:usr,t:t})}
+            {f:usr, t:t})
+    }
 
-    bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
+
+    SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
 
         if(!$w['uni']){return}
 
@@ -50,82 +76,129 @@ UNIVERSE=function(){
         return c}
 
 
+   getGuy= gg=function(username){
 
-    loc=function(){var y
+        var theGuy=false
 
-        if($w['you']){
+        username = O(username)? username.u: username
 
-            y=you;return {u:usr, x:y.x(), y:y.y()}
+        // now a is username
 
-        }}
+        _.each(guys, function(guy){
 
+            if(guy.u == username){theGuy = guy}
 
-
-
-
-    gg=function(a){
-        var guy=false
-        a=O(a)?a.u:a
-        _e(guys,function(g){
-            if(g.u==a){guy=g}
         })
-        return guy}
 
+        return theGuy}
 
+   updateGuy = upd=function(u){
 
+        var guyLocation=function(){
 
-    upd=function(u){
-        if(u){gg(u.u).b.x(u.x).y(u.y) }
-        else{ke('bc','upd',loc())}}
+            if($w['you']){ return {u:usr,  x: you.x(), y: you.y()} }
+        }
+
+        if(u){  getGuy(u.u).b.x(u.x).y(u.y) }
+
+        else {  ke('bc','upd',  guyLocation()  )  }
+
+    }
+
 
     addGuy=function(u,b){
         guys.push({u:u,b:b})
-        uni.a(plyr(b))}
+        uni.a(player(b))}
 
-    ply=function(u){
-        if(!gg(u)){
-            pMug(u,function(m){
-            UNI(function(){
+
+
+    //dep???
+  startUniverse = function(u){//ply=
+
+        if(!getGuy(u)){
+            fetchMugByUsername(u,function(m){
+
+                UNI(function(){
                 Bm(m,function(b){
                     addGuy(u,b)
-                })})})}}
+                })})})}
+    }
 
 
-    invite=function(t){ke('bc','invite',{f:usr,t:t})}
 
+    invite=function(toWho){  ke('bc','invite',   {f: usr, t: toWho}) }
 
     guys=[]
 
 
-    var fn=function(b,s){uni=s
-        you=plyr(b).fn(SL)
-        guys.push({u:usr,b:you})
 
-        I(upd,100)
 
-        usrs(function(u){
 
-            var rw=row().a()
-            _e(u,function(u){
 
-                mugb(u,function(m){
-                    rw(
-                        tn(pg(u.u),br(),m)
-                            .o(function(){
-                                invite(u.u)}))
+
+
+    var func=function(playerBitmap, s){
+
+        uni=s
+
+        you = player(playerBitmap).fn(SL)
+
+
+        guys.push({u:usr, b:you})
+
+        I(updateGuy,100)
+
+        usrs(
+
+
+            function(users){
+
+            var theRow=row().a()
+
+            _.each(users,
+
+
+                function(user){
+
+                    fetchMugByMugId(
+
+                        user,
+
+
+                        function(userMug){
+
+
+                            theRow(
+
+
+                                Thumbnail(   pg(user.u),   $br(), userMug)
+
+
+                                    .o(function(){  invite(user.u)  }))
                 })
             })
 
 
-            dv('b',1000,'auto').pp()(
+            dv('b', 1000, 'auto').pp()(
+
                 br(3),
 
                 tx('...', 'tx'),
-                bt('send',function(){ bub(qi('tx').V(), '+')}))
+
+                $button('send', function(){   SpeechBubble(
+
+                    qi('tx').V()
+
+                    ,
+
+                    '+')
+
+                }))
 
         })}
 
 
-    wMs(fn,1000,800,'/beach.jpg')}
+
+    wMs(func, 1000,800,'/beach.jpg')}
 
 
