@@ -55,7 +55,7 @@ sI=function(i){i=i||_I()
 
 
 
-im=function(a,b){
+$img = im=function(a,b){
 
     var g=G(arguments), i=sI()
 

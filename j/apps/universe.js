@@ -125,9 +125,29 @@ UNIVERSE=function(){
   }
 
 
-    invite=function(toWho){  kk.emit('bc','invite',   {f: _username, t: toWho})  }
 
-    
+
+    //the invitation is BROADCASTED !!!
+
+    invite=function(toWho){
+
+        kk.emit('bc',
+
+            'invite',
+
+            {f: _username, t: toWho})
+
+    }
+
+
+
+
+
+
+
+
+
+
     var onMugReady=function(b,s){
         uni=s
 

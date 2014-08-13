@@ -122,7 +122,7 @@ renderGuestPage=launchGuest = guest=function(){ z('r')
 
 renderHomePage =launchHome = home=function(){
 
-    WappyNav('x') //load navigator
+    WappyNav($r()) //load navigator
 
     qJ('/loggedIn', function(data){ $('#uname').text(_username).append(data) }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
 

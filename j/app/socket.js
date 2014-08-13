@@ -113,30 +113,23 @@ kk.on('accept',function(d){
 
 
 
-kk.on('invite',function(invitation){
+kk.on('invite',function(invitation){  //dd=invitation
 
-    dd=invitation
-
-    if(usr==invitation.t){
-
-
-        fetchMugByUsername(
-
-            invitation.f,
+    if(_username == invitation.t){  fetchMugByUsername(  invitation.f,
 
 
             function(userMug){
 
-              var p=   pop(
+
+
+              var p=pop(
 
 
                     $div()(
 
-                        im(userMug).w(200).h(200),
+                        $img(userMug).w(200).h(200),
 
-                        h1('chat with '+ invitation.f+'?'),
-
-
+                        $h1('chat with '+ invitation.f+'?'),
 
 
                         $button('ya',function(){
