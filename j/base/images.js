@@ -154,15 +154,31 @@ cut=function(m){//fresh()
     x.dots()
 
     s1(
-        bt('save sprite',function(){
+
+        $button('save sprite',function(){
             sv(x);fresh();EDIT()}),br(2),
-        bt('restart cut',function(){cut(m)}),br(2),
-        bt('file uploads', ldr('uploads')))
+
+        $button('restart cut',function(){cut(m)}),br(2),
+
+        $button('file uploads',
+
+            function(){$w.location='/wap/uploads' }
+
+
+        ))
+
+
+
+
+
+
 
 
     s2( h2('click to start cut-out..'),
         dv('o',500,200).pp()(x))
 }
+
+
 
 
 

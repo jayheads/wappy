@@ -82,6 +82,8 @@ qGE=function rc(u,d,f){
         _e(ss,function(s){f(s,ss)})})}
 
 
+ldr=function(a){return function(){$w.location='/wap/'+a }} //never called?
+
 
 
 load=function(a){  $w.location='/wap/'+a }
