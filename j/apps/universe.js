@@ -16,23 +16,7 @@ fetchMugByUsername = pMug=function(user, func){
 
 
 
-  UniverseMember =  function(playerBitmap){
 
-    bm = playerBitmap
-
-    playerBitmap.rgc().xy(600).sxy(.4);
-
-    playerBitmap.o('$$', function(bm){
-
-        bm.XX()
-
-        kk.emit('X', _username)
-
-    })
-
-    //only works local
-
-    return playerBitmap}
 
 
 UNIVERSE=function(){
@@ -48,11 +32,9 @@ UNIVERSE=function(){
 
 
 
-    acceptUniverseInvitation = accept=function(t){
+    acceptUniverseInvitation = accept=function(toWho){
 
-        ke('bc',
-            'accept',
-            {f:usr, t:t})
+        kk.emit('bc',  'accept',  {f:_username, t:toWho})
     }
 
 
@@ -73,7 +55,11 @@ UNIVERSE=function(){
 
         T(function(){c.X()},10000)
         tw(c,[{a:0,sxy:.1,x:x-250,y:y-250},20000])
-        if(g.p){ke('bub',{t:t,x:x,y:y,u:usr})}
+
+        if(g.p){
+
+            kk.emit('bub',
+                {t:t,x:x,y:y,u:_username})}
 
         return c}
 
@@ -112,8 +98,18 @@ UNIVERSE=function(){
 
 
     addGuy=function(u,b){
+
         guys.push({u:u,b:b})
-        uni.a( UniverseMember(b))}
+
+
+      b.rgc().xy(600).sxy(.4);
+
+      b.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
+
+        uni.a( b)
+
+
+    }
 
 
 
@@ -137,7 +133,16 @@ UNIVERSE=function(){
 
     var func=function(b,s){
         uni=s
-        you=UniverseMember(b).fn(SL)
+
+        b.rgc().xy(600).sxy(.4);
+
+        b.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
+
+
+        you=b.fn(SL)
+
+
+
         guys.push({u:usr,b:you})
 
         I(updateGuy,100)
