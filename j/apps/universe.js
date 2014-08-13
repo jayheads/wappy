@@ -27,13 +27,12 @@ UNI = function(func){
 
 
 UNIVERSE=function(){
+    guysArray=guys=[]
 
     acceptUniverseInvitation = accept=function(toWho){
 
         kk.emit('bc',  'accept',  {f:_username, t:toWho})
     }
-
-
     SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
 
         if(!$w['uni']){return}
@@ -58,9 +57,7 @@ UNIVERSE=function(){
                 {t:t,x:x,y:y,u:_username})}
 
         return c}
-
-
-   getGuy=  function(username){
+    getGuy=  function(username){
 
         var theGuy=false
 
@@ -68,23 +65,18 @@ UNIVERSE=function(){
 
         // now a is username
 
-        _.each(guys, function(guy){
+        _.each(guysArray, function(guy){
 
             if(guy.u == username){theGuy = guy}
 
         })
 
         return theGuy}
-
-
-   guyLocation=function(){
+    guyLocation=function(){
 
         if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
 
    }
-
-
-
     updateGuy =  function(user){
 
 
@@ -95,12 +87,9 @@ UNIVERSE=function(){
         else {  kk.emit('bc', 'upd',  guyLocation()  )  }
 
     }
-
-
-
     addGuy=function(username, bitmap){
 
-        guys.push(  {u: username, b: bitmap}  )
+        guysArray.push(  {u: username, b: bitmap}  )
 
         bitmap.rgc().xy(600).sxy(.4);
 
@@ -109,11 +98,7 @@ UNIVERSE=function(){
         uni.a( bitmap )
 
     }
-
-
-
-    //dep???
-  startUniverse = function(username){//ply=
+    startUniverse = function(username){//ply=
 
         if(!getGuy(username)){  fetchMugByUsername(username,
 
@@ -136,16 +121,7 @@ UNIVERSE=function(){
   }
 
 
-
-
-
-
-
-
-
     invite=function(toWho){  ke('bc','invite',   {f: usr, t: toWho}) }
-
-    guys=[]
 
     var func=function(b,s){
         uni=s
@@ -159,7 +135,7 @@ UNIVERSE=function(){
 
 
 
-        guys.push({u:usr,b:you})
+        guysArray.push({u:usr,b:you})
 
         I(updateGuy,100)
 
@@ -171,7 +147,6 @@ UNIVERSE=function(){
             var theRow=row().a()
 
             _.each(users,
-
 
                 function(user){
 
@@ -212,10 +187,6 @@ UNIVERSE=function(){
 
         })}
 
-
-
-
-
-    wMs(func,  1000,800,'/beach.jpg')}
+    wMs(func,1000,800,'/beach.jpg')}
 
 
