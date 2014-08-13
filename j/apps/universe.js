@@ -125,8 +125,9 @@ UNIVERSE=function(){
   }
 
 
-    invite=function(toWho){  ke('bc','invite',   {f: usr, t: toWho}) }
+    invite=function(toWho){  kk.emit('bc','invite',   {f: _username, t: toWho})  }
 
+    
     var onMugReady=function(b,s){
         uni=s
 
@@ -139,42 +140,22 @@ UNIVERSE=function(){
 
 
 
-        guysArray.push({u:usr,b:you})
+        guysArray.push({u:_username, b:you})
 
         I(updateGuy,100)
 
-        getUsers(
-
-
-            function(users){
+        getUsers(  function(users){
 
             var theRow=row().a()
 
-            _.each(users,
+            _.each(users,  function(user){  fetchMugByMugId(  user,   function(userMug){
 
-                function(user){
+                theRow(
 
-                    fetchMugByMugId(
+                    Thumbnail(   $pg(user.u),   $br(), userMug).$(   function(){ invite(user.u)   })
+                )
 
-                        user,
-
-
-                        function(userMug){
-
-
-                            theRow(
-
-
-                                Thumbnail(   $pg(user.u),   $br(), userMug)
-
-
-                                    .o(function(){
-
-                                        invite(user.u)
-
-                                    }))
-                })
-            })
+            })   })
 
 
             dv('b', 1000, 'auto').pp()(
