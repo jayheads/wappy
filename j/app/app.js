@@ -108,17 +108,12 @@ renderGuestPage=launchGuest = guest=function(){ z('r')
           ButtonLarge('sign up', SignUpForm)
       ).cen(),
 
-      ROW(    h1('fun!'),  $div()(   $h4('graphics'),  $pg('cool cool cool'),  $h4('social'),      $pg('cool cool')  ))  //,  FT('&copy;2013')
-
+      ROW(    $h1('fun!'),  $div()(   $h4('graphics'),  $pg('cool cool cool'),  $h4('social'),      $pg('cool cool')  ))  //,  FT('&copy;2013')
 
     )
 
+    container.pp().drg().c('o').s('a', .9).t(100).l(100)}
 
-
-    container.pp().drg().c('o').s('a', .9).t(100).l(100)
-
-
-}
 
 renderHomePage =launchHome = home=function(){
 
@@ -128,7 +123,6 @@ renderHomePage =launchHome = home=function(){
 
     if( $w[ app=uC(app) ] ){  $w[app]()  }  // should be passed in?
 }
-
 
 
 

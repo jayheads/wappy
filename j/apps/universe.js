@@ -34,6 +34,7 @@ UNIVERSE=function(){
 
         kk.emit('bc',  'accept',  {f:_username, t:toWho})
     }
+
     SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
 
         if(!$w['uni']){return}
@@ -58,6 +59,7 @@ UNIVERSE=function(){
                 {t:t,x:x,y:y,u:_username})}
 
         return c}
+
     getGuy=  function(username){
 
         var theGuy=false
@@ -73,6 +75,7 @@ UNIVERSE=function(){
         })
 
         return theGuy}
+
     guyLocation=function(){
 
         if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
@@ -90,7 +93,6 @@ UNIVERSE=function(){
 
     }
 
-
     addGuy=function(username, bitmap){
 
         guysArray.push(  {u: username, b: bitmap}  )
@@ -100,7 +102,6 @@ UNIVERSE=function(){
         bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
 
         uni.a(bitmap)}
-
 
     startUniverse = function(username){//ply=
 
@@ -120,12 +121,7 @@ UNIVERSE=function(){
                 }
 
 
-            )}
-
-  }
-
-
-
+            )} }
 
     //the invitation is BROADCASTED !!!
 
@@ -138,12 +134,6 @@ UNIVERSE=function(){
             {f: _username, t: toWho})
 
     }
-
-
-
-
-
-
 
 
 
@@ -198,13 +188,12 @@ UNIVERSE=function(){
 
 
 
-
-
-
     wMs(onMugReady,
         1000,
         800,
         '/beach.jpg')
+
+
 
 }
 

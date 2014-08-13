@@ -115,12 +115,11 @@ kk.on('accept',function(d){
 
 kk.on('invite',function(invitation){  //dd=invitation
 
-    if(_username == invitation.t){  fetchMugByUsername(  invitation.f,
+    if(_username == invitation.t){
 
+        fetchMugByUsername(  invitation.f,
 
             function(userMug){
-
-
 
               var p=pop(
 
@@ -131,17 +130,16 @@ kk.on('invite',function(invitation){  //dd=invitation
 
                         $h1('chat with '+ invitation.f+'?'),
 
-
                         $button('ya',function(){
 
                             p.m()
 
-                            startUniverse(invitation.f)
+                            startUniverse( invitation.f )
 
                             accept(invitation.f) }),
 
 
-                        $button('na', function(){} )
+                        $button('na', function(){p.m()} )
 
 
 
