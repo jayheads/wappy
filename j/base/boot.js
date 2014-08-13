@@ -115,26 +115,45 @@ FT=function(){
 
 
 
-HD=function(){
-    var g=G(arguments),
-        j=dk('H')
+HeaderDiv=HD=function(){
 
-    _e(g,function(v){
+    var args=G(arguments),
+        theDiv=$div().k('header')
+
+    _.each(args,function(v){
         if(S(v)){v=h3(v)}
-        j(v)})
+        theDiv(v)})
 
-    if(g.p){j.cen()}
-    return j.id('header').mb(20)}
+    if(args.p){theDiv.cen()}
+    return theDiv.id('header').mb(20)}
 
 
-JT=function(){
-    var g=G(arguments),j=dk('j')
-    j(h1(g.f))
-    _e(g.r,function(v){if(S(v)){v=h3(v)}
-        j(v)})
-    if(g.p){j.cen()}
-    return j.id('jumbo')
+
+
+Jumbotron=JumbotronDiv=JT=function(){
+    var args=G(arguments),
+
+        theDiv=$div().k('jumbotron')
+
+    theDiv(h1(args.f))
+
+    _.each(args.r,
+        function(v){
+
+            if(S(v)){v=h3(v)}
+
+            theDiv(v)
+
+        })
+
+
+    if(args.p){theDiv.cen()}
+
+    return theDiv.id('jumbo')
 }
+
+
+
 
 
 

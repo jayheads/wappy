@@ -4,17 +4,17 @@ format=function(){
 
 
 
-CT=function(){//cnt=buff=bff=
+ContainerDiv=CT=function(){//cnt=buff=bff=
 
-    var g=G(arguments),
-        c=_d().k('ct')
+    var args=G(arguments),
 
-    if(g.N){
-        c( br(4) ).a()}
+        theDiv = $div().k('container')
 
-    _e(g,function(v){c(v)})
+    if(args.N){ theDiv( $br(4) ).a()}
 
-    return c}
+    _.each(args,function(v){theDiv(v)})
+
+    return theDiv}
 
 
 

@@ -72,18 +72,18 @@ hr=function(c,h,w){var e=qq('hr');
 
 
 
-h1=function(){
+$h1=h1=function(){
     var g=G(arguments),
         h=qq($('<h1>'))
 
     _a(h,g)
 
     return h}
-h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
-h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
-h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
-h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
-h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
+$h2=h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
+$h3=h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
+$h4=h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
+$h5=h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
+$h6=h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
 
 $br =br =function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
 

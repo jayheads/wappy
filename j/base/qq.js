@@ -407,8 +407,11 @@ qq=function(e,b,c,d){
     q.ngSubmit=function(m){q.at('ng-submit',m)
         return q}
 
-    q.jLoad=function(a){qJ(a,function(d){q(d)})
-        return q}
+    q.jLoad=function(a){
+        qJ(a,function(d){q(d)})
+        return q
+
+    }
 
 
 

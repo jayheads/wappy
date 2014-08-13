@@ -1,8 +1,6 @@
 lc=function(a){
-    if(D(a)){$w.location=a}; return $w.location}
-
-
-
+    if(D(a)){
+        $w.location=a}; return $w.location}
 
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
 
@@ -58,143 +56,88 @@ qGE=function rc(u,d,f){
 
 
 
-load=function(a){
-
-    $w.location='/wap/'+a
-}
+load=function(a){  $w.location='/wap/'+a }
 
 
 
 
-guest=function(){
+renderGuestPage=launchGuest = guest=function(){ z('r')
 
+  var container=ContainerDiv(
 
-    z('r')
+      HeaderDiv(
+            $ul().k("nav nav-pills pull-right")(
+                $liA('home').k('active'),
+                $liA('About'),
+                $liA('Contact')),
+            $h1('jason yanofski presents..')),
+      JumbotronDiv(
+          'a graphics-based real-time social gaming creativity web app','woo hoo!',
+          ButtonLarge('log in', LoginForm),
+          $span(' '),
+          ButtonLarge('sign up', SignUpForm)
+      ).cen(),
 
-  var content=  CT(
-
-        HD(
-
-            ul().k('n np pr')(  lik('home',  '+'),    lik('About'),   lik('Contact')   ),
-
-
-            h1('jason yanofski presents..')
-
-        ),
-
-
-
-        JT(
-
-            'a graphics-based real-time social gaming creativity web app','woo hoo!',
-
-            bt('log in',  lI,  '+'), sp(' '),
-
-            bt('sign up',  sU,  '+'),
-
-            '+'
-
-        ),
-
-
-        ROW(
-
-            h1('fun!'),  _d()(   h4('graphics'),  pg('cool cool cool'),  h4('social'),      pg('cool cool')  )
-
-        )  //,  FT('&copy;2013')
+      ROW(    h1('fun!'),  $div()(   $h4('graphics'),  $pg('cool cool cool'),  $h4('social'),      $pg('cool cool')  ))  //,  FT('&copy;2013')
 
 
     )
 
 
 
+    container.pp().drg().c('o').s('a', .9).t(100).l(100)
 
 
-    content.pp()
+}
 
-    content.drg()
+renderHomePage =launchHome = home=function(){
 
-    content.c('o').s('a',.9).t(100).l(100)
+    WappyNav('x') //load navigator
+
+    qJ('/lgd', function(data){ $('#uname').text(_username).append(data) }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
+
+    if( $w[ app=uC(app) ] ){  $w[app]()  }  // should be passed in?
 
 
 }
 
 
+SignUpForm=signUpForm  = sU=function(){
 
+    var newUser=function(a,b,c){
 
-
-
-home=function(){
-
-    //load navigator
-
-    WappyNav('g')
-
-    //update user name on UI dash
-
-
-
-    qi('uname').T(     usr     )
-
-
-
-
-
-
-    //qi('uname').jLoad('/lgd')
-
-
-    app = uC(app) // should be passed in?
-
-
-    if(  $w [app] ){   $w[app]()   }
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-signUpForm  = sU=function(){
-
-    var nU=function(a,b,c){//new user
-
-        if(S(a)){return nU({u:a,p:b},c)}
+        if(S(a)){return newUser({u:a,p:b},c)}
 
         qP('/nU',a,b)}
 
 
+
+
     var f={
 
-        u:fg(
+        u: $div().k('form-group')(
 
-            lb('uname: ','uname'),
+            $label('uname: ','uname'),
 
-            fc().id('uname')
+            TextInput().k('form-control').at({type:'text'})().id('uname')
+
         )
 
             .f(20).nm('u'),
 
 
 
-        p: fg(
+        p: $div().k('form-group')(
 
-            lb('pword: ','pword'),
+            $label('pword: ','pword'),
 
             fc('p').id('pword')
 
         ).f(20).nm('p'),
 
 
-        s: sm('sign up!').f(16),  //~m
+        s:   $input().V('sign up').ty('submit').f(16)   ,
+
 
 
         v:function(){
@@ -258,10 +201,7 @@ signUpForm  = sU=function(){
 
     return f}
 
-
-
-
-logInForm = lI = function(){
+LogInForm= LoginForm=logInForm = lI = function(){
 
     var u, p, s, f,
 
@@ -337,57 +277,43 @@ logInForm = lI = function(){
 
 }
 
+logOut =lO=function(){qJ('/lo',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
+
+getUsers = usrs=function(f){ qG('/users', f)}
+ 
+//Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
+
+getBuds = buds=function(f){qG('/buds',f)}
+
+removeUser = rmU=function(a,b){if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
 
 
-
-
-
-
-
-
-lO=function(){qJ('/lo',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
-
-usrs=function(f){qG('/users',f)}
-Us=function(f){
-
-    qJ('/gU',
-
-        f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
-buds=function(f){qG('/buds',f)}
-
-rmU=function(a,b){if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
-
-fresh=function(){z();WappyNav()}
-
-
+clearApps = fresh=function(){ z();WappyNav() }
 
 $(function(){
 
-
     qJ('/lgd',
-        function(d){
-            usr=d
-            if(d=='guest'||!d){
 
-                guest()}
+        function(username){
 
-            else{
-                ke('id', usr)
+            _username =usr=username
+
+            if(username=='guest'|| !username){guest()}
+
+            else {
+
+                ke('id', username)
+
                 joinSelf()
-                wM(function(m){mug=m})
-                home()
-            }})
 
+                wM(function(m){_userMug= mug = m})
 
+                renderHomePage()
+
+            }
+        })
 
 })
-
-
-
-
-
-
-
 
 
 
@@ -438,8 +364,6 @@ lgrBar=function(){
         $: function(d){  qi('log').jLoad('/lgd') },
         $$:lO
     })(sp('log: '),log())}//depr?
-
-
 
 
 

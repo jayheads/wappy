@@ -49,7 +49,7 @@ $label = lb=function lb(l,f,n,p){
 $form=function(){return qq('f')}
 
 
-//fc=function(a){   return TextInput(a).k('form-control') }
+fc=function(a){   return TextInput(a).k('form-control') }
 
 
 
