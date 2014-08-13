@@ -81,49 +81,71 @@ UNIVERSE=function(){
         return theGuy}
 
 
+   guyLocation=function(){
+
+        if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
+
+   }
 
 
-   updateGuy =  function(u){
 
-        var guyLocation=function(){
+    updateGuy =  function(user){
 
-            if($w['you']){ return {u:usr,  x: you.x(), y: you.y()} }
-        }
 
-        if(u){  getGuy(u.u).b.x(u.x).y(u.y) }
 
-        else {  ke('bc','upd',  guyLocation()  )  }
+        if(user){  getGuy( user.u ).b.x(user.x).y(user.y) }
+
+
+        else {  kk.emit('bc', 'upd',  guyLocation()  )  }
 
     }
 
 
-    addGuy=function(u,b){
 
-        guys.push({u:u,b:b})
+    addGuy=function(username, bitmap){
 
+        guys.push(  {u: username, b: bitmap}  )
 
-      b.rgc().xy(600).sxy(.4);
+        bitmap.rgc().xy(600).sxy(.4);
 
-      b.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
+        bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
 
-        uni.a( b)
-
+        uni.a( bitmap )
 
     }
 
 
 
     //dep???
-  startUniverse = function(u){//ply=
+  startUniverse = function(username){//ply=
 
-        if(!getGuy(u)){
-            pMug(u,function(m){
+        if(!getGuy(username)){
 
-                UNI(function(){
-                Bm(m,function(b){
-                    addGuy(u,b)
-                })})})}
-    }
+            fetchMugByUsername(username,
+
+                function(userMug){
+
+                var uniFunc=function(){
+
+
+                    Bm( userMug,  function(bitmap){ addGuy(username, bitmap) } )
+
+
+                }
+                    UNI(uniFunc)
+
+                }
+
+
+            )}
+
+  }
+
+
+
+
+
+
 
 
 

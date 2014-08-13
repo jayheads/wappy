@@ -46,8 +46,8 @@
       <file leaf-file-name="universe.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.28721803" vertical-offset="589" max-vertical-offset="2700">
-              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.55789477" vertical-offset="1159" max-vertical-offset="3030">
+              <caret line="133" column="16" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
               <folding>
                 <element signature="e#128#207#0" expanded="false" />
                 <element signature="e#495#1003#0" expanded="false" />
@@ -722,6 +722,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6150" max-vertical-offset="11235">
           <caret line="410" column="7" selection-start-line="410" selection-start-column="7" selection-end-line="411" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -757,8 +758,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28721803" vertical-offset="589" max-vertical-offset="2700">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.55789477" vertical-offset="1159" max-vertical-offset="3030">
+          <caret line="133" column="16" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
           <folding>
             <element signature="e#128#207#0" expanded="false" />
             <element signature="e#495#1003#0" expanded="false" />
