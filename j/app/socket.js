@@ -127,7 +127,7 @@ kk.on('invite',function(invitation){
 
             function(userMug){
 
-                pop(
+              var p=   pop(
 
 
                     $div()(
@@ -141,7 +141,7 @@ kk.on('invite',function(invitation){
 
                         $button('ya',function(){
 
-                            pop.m()
+                            p.m()
 
                             startUniverse(invitation.f)
 
@@ -154,7 +154,9 @@ kk.on('invite',function(invitation){
 
                     )
 
-          )})}
+          )
+
+            })}
 
 })
 

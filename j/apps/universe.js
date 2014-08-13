@@ -14,6 +14,11 @@ fetchMugByUsername = pMug=function(user, func){
 
 }
 
+
+
+
+
+
 SuperPlayer = PlayerBitmap=player=function(playerBitmap){
 
     bm = playerBitmap
