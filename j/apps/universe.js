@@ -16,10 +16,7 @@ fetchMugByUsername = pMug=function(user, func){
 
 
 
-
-
-
-SuperPlayer = PlayerBitmap=player=function(playerBitmap){
+  UniverseMember =  function(playerBitmap){
 
     bm = playerBitmap
 
@@ -29,7 +26,7 @@ SuperPlayer = PlayerBitmap=player=function(playerBitmap){
 
         bm.XX()
 
-        ke('X', usr)
+        kk.emit('X', _username)
 
     })
 
@@ -116,7 +113,7 @@ UNIVERSE=function(){
 
     addGuy=function(u,b){
         guys.push({u:u,b:b})
-        uni.a(player(b))}
+        uni.a( UniverseMember(b))}
 
 
 
@@ -140,7 +137,7 @@ UNIVERSE=function(){
 
     var func=function(b,s){
         uni=s
-        you=player(b).fn(SL)
+        you=UniverseMember(b).fn(SL)
         guys.push({u:usr,b:you})
 
         I(updateGuy,100)
