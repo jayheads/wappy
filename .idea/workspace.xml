@@ -46,14 +46,16 @@
       <file leaf-file-name="universe.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21954887" vertical-offset="94" max-vertical-offset="1965">
-              <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.38345864" vertical-offset="765" max-vertical-offset="1905">
+              <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
               <folding>
                 <element signature="e#128#207#0" expanded="false" />
-                <element signature="e#396#462#0" expanded="false" />
-                <element signature="e#501#1009#0" expanded="false" />
-                <element signature="e#1306#1386#0" expanded="false" />
-                <element signature="e#1418#1549#0" expanded="false" />
+                <element signature="e#399#465#0" expanded="false" />
+                <element signature="e#504#1012#0" expanded="false" />
+                <element signature="e#1044#1282#0" expanded="false" />
+                <element signature="e#1309#1389#0" expanded="false" />
+                <element signature="e#1422#1553#0" expanded="false" />
+                <element signature="e#1593#1786#0" expanded="false" />
                 <element signature="e#1827#2190#0" expanded="false" />
               </folding>
             </state>
@@ -762,14 +764,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21954887" vertical-offset="94" max-vertical-offset="1965">
-          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.38345864" vertical-offset="765" max-vertical-offset="1905">
+          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
           <folding>
             <element signature="e#128#207#0" expanded="false" />
-            <element signature="e#396#462#0" expanded="false" />
-            <element signature="e#501#1009#0" expanded="false" />
-            <element signature="e#1306#1386#0" expanded="false" />
-            <element signature="e#1418#1549#0" expanded="false" />
+            <element signature="e#399#465#0" expanded="false" />
+            <element signature="e#504#1012#0" expanded="false" />
+            <element signature="e#1044#1282#0" expanded="false" />
+            <element signature="e#1309#1389#0" expanded="false" />
+            <element signature="e#1422#1553#0" expanded="false" />
+            <element signature="e#1593#1786#0" expanded="false" />
             <element signature="e#1827#2190#0" expanded="false" />
           </folding>
         </state>

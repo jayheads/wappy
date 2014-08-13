@@ -20,13 +20,14 @@ UNI = function(func){
 
     if($w['uni']){ func() }
 
-    else { UNIVERSE( func ) }
+    else { UNIVERSE(); func() }
 
 }
 
 
 
 UNIVERSE=function(){
+
     guysArray=guys=[]
 
     acceptUniverseInvitation = accept=function(toWho){
@@ -77,6 +78,7 @@ UNIVERSE=function(){
         if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
 
    }
+
     updateGuy =  function(user){
 
 
@@ -87,6 +89,8 @@ UNIVERSE=function(){
         else {  kk.emit('bc', 'upd',  guyLocation()  )  }
 
     }
+
+
     addGuy=function(username, bitmap){
 
         guysArray.push(  {u: username, b: bitmap}  )
@@ -95,9 +99,9 @@ UNIVERSE=function(){
 
         bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
 
-        uni.a( bitmap )
+        uni.a(bitmap)}
 
-    }
+
     startUniverse = function(username){//ply=
 
         if(!getGuy(username)){  fetchMugByUsername(username,
@@ -123,7 +127,7 @@ UNIVERSE=function(){
 
     invite=function(toWho){  ke('bc','invite',   {f: usr, t: toWho}) }
 
-    var func=function(b,s){
+    var onMugReady=function(b,s){
         uni=s
 
         b.rgc().xy(600).sxy(.4);
@@ -139,7 +143,7 @@ UNIVERSE=function(){
 
         I(updateGuy,100)
 
-        usrs(
+        getUsers(
 
 
             function(users){
@@ -161,23 +165,27 @@ UNIVERSE=function(){
                             theRow(
 
 
-                                Thumbnail(   pg(user.u),   $br(), userMug)
+                                Thumbnail(   $pg(user.u),   $br(), userMug)
 
 
-                                    .o(function(){  invite(user.u)  }))
+                                    .o(function(){
+
+                                        invite(user.u)
+
+                                    }))
                 })
             })
 
 
             dv('b', 1000, 'auto').pp()(
 
-                br(3),
+                $br(3),
 
                 tx('...', 'tx'),
 
-                $button('send', function(){   SpeechBubble(
+                $button('send', function(){
 
-                    qi('tx').V()
+                    SpeechBubble(  qi('tx').V()
 
                     ,
 
@@ -187,6 +195,16 @@ UNIVERSE=function(){
 
         })}
 
-    wMs(func,1000,800,'/beach.jpg')}
+
+
+
+
+
+    wMs(onMugReady,
+        1000,
+        800,
+        '/beach.jpg')
+
+}
 
 
