@@ -16,21 +16,17 @@ fetchMugByUsername = pMug=function(user, func){
 
 
 
+UNI = function(func){
+
+    if($w['uni']){ func() }
+
+    else { UNIVERSE( func ) }
+
+}
 
 
 
 UNIVERSE=function(){
-
-
-    UNI = function(func){
-
-        if($w['uni']){func()}
-
-        else {UNIVERSE(func)}
-
-    }
-
-
 
     acceptUniverseInvitation = accept=function(toWho){
 
@@ -64,7 +60,7 @@ UNIVERSE=function(){
         return c}
 
 
-   getGuy= gg=function(username){
+   getGuy=  function(username){
 
         var theGuy=false
 
@@ -119,20 +115,18 @@ UNIVERSE=function(){
     //dep???
   startUniverse = function(username){//ply=
 
-        if(!getGuy(username)){
-
-            fetchMugByUsername(username,
+        if(!getGuy(username)){  fetchMugByUsername(username,
 
                 function(userMug){
 
-                var uniFunc=function(){
+                    UNI(  function(){
 
+                            Bm( userMug,
 
-                    Bm( userMug,  function(bitmap){ addGuy(username, bitmap) } )
+                                function( bitmap ){  addGuy(username, bitmap)  }
+                            )}
 
-
-                }
-                    UNI(uniFunc)
+                    )
 
                 }
 
