@@ -316,7 +316,8 @@ module.exports=function(){
 
         })})
     //is logged in?
-    $a.get('/lgd', $w.u, function(req, res){
+
+    $a.get('/loggedIn', $w.u, function(req, res){
         res.j(req.u)
     })
 

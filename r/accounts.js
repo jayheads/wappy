@@ -29,7 +29,14 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
 
 
-    $a.g('/lgd',$w.u,function(q,p,n){p.j(q.u)})
+    $a.g('/lgd',  $w.u,  function(req, res){   res.json( req.u )   })
+
+    $a.g('/loggedIn',  $w.u,  function(req, res){   res.json( req.u )   })
+
+
+
+
+
     //delete user
     $a.p('/rmU',function(q,p,n){$l(q.b);  $m.user.remove(q.b,function(z,u){p.j(z?z:u)})})
     //create new user

@@ -1,3 +1,31 @@
+$(function(){
+
+
+    $.getJSON('/loggedIn', {},
+
+        function(username){
+
+            _username   =usr=username
+
+            if(username=='guest' || !username){ renderGuestPage() }
+
+            else {
+
+                kk.emit('id', username)
+
+                joinSelf()
+
+                wM(function(m){ _userMug= mug = m})
+
+                renderHomePage()
+
+            }
+        })
+})
+
+
+
+
 lc=function(a){
     if(D(a)){
         $w.location=a}; return $w.location}
@@ -94,12 +122,12 @@ renderHomePage =launchHome = home=function(){
 
     WappyNav('x') //load navigator
 
-    qJ('/lgd', function(data){ $('#uname').text(_username).append(data) }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
+    qJ('/loggedIn', function(data){ $('#uname').text(_username).append(data) }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
 
     if( $w[ app=uC(app) ] ){  $w[app]()  }  // should be passed in?
-
-
 }
+
+
 
 
 SignUpForm=signUpForm  = sU=function(){
@@ -280,7 +308,7 @@ LogInForm= LoginForm=logInForm = lI = function(){
 logOut =lO=function(){qJ('/lo',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
 getUsers = usrs=function(f){ qG('/users', f)}
- 
+
 //Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
 
 getBuds = buds=function(f){qG('/buds',f)}
@@ -290,30 +318,6 @@ removeUser = rmU=function(a,b){if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
 
 clearApps = fresh=function(){ z();WappyNav() }
 
-$(function(){
-
-    qJ('/lgd',
-
-        function(username){
-
-            _username =usr=username
-
-            if(username=='guest'|| !username){guest()}
-
-            else {
-
-                ke('id', username)
-
-                joinSelf()
-
-                wM(function(m){_userMug= mug = m})
-
-                renderHomePage()
-
-            }
-        })
-
-})
 
 
 
@@ -333,7 +337,7 @@ $(function(){
 
 
 
-lgr=function(){
+lgrX=function(){
 
     var log=function(c){
         return sp('?').id('log')
@@ -349,7 +353,7 @@ lgr=function(){
         ).o({
 
             $:
-                function(d){  qi('log').jLoad('/lgd') },
+                function(d){  qi('log').jLoad('/loggedIn') },
 
             $$:lO
 
@@ -358,26 +362,14 @@ lgr=function(){
 }//depr?
 
 
-
-lgrBar=function(){
+lgrBarX=function(){
     di('lgr').pp().c('b').o({
-        $: function(d){  qi('log').jLoad('/lgd') },
+        $: function(d){  qi('log').jLoad('/loggedIn') },
         $$:lO
     })(sp('log: '),log())}//depr?
 
 
 
-mDiv=function(){z()  /////////////////////
-
-    dv()(
-
-        h1('hi'),
-        h2('yo')
-
-    ).a()
-
-
-}
 
 
 

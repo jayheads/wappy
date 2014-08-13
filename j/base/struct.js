@@ -17,12 +17,6 @@ ContainerDiv=CT=function(){//cnt=buff=bff=
     return theDiv}
 
 
-
-
-
-
-
-
 mugHeader=function(){
 
     return row(
