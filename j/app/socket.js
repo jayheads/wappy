@@ -16,104 +16,72 @@ kk.on(  'alert',  function(a){alert(a)})
 
 
 
-kk.on('l',function(d){  $l(d)  })
+//kk.on('l',function(d){  $l(d)  })
 kk.on('log',function(d){  $l(d)  })
 
-
-
-
-
-kk.on( 'dpop', function(d,n){ dud(d,n)  })
-
-kk.on( 'dudPop', function(d,n){ dud(d,n)  })
-
-
-
-kk.on('d',function(d){$l('SERVER: %j',d)})
+//kk.on('d',function(d){$l('SERVER: %j',d)})
 kk.on('dir',function(d){$l('SERVER: %j',d)})
+
+kk.on( 'dpop', function(d,n){ dud(d, n)  })
+
+kk.on( 'dudPop', function(d,n){ dud(d, n)  })
+
+
 
 kk.on('notice', function (d) {  $l('SERVER NOTICE: %s', d);  })
 
 kk.on('p',function(e){pop(e)})
+
 kk.on('pop',function(e){pop(e)})
-
-
 kk.on('roo',function(d){roo=d})  // ?
 
-kk.on('res', function(d){res=d})  // ?
 
+kk.on('res', function(d){ res = d })  // ?
 
-kk.on('newImgAck', function(d){xx().f(d.u)})
-
+kk.on('newImgAck', function(d){ xx().f(d.u) })
 
 kk.on('im', function(d){ xx().f( d ) })
 
+//dnm = function(d){ return  d.n+': '+ d.m }
+
+
+kk.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
+kk.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
+kk.on('chatx',function(d){ $w['chat_'+ d.t].s( d.n+': '+ d.m)})
+
+//kk.on('frog',function(){pop('frog')})
 
 
 
-dnm=function(d){ return  d.n+': '+ d.m }
+////////////////////////////////////////////
+// universe
+
+kk.on('bub',function(data){ //$l('bub: '+ d)
+
+    if(getGuy(data.u)){
+
+        SpeechBubble(data.t, data.x, data.y)
+    }
+})
+
+kk.on('upd', function(guy){ updateGuy(guy) })
+kk.on('updateGuy', function(guy){ updateGuy(guy) })
+
+kk.on('accept', function(data){
 
 
+    if(_username == data.t){
 
-kk.on('newChat',
-    function(d){
+        startUniverse(data.f)
 
-        CH.b(dnm(d))
+        // here u should really just be able to 'addUser'
 
-    })
+    }
 
-kk.on('youChat',
-    function(d){CH.s(dnm(d))})
-
-
-kk.on('chatx',function(d){
-
-
-    $w['chat_'+ d.t].s( dnm(d)
-
-    )
 
 })
 
-
-
-
-
-kk.on('bub',
-    function(d){
-        $l('bub: '+d)
-
-
-
-
-if(gg(d.u)){bub(d.t, d.x, d.y)}})
-
-kk.on('frog',function(){pop('frog')})
-
-
-
-kk.on('upd', function(guy){ updateGuy(guy)})
-
-
-kk.on('updateGuy', function(guy){ updateGuy(guy)})
-
-
-
-
-
-kk.on('accept',function(d){
-    dd=d
-
-    if(usr == d.t){ startUniverse(d.f)  }
-
-})
-
-
-
-
-
-
-kk.on('invite',function(invitation){  //dd=invitation
+kk.on('invite', function(invitation){  //dd=invitation
 
     if(_username == invitation.t){
 
@@ -130,14 +98,21 @@ kk.on('invite',function(invitation){  //dd=invitation
 
                         $h1('chat with '+ invitation.f+'?'),
 
-                        $button('ya',function(){
+                        $button('ya',function(){  p.m()
 
-                            p.m()
+
 
                             startUniverse( invitation.f )
 
-                            accept(invitation.f) }),
+                            //so u are just adding them in?
+                            // ah the function also supposedly takes into account the app not even being open
+                            // i could nix that for now
 
+
+
+                            accept(invitation.f)
+
+                        }),
 
                         $button('na', function(){p.m()} )
 
@@ -151,6 +126,7 @@ kk.on('invite',function(invitation){  //dd=invitation
 
 })
 
+////////////////////////////////////////////
 
 
 
@@ -256,7 +232,9 @@ chaz=function(){
 
 
 
-dud=function(d,n){  qP('/dud', {d:d}, function(u){   upop(u,n)  })}
+dud=function(d,n){  $.post('/dud', {d:d}, function(u){   upop(u,n)  })}
+
+
 
 
 

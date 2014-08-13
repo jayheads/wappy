@@ -194,16 +194,26 @@ module.exports=function(io,K){kk=io.sockets
         io.of('/chat').on('connection',function(d){l('new chatter')})
 
 
-        k.on('chat', function(d){em(k)('chat','cool')})
+        //k.on('chat', function(d){  k.emit('chat', 'cool')  })
 
 
         k.on('in',function(d){var rm,guy
             if(A(d)){room=rooms[roomName(d)]
                 if(!room){em('res','-')}
-                else {guy=guy||k.id;em(k)('res', room[guy]?true:false) }}
-            else{rm=room(d)
-                if(!rm){em(k)('res','-')}
-                else{em(k)('res',rm[k.id]?true:false)}}})})
+                else {guy=guy||k.id;
+
+                    k.emit('res', room[guy]?true:false) }}
+
+            else { rm = room(d)
+
+                if(!rm){ k.emit('res', '-') }
+
+                else { k.emit('res', rm[k.id]? true: false ) }
+
+            }
+
+
+        })})
 
 
     Rooms=function(){
