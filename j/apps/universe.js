@@ -83,7 +83,7 @@ UNIVERSE=function(){
 
 
 
-   updateGuy = upd=function(u){
+   updateGuy =  function(u){
 
         var guyLocation=function(){
 

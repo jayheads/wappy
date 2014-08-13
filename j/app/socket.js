@@ -92,7 +92,7 @@ kk.on('frog',function(){pop('frog')})
 
 
 
-kk.on('upd', function(guy){ upd(guy)})
+kk.on('upd', function(guy){ updateGuy(guy)})
 
 
 kk.on('updateGuy', function(guy){ updateGuy(guy)})
