@@ -26,7 +26,7 @@ UNI = function(func){
 
 
 
-UNIVERSE=function(){
+UNIVERSE=function(){z()
 
     guysArray=guys=[]
 

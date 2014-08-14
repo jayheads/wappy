@@ -190,13 +190,6 @@ LAUNCHER=function(){
 }
 
 
-
-
-
-
-
-
-
 LAUNCHER1=function(){
     z()
     catchFlag = false
@@ -279,7 +272,6 @@ LAUNCHER1=function(){
     }
 }
 
-
 LAUNCHERFOLLOW=function(){z()
 
     game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -355,3 +347,4 @@ LAUNCHERFOLLOW=function(){z()
         g.db.cameraInfo(g.camera, 32, 64);
         g.db.spriteCoords(p, 32, 150);
         g.db.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)')}}
+

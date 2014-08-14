@@ -1,4 +1,6 @@
- ACTIONONCLICK=function(){z()
+
+
+ACTIONONCLICK=function(){z()
 
 
     game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create })
@@ -16,8 +18,7 @@
            this,2,1,0)}
  }
 
-
-   BUTTONSCALE=function(){z()
+ BUTTONSCALE=function(){z()
 
          game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
@@ -86,7 +87,8 @@
        function render(){}
    }
 
-   CHANGINGTHEFRAMES=function(){z()
+
+CHANGINGTHEFRAMES=function(){z()
 
 
 
@@ -257,8 +259,6 @@ RASTERBOUNCE=function(){z()
 
      }}
 
-
-
  BITMAPDATAPIXEL=function(){z()
 
       game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create })
@@ -344,11 +344,6 @@ RASTERBOUNCE=function(){z()
 
  }
 
-
-
-
-
-
  BITMAPDATAWOBBLE=function(){z()
 
 
@@ -415,8 +410,6 @@ RASTERBOUNCE=function(){z()
          if (waveDataCounter==_z(waveData)){waveDataCounter=0}
 
      }}
-
-
 
  CACHEDBITMAPDATA=function(){z()
 
@@ -590,7 +583,6 @@ RASTERBOUNCE=function(){z()
 
                 }}
 
-
  FULLSCREEN=function(){z()
 
 
@@ -699,16 +691,25 @@ RASTERBOUNCE=function(){z()
 
      }
 
+
+
      function update() {
 
          if (!g.input.activePointer.position.isZero())
+
          {
              //	This time we'll draw the ball sprite twice, in a mirror effect
              texture.renderXY(ball, g.input.activePointer.x, g.input.activePointer.y, true)
              texture.renderXY(ball, g.input.activePointer.x, 600 - g.input.activePointer.y, false)
          }
 
-     }}
+     }
+
+
+
+
+ }
+
  RENDERTEXTURESTARFIELD=function(){z()
 
 
@@ -792,6 +793,8 @@ RASTERBOUNCE=function(){z()
            }
 
        }}
+
+
  RENDERTEXTURETRAIL=function(){z()
 
 

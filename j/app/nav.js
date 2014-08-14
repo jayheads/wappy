@@ -1,45 +1,90 @@
 
 
-WappyNav = WAPNAV=function(a){
+WappyNav =  function(color){
 
-    var g=G(arguments),
+    var args=G(arguments)
 
-        a=g[0];
+    color=args[0]
 
-    if(a){co(a)}
+    if(color){ co(color) }
 
-    if(g.N){z()}
+    if(args.N){ z() }
+
 
 
     StandardNavbar(
 
         Nav(
             DropdownLoader(Glyph('picture','create'),
-                    'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase','transform' ,'can','big','rub','fan','trans','pan','text' ),
+                    'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
+                'tween','tweenart', 'easing', 'pack','sprite','transform' ,
+                'can' ,'rub','fan' ),
 
-            DropdownLoader(Glyph('tower','animate'),
-                    'tween','tweenart', 'easing', 'pack','sprite'),
+
+
+            DropdownLoader(Glyph('glass','youplay'),
+                'universe',
+               'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
+                'groupvsgroup','shooty','hit','space','maggots'   ),
+
+
 
             DropdownLoader(
                 Glyph('tw','play'),
-                'shooty', 'bod',  'connect','matrix', 'space', 'ship',
-                'circle','hit','boxes','solar','canon','fullcan' ),
 
-            DropdownLoader(Glyph('glass','work'), 'dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object' ),
+                'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
+
+                'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'
+
+            ),
+
+
+
+
 
             DropdownLoader(Glyph('glass','share'),
-                'users', 'status' , 'messages','posts','chatbox','universe','ranky','profiles' ),
+                'users', 'status' , 'messages','posts','chatbox', 'ranky',
+                'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
 
-            DropdownLoader(Glyph('glass','demo'),
-                 'grid', 'bowl','tangle','corners','borders', 'gamer', 'box2d', 'wheel','heads','melon','meltut','gquery')
-        ),
+
+
+
+            DropdownLoader(Glyph('glass','phaser'),
+            'tanks','genmatch','breakout','tilecallbacks',
+                'acceleratetopointer','angularvelocity','oneway','impactevents',
+               'ninjaimpact', 'aabbaabb', 'aabbtile', 'ninjalab',
+                'anglepointer','shootpointer', 'launcherfollow',
+
+                'movearoundworld','bringchildtop','tweenrelative','worldsprite','fixedtocamera','cannonballs'
+
+
+            ),
+
+            DropdownLoader(Glyph('glass','phaser2'),
+
+                'pixelpickscrolling','inputpriority', 'callallanimations','callall','displayorder',
+                'extendingagroup','getfirstdead','recycling','swapchildren','removebetween','removing',
+                'bringgrouptotop','multipleanims','combinedtweens'
+
+
+            ),
+
+            DropdownLoader(Glyph('glass','box2d'),
+                'box2d', 'wheel','heads', 'cups','pinball', 'revdemo',
+                'player','player1','player2','player3'  )
+
+    // DropdownLoader(Glyph('glass','phaserDisplay'),'actiononclick','buttonscale','changingtheframes','rotatedbuttons','rasterbounce','alphamask','floodfill','bitmapdatapixel','bitmapdataprocess','bitmapdatawobble','cachedbitmapdata','extractmask','graphics','fullscreen','rendercrisp','rendertexturemirror','rendertexturestarfield','rendertexturetrail')
+
+
+    ),
+
 
 
         NavRight(
             Dropdown(
                 Glyph('user',_s().id('uname'),'-'),
                 $liA('view' ),   //   $liA(   Glyph('zoom-in','profile').o(  ldr('profile')  )  ),
-                $liA('logout').o(lO))),
+                $liA('logout').o(logOut))),
 
 
         SearchNavRight()
@@ -71,7 +116,10 @@ NavRight=function(){
     return $ul().k("nav navbar-nav navbar-right").apply(0, G(arguments))
 
 }
+
+
 Dropdown=function(){  // DropdownMenu =
+
 
     DropdownToggle0 =   function(dropdownName, glyphicon){
 
@@ -83,11 +131,12 @@ Dropdown=function(){  // DropdownMenu =
     var args=G(arguments),  theInnerUl, theOuterLi
 
 
-    theInnerUl = ul().k('dropdown-menu')
+    theInnerUl = $ul().k('dropdown-menu')
 
 
     _.each(args.r,
         function(arg){
+
             if(
                 S(arg)){
                 
@@ -101,7 +150,7 @@ Dropdown=function(){  // DropdownMenu =
 
 
 
-    theOuterLi = li().k('dropdown')(
+    theOuterLi = $li().k('dropdown')(
         
         $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})
             (args.f,  _s().k('caret'))

@@ -240,11 +240,6 @@ GROUPVSGROUP1=function(){z()
 }
 
 
-
-
-
-
-
 MASSVELOCITYTEST=function(){
 
     pG(
@@ -493,9 +488,6 @@ MAGGOTS1=function(){z()
     }
 
 }
-
-
-
 MOVEAROUNDWORLD=function(){z()
 
 
@@ -560,8 +552,6 @@ MOVEAROUNDWORLD=function(){z()
 
 
 }
-
-
 BRINGCHILDTOP=function(){
 
     z()
@@ -599,8 +589,6 @@ BRINGCHILDTOP=function(){
 
                 function render(){g.db.inputInfo(32,32)}
            }
-
-
 TWEENRELATIVE=function(){z()
 
         game= Game(800,600,Phaser.CANVAS,'phaser-example', {
@@ -634,8 +622,6 @@ TWEENRELATIVE=function(){z()
             g.db.t('x: ' + a1.x, a1.x, a1.y - 4)
             g.db.t('x: ' + a2.x, a2.x, a2.y - 4)}
 }
-
-
 WORLDSPRITE=function(){z()
 
 
@@ -670,7 +656,6 @@ WORLDSPRITE=function(){z()
 
         }
 }
-
 FIXEDTOCAMERA=function(){z()
        game = Game(800, 600, Phaser.CANVAS, 'phaser-example',
            {preload: preload, create: create, update: update, render : render });
@@ -717,7 +702,6 @@ FIXEDTOCAMERA=function(){z()
                 g.cm.x += 4}}
         function render(){g.db.cameraInfo(g.camera, 32, 32)}
 }
-
 CANNONBALLS=function(){
 
     var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -800,7 +784,6 @@ CANNONBALLS=function(){
     }
 
 }
-
 PIXELPICKSCROLLING=function(){z()
 
        game =  Game(800, 600, Phaser.CANVAS, 'phaser-example',
@@ -874,7 +857,6 @@ PIXELPICKSCROLLING=function(){z()
 
        function render(){g.db.spriteInputInfo(b, 32, 32)}
 }
-
 INPUTPRIORITY=function(){pG(
 
             function(){
@@ -888,7 +870,6 @@ INPUTPRIORITY=function(){pG(
                g.sp(300,300,'card').iE(1).pr(0).drag()}
 
     )}
-
 SNAPONDRAG=function(){z()
       game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
@@ -916,7 +897,6 @@ SNAPONDRAG=function(){z()
 
     }
 }
-
 CALLALLANIMATIONS=function(){z()
          game=Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create })
          function preload(){g=$G(game)
@@ -925,8 +905,6 @@ CALLALLANIMATIONS=function(){z()
              coins=g.gr()
              _t(5000,function(){coins.crR('coin',0)})
              coins.cA('an.add','an','spin',[0,1,2,3,4,5],10,true).cA('an.play','an','spin')}}
-
-
 CALLALL=function(){z()
 
 
@@ -957,8 +935,6 @@ CALLALL=function(){z()
 
               }
 }
-
-
 DISPLAYORDER=function(){z()
 
          game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
@@ -988,7 +964,6 @@ DISPLAYORDER=function(){z()
                     },this)
                 },this)}
     }
-
 EXTENDINGAGROUP=function(){z()
 
 
@@ -1018,7 +993,6 @@ EXTENDINGAGROUP=function(){z()
                customGroup2 = new MonsterGroup(g, 'baddie', 'slide');
 
            }}
-
 GETFIRSTDEAD=function(){z()
 
 pG(
@@ -1047,8 +1021,6 @@ pG(
         g.db.text('One item will be resurrected every second', 32, 32);
         g.db.text('Living: ' + veg.cL() + '   Dead: ' + veg.cD(), 32, 64)}
 )}
-
-
 XXGROUPTRANSFORM=function(){z()
 
     var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
@@ -1099,8 +1071,6 @@ XXGROUPTRANSFORM=function(){z()
 
 
                }
-
-
 RECYCLING=function(){z()
      game =  Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
@@ -1135,7 +1105,6 @@ RECYCLING=function(){z()
 
     }
 }
-
 SWAPCHILDREN=function(){z()
 
 
@@ -1175,7 +1144,6 @@ SWAPCHILDREN=function(){z()
                     game.debug.text('Tap screen to swap the children and therefore swap their indexes.', 10, 280);
 
                 }}
-
 REMOVEBETWEEN=function(){  z()
 
 
@@ -1220,8 +1188,7 @@ REMOVEBETWEEN=function(){  z()
 
        }
    }
-
-REMOVE=function(){z()
+REMOVING=function(){z()
 
              game= Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
@@ -1267,7 +1234,6 @@ REMOVE=function(){z()
 
 
          }
-
 BRINGGROUPTOTOP=function(){z()
 
              game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -1326,7 +1292,6 @@ BRINGGROUPTOTOP=function(){z()
                 game.debug.inputInfo(32, 32);
             }
         }
-
 MULTIPLEANIMS=function(){z()
 
 
@@ -1406,9 +1371,6 @@ MULTIPLEANIMS=function(){z()
                     $E.Quadratic.InOut, true, 0, 1000, true)
 
             }}
-
-
-
 COMBINEDTWEENS=function(){z()
 
 
@@ -1436,7 +1398,5 @@ COMBINEDTWEENS=function(){z()
     function theEnd(){
         g.tw(p).t({x:-150},1000,$E.Bounce.Out).s()}
 }
-
-
 
 

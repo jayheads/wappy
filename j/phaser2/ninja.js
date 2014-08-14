@@ -60,17 +60,6 @@ ONEWAY=function(){z()
 
                    }}
 
-
-
-
-
-
-
-
-
-
-
-
 IMPACTEVENTS=function(){z()
 
     game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -148,11 +137,6 @@ IMPACTEVENTS=function(){z()
 
 }
 
-
-
-
-
-
 NINJATILEMAP=function(){
 
 
@@ -188,11 +172,6 @@ pG(
 
 
 }
-
-
-
-
-
 
 NINJAIMPACT=function(){z()
 
@@ -249,9 +228,6 @@ NINJAIMPACT=function(){z()
         if(cu.up.isDown){sprite1.body.moveUp(20)} else if(cu.down.isDown){sprite1.body.moveUp(20)}
 }}
 
-
-
-
 AABBAABB=function(){z()
 
 // var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
@@ -284,10 +260,6 @@ AABBAABB=function(){z()
         g.db.text('down: ' + p.body.touching.down, 256, 64);
 
     }}
-
-
-
-
 
 AABBTILE=function(){ z()
 
@@ -328,7 +300,6 @@ function render(){
     g.db.t('right: '+sp1.b.t.right,256,32)
     g.db.t('up: ' +sp1.b.t.up,32,64)
     g.db.t('down: '+sp1.b.t.down,256,64)}}
-
 
 NINJALAB=function(){z()
 
