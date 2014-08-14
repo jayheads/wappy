@@ -250,33 +250,87 @@ inputBox=function(ob){
 
 
 
+joinSelf = function(){
 
+    kk.emit( 'joinRoom',  _username )
 
-joinSelf=function(){ke('j',usr)}
-
-
-iMsg=function(t,m){ke('iMsg',{m:m,t:t,f:usr})}
-
-imBox=function(f){
-    var w=win('instant message from '+f) ,
-        t=tx(), b=bt('reply',  function(){iMsg(f,t.V());w(h2(t.V())) })
-    return w(t,b)}
-
-
-
-msgI=function(m){
-
-    var t=m.t, f=m.f, m=m.m,
-
-        w=$w['im_'+f]=$w['im_'+f]||imBox(f);
-
-    w(h1(m))
 }
 
 
 
 
-win = function(  a, c,  id ){//title/ob?,color,id
+sendMessage =iMsg=function( toWho, message ){
+
+
+
+    kk.emit(  'sendMessage',  {  m: message,  t:toWho,  f:_username  }  )
+
+}
+
+
+
+
+
+
+
+
+
+
+//it's an instant message from a user, but doesnt contain message?
+
+InstantMessage = imBox=function( f ){
+
+
+    var theWin = win( 'instant message from ' + f ) ,
+
+        theTextInput = tx(),
+
+        reply=theTextInput.V()
+
+    theButton = $button(
+
+        'reply' , function(){
+
+           sendMessage( f,  reply)
+
+            theWin( $h2( reply  ) )
+
+        })
+
+    return theWin( theTextInput, theButton )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+receiveMessage = msgI=function(messageObject){
+
+    var toWho = messageObject.t ,
+
+        from = messageObject.f ,
+
+        message = messageObject.m ,
+
+        imFrom='im_' + from
+
+        instantMessage = ($w[imFrom]  =  $w[imFrom]  ||  InstantMessage(from))
+
+    instantMessage(   $h1( message )   )
+
+}
+
+
+
+
+$win = win = function(  a, c,  id ){//title/ob?,color,id
 
     var size,  theWindow,  text,  moreButton,  lessButton, closeButton
 
@@ -297,12 +351,9 @@ win = function(  a, c,  id ){//title/ob?,color,id
 
     closeButton = btl('X',function(){theWindow.X()})
 
-
-
     theWindow=dva(size||4).s({ C:'b', a:.9,  of:'a' })
 
         .P(10).B(4).bs('-').bc('o').auto()
-
 
     (  moreButton,  lessButton.hd(), closeButton  ).drg().a()
 
@@ -319,7 +370,7 @@ win = function(  a, c,  id ){//title/ob?,color,id
 
         theWindow(
 
-            pg(text)
+            $pg(text)
 
                 .f(24).cen().c('X')
 
@@ -361,7 +412,7 @@ win = function(  a, c,  id ){//title/ob?,color,id
 
 privateChatBox = priv=function(a){
     chatBox(a);
-    ke('j',a)}
+    kk.emit('j',a)}
 
 chatBox = cbox =function(t,c,i){
 
@@ -369,10 +420,10 @@ chatBox = cbox =function(t,c,i){
     var chI=tx(),
 
         chS=bt('send',function(){
-            ke('chatx',{t:t,n:usr,m:chI.V()})}),
+            kk.emit('chatx',{t:t,n:usr,m:chI.V()})}),
 
         pcS=bt('pic',function(){pop('pic select')}),
-        ppS=bt('pop',function(){ke('p',chI.V(),t)}),
+        ppS=bt('pop',function(){kk.emit('p',chI.V(),t)}),
 
 
         chM=di('cbi').s({of:'a',C:'x'}),

@@ -32,7 +32,7 @@ WappyNav =  function(color){
             DropdownLoader(
                 Glyph('tw','play'),
 
-                'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
+               'iso', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
 
                 'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'
 
@@ -72,6 +72,7 @@ WappyNav =  function(color){
             DropdownLoader(Glyph('glass','box2d'),
                 'box2d', 'wheel','heads', 'cups','pinball', 'revdemo',
                 'player','player1','player2','player3'  )
+
 
     // DropdownLoader(Glyph('glass','phaserDisplay'),'actiononclick','buttonscale','changingtheframes','rotatedbuttons','rasterbounce','alphamask','floodfill','bitmapdatapixel','bitmapdataprocess','bitmapdatawobble','cachedbitmapdata','extractmask','graphics','fullscreen','rendercrisp','rendertexturemirror','rendertexturestarfield','rendertexturetrail')
 

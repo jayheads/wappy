@@ -1,8 +1,4 @@
-fetchMugByMugId=mugb=function(user, func){
-
-    qP('/dud', {d: user.m}, func)
-
-}
+fetchMugByMugId=mugb=function(user, func){ qP('/dud', {d: user.m}, func) }
 
 fetchMugByUsername = pMug=function(user, func){
 
@@ -14,17 +10,11 @@ fetchMugByUsername = pMug=function(user, func){
 
 }
 
-
-
 UNI = function(func){
 
     if($w['uni']){ func() }
 
-    else { UNIVERSE(); func() }
-
-}
-
-
+    else { UNIVERSE(); func() }}
 
 UNIVERSE=function(){z()
 

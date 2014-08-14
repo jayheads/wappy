@@ -131,7 +131,7 @@ kk.on('invite', function(invitation){  //dd=invitation
 
 
 
-kk.on('iMsg',function(m){msgI(m)})
+kk.on('sendMessage', function(message){ receiveMessage(message) })
 
 
 
