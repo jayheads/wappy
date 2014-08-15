@@ -1,4 +1,4 @@
-kk=io.connect("http://localhost")
+socket = kk=io.connect("http://localhost")
 
 var e=function(a,b){return kk.emit(a,b)},
 
@@ -10,53 +10,53 @@ var e=function(a,b){return kk.emit(a,b)},
 
 
 
-kk.on(  'a',function(a){alert(a)})
-kk.on(  'alert',  function(a){alert(a)})
+socket.on(  'a',function(a){alert(a)})
+socket.on(  'alert',  function(a){alert(a)})
 
 
 
 
-//kk.on('l',function(d){  $l(d)  })
-kk.on('log',function(d){  $l(d)  })
+//socket.on('l',function(d){  $l(d)  })
+socket.on('log',function(d){  $l(d)  })
 
-//kk.on('d',function(d){$l('SERVER: %j',d)})
-kk.on('dir',function(d){$l('SERVER: %j',d)})
+//socket.on('d',function(d){$l('SERVER: %j',d)})
+socket.on('dir',function(d){$l('SERVER: %j',d)})
 
-kk.on( 'dpop', function(d,n){ dud(d, n)  })
+socket.on( 'dpop', function(d,n){ dud(d, n)  })
 
-kk.on( 'dudPop', function(d,n){ dud(d, n)  })
-
-
-
-kk.on('notice', function (d) {  $l('SERVER NOTICE: %s', d);  })
-
-kk.on('p',function(e){pop(e)})
-
-kk.on('pop',function(e){pop(e)})
-kk.on('roo',function(d){roo=d})  // ?
+socket.on( 'dudPop', function(d,n){ dud(d, n)  })
 
 
-kk.on('res', function(d){ res = d })  // ?
 
-kk.on('newImgAck', function(d){ xx().f(d.u) })
+socket.on('notice', function (d) {  $l('SERVER NOTICE: %s', d);  })
 
-kk.on('im', function(d){ xx().f( d ) })
+socket.on('p',function(e){pop(e)})
+
+socket.on('pop',function(e){pop(e)})
+socket.on('roo',function(d){roo=d})  // ?
+
+
+socket.on('res', function(d){ res = d })  // ?
+
+socket.on('newImgAck', function(d){ xx().f(d.u) })
+
+socket.on('im', function(d){ xx().f( d ) })
 
 //dnm = function(d){ return  d.n+': '+ d.m }
 
 
-kk.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
-kk.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
-kk.on('chatx',function(d){ $w['chat_'+ d.t].s( d.n+': '+ d.m)})
+socket.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
+socket.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
+socket.on('chatx',function(d){ $w['chat_'+ d.t].s( d.n+': '+ d.m)})
 
-//kk.on('frog',function(){pop('frog')})
+//socket.on('frog',function(){pop('frog')})
 
 
 
 ////////////////////////////////////////////
 // universe
 
-kk.on('bub',function(data){ //$l('bub: '+ d)
+socket.on('bub',function(data){ //$l('bub: '+ d)
 
     if(
         getGuy(data.u)
@@ -67,11 +67,11 @@ kk.on('bub',function(data){ //$l('bub: '+ d)
     }
 })
 
-kk.on('upd', function(guy){ updateGuy(guy) })
+socket.on('upd', function(guy){ updateGuy(guy) })
 
-kk.on('updateGuy', function(guy){ updateGuy(guy) })
+socket.on('updateGuy', function(guy){ updateGuy(guy) })
 
-kk.on('accept', function(data){
+socket.on('accept', function(data){
 
 
     if(_username == data.t){
@@ -87,7 +87,7 @@ kk.on('accept', function(data){
 
 
 
-kk.on('invite', function(invitation){  //dd=invitation
+socket.on('invite', function(invitation){  //dd=invitation
 
     if(_username == invitation.t){
 
@@ -137,11 +137,11 @@ kk.on('invite', function(invitation){  //dd=invitation
 
 
 
-kk.on('sendMessage', function(message){ receiveMessage(message) })
+socket.on('sendMessage', function(message){ receiveMessage(message) })
 
 
 
-kk.on('inRm',function(u){
+socket.on('inRm',function(u){
     $l('inRm')
     var rm='chat_'+u.r
 
@@ -158,17 +158,17 @@ kk.on('inRm',function(u){
 
 
 
-ke=function(a,b,c){ kk.emit(a,b,c) }
+ke=function(a,b,c){ socket.emit(a,b,c) }
 
 
 
 
-//sop=function(m,u){ kk.emit('p',m,u)  }
+//sop=function(m,u){ socket.emit('p',m,u)  }
 
 
 
 
-em=function(a,b){kk.emit('e',a,b)}
+em=function(a,b){socket.emit('e',a,b)}
 
 
 
@@ -206,18 +206,18 @@ sendPopBox=function(){
 
     $('.pop').click(function(){
 
-        kk.emit( 'pop',
+        socket.emit( 'pop',
 
             { t: qk( 'pt' ).v, b: qk( 'pb' ).v
         })
     })
 }
 
-//kf=function(a,b,c){return function(){kk.emit(a,b,c)}}
+//kf=function(a,b,c){return function(){socket.emit(a,b,c)}}
 
 
 $emitButton =bte=function(a,b){return $button(
-    a, function(){ kk.emit(b) }
+    a, function(){ socket.emit(b) }
 )}
 
 
@@ -264,5 +264,5 @@ dud=function(d,n){
 
 
 //sk-send du of your (first) can-el
-du=function(){var u=c0().toDataURL();kk.emit('du',u);return u}
+du=function(){var u=c0().toDataURL();socket.emit('du',u);return u}
 

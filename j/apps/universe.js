@@ -16,82 +16,101 @@ UNI = function(func){
 
     else { UNIVERSE(); func() }}
 
+
+
+SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
+
+    if(!$w['uni']){return}
+
+    t=g[0]||'hi!'
+    x=g[1]||you.x()
+    y=g[2]||you.y()
+
+    uni.a(c)
+
+    c.a(cir(x-150,y-150,100,'w'))
+    c.a(cir(x-50,y-50,30,'w'))
+    c.a(cir(x-20,y-20,10,'w'))
+    c.a(TX(t).x(x-200).y(y-200))  //c=Do(c)
+
+    T(function(){c.X()},10000)
+    tw(c,[{a:0,sxy:.1,x:x-250,y:y-250},20000])
+
+    if(g.p){
+
+        kk.emit('bub',
+            {t:t,x:x,y:y,u:_username})}
+
+    return c}
+
+
+guyLocation=function(){
+
+    if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
+
+}
+
+
+
+
+
+addGuy=function(username, bitmap){
+
+    guysArray.push(  {u: username, username:username,   b: bitmap,  bitmap:bitmap}  )
+
+    bitmap.rgc().xy(600).sxy(.4)
+
+    bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username) })
+
+    uni.a(bitmap)}
+
+
+
+
+//get guy object by username or u.username
+//guy object has {u/username, x, y}
+getGuy=function(username){
+
+    var theGuy=false
+
+    username = O(username)? username.u: username
+
+    _.each(guysArray,
+
+        function(guy){
+            if(guy.u == username){theGuy = guy}})
+
+    return theGuy}
+
+
+
+
+
+//pass in a user/username to update your image of them
+//or.. pass nothing to update everyone on YOU
+updateGuy =  function(user){
+
+    if(user){
+
+        var bitmap = getGuy( user.u ).bitmap
+
+        bitmap.x( user.x ).y( user.y )   }
+
+
+    else {  kk.emit('bc', 'upd',  guyLocation())  }}
+
+
+
+
 UNIVERSE=function(){z()
 
     guysArray=guys=[]
 
     acceptUniverseInvitation = accept=function(toWho){
 
-        kk.emit('bc',  'accept',  {f:_username, t:toWho})
-    }
-
-    SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
-
-        if(!$w['uni']){return}
-
-        t=g[0]||'hi!'
-        x=g[1]||you.x()
-        y=g[2]||you.y()
-
-        uni.a(c)
-
-        c.a(cir(x-150,y-150,100,'w'))
-        c.a(cir(x-50,y-50,30,'w'))
-        c.a(cir(x-20,y-20,10,'w'))
-        c.a(TX(t).x(x-200).y(y-200))  //c=Do(c)
-
-        T(function(){c.X()},10000)
-        tw(c,[{a:0,sxy:.1,x:x-250,y:y-250},20000])
-
-        if(g.p){
-
-            kk.emit('bub',
-                {t:t,x:x,y:y,u:_username})}
-
-        return c}
-
-    getGuy=  function(username){
-
-        var theGuy=false
-
-        username = O(username)? username.u: username
-
-        // now a is username
-
-        _.each(guysArray, function(guy){
-
-            if(guy.u == username){theGuy = guy}
-
-        })
-
-        return theGuy}
-
-    guyLocation=function(){
-
-        if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
-
-   }
-
-    updateGuy =  function(user){
+        kk.emit('bc',  'accept',  {f:_username, t:toWho})  }
 
 
-
-        if(user){  getGuy( user.u ).b.x(user.x).y(user.y) }
-
-
-        else {  kk.emit('bc', 'upd',  guyLocation()  )  }
-
-    }
-
-    addGuy=function(username, bitmap){
-
-        guysArray.push(  {u: username, b: bitmap}  )
-
-        bitmap.rgc().xy(600).sxy(.4);
-
-        bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
-
-        uni.a(bitmap)}
 
     startUniverse = function(username){//ply=
 

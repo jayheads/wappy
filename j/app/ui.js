@@ -10,14 +10,14 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
     var theTextInput = tx(),  theSendButton = $button('send', function(){
 
-            kk.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
+            socket.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
 
         }),
 
 
         thePicButton=$button('pic',function(){  pop('pic select')  }),
 
-        thePopButton=$button('pop', function(){ kk.emit('p', theTextInput.V(), title)}),
+        thePopButton=$button('pop', function(){ socket.emit('p', theTextInput.V(), title)}),
 
         theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
 
@@ -372,7 +372,7 @@ inputBox=function(ob){
 
 joinSelf = function(){
 
-    kk.emit( 'joinRoom',  _username )
+    socket.emit( 'joinRoom',  _username )
 
 }
 
@@ -383,7 +383,7 @@ sendMessage =iMsg=function( toWho, message ){
 
 
 
-    kk.emit(  'sendMessage',  {  m: message,  t:toWho,  f:_username  }  )
+    socket.emit(  'sendMessage',  {  m: message,  t:toWho,  f:_username  }  )
 
 }
 
@@ -532,7 +532,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
 privateChatBox = priv=function(a){
     ChatBox(a);
-    kk.emit('j',a)}
+    socket.emit('j',a)}
 
 
 
