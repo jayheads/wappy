@@ -115,7 +115,7 @@ btd=function(a){var g=G(arguments),a=g[0],
 
 
 //bt: green/white, block-float left
-btr=function(t,f,C,c){return bt(t,f,C,c)
+$buttonRight=btr=function(t,f,C,c){return bt(t,f,C,c)
     .s({C:'g',c:'w',y:'b',fl:'r'})}
 
 
@@ -123,7 +123,7 @@ btr=function(t,f,C,c){return bt(t,f,C,c)
 
 
 //bt: green/white, block -float left
-btl=function(t,f,C,c){return bt(t,f,C,c)
+$buttonLeft=function(t,f,C,c){return bt(t,f,C,c)
     .s({C:'g',c:'w',y:'b',fl:'l'})}
 
 

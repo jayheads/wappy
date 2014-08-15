@@ -19,7 +19,7 @@ add=function rc(M,a){var g=G(arguments)
     if(A(a)){
         _e(a,function(v){rc( O(v)?v.n :v) })}
 
-    else{_e(g,function(v){M(br(),msg(v))})}}
+    else{_e(g,function(v){M($br(),msg(v))})}}
 
 //runs a fn on the qq of all obs of certain class
 all=function(s,f){
@@ -160,7 +160,7 @@ inptDep=function(h1Title, buttonText, url, func){
         g.p? textAndTextAreaSpan(buttonText,url,func):
             g.n? textInputSpan(buttonText,url,func):
                 textAreaInputSpan(buttonText,url,func),
-        hr()
+        $hr()
     )}
 
 ipt=function(h1Title, buttonText, url, ob, func){
@@ -183,7 +183,7 @@ ipt=function(h1Title, buttonText, url, ob, func){
             :g.n? textInputSpan(buttonText,url,ob,func)
 
             :textAreaInputSpan(buttonText,url,func)
-       // ,  hr()
+       // ,  $hr()
 
     )}
 
@@ -335,7 +335,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
     var size,  theWindow,  text,  moreButton,  lessButton, closeButton
 
 
-    moreButton = btr('>', function(){
+    moreButton = $buttonRight('>', function(){
 
             theWindow.Z(4)
 
@@ -344,12 +344,12 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
             moreButton.hd()  })
 
 
-    lessButton= btr('<',function(){
+    lessButton= $buttonRight('<',function(){
 
         theWindow.auto();
         moreButton.sh();lessButton.hd()}).hd()
 
-    closeButton = btl('X',function(){theWindow.X()})
+    closeButton = $buttonLeft('X',function(){theWindow.X()})
 
     theWindow=dva(size||4).s({ C:'b', a:.9,  of:'a' })
 
@@ -385,7 +385,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
                 }),
 
 
-            hr().c(c||'z').f(10)
+            $hr().c(c||'z').f(10)
 
         )
     }
@@ -449,22 +449,22 @@ chatBox = cbox =function(t,c,i){
             if(A(u)){
 
 
-                _e(u, function(u){
+                _.each(u, function(u){
 
                     usrB(
 
-                        h5(u).o(function(){
+                        $h5(u).$(function(){
 
-                                qP('/mug', {u:u},
+                                $.post('/mug', {u:u},
 
                                 function(m){var s,d
 
 
                             win(
                                 _d()(
-                                    br(),hr(),
-                                    h3('User: '+u)
-                                     ,  br(),
+                                    $br(), $hr(),
+                                    $h3('User: '+u)
+                                     ,  $br(),
                                      c3(m),
                                     s=h1(),
                                     d=_d(),

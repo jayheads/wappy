@@ -65,7 +65,7 @@ ifra=function(){return qq('I')}
 
 _y=function(a){return qq('sl')}
 
-hr=function(c,h,w){var e=qq('hr');
+$hr = hr=function(c,h,w){var e=qq('hr');
     if(N(c)){return hr('z',c,h)}
     e.h(h||2);e.c(c||'z');
     if(w){e.w(w)};return e}
