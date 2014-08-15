@@ -576,6 +576,7 @@ pop=function(message, o){
 
 
     var ops=o
+
     ops = O(ops)? ops : {}
 
     var g=G(arguments),
@@ -584,66 +585,66 @@ pop=function(message, o){
 
         message = message || 'pop pop',
 
-
         modalBody = ModalBody(   $h2(message)  )
 
-        m = _pop(   modalBody  ),
+    theModal =   _pop(   modalBody  ),
 
-        theModal = m
-
-
+         m = theModal
 
 
 
+
+    var titleColor= ops.tc|| 'z',
+        headerColor =ops.hc||'z',
+        title=ops.t
+
+
+    //hide? default:false
     if( ! ops.h ){ theModal.m() }
 
 
-    if( ops.t ){
+    if(title){
 
-        modalBody.q.prepend(      $hr().c(  ops.hc||'z'  ).s({height: 2}).q    )
+        //header
+        modalBody.q.prepend(
+            $hr().c( headerColor  ).s({height: 2}).q)
 
-
-        //text, textcolor
-        modalBody.q.prepend(      $h1(  ops.t  ).s( 'c',   ops.tc || 'z'  ).q
-        )
-
-    }
+        //title
+        modalBody.q.prepend(
+            $h1(title).s('c', titleColor).q)}
 
 
     //button
     if( ops.b ){ modalBody.a(  $button(ops.b)  )}
 
-
-
     //dragg
-    if( ops.d ){     theModal.drg() }
-    if( ops.drag ){     theModal.drg() }
+    if( ops.d ){  theModal.drg() }
+    if( ops.drag ){  theModal.drg() }
 
     //opacity
-    if(ops.a){   theModal.s( {opacity: ops.a} ) }
-    if(ops.opacity){   theModal.s( {opacity: ops.opacity} ) }
+    if( ops.a ){ theModal.s( {opacity: ops.a} ) }
+    if(ops.opacity){ theModal.s({ opacity : ops.opacity }) }
 
-
-
-    //color
+    //text color of the MESSAGE
     if(ops.c){
 
         //flash like crazy
-        if( ops.c == '*' ){
-
-            I( function(){ modalBody.c() }, 100) }
+        if( ops.c == '*' ){ setInterval( function(){ modalBody.c() }, 100) }
 
         //color
-        else { theModal.s({c: ops.c}) }
-    }
+        else { theModal.s({  c: ops.c   }) } }
 
 
-    //color
-    if(ops.C){ modalBody.s({  C: ops.C  })}
+
+    //color of background of modal itself
+    if(ops.C){ modalBody.s({ C: ops.C })    }
 
 
-    //bacground color
-    if(ops.bc) {theModal.s({ C: ops.bc })}
+
+    //this color takes over the whole screen!
+    //this is the background color of the hiding body
+    if(ops.bc) {  theModal.s({  C: ops.bc   })}
+
 
     return theModal
 
