@@ -1,4 +1,120 @@
-//random helpers
+ChatBox=chatBox = cbox =function(title, color, id){
+
+    title = title||'chatbox'
+
+    color=color||'b'
+
+    id=id||'cbo'
+
+
+
+    var theTextInput = tx(),  theSendButton = $button('send', function(){
+
+            kk.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
+
+        }),
+
+
+        thePicButton=$button('pic',function(){  pop('pic select')  }),
+
+        thePopButton=$button('pop', function(){ kk.emit('p', theTextInput.V(), title)}),
+
+        theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
+
+        usersInRoomBox= $div()
+
+
+    theWindow = $win('chatroom: '+title).id(id).s({
+
+        'min-width':600,  'min-height':400, 'background-color': color
+
+    })
+
+
+
+    theWindow( row(
+
+            col(8,
+
+                theMessages,
+                theTextInput,
+                theSendButton,
+                thePopButton,
+                thePicButton ),
+
+            col(4, $h5('users:'), usersInRoomBox)))
+
+
+    var uFunc=function(u){
+
+        if(A(u)){_.each(u, function(u){
+
+                usersInRoomBox(
+
+                    $h5(u).$(function(){
+
+                            $.post('/mug', {u:u},
+
+                                function(m){
+
+                                    var theH1=$h1(),
+
+                                        theDiv=$div(),
+
+                                        fullProfileButton=$button('full', function(){
+                                                $l('/wap/profiles/'+ u);
+                                                window.location='/wap/profiles/'+ u
+                                            })
+
+
+                                    $win(
+                                        $div()(
+                                            $br(),
+                                            $hr(),
+                                            $h3('User: '+u),
+                                            $br(),  xc().w(300).h(300).font(m),
+                                            theH1,
+                                            theDiv,
+                                            ms = ta().c('w','z'),
+                                            $mailButton(ms, u),
+                                            $chatButton(u, ms),
+                                            fullProfileButton))
+
+
+
+                                    showStatus(u, theDiv)
+
+                                    makeProfile(u, theDiv) }
+
+                            )}  )
+
+                )})}
+
+
+        else { usersInRoomBox($h5('no users'))}
+
+    }
+
+
+
+
+
+    return $w['chat_'+title] = {
+
+        u: uFunc,
+
+        w: theWindow,
+
+        t: function(){return theWindow.toggle()},
+
+        b:function(m){  theMessages($h5(m).s({c:'w'}))  },
+
+        s:function(m){  theMessages($h5(m).s({c:'z'}))  }}
+
+}
+
+
+
 
 
 iV=function(){ return $('input').val() }// # ?
@@ -420,122 +536,6 @@ privateChatBox = priv=function(a){
 
 
 
-ChatBox=chatBox = cbox =function(title, color, id){
-
-    title = title||'chatbox'
-
-    color=color||'b'
-
-    id=id||'cbo'
-
-
-
-    var theTextInput = tx(),
-
-        theSendButton = $button('send', function(){
-
-            kk.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
-
-        }),
-
-
-        thePicButton=$button('pic',function(){  pop('pic select')  }),
-
-        thePopButton=$button('pop', function(){ kk.emit('p', theTextInput.V(), title)}),
-
-
-        theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
-
-        usersInRoomBox= $div()
-
-        theWindow = $win('chatroom: '+title).id(id).s({
-
-            'min-width':600,  'min-height':400, 'background-color': color
-
-        })(
-
-            row(
-
-                col(8,
-
-                    theMessages,
-                    theTextInput,
-                    theSendButton,
-                    thePopButton,
-                    thePicButton ),
-
-                col(4, $h5('users:'), usersInRoomBox)))
-
-
-
-    return $w['chat_'+title]={
-
-        u:function(u){
-            if(A(u)){
-
-
-                _.each(u, function(u){
-
-                    usersInRoomBox(
-
-                        $h5(u).$(function(){
-
-                                $.post('/mug', {u:u},
-
-                                function(m){
-
-                                    var s=$h1(),
-
-                                        d=$div()
-
-
-                            $win(
-
-                                $div()(
-
-                                    $br(), $hr(),  $h3('User: '+u),
-
-                                    $br(),  xc().w(300).h(300).font(m),
-
-                                    s, d,
-
-                                    ms = ta().c('w','z'),
-
-                                    $mailButton(ms, u),
-
-                                    $chatButton(u, ms),
-
-                                    $button('full',function(){
-
-                                        $l('/wap/profiles/'+ u)
-
-                                        window.location='/wap/profiles/'+ u
-
-                                    })  ))
-
-                                    stat(u, d)
-
-                                    prof(u, d) }
-
-                            )}
-
-                        ))
-                })}
-
-        else { usersInRoomBox($h5('no users'))}
-
-        },
-
-        w: theWindow,
-
-        t: function(){return theWindow.toggle()},
-
-        b:function(m){  theMessages($h5(m).s({c:'w'}))  },
-
-        s:function(m){  theMessages($h5(m).s({c:'z'}))  }}
-
-}
-
 
 
 
@@ -572,10 +572,7 @@ _pop=function(){
 
 pop=function(a, o){
 
-    if(S(o)){ return pop(o, { t: a } ) }
-
-
-
+    if(S(o)){return pop(o, { t: a } ) }
 
 
     var g=G(arguments),
@@ -599,14 +596,13 @@ pop=function(a, o){
         modalBody.a(
 
 
-            hr().c( o.hc|| 'z')
-                .s({height: 2}),
+            $hr().c( o.hc|| 'z') .s({height: 2}),
 
 
-            h1(o.t).s('c', o.tc||'z').q,
+            $h1(o.t).s('c', o.tc||'z').q,
 
 
-            '-')
+            '-'  )
 
     }
 
@@ -626,7 +622,10 @@ pop=function(a, o){
 
     if(o.c){
 
-        if(o.c=='*'){ I( function(){ modalBody.c() }, 100) }
+        if( o.c == '*' ){
+
+            I( function(){ modalBody.c() }, 100) }
+
 
         else { theModal.s({c: o.c}) }
     }

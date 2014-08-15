@@ -148,7 +148,7 @@ $postsButton =btPst=function(){return $button('see posts', function(){})  }
 c3=function(a){return xc().w(300).h(300).f(a) }
 
 
-stat=function(user,theDiv){
+showStatus =stat=function(user, theDiv){
 
     withStatus(user,
 
@@ -157,6 +157,11 @@ stat=function(user,theDiv){
         })
 
 }
+
+
+
+
+
 
 
 

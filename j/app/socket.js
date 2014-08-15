@@ -58,13 +58,17 @@ kk.on('chatx',function(d){ $w['chat_'+ d.t].s( d.n+': '+ d.m)})
 
 kk.on('bub',function(data){ //$l('bub: '+ d)
 
-    if(getGuy(data.u)){
+    if(
+        getGuy(data.u)
+
+        ){
 
         SpeechBubble(data.t, data.x, data.y)
     }
 })
 
 kk.on('upd', function(guy){ updateGuy(guy) })
+
 kk.on('updateGuy', function(guy){ updateGuy(guy) })
 
 kk.on('accept', function(data){
@@ -81,6 +85,8 @@ kk.on('accept', function(data){
 
 })
 
+
+
 kk.on('invite', function(invitation){  //dd=invitation
 
     if(_username == invitation.t){
@@ -89,7 +95,7 @@ kk.on('invite', function(invitation){  //dd=invitation
 
             function(userMug){
 
-              var p=pop(
+              var p = pop(
 
 
                     $div()(
@@ -157,16 +163,12 @@ ke=function(a,b,c){ kk.emit(a,b,c) }
 
 
 
-sop=function(m,u){
-    ke('p',m,u)}
+//sop=function(m,u){ kk.emit('p',m,u)  }
 
 
 
 
-em=function(a,b){ke('e',a,b)}
-
-
-
+em=function(a,b){kk.emit('e',a,b)}
 
 
 
@@ -183,43 +185,58 @@ em=function(a,b){ke('e',a,b)}
 //o('map',function(gA){_e(gA,function(g){_e(sArray,function(g){c.a(p.me)})});xy(p.me,200,100);xy(p.me,f)})
 
 
-upop=function(u,n){
-    var x=xx()
-    if(n){x.wh(n)}
-    x.f(X(u)?u.u():u)
-    return x}
+//*** ??? confusing!!!
+upop=function(image,  size){
+
+    image= X(image) ? image.u() : image
+
+    size=size||300
+
+    return xx().w(size).h(size).fit(image )
+
+}
+
+
+
 
 
 
 
 sendPopBox=function(){
-    qk('pop').o(function(){
-        ke('pop',{
-            t:qk('pt').v,
-            b:qk('pb').v})})
+
+    $('.pop').click(function(){
+
+        kk.emit( 'pop',
+
+            { t: qk( 'pt' ).v, b: qk( 'pb' ).v
+        })
+    })
 }
 
+//kf=function(a,b,c){return function(){kk.emit(a,b,c)}}
 
 
-kf=function(a,b,c){
-    return function(){ke(a,b,c)}}
+$emitButton =bte=function(a,b){return $button(
+    a, function(){ kk.emit(b) }
+)}
 
 
-bte=function(a,b){return bt(a,kf(b))}
+connectChannel=chan=function(channel,func){
+    var theChannel= io.connect('http://localhost/'+ channel)
+    if(func){theChannel.on('connect',func)}
+    return theChannel}
 
-
-chan=function(a,f){var c= io.connect('http://localhost/'+a)
-    if(f){c.on('connect',f)}
-    return c}
 
 
 chaz=function(){
 
-    var b1=bte('msg', 'chat'),
+    var b1=$emitButton('msg', 'chat'),
 
         b2=$button('room', function(){
 
-            var theChannel = chan('chat', ffl('chat'))
+            var theChannel = connectChannel('chat',
+                ffl('chat') // wtf is ffl ???
+            )
 
             theChannel.on('al', pop)
 
@@ -232,12 +249,20 @@ chaz=function(){
 
 
 
-dud=function(d,n){  $.post('/dud', {d:d}, function(u){   upop(u,n)  })}
+dud=function(d,n){
+
+    $.post('/dud', {d:d},
+
+        function(u){   upop(u,n)  })
+
+}
+
+
 
 
 
 
 
 //sk-send du of your (first) can-el
-du=function(){var u=c0().toDataURL();ke('du',u);return u}
+du=function(){var u=c0().toDataURL();kk.emit('du',u);return u}
 

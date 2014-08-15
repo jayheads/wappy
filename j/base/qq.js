@@ -4,7 +4,7 @@
 
 
 
-qq=function(e,b,c,d){
+qq = function(e,b,c,d){
 
     if(O(e)){
 
@@ -14,10 +14,16 @@ qq=function(e,b,c,d){
         if(E(e)){e=Q(e)}
     }
 
-    else {e=$('<'+oO('t', e||'d')+'>'+(b||'')+'</>')}
+    else {e = $('<'+oO('t', e||'d')+'>'+(b||'')+'</>')}
 
     var q=function(a,b){
-        return  _a(q.fn,arguments,q)}
+
+        //return  _a( q.fn, arguments, q )
+
+        return  q.fn.apply(q, arguments)
+    }
+
+
 
 
     q.fn=function(a,b){
@@ -43,9 +49,14 @@ qq=function(e,b,c,d){
     q.e =  q.el=  q.q[0]
 
     //make css
+
     q.s=  q.css =function(a,b){
-        q.res=ss(q.q,a,b);
+
+        q.res=ss(q.q,a,b)
+
         return q}
+
+
 
 
     //call a jquery method
@@ -71,16 +82,35 @@ qq=function(e,b,c,d){
             q.q.appendTo(Q(b||bd()))
 
             if(g.p){q.p('s')}
+
             return q}
 
         if(g.n){
+
             if(U(a)){
-            bd().prepend(q.q);return q}
-            if(A(a)){_e(a,q.a(a))}
-            else {_e(g,function(a){
-                if(a.ob && iSt(a.ob)){ a=a.Q}
-                q.q.prepend(Q(a))
-            })}}
+
+                bd().prepend(q.q);return q}
+
+            if(A(a)){
+
+                _.each(a, q.a(a))}
+
+            else {
+
+                _.each(g,
+                    function(a){
+
+                        if(a.ob && iSt(a.ob)){ a=a.Q}
+
+                        q.q.prepend(Q(a))
+            })}
+
+        }
+
+
+
+
+
 
         else{
 
