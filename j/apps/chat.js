@@ -1,30 +1,19 @@
 
 
-CHATBOX=function(){
+CHATROOMS=CHATBOX=function(){
 
     chats=dva(2).l(900).auto().P(10).c('bb')(
 
-        // bt('chat',ff('CHT.t()')).M(40),
-        // bt('frog chat',   ff('gc.t()')  ).M(40),
-        // bt('taxi chat',  ff('yc.t')  ).M(40),
+        $button('general',function(){ PrivateChatRoom('general')  }).M(40),
+        $button('fun',function(){ PrivateChatRoom('fun')  }).M(40),
+        $button('sexy',function(){ PrivateChatRoom('sexy')  }).M(40),
+
+        theTextInput=tx(),
 
 
-
-
-        bt('general',function(){ priv('general')  }).M(40),
-        bt('fun',function(){ priv('fun')  }).M(40),
-        bt('sexy',function(){ priv('sexy')  }).M(40),
-
-
-        t=tx(),
-
-
-        bt('private', function(){
-            priv(t.V())}).M(40))
-
-
-
-
+        $button('PrivateChatRoomate', function(){  PrivateChatRoom(theTextInput.V())
+        
+        }).M(40))
 
 }
 
@@ -58,7 +47,7 @@ SORTY=function(){format()
 
 
     qG('/srt',function(t){
-        d1(bt(t.t,function(){sorty(t.t)}),
+        d1($button(t.t,function(){sorty(t.t)}),
         br(2))},'+')
 
     s2(im('me'))}

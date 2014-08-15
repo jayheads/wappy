@@ -31,32 +31,21 @@ WappyNav =  function(color){
 
             DropdownLoader(
                 Glyph('tw','play'),
-
-               'iso', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
-
-                'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'
-
-            ),
-
-
-
+               'iso1', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
+                'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'),
 
 
             DropdownLoader(Glyph('glass','share'),
-                'users', 'status' , 'messages','posts','chatbox', 'ranky',
-                'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
-
-
+                'users', 'status' , 'messages','posts','chatrooms',
+                'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
 
 
             DropdownLoader(Glyph('glass','phaser'),
             'tanks','genmatch','breakout','tilecallbacks',
                 'acceleratetopointer','angularvelocity','oneway','impactevents',
-               'ninjaimpact', 'aabbaabb', 'aabbtile', 'ninjalab',
+               'ninjaimpact', 'aabbaabb',   'ninjalab',
                 'anglepointer','shootpointer', 'launcherfollow',
-
                 'movearoundworld','bringchildtop','tweenrelative','worldsprite','fixedtocamera','cannonballs'
-
 
             ),
 
@@ -66,12 +55,14 @@ WappyNav =  function(color){
                 'extendingagroup','getfirstdead','recycling','swapchildren','removebetween','removing',
                 'bringgrouptotop','multipleanims','combinedtweens'
 
-
             ),
 
-            DropdownLoader(Glyph('glass','box2d'),
-                'box2d', 'wheel','heads', 'cups','pinball', 'revdemo',
-                'player','player1','player2','player3'  )
+            DropdownLoader(
+
+                Glyph('glass','box2d'),
+                    'box2d', 'wheel','heads', 'cups','pinball',
+                    'revdemo','player','player1','player2', 'player3'
+            )
 
 
     // DropdownLoader(Glyph('glass','phaserDisplay'),'actiononclick','buttonscale','changingtheframes','rotatedbuttons','rasterbounce','alphamask','floodfill','bitmapdatapixel','bitmapdataprocess','bitmapdatawobble','cachedbitmapdata','extractmask','graphics','fullscreen','rendercrisp','rendertexturemirror','rendertexturestarfield','rendertexturetrail')

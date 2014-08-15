@@ -535,7 +535,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
 
 
-privateChatBox=priv=function(a){
+PrivateChatRoom=priv=function(a){
 
     ChatBox(a)
 
