@@ -1,26 +1,38 @@
 
 $div = _d=function(a,b){
-    var g=G(arguments),
-        d=qq('d')
 
-    _e(g.r, function(g){ d(g) })
+    var args=G(arguments),
 
-    return d}
+        theDiv = qq('d')
+
+    _.each(args.r, function( args ){ theDiv(args) })
+
+    return theDiv}
 
 
 
 
 
-di=function(i){return _d().id(i)}
+di=function(i){ return $div().id(i) }
 
-dk=function(k,C,c,f,h){
-    var g=G(arguments),k=g[0],C=g[1],c=g[2],f=g[3],
-        d=_d().k(k)
+
+$divParams =dk=function(k,C,c,f,h){
+
+    var g=G(arguments),k=g[0],C=g[1],c=g[2],f=g[3],d=_d().k(k)
+
     if(c){d.c(C,c)} else if(C){d.c(C)}
+
     if(f){d.f(f)}
+
     if(h){d.H(h)}
+
     if(g.p){d.a()()}
+
     return d}
+
+
+
+
 
 dz=function(z,C,c,f,h){
     var g=G(arguments),z=g[0],C=g[1],c=g[2],f=g[3],h=g[4]
@@ -33,13 +45,10 @@ dz=function(z,C,c,f,h){
 
 
 
-ddd=function(){z()
-    d=dva(500)(
-        e=dv(100),
-        c=sCan()
+//ddd=function(){z(); d=dva(500)(  e=dv(100), c=sCan()  ) }
 
-    )
-}
+
+
 dv=function f(r,w,h,p){
 
 //div -auto- (padding 10)
@@ -47,22 +56,36 @@ dv=function f(r,w,h,p){
 //can pass all pams in array, and then pass contents
 
     var g=G(arguments),
-        r=g[0],w=g[1],
-        h=g[2],p=g[3],
-        d=_d()
 
-    if(A(g.f)){return _a(_a(f,g.f),  g.r)}
-    if(!S(r)){return f($r(),r,w,h,p)}
+        r=g[0],   w=g[1],   h=g[2],     p=g[3],
+
+        d=$div()
+
+    if( A(g.f) ){
+
+        return _a(_a(f,g.f),g.r)   //_a(_a(f,g.f),g.r)
+
+    }
+
+
+
+
+    if(!S(r)){return f( $r(),r,w,h,p ) }
 
     d.c(r)
 
   //if(U(w)){return d.auto()}
 
-    if(N(w)){d.w(w)}
-    if(N(h)){d.h(h)}
-    d.P(N(p)?p:10)
+    if(N(w)){ d.w(w) }
+    if(N(h)){ d.h(h) }
+    d.P( N(p)? p: 10 )
 
     return d}
+
+
+
+
+
 
 
 

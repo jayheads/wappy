@@ -167,12 +167,13 @@ module.exports=function(io, K){
         // kk.in(r).emit('l','frog')
 
 
+        serverSocket.on('sendChatMessage', function(data){ $l(data)
 
-        serverSocket.on('chatx', function(data){ $l(data)
-
-            sockets.in(data.t).emit('chatx', data)
+            sockets.in(data.chatRoomName).emit( 'sendChatMessage' , data)
 
         })
+
+
 
 
 

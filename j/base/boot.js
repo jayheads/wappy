@@ -70,7 +70,7 @@ row93=function(a,b){return row(col(9,a),col(3,b))}
 row363=function(a,b,c){
     return row(col(3,a),col(6,b),col(3,c))}
 
-ROW=function(a,b,c,d){
+$row = ROW=function(a,b,c,d){
 
     var g=G(arguments),
 
@@ -80,9 +80,12 @@ ROW=function(a,b,c,d){
 
     if(z==1){return row(col(12,a))}
 
-    if(z==2){return g.p?row93(a,b)
+    if(z==2){
+        return g.p?row93(a,b)
         :g.n? row39(a,b)
-        :row2(a,b)}
+        :row2(a,b)
+    }
+
 
     if(z==3){return g.n?row363(a,b,c):row3(a,b,c)}
 
@@ -151,9 +154,6 @@ Jumbotron=JumbotronDiv=JT=function(){
 
     return theDiv.id('jumbo')
 }
-
-
-
 
 
 

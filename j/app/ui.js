@@ -1,7 +1,12 @@
 
 
 
-ChatBox=chatBox = cbox =function(title, color, id){
+
+
+//these chat boxes are being stored globally!
+//chat_chatRoomName
+//but i should have a chatRoomArray
+ChatBox    =chatBox=cbox=function(title, color, id){
 
     title = title||'chatbox'
 
@@ -15,9 +20,11 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
         theSendButton = $button('send', function(){
 
-            socket.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
+            socket.emit('sendChatMessage', { chatRoomName:title,  username:_username,  message: theTextInput.V()  })
 
         }),
+
+
 
 
         thePicButton=$button('pic',function(){  pop('pic select')  }),
@@ -128,14 +135,85 @@ ChatBox=chatBox = cbox =function(title, color, id){
 }
 
 
+BasicLayout =format=function(){
+
+    section1= s1=$span()
+
+    section2 =s2=$span()
+
+    ContainerDiv( row39(s1, s2) )}
+
+ContainerDiv  =CT=function(){//cnt=buff=bff=
+
+    var args=G(arguments),
+
+        theDiv = $div().k('container')
+
+    if(args.N){ theDiv( $br(4) ).a()}
+
+    _.each(args,
+        function(v){theDiv(v)})
+
+    return theDiv}
+
+mugHeader =function(){
+
+    return row(
+
+        col(2).k('text-center')(  qim('me').Z(.7),  $h5('hi') ),
+
+        col(3)(
+            $h4('pics'),
+            $h5('place to upload'))
+
+
+    ).a()()
+
+}
+
+Message =msg=function(messageText){
+
+
+    return $div().k('msg').c('x','z').font(20).T(messageText||'messageText goes here').M(10).P(10).B(0) }
+
+ChatRoom2 =chat=function() {//uses var usr!
+    $canvas = _c()
 
 
 
-iV=function(){ return $('input').val() }// # ?
+    var uni = $canvas.c('b')
 
-pD=function(e){ return e.preventDefault(true) }
+    x = xx(uni).w(1200).h(1000)
+
+    row(
+        col(12, $br(40)
+        )
+
+    ).pp()
+
+    row(
+
+        col(1,
+
+            dv('x', 200, 800)(
+                $ul().id('users')
+            )),
+
+        col(11, uni)
+
+    ).pp()
 
 
+    var usersDiv = qq($('#users'))
+
+    usersDiv( $li( $h3('users!'))  )
+
+    usersDiv( $li( $h3('users!'))  )
+
+    usersDiv(  $li( 'user1')  )
+
+
+}
 
 
 
@@ -143,13 +221,39 @@ pD=function(e){ return e.preventDefault(true) }
 //pass in each arg as a 'msg', spacing them out with br's
 //could be feed i was looking for, except if it gets
 // an obj it passes in its 'n' pop???
-add=function rc(M,a){var g=G(arguments)
 
-    if(g.n){M.E()}
-    if(A(a)){
-        _e(a,function(v){rc( O(v)?v.n :v) })}
 
-    else{_e(g,function(v){M($br(),msg(v))})}}
+add=function rc( messagesArray, a ){
+
+    var args=G(arguments)
+
+    if(args.n){ messagesArray.E() }
+
+    if( A(a) ){
+
+        _.each(a,
+            function(v){
+                rc( O(v) ?v.n :v) })}
+
+    else { _.each(
+
+        args,
+
+        function(v){messagesArray($br(),
+            msg(v))
+        }
+
+    )}
+}
+
+
+
+
+
+
+
+
+
 
 //runs a fn on the qq of all obs of certain class
 all=function(s,func){
@@ -240,7 +344,7 @@ textInputSpan =ip0=function(
 //      will be posted to the url
 //      (passing the function)
 
-textAreaInputSpan=ip1=function(buttonText,url,func){
+textAreaInputSpan =ip1=function(buttonText,url,func){
 
     url=url||'/';
 
@@ -323,8 +427,6 @@ ipt=function(h1Title, buttonText, url, ob, func){
 
 
 
-
-
 inputBox=function(ob){
     ob=ob||{}
 
@@ -384,11 +486,7 @@ inputBox=function(ob){
 
 
 
-joinSelf = function(){
-
-    socket.emit( 'joinRoom',  _username )
-
-}
+joinSelf = function(){ socket.emit( 'joinRoom',  _username )}
 
 
 
@@ -400,12 +498,6 @@ sendMessage =iMsg=function( toWho, message ){
     socket.emit(  'sendMessage',  {  m: message,  t:toWho,  f:_username  }  )
 
 }
-
-
-
-
-
-
 
 
 
@@ -438,13 +530,6 @@ InstantMessage = imBox=function( f ){
 
 
 
-
-
-
-
-
-
-
 receiveMessage = msgI=function(messageObject){
 
     var toWho = messageObject.t ,
@@ -464,7 +549,7 @@ receiveMessage = msgI=function(messageObject){
 
 
 
-$win = win = function(  a, c,  id ){//title/ob?,color,id
+$window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
     var size,  theWindow,  text,  moreButton,  lessButton, closeButton
 
@@ -532,29 +617,12 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
 }
 
-
-
-
-PrivateChatRoom=priv=function(a){
+PrivateChatRoom  =priv=function(a){
 
     ChatBox(a)
 
     socket.emit( 'j', a )//why cant i change this emit name to joinRoom ???
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -571,12 +639,6 @@ _pop=function(){
     return MFADE( MDIALOG( modalContent ))
 
 }
-
-
-
-
-
-
 
 
 
@@ -669,32 +731,36 @@ pop=function(message, o){
 
 dang=function(t,e){//random cool text input/alert
 
-    var g=G(arguments),f
+    var args=G(arguments),
+        theForm
 
-    if(g.n){
+    if(args.n){
 
-        f = $span().xb()(
+        theForm = $span().xb()(
 
-            $h2(g.f).k('a ad') //alert-danger
+            $h2(args.f).k('alert alert-danger')
 
-        ).pp()} else {
+        ).pp()}
 
-        f=form()(
 
-            dv( t ).k('btn').font(30),
+    else {
+
+        theForm=form().k('text-center').c('o').font(20)(
+
+            dv(t).k('btn').font(30),
 
             tx(),
 
             $span(' ')
+        )}
 
-        ).font(20).k('text-center').c('o')}
 
-    if( F(e) ){f.o('s',e)}
+    if( F(e) ){ theForm.o('s', e) }
 
 
     // if '+' : make it drag, and give it a min width
-    if(g.p){ f.drg().s({'min-width':200}) }
+    if(args.p){ theForm.drg().s({'min-width':200}) }
 
-    return f}
+    return theForm}
 
 

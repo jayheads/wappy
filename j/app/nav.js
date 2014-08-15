@@ -23,7 +23,7 @@ WappyNav =  function(color){
 
 
             DropdownLoader(Glyph('glass','youplay'),
-                'universe',
+
                'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
                 'groupvsgroup','shooty','hit','space','maggots'   ),
 
@@ -35,7 +35,7 @@ WappyNav =  function(color){
                 'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'),
 
 
-            DropdownLoader(Glyph('glass','share'),
+            DropdownLoader(Glyph('glass','share'),'universe',
                 'users', 'status' , 'messages','posts','chatrooms',
                 'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
 

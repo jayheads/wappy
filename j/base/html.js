@@ -140,7 +140,7 @@ well=function(a){
 
 
 
-li=function(){var g=G(arguments),
+$li =li=function(){var g=G(arguments),
     l=qq('li')
 
     //klass or add

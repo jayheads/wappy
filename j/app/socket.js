@@ -49,7 +49,14 @@ socket.on('im', function(d){ xx().f( d ) })
 
 socket.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
 socket.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
-socket.on('chatx',function(d){ $w['chat_'+ d.t].s( d.n+': '+ d.m)})
+
+
+socket.on('sendChatMessage',function(data){
+
+    $w['chat_'+ data.chatRoomName].s( data.username+': '+ data.message)
+
+})
+
 
 //socket.on('frog',function(){pop('frog')})
 
