@@ -79,7 +79,7 @@ textInputSpan =ip0=function(
 
     var theSpan = _s(),  theTextInput=tx(),
 
-        theButton=bt(buttonText,
+        theButton=$button(buttonText,
 
             function(){
 
@@ -91,8 +91,8 @@ textInputSpan =ip0=function(
             })
 
 
-    //return a span with the tx and a bt
-    //when u click the bt, get the value and post it to a url
+    //return a span with the tx and a $button
+    //when u click the $button, get the value and post it to a url
 
     return theSpan(theTextInput, theButton)
 
@@ -116,7 +116,7 @@ textAreaInputSpan=ip1=function(buttonText,url,func){
 
         theTextArea=ta(),
 
-        theButton=bt(buttonText, function(){
+        theButton=$button(buttonText, function(){
 
             qP(url, dV(theTextArea), func)
 
@@ -135,7 +135,7 @@ textAndTextAreaSpan=ip2=function(buttonText,url,func){
     var theSpan=_s(),
         theTextInput=tx(),
         theTextArea=ta(),
-        theButton=bt(buttonText,function(){
+        theButton=$button(buttonText,function(){
 
         qP(
             url,
@@ -214,7 +214,7 @@ inputBox=function(ob){
 
         theDiv(
 
-            bt(buttonText, function(){
+            $button(buttonText, function(){
                 qP(url, _.defaults(dataValue(theTextInput),defaults), func)
             }))}
 
@@ -224,7 +224,7 @@ inputBox=function(ob){
 
         theDiv(
             theTextAreaInput,
-            bt(buttonText, function () {
+            $button(buttonText, function () {
                 qP(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
         )}
 
@@ -237,7 +237,7 @@ inputBox=function(ob){
 
         theDiv(
 
-            bt(buttonText, function () {
+            $button(buttonText, function () {
                 qP(url,
                     _.defaults(dataValue(theTextInput,theTextAreaInput), defaults),
                     func)}))}
@@ -372,7 +372,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
             $pg(text)
 
-                .f(24).cen().c('X')
+                .font(24).cen().c('X')
 
                 .s({
 
@@ -385,7 +385,7 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
                 }),
 
 
-            $hr().c(c||'z').f(10)
+            $hr().c(c||'z').font(10)
 
         )
     }
@@ -411,39 +411,68 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
 
 privateChatBox = priv=function(a){
-    chatBox(a);
+    ChatBox(a);
     kk.emit('j',a)}
 
-chatBox = cbox =function(t,c,i){
-
-    t=t||'chatbox';c=c||'b';i=i||'cbo';
-    var chI=tx(),
-
-        chS=bt('send',function(){
-            kk.emit('chatx',{t:t,n:usr,m:chI.V()})}),
-
-        pcS=bt('pic',function(){pop('pic select')}),
-        ppS=bt('pop',function(){kk.emit('p',chI.V(),t)}),
 
 
-        chM=di('cbi').s({of:'a',C:'x'}),
+ChatBox=chatBox = cbox =function(title, color, id){
+
+    title = title||'chatbox'
+
+    color=color||'b'
+
+    id=id||'cbo'
+
+
+
+    var theTextInput = tx(),
+
+        theSendButton = $button('send', function(){
+
+            kk.emit('chatx', {
+
+                t:title,
+
+                n:_username,
+
+                m: theTextInput.V()
+
+            })}),
+
+        thePicButton=$button('pic',function(){  pop('pic select')  }),
+
+        thePopButton=$button('pop', function(){kk.emit('p', theTextInput.V(),t)}),
+
+
+        theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
+
 
         usrB=_d()
 
-        w=win('chatroom: '+t).id(i).s({
-            nw:600,nh:400,C:c})(
+        theWindow = $win('chatroom: '+title).id(id).s({
+
+            'min-width':600,  'min-height':400, 'background-color': color
+
+        })(
 
             row(col(8,
 
-            chM,
-            chI,
-            chS, ppS,
-            pcS),
-                col(4,h5('users:'),usrB)))
+            theMessages,
+
+            theTextInput,
+
+            theSendButton,
+                    thePopButton,
+            thePicButton
+
+                ),
+
+                col(4, $h5('users:'), usrB)))
 
 
 
-    return $w['chat_'+t]={
+    return $w['chat_'+title]={
 
         u:function(u){
             if(A(u)){
@@ -457,26 +486,38 @@ chatBox = cbox =function(t,c,i){
 
                                 $.post('/mug', {u:u},
 
-                                function(m){var s,d
+                                function(m){
+
+                                    var s,d
 
 
-                            win(
-                                _d()(
-                                    $br(), $hr(),
-                                    $h3('User: '+u)
-                                     ,  $br(),
-                                     c3(m),
+                            $win(
+
+                                $div()(
+
+                                    $br(),
+
+                                    $hr(),
+
+                                    $h3('User: '+u),
+
+                                    $br(),
+
+                                    xc().w(300).h(300).font(m),
+
                                     s=h1(),
+
                                     d=_d(),
+
                                     ms=ta().c('w','z'),
 
-                                    btMail(ms,u),
+                                    btMail(ms, u),
 
-                                    btChat(u,ms),
+                                    btChat(u, ms),
 
 
 
-                                    bt('full',function(){
+                                    $button('full',function(){
                                         $l('/wap/profiles/'+ u)
                                         window.location='/wap/profiles/'+ u
                                     })
@@ -492,13 +533,28 @@ chatBox = cbox =function(t,c,i){
                         ))
                 })}
 
-        else{usrB(h5('no users'))}},
+        else { usrB($h5('no users'))}},
 
-        w:w,
-        t:ff('w.tg()'),
-        b:function(m){chM(h5(m).s({c:'w'}))},
-        s:function(m){chM(h5(m).s({c:'z'}))}}
+        w: theWindow,
+
+        t: function(){return theWindow.toggle()},
+
+
+
+        b:function(m){  theMessages($h5(m).s({c:'w'}))  },
+
+        s:function(m){  theMessages($h5(m).s({c:'z'}))  }}
+
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -615,11 +671,11 @@ dang=function(t,e){//random cool text input/alert
         ).pp()} else {
 
         f=form()(
-            dv(['b'],t).f(30),
+            dv(['b'],t).font(30),
             tx(),
             sp(' ')
 
-        ).f(20).k('tc').c('o')}
+        ).font(20).k('tc').c('o')}
 
     if(F(e)){f.o('s',e)}
 

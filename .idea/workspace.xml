@@ -46,11 +46,10 @@
       <file leaf-file-name="ui.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/j/app/ui.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0779661" vertical-offset="4544" max-vertical-offset="9015">
-              <caret line="341" column="27" selection-start-line="341" selection-start-column="27" selection-end-line="341" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.8430421" vertical-offset="7534" max-vertical-offset="10065">
+              <caret line="558" column="0" selection-start-line="558" selection-start-column="0" selection-end-line="558" selection-end-column="0" />
               <folding>
-                <element signature="e#5133#5443#0" expanded="false" />
-                <element signature="e#5500#5761#0" expanded="false" />
+                <element signature="e#5173#5483#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -96,21 +95,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/app/app.js">
+      <file leaf-file-name="qq.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/j/base/qq.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4545" max-vertical-offset="5715">
-              <caret line="303" column="8" selection-start-line="303" selection-start-column="8" selection-end-line="303" selection-end-column="8" />
+            <state vertical-scroll-proportion="-7.923077" vertical-offset="1804" max-vertical-offset="11220">
+              <caret line="135" column="8" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="phaser.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/phaser2/phaser.js">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/j/app/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="21015" max-vertical-offset="21120">
-              <caret line="1401" column="0" selection-start-line="1401" selection-start-column="0" selection-end-line="1401" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4545" max-vertical-offset="5715">
+              <caret line="303" column="8" selection-start-line="303" selection-start-column="8" selection-end-line="303" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -169,7 +168,6 @@
         <option value="$PROJECT_DIR$/w/o/jold/booty.js" />
         <option value="$PROJECT_DIR$/j/base/inputs.js" />
         <option value="$PROJECT_DIR$/j/base/boot.js" />
-        <option value="$PROJECT_DIR$/j/base/qq.js" />
         <option value="$PROJECT_DIR$/r/accounts.js" />
         <option value="$PROJECT_DIR$/w/routes/routes.js" />
         <option value="$PROJECT_DIR$/j/base/struct.js" />
@@ -186,6 +184,7 @@
         <option value="$PROJECT_DIR$/j/app/socket.js" />
         <option value="$PROJECT_DIR$/j/base/html.js" />
         <option value="$PROJECT_DIR$/j/base/buts.js" />
+        <option value="$PROJECT_DIR$/j/base/qq.js" />
         <option value="$PROJECT_DIR$/j/app/ui.js" />
       </list>
     </option>
@@ -639,14 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/j/base/qq.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6150" max-vertical-offset="11235">
-          <caret line="410" column="7" selection-start-line="410" selection-start-column="7" selection-end-line="411" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/j/base/struct.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1035">
@@ -658,6 +649,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="729" max-vertical-offset="5760">
           <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -772,14 +764,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2296" max-vertical-offset="2940">
-          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/w/sockets.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="4185">
@@ -812,13 +796,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/j/apps/universe.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2296" max-vertical-offset="2940">
+          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/j/base/qq.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.923077" vertical-offset="1804" max-vertical-offset="11220">
+          <caret line="135" column="8" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/j/app/ui.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0779661" vertical-offset="4544" max-vertical-offset="9015">
-          <caret line="341" column="27" selection-start-line="341" selection-start-column="27" selection-end-line="341" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.8430421" vertical-offset="7534" max-vertical-offset="10065">
+          <caret line="558" column="0" selection-start-line="558" selection-start-column="0" selection-end-line="558" selection-end-column="0" />
           <folding>
-            <element signature="e#5133#5443#0" expanded="false" />
-            <element signature="e#5500#5761#0" expanded="false" />
+            <element signature="e#5173#5483#0" expanded="false" />
           </folding>
         </state>
       </provider>
