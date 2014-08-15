@@ -36,7 +36,9 @@ socket.on('pop',function(e){pop(e)})
 socket.on('roo',function(d){roo=d})  // ?
 
 
-socket.on('res', function(d){ res = d })  // ?
+//socket.on('res', function(d){ res = d })  // ?
+
+
 
 socket.on('newImgAck', function(d){ xx().f(d.u) })
 
@@ -168,7 +170,10 @@ ke=function(a,b,c){ socket.emit(a,b,c) }
 
 
 
-em=function(a,b){socket.emit('e',a,b)}
+socketEmit = em=function(a,b){  socket.emit('e',  a,  b)  }
+
+
+
 
 
 

@@ -6,6 +6,7 @@ module.exports=function(io, K){
   sockets =  kk = io.sockets
 
 
+
     sK=function(k){
         k.e=k.emit
         k.o=k.on
@@ -27,13 +28,22 @@ module.exports=function(io, K){
 
 
     em=function(k,b,d,e,f){
-        if(U(b)){return _.partial(em,k)}
-        k.emit(b,d,e,f)}
 
-    bc=function(k,b,d,e,f){if(U(b)){return _.partial(bc,k)}
+        if(U(b)){return _.partial(em, k)}
+
+        k.emit(b,d,e,f)
+
+    }
+
+
+
+
+    bc=function(k, b, d, e, f){
+        if(U(b)){return _.partial(bc, k)}
         k.broadcast.emit(b,d,e,f)}
 
-    jn=function(k,b,d){if(U(b)){return _.partial(bc,k)}
+    jn=function(k, b, d){
+        if(U(b)){return _.partial(bc,k)}
         k.join(b,d)}
 
     sKK(kk) //man=kk.manager
@@ -42,9 +52,12 @@ module.exports=function(io, K){
 
     clients = sockets.clients
 
-    rooms = kk.manager.rooms
+    roomsArray =rooms = kk.manager.rooms
 
-    room = function(theRoom){ return rooms['/'+theRoom] }
+
+    room = function(theRoom){ return roomsArray['/'+theRoom]    }
+
+
 
 
     sockets.on('connection',function(k){//k=sK(k)
@@ -53,10 +66,11 @@ module.exports=function(io, K){
         //kb=function(a,b){sK(k);k.b.e(a,b)}
 
 
+        var serverSocket=k
         //l('k!')
         //em(k)('l','jason')
 
-        k.on('p', function(d, u){
+        serverSocket.on('p', function(d, u){
 
             return U(u)?
 
@@ -70,7 +84,7 @@ module.exports=function(io, K){
 
 
 
-        k.on('l',function(d){
+        serverSocket.on('l',function(d){
             d=d||'ping';
             k.emit('l', 'sent: '+l(d))})
 
@@ -78,7 +92,7 @@ module.exports=function(io, K){
 
 
 
-        k.on('iMsg', function(message){
+        serverSocket.on('iMsg', function(message){
 
             sockets.in(message.t).emit('iMsg', message)
 
@@ -88,26 +102,26 @@ module.exports=function(io, K){
 
 
 
-        k.on('e',function(d,a,b,c){ k.emit(d,a,b,c)})
+        serverSocket.on('e',function(d,a,b,c){ k.emit(d,a,b,c)})
 
-        k.on('bc',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
+        serverSocket.on('bc',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
 
-        k.on('upop',function(data,n){
+        serverSocket.on('upop',function(data,n){
             k.broadcast.emit('upop',data,n)})
 
-        k.on('dpop',
+        serverSocket.on('dpop',
             function(data,n){
            k.broadcast.emit('dpop',data,n)})
 
 
-        k.on('bub',
+        serverSocket.on('bub',
             function(d,n){k.broadcast.emit('bub',d,n)})
 
 
 
-        k.on('id',function(d){
+        serverSocket.on('id',function(d){
 
-       k.emit('l',k.id)
+            serverSocket.emit('l',k.id)
 
             $l(k.id)
 
@@ -121,7 +135,7 @@ module.exports=function(io, K){
 
 
 
-        k.on('chat',function(data){
+        serverSocket.on('chat',function(data){
 
             k.broadcast.emit('newChat',{n:data.n,m:data.m})
 
@@ -131,21 +145,21 @@ module.exports=function(io, K){
 
 
         ////
+        theRoomFunction=function(theRoom){
 
-        k.on('j',
-            function(theRoom){
+            $l('joinRoom')
 
-            k.join(theRoom)
+            k.join( theRoom )
 
-            k.emit('inRm', {
+            k.emit('inRoom', {   r:theRoom,  u: _.map( roomsArray[ '/' + theRoom ] , getSocketUser )
 
-                r:theRoom,
+            })}
 
-                u: _.map( room(theRoom), getSocketUser)
-            })
 
-        })
 
+        serverSocket.on('j', theRoomFunction)
+
+        serverSocket.on('joinRoom', theRoomFunction)
 
 
 
@@ -154,7 +168,7 @@ module.exports=function(io, K){
 
 
 
-        k.on('chatx', function(data){ $l(data)
+        serverSocket.on('chatx', function(data){ $l(data)
 
             sockets.in(data.t).emit('chatx', data)
 
@@ -162,33 +176,35 @@ module.exports=function(io, K){
 
 
 
-        k.on('red',function(r,e,d){r=r||'frog';e=e||'frog';d=d||'frog'
+
+
+        serverSocket.on('red',function(r,e,d){r=r||'frog';e=e||'frog';d=d||'frog'
            sockets.in(r).emit(e,d)})
 
 
-        k.on('x',function(m){k.emit.to('sex').emit('l',m||'sexy')
+        serverSocket.on('x',function(m){k.emit.to('sex').emit('l',m||'sexy')
             sockets.in('sex').emit('l',m||'sexy')})
 
 
-        k.on('kk',
+        serverSocket.on('kk',
             function(data){
                 k.emit('res',
                     sockets.clients(''))
             })
 
 
-        k.on('r', function(data){
+        serverSocket.on('r', function(data){
 
             k.emit('res',
                 data?room[data]
-                    :rooms())
+                    :roomsArray())
         })
 
 
 
 
 
-        k.on('who',function(u){
+        serverSocket.on('who',function(u){
 
 
              $l( getSocketUser(u))
@@ -201,22 +217,41 @@ module.exports=function(io, K){
 
 
 
-        k.on('rm', function(theRoom){
+        serverSocket.on('rm',
+
+            function(theRoom){ //$l(room(theRoom))
+
+            k.emit( 'inRm',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
 
 
-            $l(room(theRoom))
+            k.emit( 'inRoom',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
 
-            k.emit('inRm', {
-
-                r: theRoom,
-                u: _.map( room(theRoom), getSocketUser )
 
             })
 
-        })
+
+        serverSocket.on('inRoom',
+
+            function(theRoom){ //$l(room(theRoom))
+
+                k.emit( 'inRm',  {   u: _.map( roomsArray['/'+theRoom]     , getSocketUser), r: theRoom }  )
 
 
-        k.on('du',function(data){
+                k.emit( 'inRoom',  { u: _.map( roomsArray['/'+theRoom] , getSocketUser) , r: theRoom  }  )
+
+            })
+
+
+
+
+
+
+
+
+
+
+//dataUrl?
+        serverSocket.on('du',  function(data){
 
             k.emit('im', data)
 
@@ -228,42 +263,70 @@ module.exports=function(io, K){
 
 
 
-        k.on('newImg',function(d){
-            $m.img.create(d,function(z,d){
-                k.emit('newImgAck',d)})})
+
+        //CREATE AN IMAGE
+        serverSocket.on('newImg', function(data){
+
+            $m.img.create(data, function(err, image){  k.emit('newImgAck', image)   })
+
+        })
 
 
-        io.of('/chat').on('connection',function(d){l('new chatter')})
+        io.of('/chat').on('connection', function(d){ $l('new chatter') })
 
 
         //k.on('chat', function(d){  k.emit('chat', 'cool')  })
 
 
-        k.on('in',function(d){var rm,guy
-            if(A(d)){room=rooms[roomName(d)]
+        k.on('in',
 
-                if(!room){ em('res','-') }
+            function(data){
 
-                else {guy=guy||k.id;
+                var theRoom,  guy
 
-                    k.emit('res', room[guy]?true:false) }}
+                if(A(d)){
 
-            else { rm = room(d)
+                    room= roomsArray[  roomName(data)  ]
 
-                if(!rm){ k.emit('res', '-') }
 
-                else { k.emit('res', rm[k.id]? true: false ) }
+                    if(!room){  l('not room !') }// em('res', '-')
+
+                    else {
+                        guy=guy||k.id;
+
+                        k.emit('res', room[guy]?true:false) }
+                }
+
+
+
+            else {
+
+                    theRoom = roomsArray['/'+ data]
+
+                if(!theRoom){ $l('not room') }// k.emit('res', '-')
+
+                else { k.emit('res', theRoom[ k.id ]? true: false ) }
 
             }
+   })
 
 
-        })})
+
+
+
+
+
+
+    })
+
+
 
 
     Rooms=function(){
 
 
-    var usernames={},rooms=['Lobby']
+    //var usernames={}, $scope.$broadcast('', );
+    rooms=['Lobby']
 
     io.sockets.on('connection', function(k) {
 

@@ -1,3 +1,6 @@
+
+
+
 ChatBox=chatBox = cbox =function(title, color, id){
 
     title = title||'chatbox'
@@ -8,7 +11,9 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
 
 
-    var theTextInput = tx(),  theSendButton = $button('send', function(){
+    var theTextInput = tx(),
+
+        theSendButton = $button('send', function(){
 
             socket.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
 
@@ -32,7 +37,9 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
 
 
-    theWindow( row(
+    theWindow(
+
+        row(
 
             col(8,
 
@@ -45,15 +52,15 @@ ChatBox=chatBox = cbox =function(title, color, id){
             col(4, $h5('users:'), usersInRoomBox)))
 
 
-    var uFunc=function(u){
-
-        if(A(u)){_.each(u, function(u){
+    var uFunc=function(u){ if(A(u)){_.each(u, function(u){
 
                 usersInRoomBox(
 
-                    $h5(u).$(function(){
+                    $h5(u).$(
 
-                            $.post('/mug', {u:u},
+                        function(){
+
+                            $.post('/mug', {u: u},
 
                                 function(m){
 
@@ -72,13 +79,15 @@ ChatBox=chatBox = cbox =function(title, color, id){
                                             $br(),
                                             $hr(),
                                             $h3('User: '+u),
-                                            $br(),  xc().w(300).h(300).font(m),
+                                            $br(),
+                                            xc().w(300).h(300).font(m),
                                             theH1,
                                             theDiv,
                                             ms = ta().c('w','z'),
                                             $mailButton(ms, u),
                                             $chatButton(u, ms),
-                                            fullProfileButton))
+                                            fullProfileButton)
+                                    )
 
 
 
@@ -89,6 +98,11 @@ ChatBox=chatBox = cbox =function(title, color, id){
                             )}  )
 
                 )})}
+
+
+
+
+
 
 
         else { usersInRoomBox($h5('no users'))}
@@ -521,18 +535,14 @@ $win = win = function(  a, c,  id ){//title/ob?,color,id
 
 
 
+privateChatBox=priv=function(a){
+
+    ChatBox(a)
+
+    socket.emit( 'j', a )//why cant i change this emit name to joinRoom ???
+}
 
 
-//    _d( h1('hello') ).a()
-
-//    <div> <h1> hello </h1>  </div>
-
-
-
-
-privateChatBox = priv=function(a){
-    ChatBox(a);
-    socket.emit('j',a)}
 
 
 
