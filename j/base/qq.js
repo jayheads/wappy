@@ -76,28 +76,40 @@ qq = function(e,b,c,d){
 
 
     //appending / adding to stage
-    q.a=  q.append=function(a,b){var g=G(arguments), a=g[0], b=g[1]
+
+
+    q.a=  q.append=function(a, b){var g=G(arguments), a=g[0], b=g[1]
+
+
+        var theElement= b,
+            args=g
+
 
         if(a===2){
-            q.q.appendTo(Q(b||bd()))
 
-            if(g.p){q.p('s')}
+            q.q.appendTo(
 
-            return q}
+                Q(  theElement  ||  qq($('body'))  )       )
+
+            if( args.p ){  q.positioning('static')  }
+
+            return q }
+
 
         if(g.n){
 
             if(U(a)){
 
-                bd().prepend(q.q);return q}
+                qq($('body')).prepend( q.q ); return q
 
-            if(A(a)){
+            }
 
-                _.each(a, q.a(a))}
+            if( A(a) ){   _.each(a, q.a(a))  }
 
             else {
 
                 _.each(g,
+
                     function(a){
 
                         if(a.ob && iSt(a.ob)){ a=a.Q}
@@ -106,8 +118,6 @@ qq = function(e,b,c,d){
             })}
 
         }
-
-
 
 
 
@@ -190,8 +200,19 @@ qq = function(e,b,c,d){
 
     //del button
     q.xb= q.delBt=function(){//x button!!!
-        q.pp(_d()(bt('x',function(){q.X()},'-').k('pr').M(20)))
+        q.pp(
+            $div()(
+                $button.k( 'dropdown-toggle' ).at({ 'data-target' : 'dropdown' })(
+
+                    'x', function(){ q.X() })
+
+                    .k('pull-right').margin(20)
+            ))
+
         return q}
+
+
+
 
 
     //outer html
@@ -588,8 +609,9 @@ qq = function(e,b,c,d){
     q.act= q.action=function(a){return q.at({a:a||'/upl'})}
 
     q.dd=  q.dropDown= function(a){
-        return q.k('ddt').at({'dt':'dropdown'})
+        return q.k('dropdown-toggle').at({'data-target':'dropdown'})
     }
+
 
 
 

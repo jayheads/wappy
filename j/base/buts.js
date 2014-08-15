@@ -18,7 +18,7 @@ $button = bt=function(t,f,C,c){
 
     b(t)
     if(f){b.o(f)}
-    if(g.n){b.dd()}//dropdown
+    if(g.n){ b.dd() }//dropdown
     return b
 
 }

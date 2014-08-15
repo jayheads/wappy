@@ -570,74 +570,84 @@ _pop=function(){
 
 
 
-pop=function(a, o){
+pop=function(message, o){
 
-    if(S(o)){return pop(o, { t: a } ) }
+    if( S(o) ){   return pop(o, { t: a } )    }
 
+
+    var ops=o
+    ops = O(ops)? ops : {}
 
     var g=G(arguments),
 
         modalBody,
 
-        a = a||'pop pop',
+        message = message || 'pop pop',
 
-        m = _pop( modalBody = MBODY(h2(a))),
+
+        modalBody = ModalBody(   $h2(message)  )
+
+        m = _pop(   modalBody  ),
 
         theModal = m
 
-    o=ob(o)
 
 
-    if(!o.h){theModal.m()}
 
 
-    if(o.t){
-
-        modalBody.a(
+    if( ! ops.h ){ theModal.m() }
 
 
-            $hr().c( o.hc|| 'z') .s({height: 2}),
+    if( ops.t ){
+
+        modalBody.q.prepend(      $hr().c(  ops.hc||'z'  ).s({height: 2}).q    )
 
 
-            $h1(o.t).s('c', o.tc||'z').q,
-
-
-            '-'  )
+        //text, textcolor
+        modalBody.q.prepend(      $h1(  ops.t  ).s( 'c',   ops.tc || 'z'  ).q
+        )
 
     }
 
 
+    //button
+    if( ops.b ){ modalBody.a(  $button(ops.b)  )}
 
 
-    if(o.b){
 
-        modalBody.a( $button(o.b) )}
+    //dragg
+    if( ops.d ){     theModal.drg() }
+    if( ops.drag ){     theModal.drg() }
+
+    //opacity
+    if(ops.a){   theModal.s( {opacity: ops.a} ) }
+    if(ops.opacity){   theModal.s( {opacity: ops.opacity} ) }
 
 
-    if(o.d){     theModal.drg() }
 
+    //color
+    if(ops.c){
 
-    if(o.a){   theModal.s( {opacity: o.a} ) }
-
-
-    if(o.c){
-
-        if( o.c == '*' ){
+        //flash like crazy
+        if( ops.c == '*' ){
 
             I( function(){ modalBody.c() }, 100) }
 
-
-        else { theModal.s({c: o.c}) }
+        //color
+        else { theModal.s({c: ops.c}) }
     }
 
 
+    //color
+    if(ops.C){ modalBody.s({  C: ops.C  })}
 
-    if(o.C){ modalBody.s({C:o.C})}
 
+    //bacground color
+    if(ops.bc) {theModal.s({ C: ops.bc })}
 
-    if(o.bc) {theModal.s({C:o.bc})}
+    return theModal
 
-    return theModal}
+}
 
 
 
@@ -652,22 +662,27 @@ dang=function(t,e){//random cool text input/alert
 
     if(g.n){
 
-        f=_s().xb()(
+        f = $span().xb()(
 
-            h2(g.f).k('a ad') //alert-danger
+            $h2(g.f).k('a ad') //alert-danger
 
         ).pp()} else {
 
         f=form()(
-            dv(['b'],t).font(30),
+
+            dv( t ).k('btn').font(30),
+
             tx(),
-            sp(' ')
 
-        ).font(20).k('tc').c('o')}
+            $span(' ')
 
-    if(F(e)){f.o('s',e)}
+        ).font(20).k('text-center').c('o')}
 
-    if(g.p){f.drg().s({nw:200})}
+    if( F(e) ){f.o('s',e)}
+
+
+    // if '+' : make it drag, and give it a min width
+    if(g.p){ f.drg().s({'min-width':200}) }
 
     return f}
 

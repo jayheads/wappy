@@ -229,6 +229,8 @@ ModalFooter = MFOOT=function(){
     _.each(G(arguments),function(arg){theDiv(arg)})// :)
 
     return theDiv}
+
+
 ModalBody = MBODY= function(){
 
     var theDiv = $div().k('modal-body')
@@ -237,6 +239,8 @@ ModalBody = MBODY= function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
+
+
 ModalHeader = MHEAD= function(){
 
     var theDiv = $div().k('modal-header')
