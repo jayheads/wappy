@@ -22,8 +22,9 @@ add=function rc(M,a){var g=G(arguments)
     else{_e(g,function(v){M($br(),msg(v))})}}
 
 //runs a fn on the qq of all obs of certain class
-all=function(s,f){
-    _e($('.'+s),function(m){f(qq(m))})
+all=function(s,func){
+    _.each($('.'+s),
+        function(m){func(qq(m))})
 }
 
 
@@ -35,9 +36,12 @@ all=function(s,f){
 
 getMessages = gMsgs=function rc(u,M){
     qJ(u,
-        function(d){ add(M,d)
+        function(d){
+            add(M,d)
         all('msg', function(m){
-            m.$$(pof('/nMsg',{n:m.T()},rc))})})}
+            m.$$(pof('/nMsg',{n:m.T()},rc))})
+
+        })}
 
 
 
@@ -77,7 +81,7 @@ textInputSpan =ip0=function(
     func=func||home
 
 
-    var theSpan = _s(),  theTextInput=tx(),
+    var theSpan = $span(),  theTextInput=tx(),
 
         theButton=$button(buttonText,
 
@@ -112,13 +116,13 @@ textAreaInputSpan=ip1=function(buttonText,url,func){
 
     func=func||home
 
-    var theSpan=_s(),
+    var theSpan=$span(),
 
         theTextArea=ta(),
 
         theButton=$button(buttonText, function(){
 
-            qP(url, dV(theTextArea), func)
+            $.post(url, dV(theTextArea), func)
 
         })
 
@@ -132,7 +136,7 @@ textAndTextAreaSpan=ip2=function(buttonText,url,func){
 
     url=url||'/'; func=func||home
 
-    var theSpan=_s(),
+    var theSpan=$span(),
         theTextInput=tx(),
         theTextArea=ta(),
         theButton=$button(buttonText,function(){
@@ -154,7 +158,7 @@ inptDep=function(h1Title, buttonText, url, func){
 
     return dva(4)(
 
-        h1(h1Title),
+        $h1(h1Title),
 
 
         g.p? textAndTextAreaSpan(buttonText,url,func):
@@ -215,7 +219,7 @@ inputBox=function(ob){
         theDiv(
 
             $button(buttonText, function(){
-                qP(url, _.defaults(dataValue(theTextInput),defaults), func)
+                $.post(url, _.defaults(dataValue(theTextInput),defaults), func)
             }))}
 
     if(ob.inputType == 'textArea') {
@@ -225,7 +229,7 @@ inputBox=function(ob){
         theDiv(
             theTextAreaInput,
             $button(buttonText, function () {
-                qP(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
+                $.post(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
         )}
 
     if(ob.inputType == 'textAndTextArea') {
@@ -238,7 +242,7 @@ inputBox=function(ob){
         theDiv(
 
             $button(buttonText, function () {
-                qP(url,
+                $.post(url,
                     _.defaults(dataValue(theTextInput,theTextAreaInput), defaults),
                     func)}))}
 
@@ -430,25 +434,19 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
         theSendButton = $button('send', function(){
 
-            kk.emit('chatx', {
+            kk.emit('chatx', { t:title,  n:_username,  m: theTextInput.V()  })
 
-                t:title,
+        }),
 
-                n:_username,
-
-                m: theTextInput.V()
-
-            })}),
 
         thePicButton=$button('pic',function(){  pop('pic select')  }),
 
-        thePopButton=$button('pop', function(){kk.emit('p', theTextInput.V(),t)}),
+        thePopButton=$button('pop', function(){ kk.emit('p', theTextInput.V(), title)}),
 
 
         theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
 
-
-        usrB=_d()
+        usersInRoomBox= $div()
 
         theWindow = $win('chatroom: '+title).id(id).s({
 
@@ -456,19 +454,17 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
         })(
 
-            row(col(8,
+            row(
 
-            theMessages,
+                col(8,
 
-            theTextInput,
-
-            theSendButton,
+                    theMessages,
+                    theTextInput,
+                    theSendButton,
                     thePopButton,
-            thePicButton
+                    thePicButton ),
 
-                ),
-
-                col(4, $h5('users:'), usrB)))
+                col(4, $h5('users:'), usersInRoomBox)))
 
 
 
@@ -480,7 +476,7 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
                 _.each(u, function(u){
 
-                    usrB(
+                    usersInRoomBox(
 
                         $h5(u).$(function(){
 
@@ -488,58 +484,51 @@ ChatBox=chatBox = cbox =function(title, color, id){
 
                                 function(m){
 
-                                    var s,d
+                                    var s=$h1(),
+
+                                        d=$div()
 
 
                             $win(
 
                                 $div()(
 
-                                    $br(),
+                                    $br(), $hr(),  $h3('User: '+u),
 
-                                    $hr(),
+                                    $br(),  xc().w(300).h(300).font(m),
 
-                                    $h3('User: '+u),
+                                    s, d,
 
-                                    $br(),
+                                    ms = ta().c('w','z'),
 
-                                    xc().w(300).h(300).font(m),
+                                    $mailButton(ms, u),
 
-                                    s=h1(),
-
-                                    d=_d(),
-
-                                    ms=ta().c('w','z'),
-
-                                    btMail(ms, u),
-
-                                    btChat(u, ms),
-
-
+                                    $chatButton(u, ms),
 
                                     $button('full',function(){
+
                                         $l('/wap/profiles/'+ u)
+
                                         window.location='/wap/profiles/'+ u
-                                    })
 
-                                ))
-                                    stat(u,d)
+                                    })  ))
 
-                                    prof(u,d) }
+                                    stat(u, d)
 
-                            ) }
+                                    prof(u, d) }
 
+                            )}
 
                         ))
                 })}
 
-        else { usrB($h5('no users'))}},
+        else { usersInRoomBox($h5('no users'))}
+
+        },
 
         w: theWindow,
 
         t: function(){return theWindow.toggle()},
-
-
 
         b:function(m){  theMessages($h5(m).s({c:'w'}))  },
 

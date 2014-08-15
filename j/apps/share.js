@@ -1,55 +1,56 @@
 
 //used for LISTING things (blog posts, etc)
 blp=function(s,d){
-    var g=G(arguments), s=g[0],  d=g[1],
+
+    var g=G(arguments),   s=g[0],   d=g[1],
 
 
-        sp=_s()
+        theSpan = $span()
 
     if(g.p){
 
-        sp(
+        theSpan(
 
-            bt('topic: '+ s.t,
+            $button('topic: '+ s.t,  function(){  topic=s.t;  tab4.load()  }   ),
 
-                function(){
+            $h5( dt(s.dt).dt() ),
 
-                    topic=s.t;
-
-                    tab4.load()
-                }
-            ),
-
-            h5( dt(s.dt).dt() ),
-            h3( s.c)
+            $h3( s.c)
 
         )}
 
 
     else if(g.n){
 
-        sp(
-            bt('user: '+s.u, function(){from=s.u;tab3.load()}),  br(),
+        theSpan(
+            $button('user: '+s.u, function(){from=s.u;tab3.load()}),
 
-            bt('topic: '+s.t, function(){topic=s.t;tab4.load()}),
+            $br(),
 
-            h5(dt(s.dt).dt()),h3(s.c))}
+            $button('topic: '+s.t, function(){topic=s.t;tab4.load()}),
+
+            $h5(  dt(s.dt).dt()  ),
+
+            $h3(s.c))
+    }
 
     else if(g.d){
 
-        sp(
-            bt('user: '+s.u,function(){from=s.u;tab3.load()}),  br(),
+        theSpan(
+
+            $button('user: '+s.u,function(){from=s.u;tab3.load()}),
+            $br(),
 
 
-            h5(s.dt),h3(s.c))}
+            $h5(s.dt), $h3(s.c))}
 
     else {
 
-        sp(
+        theSpan(
 
-            h4( dt(s.dt).dt() ),
+            $h4( dt(s.dt).dt() ),
 
-            h1(s.c)
+            $h1(s.c)
         )
 
     }
@@ -59,14 +60,16 @@ blp=function(s,d){
 
 
     if(s.du){
-        sp(
-        cx(400).f(s.du).bc('-')
+        theSpan(
+
+            cx(400).f(s.du).bc('-')
 
     )}
 
-    sp(hr())
 
-    return D(d)? d(sp): sp
+    theSpan($hr())
+
+    return D(d)? d(theSpan): theSpan
 
 }
 
@@ -76,30 +79,86 @@ blp=function(s,d){
 
 
 //api calls
-wUSt=function(u,f){//with first status?
+withStatus = wUSt=function(user,func){//with first status?
+
     qG('/sts1',
-        {u:u},function(s){
-            f(s.c)})
+
+        {u: user},
+
+        function(status){ func(status.c) })
 }
 
-btMail=function(ms,u){
 
-   return bt('mail',
-       function(){qP('/sMsg',{m:ms.V(), to:u.u})})
+
+
+$mailButton = btMail=function(message, user){
+
+   return $button('mail',
+
+       function(){
+
+           $.post('/sMsg',
+
+               {
+
+               m: message.V(), to: user.u
+
+           }
+
+           )})
 
 }
 
-btChat=function(u,ms){return bt('chat',function(){iMsg(u.u,ms.V())})}
 
-btRq=function(u){
-    return  bt('buddy-request',function(){qP('/sRq',{to:u.u})})}
 
-btPst=function(){return bt('see posts',function(){})  }
+
+
+$chatButton  = btChat=function(user,message){
+
+    return $button('chat',function(){
+
+        sendMessage(user.u, message.V())
+    })
+
+}
+
+
+
+
+
+
+$buddyRequestButton =btRq=function(user){
+
+    return $button('buddy-request',
+
+        function(){
+
+            $.post('/sRq', {to:user.u})
+
+        })}
+
+
+
+
+
+
+$postsButton =btPst=function(){return $button('see posts', function(){})  }
 
 
 c3=function(a){return xc().w(300).h(300).f(a) }
 
-stat=function(u,d){wUSt(u,function(s){d(h3('STATUS: '+s))})}
+
+stat=function(user,theDiv){
+
+    withStatus(user,
+
+        function(status){
+            theDiv( $h3('STATUS: '+ status))
+        })
+
+}
+
+
 
 
 POSTS=function(){format()
@@ -119,10 +178,10 @@ POSTS=function(){format()
 
 
 
-        h2('attach:'),
+        $h2('attach:'),
 
 
-        bt('pic', function(){
+        $button('pic', function(){
 
             m=pop(
 
@@ -229,36 +288,41 @@ POSTS=function(){format()
 
 
 USERS=function(){format()
-    s1(h1('filter'),h1('order'),h1('view'))
+
+    s1(
+        $h1('filter'),
+        $h1('order'),
+        $h1('view'))
+
     tab1=['users',function(){
 
 
         TABS.E(
-            h1('Users: '),
-            br())
+            $h1('Users: '),
+            $br())
 
-        usrs(  function(u){
+        getUsers(  function(u){
 
-            _e(u,function(u){
-                qP('/dud', {d:u.m},
+            _.each(u,function(u){
+
+                $.post('/dud', { d: u.m },
 
                     function(m){
 
                 TABS(
 
-                    tn( pg(u.u), br(), m ).o( function(){
-                        window.location='/wap/profiles/'+ u.u;//return
+                    tn(
+                        $pg(u.u),
 
+                        $br(), m ).$( function(){
+
+                            window.location='/wap/profiles/'+ u.u;//return
 
                     })
 
-
                 )})})})
-
-
-
-
     }]
+
     tab2=['buds',function(){
 
 
@@ -298,11 +362,11 @@ USERS=function(){format()
 
         TABS(
 
-            pg('about'),
-            pg('activity'),
-            pg('buds'),
-            pg('posts'),
-            pg('relations')
+            $pg('about'),
+            $pg('activity'),
+            $pg('buds'),
+            $pg('posts'),
+            $pg('relations')
 
 
         )
@@ -312,19 +376,40 @@ USERS=function(){format()
     s2(t=tabs(tab1,tab2,tab3,tab4))
     t.load()}
 
-prof=function(a,d){a=a||'a'
 
 
-    qP('/gPf',{u:a}, function(o){if(O(o)){d=d||dva(3)
 
-        d(
-            h4('things i like'),h5(o.things),
-            h4('words that describe me'),h5(o.words),
-            h4('more about me..'),h5(o.about),
-            h4('what i want..'),h5(o.want),
-            h4('my best feature'),h5(o.best))
+makeProfile = prof=function(user, theDiv){
 
-    } })}
+    user=user || 'a'
+
+
+    $.post('/gPf', {u:user}, function(data){
+
+        if(O(data)){ theDiv = theDiv||dva(3)
+
+        theDiv(  h4('things i like'), $h5(data.things),
+
+            $h4('words that describe me'),  $h5(data.words),
+
+            $h4('more about me..'),   $h5(data.about),
+
+            $h4('what i want..'),  $h5(data.want),
+
+            $h4('my best feature'),   $h5(data.best))
+
+    }})
+
+
+
+
+}
+
+
+
+
+
+
 
 PROFILES=function(){format()
     u=pam
@@ -513,9 +598,6 @@ Status=function(i){
 }
 
 
-
-
-hello=3
 
 //avail=bbM({url:'/sts'})
 
