@@ -138,7 +138,19 @@ scaleDraw = function (i,c){ c.save(); c.scale(c.w/i.w, c.h/ i.h ); c.drawImage(i
 changeData = function(d, str){var f = new Function("v","k","l","l[k]=" + str);ea(d.data, function(v,k,l){f(v,k,l);})}
 changeData2 = function (d, str){var s = "l[k]=" + str; $m(d.data, s);}
 gD = getData = function(c){ return c.getImageData(0,0, c.w, c.h) }
-pD = putData = function (data, c) {c.putImageData(data, 0, 0)};
+
+
+pD = putData = function (data, c) {
+    c.putImageData(data, 0, 0)
+}
+
+
+
+
+
+
+
+
 gcp = getChangePut = function(c1, str, c2){var d = gD(c1);cD(d, str);pD(d,c2);}
 DD = copyPasteData = getPutData = function (c,d){pD(gD(c),d)}
 dit = function (d, str){  var s = "l[k]=" + str; $m(d.data, s);  }

@@ -259,7 +259,7 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
                 u=fg(
 
-                    lb('uname: ','uname'),
+                    $label('uname: ','uname'),
 
                     fc().id('uname')
 
@@ -278,7 +278,7 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
             .o('s',
 
-            function(q,e){  pD(e.e)
+            function(q,e){ // pD(e.e)
 
                 if(u){  qP(  '/li',
 

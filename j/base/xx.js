@@ -1,4 +1,15 @@
 
+$canvas=function(a,b){
+
+    var theCanvas= qq('c').k('can').at({w:100, h:100})
+
+       return theCanvas
+
+}
+
+
+
+
 xx=function xx(c,w,h,t,l){
 
     if(C(c)){c=C(c)}
@@ -7,7 +18,7 @@ xx=function xx(c,w,h,t,l){
     else{
 
         var g=G(arguments),
-            can=_c()
+            can=$canvas()
 
             c=g[0]
             w=g[1]
@@ -101,9 +112,22 @@ xx=function xx(c,w,h,t,l){
 
 
     //DRAWING
-    x.dI=function(i){var g=G(arguments);
-        g[1]=g[1]||0;g[2]=g[2]||0;
-        _a(x.m,_c('d',g))}
+    x.dI=function(i){
+        var g=G(arguments)
+
+        g[1]=g[1]||0
+
+        g[2]=g[2]||0
+
+
+        x.m.apply(x, _c('d', g) )
+
+    }
+
+
+
+
+
 
     x.d=function(i){
         var g=G(arguments),i=g[0]
@@ -424,112 +448,165 @@ xx=function xx(c,w,h,t,l){
 
         return x}
 
+    
+    
 
 
 // GRADIENTS
+    addColorStop =acs=function rc( gradient, stop, color ){
 
-
-    acs=function acs(g,n,s){
         // pass only a gradient -> function with gradient curried
         // add a color stop to a gradient
-        if(U(n)){return _p(acs,g)}
-        g.addColorStop(n,oO('c',s))
-        return g}
 
-    sGr=function(g){
-        g.a=function(n,c){acs(g,n,c);return g}
-        return g}
+        if(U(stop)){return _.partial(rc, gradient)}
 
-    x.lg=function(a,b,c,d){
+        gradient.addColorStop(stop, oO('c', color))
+
+        return g}
+    SuperGradient =sGr=function(gradient){
+
+        gradient.a=function(stop,color){
+
+            addColorStop(gradient, stop,color);
+
+            return gradient
+        }
+
+        return gradient}
+    x.createLinearGradient =x.lg=function(a,b,c,d){
 
         a=a||0
         b=b||0
         c=c||x.w()
         d=d||x.h()
-        return sGr(
+        return SuperGradient(
             x.x.createLinearGradient(a,b,c,d))
 
     }
-    x.rg=function rg(){
+    x.createRadialGradient =x.rg= function rg(){
+
+        //ctx.createRadialGradient()
+
+
         var g=G(arguments)
-        g[0]=g[0]||10
-        g[1]=g[1]||10
-        g[2]=g[2]||100
-        g[3]=g[3]||(g[2]+100)
-        g[4]=g[4]||g[0]
-        g[5]=g[5]||g[1]
-        g[6]=g[6]||g[3]
+
+        g[0]=g[0]||  200
+        g[1]=g[1]||  200
+        g[2]=g[2]||  100
+
+        g[3]=g[3]||  250
+
+        g[4]= g[4]|| 250
+
+        g[5]= g[5]|| 800
+
         return x('rg',
-            g[0],g[1],g[2],
-            g[3],g[4],g[5],g[6]).res}
 
-    x.createPat=x.cPt=function(c,im,b){
-        return xM(c)('p',im,oO('pt',b||'r'))}//=createPattern
+            g[0],  g[1],   g[2],  g[3], g[4],  g[5]
 
-    x.grad=function(g,s,w,h){ //depr?
-        var fn=_z(g)==4?lG:rG;
-        g=_a(fn,_c(x.x,g))
-        if(O(s)){_e(s,function(v,k){var o=S(v)?{k:k, v:v}:{k:v, v:k}
-            acs(g,o.k ,$r('c',o.v))})}
-        x({f:g})
+        ).res
+    }
+    x.sampRadGrad=function(gradient){
+
+        gradient = gradient || x.rg()
+
+        addColorStop(gradient, 0, 'r')
+
+        addColorStop(gradient,.15, 'b')
+        addColorStop(gradient,.2, 'r')
+        addColorStop(gradient,.5, 'y')
+        addColorStop(gradient, 1, 'b')
+
+        x.fs(gradient)
+
         x.fr()
-        return g}
+    }
+    x.sampLinGrad=function(gradient){
 
-    x.grad2=function(a,b,c,d,e,f){var g=G(arguments), gr
+        gradient = gradient || x.lg()
 
-        if(!N(a)){
-            return x('p',a,pt[b]||null)} //pattern
+        addColorStop(gradient,0,'r')
 
-        if(f){g=x('rg', g)} else if(d){gr=x('rg',G); return acs(gr,a,b)}
+        addColorStop(gradient,.1,'r')
+        addColorStop(gradient,.15,'b')
+        addColorStop(gradient,.2,'r')
+        addColorStop(gradient,.5,'y')
+        addColorStop(gradient, 1,'b')
 
-        if(!N(a)){return x.x.createPattern(a,oO('pt',b)||null)}
-
-        if(f){g=x.x.createRadialGradient(a,b,c,d,e,f)} else if(d){g=x.x.createLinearGradient(a,b,c,d)}
-
-        return g.addColorStop(a,b)}
-    x.sampRadGrad=x.grr=function(g){
-        g=g||x.rg()
-
-        var s=acs(g)
-        s(0,'r')
-        s(0.05,'b')
-        s(0.05,'b')
-        s(0.1,'r')
-        s(0.1,'r')
-        s(0.15,'b')
-        s(0.15,'b')
-        s(0.2,'r')
-        s(0.5,'y')
-        s(1,'b')
-
-        x({f:g})
-        x.fr()}
-    x.sampLinGrad=x.gr=function(g){
-        g=g||x.lg()
-
-        var s=acs(g)
-
-        s(0,'r')
-        s(0.05,'b')
-        s(0.05,'b')
-        s(0.1,'r')
-        s(0.1,'r')
-        s(0.15,'b')
-        s(0.15,'b')
-        s(0.2,'r')
-        s(0.5,'y')
-        s(1,'b')
-
-        x({f:g})
+        x.fs(gradient)
 
         x.fr()
 
         return x}
-    x.IntervalGrad=x.gra=function(){var a=0, b=1000
-        I(.02, function(){
-            a+=1; b-=2;
-            x.gr([200,200,a,290,270,b],
-                {y:.1,r:.3,V:1})})}
+    x.grad=x.createGradient =function(   gradientArgs, stopObject,  w, h){
+
+        var gradient=
+
+
+        (gradientArgs.length == 4) ? gradient=x.createLinearGradient.apply(x.x, gradientArgs)
+            : x.createRadialGradient.apply(x.x,  gradientArgs   )
+
+
+        if(O(stopObject)){
+
+            _.each(stopObject,
+
+                function(v,k){
+
+                    var o = S(v)? {k:k, v:v} : {k:v, v:k}
+
+            addColorStop(gradient, o.k , $r('c', o.v))
+
+        })}
+        x.fs(gradient)
+
+        x.fr()
+
+        return gradient
+
+    }
+    x.intervalGrad=function(){
+
+        var a=0,  b=1000,  gradient
+
+        setInterval(
+
+            function(){
+
+                a += 1;
+                b -= 2
+
+                //gradient=  x.createRadialGradient( 200, 200, a, 290, 270, b)
+                //gradient.addColorStop(.1,'Yellow')
+                //gradient.addColorStop(.3,'Red')
+                //gradient.addColorStop(1, 'Violet')
+
+                gradient = x.grad( [200, 200, a, 290, 270, b],  { y: .1, r: .3,  V:1 } )
+
+                x.fs( gradient )
+                x.fr()
+
+
+            //
+
+                }
+        ,100)
+    }
+
+    
+    
+    
+    
+    
+    
+
+ 
+    //patterns are for 'fills'
+    x.createPat=x.cPt=function(c,im,b){
+
+        return xM(c)('p',im,oO('pt',b||'r'))
+
+    }//=createPattern
 
 
     // PROPS
@@ -540,9 +617,14 @@ xx=function xx(c,w,h,t,l){
 
     // global comp
 
-    gCo=function(c){return _p(xP(c),'g')}
-    x.gc=gCo(x.c)
+    globalCompositionOperation=function( canvasEl ){
 
+        return _.partial( xP(canvasEl), 'g' )
+    }
+
+    x.globalCompositionOperation= x.gc= globalCompositionOperation( x.c )
+
+    
     x.shadow=x.sd=function(){
 
     }
@@ -652,18 +734,10 @@ X=function X(c){
     }
 }
 
-
-
-
-
-
 rt=function(a,b){
     if(U(b)){return a.rotation}
     a.rotation=b
     return a}
-
-
-
 
 smoothWithStop=function(){
     d=dv().id('test').a()(y=cx('x',40).q.k('box'))
@@ -697,10 +771,6 @@ BIG=function(){z()
 
 }
 
-
-
-
-
 notAnim=function(a){return a.filter(':not(:animated)')}
 notAnim.t=function(){var s=1000,m=function(n){return {marginLeft:n}},n=0
     d=dv().id('test').a()(y=cx('x',40).q.k('box'))
@@ -709,9 +779,6 @@ notAnim.t=function(){var s=1000,m=function(n){return {marginLeft:n}},n=0
         function(){$('#debug').append('<p>start..'+(n++)+'<p>')})
         .animate(m(10),s).animate(m(-10),s).animate(m(10),s).animate(m(-10),s).animate(m(-10),s)
         .animate(m(0),s,function(){$('#debug').append('<p>fin..<p>')})})}
-
-
-
 
 HSP=horizSlidPanels=function(){z()
 
@@ -727,22 +794,31 @@ HSP=horizSlidPanels=function(){z()
     d=_d().k('container')(
       _d().k('panels')(sp('1'),  sp('2'),  sp('3'), sp('4'), sp('5')),
       _d().k('panels')(sp('A'),  sp('B'),   sp('C'),  sp('D'),  sp('E'))).a()
+
     $('span').css({width:'100px',fontSize:'40px'})
       if(_z($('div.panels'))){
           $('div.panels span:last-child').addClass('last')
           $('div.panels span').hover(
+
               function(){$(this).stop().animate({width:'110px',fontSize:'50px'},s)
                       .siblings('span').stop().animate({width:'90px',fontSize:'30px'})},
-              function(){$(this).stop().animate({width:'90px',fontSize:'30px'})})}}
+              function(){$(this).stop().animate({width:'90px',fontSize:'30px'})})}
+
+}
+
+
+
 
 
 tree=function(){z();var s=200
+
     d=_d().k('container')(
 
         pg().k('tree_controls')(
 
             lk('expand all').k('expand_all'),
             lk('collapse all').k('collapse_all')
+
         )).a()
 
 
@@ -794,16 +870,9 @@ tree=function(){z();var s=200
                      }})
 
 
-
-
-
-
-
-
         $('ul.tree li:last-child').addClass('last')
 
         $('ul.tree_expanded').prev('a').addClass('trigger_expanded')
-
 
     }
 
@@ -813,14 +882,12 @@ tree=function(){z();var s=200
 
 
 
-spi=function(i){return sp().id(i)}
-
 
 CAN=function(){var picHolder
 
     format()
 
-    s2(picHolder=spi('pics'))
+    s2(picHolder=$span().id('pics'))
 
 
     eaI(function(v){
@@ -842,12 +909,14 @@ CAN=function(){var picHolder
 
     s2(x=cx('y',1000,800))
 
-    I(function(){x.bc()},10000)
+    setInterval(function(){
+        x.bc()
+    }, 10000)
 
 
     s1(
 
-        lb('mouse'),
+        $label('mouse'),
 
 
         sel('none','click','enter','leave','move').id('mouse').o(
@@ -873,48 +942,85 @@ CAN=function(){var picHolder
 
 
 
-        lb('global comp'),
-        _a(sel,V(oO('g'))).o(function(v){x.gc(v)}),
+        $label('global comp'),
+
+        sel.apply(this, V(oO('g')) ).$(function(v){ x.gc(v) }),
 
         //gct=tx(),bt('gc:global composition',function(){x.gc(gct.V())}),
 
 
-        bt('SAVE(sv)',function(){x.sv()}),br(2),
+        $button('SAVE(sv)',function(){
+            x.sv()
+        }),
 
-        bt('CUT(dots)',function(){
-            x.q.q.unbind()
-            qi('mouse').v('none')
-            x.dots()}),br(2),
+        $br(2),
+
+        $button('CUT(dots)',
+
+            function(){
+
+                x.q.q.unbind()
+
+                qi('mouse').v('none')
+
+                x.dots()
+            }),
+
+        $br(2),
+
+        $button('RESTORE(R)',
+            function(){x.R()}),
+
+        $br(2),
+
+        $button('bc:change background color',function(){x.bc()}),br(2),
+
+        $button('cir:make circle',function(){x.cir(100,100,100)}),br(2),
+
+        $button('d:draw',function(){x.d($w['mug']||'me')}),br(2),
+        $button('dC:draw center',function(){x.dC($w['mug']||'me')}),br(2),
+
+        $button('me',function(){x.me()}),
+
+        $br(2),
+
+        $button('sh1',function(){x.ln(sh1)}),
+        $br(2),
+
+        $button('sh2',function(){x.ln(sh2)}),
+        $br(2),
+
+        $button('tictactoe',function(){x.ln(tictactoe)}),
+        $br(4),
 
 
-        bt('RESTORE(R)',
-            function(){x.R()}),br(2),
+        $button('sampLinGrad',function(){
 
-        bt('bc:change background color',function(){x.bc()}),br(2),
+            x.sampLinGrad()
 
-        bt('cir:make circle',function(){x.cir(100,100,100)}),br(2),
-
-        bt('d:draw',function(){x.d($w['mug']||'me')}),br(2),
-        bt('dC:draw center',function(){x.dC($w['mug']||'me')}),br(2),
-
-        bt('me',function(){x.me()}),br(2),
+        }),
 
 
-
-        bt('sh1',function(){x.ln(sh1)}),br(2),
-        bt('sh2',function(){x.ln(sh2)}),br(2),
-        bt('tictactoe',function(){x.ln(tictactoe)}),br(2),
 
 
         br(2),
-        bt('gr',function(){
-            x.gr()
-        }),br(2),
 
 
 
-        bt('grr',function(){x.grr()}),br(2),
-        bt('xxx',function(){xxx('barney')}),br(2),
+        $button('sampRadGrad', function(){
+
+            x.sampRadGrad()
+
+        }),
+
+
+        $br(2),
+
+
+
+
+
+        $button('xxx',function(){xxx('barney')}),br(2),
 
         bt('bads',function(){bad(x,200,8)  }),br(2),
 
@@ -923,12 +1029,6 @@ CAN=function(){var picHolder
 tCl=function(n1,n2,n3,n4){
     return n2? "rgba("+n1+","+n2+","+""+n3+","+(n4||1)+")"
         :$r('c',n1)}
-
-
-
-
-
-
 
 FAN=function(){
 
@@ -1008,16 +1108,27 @@ RUB=function(){z()
 
         x.crop(rr)
         data=x.gD()})}
+
+
 PAN=function(){
     z()
+
     x=cx('y',1000,800).a()
+
     y=cx('x',400).a()
+
     x.$$(function(){x.f('me')})
-    x.f('me')}
+    x.f('me')
+
+}
+
+
 TEXT=function(){z();x=cx('y',1000,800).a()
 
 
     x.$$(function(){x.X()})}
+
+
 TRANS=function(){
 
 
@@ -1068,7 +1179,7 @@ makeGrad=function(){z()
 
 
 can=function(r,w,h,t,l){var g=G(arguments),
-    c=_c()
+    c=$canvas()
     if(!S(g[0])){return g.p? can('X',r,w,h,t,'+')
         :g.n? can('X',r,w,h,t,'-')
         :can('b',r,w,h,t)}
@@ -1092,16 +1203,25 @@ c0=function(){var g=G(arguments),
     return g.n? xx(c):g.p?St(c):c}
 c00=function(){var g=G(arguments),c=_l($('canvas'))
     return g.n? xx(c):g.p?St(c):c}
-ci=function(a){return qq(_c()).id(a)}
+ci=function(a){return qq($canvas()).id(a)}
 
 
 
 
-xc=function(i,z,f){var x=xx(_c()).bc('X')
+xc=function(i,z,f){
+    var x=xx($canvas()).bc('X')
+
     if(i){x.f(i)}
     if(z){x.Z(z)}
     if(f){x.o(f)}
-    return x}
+
+    return x
+
+}
+
+
+
+
 
 c1=function(m){return cx().bc('-').Z(1).mug(m)}
 
@@ -1185,6 +1305,7 @@ coin=function(x,n,n1){
 
     return c}
 tictactoe=[[[200,0],[200,600]],[[400,0],[400,600]],[[0,200],[600,200]],[[0,400],[600,400]]]
+
 vec=function(x,y){
     var v=function v(){}
     v.x= x||2
@@ -1196,13 +1317,18 @@ vec=function(x,y){
         v.x+= a.x;
         v.y+= a.y;
         return v}
+
     v.s=function(a){v.x*= a;
         v.y*= a;
         return v}
+
     v.u=function(){v.x= v.x/v.l();
         v.y=v.y/v.l() }
+
     v.n=function(){v.x*=-1;  v.y*=-1}
+
     v.p=function(a){return (v.x*a.x)+(v.y*a.y)}
+
     v.r=function(a){
         v.x=v.x*cos(a)-v.y*sin(a)
         v.y=v.x*sin(a)+v.y*cos(a)
@@ -1210,12 +1336,21 @@ vec=function(x,y){
     v.toString=function(){
         return '('+tFx(v.x)+','+ tFx(v.y)+')'}
     v.v=v.toString
-    return v}
+
+    return v
+}
+
+
+
+
+
 vkl=function(a){return new Function("v","k","l","l[k]="+s)}
+
 
 pxChangeData=function(d,s){_e(_d(d),function(v,k,l){vkl(s)(v,k,l)})}
 
 pxChangeData2=function(d,s){$m(_d(d),"l[k]="+s)}
+
 
 fade=function(im){
 // sets every fourth value to 50..
@@ -1224,6 +1359,9 @@ fade=function(im){
     var imD=_d(im), l=_z(imD)
     for(var i=7;i<l;i+=4){imD[i]=80}
     return _d(im, imD  ) }
+
+
+
 pixelz=function(){
     var d=x('G', 0,0,300,300)
     d.d=d.data
@@ -1243,6 +1381,7 @@ pixelz=function(){
         d.d[i+2]=255-d.d[i+2]
         d.d[i+3]=255
     }}
+
 CUTX=function(i){
     return function(sx,sy){
         return function(sw,sh){
@@ -1250,29 +1389,65 @@ CUTX=function(i){
                 return function(dw,dh){
                     return function(dx,dy) {
                         c.x.drawImage(i,sx,sy,sw,sh,dx,dy,dw,dh)}}}}}}
+
 LEFT = function(S){return CUTX(S)(0,0)(S.width/2,S.height)}
-drawMy= function(a){cutter(a)(0,0)(a.w,a.h)}
+
+drawMy= function(a){
+
+    cutter(a)(0,0)(a.w,a.h)
+}
+
+
 
 
 state=0
 sh1=[[10,0],[19,19],[10,9],[9,9],[0,19],[9,0]]
+
 sh2=[[[10,0],[19,19],[10,9],[9,9],[0,19],[9,0]],[[8,13],[12, 13]],[[9,14],[9,18]],[[10,14],[10,18]]]
-hits=function(){
-    _e(Cs,function(c,C){
-        if(xyc(c.x,c.y,g)){
-            delete Cs[C];
-            g.c+=1}})
 
-    _e(As,function(a,A){
-        if (xyc(g.x,g.y,a)){g.h-=1}
 
-        _e(Bs,function(b,B){
-            if (xyc(b.x,b.y,a)){delete Bs[B]
+
+
+
+//bluecircle game function
+//never used
+coinHits=function(){
+
+    _.each(CoinsArray,
+
+        function(coin, coinId){
+
+            //??? hitTest?
+            if( xyc( coin.x, coin.y, game )){
+
+                delete CoinsArray[coinId]
+
+                game.coinScore += 1
+            }
+        })
+
+
+
+
+    _.each(
+        As,function(a,A){
+
+            if (
+                xyc(g.x,g.y,a)){
+                g.h-=1}
+
+        _.each(Bs,function(b,B){
+
+            if (xyc(b.x,b.y,a)){
+                delete Bs[B]
+
                 delete As[A]
-                As.push(bad())}})})}
 
+                As.push(bad())}})
 
+        })
 
+}
 
 startGameX=function(st){
 
@@ -1324,12 +1499,19 @@ updateBallX= function(){
     XY(guy,0.5,'+')
     XY(ball,ball.vx,ball.vy,'+')
     ball.vy+=.04}
+
 drawBallX =function d(px,py){
-    px=px||ball
-    if(O(px)){return d(px.x, px.y)}
+
+    px = px||ball
+
+    if(O(px)){ return d(px.x, px.y) }
+
     x('b')
+
     x.cir(px,py,2);
-    x('f')}
+
+    x('f')
+}
 
 
 
@@ -1337,7 +1519,6 @@ drawBallX =function d(px,py){
 
 
 
-ISOMETRIC=function(){z()}
 STORAGE=function(){ z()
 
     saveFromLocStor=function(){i=ta().id('input')
