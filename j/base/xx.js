@@ -10,64 +10,102 @@ $canvas=function(a,b){
 
 
 
-xx=function xx(c,w,h,t,l){
 
-    if(C(c)){c=C(c)}
-    else if(!S(c)){return xx($r(),c,w,h,t)}
 
-    else{
+xx = function xx(c, w, h, t, l){
+
+    if (C(c) ){  c=C(c)  }
+
+    else if(!S(c)){
+
+        return xx($r(),c,w,h,t)}
+
+    else {
 
         var g=G(arguments),
-            can=$canvas()
 
-            c=g[0]
-            w=g[1]
-            h=g[2]
-            t=g[3]
-            l=g[4]
+            can=$canvas(),
+
+            left,
+
+            top
+
+
+        c=g[0]
+
+        w=g[1]
+
+        h=g[2]
+
+        top= t=g[3]
+
+       left= l=g[4]
 
         w=w||4
+
         h=(h||w)
+
         if(h<10){h*=100}
+
         if(w<10){w*=100}
-        can.s({C:c, a:.6}).at({w:w, h:h}).a()
+
+        can.s({backgroundColor: c, opacity:.6}).at({ width:w, height:h }).a()
 
 
+
+        //make it draggable, unless args.NOT!!!!
         if(g.N){
 
-            l=l||3
-            t=(t||l)
-            if(l<10){l*=100}
-            if(t<10){t*=100}
-            can.p('a').drg().l(l).t(t)}
+            left = left || 300
+
+            top = ( top || left )
+
+            if( l < 10 ){ l *= 100 } //optional
+
+            if( t < 10 ){ t *= 100 } //optional
+
+            can.p('a').drg().left(left ).top(top )  }
 
 
-        c=can}
+        c = can }
+
+    var x=function x( a, b ){
+
+        var args = G(arguments)
+
+        if(F(a)){ return a }
+
+        if(A(a)){ return x.pop( a[0] ) }
+
+        if(O(a)){
+
+                x.pop(g.f)
+            if(!b){return x.x}
+                x.res = x.met.apply(x, args.r);
+
+            return x}
 
 
+        if(S(a)){
+            x.res= x.met.apply(x, args)
+            return x}
 
-    var x=function x(a,b){
+        return x.res}
 
-        var g=G(arguments)
-            if(F(a)){return a}
-            if(A(a)){return x.p(a[0])}
-            if(O(a)){x.p(g.f);if(!b){return x.x}
-                x.res=_a(x.m,g.r,x);return x}
-            if(S(a)){x.res=_a(x.m, g);return x}
-            return x.res}
-
-    x.c=c
-    x.x=X(x.c)
-    x.p=xP(x.x)
-    x.m=xM(x.x)
+    x.can  =x.c=c
+    x.ctx  =x.x =  X(x.c)
+    x.pop  =x.p =  xP(x.x)
+    x.met  =x.m=   xM(x.x)
 
 
     //inherit from q
-    x.q=qq(x.c)
+    x.qq =x.q=qq(x.c)
+
     x.o=function(a,b,c){x.q.o(a,b,c);return x}
-    x.a=function(){x.q.a();return x}
-    x.ox=function(){return x.q.q.offset().left}
-    x.oy=function(){return x.q.q.offset().top}
+
+
+    x.a=function(){ x.q.a(); return x }// ???
+
 
 
     x.id=function(a){
@@ -77,42 +115,57 @@ xx=function xx(c,w,h,t,l){
 
 
 
-    x.l=function(n){if(!n){
-        return osl(x.q)}
-        return _i(n-x.l())}
+
+    x.offsetLeft  =x.l=function(theOffset){
+
+        if(!theOffset){
+
+        return offsetLeft(x.q)}
+
+        return parseInt( theOffset - x.offsetLeft() )
+
+    };x.ox=function(){return x.q.q.offset().left}
 
 
-    x.t=function(y){if(!y){
-        return ost(y.q)}
-        return _i(y-x.t())}
+    x.offsetTop   =x.t=function( y ){
+
+        if( !y ){ return offsetTop( y.q ) }
+
+        return parseInt( y - x.offsetTop() ) };x.oy=function(){return x.q.q.offset().top}
+
+
 
 
     //remove
-    x.rm=function(){qq(x.c).X()}
+    x.remove = x.rm = function() { qq( x.c ).X() }
 
 
 
     //save
-    x.snap=x.saveImage=x.sv=function(){sv(x)}//b
+    x.snap=x.saveImage  =x.sv=function(){sv(x)}//b
 
 
-//SAVE/RESTORE
-    x.saveState=x.S=function(){
-        x.x.save();return x}
+    x.saveState=x.S=function(){ x.x.save();return x}
 
 
-    x.restoreState=x.R=function(){
-        x.x.restore();return x}
+    x.restoreState=x.R=function(){  x.x.restore();return x}
 
-    //back color
-    x.backgroundColor=x.bc=function(c){var g=G(arguments),c=g[0]
-        if(g.n){c='X'}
-        x.q.c(c);return x}//b
+    x.backgroundColor=x.bc=function(c){
 
+        var g = G(arguments),
+
+            c = g[0]
+
+        if(g.n){ c = 'X' }
+
+        x.q.c( c )
+
+        return x }//b
 
 
     //DRAWING
     x.dI=function(i){
+
         var g=G(arguments)
 
         g[1]=g[1]||0
@@ -120,7 +173,11 @@ xx=function xx(c,w,h,t,l){
         g[2]=g[2]||0
 
 
-        x.m.apply(x, _c('d', g) )
+        x.met.apply(
+
+            x, ['d'].concat(g)
+
+        )
 
     }
 
@@ -224,7 +281,7 @@ xx=function xx(c,w,h,t,l){
         b=b||0
         c=c||x.w()
         d=d||x.h()
-        x.m('fr',a,b,c,d)
+        x.met('fr',a,b,c,d)
         return x}
 
     //clear screen [+ fill with color || run fx]
@@ -265,13 +322,13 @@ xx=function xx(c,w,h,t,l){
         f.x=ca(a,b,c)
         if(U(a)){return f.x.font}
         if(S(a)){f.x.font=a}
-        f.f=function(a,b){f.x.p('fo',$f(a))}
+        f.f=function(a,b){f.x.pop('fo',$f(a))}
 
         f.t=function(a,b,c){
             if(c){f(c)
                 return f.t(a,b)}
 
-            f.x.m('ft',f.tt,a,b)}
+            f.x.met('ft',f.tt,a,b)}
         return f}
 
     //set stroke style
@@ -612,8 +669,11 @@ xx=function xx(c,w,h,t,l){
     // PROPS
 
     //alpha
-    x.op=function(n){x({a:n||.5})
-        return x}
+    x.op=function(n){
+
+        x({a:n||.5}); return x
+
+    }
 
     // global comp
 
@@ -624,10 +684,41 @@ xx=function xx(c,w,h,t,l){
 
     x.globalCompositionOperation= x.gc= globalCompositionOperation( x.c )
 
-    
-    x.shadow=x.sd=function(){
 
-    }
+    x.shadowColor=function(color){
+
+        if(U(color)){
+            return x.x.shadowColor
+        }
+
+
+        x.x.shadowColor=oO('c', color)
+
+        return x}
+    x.shadowBlur=function(blurNumber){
+
+        if(U(blurNumber)){
+            return x.x.shadowBlur}
+
+        x.x.shadowBlur=blurNumber
+        return x}
+    x.shadowOffsetX=function(offsetX){
+
+        if(U(offsetX)){
+            return x.x.shadowOffsetX}
+
+        x.x.shadowOffsetX=offsetX
+        return x}
+    x.shadowOffsetY=function(offsetY){
+        if(U(offsetY)){
+            return x.x.shadowOffsetY}
+
+        x.x.shadowOffsetY=offsetY
+
+        return x}
+
+
+
 
 
 
@@ -729,33 +820,49 @@ X=function X(c){
         if(c.canvas){return c}
         if(C(c)){return C(c).getContext('2d')}
 
+
         if(c.x){return X(c.x)}
         if(c.q){return X(c.q)}
     }
+
 }
 
-rt=function(a,b){
+
+
+
+
+rotation =rt=function(a,b){
+
     if(U(b)){return a.rotation}
+
     a.rotation=b
+
     return a}
 
-smoothWithStop=function(){
+
+
+SMOOTHWITHSTOP=function(){
     d=dv().id('test').a()(y=cx('x',40).q.k('box'))
 
     $('#test').hover(function(){$('.box').stop().fadeTo(200,1)},
-        function(){$('.box').stop().fadeTo(200,0)})}
+        function(){$('.box').stop().fadeTo(200,0)})
+
+}
 
 
 BIG=function(){z()
 
 
 
-    d=dv().id('test').a()(y=cx('x',40).q.k('box'))
+    d =dv().id('test').a()(
+
+        y = cx('x', 40). q. k('box')
+
+    )
 
 
 
     d2=dv().id('debug').a()
-
 
 
     //x=cx('y',1000,800).a()
@@ -771,15 +878,30 @@ BIG=function(){z()
 
 }
 
-notAnim=function(a){return a.filter(':not(:animated)')}
-notAnim.t=function(){var s=1000,m=function(n){return {marginLeft:n}},n=0
+
+
+
+
+notAnimated = notAnim=function(a){return a.filter(':not(:animated)')}
+
+notAnimated.test=function(){
+
+    var s=1000,m=function(n){return {marginLeft:n}},n=0
     d=dv().id('test').a()(y=cx('x',40).q.k('box'))
     d2=dv().id('debug').a()
     $('#test').click(function(){notAnim($('.box')).animate(m(-10),s,
         function(){$('#debug').append('<p>start..'+(n++)+'<p>')})
         .animate(m(10),s).animate(m(-10),s).animate(m(10),s).animate(m(-10),s).animate(m(-10),s)
-        .animate(m(0),s,function(){$('#debug').append('<p>fin..<p>')})})}
+        .animate(m(0),s,function(){$('#debug').append('<p>fin..<p>')})})
+}
 
+
+
+
+
+
+
+//cool demo
 HSP=horizSlidPanels=function(){z()
 
 
@@ -791,18 +913,33 @@ HSP=horizSlidPanels=function(){z()
 
     var s=200
 
-    d=_d().k('container')(
-      _d().k('panels')(sp('1'),  sp('2'),  sp('3'), sp('4'), sp('5')),
-      _d().k('panels')(sp('A'),  sp('B'),   sp('C'),  sp('D'),  sp('E'))).a()
+
+    theDiv = $div().k('container')(
+
+      $div().k('panels')(
+          $span('1'),  $span('2'),  $span('3'), $span('4'), $span('5')),
+
+      $div().k('panels')(
+          $span('A'),  $span('B'),   $span('C'),  $span('D'),  $span('E'))
+
+    ).a()
 
     $('span').css({width:'100px',fontSize:'40px'})
-      if(_z($('div.panels'))){
-          $('div.panels span:last-child').addClass('last')
-          $('div.panels span').hover(
 
-              function(){$(this).stop().animate({width:'110px',fontSize:'50px'},s)
+    if( $('div.panels').length ){
+
+
+        $('div.panels span:last-child').addClass('last')
+
+        $('div.panels span').hover(
+
+            function(){$(this).stop().animate({width:'110px',fontSize:'50px'},s)
                       .siblings('span').stop().animate({width:'90px',fontSize:'30px'})},
-              function(){$(this).stop().animate({width:'90px',fontSize:'30px'})})}
+
+            function(){
+                $(this).stop().animate({width:'90px',fontSize:'30px'})
+            })
+    }
 
 }
 

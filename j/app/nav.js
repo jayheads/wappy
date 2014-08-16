@@ -51,7 +51,7 @@ WappyNav =  function(color){
 
             DropdownLoader(Glyph('glass','phaser2'),
 
-                'pixelpickscrolling','inputpriority', 'callallanimations','callall','displayorder',
+                'pixelpickscrolling','inputpriority', 'callallanimations','callall','displayorder','hsp',
                 'extendingagroup','getfirstdead','recycling','swapchildren','removebetween','removing',
                 'bringgrouptotop','multipleanims','combinedtweens'
 

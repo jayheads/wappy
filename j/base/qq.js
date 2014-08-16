@@ -325,11 +325,18 @@ qq = function(e,b,c,d){
 
 
     //left
-    q.l= q.px= q.positionLeft=q.psl= q.left=function(a){
-        if(U(a)){return q.q.position().left  //_i(q.pl())
-}
-        q.s('l',a);
+    q.left= q.l= q.px= q.positionLeft=q.psl= function(pos){
+
+        if(U(pos)){
+
+            return q.q.position().left}  //_i(q.pl())
+
+        q.s('left', pos);
+
         return q}
+
+
+
 
     //top
     q.pst=q.positionTop=function(){return q.ps().top}

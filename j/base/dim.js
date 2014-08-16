@@ -1,7 +1,20 @@
 //dims
-os=function(a){if(C(a)){a=C(a)};return $(a||'body').offset()}
-osl=function(a){return os(a).left}
-ost=function(a){return os(a).top}
+
+offset=os=function(element){
+
+    if(C(a)){element=C(element)};
+
+    return $(element||'body').offset()
+
+}
+
+
+
+offsetLeft=osl=function(el){return offset(el).left}
+
+offsetTop=ost=function(el){return offset(el).top}
+
+
 //dims
 iW=function(a){if(O(a=a||$$w)){return Q(a).innerWidth()}}
 iH=function(a){if(O(a=a||$$w)){return Q(a).innerHeight()}}
