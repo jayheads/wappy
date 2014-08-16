@@ -166,34 +166,49 @@ xx = function xx(c, w, h, t, l){
     //DRAWING
     x.dI=function(i){
 
-        var g=G(arguments)
+        var args=G(arguments)
 
-        g[1]=g[1]||0
+        args[1]=args[1]||0
 
-        g[2]=g[2]||0
+        args[2]=args[2]||0
 
+        x.met.apply( x, ['d'].concat(args) )
 
-        x.met.apply(
+    }
 
-            x, ['d'].concat(g)
+    x.d=function(i){
 
-        )
+        var args=G(arguments), image=args[0]
 
+        $img(i,
+
+            function(image){
+
+                args[0]=image
+
+                x.dI.apply(this, args)
+            })
     }
 
 
 
 
+    x.Cd=function(a, X, Y){
+
+        $img(
+            a,
+
+            function(image){
+                x.d(image,
+                        X- image.w()/2,
+                        Y-image.h()/2)
+            })
+
+    }
 
 
-    x.d=function(i){
-        var g=G(arguments),i=g[0]
-        im(i,function(i){g[0]=i;_a(x.dI,g)})}
-
-    x.Cd=function(a,X,Y){
-        im(a, function(i){x.d(i, X- i.w()/2, Y-i.h()/2)})}
-
-    x.dC=function f(i,X,Y){
+    //draw it where u say, but as if its reg point was its center
+    x.drawRegCenter= x.dC=function f(i,X,Y){
         im(i,function(i){
             x.d(i, (x.w()/2)-(i.w()/2), (x.h()/2)-(i.h()/2))})
         return x}
@@ -209,19 +224,54 @@ xx = function xx(c, w, h, t, l){
 
         return x}
 
-    x.me=function me(n){//randomly draw my face
-        var g=G(arguments),n=g[0]||200
-        if(x.me.d){
-            clearInterval(x.me.d);x.me.d=false}
-        else{x.me.d=I(function(){
-            x.d($w['mug']||'me',_r(x.w()-200),_r(x.w()-200))},n) }
-        return x}
-    x.me.d=false
 
-    x.mug=function(m){
-        qP('/mug',{u:m},
-            function(m){x.fit(m)})
+
+
+    x.drawMug=x.me=function me(interval){//randomly draw my face
+
+        var g=G(arguments),
+
+            interval=g[0]||200
+
+
+        if(x.me.d){
+
+            clearInterval(x.me.d)
+
+            x.me.d=false
+        }
+
+        else{
+
+            x.me.intId=x.me.d= setInterval(function(){
+
+                x.d(
+
+                        $w['mug']||'me',
+
+                    _.random( x.w()-200 ),
+
+                    _.random( x.w()-200 )
+
+                )
+
+            }, interval)
+        }
+
         return x}
+    x.drawMug.intId=false
+
+
+    x.fitMug= x.mug=function(user){
+
+        $.post('/mug', { u: user },
+
+            function(userMug){  x.fit(userMug)  })
+
+        return x}
+
+
+
 
     x.crop=function rc(x1,y1,x2,y2){
         if(A(x1)){
@@ -235,11 +285,14 @@ xx = function xx(c, w, h, t, l){
 
 
 
+
+
     //get data url
-    x.du=x.u=function(){return tU(x.c)}
+    x.dataUrl =x.du=x.u=function(){ return tU( x.can ) }
 
     x.img=new Image()
-    x.img.src=x.u()
+
+    x.img.src = x.dataUrl()
 
 
     // DIMS
@@ -302,8 +355,10 @@ xx = function xx(c, w, h, t, l){
 
     // FONT/TEXT
     //set font
-    x.fo=function(f){x.x.font=$f(f)
+    x.fo=function(f){
+        x.x.font=$f(f)
         return x}
+
     x.tx=function(t,X,Y){
         var g=G(arguments),
             t=g[0],
@@ -315,13 +370,31 @@ xx = function xx(c, w, h, t, l){
         else x.x.fillText(t,X,Y)
 
         return x}
-    x.ftc=function(t,p2){return x.ft(t,x.w()/2-x.mt(t)/2,p2)}
-    x.Text=function(a,b,c){var g=G(arguments),
-        f=function f(a,b){if(S(a)&&U(b)){f.tt=a}}
+
+    x.ftc=function(t,p2){
+
+        return x.ft(
+            t,
+                x.w()/2-x.mt(t)/2,
+            p2
+        )
+    }
+
+
+    x.Text=function(a,b,c){
+
+        var g=G(arguments),
+
+            f=function f(a,b){if(S(a)&&U(b)){f.tt=a}}
+
         if(g.p){return{f:a,fo:b,tb:c}}
+
         f.x=ca(a,b,c)
+
         if(U(a)){return f.x.font}
+
         if(S(a)){f.x.font=a}
+
         f.f=function(a,b){f.x.pop('fo',$f(a))}
 
         f.t=function(a,b,c){
@@ -329,6 +402,7 @@ xx = function xx(c, w, h, t, l){
                 return f.t(a,b)}
 
             f.x.met('ft',f.tt,a,b)}
+
         return f}
 
     //set stroke style
@@ -348,14 +422,25 @@ xx = function xx(c, w, h, t, l){
     /// LINES ////
     x.moveTo=x.mt=function(t){return x.x.measureText(t).width}
 
-    x.begin=x.bg=function(p1,p2){if(A(p1)){return x.bg(p1[0],p1[1])}
-        x('b')
-        x('m',p1,p2)
-        return x}
 
-    x.lt=function(p1,p2){var g=G(arguments)
+    x.begin  =x.bg=function(p1,p2){if(A(p1)){return x.bg(p1[0],p1[1])}
+
+        x('b')
+
+        x('m',p1,p2)
+        return x
+    }
+
+
+
+
+    x.lineTo=  x.lt=function(p1,p2){
+
+        var g=G(arguments)
+
         if(A(p1)){
-            _e(g,
+
+            _.each(g,
                 function(p){
                     x.lt(p[0],p[1])})}
 
@@ -365,36 +450,107 @@ xx = function xx(c, w, h, t, l){
         x('s')
 
         return x}
+
+
+
     //draw line ( [x,y],[x,y] || x,y,x,y )
-    //draw multiple unconnected lines ([[],[]],[[],[]] || [],[])
-    x.ln=function rc(p){var g=G(arguments),p=g[0]
-        if(AA(p)||(A(p)&&_z(p)==4)){_e(g,function(p){_a(rc,p)})}
-        else if(A(p)){x.bg(g.f);_a(x.lt,g.r)}
-        else if(N(p)){x.bg(g[0],g[1]); x.lt(g[2],g[3])   }
-        return x}
+
+    //draw multiple unconnected lines ( [[],[]],[[],[]] || [],[] )
+    x.line = x.ln=function rc(p){
+
+        var args = G(arguments),
+
+            p = args[0]
+
+        if(
+            AA(p) ||
+
+            ( A(p)&&_z(p)==4) ){
+
+            _.each(args,
+
+                function(p){
+
+                     rc.apply(this, p)
+
+                })
+        }
+
+        else if( A(p) ){
+
+            x.begin( g.f )
+
+            x.lineTo.apply(x, g.r )
+        }
+
+
+        else if(N(p)){
+
+            x.begin( g[0], g[1] )
+
+            x.lineTo( g[2], g[3] )
+        }
+
+        return x }
+
+
+
+
+
+
     //draw horizontal line
-    x.lnh=function(X,Y,l){var g=G(arguments),X=g[0],Y=g[1],l=g[2],
+
+    x.horizontalLine=x.lnh=function(X,Y,l){var g=G(arguments),X=g[0],Y=g[1],l=g[2],
         X2=g.p?X+l:g.n?X-l:l
         return x.ln(X,Y,X2,Y)}
+
     //draw vertical line
-    x.lnv=function(X,Y,l){
-        var g=G(arguments),X=g[0],Y=g[1],l=g[2],
-            Y2=g.p?Y+l:g.n?Y-l:l
-        return x.ln(X,Y,X,Y2)}
+    x.verticalLine= x.lnv=function(X,Y,len){
+
+        var g=G(arguments),
+
+            X=g[0],
+
+            Y=g[1],
+
+            len=g[2],
+
+            Y2 = g.p ? Y + len
+                : g.n ? Y - len
+                : len
+
+        return x.ln( X, Y , X, Y2 )
+    }
 
     //line stroke settings
-    x.lW=x.lw=function(n){
-        n=n||10;x({w:n});return x}
+    x.lineWidth= x.lW=x.lw=function(n){
 
-    x.ml=function(n){n=n||10;x({m:n});return x}
-    x.lC=x.lc=function(n){n=n||'r';x({p:n});return x}
-    x.lJ=x.lj=function(n){n=n||'r';x({j:n});return x}
+        n=n||10
+
+        x({ w: n })
+
+        return x }
+
+
+    x.miterLimit = x.ml = function(n){
+
+        n = n || 10
+
+        x({ m : n })
+
+        return x }
+
+
+    x.lineCap = x.lC=x.lc=function(n){ n=n||'r';x({p:n});return x}
+
+    x.lineJoin =  x.lJ=x.lj=function(n){
+        n=n||'r';x({j:n});return x}
 
     //x.to=function(a,b,c){if(N(b)){o.m('l',a,b)};if(N(c)){o.m('a2',arguments)}}
 
 
     /// CIRCLES/CURVES ///
-    x.cir=function(X,Y,R,fs,ss){
+    x.circle =x.cir=function(X,Y,R,fs,ss){
         var g=G(arguments),
             X=g[0]||200,
             Y=g[1]||200,
@@ -408,12 +564,24 @@ xx = function xx(c, w, h, t, l){
         return x}
 
     x.curve=function f(a,b,c,d,e,f){
+
         var g=G(arguments)
-        if(N(e)){x('z',a,b,c,d,e,f)}
+
+        if(N(e)){
+            x('z',a,b,c,d,e,f)
+        }
+
         else{x('q',a,b,c,d)}
-        if(g.N){x('s')}}
+
+        if(g.N){x('s')}
+    }
+
+
+
     x.pip=function(c,a,b){
         return x('ip',a,b)}
+
+
     x.a2=function a2(X){var g=G(arguments)
         if(A(X)){return _a(a2(x), X)}
         x('a2',g[0]||50,g[1]||40,g[2]||100,g[3]||100,g[4]||30)

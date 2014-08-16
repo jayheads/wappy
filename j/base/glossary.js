@@ -373,17 +373,44 @@ Q=function Q(a){if(O(a)){if(s$(_S(a)).contains('Window')||a[0]
         :0}}
 
 
-R=function(a,b){var g=G(arguments)
 
+
+R=function(a,b){
+
+    var g=G(arguments)
 
     return( S(a) &&S (b) )? ( g.N? s$(a).ensureRight(b).s
+
         : s$(a).chompRight(b).s    )
 
         : N(b)? _.range(a, b)
 
         : N(a)? (g.P? _.range(a):  _.range(1,(a||10)+1)   )
 
-        :new XMLHttpRequest()}
+        : new XMLHttpRequest()
+
+}
+
+chompRight=function(a,b){return s$(a).chompRight(b).s }
+
+ensureRight=function(a,b){return s$(a).ensureRight(b).s}
+
+Range=function(a,b){
+
+    var args = G(arguments)
+
+    return N(b)? _.range(a, b)
+
+        : args.P? _.range(a)
+
+        :  _.range(1, (a||10) + 1 )
+
+}
+
+
+
+
+
 
 
 
@@ -399,12 +426,6 @@ _r=function r(a,b,c,d){
         :S(a)? a.replace(b||'#', c||'')
         :_.rest(a,b)
 }
-
-
-
-
-
-
 
 
 
@@ -451,7 +472,9 @@ _t=function t(a,b,c){
 
 tA=function(a){return O(a)?_.toArray(a):[a]}
 
-tU=function(a){if(O(a)&&F(a.toDataURL)){return a.toDataURL()}
+tU=function(a){
+
+    if(O(a) && F(a.toDataURL) ){ return a.toDataURL() }
 //tU=function(s){return  S(s)?sJ:tU(s)? tU(s)
 // :s.u? s.u():iI(s)? s.src
 // : s.image?s.image.src:0} //s/c/C/i/b->s sync
@@ -460,20 +483,27 @@ tU=function(a){if(O(a)&&F(a.toDataURL)){return a.toDataURL()}
 
 
 
-uC=function(a){return S(a)? a.toUpperCase()
-    :A(a)?  _m(a,function(a){return uC(a)}):a }
+toUpperCase=uC=function(a){
+    return S(a)? a.toUpperCase()
+    :A(a)? _.map(a,function(a){return uC(a)}):a }
 
-Uc=function(a){
+
+isUpper=Uc=function(a){
     if(S(a)){
-        return s$(a).isUpper()}}
+        return s$(a).isUpper()}
+}
 
 
 
 
 U=function u(a,b){
-    var iU=_.isUndefined;
-    return iU(b)? iU(a)
-        :_a(_.extend,arguments)}
+
+    var iU = _.isUndefined;
+
+    return iU(b)? iU(a)  : _a(_.extend, arguments)
+}
+
+
 
 
 
@@ -483,24 +513,34 @@ U=function u(a,b){
 
 _u=function(a){
 
-    url=function(a){return 'url("' +a+ '")'}
-      return url(a)
+    url = function(a){ return 'url("' +a+ '")' }
+
+    return url(a)
     //return U(a)? qq('ul'): url(a)
 
 }
 
 
-V=function(a){if(S(a)){a=oO(a)};
-    return _.values(a)}
+V=function(a){
+
+    if(S(a)){ a=oO(a) }
+
+    return _.values(a)
+}
 
 
-_v=function(a){return S(a)?
+_v=function(a){
+
+    return S(a)?
     function(){$F(a)()}
-    :F(a)?a:F(a.value)?a.value():a.value}
+    :F(a)?a:F(a.value)?a.value():a.value
+
+}
 
 
 
 _w=function(a,b){
+
     if(O(a)){
 
         var w=function(a,b){if(U(b)){return a.width}
@@ -538,18 +578,27 @@ W=function(a){var g=G(arguments)
     return N(a)?W()/a:oW(Q(a))}
 
 
-fCC=function(a){return $S.fromCharCode(a)}
+fCC=function(a){ return $S.fromCharCode(a) }
 
 
 
-_x=function(a, b){if(S(a)){return(_h(a,'.'))?a:
-    R(a,b||'.png')}}
+_x=function(a, b){
+
+    if(S(a)){return(_h(a,'.'))?a:
+    R(a,b||'.png')}
+}
+
 
 
 
 Z=function(a){
-    if(A(a)){return _a(_.zip,arguments)}
-    return $$w.resize(a||function(){co() })}
+
+    if(A(a)){ return _a(_.zip,arguments) }
+
+    return $$w.resize(a||function(){co() })
+}
+
+
 
 z=function(c){
     if(c){co(c)}
@@ -557,9 +606,11 @@ z=function(c){
 
 
 
-$$$=function(a){$(_v(a))}
+$$$ = function(a){$(_v(a))}
 
-qx=function(a){return xx(qi(a))}
+
+
+qx = function(a){return xx(qi(a))}
 
 
 
@@ -571,12 +622,13 @@ qx=function(a){return xx(qi(a))}
 //test functions
 fA=function(a){return function(){alert(a)}}
 fL=function(a){return function(){$l(a)}}
-a3=function(){alert(3)}
-a4=function(){alert(4)}
-al=function(a){a=a||':)';alert(a);return a}
+//a3=function(){alert(3)}
+//a4=function(){alert(4)}
+//al=function(a){a=a||':)';alert(a);return a}
 
 
 
-C$=createjs;
+C$=createjs
+
 T$=C$.Ticker
 
