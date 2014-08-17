@@ -99,8 +99,8 @@ module.exports=function(io, K){
 
     
     
-   //get socketId from username
-     getSocketId  =function(username){
+    //get socketId from username
+     getSocketId =function(username){
 
 
            var socketId= usersArray[ username ]
@@ -110,6 +110,7 @@ module.exports=function(io, K){
         return socketId}
 
 
+    //get username from socket id?  (for listing in chatrooms)
 
 
 
@@ -123,13 +124,11 @@ module.exports=function(io, K){
         //l('k!')
         //em(k)('l','jason')
 
-        serverSocket.on('p', function(d, u){
+        serverSocket.on('pop', function(toBePopped, room){
 
-            return U(u)?
+            return U(room)? k.broadcast.emit('pop', toBePopped) :
 
-            k.broadcast.emit('p', d) :
-
-            sockets.in(u).emit('p', d)
+            sockets.in(room).emit('pop', toBePopped)
 
         })
 
@@ -137,7 +136,7 @@ module.exports=function(io, K){
 
 
 
-       // serverSocket.on('l',function(d){d=d||'ping';  k.emit('l', 'sent: '+l(d))})
+       serverSocket.on('log',function(d){d=d||'ping';  k.emit('l', 'sent: '+l(d))})
 
 
 
@@ -149,9 +148,9 @@ module.exports=function(io, K){
 
 
 
-        serverSocket.on('e',function(d,a,b,c){ k.emit(d,a,b,c)})
+        serverSocket.on('emit',function(d,a,b,c){ k.emit(d,a,b,c)})
 
-        serverSocket.on('bc',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
+        serverSocket.on('broadcast',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
         //   serverSocket.on('chat',function(data){
         //       k.broadcast.emit('newChat',   {    n: data.n,   m: data.m  })
         //       k.emit('youChat', {  n: data.n,  m: data.m  })    })
@@ -180,15 +179,20 @@ module.exports=function(io, K){
 
             k.join( theRoom )
 
-            var r = roomsArray[   '/' + theRoom   ],
+
+
+            var roomMembers = roomsArray['/' + theRoom],
 
 
 
-                rr =  _.map( r  , function(username){ return usersArray[ username ]  } )
+                roomMembersByUsername =  _.map( roomMembers  , function(socketId){ return usersArray[socketId]  } )
 
 
 
-            k.emit( 'inRoom',  { room: theRoom,  user: rr }      )
+            k.emit( 'inRoom',  {
+                room: theRoom,
+                members: roomMembersByUsername }
+            )
 
 
 
@@ -235,7 +239,11 @@ module.exports=function(io, K){
         serverSocket.on('sendChatMessage', function(data){ $l(data); sockets.in(data.chatRoomName).emit( 'sendChatMessage' , data)    })
 
         //this is the real sendMessage!!!!
-        serverSocket.on('iMsg', function(message){  sockets.in(message.t).emit('iMsg', message)     })
+        serverSocket.on('iMsg', function(message){
+
+            sockets.in(message.t).emit('iMsg', message)
+
+        })
 
         serverSocket.on('sendMessage', function(data){
 
@@ -246,6 +254,7 @@ module.exports=function(io, K){
             $l('send message')
 
         })
+
 
         serverSocket.on('kk',  function(data){  serverSocket.emit('res',  sockets.clients(''))   })
 
@@ -315,14 +324,6 @@ module.exports=function(io, K){
 
             }
    })
-
-
-
-
-
-
-
-
 
 
 

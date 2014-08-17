@@ -171,6 +171,8 @@ socket.on('inRoom', function(u){  $l('inRoom')
 
 
 
+
+
 socket.on('say to someone', function(id, msg){
     socket.broadcast.to(id).emit('my message', msg)
 })

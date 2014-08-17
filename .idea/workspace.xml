@@ -26,11 +26,10 @@
       <file leaf-file-name="socket.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/j/app/socket.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.576923" vertical-offset="2226" max-vertical-offset="3555">
-              <caret line="177" column="0" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
+            <state vertical-scroll-proportion="-11.884615" vertical-offset="2226" max-vertical-offset="3705">
+              <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
               <folding>
                 <element signature="e#3150#3227#0" expanded="false" />
-                <element signature="e#3263#3403#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -39,20 +38,21 @@
       <file leaf-file-name="sockets.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/w/sockets.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334" vertical-offset="465" max-vertical-offset="4320">
-              <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.37354988" vertical-offset="2359" max-vertical-offset="3975">
+              <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
               <folding>
                 <element signature="e#169#1229#0" expanded="false" />
                 <element signature="e#1667#1742#0" expanded="false" />
                 <element signature="e#1947#2050#0" expanded="false" />
-                <element signature="e#4067#4141#0" expanded="false" />
-                <element signature="e#4277#4772#0" expanded="false" />
-                <element signature="e#5115#5216#0" expanded="false" />
-                <element signature="e#5673#5955#0" expanded="false" />
-                <element signature="e#6083#6427#0" expanded="false" />
-                <element signature="e#6474#6997#0" expanded="false" />
-                <element signature="e#7077#7194#0" expanded="false" />
-                <element signature="e#7271#7371#0" expanded="false" />
+                <element signature="e#3516#3950#0" expanded="false" />
+                <element signature="e#4261#4335#0" expanded="false" />
+                <element signature="e#4471#4966#0" expanded="false" />
+                <element signature="e#5326#5427#0" expanded="false" />
+                <element signature="e#5885#6167#0" expanded="false" />
+                <element signature="e#6295#6639#0" expanded="false" />
+                <element signature="e#6686#7209#0" expanded="false" />
+                <element signature="e#7281#7398#0" expanded="false" />
+                <element signature="e#7475#7575#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -847,31 +847,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/j/app/socket.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.576923" vertical-offset="2226" max-vertical-offset="3555">
-          <caret line="177" column="0" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
+        <state vertical-scroll-proportion="-11.884615" vertical-offset="2226" max-vertical-offset="3705">
+          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
           <folding>
             <element signature="e#3150#3227#0" expanded="false" />
-            <element signature="e#3263#3403#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/w/sockets.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="465" max-vertical-offset="4320">
-          <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.37354988" vertical-offset="2359" max-vertical-offset="3975">
+          <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
           <folding>
             <element signature="e#169#1229#0" expanded="false" />
             <element signature="e#1667#1742#0" expanded="false" />
             <element signature="e#1947#2050#0" expanded="false" />
-            <element signature="e#4067#4141#0" expanded="false" />
-            <element signature="e#4277#4772#0" expanded="false" />
-            <element signature="e#5115#5216#0" expanded="false" />
-            <element signature="e#5673#5955#0" expanded="false" />
-            <element signature="e#6083#6427#0" expanded="false" />
-            <element signature="e#6474#6997#0" expanded="false" />
-            <element signature="e#7077#7194#0" expanded="false" />
-            <element signature="e#7271#7371#0" expanded="false" />
+            <element signature="e#3516#3950#0" expanded="false" />
+            <element signature="e#4261#4335#0" expanded="false" />
+            <element signature="e#4471#4966#0" expanded="false" />
+            <element signature="e#5326#5427#0" expanded="false" />
+            <element signature="e#5885#6167#0" expanded="false" />
+            <element signature="e#6295#6639#0" expanded="false" />
+            <element signature="e#6686#7209#0" expanded="false" />
+            <element signature="e#7281#7398#0" expanded="false" />
+            <element signature="e#7475#7575#0" expanded="false" />
           </folding>
         </state>
       </provider>
