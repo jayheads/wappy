@@ -98,7 +98,7 @@ updateGuy =  function(user){
         bitmap.x( user.x ).y( user.y )   }
 
 
-    else {  kk.emit('bc', 'upd',  guyLocation())  }}
+    else {  kk.emit('bc', 'updateGuy',  guyLocation())  }}
 
 
 
