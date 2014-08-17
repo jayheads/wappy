@@ -40,15 +40,27 @@ socket.on('roo',function(d){roo=d})  // ?
 
 
 
-socket.on('newImgAck', function(d){ xx().f(d.u) })
+socket.on('newImgAck', function(data){ xx().fit(data.u) })
 
-socket.on('im', function(d){ xx().f( d ) })
+
+socket.on('im', function(image){ xx().f( image ) })
 
 //dnm = function(d){ return  d.n+': '+ d.m }
 
 
-socket.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
-socket.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
+
+
+
+//chaz=function(){
+    //var b1= $emitButton('msg', 'chat'),  b2 = $button('room', function(){var theChannel = connectChannel('chat',  ffl('chat') ) // wtf is ffl ???
+      //      theChannel.on('al', pop)})
+    //dva()(b1,b2).lt(300)}
+
+//socket.on('newChat', function(d){ CH.b(d.n+': '+ d.m) })
+
+//socket.on('youChat', function(d){ CH.s(d.n+': '+ d.m) })
+
+
 
 
 socket.on('sendChatMessage',function(data){
@@ -58,6 +70,8 @@ socket.on('sendChatMessage',function(data){
 })
 
 
+
+
 //socket.on('frog',function(){pop('frog')})
 
 
@@ -65,16 +79,14 @@ socket.on('sendChatMessage',function(data){
 ////////////////////////////////////////////
 // universe
 
-socket.on('bub',function(data){ //$l('bub: '+ d)
+//RECIEVE speech bubble
+socket.on('speechBubble', function(speech){
 
-    if(
-        getGuy(data.u)
+    if( getGuy(speech.u) ){  SpeechBubble(speech.t, speech.x, speech.y) }
 
-        ){
-
-        SpeechBubble(data.t, data.x, data.y)
-    }
 })
+
+
 
 socket.on('upd', function(guy){ updateGuy(guy) })
 
@@ -225,39 +237,47 @@ sendPopBox=function(){
     })
 }
 
+
+
+
 //kf=function(a,b,c){return function(){socket.emit(a,b,c)}}
 
 
-$emitButton =bte=function(a,b){return $button(
-    a, function(){ socket.emit(b) }
+
+//a button that emits!
+$emitButton   =bte=function(buttonText ,toEmit){
+
+    return $button(buttonText,
+
+        function(){  socket.emit(toEmit || buttonText)  }
+
 )}
 
 
-connectChannel=chan=function(channel,func){
+
+
+
+
+
+//so this will connect you to a LOCAL channel.. maybe reason websocket not working actually
+//you can also pass it a callback function (on 'connected')
+connectChannel=chan=function(channel, func){
+
     var theChannel= io.connect('http://localhost/'+ channel)
-    if(func){theChannel.on('connect',func)}
-    return theChannel}
 
+    if(func){
+        theChannel.on('connect',func)
+    }
 
-
-chaz=function(){
-
-    var b1=$emitButton('msg', 'chat'),
-
-        b2=$button('room', function(){
-
-            var theChannel = connectChannel('chat',
-                ffl('chat') // wtf is ffl ???
-            )
-
-            theChannel.on('al', pop)
-
-        })
-
-
-    dva()(b1,b2).lt(300)
+    return theChannel
 
 }
+
+
+
+
+
+
 
 
 

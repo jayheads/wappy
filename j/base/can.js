@@ -183,33 +183,46 @@ sCan=function(can){
     can.ME=function(f){
         x.q.q.mouseenter(function(e){f( mX(e)-osl(x.q.q), mY(e)-ost(x.q.q))})}
 
-    can.ML=function(f){
-         x.q.q.mouseleave(function(e){f( mX(e)-osl(x.q.q), mY(e)-ost(x.q.q))})}
+    can.ML=function(f){x.q.q.mouseleave(function(e){f( mX(e)-osl(x.q.q), mY(e)-ost(x.q.q))})}
 
-    can.MU=function(f){
-
+    can.MU=function(func){
         x.q.q.mouseup(function(e){
-            f( mX(e)-osl(x.q.q),
-                    mY(e)-ost(x.q.q)
-            )})}
-
+            func(e.clientX-offsetLeft(x.q.q), e.clientY-offsetTop(x.q.q))
+        })
+    }
     can.MM=function(f){
+
         x.q.q.mousemove(function(e){
-            f( mX(e)-osl(x.q.q), mY(e)-ost(x.q.q))})}
 
+            f(
+                    e.clientX-offsetLeft(x.q.q),
+                    e.clientY-offsetTop(x.q.q)
+            )
 
+        }
 
-    can.MD=function(f){
-        can.q.mousedown(function(e){
-            f(mX(e)-osl(can.q), mY(e)-ost(can.q))
-        })}
+        )}
+    can.MD=function(func){
+
+        can.q.mousedown(
+
+            function(event){
+
+            func( event.clientX - offsetLeft( can.q ),  event.clientY - offsetTop( can.q ) )
+
+        }
+
+        )}
+
     return can}
 
 
 
 
-    mX=function(e){return e.clientX},
-    mY=function(e){return e.clientY}
+
+mX=function(e){ return e.clientX },
+
+mY=function(e){ return e.clientY }
 
 
 

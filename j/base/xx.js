@@ -92,11 +92,61 @@ xx = function xx(c, w, h, t, l){
 
         return x.res}
 
-    x.can  =x.c=c
-    x.ctx  =x.x =  X(x.c)
+    x.canvas=  x.can  =x.c=c
+    x.context=  x.ctx  =x.x =  X(x.c)
     x.pop  =x.p =  xP(x.x)
     x.met  =x.m=   xM(x.x)
 
+
+    //works
+    x.roundRect= function(X, y, width, height, radius){
+
+        x.beginPath();
+        x.moveTo(X + radius, y);
+        x.lineTo(X + width - radius, y);
+        x.quadraticCurveTo(X + width, y, X + width, y + radius);
+        x.lineTo(X + width, y + height - radius);
+        x.quadraticCurveTo(X + width, y + height, X + width - radius, y + height);
+        x.lineTo(X + radius, y + height);
+        x.quadraticCurveTo(X, y + height, X, y + height - radius);
+        x.lineTo(X, y + radius);
+        x.quadraticCurveTo(X, y, X + radius, y);
+        x.closePath();
+
+        return x}
+
+    x.roundRect.test=function(){
+
+        x.roundRect(    100,100,200,400,20)
+    }
+
+    //dont work?
+    x.invert= function(src, dst){
+
+        var data = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        var pixels = data.data;
+        var r, g, b, a, h, s, l, hsl = [],
+            newPixel = []
+
+        for (var i = 0, len = pixels.length; i < len; i += 4) {
+            pixels[i + 0] = 255 - pixels[i + 0]
+            pixels[i + 1] = 255 - pixels[i + 1]
+            pixels[i + 2] = 255 - pixels[i + 2]}
+
+        this.context.putImageData(data, 0, 0)
+
+        return x}
+
+    //does something!
+    x.paperBag= function(x, y, width, height, blowX, blowY) {
+        var lx, ly;
+        this.beginPath();
+        this.moveTo(x, y);
+        this.quadraticCurveTo(x + width / 2 | 0, y + height * blowY | 0, x + width, y);
+        this.quadraticCurveTo(x + width - width * blowX | 0, y + height / 2 | 0, x + width, y + height);
+        this.quadraticCurveTo(x + width / 2 | 0, y + height - height * blowY | 0, x, y + height);
+        this.quadraticCurveTo(x + width * blowX | 0, y + height / 2 | 0, x, y);
+    }
 
     //inherit from q
     x.qq =x.q=qq(x.c)
@@ -423,7 +473,7 @@ xx = function xx(c, w, h, t, l){
     x.moveTo=x.mt=function(t){return x.x.measureText(t).width}
 
 
-    x.begin  =x.bg=function(p1,p2){if(A(p1)){return x.bg(p1[0],p1[1])}
+    x.beginPath= x.begin  =x.bg=function(p1,p2){if(A(p1)){return x.bg(p1[0],p1[1])}
 
         x('b')
 
@@ -563,7 +613,8 @@ xx = function xx(c, w, h, t, l){
         x('s')('f')
         return x}
 
-    x.curve=function f(a,b,c,d,e,f){
+
+    x.quadraticCurveTo =x.curve=function f(a,b,c,d,e,f){
 
         var g=G(arguments)
 

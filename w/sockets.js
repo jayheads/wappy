@@ -109,13 +109,23 @@ module.exports=function(io, K){
         serverSocket.on('upop',function(data,n){
             k.broadcast.emit('upop',data,n)})
 
-        serverSocket.on('dpop',
-            function(data,n){
-           k.broadcast.emit('dpop',data,n)})
 
 
-        serverSocket.on('bub',
-            function(d,n){k.broadcast.emit('bub',d,n)})
+      //  serverSocket.on('dpop',   function(data,n){  k.broadcast.emit('dpop',data,n) })
+
+
+
+
+
+
+
+        serverSocket.on('speechBubble',
+
+            function(speech){
+
+                k.broadcast.emit('speechBubble', speech)
+
+            })
 
 
 
@@ -135,13 +145,15 @@ module.exports=function(io, K){
 
 
 
-        serverSocket.on('chat',function(data){
+     //   serverSocket.on('chat',function(data){
+     //       k.broadcast.emit('newChat',   {    n: data.n,   m: data.m  })
+     //       k.emit('youChat', {  n: data.n,  m: data.m  })    })
 
-            k.broadcast.emit('newChat',{n:data.n,m:data.m})
 
-            k.emit('youChat', {n:data.n,m:data.m})
 
-        })
+
+
+
 
 
         ////

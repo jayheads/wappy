@@ -38,8 +38,9 @@ SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
 
     if(g.p){
 
-        kk.emit('bub',
-            {t:t,x:x,y:y,u:_username})}
+        kk.emit('speechBubble',  {t:t,x:x,y:y,u:_username}
+
+        )}
 
     return c}
 
