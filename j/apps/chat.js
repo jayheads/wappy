@@ -11,7 +11,7 @@ CHATROOMS=CHATBOX=function(){
         theTextInput=tx(),
 
 
-        $button('PrivateChatRoomate', function(){  PrivateChatRoom(theTextInput.V())
+        $button('PrivateChatRoomate',  function(){  PrivateChatRoom(theTextInput.V())
         
         }).M(40))
 

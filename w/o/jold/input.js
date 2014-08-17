@@ -1,9 +1,13 @@
+
+
 ip=function(t,v,C,c){
     var g=G(arguments),i=_i().at({t:t||'t',v:v})
     if(g.p){i.k('fc')}
     if(C){i.s('C',C)}
     if(c){i.s('c',c)}
     return i}
+
+
 bt=function(){var g=G(arguments)
 
     g[0]=g[0]||'ok'
@@ -100,11 +104,25 @@ fup=function(l,h){
     return d}
 sm=function(a){return ip('s').k('s').v(ok(a))}
 smb=function(a){return _n().ty('s').k('b bdf').T(ok(a))}
-tx=function(){var g=G(arguments),
-        t=ip(g.n?'p':'t')
-    t.ph(g.f)
-    if(g.N){t.k('fc')}
-    return t}
+
+
+$textInput=tx=function(placeholderText, notFormControl){
+
+    var args = G(arguments),
+
+        theTextInput = ip(args.n? 'password' : 'text' )
+
+    theTextInput.ph(args.f)
+
+    if(args.N){ theTextInput.k('form-control') }
+
+    return theTextInput}
+
+
+
+
+
+
 pw=function(p){return tx(p||'password','-')}
 cb=function(n,v,i){
     if(g.n){return dk('cb')(lb()(n).pp(cb()))}

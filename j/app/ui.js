@@ -1,18 +1,36 @@
 
 
+makeUserModal=function(username, userMug){
+
+    var theH1=$h1(),
+
+        theDiv=$div(),
+
+        fullProfileButton=$button('full', function(){
+            $l('/wap/profiles/'+ username);
+            window.location='/wap/profiles/'+ username})
+
+
+    //thos pops a window
+    userModalWindow = UserModal(username, userMug, fullProfileButton)
+
+    showStatus(username, theDiv)
+
+    makeProfile(username, theDiv) }
+
 
 
 
 //these chat boxes are being stored globally!
 //chat_chatRoomName
 //but i should have a chatRoomArray
-ChatBox    =chatBox=cbox=function(title, color, id){
+ChatRoom    =chatBox=cbox=function(title, color, id){
 
-    title = title||'chatbox'
+    title = title || 'chatbox'
 
-    color=color||'b'
+    color = color || 'b'
 
-    id=id||'cbo'
+    id = id || 'cbo'
 
 
 
@@ -20,9 +38,19 @@ ChatBox    =chatBox=cbox=function(title, color, id){
 
         theSendButton = $button('send', function(){
 
-            socket.emit('sendChatMessage', { chatRoomName:title,  username:_username,  message: theTextInput.V()  })
+
+            socket.emit( 'sendChatMessage', {
+
+                chatRoomName: title,
+
+                username: _username,
+
+                message: theTextInput.V()
+
+                })
 
         }),
+
 
 
 
@@ -31,107 +59,100 @@ ChatBox    =chatBox=cbox=function(title, color, id){
 
         thePopButton=$button('pop', function(){ socket.emit('p', theTextInput.V(), title)}),
 
+
         theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
 
-        usersInRoomBox= $div()
+        usersInRoomBox = $div()
 
-
-    theWindow = $win('chatroom: '+title).id(id).s({
-
-        'min-width':600,  'min-height':400, 'background-color': color
-
-    })
-
-
+    theWindow = $win('chatroom: '+title).id(id).s({ 'min-width':600,  'min-height':400, 'background-color': color})
 
     theWindow(
 
         row(
 
             col(8,
+                theMessages, theTextInput, theSendButton, thePopButton, thePicButton ),
 
-                theMessages,
-                theTextInput,
-                theSendButton,
-                thePopButton,
-                thePicButton ),
-
-            col(4, $h5('users:'), usersInRoomBox)))
-
-
-    var uFunc=function(u){ if(A(u)){_.each(u, function(u){
-
-                usersInRoomBox(
-
-                    $h5(u).$(
-
-                        function(){
-
-                            $.post('/mug', {u: u},
-
-                                function(m){
-
-                                    var theH1=$h1(),
-
-                                        theDiv=$div(),
-
-                                        fullProfileButton=$button('full', function(){
-                                                $l('/wap/profiles/'+ u);
-                                                window.location='/wap/profiles/'+ u
-                                            })
-
-
-                                    $win(
-                                        $div()(
-                                            $br(),
-                                            $hr(),
-                                            $h3('User: '+u),
-                                            $br(),
-                                            xc().w(300).h(300).font(m),
-                                            theH1,
-                                            theDiv,
-                                            ms = ta().c('w','z'),
-                                            $mailButton(ms, u),
-                                            $chatButton(u, ms),
-                                            fullProfileButton)
-                                    )
-
-
-
-                                    showStatus(u, theDiv)
-
-                                    makeProfile(u, theDiv) }
-
-                            )}  )
-
-                )})}
+            col(4,
+                $h5('users:'), usersInRoomBox)))
 
 
 
 
+    var updateMembers=function(members){
+ 
+        
+        if(A(members)){ 
 
+            _.each(members,
+                function(username){ // for each of the passed in members..
+             
+        usersInRoomBox($h5( username ).$( function(){
 
+            $.post('/mug', {u: username},
 
-        else { usersInRoomBox($h5('no users'))}
+            function(userMug){  makeUserModal( username, userMug ) }
 
-    }
+            )
 
+        }) )})}
 
+        else { usersInRoomBox( $h5('no users') ) } }
+ 
 
+    
+    //this is the the controlling object for client-side control of the $window
+    return $w[ 'chat_'+title ] = {
 
-
-    return $w['chat_'+title] = {
-
-        u: uFunc,
+        u: updateMembers,
+        updateMembers: updateMembers,
 
         w: theWindow,
+        window: theWindow,
 
-        t: function(){return theWindow.toggle()},
+        t: function(){return theWindow.toggle()},//dep
+        toggle: function(){return theWindow.toggle()},
 
-        b:function(m){  theMessages($h5(m).s({c:'w'}))  },
 
-        s:function(m){  theMessages($h5(m).s({c:'z'}))  }}
+        b:function(m){  theMessages($h5(m).s({c:'w'}))  },//dep
+        s:function(m){  theMessages($h5(m).s({c:'z'}))  },//dep
 
+        write:function(m){  theMessages($h5(m).s({c:'w'}))  },
+        writeBlack:function(m){  theMessages($h5(m).s({c:'z'}))  }
+    }
+
+}
+
+
+getUserModal=function(){
+    
+    
+}
+
+
+UserModal=function(username, userMug, fullProfileButton){
+    
+  return  $win(
+
+        $div()(
+
+            $br(),
+            $hr(),
+            $h3('User: ' + username),
+
+            $br(),
+
+            xc().w(300).h(300).fit(userMug),
+
+            theH1, theDiv,
+
+            messageTextarea = $textarea().c('w','z'),
+            $mailButton(messageTextarea, username),
+            $chatButton(username, messageTextarea),
+
+            fullProfileButton
+        )
+    )
 }
 
 
@@ -644,10 +665,12 @@ $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
 PrivateChatRoom  =priv=function(a){
 
-    ChatBox(a)
+    ChatRoom(a)
 
     socket.emit( 'j', a )//why cant i change this emit name to joinRoom ???
 }
+
+
 
 
 
