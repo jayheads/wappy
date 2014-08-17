@@ -79,8 +79,8 @@ toL=function(q,n){
 
 
 key=function(q){var g=G(arguments),q=g[0]
-    if(g.P){kD('l',toL,q); kD('r', toR,q)}
-    if(g.N){kD('u',toU,q);kD('d',toD,q)}}
+    if(g.P){kD('l', toL,q); kD('r', toR,q)}
+    if(g.N){kD('u', toU,q);kD('d',toD,q)}}
 
 
 

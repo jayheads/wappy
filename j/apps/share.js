@@ -113,14 +113,31 @@ $mailButton = btMail=function(message, user){
 
 
 
-$chatButton  = btChat=function(user,message){
+$chatButton  = btChat=function(username,message){ //_$username,  messageTextarea
 
     return $button('chat',function(){
 
-        sendMessage(user.u, message.V())
+        $l('send message')
+
+        $l('message: '+ message.V())
+        $l('toWho: '+ username)
+
+
+
+        $l('from: '+ _username)
+
+
+        socket.emit(  'sendMessage',
+
+            {  m: message.V(),  t:username,  f:_username  }
+        )
+
+
     })
 
 }
+
+
 
 
 
@@ -148,15 +165,7 @@ $postsButton =btPst=function(){return $button('see posts', function(){})  }
 c3=function(a){return xc().w(300).h(300).f(a) }
 
 
-showStatus =stat=function(user, theDiv){
 
-    withStatus(user,
-
-        function(status){
-            theDiv( $h3('STATUS: '+ status))
-        })
-
-}
 
 
 
@@ -343,7 +352,7 @@ USERS=function(){format()
                     br(),
                     xc().w(300).h(300).f(m),
                     d=_d(),
-                    ms=ta().c('w','z') ,
+                    ms=$textarea().c('w','z') ,
                     bt('send message',function(){
 
                         qP('/sMsg',{m:ms.V(),  to:u.u})
@@ -414,18 +423,44 @@ makeProfile = prof=function(user, theDiv){
 
 
 
+showStatus =stat=function(user, theDiv){
+
+    withStatus(user,
+
+        function(status){
+            theDiv( $h3('STATUS: '+ status))
+        })
+
+}
+
+PROFILES=function(){
+
+    format()
+
+    _$username =u=pam
+
+    s1(   $h1(pam),   statusSpan = $span(),   image = $img()   )
+
+    withStatus( _$username, function(status){  _$username( $h3('STATUS: '+ status))  })
+
+    $.post(  '/mug',  {u: _$username||'a'}, function(data){  // user 'a' ????? is this just MOCKED?
+
+        image.src = data
+
+        qq(image).wh(200)
+
+    })
 
 
-PROFILES=function(){format()
-    u=pam
 
 
-    s1(h1(pam),st=sp(),i=im());
-    stat(u,st)
+    s1(
 
-    qP('/mug', {u:'a'}, function(d){i.src=d; qq(i).wh(200)})
+        messageTextarea=$textarea().c('w','z'),
 
-    s1( ms=ta().c('w','z'),  btChat(u,ms) )
+       $chatButton( _$username,  messageTextarea)
+
+    )
 
 
 
@@ -439,19 +474,25 @@ PROFILES=function(){format()
                 ) })})
 
     })
-    tab3=tab('blog',function(){
-        TABS.E()
-        qG('/pstu',{u:u},  function(i){  blp(i, TABS, '+') },'+')})
-    tab4=tab('buds',function(){TABS.E() })
-    tab5=tab('groups',function(){TABS.E() })
+
+    tab3= tab('blog',function(){
+
+            TABS.E()
+
+            qG('/pstu',{u:u},  function(i){  blp(i, TABS, '+') },'+')
+    })
+
+    tab4=tab('buds',function(){ TABS.E() })
+
+    tab5=tab('groups',function(){ TABS.E() })
 
     tab6=tab('mail',function(){
 
-        //TABS.E( ms=ta().c('w','z'),btMail(ms,u)  )
+        //TABS.E( messageTextarea=$textarea().c('w','z'),btMail(messageTextarea,u)  )
 
          from=u
 
-        var ms=ta()
+        var messageTextarea=$textarea()
 
         u=$w['from']||'b'
         TABS.E()(h1('convo with '+u))
@@ -468,7 +509,7 @@ PROFILES=function(){format()
                         h5(m.m))),
                     hr())},'+')
 
-        TABS(ms, bt('new message',function(){qP('/sMsg',{m:ms.V(),to:from})}),br(2))
+        TABS(messageTextarea, bt('new message',function(){qP('/sMsg',{m:messageTextarea.V(),to:from})}),br(2))
 
 
 
@@ -476,8 +517,9 @@ PROFILES=function(){format()
 
     })
 
-    s2(t=tabs(tab1,tab2,tab3,tab4,tab5,tab6))
-    t.load()
+    s2(theTabs=tabs(tab1,tab2,tab3,tab4,tab5,tab6))
+
+    theTabs.load()
 
     //s2( br(), d=_d() )
 
@@ -555,12 +597,12 @@ Status=function(i){
 
             br(),
             lb('about you'),
-            about=ta(),
+            about=$textarea(),
 
 
             br(),
             lb('what you want'),
-            want=ta(),
+            want=$textarea(),
 
 
             br(),

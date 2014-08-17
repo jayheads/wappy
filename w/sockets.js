@@ -58,6 +58,9 @@ module.exports=function(io, K){
     room = function(theRoom){ return roomsArray['/'+theRoom]    }
 
 
+    getSocketUser  =function(username){ return USERS[ username ]  }
+
+
 
 
     sockets.on('connection',function(k){//k=sK(k)
@@ -84,20 +87,14 @@ module.exports=function(io, K){
 
 
 
-        serverSocket.on('l',function(d){
-            d=d||'ping';
-            k.emit('l', 'sent: '+l(d))})
+       // serverSocket.on('l',function(d){d=d||'ping';  k.emit('l', 'sent: '+l(d))})
 
 
 
 
+        // kk.in(r).emit('l','frog')
+        //  serverSocket.on('dpop',   function(data,n){  k.broadcast.emit('dpop',data,n) })
 
-        serverSocket.on('iMsg', function(message){
-
-            sockets.in(message.t).emit('iMsg', message)
-
-
-        })
 
 
 
@@ -105,29 +102,61 @@ module.exports=function(io, K){
         serverSocket.on('e',function(d,a,b,c){ k.emit(d,a,b,c)})
 
         serverSocket.on('bc',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
-
-        serverSocket.on('upop',function(data,n){
-            k.broadcast.emit('upop',data,n)})
-
-
-
-      //  serverSocket.on('dpop',   function(data,n){  k.broadcast.emit('dpop',data,n) })
+        //   serverSocket.on('chat',function(data){
+        //       k.broadcast.emit('newChat',   {    n: data.n,   m: data.m  })
+        //       k.emit('youChat', {  n: data.n,  m: data.m  })    })
 
 
+
+        //k.on('chat', function(d){  k.emit('chat', 'cool')  })
 
 
 
 
+        //serverSocket.on('red',function(r,e,d){r=r||'frog';e=e||'frog';d=d||'frog';sockets.in(r).emit(e,d)})
 
-        serverSocket.on('speechBubble',
 
-            function(speech){
+        //serverSocket.on('x',function(m){k.emit.to('sex').emit('l',m||'sexy');sockets.in('sex').emit('l',m||'sexy')})
+
+
+        ////
+
+        theRoomFunction=function(theRoom){
+
+            $l('joinRoom')
+            $l('joining room: " '+ theRoom + ' "' )
+
+            k.join( theRoom )
+
+           var r = roomsArray[ '/' + theRoom ],
+
+               rr =  _.map( r  , function(username){ return USERS[ username ]  } )
+
+
+            k.emit(   'inRoom',     {room: theRoom,     user: rr  }
+
+            )
+
+
+        }
+
+
+
+
+
+
+
+        serverSocket.on('emit',function(d,a,b,c){ k.emit(d,a,b,c)})
+
+        serverSocket.on('broadcast',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
+
+        serverSocket.on('upop',function(data,n){ k.broadcast.emit('upop',data,n)})
+
+        serverSocket.on('speechBubble',   function(speech){
 
                 k.broadcast.emit('speechBubble', speech)
 
             })
-
-
 
         serverSocket.on('id',function(d){
 
@@ -141,34 +170,6 @@ module.exports=function(io, K){
             $l(USERS[k.id])
         })
 
-
-
-
-
-     //   serverSocket.on('chat',function(data){
-     //       k.broadcast.emit('newChat',   {    n: data.n,   m: data.m  })
-     //       k.emit('youChat', {  n: data.n,  m: data.m  })    })
-
-
-
-
-
-
-
-
-        ////
-        theRoomFunction=function(theRoom){
-
-            $l('joinRoom')
-
-            k.join( theRoom )
-
-            k.emit('inRoom', {   r:theRoom,  u: _.map( roomsArray[ '/' + theRoom ] , getSocketUser )
-
-            })}
-
-
-
         serverSocket.on('j', theRoomFunction)
 
         serverSocket.on('joinRoom', theRoomFunction)
@@ -176,7 +177,8 @@ module.exports=function(io, K){
 
 
 
-        // kk.in(r).emit('l','frog')
+
+
 
 
         serverSocket.on('sendChatMessage', function(data){ $l(data)
@@ -185,26 +187,24 @@ module.exports=function(io, K){
 
         })
 
+        //this is the real sendMessage!!!!
+        serverSocket.on('iMsg', function(message){
+            sockets.in(message.t).emit('iMsg', message)     })
 
+        serverSocket.on('sendMessage', function(data){
 
+            //data message blank!
 
+            $l(data)
 
+            $l('send message')
 
+        })
 
-        serverSocket.on('red',function(r,e,d){r=r||'frog';e=e||'frog';d=d||'frog'
-           sockets.in(r).emit(e,d)})
-
-
-        serverSocket.on('x',function(m){k.emit.to('sex').emit('l',m||'sexy')
-            sockets.in('sex').emit('l',m||'sexy')})
-
-
-        serverSocket.on('kk',
-            function(data){
+        serverSocket.on('kk',  function(data){
                 k.emit('res',
                     sockets.clients(''))
             })
-
 
         serverSocket.on('r', function(data){
 
@@ -213,10 +213,6 @@ module.exports=function(io, K){
                     :roomsArray())
         })
 
-
-
-
-
         serverSocket.on('who',function(u){
 
 
@@ -224,46 +220,7 @@ module.exports=function(io, K){
 
         })
 
-
-        getSocketUser =toU=function(u){return USERS[u]}
-
-
-
-
-        serverSocket.on('rm',
-
-            function(theRoom){ //$l(room(theRoom))
-
-            k.emit( 'inRm',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
-
-
-            k.emit( 'inRoom',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
-
-
-            })
-
-
-        serverSocket.on('inRoom',
-
-            function(theRoom){ //$l(room(theRoom))
-
-                k.emit( 'inRm',  {   u: _.map( roomsArray['/'+theRoom]     , getSocketUser), r: theRoom }  )
-
-
-                k.emit( 'inRoom',  { u: _.map( roomsArray['/'+theRoom] , getSocketUser) , r: theRoom  }  )
-
-            })
-
-
-
-
-
-
-
-
-
-
-//dataUrl?
+        //dataUrl?
         serverSocket.on('du',  function(data){
 
             k.emit('im', data)
@@ -274,51 +231,69 @@ module.exports=function(io, K){
 
         })
 
-
-
-
         //CREATE AN IMAGE
         serverSocket.on('newImg', function(data){
 
             $m.img.create(data, function(err, image){  k.emit('newImgAck', image)   })
 
         })
+        serverSocket.on('rm',  function(theRoom){ //$l(room(theRoom))
+
+            k.emit( 'inRm',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
 
 
-        io.of('/chat').on('connection', function(d){ $l('new chatter') })
+            k.emit( 'inRoom',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
 
 
-        //k.on('chat', function(d){  k.emit('chat', 'cool')  })
+            })
+
+
+
+        serverSocket.on('inRoom',  function(theRoom){ //$l(room(theRoom))
+
+                //k.emit( 'inRm',  {   u: _.map( roomsArray['/'+theRoom]     , getSocketUser), r: theRoom }  )
+
+
+            k.emit( 'inRoom',
+
+                {
+
+                    user: _.map( roomsArray['/'+theRoom] , getSocketUser),
+
+                    room: theRoom
+
+                }  )
+
+            })
+
+
+
+
+
+
 
 
         k.on('in',
 
-            function(data){
+            function(data){ var theRoom,  guy
 
-                var theRoom,  guy
+                if( A( data ) ){
 
-                if(A(d)){
+                    theRoom =  roomsArray[  roomName(data)  ]
 
-                    room= roomsArray[  roomName(data)  ]
+                    if(!theRoom){  $l('not room !') }  // em('res', '-')
 
+                    else {    k.emit('res', theRoom[ guy || k.id ]? true : false) }
 
-                    if(!room){  l('not room !') }// em('res', '-')
-
-                    else {
-                        guy=guy||k.id;
-
-                        k.emit('res', room[guy]?true:false) }
                 }
 
+                else {  theRoom = roomsArray[ '/'+ data ]
 
 
-            else {
+                    if(!theRoom){ $l('not room') }// k.emit('res', '-')
 
-                    theRoom = roomsArray['/'+ data]
 
-                if(!theRoom){ $l('not room') }// k.emit('res', '-')
-
-                else { k.emit('res', theRoom[ k.id ]? true: false ) }
+                    else { k.emit('res', theRoom[ k.id ]? true: false ) }
 
             }
    })
@@ -327,15 +302,17 @@ module.exports=function(io, K){
 
 
 
+       // io.of('/chat').on('connection',   function(d){   $l('new chatter')    })
 
 
-
+/////////
     })
 
 
+}
 
 
-    Rooms=function(){
+Rooms=function(){
 
 
     //var usernames={}, $scope.$broadcast('', );
@@ -350,44 +327,62 @@ module.exports=function(io, K){
             k.join('Lobby');
             k.emit('updatechat', 'SERVER', 'you have connected to Lobby')
             k.broadcast.to('Lobby').emit('updatechat', 'SERVER',
-                un + ' has connected to this room')
+                    un + ' has connected to this room')
             k.emit('updaterooms', rooms, 'Lobby')
         })
+
+
         k.on('create', function(room) {
             rooms.push(room)
             k.emit('updaterooms', rooms, k.room)
         })
-        k.on('sendchat', function(data) {
+
+
+        k.on('sendchat', function(data){
+
             io.sockets["in"](k.room).emit('updatechat',
-                k.username, data)
-        })
-        k.on('switchRoom', function(newroom) {
-            var oldroom
-            oldroom = k.room
+
+                k.username, data)})
+
+
+
+
+        k.on('switchRoom', function(newroom){
+
+            var oldroom  = k.room
+
             k.leave(k.room)
             k.join(newroom)
-            k.emit('updatechat', 'SERVER',
-                'you have connected to ' + newroom);
-            k.broadcast.to(oldroom).emit('updatechat',
-                'SERVER', k.un + ' has left this room');
-            k.room = newroom;
-            k.broadcast.to(newroom).emit('updatechat',
-                'SERVER', k.un + ' joined');
-            k.emit('updaterooms', rooms, newroom);
+
+            k.emit('updatechat',
+                'SERVER',
+                'you have connected to ' + newroom)
+
+            k.broadcast.to(oldroom).emit('updatechat', 'SERVER', k.un + ' has left this room')
+
+            k.room = newroom
+
+            k.broadcast.to(newroom).emit('updatechat',  'SERVER', k.un + ' joined')
+
+            k.emit('updaterooms', rooms, newroom)
+
         })
+
+
         k.on('disconnect', function(){
+
             delete usernames[k.un]
+
             io.sockets.emit('updateusers', usernames)
+
 
             k.broadcast.emit('updatechat',
                 'SERVER', k.username + ' has disconnected')
+
             k.leave(k.room)
+
         })
     })
 
 
-    }
-
 }
-
-

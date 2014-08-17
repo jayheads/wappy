@@ -2,16 +2,18 @@ navtabs=function(){
     return ul().k('n nt')
 }
 
-auto=function(){
-    var g=G(arguments),
-        d=dv().auto()
+$autoDiv= auto=function(){
+    var args=G(arguments),
+        theDiv=$div().auto()
 
-    _e(g, function(g){ d(g) })
+    _.each(args, function(arg){ theDiv(arg) })
 
-    return d}
+    return theDiv}
 
 
-shw=function(a){
+
+
+showTab =shw=function(a){
 
     qi(a).q.tab('show')
 
@@ -21,33 +23,34 @@ shw=function(a){
 
 
 
-ch$ =function(a){  a.ch(0).$()  }
+firstChild =ch$ =function(a){  a.ch(0).$()  }
+
+
+Tab =tab=function(tabText, func){
+    var args=G(arguments), tabText=args[0], func=args[1],
+
+        theLi= $liA(tabText,
+            function(){ showTab(tabText); func()  } )
+
+
+    theLi.load=function(){ showTab(tabText); func()  }
+
+    if(args.m){  theLi.k('active')  }
+
+    return theLi}
 
 
 
-tab=function(a, f){var g=G(arguments), a=g[0], f=g[1],
 
-        l=lk(a,
-            function(){ shw(a); f()  },
-            '+')
+tabs=function(a){
 
-
-    l.load=function(){ shw(a); f()  }
-
-    if(g.m){  l.k('A')  }
-
-    return l}
-
-
-
-
-tabs=function(a){var g=G(arguments),a=g[0],
+    var g=G(arguments),a=g[0],
 
     d,
 
     u
 
-    d=auto(
+    d=$autoDiv(
 
         u=navtabs(),
 
@@ -55,7 +58,7 @@ tabs=function(a){var g=G(arguments),a=g[0],
     )
 
 
-    if(A(a)){ a=_a(tab, a) }
+    if(A(a)){ a= _a(tab, a) }
 
     u(a)
 
@@ -74,7 +77,9 @@ tabs=function(a){var g=G(arguments),a=g[0],
 
     d.c('X')
 
-    return d}
+    return d
+
+}
 
 
 

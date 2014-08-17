@@ -147,25 +147,36 @@ socket.on('pop',function(e){pop(e)})
  
 socket.on('sendMessage', function(message){ receiveMessage(message) })
 
+
+
+
+
 socket.on('sendChatMessage',function(data){
 
     $w['chat_'+ data.chatRoomName].s( data.username+': '+ data.message)
 
 })
 
-socket.on('inRm',function(u){
-    $l('inRm')
-    var rm='chat_'+u.r
-
-    uu=u.u
-    ru=rm
 
 
-    if($w[rm]){$w[rm].u(u.u)}
+socket.on('inRoom', function(u){
 
-    else{$l('no room: '+rm)}
+    $l('inRoom')
+
+    var room = 'chat_' + u.room
+
+   // uu=u.u
+
+  //  ru=rm
+
+
+    if( $w[ room ] ){ $w[ room ].user( u.u )  }
+
+    else { $l('no room: '+ room) }
 
 })
+
+
 
 
 //RECIEVE speech bubble
@@ -185,6 +196,8 @@ socket.on('accept', function(data){
         // here u should really just be able to 'addUser'
 
 })
+
+
 
 socket.on('invite', function(invitation){  //dd=invitation
 
