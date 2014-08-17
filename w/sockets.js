@@ -183,21 +183,13 @@ module.exports=function(io, K){
 
             var roomMembers = roomsArray['/' + theRoom],
 
-
-
                 roomMembersByUsername =  _.map( roomMembers  , function(socketId){ return usersArray[socketId]  } )
 
 
 
-            k.emit( 'inRoom',  {
-                room: theRoom,
-                members: roomMembersByUsername }
-            )
-
-
+            k.emit( 'roomUpdate',  {room: theRoom,  members: roomMembersByUsername} )
 
         }
-
 
 
 

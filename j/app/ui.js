@@ -19,6 +19,25 @@ makeUserModal=function(username, userMug){
     makeProfile(username, theDiv) }
 
 
+updateMembers=function(update){
+    usersInRoomBox.E()
+
+    if(A(update.members)){
+
+        _.each(update.members,
+
+            function(username){ // for each of the passed in members..
+
+                usersInRoomBox($h5( username ).$( function(){
+
+                    $.post('/mug', {u: username},
+
+                        function(userMug){  makeUserModal( username, userMug ) }
+
+                    )  }) )})}
+
+    else {usersInRoomBox( $h5('no users') )}}
+
 
 
 //these chat boxes are being stored globally!
@@ -51,18 +70,14 @@ ChatRoom    =chatBox=cbox=function(title, color, id){
 
         }),
 
-
-
-
-
         thePicButton=$button('pic',function(){  pop('pic select')  }),
 
         thePopButton=$button('pop', function(){ socket.emit('p', theTextInput.V(), title)}),
 
-
         theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
 
-        usersInRoomBox = $div()
+        usersInRoomBox = $div().k('usersBox')
+
 
     theWindow = $win('chatroom: '+title).id(id).s({ 'min-width':600,  'min-height':400, 'background-color': color})
 
@@ -77,27 +92,9 @@ ChatRoom    =chatBox=cbox=function(title, color, id){
                 $h5('users:'), usersInRoomBox)))
 
 
+    //receives an update by socket emit
+    //update.members, update.room
 
-
-    var updateMembers=function(members){
- 
-        
-        if(A(members)){ 
-
-            _.each(members,
-                function(username){ // for each of the passed in members..
-             
-        usersInRoomBox($h5( username ).$( function(){
-
-            $.post('/mug', {u: username},
-
-            function(userMug){  makeUserModal( username, userMug ) }
-
-            )
-
-        }) )})}
-
-        else { usersInRoomBox( $h5('no users') ) } }
  
 
     
@@ -105,7 +102,8 @@ ChatRoom    =chatBox=cbox=function(title, color, id){
     return $w[ 'chat_'+title ] = {
 
         u: updateMembers,
-        updateMembers: updateMembers,
+
+        updateMembers: function(members){ updateMembers(members)  },
 
         w: theWindow,
         window: theWindow,

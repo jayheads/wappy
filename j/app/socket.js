@@ -159,11 +159,14 @@ socket.on('sendChatMessage',function(data){
 
 
 
-socket.on('inRoom', function(u){  $l('inRoom')
+
+
+
+socket.on('roomUpdate', function(data){  $l('inRoom')
 
     var room = 'chat_' + u.room
 
-    if( $w[ room ] ){ $w[ room ].user( u.users )  }
+    if( $w[ room ] ){ $w[ room ].updateMembers( data.members )  }
 
     else { $l('no room: '+ room) }
 
