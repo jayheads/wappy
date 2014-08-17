@@ -1,64 +1,114 @@
 
-USERS=[]
+//this will be an array-hash
+//socketId, username
+usersArray = []
+
+
+
+
+
+
 
 module.exports=function(io, K){
 
-  sockets =  kk = io.sockets
+  
+    sockets =kk=io.sockets
+    
+    miniSockets=function() {
+        sK = function (k) {
+            k.e = k.emit
+            k.o = k.on
+            k.j = k.join
+            k.b = k.broadcast
+            k.b.e = k.b.emit
+            return k
+        }
+        sKK = function (kk) {
+            kk.o = kk.on
+            kk.i = function (a) {
+                var r = kk.in(a)
+                r.e = r.emit
+                return r
+            }
+            kk.s = function (a) {
+                var r = kk.socket(a)
+                r.e = r.emit
+                return r
+            }
+        }
+        em = function (k, b, d, e, f) {
+
+            if (U(b)) {
+                return _.partial(em, k)
+            }
+
+            k.emit(b, d, e, f)
+
+        }
+        bc = function (k, b, d, e, f) {
+            if (U(b)) {
+                return _.partial(bc, k)
+            }
+            k.broadcast.emit(b, d, e, f)
+        }
+
+        jn = function (k, b, d) {
+            if (U(b)) {
+                return _.partial(bc, k)
+            }
+            k.join(b, d)
+        }
+
+        sKK(kk) //man=kk.manager
+
+        
+    }; miniSockets()
+    
+    
+   // clients = sockets.clients
+
+    
+    //an array of rooms
+    //they all start with a slash
+    roomsArray =rooms=sockets.manager.rooms
+ 
 
 
+    //pass in a room NAME (string)
+    //get back an array of all the users in that room
+    //but you get them back by their IDs
+    //you will need to convert their id's to their usernames
+    //by mapping them with a function...
 
-    sK=function(k){
-        k.e=k.emit
-        k.o=k.on
-        k.j=k.join
-        k.b=k.broadcast
-        k.b.e=k.b.emit
-        return k}
+    getRoomMembers = function(room){
 
-    sKK=function(kk){
-        kk.o=kk.on
-        kk.i=function(a){
-            var r=kk.in(a)
-            r.e=r.emit
-            return r}
-        kk.s=function(a){
-            var r=kk.socket(a)
-            r.e=r.emit
-            return r}}
+       room= roomsArray['/'+ theRoom]
 
+       $l(room)
 
-    em=function(k,b,d,e,f){
+    return room}
 
-        if(U(b)){return _.partial(em, k)}
+    getRoomMembersByUsername=function(room){
 
-        k.emit(b,d,e,f)
+    var members = getRoomMembers(room)
 
-    }
+   // members = _.map(members, )
 
 
+}
+
+    
+    
+   //get socketId from username
+     getSocketId  =function(username){
 
 
-    bc=function(k, b, d, e, f){
-        if(U(b)){return _.partial(bc, k)}
-        k.broadcast.emit(b,d,e,f)}
+           var socketId= usersArray[ username ]
 
-    jn=function(k, b, d){
-        if(U(b)){return _.partial(bc,k)}
-        k.join(b,d)}
+        $l(socketId)
+    
+        return socketId}
 
-    sKK(kk) //man=kk.manager
-
-  //  sockets = kk.clients
-
-    clients = sockets.clients
-
-    roomsArray =rooms = kk.manager.rooms
-
-
-    room = function(theRoom){ return roomsArray['/'+theRoom]    }
-
-
-    getSocketUser  =function(username){ return USERS[ username ]  }
 
 
 
@@ -69,7 +119,7 @@ module.exports=function(io, K){
         //kb=function(a,b){sK(k);k.b.e(a,b)}
 
 
-        var serverSocket=k
+        var serverSocket = k
         //l('k!')
         //em(k)('l','jason')
 
@@ -121,21 +171,25 @@ module.exports=function(io, K){
 
         ////
 
-        theRoomFunction=function(theRoom){
+
+
+        joinRoomFunction=function(theRoom){
 
             $l('joinRoom')
             $l('joining room: " '+ theRoom + ' "' )
 
             k.join( theRoom )
 
-           var r = roomsArray[ '/' + theRoom ],
-
-               rr =  _.map( r  , function(username){ return USERS[ username ]  } )
+            var r = roomsArray[   '/' + theRoom   ],
 
 
-            k.emit(   'inRoom',     {room: theRoom,     user: rr  }
 
-            )
+                rr =  _.map( r  , function(username){ return usersArray[ username ]  } )
+
+
+
+            k.emit( 'inRoom',  { room: theRoom,  user: rr }      )
+
 
 
         }
@@ -143,53 +197,45 @@ module.exports=function(io, K){
 
 
 
-
-
-
-        serverSocket.on('emit',function(d,a,b,c){ k.emit(d,a,b,c)})
-
+        serverSocket.on('execute',  function(func,a,b,c){  global[func](a,b,c)  })
         serverSocket.on('broadcast',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
-
         serverSocket.on('upop',function(data,n){ k.broadcast.emit('upop',data,n)})
-
         serverSocket.on('speechBubble',   function(speech){
 
                 k.broadcast.emit('speechBubble', speech)
 
             })
 
-        serverSocket.on('id',function(d){
-
-            serverSocket.emit('l',k.id)
-
-            $l(k.id)
-
-            USERS[k.id]=d
-
-            $l(USERS)
-            $l(USERS[k.id])
-        })
-
-        serverSocket.on('j', theRoomFunction)
-
-        serverSocket.on('joinRoom', theRoomFunction)
 
 
 
 
+        //all users should emit this initially to list its username with its id
+        serverSocket.on('id',  function(username){
 
+                //tell client to log its socketId
+                serverSocket.emit( 'log', serverSocket.id)
 
+                //server should also log socketId
+                $l( serverSocket.id )
 
+                //associete socketId with username
+                usersArray[ serverSocket.id ] = username
 
-        serverSocket.on('sendChatMessage', function(data){ $l(data)
+                //log usersArray on server
+                $l( usersArray )
 
-            sockets.in(data.chatRoomName).emit( 'sendChatMessage' , data)
+                //log this user's username..
+                $l( usersArray[ serverSocket.id ] )
 
         })
+
+
+
+        serverSocket.on('sendChatMessage', function(data){ $l(data); sockets.in(data.chatRoomName).emit( 'sendChatMessage' , data)    })
 
         //this is the real sendMessage!!!!
-        serverSocket.on('iMsg', function(message){
-            sockets.in(message.t).emit('iMsg', message)     })
+        serverSocket.on('iMsg', function(message){  sockets.in(message.t).emit('iMsg', message)     })
 
         serverSocket.on('sendMessage', function(data){
 
@@ -201,64 +247,45 @@ module.exports=function(io, K){
 
         })
 
-        serverSocket.on('kk',  function(data){
-                k.emit('res',
-                    sockets.clients(''))
-            })
-
-        serverSocket.on('r', function(data){
-
-            k.emit('res',
-                data?room[data]
-                    :roomsArray())
-        })
-
-        serverSocket.on('who',function(u){
+        serverSocket.on('kk',  function(data){  serverSocket.emit('res',  sockets.clients(''))   })
 
 
-             $l( getSocketUser(u))
+        serverSocket.on('j', joinRoomFunction)
 
-        })
-
-        //dataUrl?
-        serverSocket.on('du',  function(data){
-
-            k.emit('im', data)
-
-            k.broadcast.emit('im', data)
-
-            $m.img.create({})
-
-        })
-
-        //CREATE AN IMAGE
-        serverSocket.on('newImg', function(data){
-
-            $m.img.create(data, function(err, image){  k.emit('newImgAck', image)   })
-
-        })
-        serverSocket.on('rm',  function(theRoom){ //$l(room(theRoom))
-
-            k.emit( 'inRm',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
-
-
-            k.emit( 'inRoom',  {  r: theRoom, u: _.map( room(theRoom), getSocketUser )  })
-
-
-            })
+        serverSocket.on('joinRoom', joinRoomFunction)
 
 
 
-        serverSocket.on('inRoom',  function(theRoom){ //$l(room(theRoom))
+        serverSocket.on('r', function(data){  serverSocket.emit('res',  data?room[data]  : roomsArray())   })
 
-                //k.emit( 'inRm',  {   u: _.map( roomsArray['/'+theRoom]     , getSocketUser), r: theRoom }  )
+        //serverSocket.on('who', function(username){  $l( getSocketId(username))  })
+
+        serverSocket.on('room',  function(theRoom){ //$l(room(theRoom))
+
+            //k.emit( 'inRm',  {  r: theRoom, u: _.map( getRoomMembers(theRoom), getSocketId )  })
 
 
             k.emit( 'inRoom',
 
                 {
 
-                    user: _.map( roomsArray['/'+theRoom] , getSocketUser),
+                    room: theRoom,  users: _.map( getRoomMembers(theRoom), getSocketId )  })
+
+
+            })
+
+        //this gets you a list of users in a room
+        //get the room
+        serverSocket.on('inRoom',  function(theRoom){ //$l(room(theRoom))
+
+                //k.emit( 'inRm',  {   u: _.map( roomsArray['/'+theRoom]     , getSocketId), r: theRoom }  )
+
+
+            serverSocket.emit( 'inRoom',
+
+                {
+
+                    users: _.map(   roomsArray['/' + theRoom] , getSocketId),
 
                     room: theRoom
 
@@ -266,16 +293,7 @@ module.exports=function(io, K){
 
             })
 
-
-
-
-
-
-
-
-        k.on('in',
-
-            function(data){ var theRoom,  guy
+        serverSocket.on('in', function(data){ var theRoom,  guy
 
                 if( A( data ) ){
 
@@ -302,7 +320,34 @@ module.exports=function(io, K){
 
 
 
-       // io.of('/chat').on('connection',   function(d){   $l('new chatter')    })
+
+
+
+
+
+
+
+
+
+        //dataUrl?
+        serverSocket.on('du',  function(data){
+
+            k.emit('im', data)
+
+            k.broadcast.emit('im', data)
+
+            $m.img.create({})
+
+        })
+
+        //CREATE AN IMAGE
+        serverSocket.on('newImg', function(data){
+
+            $m.img.create(data, function(err, image){  k.emit('newImgAck', image)   })
+
+        })
+
+        // io.of('/chat').on('connection',   function(d){   $l('new chatter')    })
 
 
 /////////

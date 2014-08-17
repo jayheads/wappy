@@ -159,21 +159,20 @@ socket.on('sendChatMessage',function(data){
 
 
 
-socket.on('inRoom', function(u){
-
-    $l('inRoom')
+socket.on('inRoom', function(u){  $l('inRoom')
 
     var room = 'chat_' + u.room
 
-   // uu=u.u
-
-  //  ru=rm
-
-
-    if( $w[ room ] ){ $w[ room ].user( u.u )  }
+    if( $w[ room ] ){ $w[ room ].user( u.users )  }
 
     else { $l('no room: '+ room) }
 
+})
+
+
+
+socket.on('say to someone', function(id, msg){
+    socket.broadcast.to(id).emit('my message', msg)
 })
 
 
