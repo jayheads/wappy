@@ -113,13 +113,14 @@ $mailButton = btMail=function(message, user){
 
 
 
-$chatButton  = btChat=function(username,message){ //_$username,  messageTextarea
+$chatButton  =function(username,message){ //= btChat  //_$username,  messageTextarea
 
-    return $button('chat',function(){
+    return $button('chat', function(){
 
         $l('send message')
 
         $l('message: '+ message.V())
+
         $l('toWho: '+ username)
 
 
@@ -127,9 +128,7 @@ $chatButton  = btChat=function(username,message){ //_$username,  messageTextarea
         $l('from: '+ _username)
 
 
-        socket.emit(  'sendMessage',
-
-            {  m: message.V(),  t:username,  f:_username  }
+        socket.emit(  'sendPrivateMessage',   {  m: message.V(),  t:username,  f:_username  }
         )
 
 

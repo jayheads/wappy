@@ -53,7 +53,6 @@ BOOK=function(){
 
 
 
-
     chVw=function(b,c){s2.E()
          s1.E();
         s1( h1('BOOK').o(ldr('book')) )
@@ -146,10 +145,46 @@ pgVw=function(b,c,p){s1.E();s2.E()
 
 
 jde=function(a){return new C$.DOMElement(a)}
+
 O$=function(d,s){
-    var o=Do(jde(d.q[0]))
+
+
+    var o=Do(
+
+        jde(d.q[0])
+
+    )
+
     if(s){o.ap(s)}
-  return o}
+
+    return o}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

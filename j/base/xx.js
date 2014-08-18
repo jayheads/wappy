@@ -509,6 +509,7 @@ xx = function xx(c, w, h, t, l){
     x.line = x.ln=function rc(p){
 
         var args = G(arguments),
+            g=args,
 
             p = args[0]
 

@@ -98,14 +98,26 @@ socket.on('dir',function(d){$l('SERVER: %j',d)})
 socket.on('pop',function(e){pop(e)})
 
 
+//***
 
-socket.on('sendMessage',
+//this is triggered within a chatroom when someone clicks on a user and 'chats' them up
+//will need to update other parts to also activate this (instant messages from other parts of the site)
+socket.on('sendPrivateMessage',
     function(message){
+
+        // uh... this is a client side function, idiot...
         receiveMessage(message)
+
     })
 
 
 
+
+
+
+
+
+//chatrooms
 socket.on('sendChatMessage',
     function(data){
         chatRoomsObject[data.chatRoomName].write( data.username+': '+ data.message)})

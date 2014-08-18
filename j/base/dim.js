@@ -2,7 +2,7 @@
 
 offset=os=function(element){
 
-    if(C(a)){element=C(element)};
+    if(C(element)){element=C(element)};
 
     return $(element||'body').offset()
 

@@ -65,28 +65,30 @@ ChatRoom=function(title, color, id){
 
 
     var updateUsersDiv=function(u){
-
         usersInRoomBox.E()
+        if(A(u)){ _.each(u,
 
-        if(A(u)){ _.each(u, function(u){
+
+            function(username){
 
                 usersInRoomBox(
 
-                    $h5(u).$(
+                    $h5(username).$(
 
                         function(){
 
-                            $.post('/mug', {u: u},
+                            alert('clicked '+username)
+                            $.post('/mug', {u: username},
 
-                                function(m){
+                                function(userMug){
 
                                     var theH1=$h1(),
 
                                         theDiv=$div(),
 
                                         fullProfileButton=$button('full', function(){
-                                                $l('/wap/profiles/'+ u);
-                                                window.location='/wap/profiles/'+ u
+                                                $l('/wap/profiles/'+ username);
+                                                window.location='/wap/profiles/'+ username
                                             })
 
 
@@ -94,31 +96,32 @@ ChatRoom=function(title, color, id){
                                         $div()(
                                             $br(),
                                             $hr(),
-                                            $h3('User: '+u),
+                                            $h3('User: '+ username),
                                             $br(),
-                                            xc().w(300).h(300).font(m),
+                                            xc().w(300).h(300).fit( userMug ),
                                             theH1,
                                             theDiv,
-                                            ms = ta().c('w','z'),
-                                            $mailButton(ms, u),
-                                            $chatButton(u, ms),
+
+                                            ms = $textarea().c('w','z'),
+
+                                            $mailButton(ms, username),
+
+                                            $chatButton(username, ms),
+
                                             fullProfileButton)
                                     )
 
 
 
-                                    showStatus(u, theDiv)
 
-                                    makeProfile(u, theDiv) }
+                                    showStatus(username, theDiv)
+
+                                    makeProfile(username, theDiv) }
 
                             )}  )
 
                 )})}
-
-
-        else { usersInRoomBox($h5('no users'))}
-
-    }
+        else { usersInRoomBox($h5('no users'))}}
 
 
 
@@ -143,12 +146,17 @@ ChatRoom=function(title, color, id){
         writeBlack:function(m){  theMessages($h5(m).s({c:'z'}))  }}
 
 
-    $w['chat_' +  title]= chatController
 
+    //old way to store rooms...
+    //$w['chat_' +  title]= chatController
+
+
+    //add room to client rooms list
     chatRoomsObject[title]=chatController
 
 
-    setInterval( function(){ socket.emit('room', title)}, 100)
+    //repeatedly emit 'room', which launches room user updates!
+    setInterval( function(){ socket.emit('room', title)}, 1000)
 
     return chatController
 }
@@ -592,9 +600,7 @@ receiveMessage = msgI=function(messageObject){
 
         instantMessage = ($w[imFrom]  =  $w[imFrom]  ||  InstantMessage(from))
 
-    instantMessage(   $h1( message )   )
-
-}
+    instantMessage( $h1( message )   )}
 
 
 
