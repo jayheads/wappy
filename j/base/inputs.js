@@ -163,7 +163,7 @@ TextInput =$input=ip=function(typ, val, Color, color){
 
 
 
-tx=function(widthOrPlaceHolderValue, id){
+$textInput=tx=function(widthOrPlaceHolderValue, id){
 
     var g=G(arguments),
 

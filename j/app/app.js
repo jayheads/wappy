@@ -26,12 +26,13 @@ $(function(){
         })
 })
 
- 
+
 
 
 lc=function(a){
-    if(D(a)){
-        $w.location=a}; return $w.location}
+    if(D(a)){  $w.location=a  }; return $w.location
+}
+
 
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
 

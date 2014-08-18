@@ -1,12 +1,10 @@
 
+chatRoomsObject={}
 
 
 
 
-//these chat boxes are being stored globally!
-//chat_chatRoomName
-//but i should have a chatRoomArray
-ChatBox    =chatBox=cbox=function(title, color, id){
+ChatRoom=function(title, color, id){
 
     title = title||'chatbox'
 
@@ -14,13 +12,17 @@ ChatBox    =chatBox=cbox=function(title, color, id){
 
     id=id||'cbo'
 
+    var theTextInput = $textInput(),
 
-
-    var theTextInput = tx(),
 
         theSendButton = $button('send', function(){
 
-            socket.emit('sendChatMessage', { chatRoomName:title,  username:_username,  message: theTextInput.V()  })
+            socket.emit('sendChatMessage', {
+
+                chatRoomName: title,
+                username: _username,
+                message: theTextInput.V()
+            })
 
         }),
 
@@ -29,9 +31,12 @@ ChatBox    =chatBox=cbox=function(title, color, id){
 
         thePicButton=$button('pic',function(){  pop('pic select')  }),
 
+
         thePopButton=$button('pop', function(){ socket.emit('p', theTextInput.V(), title)}),
 
-        theMessages = di( 'cbi' ).s({overflow:'auto', C:'x'}),
+
+        theMessages = $div().id( 'cbi' ).s({overflow:'auto', C:'x'}),
+
 
         usersInRoomBox= $div()
 
@@ -59,7 +64,11 @@ ChatBox    =chatBox=cbox=function(title, color, id){
             col(4, $h5('users:'), usersInRoomBox)))
 
 
-    var uFunc=function(u){ if(A(u)){_.each(u, function(u){
+    var updateUsersDiv=function(u){
+
+        usersInRoomBox.E()
+
+        if(A(u)){ _.each(u, function(u){
 
                 usersInRoomBox(
 
@@ -107,32 +116,48 @@ ChatBox    =chatBox=cbox=function(title, color, id){
                 )})}
 
 
-
-
-
-
-
         else { usersInRoomBox($h5('no users'))}
 
     }
 
 
 
+   var chatController=  {
 
+        u: updateUsersDiv,
+        updateUsersDiv: updateUsersDiv,
 
-    return $w['chat_'+title] = {
-
-        u: uFunc,
 
         w: theWindow,
+        window: theWindow,
+
 
         t: function(){return theWindow.toggle()},
+        toggle: function(){return theWindow.toggle()},
 
         b:function(m){  theMessages($h5(m).s({c:'w'}))  },
+        write:function(m){  theMessages($h5(m).s({c:'w'}))  },
 
-        s:function(m){  theMessages($h5(m).s({c:'z'}))  }}
 
+        s:function(m){  theMessages($h5(m).s({c:'z'}))  },
+        writeBlack:function(m){  theMessages($h5(m).s({c:'z'}))  }}
+
+
+    $w['chat_' +  title]= chatController
+
+    chatRoomsObject[title]=chatController
+
+
+    setInterval( function(){ socket.emit('room', title)}, 100)
+
+    return chatController
 }
+
+
+
+
+
+
 
 
 BasicLayout =format=function(){
@@ -642,9 +667,9 @@ $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
 }
 
-PrivateChatRoom  =priv=function(a){
+PrivateChatRoom  = function(a){
 
-    ChatBox(a)
+    ChatRoom(a)
 
     socket.emit( 'j', a )//why cant i change this emit name to joinRoom ???
 }
