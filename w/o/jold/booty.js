@@ -141,9 +141,19 @@ MCT=function(){var g=G(arguments), d=_d().k('mc')
 MDIALOG=function(){var g=G(arguments),d=_d().k('md')
     _e(g,function(v){d(v)})
     return d}
-MFADE=function(){var g=G(arguments), d=_d().k('m f')
-    _e(g,function(v){d(v)})
-    return d}
+
+
+ModalForm=MFADE=function(){
+
+    var args=G(arguments), theDiv= $div().k('modal form')
+    _.each(args,function(arg){theDiv(arg)})
+    return theDiv
+}
+
+
+
+
+
 MODAL=function(a,b,c){
 
     var ft=MFOOT(bt({t:'close'}).at({t:'submit',dd:'modal'}))

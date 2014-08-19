@@ -89,8 +89,6 @@ withStatus = wUSt=function(user,func){//with first status?
 }
 
 
-
-
 $mailButton = btMail=function(message, user){
 
    return $button('mail',
@@ -108,10 +106,6 @@ $mailButton = btMail=function(message, user){
            )})
 
 }
-
-
-
-
 
 $chatButton  =function(username, message){ //= btChat  //_$username,  messageTextarea
 
@@ -145,13 +139,6 @@ $chatButton  =function(username, message){ //= btChat  //_$username,  messageTex
 
 }
 
-
-
-
-
-
-
-
 $buddyRequestButton =btRq=function(user){
 
     return $button('buddy-request',
@@ -162,24 +149,10 @@ $buddyRequestButton =btRq=function(user){
 
         })}
 
-
-
-
-
-
 $postsButton =btPst=function(){return $button('see posts', function(){})  }
 
 
 c3=function(a){return xc().w(300).h(300).f(a) }
-
-
-
-
-
-
-
-
-
 
 
 

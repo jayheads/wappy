@@ -29,9 +29,6 @@ ChatRoom=function(title, color, id){
 
         }),
 
-
-
-
         thePicButton=$button('pic',function(){  pop('pic select')  }),
 
 
@@ -126,9 +123,7 @@ ChatRoom=function(title, color, id){
                 )})}
         else { usersInRoomBox($h5('no users'))}}
 
-
-
-   var chatController=  {
+   var chatController={
 
         u: updateUsersDiv,
         updateUsersDiv: updateUsersDiv,
@@ -155,7 +150,7 @@ ChatRoom=function(title, color, id){
 
 
     //add room to client rooms list
-    chatRoomsObject[title]=chatController
+    chatRoomsObject[title] = chatController
 
 
     //repeatedly emit 'room', which launches room user updates!
@@ -639,51 +634,71 @@ $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
 }
 
-PrivateChatRoom  = function(a){
 
-    ChatRoom(a)
 
-    socket.emit( 'j', a )//why cant i change this emit name to joinRoom ???
+
+PrivateChatRoom  = function(roomName){
+
+
+    //bug.. if they CLOSE the window...this needs to TRIGGER something
+    //in this case (removal from the chatRoomsObject)..
+    //but more generally, i need to allow a sophisticated options obj to $win
+
+    if(chatRoomsObject[ roomName ]){ $l('already in this room') }
+
+    else {
+
+        ChatRoom(roomName)
+
+        socket.emit('j', roomName)//why cant i change this emit name to joinRoom ???
+    }
+
+
+
+
 }
+
+
+
+
 
 
 
 
 _pop=function(){
 
-    var modalContent = MCT() // <div class="modal-content"></div>
-
-    _.each(arguments,  function(a){
-
-             modalContent( S(a)? $div()(a): a )  })
+    var modalContent = ModalContent() // <div class="modal-content"></div>
 
 
-    return MFADE( MDIALOG( modalContent ))
+    _.each(arguments,
+
+        function(arg){
+
+            modalContent( S(arg)? $div()(arg) : arg )  })
+
+
+    return ModalForm(
+        ModalDialog(
+            modalContent
+        ))
 
 }
 
 
 
-pop=function(message, o){
+pop=function(message, ops){
 
-    if( S(o) ){   return pop(o, { t: a } )    }
-
-
-    var ops=o
+    if( S(ops) ){ return pop(ops, { t: message } )    }
 
     ops = O(ops)? ops : {}
 
-    var g=G(arguments),
-
-        modalBody,
+    var modalBody,
 
         message = message || 'pop pop',
 
-        modalBody = ModalBody(   $h2(message)  )
+        modalBody = ModalBody(  $h2(message)),
 
-    theModal =   _pop(   modalBody  ),
-
-         m = theModal
+        theModal =   _pop(   modalBody  )
 
 
 
