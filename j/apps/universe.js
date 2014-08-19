@@ -2,7 +2,7 @@ fetchMugByMugId=mugb=function(user, func){ qP('/dud', {d: user.m}, func) }
 
 fetchMugByUsername = pMug=function(user, func){
 
-    qP('/mug', {u:user}, function(mug){
+    $.post('/mug', {u:user}, function(mug){
 
     if(mug){ func(mug) }
 
@@ -10,35 +10,34 @@ fetchMugByUsername = pMug=function(user, func){
 
 }
 
-UNI = function(func){
-
-    if($w['uni']){ func() }
-
-    else { UNIVERSE(); func() }}
 
 
 
-SpeechBubble = bub=function(t,x,y){var g=G(arguments), c=Ct()//Ct$()
+SpeechBubble =  function(text,x,y){
+
+    var g=G(arguments),
+
+        c=Ct()//Ct$()
 
     if(!$w['uni']){return}
 
-    t=g[0]||'hi!'
+    text =g[0]||'hi!'
     x=g[1]||you.x()
     y=g[2]||you.y()
 
     uni.a(c)
 
-    c.a(cir(x-150,y-150,100,'w'))
-    c.a(cir(x-50,y-50,30,'w'))
-    c.a(cir(x-20,y-20,10,'w'))
-    c.a(TX(t).x(x-200).y(y-200))  //c=Do(c)
+    c.a(EaselCircle(x-150,y-150,100,'w'))
+    c.a(EaselCircle(x-50,y-50,30,'w'))
+    c.a(EaselCircle(x-20,y-20,10,'w'))
+    c.a(EaselText(text).x(x-200).y(y-200))  //c=Do(c)
 
-    T(function(){c.X()},10000)
-    tw(c,[{a:0,sxy:.1,x:x-250,y:y-250},20000])
+    setTimeout(function(){c.X()},10000)
+    EaselTween(c,[{a:0,sxy:.1,x:x-250,y:y-250},20000])
 
     if(g.p){
 
-        kk.emit('speechBubble',  {t:t,x:x,y:y,u:_username}
+        socket.emit('speechBubble',  {t:text,x:x,y:y,u:_username}
 
         )}
 
@@ -61,7 +60,7 @@ addGuy=function(username, bitmap){
 
     bitmap.rgc().xy(600).sxy(.4)
 
-    bitmap.o('$$', function(bm){   bm.XX(); kk.emit('X', _username) })
+    bitmap.o('$$', function(bm){   bm.XX(); socket.emit('X', _username) })
 
     uni.a(bitmap)}
 
@@ -98,7 +97,7 @@ updateGuy =  function(user){
         bitmap.x( user.x ).y( user.y )   }
 
 
-    else {  kk.emit('bc', 'updateGuy',  guyLocation())  }}
+    else {  socket.emit('bc', 'updateGuy',  guyLocation())  }}
 
 
 
@@ -106,7 +105,7 @@ updateGuy =  function(user){
 
 invite=function(toWho){
 
-    kk.emit('bc',
+    socket.emit('bc',
 
         'invite',
 
@@ -116,7 +115,7 @@ invite=function(toWho){
 
 acceptUniverseInvitation = accept=function(toWho){
 
-    kk.emit('bc',  'accept',  {f:_username, t:toWho})  }
+    socket.emit('bc',  'accept',  {f:_username, t:toWho})  }
 
 
 UNIVERSE=function(){z()
@@ -133,7 +132,7 @@ UNIVERSE=function(){z()
 
                     if(!$w['uni']){  UNIVERSE() }
 
-                     
+
 
                             Bm( userMug,
 
@@ -163,7 +162,7 @@ UNIVERSE=function(){z()
 
         b.rgc().xy(600).sxy(.4);
 
-        b.o('$$', function(bm){   bm.XX(); kk.emit('X', _username)})
+        b.o('$$', function(bm){   bm.XX(); socket.emit('X', _username)})
 
 
         you=b.fn(SL)
@@ -172,7 +171,7 @@ UNIVERSE=function(){z()
 
         guysArray.push({u:_username, b:you})
 
-        I(updateGuy,100)
+        setInterval(updateGuy,100)
 
         getUsers(  function(users){
 
@@ -192,7 +191,7 @@ UNIVERSE=function(){z()
 
                 $br(3),
 
-                tx('...', 'tx'),
+                $textInput('...', 'tx'),
 
                 $button('send', function(){
 
@@ -202,9 +201,7 @@ UNIVERSE=function(){z()
 
                     '+')
 
-                }))
-
-        })}
+                }))  })}
 
 
 

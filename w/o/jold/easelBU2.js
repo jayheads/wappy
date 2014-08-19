@@ -747,7 +747,7 @@ Do = function(o){o=Ed(x);  var x=o.obj, ob={},
         return o}
     return o}
 
-Ct = function(o){
+EaselContainer = Ct = function(o){
     o=Do(o);
 
     var x=o.obj, ac = "addChild",  aca ="addChildAt",  nc="getNumChildren",

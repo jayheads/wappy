@@ -106,7 +106,7 @@ Gx=function(st){
 
 
 
-cir=function p(x,y,r,fc,sc){var gx=Gx()
+EaselCircle = cir=function p(x,y,r,fc,sc){var gx=Gx()
 
     if(O(x)){
         return p(
@@ -206,7 +206,7 @@ ballBox=function(bl,bx,buff){ buff=buff||100
 
     return b}
 
-TX=function(a,r,f,x,y){var g=G(arguments),
+EaselText = TX=function(a,r,f,x,y){var g=G(arguments),
 
     t=Do(new C$.Text(
         g[0],

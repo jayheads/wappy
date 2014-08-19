@@ -32,7 +32,7 @@ ww=function(o){var w={}
 
 
 
-tw=function(a,b){if(U(b)){return twg(a)}
+EaselTween=tw=function(a,b){if(U(b)){return twg(a)}
     //first arg passed to twg, and then rest of args are 'to' pams
 
 
