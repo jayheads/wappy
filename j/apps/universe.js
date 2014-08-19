@@ -44,9 +44,7 @@ SpeechBubble =  function(text,x,y){
     return c}
 
 
-guyLocation=function(){
-
-    if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
+guyLocation=function(){if($w['you']){ return { u:_username,  x: you.x(), y: you.y()} }
 
 }
 

@@ -77,7 +77,7 @@ module.exports=function(io, K){
 
     getRoomMembers=function(theRoom){
        theRoom=roomsArray['/'+ theRoom]
-    return $l(theRoom)
+    return  theRoom
     }
 
 
@@ -88,7 +88,7 @@ module.exports=function(io, K){
 
         theRoom =  _.map(theRoom, function(memberId){ return usersArray[memberId]  })
 
-        return $l(theRoom)
+        return  theRoom
 
 
     }
@@ -232,9 +232,11 @@ module.exports=function(io, K){
 
         //this is what the actual CHATROOMS execute
 
-        serverSocket.on('sendChatMessage', function(data){  $l(data)
+        serverSocket.on('sendChatMessage', function(data){
 
-            sockets.in( data.chatRoomName ).emit( 'sendChatMessage' , data )
+            $l(data)
+
+            sockets.in( data.chatRoomName ).emit( 'receiveChatMessage' , data )
 
         })
 
@@ -293,19 +295,19 @@ module.exports=function(io, K){
         serverSocket.on('room',  function( theRoom ){ //$l(room(theRoom))
 
 
-            $l(usersArray)
+            //$l(usersArray)
 
-            $l('on room')
+           // $l('on room')
             //k.emit( 'inRm',  {  r: theRoom, u: _.map( getRoomMembers(theRoom), getSocketId )  })
 
 
-            $l('room: '+ theRoom)
+           // $l('room: '+ theRoom)
 
             var users = getRoomMembersByUsername( theRoom )
 
-            $l('--')
-            $l(users)
-            $l('--')
+           // $l('--')
+            //$l(users)
+            //$l('--')
 
             k.emit( 'roomUpdate',
 

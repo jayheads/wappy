@@ -20,8 +20,11 @@ ChatRoom=function(title, color, id){
             socket.emit('sendChatMessage', {
 
                 chatRoomName: title,
+
                 username: _username,
+
                 message: theTextInput.V()
+
             })
 
         }),
