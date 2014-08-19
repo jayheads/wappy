@@ -1,8 +1,13 @@
 roomsObject = { }
 
+instantMessagesObject={ }
+
+
+//connect to the socket //..need to change this on the deployment server!!!
 socket = kk=io.connect("http://localhost")
 
-var e=function(a,b){return kk.emit(a,b)},o=function(a,b){return kk.on(a,b)}, b=function(a,b){return kk.broadcast.emit(a,b)  }
+
+//var e=function(a,b){return kk.emit(a,b)},o=function(a,b){return kk.on(a,b)}, b=function(a,b){return kk.broadcast.emit(a,b)  }
 //socket.on(  'a',function(a){alert(a)})
 //socket.on('l',function(d){  $l(d)  })
 //socket.on('d',function(d){$l('SERVER: %j',d)})
@@ -38,9 +43,9 @@ var e=function(a,b){return kk.emit(a,b)},o=function(a,b){return kk.on(a,b)}, b=f
 
 
 
-socketEmit =function(a,b){ // em=
+//socketEmit = function(a,b){ socket.emit( 'e' ,  a,  b)  } // em=
 
-    socket.emit('e',  a,  b)  }
+
 
 
 
@@ -54,6 +59,7 @@ upop=function(image,  size){
     return xx().w(size).h(size).fit(image )
 
 }
+
 dud=function(d,n){   $.post('/dud', {d:d},   function(u){   upop(u,n)  })}
 //sk-send du of your (first) can-el
 du=function(){var u=c0().toDataURL();socket.emit('du',u);return u}
@@ -76,6 +82,9 @@ $emitButton   =bte=function(buttonText ,toEmit){
         function(){  socket.emit(toEmit || buttonText)  }
 
     )}
+
+
+//NAMESPACE
 //so this will connect you to a LOCAL channel.. maybe reason websocket not working actually
 //you can also pass it a callback function (on 'connected')
 connectChannel=chan=function(channel, func){
@@ -102,12 +111,49 @@ socket.on('pop',function(e){pop(e)})
 
 //this is triggered within a chatroom when someone clicks on a user and 'chats' them up
 //will need to update other parts to also activate this (instant messages from other parts of the site)
-socket.on('receivePrivateMessage',
-    function(message){
 
-        //alert('private message')
-        // uh... this is a client side function, idiot...
-        receivePrivateMessage(message)
+
+//it's an instant message from a user, but doesnt contain message?
+
+InstantMessage = function(messageObject){  //=imBox
+
+    var theTextInput = $textInput()
+
+    var instantMessage = $win()(
+
+                $h3( 'instant message from ' + messageObject.from ),
+
+                $h4( 'message: ' + messageObject.message ),
+
+                theTextInput,
+
+                $button( 'reply' , function(){
+
+                    socket.emit( 'sendPrivateMessage' , {
+
+                        message: theTextInput.V() ,
+
+                        toWho: messageObject.from ,
+
+                        from: _username }) }) )
+
+
+    instantMessagesObject[messageObject.from]=instantMessage
+
+    return instantMessage
+
+}
+
+
+
+
+socket.on('receivePrivateMessage',
+
+    function(messageObject){
+
+        var iMsg = instantMessagesObject[messageObject.from]
+
+        if(iMsg){ iMsg($h4(messageObject.message)) } else {InstantMessage(messageObject)}
 
     })
 
