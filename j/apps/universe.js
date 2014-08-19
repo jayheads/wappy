@@ -103,13 +103,25 @@ updateGuy =  function(user){
 
 
 
+
+invite=function(toWho){
+
+    kk.emit('bc',
+
+        'invite',
+
+        {f: _username, t: toWho})
+
+}
+
+acceptUniverseInvitation = accept=function(toWho){
+
+    kk.emit('bc',  'accept',  {f:_username, t:toWho})  }
+
+
 UNIVERSE=function(){z()
 
-    guysArray=guys=[]
-
-    acceptUniverseInvitation = accept=function(toWho){
-
-        kk.emit('bc',  'accept',  {f:_username, t:toWho})  }
+    guysArray  =guys=[]
 
 
 
@@ -119,31 +131,29 @@ UNIVERSE=function(){z()
 
                 function(userMug){
 
-                    UNI(  function(){
+                    if(!$w['uni']){  UNIVERSE() }
+
+                     
 
                             Bm( userMug,
 
                                 function( bitmap ){  addGuy(username, bitmap)  }
-                            )}
+                            )
 
-                    )
+
 
                 }
 
 
             )} }
 
+
+
+
+
     //the invitation is BROADCASTED !!!
 
-    invite=function(toWho){
 
-        kk.emit('bc',
-
-            'invite',
-
-            {f: _username, t: toWho})
-
-    }
 
 
 
