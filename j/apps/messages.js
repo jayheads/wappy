@@ -44,7 +44,9 @@ Tab =tab=function(tabText, func){
 
 tabs=function(a){
 
-    var g=G(arguments),a=g[0],
+    var g=G(arguments),
+
+        a=g[0],
 
     d,
 
@@ -54,7 +56,7 @@ tabs=function(a){
 
         u=navtabs(),
 
-        TABS=_s()
+        TABS= $san()
     )
 
 
@@ -62,7 +64,7 @@ tabs=function(a){
 
     u(a)
 
-    _e(g.r,
+    _.each(g.r,
 
         function(a){
 
@@ -93,7 +95,8 @@ MESSAGES=function(){format()
 
         TABS.E(
 
-            h1('Messages'), br()
+            $h1('Messages'),
+            $br()
         )
 
 
@@ -107,16 +110,17 @@ MESSAGES=function(){format()
 
                         col(2, c1(m.fr)),
                         col(10,
-                            bt(m.fr,
+
+                            $button(m.fr,
 
                                 function(){
                                     from = m.fr;
                                     tab3.load()
                                 }),
 
-                            h4(dtt(m.dt)).k('pr'),
-                            h5(m.m))
-                    ),hr()
+                            $h4(dtt(m.dt)).k('pull-right'),
+                            $h5(m.m))
+                    ),$hr()
                 )
 
 
@@ -133,24 +137,27 @@ MESSAGES=function(){format()
 
     tab2=['sent', function(){
 
-        TABS.E()(h1('Messages'),br())
+        TABS.E()(
+            $h1('Messages'),
+            $br())
 
         qG('/MsgS',function(m){mm=m;
 
-            var ms=ta(),
+            var ms=$textarea(),
                 c=cx().bc('-').Z(1)
 
-            qP(
+            $.post(
                 '/mug',{u:m.to},
 
-                function(m){c.f(m)}
+                function(mug){c.f(mug)}
             )
 
 
             TABS(row(
                 col(2,c),
                 col(10,
-                    bt('to: '+m.to,
+
+                    $button('to: '+m.to,
 
                         function(){
 
@@ -159,14 +166,14 @@ MESSAGES=function(){format()
 
                     ),
 
-                    h4(dt(m.dt).dt()).k('pr'),
-                    h5(m.m))),hr())
+                    $h4(dt(m.dt).dt()).k('pull-right'),
+                    $h5(m.m))),$hr())
         },
             '+')
     }]
 
 
-    tab3=tab('convo',
+    tab3 = tab('convo',
 
         function(){
 
@@ -176,48 +183,89 @@ MESSAGES=function(){format()
 
         TABS.E()(
 
-            h1('convo with '+u)
+            $h1('convo with '+u)
 
         )
 
-        TABS(h1('Messages'), br())
+        TABS(
 
-        qG('/gMsgW',{u:u},
-            function(m){var c=cx().bc('-').Z(1)
-                    qP('/mug',{u:m.fr},function(m){c.f(m)})
+            $h1('Messages'), $br()
+        )
+
+        qG('/gMsgW', {u:u},
+
+            function(m){
+                var c=cx().bc('-').Z(1)
+
+                $.post('/mug',
+                        {u:m.fr},
+                        function(m){c.f(m)})
 
                 TABS(row(col(2,c),
                         col(10,
-                            h6('from: '+m.fr),
-                            h4(dt(m.dt).dt() ).k('pr'),
-                            h5(m.m))),
-                        hr())},
+                            $h6('from: '+m.fr),
+                            $h4(dt(m.dt).dt() ).k('pull-right'),
+                            $h5(m.m))),
+                        $hr())},
             '+')
 
-        TABS(ms, bt('new message',
-            function(){qP('/sMsg',
-                {m:ms.V(),to:from})}),
-            br(2))
+        TABS(ms,
+
+            $button('new message',
+
+                function(){
+
+                $.post('/sMsg',   {m:ms.V(), to:from})
+
+            }),
+
+            $br(2)
+        )
 
     })
 
-    tab4=['requests',function(){
+    tab4 = [ 'requests', function(){
 
 
-        TABS.E(h1('Buddy requests'),br() )
+        TABS.E(
+            $h1('Buddy requests'),
+            $br()
+        )
 
+
+
+        //buddy requests
         qG('/gRq',function(msgs){
-            _e(msgs,function(msg){
-               TABS(_d()(
-            h6('from '+msg.fr+' on '+msg.dt),
-            h5(msg.m),
-            bt('accept',function(){qP('/yRq',{u:msg.fr})}),bt('deny'),hr()))})})
 
-    }]
+            _.each(msgs,  function(msg){
 
-    s2(t=tabs(tab1,tab2,tab3,tab4))
 
-    t.load()}
+                TABS(
+
+                    $div()(
+
+                        $h6( 'from ' + msg.fr + ' on ' + msg.dt ),
+
+                        $h5( msg.m ) ,
+
+                        $button('accept',  function(){  $.post( '/yRq',  { u: msg.fr }  )}),
+
+                        $button('deny'),
+
+                       $hr() ) )
+
+
+
+
+            })})
+
+    } ]
+
+    s2( t = tabs( tab1, tab2, tab3, tab4 ) )
+
+    t.load()
+
+}
 
 
 

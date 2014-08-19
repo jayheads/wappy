@@ -261,6 +261,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             sis.find(function(z,s){
                 p.j(s)})
         })})
+
+
     $a.g('/lib',function(q,p){p.r('lib')})
     $a.g('/border',function(q,p){p.r('border')}) //an animation
     $a.g('/anon',function(q,p){p.r('anon')}) //an animation

@@ -217,16 +217,32 @@ module.exports=function(){
 
 
 
+    //send someone an email !!!!!
     $a.post('/sMsg',$w.u,function(req,res){
 
         cre('msg',{
-            m: req.b.m,
-            to: req.b.to,
-            fr: req.u
+
+                m: req.body.m,
+
+                to: req.body.to,
+
+                fr: req.u
         },
             res
 
         )})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

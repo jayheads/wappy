@@ -418,7 +418,7 @@ PROFILES=function(){
 
     format()
 
-    _$username =u=pam
+    _$username = u = pam
 
     s1(   $h1(pam),   statusSpan = $span(),   image = $img()   )
 
@@ -468,36 +468,87 @@ PROFILES=function(){
 
     tab5=tab('groups',function(){ TABS.E() })
 
-    tab6=tab('mail',function(){
+
+
+    tab6=tab('email', function(){
 
         //TABS.E( messageTextarea=$textarea().c('w','z'),btMail(messageTextarea,u)  )
 
-         from=u
 
-        var messageTextarea=$textarea()
+        from = _$username
 
-        u=$w['from']||'b'
-        TABS.E()(h1('convo with '+u))
-        TABS(h1('Messages'),br())
+        var messageTextarea = $textarea()
 
-        qG('/gMsgW',{u:u},
-            function(m){var c=cx().bc('-').Z(1)
-                qP('/mug',{u:m.fr},function(m){c.f(m)})
+        _$username = $w['from'] || 'b'
 
-                TABS(row(col(2,c),
-                    col(10,
-                        h6('from: '+m.fr),
-                        h4(dt(m.dt).dt() ).k('pr'),
-                        h5(m.m))),
-                    hr())},'+')
+        TABS.E()($h1('convo with '+u))
 
-        TABS(messageTextarea, bt('new message',function(){qP('/sMsg',{m:messageTextarea.V(),to:from})}),br(2))
+        TABS(
+
+            $h1('Messages'),
+            $br()
+
+        )
+
+
+        qG( '/gMsgW', { u: _$username },
+
+
+            function( message ){
+
+                var c = cx().bc('-').Z(1)
+
+                $.post('/mug', {u:m.fr}, function(mug){ c.fit(mug) })
+
+                TABS(
+
+                    row(col(2,c),
+
+                        col(10,
+
+                            $h6('from: ' + message.fr),
+
+                            $h4(
+
+                                dt( message.dt ).dt()
+
+                            ).k('pull-right'),
+
+                            $h5(m.m))),
+                    $hr()
+
+                )},
+
+            '+')
+
+
+        TABS(
+
+            messageTextarea,
+
+            $button('new message', function(){
+
+                $.post( '/sMsg' ,
+
+                    {m: messageTextarea.V(), to: from})
+
+            }),
+
+
+            $br(2)
+        )
+
+
+
+
 
 
 
 
 
     })
+
+
 
     s2(theTabs=tabs(tab1,tab2,tab3,tab4,tab5,tab6))
 

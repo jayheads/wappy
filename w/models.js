@@ -166,6 +166,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
      //message
      msg:{fr:SQ, to:SQ, dt:DATE,  m:S,  c:S},
 
+
      //buddy request
      req:{fr:SQ,  to:SQ, dt:DATE},
 
