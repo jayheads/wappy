@@ -243,9 +243,23 @@ module.exports=function(io, K){
 
 
 
+//this is triggered within a chatroom when someone clicks on a user and 'chats' them up
+//will need to update other parts to also activate this (instant messages from other parts of the site)
 
         //this is the real sendMessage!!!!
-        serverSocket.on('iMsg', function(message){  sockets.in(message.t).emit('iMsg', message)     })
+        serverSocket.on('sendPrivateMessage',
+            function(message){
+
+                $l('sending private message..')
+                sockets.in(message.toWho).emit('receivePrivateMessage', message)
+
+            })
+
+
+
+
+
+
 
         serverSocket.on('sendMessage', function(data){
 

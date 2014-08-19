@@ -102,11 +102,12 @@ socket.on('pop',function(e){pop(e)})
 
 //this is triggered within a chatroom when someone clicks on a user and 'chats' them up
 //will need to update other parts to also activate this (instant messages from other parts of the site)
-socket.on('sendPrivateMessage',
+socket.on('receivePrivateMessage',
     function(message){
 
+        //alert('private message')
         // uh... this is a client side function, idiot...
-        receiveMessage(message)
+        receivePrivateMessage(message)
 
     })
 

@@ -333,16 +333,28 @@ TANGLE=function(){
 
 
 BORDERS=function(){
-   change=function(){qq(qim('me').a().bc('g').bs('-'))
+
+   change=function(){
+
+           qim('me').a().bc('g').bs('-')
+
            .j({bt:40},1000).j({bb:40},1000).j({bl:40},1000)
            .j({br:40},1000).j({gt:40},1000).j({gb:40},1000)
            .j({gl:40},1000).j({gr:40},1000).j({mt:40},1000)
            .j({mb:40},1000).j({ml:40},1000).j({mr:40},1000)
            .j({mt:0},1000).j({mb:0},1000).j({ml:0},1000).j({mr:0},1000)
            .j({gt:0},1000).j({gb:0},1000).j({gl:0},1000).j({gr:0},1000)
-           .j({bt:0},1000).j({bb:0},1000).j({bl:0},1000).j({br:0},1000)}
-    m$$(function(){z();_t(10,change)})
-    _t(10,change)}
+           .j({bt:0},1000).j({bb:0},1000).j({bl:0},1000).j({br:0},1000)
+   }
+
+
+    m$$(
+        function(){
+        z();_.times(10,change)}
+    )
+
+    _.times(10, change)
+}
 
 
 

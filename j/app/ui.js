@@ -562,45 +562,82 @@ sendMessage =iMsg=function( toWho, message ){
 
 //it's an instant message from a user, but doesnt contain message?
 
-InstantMessage = imBox=function( f ){
+InstantMessage =function( messageObject ){  //=imBox
 
 
-    var theWin = win( 'instant message from ' + f ) ,
+    var theWin = $win(
 
-        theTextInput = tx(),
+            $div()(
 
-        reply=theTextInput.V()
+                h3( 'instant message from ' + messageObject.from ),
 
-    theButton = $button(
+                h4('message: ' + messageObject.message)
+            )
 
-        'reply' , function(){
+        ).id('win'),
 
-           sendMessage( f,  reply)
+        theTextInput = $textInput()//,   reply = theTextInput.V()
 
-            theWin( $h2( reply  ) )
+    theButton = $button('reply' , function(){
+
+        $l('replyig..')
+            //sendPrivateMessage( from, reply)
+
+            //theWin( $h2( reply  ) )
+
+        mess=$l( theTextInput.V()  )
+
+        goesTo=$l(messageObject.from)
+
+        responseObject= {  message: mess ,  toWho:goesTo ,  from: _username  }
+
+        socket.emit('sendPrivateMessage',
+
+           responseObject
+)
+
+
+
 
         })
 
-    return theWin( theTextInput, theButton )
+    return theWin(   theTextInput,   theButton )
 
 }
 
 
 
 
-receiveMessage = msgI=function(messageObject){
 
-    var toWho = messageObject.t ,
 
-        from = messageObject.f ,
 
-        message = messageObject.m ,
 
-        imFrom='im_' + from
+receivePrivateMessage =  function(messageObject){
 
-        instantMessage = ($w[imFrom]  =  $w[imFrom]  ||  InstantMessage(from))
+rm=messageObject
 
-    instantMessage( $h1( message )   )}
+    var toWho = messageObject.toWho ,
+
+        from = messageObject.from ,
+
+        message = messageObject.message ,
+
+        imFrom= 'im_' + from
+
+
+
+        instantMessage = (
+
+              $w[imFrom]  ||  InstantMessage( messageObject )
+
+            )
+
+    //instantMessage( $h1( message )   )
+
+}
+
+
+
 
 
 
