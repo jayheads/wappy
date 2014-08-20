@@ -79,14 +79,11 @@ module.exports=function(){
     //it performs a find on a model, and returs results sorted by 'dt:-1'
     //date time from most recently stamped
 
-    rec=function(model,criteria,func){
+    rec=function(model,criteria,func){ // **** making errors ******
 
-        func= F(func)
-             ?func
-             :function(err,data){
+        func= F(func)  ?func  :function(err,data){
 
-            func.j(data)
-        }
+            func.j(data) }
 
 
 
@@ -184,7 +181,7 @@ module.exports=function(){
 
 
 
-    $a.post('/nU', function(req,res,next){
+    $a.post('/user', function(req,res,next){
 
         models.user.create(req.b, function(err,user){ if(err){
 

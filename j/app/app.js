@@ -97,16 +97,20 @@ load=function(a){  $w.location='/wap/'+a }
 
 
 
-renderGuestPage=launchGuest = guest=function(){ z('r')
+renderGuestPage =guest=function(){ z('r')
 
   var container=ContainerDiv(
 
       HeaderDiv(
+
             $ul().k("nav nav-pills pull-right")(
                 $liA('home').k('active'),
                 $liA('About'),
                 $liA('Contact')),
-            $h1('jason yanofski presents..')),
+            $h1('jason yanofski presents..')
+
+      ),
+
 
       JumbotronDiv(
           'a graphics-based real-time social gaming creativity web app','woo hoo!',
@@ -123,7 +127,7 @@ renderGuestPage=launchGuest = guest=function(){ z('r')
     container.pp().drg().c('o').s('a', .9).t(100).l(100)}
 
 
-renderHomePage =launchHome = home=function(){
+renderHomePage   = home=function(){
 
     WappyNav( $r() ) //load navigator
 
@@ -131,11 +135,13 @@ renderHomePage =launchHome = home=function(){
 
         function(username){
 
-
             $('#uname').text(username) //.append(data)
 
-            _username=username
-        }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
+            _username = username
+        })
+
+
+        //update user name on UI dash  //qi('uname').jLoad('/lgd')
 
 
 
@@ -144,101 +150,84 @@ renderHomePage =launchHome = home=function(){
 
 
 
+SignUpForm = function(){ var username, password,  submit, form
+
+    username= $div().k('form-group')($label('uname: ','uname'),  TextInput().k('form-control').at({type:'text'})().id('uname')).f(20).nm('u')
+
+    password= $div().k('form-group')( $label('pword: ','pword'), $password().id('pword') ).f(20).nm('p')
+
+    submit= $input().V('sign up').type('submit').f(16)
+
+    form = $form().c('o').P(4)( username, password, submit ).o('s', function( q, e ){  e.e.preventDefault() //pD(e.e)
+
+        $.post('/user', {
+
+                u: username.ch(1).V(),
+                p: password.ch(1).V()
+            },
+
+            function(username){
+
+            if(username === 'guest'){ qi('mod').m(); pop('try again.. idiot') }
+
+            else { renderHomePage(); pop( 'welcome ' + username + '!' )   }  //WAPNAV() //qi('username').jLoad( '/loggedIn' )//uplog()
+
+        })
+
+    })
+
+    pop( form ).id('mod').drg()
+
+    //return formObject
+}
+
+SignUpForm2 = function(){
 
 
-SignUpForm=signUpForm  = sU=function(){
-
-    var newUser=function(a,b,c){
-
-        if(S(a)){return newUser({u:a,p:b},c)}
-
-        $.post('/nU',a,b)}
 
 
-    var f={
+    var formObject={
 
-        u: $div().k('form-group')(
+        username: $div().k('form-group')($label('uname: ','uname'),  TextInput().k('form-control').at({type:'text'})().id('uname')).f(20).nm('u'),
 
-            $label('uname: ','uname'),
+        password: $div().k('form-group')( $label('pword: ','pword'), $password().id('pword') ).f(20).nm('p'),
 
-            TextInput().k('form-control').at({type:'text'})().id('uname'))
+        submit:   $input().V('sign up').type('submit').f(16)   ,
 
-            .f(20).nm('u'),
-
-
-
-        p: $div().k('form-group')(
-
-            $label('pword: ','pword'),
-
-            fc('p').id('pword')
-
-        ).f(20).nm('p'),
-
-
-        s:   $input().V('sign up').ty('submit').f(16)   ,
-
-
-
-        v:function(){
-
-            return {
-
-                u:qq(f.u.ch(1)).V(),
-
-                p:qq(f.p.ch(1)).V()
-
-            }
-
-        }
+        verify: function(){ return {  u: qq( formObject.username.ch(1) ).V(), p: qq( formObject.password.ch(1) ).V()  }}
     }
 
 
-    f.f= $form().P(4).c('o')(
+    formObject.form = $form().c('o').P(4)(  formObject.username,   formObject.password,  formObject.submit  )
 
-        f.u,
-        f.p,
-        f.s
-
-    )
+    pop(formObject.form).id('mod').drg()
 
 
 
-    pop(f.f).id('mod').drg()
+    formObject.form.o('s', function( q, e ){  e.e.preventDefault() //pD(e.e)
 
-    f.f.o('s', function(q,e){
+        $.post('/user',  formObject.verify(),  function(username){
 
+                if(username === 'guest'){ qi('mod').m(); pop('try again.. idiot') }
 
-        e.e.preventDefault() //pD(e.e)
+                else { renderHomePage(); pop( 'welcome ' + username + '!' )   }  //WAPNAV() //qi('username').jLoad( '/loggedIn' )//uplog()
 
-        $.post('/nU',  f.v(),  function(d){
+            })
 
-
-                if(d === 'guest'){
-
-                    qi('mod').m()
-
-                    pop('try again.. idiot')
-
-                }
+    })
 
 
-                else {
-
-                    home()
-
-                    WAPNAV()
-
-                    pop( 'welcome ' + d + '!' )
-
-                    qi('username').jLoad( '/loggedIn' )//uplog()
+    //return formObject
+}
 
 
-                }
 
-            })})
 
-    return f}
+
+
+
+
+
 
 
 
@@ -259,7 +248,7 @@ verifyLogin=function(username){
     else {
 
 
-        home()
+        renderHomePage()
 
         pop( 'welcome '+ username + '!' )
     }

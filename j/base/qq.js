@@ -382,17 +382,27 @@ qq = function(e,b,c,d){
         return N(n)?q.s('z',n):q.s('z').res}//z-index
 
 
-    q.dp= q.dy =q.display=function(a,l,t){
-        if(U(a)){return ss(q,'y')}
-        q.s('y',a);return q}//display
+    q.dp= q.dy =q.display=function( a, l, t ){
+        if(U(a)){ return ss(q,'y')}
+        q.s('y',a);
+        return q
+    }//display
 
 
     q.pa =q.parent=function(){
         return qq(q.q.parent())}
 
-    q.ch  =q.children=function c(a){
-        if(N(a)){return qq(c()[a||0])}
-        return q.q.children(a)}
+    q.ch  =q.children=function rc(a){
+
+        if( N(a) ){return qq( rc()[ a || 0 ] )}
+        
+        return q.q.children(a)
+
+    }
+
+
+
+
 
     q._c  =q.children2=function(){return _c(q.q)}//children
 
