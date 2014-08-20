@@ -27,7 +27,9 @@ $(function(){
 })
 
 
-
+$password=function(){
+   return $input().type('password').class('form-control')
+}
 
 lc=function(a){
     if(D(a)){  $w.location=a  }; return $w.location
@@ -105,12 +107,14 @@ renderGuestPage=launchGuest = guest=function(){ z('r')
                 $liA('About'),
                 $liA('Contact')),
             $h1('jason yanofski presents..')),
+
       JumbotronDiv(
           'a graphics-based real-time social gaming creativity web app','woo hoo!',
           ButtonLarge('log in', LoginForm),
           $span(' '),
           ButtonLarge('sign up', SignUpForm)
       ).cen(),
+
 
       ROW(    $h1('fun!'),  $div()(   $h4('graphics'),  $pg('cool cool cool'),  $h4('social'),      $pg('cool cool')  ))  //,  FT('&copy;2013')
 
@@ -121,12 +125,24 @@ renderGuestPage=launchGuest = guest=function(){ z('r')
 
 renderHomePage =launchHome = home=function(){
 
-    WappyNav($r()) //load navigator
+    WappyNav( $r() ) //load navigator
 
-    qJ('/loggedIn', function(data){ $('#uname').text(_username).append(data) }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
+    $.getJSON('/loggedIn',
+
+        function(username){
+
+
+            $('#uname').text(username) //.append(data)
+
+            _username=username
+        }) //update user name on UI dash  //qi('uname').jLoad('/lgd')
+
+
 
     if( $w[ app=uC(app) ] ){  $w[app]()  }  // should be passed in?
 }
+
+
 
 
 
@@ -215,7 +231,7 @@ SignUpForm=signUpForm  = sU=function(){
 
                     pop( 'welcome ' + d + '!' )
 
-                    qi('uname').jLoad( '/lgd' )//uplog()
+                    qi('username').jLoad( '/loggedIn' )//uplog()
 
 
                 }
@@ -227,92 +243,96 @@ SignUpForm=signUpForm  = sU=function(){
 
 
 
+verifyLogin=function(username){
 
-LogInForm= LoginForm=logInForm = lI = function(){
+    if(username==='guest'){
 
-    var u, p, s, f,
-
-        verifyLogin=function(username){
-
-            if(username==='guest'){
-
-                //close the login form
-                qi('mod').m()
+        //close the login form
+        qi('mod').m()
 
 
-                //pop a UI alert message
-                pop('try again.. idiot')
+        //pop a UI alert message
+        pop('try again.. idiot')
 
-            }
+    }
 
-            else {
-
-
-                home()
-
-                pop('welcome '+username+'!')
-            }
-        }
+    else {
 
 
+        home()
+
+        pop( 'welcome '+ username + '!' )
+    }
+}
+
+
+ LoginForm= function(){
+
+    var username, password, f
 
     pop(
 
         f = $form().P(4).c('g')(
 
-                u=$div().k('form-group')(
-
-                    $label('uname: ','uname'),
-
-                    $textInput().id('uname')
-
-                ).f(20).nm('u'),
 
 
+            username=$div().k('form-group')(
 
-            p=$div().k('form-group')(  $label('pword: ', 'pword'),
+                $label('username: ','username'),
 
-                fc('p').id('pword')
+                $textInput().id('username')
+
+                ).f(20).nm('username'),
+
+
+
+            password=$div().k('form-group')(
+
+                $label('password: ', 'password'),
+
+                $password().id('password')
 
             ).f(20).nm('p'),
 
 
-            s =   $input().V('log in').type('submit').f(16)
+            $input().V('log in').type('submit').f(16)
 
 
 
-        )
-
-            .o('s',
-
-            function(q, e){
+        ).o('s',   function(q, e){
 
                 e.e.preventDefault() // pD(e.e)
 
-                if(u){  $.post(  '/login',
+                if(username){
+
+                    $.post(  '/login',
 
                     {
-                        username: qq( u.ch(1) ).V(),
+                        username: qq( username.ch(1) ).V(),
 
-                        password: qq( p.ch(1) ).V()
+                        password: qq( password.ch(1) ).V()
 
                     },   verifyLogin)   }
             })
 
-
-
-
     ).drg().id('mod')
-
-
-
-    return {}
 
 }
 
+
+
+
+
 logOut = function(){qJ('/logOut',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
-getUsers = usrs = function(f){ qG('/users', f)}
+getUsers =  function(func){
+
+  $.get('/users', func)
+
+}//usrs =
+
+
+
 
 
 

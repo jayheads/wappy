@@ -223,22 +223,24 @@ module.exports=function(){
     //trims it down so you only get the username, mugId, and userId
 
 
-    $a.get('/gU', function(req, res, next){
 
-        models['user'].find(
+    $a.get('/users', function(req, res, next){
 
-            function(err, user){
+        $l('get users')
 
-                if(user){
-                    res.json(_.map(user, function(user){
+        models.user.find(
 
-                return {
+            function(err, users){
 
-                    u:user.u,  m:user.m,   i:user.i
+                if(users){
 
-                }
+                    res.json( _.map(users, function(user){
 
-            }))}})
+                return {   u:user.u,  m:user.m,   i:user.i  }
+
+            }))}}
+
+        )
 
 
     })
@@ -252,9 +254,7 @@ module.exports=function(){
 
 
 
-    $a.post('/login',
-
-        function(req,res,next){
+    $a.post('/login',  function(req,res,next){
 
 
         models.user.findOne(
@@ -294,11 +294,6 @@ module.exports=function(){
 
 
         })
-
-
-
-
-
 
 
     $a.get('/logOut', $w.u, function(req,res){

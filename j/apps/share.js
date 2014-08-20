@@ -289,33 +289,52 @@ USERS=function(){format()
         $h1('order'),
         $h1('view'))
 
-    tab1=['users',function(){
+    tab1=['users', function(){
 
 
         TABS.E(
             $h1('Users: '),
             $br())
 
-        getUsers(  function(u){
 
-            _.each(u,function(u){
 
-                $.post('/dud', { d: u.m },
+        $.get('/users',
 
-                    function(m){
 
-                TABS(
+            function(u){
 
-                    tn(
-                        $pg(u.u),
+                uuu=u
+                $l('getUsers')
 
-                        $br(), m ).$( function(){
+                _.each(u,
 
-                            window.location='/wap/profiles/'+ u.u;//return
 
-                    })
+                    function(u){
 
-                )})})})
+                        $.post('/dud', { d: u.m },
+
+                            function(m){
+
+                                TABS(
+
+                                    tn(
+                                        $pg(u.u),
+
+                                        $br(), m ).$( function(){
+
+                                            window.location='/wap/profiles/'+ u.u;//return
+
+                                        })
+
+                                )})})}
+
+        )
+
+
+
+
+
+
     }]
 
     tab2=['buds',function(){
@@ -349,7 +368,7 @@ USERS=function(){format()
 
     tab3=tab('user2',function(){TABS.E()(h1('users'))})
 
-    tab4=['user',function(){
+    tab4=['user', function(){
 
         from=$w['from']||'b'
 
@@ -361,15 +380,19 @@ USERS=function(){format()
             $pg('activity'),
             $pg('buds'),
             $pg('posts'),
-            $pg('relations')
-
-
-        )
+            $pg('relations') )
 
     }]
 
-    s2(t=tabs(tab1,tab2,tab3,tab4))
-    t.load()}
+    s2(
+        theTabs=tabs(tab1,tab2,tab3,tab4)
+    )
+
+    theTabs.load()
+
+}
+
+
 
 
 

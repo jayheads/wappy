@@ -466,7 +466,7 @@ qq = function(e,b,c,d){
         return q}
 
     q.jLoad=function(a){
-        qJ(a,function(d){q(d)})
+        qJ(a, function(d){q(d)})
         return q
 
     }
@@ -596,7 +596,11 @@ qq = function(e,b,c,d){
     q.ty=q.type=function(t){return q.at({
         type:oO('i',t)})}//type
 
-    q.nm= q.name=function(a){return q.at({name:a})}
+    q.nm= q.name = function(name){ return q.at({name: name}) }
+
+
+
+
 
     q.hr= q.href=function(a){return q.at({href:a})}
 

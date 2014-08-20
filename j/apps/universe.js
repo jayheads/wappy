@@ -171,11 +171,16 @@ UNIVERSE=function(){z()
 
         setInterval(updateGuy,100)
 
-        getUsers(  function(users){
+
+        getUsers(
+
+
+            function(users){
 
             var theRow=row().a()
 
-            _.each(users,  function(user){  fetchMugByMugId(  user,   function(userMug){
+            _.each(users,
+                function(user){  fetchMugByMugId(  user,   function(userMug){
 
                 theRow(
 

@@ -31,7 +31,7 @@ REQUESTSX=function(){var c=CT(),d=dv('y',800,600)
 USERSX=function(){
 
     CT(h1('Users: '),br(),rr=row())
-    usrs(function(u){
+    getUsers(function(u){
 
 
 
