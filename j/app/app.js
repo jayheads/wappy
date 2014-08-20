@@ -136,9 +136,7 @@ SignUpForm=signUpForm  = sU=function(){
 
         if(S(a)){return newUser({u:a,p:b},c)}
 
-        qP('/nU',a,b)}
-
-
+        $.post('/nU',a,b)}
 
 
     var f={
@@ -147,9 +145,7 @@ SignUpForm=signUpForm  = sU=function(){
 
             $label('uname: ','uname'),
 
-            TextInput().k('form-control').at({type:'text'})().id('uname')
-
-        )
+            TextInput().k('form-control').at({type:'text'})().id('uname'))
 
             .f(20).nm('u'),
 
@@ -182,7 +178,7 @@ SignUpForm=signUpForm  = sU=function(){
     }
 
 
-    f.f= _f().P(4).c('o')(
+    f.f= $form().P(4).c('o')(
 
         f.u,
         f.p,
@@ -194,13 +190,12 @@ SignUpForm=signUpForm  = sU=function(){
 
     pop(f.f).id('mod').drg()
 
-    f.f.o('s', function(q,e){pD(e.e)
+    f.f.o('s', function(q,e){
 
 
-        qP('/nU', f.v(),
+        e.e.preventDefault() //pD(e.e)
 
-
-            function(d){
+        $.post('/nU',  f.v(),  function(d){
 
 
                 if(d === 'guest'){
@@ -229,13 +224,17 @@ SignUpForm=signUpForm  = sU=function(){
 
     return f}
 
+
+
+
+
 LogInForm= LoginForm=logInForm = lI = function(){
 
     var u, p, s, f,
 
-        verifyLogin=function(d){
+        verifyLogin=function(username){
 
-            if(d==='guest'){
+            if(username==='guest'){
 
                 //close the login form
                 qi('mod').m()
@@ -251,7 +250,7 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
                 home()
 
-                pop('welcome '+d+'!')
+                pop('welcome '+username+'!')
             }
         }
 
@@ -259,22 +258,26 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
     pop(
 
-        f = _f().P(4).c('g')(
+        f = $form().P(4).c('g')(
 
-                u=fg(
+                u=$div().k('form-group')(
 
                     $label('uname: ','uname'),
 
-                    fc().id('uname')
+                    $textInput().id('uname')
 
                 ).f(20).nm('u'),
 
 
 
-            p=fg(  lb('pword: ', 'pword'),  fc('p').id('pword')  ).f(20).nm('p'),
+            p=$div().k('form-group')(  $label('pword: ', 'pword'),
+
+                fc('p').id('pword')
+
+            ).f(20).nm('p'),
 
 
-            s =   $input().V('log in').ty('submit').f(16)
+            s =   $input().V('log in').type('submit').f(16)
 
 
 
@@ -282,14 +285,16 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
             .o('s',
 
-            function(q,e){ // pD(e.e)
+            function(q, e){
 
-                if(u){  qP(  '/li',
+                e.e.preventDefault() // pD(e.e)
+
+                if(u){  $.post(  '/login',
 
                     {
-                        u: qq( u.ch(1) ).V(),
+                        username: qq( u.ch(1) ).V(),
 
-                        p: qq( p.ch(1) ).V()
+                        password: qq( p.ch(1) ).V()
 
                     },   verifyLogin)   }
             })
@@ -305,15 +310,19 @@ LogInForm= LoginForm=logInForm = lI = function(){
 
 }
 
-logOut =lO=function(){qJ('/lo',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
+logOut = function(){qJ('/logOut',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
-getUsers = usrs=function(f){ qG('/users', f)}
+getUsers = usrs = function(f){ qG('/users', f)}
+
+
 
 //Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
 
-getBuds = buds=function(f){qG('/buds',f)}
+getBuds = buds=function(func){ qG('/buds', func) }
 
-removeUser = rmU=function(a,b){if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
+removeUser = rmU=function(a,b){
+
+    if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
 
 
 clearApps = fresh=function(){ z();WappyNav() }
@@ -355,7 +364,7 @@ lgrX=function(){
             $:
                 function(d){  qi('log').jLoad('/loggedIn') },
 
-            $$:lO
+            $$:logOut
 
         }).$()
 
@@ -365,7 +374,7 @@ lgrX=function(){
 lgrBarX=function(){
     di('lgr').pp().c('b').o({
         $: function(d){  qi('log').jLoad('/loggedIn') },
-        $$:lO
+        $$:logOut
     })(sp('log: '),log())}//depr?
 
 

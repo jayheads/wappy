@@ -182,36 +182,31 @@ module.exports=function(){
 
         })})
 
+
+
     $a.post('/nU', function(req,res,next){
 
-
-
-
-
-
-        $m['user'].create(req.b, function(err,u){ if(err){
+        models.user.create(req.b, function(err,user){ if(err){
 
                 $l(err.code==11000?'!!':'!'); $d(err)
-                res.j('error'); next(err)}
+                res.json('error'); next(err)}
 
             else {
 
                 //set session u=u.u (user name= user.username)
-                req.s.u=u.u
+                req.session.username= req.session.u= user.u
 
                 //set session li=true (loggedIn=true)
-                req.s.li=true
+                req.session.loggedIn = true
 
                 //save session and send back a json obj of username -so a string? huh?
-                req.s.save(function(){
-                    res.j(u.u)})
+                req.session.save(function(){ res.j(user.u)})
             }
-
-
 
         })
 
     })
+
 
 
     //get all users //sends user list
@@ -221,20 +216,21 @@ module.exports=function(){
 
             //remove( 'user', req.b,  pjd(res) )
 
-        $m['user'].remove(req.b, pjd(res))
+        models['user'].remove(req.b, pjd(res))
 
     })
     //create(post new) user
     //trims it down so you only get the username, mugId, and userId
 
+
     $a.get('/gU', function(req, res, next){
 
-        $m['user'].find(
+        models['user'].find(
 
             function(err, user){
 
                 if(user){
-                    res.j(_.map(user, function(user){
+                    res.json(_.map(user, function(user){
 
                 return {
 
@@ -253,21 +249,21 @@ module.exports=function(){
 
 
 
-    //login
 
 
-    $a.post('/li',
+
+    $a.post('/login',
 
         function(req,res,next){
 
 
-        $m['user'].findOne(
+        models.user.findOne(
 
             {
 
-                u : req.body.u ,
+                u : req.body.username ,
 
-                p : req.body.p
+                p : req.body.password
 
             },
 
@@ -278,7 +274,7 @@ module.exports=function(){
 
                 if(!user){
 
-                    res.j('guest')
+                    res.json('guest')
                 }
 
                 else {
@@ -303,23 +299,31 @@ module.exports=function(){
 
 
 
-    //logout (a command)
-    $a.get('/lo', $w.u, function(req,res){
 
-        req.s.u=null
 
-        req.s.li=false
+    $a.get('/logOut', $w.u, function(req,res){
 
-        req.s.save(function(){
+        req.session.username =   req.session.u = null
 
-            res.j('false')
+        req.session.loggedIn=  req.s.li=   false
+
+
+        req.session.save(function(){
+
+            res.json('false')
 
         })})
     //is logged in?
 
     $a.get('/loggedIn', $w.u, function(req, res){
-        res.j(req.u)
+
+        res.json(req.u)
+
     })
+
+
+
+
 
 
     ////
@@ -338,7 +342,7 @@ module.exports=function(){
                 op=imgFile.path
 
 
-           $m['pic'].create(
+           models['pic'].create(
 
                {
                    u:req.I,
@@ -396,7 +400,7 @@ module.exports=function(){
     //remove a pic
     $a.post('/rmP', function(req,res){
 
-        $m['pic'].remove(req.b, function(err, data){
+        models['pic'].remove(req.b, function(err, data){
             res.j(data)
         })
 
@@ -409,7 +413,7 @@ module.exports=function(){
     //get all pics(files) (everyone's)
     $a.get('/pix', function(req, res){  // all('pic', res)
 
-        $m['pic'].find(
+        models['pic'].find(
 
             function(err, data){
 
@@ -428,7 +432,7 @@ module.exports=function(){
     $a.get('/mypix', $w.u, function(req,res){
 
 
-        $m['pic'].find(
+        models['pic'].find(
 
             { u: req.I },
 
@@ -510,7 +514,7 @@ module.exports=function(){
     //get User's image ID
     // GET MUG ID
     //return user THEIR mug ob (if im) or mugID
-    //$a.g('/gMg2',$w.u,function(q,p,n){$m.img.findById(q.U.m, function(m){p.j(m)})})
+    //$a.g('/gMg2',$w.u,function(q,p,n){models.img.findById(q.U.m, function(m){p.j(m)})})
     $a.get('/gMg',  $w.u,  function(req, res){
 
         res.j( req.U.m )

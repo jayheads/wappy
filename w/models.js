@@ -1,7 +1,8 @@
 var S=String, N=Number, O=Object, D=Date, t=true,
 
 
-    oid = $g.s.Types.ObjectId,
+    oid = mongoose.Schema.Types.ObjectId,
+
 
 
     OID=function(ref){
@@ -13,20 +14,19 @@ var S=String, N=Number, O=Object, D=Date, t=true,
             ref:ref
         }
 
-        if(g.p){
-            o.required=true}
+        if(g.p){ o.required=true}
 
         return o},
 
 
 
-    OBD={type:O, default:{}},
+    OBD={type:Object, default:{}},
 
     ARD={type:[{}], default:[]},
 
     DATE={type:Date, default:Date.now},
 
-    ND={type:N, default:0},
+    ND={type:Number, default:0},
 
     SQ={type:S, required:true},
 
@@ -34,7 +34,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     //ash schema?
 
-    ashSM=$g.s({
+    ashSM=mongoose.s({
 
         v:String,    //?
 
@@ -43,52 +43,52 @@ var S=String, N=Number, O=Object, D=Date, t=true,
     }),
 
 
-    sort=$g.s({
+    sort=mongoose.Schema({
 
-        n:S, //name
-        t:S,  //title
+        n:String, //name
+        t:String,  //title
 
-        ct:OBD  //content {type:O,default:{}}
-
-    }),
-
-
-    term=$g.s({
-
-        t:S,  //term
-
-        meaning:S,
-
-        st:DATE  //stamp
+        ct:{type:Object, default:{}}  //content {type:O,default:{}}
 
     }),
 
 
+    term=mongoose.Schema({
+
+        t:String,  //term
+
+        meaning:String,
+
+        st:{type:Date, default:Date.now}  //stamp
+
+    }),
 
 
-    page=$g.s({
 
-        n:S,
+
+    page = mongoose.Schema({
+
+        n: String,
 
         s:[{
 
-            h:S, //header
+            h: String, //header
 
-            ct:S  //content
+            ct: String  //content
 
         }]
 
     }),
 
 
-    chapter=$g.s({
+    chapter=mongoose.Schema({
 
-        n:S,  //name
+        n: String,  //name
 
         p:[{   //pages
 
-            h:S,  //header
-            v:S
+            h:String,  //header
+            v:String
 
         }]
 
@@ -100,7 +100,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     user:{
 
-        u:SQ,   //username
+        u:{type:S, required:true},   //username
         p:S,    //password
         pf:O,   //profile
 
@@ -120,11 +120,15 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
      pic:{
 
-         u:OID('user','+'),
+         u:{
+             type:oid,
+             ref:'user',
+             required:true
+         },
 
          m:D,
 
-         d:DATE,
+         d:{type:Date, default:Date.now},
 
          s:N,
 
@@ -142,17 +146,17 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
      img:{u:S, m:D, d:S, n:S, dats:[N]},
 
-     guy:{n:SQ, m:S,  x:N, y:N}, //map:{n:S, guys:O},
+     guy:{n:{type:S, required:true}, m:S,  x:N, y:N}, //map:{n:S, guys:O},
 
     //book:{u:{type:oid,ref:'user',required:t},t:S,c:[chapter]},
 
 
      //sort
-     srt:{ u:SQ,   dt:DATE,  t:S, i: ARD},
+     srt:{ u:{type:S, required:true},   dt:{type:Date, default:Date.now},  t:S, i: {type:[{}], default:[]}},
 
 
      //status
-     sts:{dt:DATE,  u:SQ,  c:S},
+     sts:{dt:{type:Date, default:Date.now},  u:{type:String, required:true},  c:S},
 
 
      //avail
@@ -160,22 +164,22 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
 
      //post
-     pst:{dt:DATE,  u:SQ,  t:S, c:S, du:S},
+     pst:{dt:{type:Date, default:Date.now},  u:{type:String, required:true},  t:S, c:S, du:S},
 
 
      //message
-     msg:{fr:SQ, to:SQ, dt:DATE,  m:S,  c:S},
+     msg:{fr:{type:String, required:true}, to:{type:String, required:true}, dt:{type:Date, default:Date.now},  m:S,  c:S},
 
 
      //buddy request
-     req:{fr:SQ,  to:SQ, dt:DATE},
+     req:{fr:{type:String, required:true},  to:{type:String, required:true}, dt:{type:Date, default:Date.now}},
 
 
      //topic
      tpc:{
 
          t:S,  //topic
-         i:ARD
+         i:{type:[{}], default:[]}
      },
 
 
@@ -205,9 +209,9 @@ var $m={}
 
 for(var m in MODELS){
 
-    $m[m] =  $g.m(
+    $m[m] =  mongoose.m(
         cL(m),
-        $g.s(MODELS[m])
+        mongoose.s(MODELS[m])
     )
 
 
@@ -219,19 +223,25 @@ for(var m in MODELS){
 
 
 //book schema
-bookSch=$g.s({
+bookSch=mongoose.s({
 
-    name: S,
+    name: String,
 
-    author: OID('user')
+    author:{
+        type:oid,
+        ref:'user'
+    }
 
 })
 
 
 
 //chapter schema
-chapterSch=$g.s({
-    book:OID('Book'),
+chapterSch=mongoose.s({
+    book:{
+        type:oid,
+        ref:'Book'
+    },
     content:S,
     title:S
 
@@ -242,26 +252,32 @@ chapterSch=$g.s({
 
 
 //page schema
-pageSch=$g.s({
+pageSch=mongoose.s({
 
-    chapter:OID('Chapter'),  content:S,  name:S
+    chapter:{
+        type:oid,
+        ref:'Chapter'
+    },  content:S,  name:S
 
 })
 
 
 
 
-sectionSch=$g.s({page:OID('Page'),content:S,heading:S})
+sectionSch=mongoose.s({page:{
+    type:oid,
+    ref:'Page'
+},content:S,heading:S})
 
 
 
 
 
 
-Book=$g.m('Book',bookSch)
-Chapter=$g.m('Chapter',chapterSch)
-Page=$g.m('Page',pageSch)
-Section=$g.m('Section',sectionSch)
+Book=mongoose.m('Book',bookSch)
+Chapter=mongoose.m('Chapter',chapterSch)
+Page=mongoose.m('Page',pageSch)
+Section=mongoose.m('Section',sectionSch)
 
 
 
@@ -279,8 +295,8 @@ old={ sorty:{type:O,default:{}},
 
     topic:{
 
-        n:SQ,
-        vws:ND,
+        n:{type:String, required:true},
+        vws:{type:Number, default:0},
         sc:{type:N,default:0},
 
         ms:{type:[{vu:{type:S,unique:t},
@@ -316,7 +332,7 @@ old={ sorty:{type:O,default:{}},
         t:S,p:[page]},
 
 
-    pets:[{k:SQ,
+    pets:[{k:{type:String, required:true},
         n:{type:S,default:'none'},
         age:{type:S,default:'?'}}]
 

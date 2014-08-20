@@ -41,6 +41,9 @@ Tab =tab=function(tabText, func){
 
 
 
+$password=function(){
+return ip().type('password').k('form-control')
+}
 
 tabs=function(a){
 

@@ -95,26 +95,25 @@ l('------- wappy --------')
 
 
 
-gz={health:100, x:5000,  y:5000}
+//gz = {health:100, x:5000,  y:5000}
 
 
 
-mongoose  =$g=db=d=  require('mongoose')
+mongoose  =   require('mongoose') //$g=db=d=
 
+mongoose.s = mongoose.Schema
 
-$g.s = $g.Schema
+mongoose.m = mongoose.model
 
-$g.m = $g.model
+mongoose.c = mongoose.connect
 
-$g.c = $g.connect
-
-models  =$m=require('./models')
+models  =$m= require('./models')
 
 //$t=require('./task')
 
 
-$g.connect(
-    "mongodb://localhost/brain",smile
+mongoose.connect(
+    "mongodb://localhost/brain", smile
 )
 
 
@@ -123,9 +122,10 @@ require('./mong')
 http=ht=h=require('http')
 
 
-ht.s=ht.createServer
+http.s=http.createServer
 
 path=pt=p=require('path')
+
 pt.b=pt.basename
 pt.j=pt.join
 pt.e=pt.extname
@@ -143,7 +143,7 @@ fs.rn=fs.rename
 express   = e=require('express')
 
 
-mongoStore =  st=new(require('connect-mongo')(e))({db:'brain'})
+mongoStore =st=new(require('connect-mongo')(e))({db:'brain'})
 
 
 a=express()
@@ -231,15 +231,6 @@ require('./routes/social')()
 require('./routes/bookRoutes')()
 
 require('./routes/restRoutes')()
-
-
-
-
-
-
-
-
-
 
 
 
