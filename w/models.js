@@ -10,7 +10,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
         var g=G(arguments),
 
         o={
-            type:oid,
+            type:mongoose.Schema.Types.ObjectId,
             ref:ref
         }
 
@@ -100,55 +100,59 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     user:{
 
-        u:{type:S, required:true},   //username
-        p:S,    //password
-        pf:O,   //profile
+        u: {type:String, required:true},   //username
 
-        m:{     //mug
+        p: String,  //password
 
-            type:S,
+        pf: Object, //profile
 
-            default:'/me.png'
-        },
+        m: { type: String, default: '/me.png' },  //mugData
 
-        buds:[S]  // array of usernames?
-
-    },
-
-
-
+        buds: [String]  },// array of usernames?
 
      pic:{
 
-         u:{
-             type:oid,
-             ref:'user',
-             required:true
-         },
+         u: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
 
-         m:D,
+         d: {type:Date, default:Date.now},
 
-         d:{type:Date, default:Date.now},
+         s: Number,
 
-         s:N,
+         n: String,
 
-         n:S,
-
-         o:S,
-
-         e:S, //ext?
-
-         p:S
-     },
+         e: String },
 
 
+     img:{
+
+         u:String,
+
+         m:Date,
+
+         d:String,
+
+         n:String,
+
+         dats:[Number]},
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-     img:{u:S, m:D, d:S, n:S, dats:[N]},
+
+
+
+
+
+
+
+
+
+
+
 
      guy:{n:{type:S, required:true}, m:S,  x:N, y:N}, //map:{n:S, guys:O},
 
-    //book:{u:{type:oid,ref:'user',required:t},t:S,c:[chapter]},
+    //book:{u:{type:mongoose.Schema.Types.ObjectId,ref:'user',required:t},t:S,c:[chapter]},
 
 
      //sort
@@ -228,7 +232,7 @@ bookSch=mongoose.s({
     name: String,
 
     author:{
-        type:oid,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'user'
     }
 
@@ -239,7 +243,7 @@ bookSch=mongoose.s({
 //chapter schema
 chapterSch=mongoose.s({
     book:{
-        type:oid,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'Book'
     },
     content:S,
@@ -255,7 +259,7 @@ chapterSch=mongoose.s({
 pageSch=mongoose.s({
 
     chapter:{
-        type:oid,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'Chapter'
     },  content:S,  name:S
 
@@ -265,7 +269,7 @@ pageSch=mongoose.s({
 
 
 sectionSch=mongoose.s({page:{
-    type:oid,
+    type:mongoose.Schema.Types.ObjectId,
     ref:'Page'
 },content:S,heading:S})
 
@@ -324,11 +328,11 @@ old={ sorty:{type:O,default:{}},
             sex:'M',desc:'silly',fun:[]}},
 
 
-        u:{type:oid,
+        u:{type:mongoose.Schema.Types.ObjectId,
             ref:'user',required:t}},
 
     teachyBook:{
-        u:{type:oid,ref:'user',required:t},
+        u:{type:mongoose.Schema.Types.ObjectId,ref:'user',required:t},
         t:S,p:[page]},
 
 
