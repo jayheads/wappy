@@ -337,7 +337,7 @@ module.exports=function(){
 
 
     //remove a pic
-    $a.post('/rmP', function(req,res){
+    $a.del('/pic', function(req,res){
 
         models.pic.remove(req.b, function(err, data){
             res.json(data)
@@ -425,26 +425,11 @@ module.exports=function(){
 
 
     //remove an image (by id) //cutouts?
-    $a.post('/rmI', function( req, res ){
+   // $a.post('/rmI', function( req, res ){   models.img.remove(  req.body,  function(err, data){res.json(data)} )  })
 
-        models.img.remove(
-
-            req.body,
-
-            function(err, data){res.json(data)} )
-
-    })
-
-    //remove an image (by id) //cutouts?
     $a.del('/img', function( req, res ){
 
-        models.img.remove(
-
-            req.body,
-
-            function(err, data){res.json(data)} )
-
-    })
+        models.img.remove(req.body, function(err, data){res.json(data)} )  })
 
 
 
@@ -526,7 +511,7 @@ module.exports=function(){
 
 
 
-    $a.post('/chMg', $w.u, function(req,res){
+    $a.post('/changeMug', $w.u, function(req,res){
 
         req.U.m = req.b.m
 

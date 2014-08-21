@@ -202,31 +202,46 @@ cut=function(m){//fresh()
 
 UPLOADS=function(){format()
 
-    var t=80
+    var top = 80
 
     s1(
         h4('You have uploaded these pics. Click to make a sprite, or hit the x to delete..'))
 
-    pics(
+    $.get('/myPix',
 
-        function(p){
-            _e(p, function(p){
+        function(pics){
 
-                var fileName=adr(p),
-                    picDiv=function(t){
+            _.each(pics, function(pic){
 
-                        return dva('b',100,100,t,200,'-').k('pic').P(16).auto().drg()}
+                var fileName = pic._id + pic.e,
+
+                    picDiv=function(top){
+
+                        return dva('b',100,100, top, 200,'-').k('pic').P(16).auto().drg()}
 
 
                 $b()(
 
-                    picDiv(t)(
-                        qim(fileName, 1.2, function(q){cut(fileName)}),
-                        del(p,'/rmP')
+                    picDiv(top)(
 
-                    ))
+                        qim(fileName, 1.2, function(){ cut(fileName) }),
 
-                t+=220
+
+
+                $button('X', function( qEl ){ //del(p,'/rmP')
+
+                    $.ajax({
+                        data: pic,
+                        url: '/pic',
+                        type: 'DELETE',
+                        success: function (result){  qEl.XX() }  })   })
+
+
+
+
+                ))
+
+                top += 220
 
             })
 
@@ -247,64 +262,59 @@ CUTOUTS=function(){format()
 
     var mug=function(f){
         wM(function(m){
-            win(
-                _d()(br(),hr(),
-                    h3('User: '+ usr),
-                    br(),
-                    xc().w(400).h(400).f(m)))})}
+            $win(
+                $div()($br(),$hr(),
+                    $h3('User: '+ usr),
+                    $br(),
+
+                    xc().w(400).h(400).fit(m)))})}
 
 
-    s1(h4('click a pic to select it as your mug, or the x to delete it'))
-
-
-    hl=function(q){
-        qe('pic',function(q){q.c('b')})
-        q.pa().c('y')}
+    s1($h4('click a pic to select it as your mug, or the x to delete it'))
 
 
 
-    $.getJSON('/img', function(p){
-
-        var t=80
-
-        _.each(p, function(p){
-
-            dva('b',100, 100, t,200,'-').k('pic')(
-
-                qim(p.d, 1, function(q){
-
-                    $.post('/chMg',{m:p._id})
-
-                    hl(q)
-
-                    mug()
-
-                }),
-
-                //del(p, '/rmI')
 
 
-                $button('X',
 
-                    function(q){
+    $.getJSON('/img', function(cutouts){
+
+        var top = 80
+
+        var highlight=function(q){
+
+            qe('pic', function(q){q.c('b')})
+
+            q.pa().c('y')
+
+        }
+
+        _.each(cutouts, function(cutout){
+
+            dva('b',100, 100, top, 200, '-' ).k('pic')(
+
+                qim(cutout.d, 1, function(q){
+
+                    $.post('/changeMug', { m: cutout._id } )
+
+                    highlight(q)
+
+                    mug() }),
+
+
+
+                $button('X', function( qEl ){ //del(p, '/rmI')
 
                         $.ajax({
-                            data:p,
+                            data: cutout,
                             url: '/img',
                             type: 'DELETE',
-                            success: function (result) {  q.XX() }
-                        })
-
-
-                    })
-
-
+                            success: function (result){  qEl.XX() }  })   })
 
 
             ).drg()
 
-
-            t+=220
+            top += 220
 
         })})
 
