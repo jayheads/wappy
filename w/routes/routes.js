@@ -408,19 +408,19 @@ module.exports=function(){
 
     //************** this is where we save new cutout-images
 
-    //newDataUrl but with 'dads' (see CONTACTEVENTS)
-    $a.post('/nImg', $w.u,  function(req, res, next){
+ 
 
-       models.img.create(
+    $a.post('/img', $w.u,  function(req, res, next){
 
-            $l({ u: req.username,   d: req.body.d,  dats: req.body.dats }),
+        models.img.create(
 
-           function(err, image){return res.json(image)  }
+            { u: req.username,   d: req.body.d,  dats: req.body.dats } ,
+
+            function(err, image){return res.json(image)  }
 
 
 
         ) })  //new image
-
 
 
 

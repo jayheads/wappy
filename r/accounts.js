@@ -151,7 +151,7 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
 
     //new image
 
-    $a.p('/nImg',
+    $a.p('/img',
         $w.u,
         function(q,p,n){
 

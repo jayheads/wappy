@@ -322,31 +322,11 @@ CUTOUTS=function(){format()
 
 
 
-
-
-
-
-
-fup=function(labelText, text){
-
+$fileUpload = fup=function(labelText, text){
 
     var theFormGroup = fg(
-
-
-        lb(
-
-            D(labelText) ? labelText  : 'upload file',
-
-            'upl'
-
-        ).k('ctl').f(20),
-
-
-
-        ip('file').id('upl').nm('i')
-
-
-    )
+        $label(  D(labelText) ? labelText  : 'upload file',  'upl'  ).k('ctl').f(20),
+        ip('file').id('upl').nm('i'))
 
 
 
@@ -372,11 +352,11 @@ fup=function(labelText, text){
 
 UPLOAD=function(){
 
-    pop(   form().mpfd().act('/upl')( fup(''),
+    pop(
 
-            //sm('ok')
+        form().mpfd().act('/upl')(   $fileUpload(''),  $input().k("show").ty('submit').V('ok')  ),
 
-            $input().k("show").ty('submit').V('ok')  ),   {t:'upload a new pic'}
+        {t: 'upload a new pic'}
 
     ).drg()
 
@@ -388,13 +368,22 @@ UPLOAD=function(){
 
 
 
-sv=function(x,f){
-    qP('/nImg',{
 
-        d:xx(C(x)).u(),
-        dats:x.dats
+// ***
+sv=function(x,func){
 
-    },f)}
+    $.post('/img', {
+
+        d: xx(C(x)).u(),
+
+        dats: x.dats
+
+    }, func)}
+
+
+
+
+
 
 
 
@@ -403,11 +392,19 @@ sv=function(x,f){
 
 //old
 card=function f(a,b){ //to see a users profile
+
     if(O(a)){return f(a.u,a.m)}
-    return dva(3).o('$$','q.X()').c('y').cen()(
-        h3(a||'anon'),
-        im(b||'me').w(200).h(200)
-    ).a()()}
+
+    return dva(3).o( '$$', 'q.X()' ).c('y').cen()(
+
+        $h3(a||'anon'),
+        $img(b||'me').w(200).h(200)
+
+    ).a()()
+
+}
+
+
 
 
 shUcards=function(){z();var t=100
