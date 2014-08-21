@@ -174,20 +174,23 @@ UNIVERSE=function(){z()
 
         getUsers(
 
-
             function(users){
 
             var theRow=row().a()
 
-            _.each(users,
-                function(user){  fetchMugByMugId(  user,   function(userMug){
+            _.each(users,  function(user){
 
-                theRow(
+                    fetchMugByMugId(user,
 
-                    Thumbnail(   $pg(user.u),   $br(), userMug).$(   function(){ invite(user.u)   })
-                )
+                        function(userMug){
 
-            })   })
+                            theRow( Thumbnail(   $pg(user.u),   $br(), userMug).$(  function(){ invite(user.u)   })  )
+
+            })
+
+                })
+
+
 
 
             dv('b', 1000, 'auto').pp()(
@@ -198,13 +201,12 @@ UNIVERSE=function(){z()
 
                 $button('send', function(){
 
-                    SpeechBubble(  qi('tx').V()
+                    SpeechBubble(  qi('tx').V(),   '+')
 
-                    ,
+                }))  })
 
-                    '+')
+    }
 
-                }))  })}
 
 
 

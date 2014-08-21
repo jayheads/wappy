@@ -45,6 +45,8 @@ module.exports=function(){
 
 
 
+
+
     create=function(model,req,res){
 
         $m[model].create(
@@ -98,17 +100,12 @@ module.exports=function(){
 
         $m[a].findOne(b).sort({dt:-1}).execFind(f)}
 
-
-
     f1=function(m,o,f){
 
         if(!F(f)){f=pjd(f)}
 
         $m[m].findOne(o,f)
     }
-
-
-
 
     fById=function(m,o,f){
 
@@ -122,11 +119,14 @@ module.exports=function(){
 
 
 
-    ALL=function(r,m){
+    ALL=function(route, model){
 
-        $a.g(r, function(req, res){
+        $a.get(route,   function(req, res){
 
-            all(m, res)    })
+
+        models[model].find(function(err, data){return res.json(data)})
+
+        })
     }
 
 
@@ -159,25 +159,16 @@ module.exports=function(){
 
 
 
-    $a.get('/', function(req,res){
+    $a.get('/', function(req,res){  res.render('wap')  })
 
-        res.render('wap')
 
-    })
-    $a.get('/wap', function(req,res){
 
-        res.render('wap')
+    $a.get('/wap', function(req,res){ res.render('wap') })
 
-    })
+
     $a.get('/wap/:app/:pam?', function(req,res){
 
-        res.render('wap', {
-
-            app:req.params.app,
-
-            pam:req.params.pam
-
-        })})
+        res.render('wap', { app:req.params.app, pam:req.params.pam })})
 
 
 
@@ -197,12 +188,8 @@ module.exports=function(){
                 req.session.loggedIn = true
 
                 //save session and send back a json obj of username -so a string? huh?
-                req.session.save(function(){ res.j(user.u)})
-            }
+                req.session.save(function(){ res.json(user.u)})} }) })
 
-        })
-
-    })
 
 
 
@@ -213,7 +200,7 @@ module.exports=function(){
 
             //remove( 'user', req.b,  pjd(res) )
 
-        models['user'].remove(req.b, pjd(res))
+        models.user.remove(req.body, function(err,data){res.json(data)})
 
     })
     //create(post new) user
@@ -221,30 +208,11 @@ module.exports=function(){
 
 
 
-    $a.get('/users', function(req, res, next){
 
-        $l('get users')
+    //need another route but with full data urls
+    $a.get('/users', function(req, res){  models.user.find( function(err, users){  if(users){   res.json( _.map(users, function(user){   return { u: user.u,  m: user.m  }  }))}})})
 
-        models.user.find(
-
-            function(err, users){
-
-                if(users){
-
-                    res.json( _.map(users, function(user){
-
-                return {   u:user.u,  m:user.m,   i:user.i  }
-
-            }))}}
-
-        )
-
-
-    })
-
-
-    ALL('/users', 'user')
-
+    $a.get('/usersFull',   function(req, res){models.user.find(function(err, users){  return res.json( users )}) })
 
 
 
@@ -254,29 +222,14 @@ module.exports=function(){
     $a.post('/login',  function(req,res,next){
 
 
-        models.user.findOne(
-
-            {
-
-                u : req.body.username ,
-
-                p : req.body.password
-
-            },
+        models.user.findOne(  { u : req.body.username , p : req.body.password },
 
 
-            function(err, user){
+            function(err, user){  if(err){next(err)}
 
-                if(err){next(err)}
+                if(!user){  res.json('guest') }
 
-                if(!user){
-
-                    res.json('guest')
-                }
-
-                else {
-
-                    req.session.username = req.session.u = user.u
+                else {  req.session.username = req.session.u = user.u
 
                     req.session.loggedIn = req.session.li = true
 
@@ -284,13 +237,7 @@ module.exports=function(){
 
                         res.json(user.u)//username
 
-                    })}
-
-            })
-
-
-
-        })
+                    })}  })    })
 
 
     $a.get('/logOut', $w.u, function(req,res){
@@ -326,12 +273,12 @@ module.exports=function(){
 
     $a.post('/upl', $w.u,  function(req,res,next){
 
-            if(req.f.png){req.f.i=req.f.png}
+            if(req.files.png){req.files.i = req.f.png}
 
 
-            var imgFile=req.f.i,
+            var imgFile=req.files.i,
 
-                op=imgFile.path
+                op = imgFile.path
 
 
            models['pic'].create(
@@ -341,7 +288,7 @@ module.exports=function(){
                    n:imgFile.name,
                    s:imgFile.size,
                    m:imgFile.lastModifiedDate,
-                   e:pt.e(imgFile.path)||'.png'
+                   e:path.extname(imgFile.path)||'.png'
                },
 
                function(err, img){
@@ -372,7 +319,7 @@ module.exports=function(){
                                    function(err){
 
                        if(err){next(err)}
-                       else {res.d('back')}
+                       else {res.redirect('back')}
 
                    }
 
@@ -392,8 +339,8 @@ module.exports=function(){
     //remove a pic
     $a.post('/rmP', function(req,res){
 
-        models['pic'].remove(req.b, function(err, data){
-            res.j(data)
+        models.pic.remove(req.b, function(err, data){
+            res.json(data)
         })
 
     })
@@ -403,36 +350,11 @@ module.exports=function(){
 
 
     //get all pics(files) (everyone's)
-    $a.get('/pix', function(req, res){  // all('pic', res)
-
-        models['pic'].find(
-
-            function(err, data){
-
-                res.json(data)
-
-            })
-
-    })
-
-
-
-
+    $a.get('/pix', function(req, res){  models.pic.find(  function(err, data){  res.json(data)  })  })
 
 
     //find all User's pics
-    $a.get('/mypix', $w.u, function(req,res){
-
-
-        models['pic'].find(
-
-            { u: req.I },
-
-            function(err, data){
-                res.j(data)
-            })
-
-    })
+    $a.get('/mypix', $w.u, function(req, res){ models.pic.find(   { u: req.userId },  function(err, pics){ res.json(pics)  }) })
 
 
 
@@ -451,55 +373,76 @@ module.exports=function(){
     ////
     //
     //upload a dataUrl!!
-    $a.post('/uplI', $w.u, function(req,res,next){
+    $a.post('/uplI', $w.u, function(req, res, next){
 
         //if(req.f.png){req.f.i= q.f.png}
 
         // var i=req.f.i
 
-        cre('img',  {u:req.I, d:req.du},  function(err, img){
-
-            $d(img)
-
-            fs.r(img.path, function(err, file){
+       models.img.create(  { u: req.userId, d: req.du },  function(err, img){ //$d(img)
 
 
-                fs.w(
 
-                    $d(pt.r(img.path,'../../p/', img._id.toString())+img.e),
+            fs.readFile(img.path, function(err, file){
+
+
+                fs.writeFile(
+
+                    $d(path.resolve(img.path,'../../p/', img._id.toString())+img.e),
 
                     file,
 
                     function(err){
 
-                        img.save(function(err){if(err){next(err)} else {res.d('back')}})
+                        img.save(function(err){ if(err){next(err)} else {res.redirect('back')}})
 
                     })})
 
-        })})
+        })
+
+
+    })
+
+
+
+
+    //************** this is where we save new cutout-images
+
     //newDataUrl but with 'dads' (see CONTACTEVENTS)
     $a.post('/nImg', $w.u,  function(req, res, next){
 
-        cre(
+       models.img.create(
 
-            'img',
+            $l({ u: req.username,   d: req.body.d,  dats: req.body.dats }),
 
-            l({u:req.u,   d:req.b.d,  dats: req.b.dats}),
-
-            res
+           function(err, image){return res.json(image)  }
 
 
 
         ) })  //new image
-    //remove an image (by id) //cutouts?
-    $a.post('/rmI', function(req,res){
 
-        rmById('img', req.b,  res)
+
+    //remove an image (by id) //cutouts?
+    $a.post('/rmI', function( req, res ){
+
+        models.image.removeById(
+
+            req.body,
+
+            function(err, data){res.json(data)} )
 
     })
+
+
+
     //find all User's images
-    $a.get('/img', $w.u,function(req, res){
-        find('img', {u: req.u}, res)})
+    $a.get('/img', $w.u, function(req, res){
+
+        models.img.find( {u: req.username}, function(err, data){res.json(data)}  )
+
+    })
+
+
     ////
     ////
     ////MUGS
@@ -507,19 +450,34 @@ module.exports=function(){
     // GET MUG ID
     //return user THEIR mug ob (if im) or mugID
     //$a.g('/gMg2',$w.u,function(q,p,n){models.img.findById(q.U.m, function(m){p.j(m)})})
-    $a.get('/gMg',  $w.u,  function(req, res){
 
-        res.j( req.U.m )
+    $a.get('/gMg',  $w.u,
 
-    })
+        function(req, res){
+
+           if(req.user){
+
+                $l('req.user.m')
+
+               res.json( req.user.m ) }  else {$l('no user')}
+
+        })
+
+
+
 
     //need to deprecate
     //get a durl from an img-ob id
     $a.post('/dud',   function(req,res,next){
 
-            fById('img', req.b.d, function(err, data){
-                    if(O(data)){
-                        res.j(data.d)   }  })
+           models.img.findById( req.body.d,
+
+               function(err, data){
+
+                   if(O(data)){
+                        res.json(data.d)   }
+
+               })
 
         })
 
@@ -527,26 +485,25 @@ module.exports=function(){
     //can dep by using oid's??
 
     $a.post('/dats', function(req,res){
-        fById('img',  req.b.d, function(err, data){
+        models.img.findById(  req.body.d, function(err, data){
 
-            if(O(data)){
-                res.j(data)
-                }
-            })
+            if(O(data)){ res.json(data) }
+
+        })
     })
+
     //get User's ACTUAL IMAGE (data-url) (by id)
 
     $a.get('/getMug',  $w.u,
         function(req,res,next){
 
-            fById('img',  $l(req.U.m),
+           models.img.findById(
 
-                function(err, data){
-                    $l(data)
+               $l(req.user.m),
 
-                    if(O(data)){
-                        res.j(data.d)
-                    }})
+                function(err, data){  $l(data)
+
+                    if(O(data)){ res.json( data.d )  }})
 
         })
 

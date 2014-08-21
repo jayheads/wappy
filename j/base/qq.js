@@ -392,6 +392,10 @@ qq = function(e,b,c,d){
     q.pa =q.parent=function(){
         return qq(q.q.parent())}
 
+
+
+
+
     q.ch  =q.children=function rc(a){
 
         if( N(a) ){return qq( rc()[ a || 0 ] )}

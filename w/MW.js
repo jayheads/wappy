@@ -48,11 +48,11 @@ Midware.user =  W.u = function(req, res, next){
                 if(user){
 
 
-                    res.locals.user = res.locals.U = req.U = user
+                    res.locals.user = res.locals.U = req.U = req.user= user
 
-                    res.locals.username = res.locals.u = req.u = user.u
+                    res.locals.username = res.locals.u = req.u = req.username = user.u
 
-                    res.locals.userId = res.locals.I = req.I = user._id
+                    res.locals.userId = res.locals.I = req.I = req.userId = user._id
 
                 }
 
