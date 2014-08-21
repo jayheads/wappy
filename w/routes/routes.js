@@ -422,16 +422,30 @@ module.exports=function(){
         ) })  //new image
 
 
+
+
     //remove an image (by id) //cutouts?
     $a.post('/rmI', function( req, res ){
 
-        models.image.removeById(
+        models.img.remove(
 
             req.body,
 
             function(err, data){res.json(data)} )
 
     })
+
+    //remove an image (by id) //cutouts?
+    $a.del('/img', function( req, res ){
+
+        models.img.remove(
+
+            req.body,
+
+            function(err, data){res.json(data)} )
+
+    })
+
 
 
 

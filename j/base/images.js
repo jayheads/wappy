@@ -119,10 +119,23 @@ qim=function(a,z,f){
     return i.a()}
 
 
-del=function(p,l){
-    return bt('X',function(q){
-        qP(l, {_id:p._id})
-        if(q){q.XX()}})}
+del = function(item, url){
+
+    return $button('X',
+
+        function(q){
+
+            $.post(url, {_id: item._id})
+
+
+            //if(q){
+                q.XX()
+            //}
+        })
+
+}
+
+
 
 
 adr=function(p){return p._id+p.e}
@@ -248,25 +261,45 @@ CUTOUTS=function(){format()
         qe('pic',function(q){q.c('b')})
         q.pa().c('y')}
 
-    imgs(function(p){
+
+
+    $.getJSON('/img', function(p){
 
         var t=80
 
-        _e(p, function(p){
+        _.each(p, function(p){
 
             dva('b',100, 100, t,200,'-').k('pic')(
 
                 qim(p.d, 1, function(q){
 
-                    qP('/chMg',{m:p._id})
+                    $.post('/chMg',{m:p._id})
+
                     hl(q)
+
                     mug()
 
                 }),
 
+                //del(p, '/rmI')
 
 
-                del(p,'/rmI')
+                $button('X',
+
+                    function(q){
+
+                        $.ajax({
+                            data:p,
+                            url: '/img',
+                            type: 'DELETE',
+                            success: function (result) {  q.XX() }
+                        })
+
+
+                    })
+
+
+
 
             ).drg()
 
