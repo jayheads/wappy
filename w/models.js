@@ -106,7 +106,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
         pf: Object, //profile
 
-        m: { type: String, default: '/me.png' },  //mugData
+        m: { type: String, default: '/me.png' },  //mugData.. no mugId
 
         buds: [String]  },// array of usernames?
 
@@ -114,7 +114,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
          u: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
 
-         d: {type:Date, default:Date.now},
+         d: {type:Date, default: Date.now},
 
          s: Number,
 

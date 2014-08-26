@@ -24,22 +24,22 @@ H$  =function(a){return new C$.Shape(a)}
 B$=function(a){return new C$.Bitmap(a)}
 
 //is display obj?
-iDo  =function(a){return O(a) && O(a.parent)}
+iDo  =function(a){ return O(a) && O(a.parent) }
 
 
 
 
 //if an obj...
 //if it has an 'ob' pop, return that.  o/w return it, as is
+//so it just gets the raw (non super) display object
+
 bj=function(a){
 
-    if(O(a)){
-
-        return O(a.ob)?a.ob:a
-
-    }
+    if(O(a)){   return O(a.ob)?a.ob:a   }
 
 }//return a??
+
+
 
 
 
@@ -47,47 +47,21 @@ rX =function(a){return a.rawX}
 rY =function(a){return a.rawY}
 
 
-gMg=function(func){
-    //should it try websocket first?
-    qG('/gMg',  func)
+withYourMugId = gMg=function(func){  $.get('/gMg',  func)}  //should it try websocket first?
 
-}//get YOUR mug id
-
-getMug=function(func){
-
-    qG('/getMug',  func)
-}
+wM = withYourMugData = getMug=function(func){  $.get('/getMug',  func)}
 
 
 
-
-wM=function(f){
-
-    //f=f||function(m){ mg=m }//run function with YOUR mug-data-url
-
-    gMg(function(m){
-
-        qP('/dud', {d:m}, f )
-
-    })
-
-
-
-}
-
+//dep by withYourMugData?
+//wM=function(f){  withYourMugId(      function(mugId){ $.get('/mug/'+  mugId, f )   }     ) }
 
 
 
 
 wMD=function(f){
 
-    f=f||function(m){mg=m}//run function with YOUR mug-data-url
-
-    gMg(function(m){
-        qP('/dats',
-            {d:m},
-            f)
-    })
+    gMg(function(m){  $.post('/dats',  {d:m},  f)   })
 
 }
 
@@ -150,9 +124,7 @@ bm=function(i,s){
 
     var b=Do( B$(src(i)) )
 
-    if(O(s)){
-        s.a(b)
-    }
+    if(O(s)){  s.a(b) }
 
 return b}
 
@@ -167,12 +139,11 @@ Bm=function(a,b){
 //If it is a URI, a new Image object
 // will be constructed and assigned to the .image property.
 
-    if(O(a)&&S(a.d)){a=a.d}
+    if(O(a) && S(a.d)){ a = a.d }
 
-    im(a,function(i){
+    $img(a, function(i){
 
-        var bm=B$(i),
-            g=Do(bm)
+        var bm=B$(i),  g=Do(bm)
 
         if(F(b)){b(g,bm)}
 
@@ -186,14 +157,10 @@ Bm=function(a,b){
  Pt=function(x,y){
 
 
-     if(U(x)){
+     if(U(x)){  return new C$.Point }
 
-         return new C$.Point}
-
-     if(O(x)&&O(y)){
-         return new C$.Point(
-        x.x+y.mx()>>1,
-            x.y+y.my()>>1
+     if(O(x) && O(y)){
+         return new C$.Point(  x.x+y.mx()>>1,  x.y+y.my()>>1
 
      )}
 
@@ -214,10 +181,7 @@ Bm=function(a,b){
 
 mxy=function(o,s){
 
-    xy(o,
-        s.mx(),
-        s.my()
-    )
+    xy(o,   s.mx(),  s.my()  )
 
     return o}
 

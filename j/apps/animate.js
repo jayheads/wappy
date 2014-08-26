@@ -148,7 +148,9 @@ EASING=function(){
     eas(5100,'qdO');eas(5300,'qdI'); eas(5500,'qdIO')}
 
 
-SPRITE=function(sprite){sprite=sprite||SS
+SPRITE=function(sprite){
+
+    sprite = sprite || SS
 
     var g=G(arguments),
         st=St('X',400).a().drg().op(.7),
@@ -162,13 +164,14 @@ SPRITE=function(sprite){sprite=sprite||SS
 
     ctr={
 
-        j:function(){s.p('jump')},
-        e:function(){s.p('explode')},
-        r:function(){s.p('spin')},
-        s:function(){s.s()},
-        p:function(){s.p()},
-        t:function(a,b){ W$.get(bj(s)).to(a,b) }
+        j:function(){ s.p('jump') },
+        e:function(){ s.p('explode') },
+        r:function(){ s.p('spin') },
+        s:function(){ s.s() },
+        p:function(){ s.p() },
+        t:function(a,b){ W$.get( bj(s) ).to(a,b) }
     }
+
 
 
     dva(6)(

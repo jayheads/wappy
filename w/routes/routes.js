@@ -474,14 +474,25 @@ module.exports=function(){
                function(err, data){
 
                    if(O(data)){
-                        res.json(data.d)   }
-
-               })
-
-        })
+                        res.json(data.d)   }  })  })
 
     //** get a dataUrl from an img-ob id ++++ physics!
     //can dep by using oid's??
+
+
+
+    $a.get( '/mug/:mugId' ,   function(req,res,next){
+
+
+        models.img.findById( req.params.mugId,
+
+            function(err, data){
+
+                if( O(data) ){   res.json(data.d)   }   })
+
+    })
+
+
 
     $a.post('/dats', function(req,res){
         models.img.findById(  req.body.d, function(err, data){
@@ -500,7 +511,7 @@ module.exports=function(){
 
                $l(req.user.m),
 
-                function(err, data){  $l(data)
+                function(err, data){
 
                     if(O(data)){ res.json( data.d )  }})
 

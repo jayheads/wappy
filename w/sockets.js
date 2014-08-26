@@ -151,7 +151,14 @@ module.exports=function(io, K){
 
         serverSocket.on('e',function(d,a,b,c){ k.emit(d,a,b,c)})
 
-        serverSocket.on('bc',function(d,a,b,c){k.broadcast.emit(d,a,b,c)})
+        serverSocket.on('bc', function(data,a,b,c){
+
+            k.broadcast.emit(data,a,b,c)
+
+        })
+
+
+
         //   serverSocket.on('chat',function(data){
         //       k.broadcast.emit('newChat',   {    n: data.n,   m: data.m  })
         //       k.emit('youChat', {  n: data.n,  m: data.m  })    })

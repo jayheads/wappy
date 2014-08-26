@@ -64,7 +64,7 @@ iCt=function(a){
 
 
 
-Ct=function(o){var g=G(arguments),o=g[0]
+EaselContainer=Ct=function(o){var g=G(arguments),o=g[0]
     if(!iCt(o)){
         return g.p?
 

@@ -11,6 +11,8 @@ MEMORY=function(){z()
 
     ]
 
+
+
 wGuy=function(){
     var x=0,y=0
     _e(grid,  function(row,i){
@@ -89,6 +91,8 @@ return {x:x,y:y}}
 }
 
 
+
+
 PINBALL=function(){
     mW({w:'makeWallsPinball'})
 
@@ -136,6 +140,18 @@ flip=function(){
     kD('d', function(){
         ba(rnd()*300+40  ,140,20)} )
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

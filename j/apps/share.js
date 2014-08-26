@@ -311,7 +311,7 @@ USERS=function(){format()
 
                     function(u){
 
-                        $.post('/dud', { d: u.m },
+                        $.get('/mug/'+ u.m ,
 
                             function(m){
 
@@ -340,25 +340,41 @@ USERS=function(){format()
     tab2=['buds',function(){
 
 
-        TABS.E(h1('Buds: '),
-            br())
+        TABS.E(
+
+            $h1('Buds: '),
+
+            $br()
+        )
 
         buds(function(u){
 
             b=u; rr=row()
-            _e(u,function(u){qP('/dud',{d:u.m},function(m){
-                TABS(tn(pg(u.u),br(),m).o(function(){win(_d()(br(),hr(),
-                    h3('User: '+ u.u),
-                    br(),
-                    xc().w(300).h(300).f(m),
-                    d=_d(),
-                    ms=$textarea().c('w','z') ,
-                    bt('send message',function(){
 
-                        qP('/sMsg',{m:ms.V(),  to:u.u})
+            _.each(u,function(u){
+
+                $.get('/mug/' +u.m, function(m){
+
+
+
+                TABS(tn(
+                    $pg(u.u),
+                    $br(),m).o(function(){$win(
+                        $div()(
+                            $br(),$hr(),
+                    $h3('User: '+ u.u),
+                    $br(),
+                    xc().w(300).h(300).f(m),
+                    d=$div(),
+                    ms=$textarea().c('w','z') ,
+
+                            $button('send message',function(){
+
+                       $.post('/sMsg',{m:ms.V(),  to:u.u})
 
                     }),
-                    bt('send buddy request')))
+
+                    $button('send buddy request')))
                     prof(u.u, d)}))})})
 
             })
