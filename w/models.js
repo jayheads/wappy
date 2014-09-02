@@ -116,6 +116,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
 
 
+
      pic:{
 
          u: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},

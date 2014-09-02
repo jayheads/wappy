@@ -198,7 +198,6 @@ module.exports=function(io, K){
             k.emit( 'inRoom',  { room: theRoom,  user: rr }      )
 
 
-
         }
 
 
