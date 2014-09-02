@@ -177,18 +177,19 @@ startUniverse = function(username){
 
     if( guy ){  $l('we have guy: ' + guy ) }
 
-    else {
-
-        $l('no guy')
+    else {  $l('no guy')
 
         fetchMugByUsername(username,
 
             function(userMug){
 
-                Bm( userMug, function( bitmap ){  addGuy(username, bitmap)  }  )  })
+                Bm( userMug,
+
+                    function( bitmap ){  addGuy(username, bitmap)  }  )  })
     }
 
 }
+
 
 
 
@@ -254,24 +255,13 @@ socket.on('speechBubble', function(speech){
     }})
 
 
-
 socket.on('updateGuy', function(guy){ updateGuy(guy) })
-
-
-
-
-
-
 socket.on('acceptUniverseInvitation', function(data){
 
     d = data
     //if it was YOUR invitation that was accepted
 
-    if( _username == data.toWho){
-
-        startUniverse(data.from)
-
-    }
+    if( _username == data.toWho){  startUniverse(data.from)   }
 
     // here u should really just be able to 'addUser'
 
@@ -302,9 +292,9 @@ socket.on('invite', function(invitation){  //dd=invitation
 
                 $h1( 'chat with '+ invitation.from + '?' ),
 
-                $button('ya', function(){
+                $button( 'ya' , function(){
 
-                    popInvitation.m()
+                    popInvitation.m( )
 
                     startUniverse( invitation.from )  //so u are just adding them in?  // ah the function also supposedly takes into account the app not even being open // i could nix that for now
 
@@ -312,25 +302,21 @@ socket.on('invite', function(invitation){  //dd=invitation
 
                 }),
 
+                $button( 'na' , function(){ popInvitation.m()  })
 
-                $button('na', function(){ popInvitation.m()  }))
+            )
 
-        )
+        )}
 
 
 
+    if( _username == invitation.toWho ){
+
+
+        fetchMugByUsername( invitation.from, inviteFunction )
 
     }
 
-
-
-
-
-
-
-    if(_username == invitation.toWho){
-
-        fetchMugByUsername(invitation.from, inviteFunction)}
 
 })
 

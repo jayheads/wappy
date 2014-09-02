@@ -1,168 +1,291 @@
-sss=function(){var g=G(arguments)
+sss=function(){var args=G(arguments)
 
     z()
 
 
-    s = St(600).a()
+    stage = SuperStage(600).a()
 
 
-    if(g.f){
+    if(args.f){
 
-        s.a(g.f)
+        stage.a(args.f)
 
-        _e(g.r,
-
-            function(v){ if(F(v)){ v(g.f) }  })
+        _.each(args.r,  function(arg){ if(F(arg)){ arg(args.f) }  })
     }
 
-    return s}
-
-
-stg=function(){
-
-    var g=G(arguments)
-
-    c=Ct().fn( SL )
-
-    s=St(1000)(
-        c
-    )
-
-    ct=CT(s)
-
-    _e(g,function(g){ c(g) })
-
-    return c}
+    return stage}
 
 
 
-tSt=function(s){
 
-    if(!O(s)){return}
-    if(iSt(s.ob)){return s}
-    if(iSt(s)){return St(s)}
+stg=function(){var args=G(arguments)
+
+    container=EaselContainer().fn( SL )
+
+    stage=SuperStage(1000)( container )
+
+    ct=ContainerDiv(stage)
+
+    _.each(args, function(arg){ container(arg) })
+
+    return container}
+
+
+tSt=function(stage){
+
+    if(!O(stage)){return}
+    if(iSt(stage.object)){return stage}
+    if(iSt(stage)){return SuperStage(stage)}
 }
 
 
-ap=function(a,s){
+appendToStage=ap=function(object,stage){
 
-    if(tSt(s)){tSt(s)(a)}
-    if(iCt(s)){s(a)}
+    if(tSt(stage)){tSt(stage)(object)}
+    if(iCt(stage)){stage(object)}
 
-    return a}
+    return object}
 
 
 
+//??
 iSt=function(a){if(D(a)){return F(a.update)}}
 
-iCt=function(a){
-    if(!O(a)){return}
-    if(a.ob){return iCt(a.ob)}
-    if(D(a)){return F(a.addChild)}
+
+
+//must be an object
+//if it has an 'object' pop, see if THAT is a container (like running bj on it?)
+//else, if it has the addChild func, return that
+//basically, checks if something is a container(or super container), by seeing if it has 'addChild'
+iCt=function(container){
+    if(!O(container)){return}
+
+    if(container.object){ return iCt(container.object) }
+
+    return F(container.addChild)
 }
 
 
 
 
-EaselContainer=Ct=function(o){var g=G(arguments),o=g[0]
-    if(!iCt(o)){
-        return g.p?
-
-            Ct(Ct$(),'+'):Ct(Ct$())}
-
-    o=Do(g.f,function o(){var g=G(arguments)
-        _e(g,function(v){o.a(v)})
-        return o})
-
-    o._ch=o.ob.children
 
 
-    o.a=function(a,b){var g=G(arguments),a=g[0],b=g[1];if(U(a)){o.Q().a();return o}
-        if(A(a)){_e(a,  function(v){  o.b(v,function(a){  SL(a)}) }); return o}
-        a=bj(a)
-        if(N(b)){o.ob.addChildAt(a,b)}
-        o.ob.addChild(a)
+
+
+EaselContainer=Ct=function(o){
+
+
+    var args=G(arguments),g=args,  o =g[0]
+
+
+
+
+    if( !iCt( o ) ){
+
+        //if its not already a container, then make a blank container
+        //(passing along the '+', which makes it slidable)
+
+        return args.p?  EaselContainer( Ct$(), '+' ) :  EaselContainer(Ct$())
+
+    }
+
+
+
+    //this makes the function object one that will 'add' its arguments to the container
+    var func=function o(){
+
+        var args=G(arguments)
+
+        _.each(args,
+            function(arg){ o.a(arg) })
+
         return o}
 
-    o.wC=function(f){
-        //iterates over Do(children)
+
+    //now make the container, itself, a super display object!!! (before we give it additional methods)
+    o=SuperDisplayObject(args.f, func  )
+
+
+    o.children = o._ch = o.ob.children
+
+
+
+    //appendTo
+    //add
+    o.a=function(child,location){
+
+        var g=G(arguments),a=g[0], location=g[1]
+
+
+        if( U(child) ){ o.qqC().a();  return o }
+        //append canvas //hmm.. a double use for a????
+
+
+        if(A(a)){
+
+            _.each(a,  function(arg){
+
+                o.bm(arg, function(bitmap){  SL(bitmap) })
+
+            }) //call bm on everything in array, and also slidify them
+
+            return o} //this is also a funny use!!
+
+
+
+        //the real meat:
+
+        a = bj( a ) //turn to raw object
+
+        //either add child at a specific location
+        if( N( location ) ){  o.ob.addChildAt( a , location )  }
+
+        //or just add the child
+        else { o.ob.addChild( a ) }
+
+        return o
+
+    }
+
+
+
+    o.wCh=o.withChildren=o.wC=function(f){//iterates over SuperDisplayObject(children)
+
+
         var a=arguments,g=G(arguments),f=g[0]
-        if(F(f)){_e(o.ch(),f);return o }
-        if(S(f)){o.wC(function(b){
+
+        if(F(f)){
+            _.each( o.ch(), f)
+            return o }
+
+        if(S(f)){
+
+            o.wCh(function(b){
+
             if(D(_r(a)[0])){_a(b[f],_r(a))}
-            else{b[f]()}});return o}
-        return o}
 
-
-    o.ch=function(a,b){var g=G(arguments),a=g[0],b=g[1]
-        if(g.n){
-            if(U(a)){o.ob.removeAllChildren()}
-            if(O(a)){o.ob.removeChild(bj(a))}
-            if(N(a)){o.ob.removeChildAt(a)}
-            return o}
-        if(F(a)){o.ob.sortChildren(a);return o}
-        if(U(a)){return _m(o._ch,Do)}
-        if(a=='#'){return o.ob.getNumChildren()}
-        if(a=='?'){return o.ob.contains(bj(b))}
-        if(N(b)){o.ob.swapChildrenAt(a,b);return o}//*** bottom-most=0
-
-        if(N(a)){return Do(o.ob.getChildAt(a))}//***
-
-        if(O(b)){return o.ob.swapChildren(a,b)}
-
-        if(N(b)){
-
-            o.ob.setChildIndex(bj(a), b)
+            else{b[f]()}});return o
         }
 
 
+        return o}
 
-        if(O(a)){return o.ob.getChildIndex(bj(a))}
 
-        if(S(a)){return Do(o.ob.getChildByName(a))}
+
+
+    //great for getting/setting a do's index
+    o.index=o.ix= o.childIndex=function(dO,i){
+        if(U(i)){return o.ob.getChildIndex( bj(dO) )}
+        else o.ob.setChildIndex( bj(dO), i )
+        return o}
+
+
+    //remove all, or remove by ix# or by object itself
+    o.remove= o.rm=function(object){
+        if(U(object)){o.ob.removeAllChildren()}
+        if(O(object)){o.ob.removeChild(bj(object))}
+        if(N(object)){o.ob.removeChildAt(object)}
+        return o}
+
+    o.swap=function(a,b){
+        if(N(b)){o.ob.swapChildrenAt(a,b);return o}//*** bottom-most=0
+        if(O(b)){return o.ob.swapChildren(a,b)}
+
+    }
+
+    sortFunction = function(o1, o2, options){
+        o1=SuperDisplayObject(o1)
+        o2=SuperDisplayObject(o2)
+        return (o1.y()>o2.y())?1 : (o1.y() < o2.y())? -1 : 0}
+    o.sort=function(func){if(F(func)){o.ob.sortChildren(func); return o}}
+
+    o.ch=function(a,b){ var g=G(arguments), a=g[0], b=g[1]
+
+        if(U(a)){return _.map( o._ch, SuperDisplayObject)}
+        if(a=='#'){return o.ob.getNumChildren()}
+        if(a=='?'){return o.ob.contains( bj(b) )}
+        if(N(a)){return SuperDisplayObject(o.ob.getChildAt(a))}//***
+        if(S(a)){ return SuperDisplayObject(o.ob.getChildByName(a))}
+
+        //if(N(b)){ o.ob.setChildIndex(bj(a), b) }
+
+        //if(O(a)){ return o.ob.getChildIndex(bj(a))}
 
         return o}
 
 
 
-    o.mC=function(m){var g=G(arguments),m=g[0]
-        if(U(m)){return o.ob.mouseChildren}
-        o.ob.mouseChildren=g.n?false:true
+    //get/set mouseChildren property
+    o.mCh=o.mouseChildren=o.mC=function(m){
+        var g=G(arguments), m=g[0]
+
+        if(U(m)){ return o.ob.mouseChildren }
+        o.ob.mouseChildren = g.n?false : true
+
         return o}
 
-    o.tC=function(m){var g=G(arguments),m=g[0]
+
+    //get/set tickChildren property
+    o.tCh= o.tickChildren = o.tC=function(m){var g=G(arguments),m=g[0]
         if(U(m)){return o.ob.tickChildren}
         o.ob.tickChildren=g.n?false:true
         return o}
 
 
+
     o.uP=function(x,y,f){var g=G(arguments),x=g[0],y=g[1],f=g[2],ob
         if(O(x)){return o.uP(x.X, x.Y)}
-        if(g.p){return _m(o.ob.getObjectsUnderPoint(x,y),Do)}
+        if(g.p){return _m(o.ob.getObjectsUnderPoint(x,y),SuperDisplayObject)}
         ob=o.ob.getObjectUnderPoint(x,y)
-        if(ob){ob=Do(ob)}
+        if(ob){ob=SuperDisplayObject(ob)}
         return ob}
 
 
-    o.bgi=function(a){
 
-        o.bm(a, function(b){ o.ch(b, 0) }) //o.ob.setChildIndex(b.ob,0)
 
+    //add bitmap at bottom.. ?
+    o.bgI=o.backgroundImage=o.bgi=function(a){var g=G(arguments)
+
+        if(g.n){ o.rm(0); return o }
+
+        if(o.backgroundImage){ o.rm(0)}
+
+        o.bm(a,  function(bitmap){
+
+            o.index(bitmap, 0)
+
+            o.backgroundImage=bitmap
+
+
+        }) //o.ob.setChildIndex(b.ob,0)
 
         return o}
 
 
 
-    o.b =o.bm=function(a,b){
 
-        var g=G(arguments),
-            a=g[0],b=g[1]
+///////////////
+
+
+
+
+    o.bm = o.addBitmap= o.bitmap = o.b = function(a,b){
+
+        var g=G(arguments),   a=g[0],  b=g[1]
 
         if(A(a)){
-            _e(a,function(v){
-                o.b(v,function(a){
-                    if(g.p){SL(a)}})})
-            return o}
+
+            _.each(a, function(arg){
+
+                o.bitmap(arg, function(a){
+
+                        if(g.p){ SL(a) }
+
+                    }  )
+
+            })
+
+            return o} //funny use
 
 
         //this is for when returning the mug
@@ -172,66 +295,132 @@ EaselContainer=Ct=function(o){var g=G(arguments),o=g[0]
    //    if(S(a)){ if( a.indexOf('data') ){ a= im($.parseJSON(a)) }}
 
 
-        if(I(a)){
-            a=B$(a)
 
-            o.ob.addChild(a)
+        //IF IMAGE OBJECT (LOADED)
+        if( I(a) ){ //if isImage
 
-            return Do(a)
+            o.a( a = new C$.Bitmap(a) )
+
+            return SuperDisplayObject(a)
         }
 
 
-        if( O(a) && S(a.d) ){ a=a.d } // ?
+        //IF NOT IMAGE OBJECT
 
-        if( O(a) ){
-
-            a=bj(a)
-
-            if(N(b)){o.ob.addChildAt(a,b)}
-
-            o.ob.addChild(a)
-
-            return o}
+        //DATA URL
+        //if its a data url (object with a data property) // then it becomes the dataString
+        if( O(a) && S( a.d ) ){ a = a.d } // ?
 
 
-        if(S(a)){} //this is where you pass lambda?
+        //BITMAP
+        //if object, add it
+        if( O(a) ){ o.a(a, b); return o }
+
+        //if( S(a) ){ } //this is where you pass lambda? //this could be data url
 
 
-        Bm(a, function(bm){
+        //HANDLE STRINGS
+        Bm(a, function( bm ){
 
-            if(g.N){o.a(bm)}
+            //add the bm (to the stage)
+            if( g.N ){ o.a( bm ) }
 
-            if(S(b)){$w[b]=bm}
+            //assign bm to variable
+            if( S(b) ){ $w[b] = bm }
 
-            if(F(b)){b(bm)}
+            //call fn on bm
+            if( F(b) ){ b(bm) }
 
-            if(g.p){bm.rgc('+')}
+            // rgc bm (centerize its origin)
+            if( g.p ){ bm.rgc('+') }
 
         })
+
 
         return o}
 
 
-    o.bData=function(data){
-       return o.b(im(  $.parseJSON(data) ))
+    o.wBm1=function(object, func){
+
+
+
+        o.bm(object,
+
+            function(bm){
+               var container = EaselContainer();
+                container.a(bm);
+                container.dO = container.displayObject=bm;
+                o.a(container)
+
+                if(func){ func(container) }
+            }
+        )
+
+
     }
 
 
-    o.mg=function(f){
+
+    o.wBm=function(object, func){
+
+
+        Bm(object, function( bm ){
+
+            var container = EaselContainer()
+
+            container.a(bm)
+
+            container.dO=bm
+
+            o.a(container)
+
+            if( F(func) ){ func(container) }
+
+        })
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    o.bData=function(data){
+       return o.b( $img(  $.parseJSON(data) ))
+    }
+
+
+
+
+    o.addMug = o.mug=o.mg=function(func){
 
         wMb(function(m){
 
             o.b(m)
-            f(m,o)
-        })
+            func(m,o)  })
 
         return o}
 
-    _e(g.r, function(v){o.b(v)})
+    _.each(g.r, function(v){o.b(v)})
 
-    if(g.p){SL(o)}
 
+    if(g.p){ SL(o) }
     return o}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -241,7 +430,7 @@ EaselContainer=Ct=function(o){var g=G(arguments),o=g[0]
 
 
 
-St=function(n1,n2,c){
+SuperStage =St=function(n1,n2,c){
 
     var g=G(arguments),
 
@@ -249,15 +438,21 @@ St=function(n1,n2,c){
             C(g[0])?S$(C(g[0])):
                 S$(C(_a(can,g))),
 
-        o=Ct(st)
+        o=EaselContainer(st)
 
     o.st=o.ob //o.st=st
 
-    o.C=o.ob.canvas
+    o.C = o.ob.canvas
 
-    o.X=xx(o.C)
+    o.X = xx(o.C)
 
-    o.Q=qq(o.C)
+    o.qqC = o.qq = o.Q = qq( o.C )
+
+
+
+
+
+
 
 
     o.u=function(a){
@@ -344,7 +539,7 @@ St=function(n1,n2,c){
 
     o.hide=function(){
         _e(ob.children,
-            function(a){Do(a).vs('-')
+            function(a){SuperDisplayObject(a).vs('-')
             });return o}
 
     o.ts=function(j,f){
@@ -362,7 +557,10 @@ St=function(n1,n2,c){
 
         })}
 
-    o.sv=function(f){sv(o.X);if(f){if(S(f)){f=ldr(f)};sec(f)};return o}
+    o.sv=function(f){
+        sv(o.X);
+        if(f){if(S(f)){f=ldr(f)};sec(f)};return o}
+
 
 
 
@@ -375,7 +573,7 @@ St=function(n1,n2,c){
         var g=G(arguments),
         f=g[0],
 
-        c=Ct()
+        c=EaselContainer()
 
         o.a(c)
 

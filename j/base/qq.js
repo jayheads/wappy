@@ -286,6 +286,8 @@ qq = function(e,b,c,d){
 
 
 
+
+
     //offset is distance from the document origin.
     //can set or get.  if pos is static, it gets changed to rel
     //use to get or set offset

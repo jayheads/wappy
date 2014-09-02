@@ -1,63 +1,598 @@
 
 eaI=function(f){imgs(function(i){_e(i,f)})}
 
-sav=function(s,a){return function(){s.sv(a)}}
 
-
-
-
+sav=function(stage,a){ return function(){ stage.sv(a) }   }
 
 EDIT=function(){
 
-    s=St(800);
-
-    var d=_d()
-
-    CT(d,s).o('$$',sav(s, 'edit'))
 
 
-    eaI(function(v){
+    stage=St(800);
+
+    var theDiv=$div()
+
+    CT(theDiv, stage).o('$$',     sav(stage, 'edit')    )
+
+
+    eaI(function( img ){
+
+        theDiv(
+
+            $imageSizeFuncCan(
+
+                img.d,     1,      function(){  stage.bm(   img.d,  TR,  '+'  ) } //rgc
+
+            )
+        )
+
+    })
+
+    return stage}
+
+
+
+
+
+
+
+PROPBOX=function(){
+
+    var imagesDiv=$div()
+
+    dA=$divA('y',200)(
+        $span('prop box'),
+        $hr(),
+        $span('selected cutout:')
+
+    )
+
+
+
+    stage = SuperStage(800)
+
+    littleStage = SuperStage(80)
+
+    dA(littleStage)
+
+    CT(imagesDiv, stage).o( '$$', sav(stage, 'edit') )
+
+    eaI(function(image){
+
+        imagesDiv(
+
+            xc(  image.d, 1,
+
+                function(){ stage.bm(
+
+                    image.d,
+
+                    function(bm){
+
+                        TR(bm)
+
+
+                        ///hmmm only clicks once?
+                        //does this relate to the draggable stage problem?
+                        bm.$(function(){
+                            $l('new selection')
+                            b=bm
+                            littleStage.ch('-')
+                            clone=Do( bm.ob.clone() )
+                            littleStage.a( clone )
+
+                            clone.xy(50).sxy(.1)
+                        })
+
+
+                    }
+
+
+
+                , '+' )}     )
+
+        )})
+
+    return stage}
+
+
+
+
+
+
+
+
+AVATAR=function(){
+z()
+    //the challenge here is to make the stage draggable but still usable, by dragging it by a wrapper div
+
+    //  s=St(400)
+
+    stage  = dragStage()
+
+    //d = qq( stage.ob.canvas )
+
+    d = $div().drg().c('x')
+
+    //d2=$div().drg().w(500).h(500).c('o')
+
+    //CT(d, stage).o('$$',  sav(stage,'avatar') )
+
+    eaI( function(img){
 
         d(
+            xc(img.d, 1, function(){
 
-            xc(
-                v.d,
-                1,
-                function(){s.bm(v.d,TR,'+')}))})
+                stage.bm(img.d, TR, '+' )  //.rgc('+')
 
-    return s}
+            })
+        )
+    })
 
-AVATAR=function(){var s=St(400),d=_d();
-    CT(d,s).o('$$',
-        sav(s,'avatar') )
-    eaI(function(v){
-        d(xc(v.d,1,function(){ s.bm(v.d,TR,'+')}))})
-    return s}
-PAINT=function(){
-    var r='#0FF',sz=2,oX=0,oY=0
+    //d2( stage )
 
-    s=St(800).a()
-
-    s.a(TX('finger paint','y',24,100))
+}
 
 
-    s.a(sh=Hx())
-
-    s.mg(function(m){m.xy(200)})
 
 
-    s.o({
 
-            D:function(q,e){sz=10},
+PAINT1=function(){z()
+    var r='#0FF',
+        size=2,oX=0,oY= 0,shape
 
-            U:function(q,e){sz=2;r=HSL()},
+    //stage = SuperStage(400).a()
 
-            M:function(q,e){
+   var stage = dragStage()
 
-                oX=e.X;oY=e.Y
+    stage.a(
 
-                if(oX){sh.gs(r).gss(sz,'round')
-                .mt(oX,oY).lt(e.X,e.Y)}}})}
+        EaselText('finger paint','b', 30, 100, 10)
+
+    )
+
+
+    stage.mug(function(m){
+
+        m.xy(40).sxy(.4)
+
+        stage.a( shape = Hx() )
+
+    })
+
+
+
+    stage.o({
+
+            D: function(q, e){ size=10 },
+
+            U: function(q, e){ size=2; r=HSL() },
+
+            M: function(q, e){
+
+                oX=e.X; oY=e.Y
+
+                if( oX ){
+
+                    shape.gs( r )
+
+                    shape.gss( size , 'round' )
+
+                    shape.mt( oX, oY )
+
+                    shape.lt( e.X , e.Y )
+                }
+            }
+
+    })
+
+
+
+
+}
+
+
+
+stagePainter=function(stage){
+
+
+    stage.a(  shape = Hx()  )
+
+    stage.o({
+
+        D: function (q, e) {
+            size = 10
+        },
+
+        U: function (q, e) {
+            size = 0;
+        },
+
+        M: function (q, e) {
+
+            oX = e.X;
+
+            oY = e.Y
+
+            if (oX && size) {
+
+                shape.gs(_paintColor)
+
+                shape.gss(size, 'round')
+
+                shape.mt(oX, oY)
+
+                shape.lt(e.X, e.Y)
+            }
+        }})
+    colorPicker = $(' <input   type="color">').appendTo($('body'))
+
+    colorPicker.on('input', function () {
+        _paintColor = $l(colorPicker.val())
+    })
+}
+
+PAINT=function(){z()
+    var r='#0FF',  size=10,oX=0,oY= 0,shape
+
+    var stage = dragStage()
+
+   // stage.a(  EaselText('finger paint', 'b', 40, 100, 10))
+
+    stage.mug(function(m){
+
+        m.xy(40).sxy(.4)
+
+        stagePainter(stage)
+
+
+    })
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+TextAdder2=function(stage){
+
+    var form= $form().a().c('x').P(10).w(300).drg()
+
+    form(
+
+        $textInput().id('text'),
+
+        $button(  'for text',   function(){
+            var val = $l( $('#text').val()  )
+
+            $('#text').val('')
+
+            var theText= EaselText(val,'w', 30, 100, 10)
+            SL(theText)
+
+
+            stage.a( theText )
+
+
+        }))
+
+
+
+
+    return form }
+
+
+TextAdder=function(stage){
+
+    var form= $form().a().c('x').P(10).w(300).drg()
+
+    form(
+
+        $textInput().id('text'),
+
+        $button(  'for text',   function(){
+            var val = $l( $('#text').val()  )
+
+            $('#text').val('')
+
+
+            var _text=EaselText(val,'w', 30, 100, 10)
+
+            var theText=  EaselContainer().a( _text)
+
+
+            theText.dO=_text
+            SL(theText)
+
+
+            stage.a(theText)
+
+            selected(theText)
+
+        }))
+
+
+
+
+    return form }
+
+
+
+EDITOR=function(){z()
+    var r='#0FF',  size=2,oX=0,oY= 0,shape
+
+    var stage = dragStage()
+
+    theDiv = $div().a().drg().c('y')
+
+
+    eaI(function( img ){
+
+        theDiv(  $imageSizeFuncCan(
+
+                img.d,     1,      function(){  stage.bm(   img.d,
+
+                    function(bm){
+                        SL(bm.sxy(.4))
+                    }
+
+
+                    ,  '+'  ) } //rgc
+
+
+
+            )
+        )
+
+    })
+
+    TextAdder2(stage)
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+rotateShake = function(bm){EaselTween(  [bm,'l'  ],  {r:0},  [ {  r:1}, 1],  [ { r:-1 },1]) }
+scaleShake = function(bm){EaselTween(  [bm,'l'  ],  {sxy:1},  [ {  sxy:.95}, 1],  [ { sxy:1.05 },1] ) }
+
+
+selected=function(bm){
+
+    //SL(bm)
+
+    bm.$(function(){
+
+        createjs.Tween.removeAllTweens()
+
+        bitmap=bm
+
+        scaleShake(bm.dO)  })
+}
+
+
+
+
+
+
+
+
+SELECTED=function(){z()
+
+
+    stage = dragStage()
+
+    stage.wBm('coin',  function(bm){
+        coin=bm;
+        SL(coin)
+        selected(bm)
+
+    })
+
+
+
+    stage.wBm('sun', function(bm){
+
+        sun=bm;
+        SL(bm)
+        selected(bm)
+
+    })
+
+
+
+    TextAdder(stage)
+
+
+    stage.wBm('me', function(bm){
+
+        me=bitmap=bm
+
+        SL(bm)
+
+        bm.rgc('+')
+
+        scaleShake(bm)
+        //rotateShake(bm)
+
+        selected(bm)
+
+        stage.wBm('flame', function(bm){ flame=bm; SL(bm);selected(bm) })
+
+        stage.wBm('guy', function(bm){ guy=bm;SL(bm); selected(bm) })
+
+    })
+
+
+
+
+
+
+    theImagesDiv = $div().a().drg().c('y')
+
+    loadImagesDiv=function() {
+
+        theImagesDiv.E()
+
+        eaI(function (img) {
+
+            theImagesDiv(
+                $imageSizeFuncCan(
+                    img.d, 1, function () {
+
+
+                        stage.wBm(img.d, function (bm) {
+
+                            SL(bm.sxy(.4));
+                            bm.rgc('+');
+                            selected(bm)
+                        })
+
+
+                    })
+            )})}
+
+
+loadImagesDiv()
+
+    d=$divA(500).c('y')(
+
+        $button('freeze',  createjs.Tween.removeAllTweens ),
+        $button('right', function(){ bitmap.x( bitmap.x() +10)  }),
+        $button('left', function(){  bitmap.x( bitmap.x() -10)  }),
+        $button('up', function(){    bitmap.y( bitmap.y() -10)  }),
+        $button('down', function(){  bitmap.y( bitmap.y() +10)  }),
+        $br(),
+
+        //fix
+        $button('bigger', function(){   bitmap.sxy(1.1, '*') }),
+        $button('smaller', function(){  bitmap.sxy(  .9,'*' )  }),
+        //
+
+        $button('wider',   function(){  bitmap.sx( bitmap.sx() * 1.1 )  }),
+        $button('thinner', function(){  bitmap.sx( bitmap.sx() * .9 )  }),
+
+        $button('taller',  function(){  bitmap.sy( bitmap.sy() *1.1 ) }),
+
+
+        $button('shorter', function(){  bitmap.sy( bitmap.sy() *.9)  }),
+
+        $br(),
+
+        $button('CW',  function(){  bitmap.rt(bitmap.rt() + 10) }),
+        $button('CCW', function(){  bitmap.rt(bitmap.rt() -10)  }),
+        $br(),
+
+        $button('get index', function(){
+
+        pop('index: ' + stage.ix(bitmap)  )
+
+        }),
+
+
+        $button('set index to 3', function(){
+
+            stage.ix(bitmap, 3)
+            pop('index: ' +  stage.ix(bitmap) )
+
+        }),
+
+
+        $button('z-up',  function(){
+
+            stage.ix(bitmap, stage.ix(bitmap)+1)
+
+        }),
+
+        $button('z-down', function(){   stage.ix(bitmap, stage.ix(bitmap)-1) }),
+
+        $button('remove', function(){
+
+            stage.rm(bitmap)
+
+        }),
+
+
+        $button('clone', function(){
+
+            stage.a(
+
+
+                EaselContainer().a(
+
+                    SuperDisplayObject( bitmap.ob.clone() )
+                )
+            )
+
+        }),
+
+        $br(),
+
+
+        $button('save', function(){
+
+            stage.sv(function(){loadImagesDiv()})
+
+        }),
+
+
+        $button('paint', function(){ stagePainter(stage) }),
+        $button('', function(){  })
+
+
+
+
+    )
+
+
+
+
+
+
+
+}
+
+
+
+INDEXX=function(){z()
+
+    s=dragStage().bm('me',function(bm){b=bm
+
+
+        SL(b)
+
+        _.times(10,  function(){s.bm('guy',SL)  })
+
+        s.ix(b, 3)
+    })
+
+
+
+}
+
+
+
+
+
+
 
 
 FILTERS=function(){
@@ -85,7 +620,9 @@ FILTERS=function(){
             v=sin(ag+=sp)*rg;b.cc('+').fl([blF(v,v,2)]) })},s)}
 
 
-TRANSFORM=function(){format()
+
+
+TRANSFORM = function(){format()
 
     wMs(function(b,s){
         b.xy(0,0)
@@ -103,13 +640,17 @@ TRANSFORM=function(){format()
         b.xy(300,300).rgc('+');TR(b)},s)
 
         wMb(function(b){
-        b.xy(400,400).rgc('+');TR(b)},s)
+        b.xy(400,400).rgc('+');TR(b)
+        },s)
 
         wMb(function(b){
-        b.xy(150,150).rgc('+');TR(b)},s)
-    wMb(function(b){
+            b.xy(150,150).rgc('+');TR(b)
+        }, s)
+
+        wMb(function(b){
         b.xy(250,250).rgc('+');TR(b)},s)
-    wMb(function(b){
+
+        wMb(function(b){
         b.xy(350,350).rgc('+');TR(b)},s)},'-')
 
     s1(bt('rotate',function(){
@@ -140,7 +681,7 @@ TRANSFORM=function(){format()
     }),br(2),
 
 
- bt('skew',function(){
+ $button('skew',function(){
 
      s.ch('-')
 
@@ -164,16 +705,22 @@ TRANSFORM=function(){format()
 
 
 
-    bt('register',function(){
-        s.ch('-')
+    $button('register',function(){
+
+        s.remove()
 
         wMb(function(b,s){TR(b); rg1(b); reggy(b)}, s)
 
         wMb(function(b,s){TR(b); b.rgc(); rg1(b);  reggy(b)}, s)}),
-        br(2))}
+        $br(2))}
+
+
 SHOWCASE=function(){format()
-    s2(_s().id('pics'))
+
+    s2( $span().id('pics'))
+
     s2( x=cx('y',500,500) )
+
     x.q.cen()
 
     eaI(function(v){qi('pics')(xc(v.d,1,function(){

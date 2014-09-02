@@ -15,13 +15,29 @@ Ct$  =function(a){return new C$.Container(a)}
 D$   =function(){return C$.DOMElement}
 G$   =function(a){return new C$.Graphics(a)}
 
-J$  =function(a){
-    if(a.images){a=SS$(a)}
-    return new C$.Sprite(a)}
 
-H$  =function(a){return new C$.Shape(a)}
 
-B$=function(a){return new C$.Bitmap(a)}
+ EaselSprite= J$=function(spriteSheet){
+
+    if( spriteSheet.images ){
+
+        spriteSheet = new createjs.SpriteSheet(spriteSheet)   }
+
+    return new createjs.Sprite( spriteSheet )
+
+}
+
+
+
+
+
+
+
+
+
+H$  =function(a){ return new C$.Shape(a) }
+
+B$=function(a){ return new C$.Bitmap(a) }
 
 //is display obj?
 iDo  =function(a){ return O(a) && O(a.parent) }
@@ -68,49 +84,45 @@ wMD=function(f){
 
 
 
-wMb=function(f,s){
-    var g=G(arguments),f=g[0],s=g[1]
+wMb=function(f,stage){
+    var g=G(arguments),
+        f=g[0],stage=g[1]
 
     wM(function(a){
 
-        Bm(a, function(b){
+        SuperBitmapAsync(a, function(b){
 
-            if(s){s.a(b)} // if stage passed, add bm to stage
+            if(stage){stage.a(b)} // if stage passed, add bm to stage
 
-                f(b,s) //run cb, and pass it bm and stage
+                f(b, stage) //run cb, and pass it bm and stage
 
         })
     })
 
-    return s}
+    return stage}
+
+
+
+
 
 
 //with mug, after creating and putting it on a stage
-wMs=function(f,w,h,bg){ var g=G(arguments)
+wMs=function(func,w,h,bg){ var g=G(arguments)
 
-    f=g[0]
+    func=g[0]
     w=g[1]
     h=g[2]
     bg=g[3]
 
-    s =St(
+    var stage =St(  w||1000,  h||800,  '+'  )
 
-            w||1000,
+    if(g.p){ stage.drg() }
 
-            h||800,
+    if(g.n){ s2(stage) }
 
-        '+'
+    if( bg ){ stage.bgi( bg ) }
 
-    )
-
-
-    if(g.p){  s.drg()  }
-
-    if(g.n){s2(s)}
-
-    if(bg){ s.bgi(bg) }
-
-    return wMb(f, s)
+    return wMb(func, stage)
 
 }
 
@@ -120,36 +132,43 @@ wMs=function(f,w,h,bg){ var g=G(arguments)
 
 
 
-bm=function(i,s){
+SuperBitmap = SuperBitmapSync =bm=function(img,stage){
 
-    var b=Do( B$(src(i)) )
+    var superBitmap= Do(B$(src(img)))
 
-    if(O(s)){  s.a(b) }
+    if(O(stage)){  stage.a(superBitmap) }
 
-return b}
+return superBitmap}
 
 
 
-Bm=function(a,b){
+
+SuperBitmapAsync = Bm=function(img,func){
 
 
 //source obj can be:
 // Image|HTMLCanvasElement|HTMLVideoElement
 // |String URIto an image file to load and use.
-//If it is a URI, a new Image object
-// will be constructed and assigned to the .image property.
+//If it is a URI, a new Image object will be constructed and assigned to the .image property.
 
-    if(O(a) && S(a.d)){ a = a.d }
+    if( O(img) && S(img.d) ){ img = img.d }
 
-    $img(a, function(i){
 
-        var bm=B$(i),  g=Do(bm)
+    $img(img, function(image){
 
-        if(F(b)){b(g,bm)}
+        var bitmap = B$( image )
 
-        if(S(b)){$w[b]=g}})
+        var superBitmap = Do(bitmap)
 
-    return a}
+        if( F(func) ){ func( superBitmap, bitmap ) }
+
+        if( S(func) ){ $w[func] = superBitmap }
+
+    })
+
+
+    return img}
+
 
 
 
@@ -227,6 +246,7 @@ gY=function(a,b){
     if(U(b)){return a.regY}
     a.regY=b
     return a}
+
 gX=function(a,b){
     if(U(b)){return a.regX}
     a.regX=b

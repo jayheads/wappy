@@ -100,40 +100,55 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     user:{
 
-        u: {type:String, required:true},   //username
+        u: {type:String, required:true},     //username: {type:String, required:true},
 
-        p: String,  //password
+        p: String, password: String,
 
-        pf: Object, //profile
+        pf: Object, profile: Object,
 
-        m: { type: String, default: '/me.png' },  //mugData.. no mugId
+        m: { type: String, default: '/me.png' },   mug: { type: String, default: '/me.png' },  //mugData.. no mugId
+//mugData.. no mugId
 
-        buds: [String]  },// array of usernames?
+        buds: [String]
+
+    },// array of usernames?
+
+
+
 
      pic:{
 
          u: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
+         //user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
 
          d: {type:Date, default: Date.now},
+         date: {type:Date, default: Date.now},
 
-         s: Number,
+         s: Number, score: Number,
 
-         n: String,
+         n: String, name: String,
 
-         e: String },
+         e: String, extname: String
+
+     },
+
+
+
 
 
      img:{
 
-         u:String,
+         u:String,  username:String,
 
-         m:Date,
+         date:Date,
 
-         d:String,
+         d:String,  data:String,
 
-         n:String,
+         name:String,
 
-         dats:[Number]},
+         dats:[Number], physicsData:[Number]
+
+     },
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

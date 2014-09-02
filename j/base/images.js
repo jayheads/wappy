@@ -295,11 +295,13 @@ CUTOUTS=function(){format()
 
                 qim(cutout.d, 1, function(q){
 
-                    $.post('/changeMug', { m: cutout._id } )
+                    $.post('/changeMug', { m: cutout._id } ) ////****************
 
                     highlight(q)
 
                     mug() }),
+
+
 
 
 
@@ -354,7 +356,7 @@ UPLOAD=function(){
 
     pop(
 
-        form().mpfd().act('/upl')(   $fileUpload(''),  $input().k("show").ty('submit').V('ok')  ),
+        form().mpfd().act('/pic')(   $fileUpload(''),  $input().k("show").ty('submit').V('ok')  ),
 
         {t: 'upload a new pic'}
 
@@ -370,15 +372,15 @@ UPLOAD=function(){
 
 
 // ***
-sv=function(x,func){
+sv=function( x, func ){
 
     $.post('/img', {
 
-        d: xx(C(x)).u(),
+        d: xx( C( x ) ).u(),
 
         dats: x.dats
 
-    }, func)}
+    }, func ) }
 
 
 

@@ -1,3 +1,6 @@
+//is this file even being used?
+testy = 1000
+
 tw=function rc(a){
 
     fu=function(a){
@@ -8,31 +11,40 @@ tw=function rc(a){
 
     return function r(b){
         fn(fu(a), b)
-        return r}}
-
-tweeny=function(a){
-    return fn=function f(b){W$.get(a).to(b); return f}
+        return r}
 }
 
 
+tweeny=function(a){  return fn=function f(b){W$.get(a).to(b); return f}}
 
-jss=function(a){return J$(SS$(a||ss)) }
-spr=function(x){
 
-    var  gts="gotoAndStop",gtp="gotoAndPlay", av="advance", ga="getAnimation",
-        gA="getAnimations",gfb="getFrameBounds", gnf= "getNumFrames",
+
+//EaselSpriteSheet = SpriteSheet= jssX = function(spriteSheet){ return J$(  SS$( spriteSheet || ss )  ) }
+
+
+
+ sprr=spr = function(x){
+
+    var gts="gotoAndStop",
+        gtp="gotoAndPlay",
+        av="advance",
+        ga="getAnimation",
+        gA="getAnimations",
+        gfb="getFrameBounds",
+        gnf= "getNumFrames",
         fr="framerate",
-
-        ca="currentAnimation",  caf="currentAnimationFrame",
+        ca="currentAnimation",
+        caf="currentAnimationFrame",
         cf="currentFrame",
-
         ae='animationend',
 
         o=Do(x)
+
     o.p=function(a){
         if(a){x[gtp](a)}
         else{x.play()}
         return o}
+
     o.s=function(a,b){
         if(a){x[gts](a)}
         else{x.stop()}
@@ -65,11 +77,26 @@ spr=function(x){
 
     return o}
 
-Sp=function(ss, f, st){
-    return Ql({m:makeMan(ss),
+EaselSprite   = sprX
+
+    Sp=function(ss, f, st){
+
+    return Ql( { m: makeMan(ss),
+
     c:function(i){var s=jss(s)
-            if(st){st.a(s)}
-            if(f){f(spr(s),s)} }})}
+
+        if(st){st.a(s)}
+
+        if(f){
+
+                f( spr(s), s )
+
+            }
+
+    }})}
+
+
+
 
 
 

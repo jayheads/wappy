@@ -45,48 +45,46 @@ sJE=sEventObj=function(e){
     }}
 
 
-Do=function(ob,f){
+
+SuperDisplayObject=Do=function(ob, func){
 
     //you decide the function object, or get a blank one
-    var o=F(f)?f:function(){};
+    var o = F(func)? func: function(){}
+
 
     //the passed on obj reached at .ob
-    o.ob=ob
+    o.object = o.ob = ob
 
 
     //pass in a stage, and the obj will be appended to it
-    o.ap=function(s){
-        s.a(o);
-        return o}
+    o.ap=function(stage){  stage.a(o); return o}
 
 
-    //not sure
+    //custom
+    //this will run one (or more) functions ON the display object
+    //example: o.fn( TR )
+    //return display object
     o.fn=function(){
-        var g=G(arguments);
-        _e(g,
 
-            function(f){
-                f(o)});return o}
+        var args=G(arguments)
 
+        _.each(args,  function(arg){  arg(o)  })
 
-
-
+        return o
+    }
 
 
 
 
-
-    //dispatch event
-    o.dE=function(a,b,c){ob.dispatchEvent(a,b,c);return a}
+    o.emit= o.dispatchEvent= o.dE=function(a,b,c){ o.object.dispatchEvent(a,b,c);  return a  }
 
 
-    //on
-    o.o=function(a,b,c,d,e){
+    o.o= o.on=function(a,b,c,d,e){
 
         var g=G(arguments),a=g[0],b=g[1],c=g[2],d=g[3],e=g[4]
 
         if(O(a)&&!F(a)){
-            _e(a,function(v,k){o.o(k,v)})
+            _.each(a,function(v,k){o.o(k,v)})
         return o}
 
 
@@ -127,15 +125,13 @@ Do=function(ob,f){
     }
 
 
+    o.name = o.n= o.nm=function(name){o.object.name=name;return o}
 
-    //name
-    o.n= o.nm=function(n){o.ob.name=n;return o}
 
-    //set
-    o.s=function(a){o.ob.set(a);return o}
+    o.set = o.s=function(a){o.ob.set(a);return o}
 
-    //something with ticker
-    o.t=function(a,b,c,d){
+
+    o.tick= o.ticker =o.t=function(a,b,c,d){
 
         if(U(a)){
             Ed(T$).t(o)
@@ -144,7 +140,9 @@ Do=function(ob,f){
         return o.o('t',
             a,b,c,d)}
 
-    o.x=function(a){var g=G(arguments)
+
+    o.x=function(a){
+        var g=G(arguments)
         if(U(a)){return ob.x}
         if(g.p){ob.x=ob.x+a}
         else if(g.n){ob.x=ob.x-a}
@@ -152,7 +150,8 @@ Do=function(ob,f){
         else if(g.d){ob.x=ob.x/a}
         else{ob.x=a}
         return o}
-    o.y=function(a){var g=G(arguments)
+    o.y=function(a){
+        var g=G(arguments)
         if(U(a)){return ob.y}
         if(g.p){ob.y=ob.y+a}
         else if(g.n){ob.y=ob.y-a}
@@ -162,8 +161,8 @@ Do=function(ob,f){
 
         else{ ob.y=a}
         return o}
-
-    o.xy=function(a,b){var g=G(arguments)
+    o.xy=function(a,b){
+        var g=G(arguments)
         a=g[0];b=g[1]
 
         if(O(a)){return o.xy(a.x, a.y)}
@@ -224,6 +223,8 @@ Do=function(ob,f){
         else if(g.d){o.sx(o.sx()/a);o.sy(o.sy()/b)}
         else{o.sx(a);o.sy(b)}
         return o}
+
+
     o.rx=function(a){var g=G(arguments)
         a=g[0]
         b=g[1]
@@ -275,6 +276,8 @@ Do=function(ob,f){
             }}
 
         return o}
+
+
     o.rt=function(a){
         var g=G(arguments);a=g[0]
 
@@ -321,8 +324,8 @@ Do=function(ob,f){
     /////
 
 
-    //off
-    o.O=function(t,f){var g=G(arguments),
+
+    o.off=o.O=function(t,f){var g=G(arguments),
         t=g[0],
         f=g[1]
         if(F(t)){return o.O('$',t)}
@@ -340,33 +343,35 @@ Do=function(ob,f){
 
         return o}
 
-    //has listener?
-    o.hl=function(a,b){return o.ob.hasEventListener(oO('e',a))}
 
-    //will trigger?
-    o.wt=function(ty){return o.ob.willTrigger(ty)}
-
-    //on click
-    o.$=function(a,b,c,d){return o.o('$', a,b,c,d)}
-
-    //on dblclick
-    o.$$=function(a,b,c,d){return o.o('$$',a,b,c,d)}
+    o.hasListener=o.hl=function(a,b){return o.ob.hasEventListener(oO('e',a))}
 
 
+    o.willTriger=o.wt=function(ty){return o.ob.willTrigger(ty)}
+
+
+    o.$=function(a,b,c,d){return o.o('$', a, b, c, d )}
+
+    o.$$=function(a,b,c,d){    return o.o( '$$', a, b, c, d )     }
+
+
+    o.lineTo= o.lT =o.lt=function(a,b){ o.g.lt(a,b);return o}
+
+    o.moveTo = o.mT= o.mt=function(a,b){ o.g.mt(a,b);return o}
+
+
+    o.beginStroke =o.gs=function(a){ o.g.s(a);return o}
+
+    o.beginFill  =o.gf=function(a){ o.g.f(a);return o}
+
+    o.strokeStyle  =o.gss=function(a,b,c){ o.g.ss(a,b,c);return o}
 
 
 
-    //line to
-    o.lt=function(a,b){o.g.lt(a,b);return o}
-    //move to
-    o.mt=function(a,b){o.g.mt(a,b);return o}
-    o.gs=function(a){o.g.s(a);return o}
-    o.gf=function(a){o.g.f(a);return o}
-    o.gss=function(a,b,c){o.g.ss(a,b,c);return o}
 
 
 //to string
-    o.str=function(){return o.ob.toString()}
+    o.str  =function(){return o.ob.toString()}
 
     //parent
     o.pa=function(n){
@@ -379,8 +384,7 @@ Do=function(ob,f){
     //remove
     o.XX=function(){
         o.O()
-        o.pa().ob.removeChild(o.ob)
-    }
+        o.pa().ob.removeChild(o.ob)}
 
 
     o.MV=function(a){
@@ -468,7 +472,9 @@ Do=function(ob,f){
     }
 
     //clone
-    o.cl=function(){return o.ob.clone()}
+    o.cl=function(){ return o.ob.clone() }
+
+
 
     //composite operation
     o.gc=function(co){if(U(co)){
@@ -565,6 +571,7 @@ Do=function(ob,f){
 
         return o}
 
+
     //matrix
     o.gm=function(m){ var g=G(arguments),m=g[0]
         return g.p? o.ob.getConcatenatedMatrix(m)
@@ -643,6 +650,27 @@ Do=function(ob,f){
 
 
 
+WrappedDOx = function( object ){
+
+ var superDisplayObject= SuperDisplayObject(object)
+
+    var container = EaselContainer()
+
+    container.a( superDisplayObject )
+
+    container.dO=container.displayObject=superDisplayObject
+
+    return container}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -653,9 +681,20 @@ Do=function(ob,f){
 
 
 //
-opop=function(a,b){
-    if(U(a)){_e(p,function(k,v){ob[v]=x[k]});return ob}
-    if(U(b)){return o[p[a]]};
-    if(S(a)){o[p[a]]=b}
-    if(O(a)){o.set(a)}
-    return o}
+opopX=function(a,b){
+
+    if(U(a)){
+        _.each(p,
+            function(k,v){
+                ob[v]=x[k]});return ob}
+
+    if(U(b)){ return o[p[a]] }
+
+
+    if(S(a)){ o[p[a]]=b }
+
+    if(O(a)){ o.set(a) }
+
+    return o
+
+}

@@ -85,7 +85,19 @@ module.exports=W
 
 
 
-function $l(a,b){if(!b){console.log(a);return a}else{console.log('{'+a+':'+b+'}');return b}};
+function $l(a,b){
+
+    if(!b){ console.log(a); return a }
+
+    else {console.log ('{' +a+ ':' +b+ '}' );return b}
+
+}
+
+
+
+
+
+
 function $d(a,b){if(!b){console.dir(a);return a}else{l(a);return d(b)}}
 
 

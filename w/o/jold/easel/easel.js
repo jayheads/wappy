@@ -124,6 +124,8 @@ sEd=function(a){
         return t}
     a.tS=function(){return this.toString()}
     return a}
+
+
 sDo=function(o){o=sEd(o);
     o.mh=function(a,b,c){return this[dOMets[a]](b,c)}
     o._=function(a,b){var t=this,p={};

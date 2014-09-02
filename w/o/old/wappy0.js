@@ -99,7 +99,7 @@ if(get('env')=="development"){
 
 
 C$ =$e.cookieParser('xyz')
-B$ =$e.bodyParser
+B$X =$e.bodyParser
 ss =$e.session
 F$=$e.favicon()
 

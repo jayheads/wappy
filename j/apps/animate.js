@@ -17,10 +17,14 @@ TWEEN=function(a){//combo/complex/anim/tween
             [b,'l'],
 
             {x:0,sxy:.7,r:0},
-            [{x:300,sxy:2.3,r:0},1000],
-            [{x:0,sxy:.7,r:-30,a:.5},3000])
+
+            [ {x:300,sxy:2.3,r:0}, 1000 ],
+
+            [ {x:0,sxy:.7,r:-30,a:.5},3000])
 
         })
+
+
 
 
     // i think the + makes this draggable
@@ -48,9 +52,6 @@ TWEEN=function(a){//combo/complex/anim/tween
             [{kxy:0,x:320,y:0,rxy:0,sxy:2,r:-1},3000])},
 
         '+')}
-
-
-
 
 TWEENART=function(a){
 
@@ -104,17 +105,16 @@ TWEENART=function(a){
 }
 
 
-
-
 EASING=function(){
 
 
-    s=St(1000,10000).a()
+    stage=St(1000,10000).a()
 
-    s.mg(
+    stage.mug(
 
         function(b){
             b.sxy(.2).xy(50,100)
+
             tw([b,'l'],
                 [{x:800},2000],
                 [{x:50},2000]
@@ -125,18 +125,19 @@ EASING=function(){
 
     eas=function(y,e){
 
-       s.mg(
+       stage.mug(
 
            function(b){
 
                b.sxy(.2).xy(50,y)
 
-               tw([b,'l'],
-               [{x:800},2000,e] ,
-               [{x:50},2000,e])
-       }
-       )
-   }
+               tw([b,'l'], [{x:800},2000,e],  [{x:50},2000,e])
+
+               b.$(function(){    pop(e + ' : ' + oO('E',e))   })
+       })}
+
+
+
 
     eas(300,'bO'); eas(500,'bI'); eas(700,'bIO')
     eas(900,'bnO');eas(1100,'bnI');eas(1300,'bnIO')
@@ -148,58 +149,60 @@ EASING=function(){
     eas(5100,'qdO');eas(5300,'qdI'); eas(5500,'qdIO')}
 
 
+
+
 SPRITE=function(sprite){
 
-    sprite = sprite || SS
+    sprite=sprite||SS
 
     var g=G(arguments),
-        st=St('X',400).a().drg().op(.7),
-        s=spr(jss(sprite)).xy(10),
-        ctr
 
-    st.a(s)
+        stage = SuperStage(  'o', 400 ).a().drg().op(.7),
 
+        sprite = SuperSprite(  EaselSpriteSheet( sprite )  ).xy(10),
 
-    //if(g.p){St().a().drg().t().a(s.p());return s}
+        controls={
+            jump:function(){ sprite.play('jump') },
+            explode:function(){ sprite.play('explode') },
+            spin:function(){ sprite.play('spin') },
+            stop:function(){ sprite.stop() },
+            play:function(){ sprite.play() } }
 
-    ctr={
+    stage.a( sprite)
 
-        j:function(){ s.p('jump') },
-        e:function(){ s.p('explode') },
-        r:function(){ s.p('spin') },
-        s:function(){ s.s() },
-        p:function(){ s.p() },
-        t:function(a,b){ W$.get( bj(s) ).to(a,b) }
-    }
+    $divA('y',460, 80,200, 300).padding(20).op(.9)(
 
+        $span(' '),
+        $button('spin',function(){    controls.spin() }), $span(' '),
+        $button('jump',function(){    controls.jump() }),$span(' '),
+        $button('explode',function(){   controls.explode()  }),  $span(' '),
+        $button('play',function(){   controls.play()  }),  $span(' '),
+        $button('stop',function(){   controls.stop()  }),   $span(' '),
+        $button('meta', function(){ SPRITE() })
 
+    )
 
-    dva(6)(
-
-        sp(' '),
-        bt('spin',function(){  ctr.r() }),sp(' '),
-        bt('jump',function(){  ctr.j() }),sp(' '),
-        bt('explode',function(){  ctr.e()  }),  sp(' '),
-        bt('play',function(){  ctr.p()  }),  sp(' '),
-        bt('pause',function(){  ctr.s()  }),   sp(' '),
-        bt('meta',SPRITE)
-
-    ).c('y').h(80).w(460).a().t(200).l(300).P(20).op(.9)
-
-    return ctr}
+    return  controls}
 
 
 
 
-PACK=function(){
 
 
-    s=St(800).a().t().op(.7) // s.qC().l(100);s.qC().t(100)
+PACK = function(){
+
+    stage = SuperStage(800).op(.7).a().t()
 
 
-    p = spr(jss(Pack)).rgc().xy(10).fn(TR).p()
-        .fr(6).xy(400,460).sxy(1.2).ap(s)
+    sprite = SuperSprite( EaselSpriteSheet(Pack) )
+
+        .rgc().xy( 400, 460 ).sxy(1.2).fn( TR ).ap( stage )
+        .frameRate(6).play()
+
 }
+
+
+
 
 
 
@@ -238,7 +241,7 @@ MOVIE=function(){wap()
 
                 _d()(
 
-                    bt('shake',function(){
+                    $button('shake',function(){
                         fn=function(b){
                             W$.get(b.obj(),{loop:true})
 
@@ -249,11 +252,11 @@ MOVIE=function(){wap()
                         }}),
 
 
-                    bt('rotate',function(){fn=function(b){W$.get(b.obj(),{loop:true})
+                    $button('rotate',function(){fn=function(b){W$.get(b.obj(),{loop:true})
                         .to(ww({kxy:0})).to(ww({kxy:20}),500).to(ww({kxy:0}),500)}}),
 
 
-                    bt('size',function(){fn=function(b){W$.get(b.obj(),{loop:true})
+                    $button('size',function(){fn=function(b){W$.get(b.obj(),{loop:true})
                         .to(ww({sxy:1})).to(ww({sxy:1.3}),500).to(ww({sxy:1}),500)}})
 
 

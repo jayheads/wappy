@@ -22,6 +22,8 @@ module.exports=function(){
         }
 
     }
+
+
     find=function(m,o,f){
 
         if( !F(f) ){ f=pjd(f) }
@@ -271,37 +273,35 @@ module.exports=function(){
     //upload photo (png?)
 //upload pic
 
-    $a.post('/upl', $w.u,  function(req,res,next){
+    $a.post('/pic', $w.u,  function(req, res, next){
+
+        $l('upload new pic!!!')
+
 
             if(req.files.png){req.files.i = req.f.png}
 
 
-            var imgFile=req.files.i,
+            var imgFile = req.files.i,  op=imgFile.path
 
-                op = imgFile.path
+        $l('imgFile.path: '+ op)
+        $l('user._id: '+ req.I)
 
-
-           models['pic'].create(
+           models.pic.create(
 
                {
-                   u:req.I,
-                   n:imgFile.name,
-                   s:imgFile.size,
-                   m:imgFile.lastModifiedDate,
-                   e:path.extname(imgFile.path)||'.png'
-               },
+                   u: req.I,
+                   n: imgFile.name,
+                   s: imgFile.size,
+                   m: imgFile.lastModifiedDate,
+                   e: path.extname(imgFile.path)||'.png' },
 
                function(err, img){
 
-                   img.p = path.resolve(
+                   if(err){$l('err'); $l(err)}
 
-                       imgFile.path,
 
-                       '../../p/',
 
-                       img._id.toString()
-
-                   )
+                   img.p = path.resolve(  imgFile.path,  '../../p/',   img._id.toString()   )
 
                        + img.e  //$d(i.p)
 
@@ -414,9 +414,24 @@ module.exports=function(){
 
         models.img.create(
 
-            { u: req.username,   d: req.body.d,  dats: req.body.dats } ,
+            {
+                u: req.username,
 
-            function(err, image){return res.json(image)  }
+                d: req.body.d,
+
+                dats: req.body.dats,
+
+                username: req.username,
+
+                data: req.body.d,
+
+                physicsData: req.body.dats
+
+            },
+
+
+
+            function(err, image){ return res.json(image)  }
 
 
 
@@ -524,14 +539,23 @@ module.exports=function(){
 
     $a.post('/changeMug', $w.u, function(req,res){
 
-        req.U.m = req.b.m
+
+        $l(req.body.m)
+
+        req.U.m = req.body.m
 
         req.U.save(
 
-            pjd(res,'m')
+            function(err, mug){   res.json(mug)   }
+
+
 
         )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
     //
+
+
+
+
 
 
     //get a sp. user's mug data-Url

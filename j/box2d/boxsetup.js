@@ -9,8 +9,11 @@ mW=makeWorld=function(o){o=ob(o)
     if(o.z !=0){ z()}
 
     o.g=N(o.g)?o.g:40
+
     w=bW(bV(0,o.g))
+
     makeStage(1200, 600,o)
+
     cvPx=gEP(did())
     startLoop(o.cb)
     checkMouseDown()
@@ -32,21 +35,21 @@ if(!o.$$==0){
 
 
 makeStage=function(X,Y,o){
-    c=cx(X,Y).a()
+
+    c = $can(X,Y).a()
+
     c.q.id('canvas')  // why not just c.id('canvas')?
     s=St(c)
     STOP()
     x=xx(c)
     s.ob.autoClear=false
 
-if(o.bg){
-
-    s.b(o.bg)
-}
-
-
+if(o.bg){s.b(o.bg)}
 
 }
+
+
+
 
      //why not s.autoClear(0)?
 gEP=function(e){

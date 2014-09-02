@@ -929,6 +929,7 @@ xx = function xx(c, w, h, t, l){
 
         x.x.shadowOffsetX=offsetX
         return x}
+
     x.shadowOffsetY=function(offsetY){
         if(U(offsetY)){
             return x.x.shadowOffsetY}
@@ -955,15 +956,20 @@ xx = function xx(c, w, h, t, l){
         x.x.translate(X,Y)}
 
 
-    x.rotate=x.rt=function(r){var g=G(arguments),
+    x.rotate=x.rt=function(r){
+        var g=G(arguments),
         r=g[0]||1
         //r=pi(-6)*r
         //x.fr(0,0,1,1)
         //x({f:$r('c')
-        x.x.rotate(r)}
+        x.x.rotate(r)
+    }
+
+
     x.transform=x.tf=function rc(a,c,e,b,d,f){var g=G(arguments)
         if(g.p){return rc(2,0,0,2,0,0)}
         return x('t',a,c,e,b,d,f)}
+
     x.setTransform=x.stf=function rc(a,c,e,b,d,f){var g=G(arguments)
         if(g.p){return rc(2,0,0,2,0,0)}
         return x('st',a,c,e,b,d,f)}
@@ -973,16 +979,28 @@ xx = function xx(c, w, h, t, l){
 
     // PIXEL-DATA
     x.getData=x.gD=function(X,Y,w,h){
+
         var g=G(arguments),
-            X=g[0]|| 0,
-            Y=g[1]|| 0,
-            w=g[2]||x.w(),
-            h=g[3]||x.h(),
-            d=x('G',X,Y,w,h).res
-        d.h=d.height
-        d.w=d.width
-        d.d=d.data
-        return d}
+
+            X=g[0] || 0,
+            Y=g[1] || 0,
+            w=g[2] || x.w(),
+            h=g[3] || x.h(),
+
+        //historic.. dont delete ! data = x('G', X, Y, w, h).res
+
+        data = x.x.getImageData(X,Y,w,h)
+
+        data.h=data.height
+        data.w=data.width
+        data.d=data.data
+
+        return data}
+
+
+
+
+
     x.putData=x.pD=function(d,X,Y){
         X=X||0
         Y=Y||0
@@ -1424,27 +1442,42 @@ FAN=function(){
         restoreDrawingSurface()
         updateRubberband({x:X,y:Y})})
 }
-RUB=function(){z()
-    x=cx('y',1000,800).a()
-    y=cx('x',400).a()
-    x.$$(function(){x.f('me')})
-    x.f('me')
 
 
+RUB=function(){ z()
+
+    x = $can('y', 1000, 800).a()
+
+    //x.$$( function(){ x.fit('me') } )
+
+    x.fit('me')
 
     guidewires=false
+
     dragging=false
+
     mousedown={}
+
     loc={}
-     rr=null
+
+    rr=null
+
     data=null
 
 
 
-    x.MD(function(X,Y){
-        data=x.gD()
-        dragging=true
-        mousedown={x:X,y:Y}})
+    x.MD( function(X,Y){
+
+        data = x.gD()
+
+        dragging = true
+
+        mousedown = { x:X, y:Y }
+
+    })
+
+
+
 
     x.MM(function(X,Y){var m={x:X,y:Y},d=mousedown
         if(dragging){x.pD(data)
@@ -1454,17 +1487,32 @@ RUB=function(){z()
                 [m.x,m.y,m.x,d.y],
                 [m.x,m.y,d.x,m.y])}})
 
-    x.MU(function(X,Y){dragging=false
-        var d=mousedown,x1,x2,y1,y2
-        if(X>d.x){x1=d.x;x2=X} else{x1=X; x2=d.x}
-        if(Y>d.y){y1=d.y;y2=Y} else{y1=Y;y2=d.y}
+
+    x.MU(function(X,Y){
+
+        dragging = false
+
+        var d = mousedown, x1, x2, y1, y2
+
+        if(X > d.x){ x1 = d.x; x2 = X } else {x1=X; x2=d.x}
+
+        if(Y > d.y){ y1 = d.y; y2 = Y } else {y1=Y; y2=d.y}
 
         rr=[x1,y1, x2, y2]
 
         x.pD(data)
 
         x.crop(rr)
-        data=x.gD()})}
+
+        data=x.gD()})
+
+}
+
+
+
+
+
+
 
 
 PAN=function(){
@@ -1535,22 +1583,59 @@ makeGrad=function(){z()
 
 
 
-can=function(r,w,h,t,l){var g=G(arguments),
-    c=$canvas()
-    if(!S(g[0])){return g.p? can('X',r,w,h,t,'+')
-        :g.n? can('X',r,w,h,t,'-')
-        :can('b',r,w,h,t)}
+$can = can = function( r, w, h, t, l ){
+
+    var g=G(arguments),
+
+        c=$canvas()
+
+    if( !S(g[0]) ){  return can('y', r, w, h, t)  }
+
     if(!N(w)){w=200}
+
     if(!N(h)){h=w}
-    c.at({w:w,h:h}).s({C:r})
-    if(g.n){c.a()}
-    if(g.p){c.a().drg().t(t).l(l)}
-    return c}
+
+    c.at({ w: w, h: h }).s({ C: r })
+
+    //if(g.n){ c.a() }
+
+    //if(g.p){ c.a().drg().top(t).left(l) }
+
+    return xx(c)
+
+}
 
 
-cx=function(r,w,h){var g=G(arguments)
-    if(g.p){return can('z',(r||4)*100,'+')}
-    return xx(_a(can,arguments))}//==cV=function(r){r=r||4; return can('z',(r||4)*100,'+')}
+
+
+
+
+
+
+
+
+
+
+cx=function(r,w,h){
+
+    var args=G(arguments)
+
+    if(args.p){
+
+        return can( 'z', (r||4) * 100, '+' )
+
+    }
+
+    return xx( can.apply(this, arguments) )
+
+}
+
+
+
+
+//==cV=function(r){r=r||4; return can('z',(r||4)*100,'+')}
+
+
 
 
 
@@ -1560,21 +1645,26 @@ c0=function(){var g=G(arguments),
     return g.n? xx(c):g.p?St(c):c}
 c00=function(){var g=G(arguments),c=_l($('canvas'))
     return g.n? xx(c):g.p?St(c):c}
+
 ci=function(a){return qq($canvas()).id(a)}
 
 
 
 
-xc=function(i,z,f){
-    var x=xx($canvas()).bc('X')
 
-    if(i){x.f(i)}
-    if(z){x.Z(z)}
-    if(f){x.o(f)}
+$imageSizeFuncCan = xc=function(image, size, func){
 
-    return x
+    var x = xx( $canvas() ).bc('X')
 
-}
+    if(image){ x.fit(image) }
+    if(size){  x.Z(size) }
+    if(func){  x.$(func) }
+
+    return x}
+
+
+
+
 
 
 

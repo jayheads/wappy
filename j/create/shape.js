@@ -1,22 +1,27 @@
 
 
 
-Hx=function(a,b){
+Hx = function(a,b){
 
-    if(O(a)){return Do(H$(a))}
+    if(O(a)){ return Do( H$(a) ) }
 
-    var h=Do(H$())
+    var h = Do( H$() )
 
-    h.g=h.ob.graphics
+    h.g = h.ob.graphics
 
-    if(S(a)){h.g.f(a)}
-    if(F(b)){b(h.g, h)}
-    if(iSt(b)){b.a(h)}
+    if(S(a)){ h.g.f(a)}
+
+    if(F(b)){ b(h.g, h)}
+
+    if(iSt(b)){ b.a(h)}
 
 
     h.f= h.fC=function(a){
-        h.g.f(oC(a))
-        return h}
+
+        h.g.f( oC(a) )
+
+        return h
+    }
 
 
 
@@ -25,6 +30,7 @@ Hx=function(a,b){
 
     h.clr=function(){h.g.clear()
         return h}
+
     h.c= h.cir=function(x,y,r,c,d){
         if(!N(r)){return h.c(0,0,x,y,r)}
         if(c){h.f(c)}
@@ -58,7 +64,7 @@ Hx=function(a,b){
 
 
 
-rct=function l(x,y,w,h,fc,sc){
+EaselRect=rct=function l(x,y,w,h,fc,sc){
 
     if(!N(w)){return l(0,0,x,y,w,h)}
 
@@ -70,7 +76,7 @@ rct=function l(x,y,w,h,fc,sc){
     fc=oC(fc||'x');
     sc=oC(sc||'y')
 
-    var sh=Hx()//.fn(SL)
+    var sh = Hx()//.fn(SL)
 
     sh.g.f(fc).s(sc).r(x,y,w,h)
 
@@ -81,32 +87,41 @@ rct=function l(x,y,w,h,fc,sc){
 
 
 
-Gx=function(st){
+Gx = function(st){
 
-    var g=G$()
+    var g = G$()
 
-    g.fs=function(a,b){
-        g.f(oC(a))
+    g.fs = function(a,b){
 
-        if(S(b)){g.s(oC(b))}
-        return g}
+        g.f( oC(a) )
 
-    g.d=function(s){g.draw(st||s)}
+        if( S(b) ){ g.s( oC(b) ) }
 
-    g.dr0=function(w,h){
-        w=N(w)?w:100
-        h=N(h)?h:w
-        g.dr(0,0,w,h)
+        return g
+    }
+
+
+    g.d = function(s){ g.draw( st || s ) }
+
+    g.dr0 = function(w,h){
+
+        w = N(w)? w : 100
+        h = N(h)? h : w
+        g.dr( 0, 0, w, h )
 
         return g }
 
-    g.H=function(){return Hx(g)}
+    g.H = function(){ return Hx(g) }
 
     return g}
 
 
 
-EaselCircle = cir=function p(x,y,r,fc,sc){var gx=Gx()
+
+
+EaselCircle = cir=function p(x,y,r,fc,sc){
+
+    var gx=Gx()
 
     if(O(x)){
         return p(
@@ -116,14 +131,18 @@ EaselCircle = cir=function p(x,y,r,fc,sc){var gx=Gx()
             x.fc,
             x.sc)}
 
-    r=N(r)?r:8;
-    x=N(x)?x:100;
-    y=N(y)?y:100
+    r=N(r)?r : 8
+    x=N(x)?x : 100
+    y=N(y)?y : 100
 
     gx.ss(r/8).fs(fc,sc||'z').dc(0,0,r)
 
 
-    return Hx( gx ).xy(x||100,y||100)}
+    return Hx( gx ).xy(x||100,y||100)
+
+}
+
+
 
 
 
@@ -206,27 +225,34 @@ ballBox=function(bl,bx,buff){ buff=buff||100
 
     return b}
 
-EaselText = TX=function(a,r,f,x,y){var g=G(arguments),
 
-    t=Do(new C$.Text(
-        g[0],
-        (N(f)?g[2]+'px Arial':g[2])||'20px Arial',
-        oC(g[1]||'z')))
 
-    t.xy(N(g[3])?g[3]:100,
-         N(g[4])?g[4]:N(g[3])?g[3]:  100)
 
-    t.bl=function(b){
 
-        if(U(b)){return t.ob.textBaseline}
+EaselText = TX=function(words, color, font, x, y){//var g=G(arguments); if(g.N){text.bl( 'alphabetic' )}   //if(g.p){ TR(text) }
+    x=N(x)? x: 100
+    y=N(y)? y: x
+    font=font|| '20px Arial'
+    font=N(font)? font + 'px Arial' : font
+    color=color||'z'
 
-        t.ob.textBaseline=b;return t}
+    var text=Do(  new createjs.Text(  words,  font,  oC(color) ) ).xy(x, y)
+    text.baseline = text.bl = function(b){
 
-    if(g.N){t.bl('alphabetic')}
+        if( U(b) ){ return text.ob.textBaseline }
 
-    if(g.p){TR(t)}
+        text.ob.textBaseline = b
 
-    return t}
+        return text
+    }
+
+    return text}
+
+
+
+
+
+
 
 
 

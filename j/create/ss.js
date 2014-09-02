@@ -1,48 +1,147 @@
 
 
-jss=function(a){a=a||$w['ss'];return J$(SS$(a))}
-Sp=function(ss,f,st){return Ql({m:makeMan(ss),c:function(i){var s=jss(s)
+EaselSpriteSheet = jss=function(a){ a=a||$w['ss']; return EaselSprite(SS$(a)) }
+
+
+
+Sp=function(ss,f,st){
+    return Ql({m:makeMan(ss),c:function(i){var s=jss(s)
     if(st){st.a(s)}
-    if(f){f(spr(s),s)}}})}
-spr=function(x){var o=Do(x);o.ob=x
+    if(f){
 
-    o.ss=o.ob.spriteSheet
-    o.nF=function(){return o.ss.getNumFrames()}
-    o.gA=function(a){return U(a)? o.ss.getAnimations():o.ss.getAnimation(a)}
-    o.gAN=function(a,n){var g=G(arguments),a=g[0],n=g[1],an=o.gA(a)
-        if(U(n)){
-            if(g.p){an.next=an;return o}
-            if(g.n){an.next=false;return o}
-            return an.next}
-        an.next=n
-        if(g.p){p.gA(n).next=a}
+        f( SuperSprite(s), s )
+
+    }}})}
+
+
+
+SuperSprite = spr=function(x){
+
+    var o = Do( x )
+
+    o.ob=x
+
+    o.sS= o.ss=o.ob.spriteSheet
+
+
+    o.numFrames=o.nF=function(){return o.sS.getNumFrames()}
+
+    o.getAnim=o.gA=function(a){
+
+        return U(a)? o.sS.getAnimations()
+            :
+            o.sS.getAnimation(a) }
+
+
+
+
+    //set/get NEXT animation on an animation
+    o.next=o.gAN =function(anim1, nextAnim){
+
+        var g=G(arguments),  anim1 =g[0],  nextAnim=g[1],
+
+            theAnim=o.gA(anim1)
+
+
+
+        //if you just pass in the anim1 string
+        if(U(nextAnim)){
+
+            //set its next to itself
+            if(g.p){theAnim.next= theAnim; return o}
+
+            //set its next to false
+            if(g.n){theAnim.next=false; return o}
+
+            //get its next
+            return theAnim.next}
+
+        theAnim.next = nextAnim
+
+        //loop the TWO anims
+        if(g.p){  o.gA(nextAnim).next=anim1  }
+
         return o}
-    o.p=function(a,b){var g=G(arguments),a=g[0],b=g[1],l=g.f,n
-        if(U(a)){o.ob.play();return o}
-        if(U(b)){if(g.n){o.gAN(a,false)}
-            if(g.p){o.gAN(a,a)}
+
+
+    o.play =o.p=function( a, b ){
+
+        var g=G(arguments),
+            a=g[0],
+            b=g[1],
+            l=g.f,
+            n
+
+        if(U(a)){ o.ob.play(); return o }
+
+        if(U(b)){
+
+            if(g.n){o.next(a, false)}
+
+            if(g.p){o.next(a, a)}
+
             o.ob.gotoAndPlay(a)
-            return o}
 
-        _e(g.r,function(a){o.gAN(l,a);l=a})
-        o.gAN(g.l,g.P?false:g.f);o.p(g.f)}
-    o.s=function(a){if(D(a)){o.ob.gotoAndStop(a)}else{o.ob.stop()};return o}
-    o.P=function(){return !o.ob.paused}
-    o.cf=function(a){var g=G(arguments),a=g[0]
+            return o
+        }
 
-        if(g.p){return o.cf(o.cf()+(N(a)?a:1))}
-        if(g.n){return o.cf(o.cf()-(N(a)?a:1))}
-        if(U(a)){return o.ob.currentFrame}
+        _.each(g.r, function(a){
+            o.next( l, a )
+            l=a
+        })
 
-        $l(a)
-        return o.P()?o.p(a):o.s(a)}
-    o.ca=function(a){return U(a)?
-        o.ob.currentAnimation
-        :o.P()?o.p(a):o.s(a)}
-    o.av=function(a){o.ob.advance(a);return o}
-    o.cm=function(a){o.ob.on('complete',a)}
-    o.ae=function(a){o.o('animationend',a);return o}
-    o.fr=function(a){var g=G(arguments),a=g[0]
+        o.next( g.l, g.isPlaying ? false : g.f )
+
+        o.play( g.f )
+
+    }
+
+
+    o.stop= o.s=function(a){ if(D(a)){ o.ob.gotoAndStop(a)}else{o.ob.stop()};return o}
+
+    o.isPlaying= o.P=function(){return !o.ob.paused}
+
+    o.frame= o.currentFrame=o.cF = o.cf=function(num){
+
+        var args=G(arguments),   num=args[0]
+
+
+        if(args.p){
+            return o.frame(
+                    o.frame() + ( N(num) ? num : 1 )
+            )}
+
+
+        if(args.n){
+            return o.frame(
+                    o.frame() - ( N(num) ? num : 1 )
+            )}
+
+
+        if( U(num) ){ return o.ob.currentFrame }
+
+
+        $l(num)
+
+        return o.isPlaying()? o.play(num) : o.stop(num)
+    }
+
+    o.anim =o.cA = o.ca = function(a){ return U(a)?
+
+        o.ob.currentAnimation :
+
+        o.isPlaying()? o.play( a ) : o.stop(a)
+
+}
+
+    o.advance= o.av=function(a){ o.ob.advance(a); return o }
+
+    o.oC= o.cm=function(a){ o.ob.on('complete',a) }
+
+    //will run each loop
+    o.oAe= o.ae=function(a){ o.o('animationend',a);return o }
+
+    o.rate =o.fR= o.frameRate=o.fr=function(a){var g=G(arguments),a=g[0]
         if(g.p){return o.fr(o.fr()+(N(a)?a:1))}
         if(g.n){return o.fr(o.fr()-(N(a)?a:1))}
         if(g.m){return o.fr(o.fr()*(N(a)?a:2))}
@@ -52,9 +151,16 @@ spr=function(x){var o=Do(x);o.ob=x
         $l(a)
         o.ob.framerate=a;
         return o}
-    o.caf=function(a){if(U(a)){return o.ob.currentAnimationFrame}}
+
+
+    o.cAF= o.caf=function(a){
+        if(U(a)){
+            return o.ob.currentAnimationFrame}
+    }
 
     return o}
+
+
 
 
 

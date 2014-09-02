@@ -132,7 +132,7 @@ FLOAT=function(){
 //ddd=function(){z(); d=dva(500)(  e=dv(100), c=sCan()  ) }
 
 //color, width, height, left, top
-dva=function f(r,w,h,l,t){
+$divA = dva=function f(r,w,h,l,t){
     var g=G(arguments),r=g[0],w=g[1],h=g[2],l=g[3],t=g[4],
         d
 
@@ -143,17 +143,13 @@ dva=function f(r,w,h,l,t){
             :g.p?f($r(),r,w,h,l,'+')
             :f($r(),r,w,h,l)}
 
-
     d = $div().p('a').c(r).a()
-
 
     if(g.p){
 
-        if(w){
-            d.l(w)}
+        if(w){  d.l(w) }
 
-        if(h){
-            d.t(h)}
+        if(h){ d.t(h) }
 
         d.P(16)
 
@@ -161,7 +157,7 @@ dva=function f(r,w,h,l,t){
     }
 
 
-    w=w||1
+    w= w||100
     h=h||w
     d.w(w)
     d.h(h)
@@ -174,6 +170,13 @@ dva=function f(r,w,h,l,t){
 
     if(g.N){d.drg()}
     return d}
+
+
+
+
+
+
+
 
 dvd=function(){
 

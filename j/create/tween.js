@@ -32,7 +32,12 @@ ww=function(o){var w={}
 
 
 
-EaselTween=tw=function(a,b){if(U(b)){return twg(a)}
+
+
+EaselTween=tw=function(a,b){
+
+    if(U(b)){return twg(a)}
+
     //first arg passed to twg, and then rest of args are 'to' pams
 
 
@@ -113,6 +118,17 @@ EaselTween=tw=function(a,b){if(U(b)){return twg(a)}
     })
 
     return Tw(a)}
+
+
+
+
+
+
+
+
+
+
+
 tweens={}
 
 tweens.rpunch=function(arm){
@@ -150,9 +166,6 @@ tweens.rott=function(a){
     )
 }
 
-
-
-
 tweens.prod1=function(a){return tw(
 
     a,
@@ -171,11 +184,6 @@ tweens.prod2=function(a){
         {a:0}
     )
 }
-
-
-
-
-
 
 
 
