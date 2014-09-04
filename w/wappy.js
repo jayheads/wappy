@@ -285,7 +285,7 @@ _.each([
 
 httpServer = http.createServer(a)
 
-if(a.get('env')==='development'){
+if(a.get('env')==='localhost'){
 $l('LOCALHOST')
     httpServer.listen( 8080, smile )
 
