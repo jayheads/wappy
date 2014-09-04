@@ -4,7 +4,7 @@ instantMessagesObject={ }
 
 
 //connect to the socket //..need to change this on the deployment server!!!
-socket = kk=io.connect("http://localhost")
+socket = kk=io.connect( )
 
 
 //var e=function(a,b){return kk.emit(a,b)},o=function(a,b){return kk.on(a,b)}, b=function(a,b){return kk.broadcast.emit(a,b)  }

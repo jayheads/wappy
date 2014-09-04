@@ -161,31 +161,48 @@ sE=function(e){
 
 
 
-ee=function ee(q,a,f){
+ee=function ee(element, mouseEvent, func){
 
 
-    if(U(a)){return _p(ee,q)}
-    if(F(a)||(S(a)&&!(Oo('e',a)))){return ee(q,'$',a)}
+
+    //some partial application
+    if(U(mouseEvent)){ return _.partial(ee, element)}
+
+    // can imply '$' (click)
+    if( F(mouseEvent) || (S(mouseEvent)&&!(Oo('e', mouseEvent)))){  return ee( element, '$', mouseEvent )}
 
 
-    if(O(a)){_e(a,function(v,k){ee(q,k,v)});return q}
+    //can pass an object of events
+    if(O(mouseEvent)){
+        _.each(mouseEvent, function(v, k){
 
-    _e(a.split(' '),
+            ee(element, k, v)})
 
-        function(a){
-            q.q.on(oO('e',a),
-                function(e){
-                    var qt=qq(this)
-                    e=sE(e)
-                    e.x=e.px-qt.x()
-                    e.y=e.py-qt.y()
-                    f(qt,e)
+        return element}
+
+
+    _.each(mouseEvent.split(' '), function(mouseEvent){
+
+        element.q.on( oO('e',mouseEvent),
+
+                function(eventObject){
+
+                    var qqTarget = qq(this)
+
+                    eventObject = sE(eventObject)
+
+                    eventObject.x = eventObject.px - qqTarget.x()
+
+                    eventObject.y = eventObject.py - qqTarget.y()
+
+                    func(qqTarget, eventObject)
+
                 })
         })
 
+    return element}
 
 
-    return q}
 
 
 
@@ -197,31 +214,87 @@ $h=function(a,b){
 
 
 
-MM=function(a){return $h('m',a)}
-MU=function(a){return $h('u',a)}
-MD=function(a){return $h('d',a)}
+
+
+MM=function(a){ return qq($('html')).o('mousemove', a)}
+
+MU=function(a){return qq($('html')).o('mouseup', a)}
+
+MD=function(a){return qq($('html')).o('mousedown', a)}
 
 
 
 
+drg=function(element){
 
-drg=function(d){var z=qq(d),l=z.x(),t=z.y()
+    var q= $b( qq(element).q ).css({ position: 'absolute' }).on('mousedown', function(e){
 
-    $b(z)
-    z.l(l)
-    z.t(t)
+        var offset = $(this).offset(),
 
-    return qq(d).p('a').o('d',function(q,e){
+        deltaX = e.pageX - offset.left, deltaY = e.pageY - offset.top
 
-        MM(function(h,E){
-            d.l(E.px-e.x)
-            d.t(E.py-e.y)})
+        $('html').on( 'mousemove' , function( e ){ q.css({ left:  e.pageX - deltaX , top: e.pageY - deltaY }) })
+                 .on( 'mouseup' , function(){  $(this).off() })
 
-        MU(function(h){h.q.off()})})
+    })
+
+    touchDrg(element)
+    return qq(element)
 
 }
 
 
+
+touchDrg=function(element){
+
+    var q= $b( qq(element).q ).css({ position: 'absolute' }).on('touchstart',
+
+        function(e){ $l('touchstart')
+
+        var offset = $(this).offset(),
+            deltaX = e.originalEvent.touches[0].pageX- offset.left,
+            deltaY = e.originalEvent.touches[0].pageY - offset.top
+
+
+            $l(deltaX + ' : ' + deltaY)
+
+            $('html').on( 'touchmove' , function( e ){ $l('touchmove')
+
+            q.css({ left: e.originalEvent.touches[0].pageX - deltaX , top: e.originalEvent.touches[0].pageY - deltaY }) })
+            .on( 'touchend' , function(){ $l('touchstop'); $(this).off() })
+
+    })
+
+    return qq(element)
+
+}
+
+
+
+
+
+TOUCHSTART=function(){
+
+    z()
+
+    d= $div().w(100).h(200).c('r').a()
+
+    touchDrg(d)
+}
+
+
+
+EASELTOUCH=function(){z()
+
+    stage = SuperStage(500).a()
+
+    createjs.Touch.enable( stage.ob )
+
+    stage.bm('me', SL)
+
+    $div().w(10000).h(10).c('r').a()
+
+}
 
 
 

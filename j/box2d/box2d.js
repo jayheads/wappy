@@ -410,8 +410,6 @@ sFxD=function(f){
 }
 
 
-
-
 //makes a new super fixture
 fDf=function(s){//=b2FD=fDef=Fixt=FixtureDef=bF=
     var f=sFxD(new b2FixtureDef).d(1)
