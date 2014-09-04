@@ -95,6 +95,7 @@ l('------- wappy --------')
 
 
 
+
 //gz = {health:100, x:5000,  y:5000}
 
 
@@ -147,6 +148,10 @@ mongoStore =st=new(require('connect-mongo')(e))({db:'brain'})
 
 
 a=express()
+
+$l('env: ' + a.get('env'))
+
+
 
 a.l = a.locals
 
@@ -280,9 +285,17 @@ _.each([
 
 httpServer = http.createServer(a)
 
+if(a.get('env')==='development'){
+$l('LOCALHOST')
+    httpServer.listen( 8080, smile )
 
-httpServer.listen( 8080, smile)
+}
 
+
+else {
+    $l('AMAZON')
+    httpServer.listen( 80, smile )
+}
 
 
 ball = {x:100, y:100}
@@ -290,7 +303,7 @@ ball = {x:100, y:100}
 
 io =  require('socket.io').listen(httpServer)
 
-io.set('log level',1)
+io.set('log level', 1)
 
 
 sio = require('session.socket.io')
