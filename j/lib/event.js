@@ -291,6 +291,10 @@ EASELTOUCH=function(){z()
     createjs.Touch.enable( stage.ob )
 
     stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
 
     $div().w(10000).h(10).c('r').a()
 
