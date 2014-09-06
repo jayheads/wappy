@@ -161,8 +161,9 @@ module.exports=function(){
 
 
 
-    $a.get('/', function(req,res){  res.render('wap')  })
+    $a.get('/', function(req,res){  res.render('wap')   })
 
+    $a.get('/pinball', function(req,res){  res.render('pinball')   })
 
 
     $a.get('/wap', function(req,res){ res.render('wap') })

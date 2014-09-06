@@ -36,9 +36,10 @@ if(!o.$$==0){
 
 makeStage=function(X,Y,o){
 
-    c = $can(X,Y).a()
+    c = $can(X,Y).a().bc('z')
 
     c.q.id('canvas')  // why not just c.id('canvas')?
+
     s=St(c)
     STOP()
     x=xx(c)

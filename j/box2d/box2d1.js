@@ -131,17 +131,23 @@ PINBALL=function(){
 
 
 
-    kD('u',
-
-        function(){ leftFlip.aI(100, 0);
+    kD('u',   function(){ leftFlip.aI(100, 0);
            rightFlip.aI(-100,0)
-        }
-
-    )
+        }   )
 
 
 
     kD('d', function(){  ba(rnd()*300+40  ,140,20)} )
+
+
+    $('body').mousedown(function(){
+
+
+        ba(rnd()*300+40,140,20)
+         leftFlip.aI(100, 0);
+         rightFlip.aI(-100,0)
+
+    })
 }
 
 

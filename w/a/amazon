@@ -2,19 +2,8 @@ i-46292374
 
 
 
-//ssh -i my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
-
-
-
 
 chmod 400 ~/Desktop/abc1234.pem
-
-ssh -i ~/Desktop/abc1234.pem ec2-user@ec2-54-245-155-194.us-west-2.compute.amazonaws.com
-
-
-////
-
-
 
 
 
@@ -25,4 +14,7 @@ BUT, in the proccess, i lost everything.  and now i opend an ubuntu instance
 ssh -i ~/Desktop/keypair.pem ec2-user@ec2-54-179-179-34.ap-southeast-1.compute.amazonaws.com
 *****
 
+//mongod --fork --logpath /var/log/mongod.log
+//export LC_ALL=C (to make mongod work on server)
+//sudo /usr/local/bin/forever start  wappy.js (on server)!!!
 
