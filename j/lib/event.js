@@ -218,7 +218,23 @@ $h=function(a,b){
 
 MM=function(a){ return qq($('html')).o('mousemove', a)}
 
-MU=function(a){return qq($('html')).o('mouseup', a)}
+MU=function(a){
+
+
+
+    return qq($('html')).o('mouseup', a)
+
+}
+
+
+
+$.MU = $.mouseUp=function(func){$('html').mouseup(func)}
+$.MM = $.mouseMove=function(func){$('html').mousemove(func)}
+$.MD = $.mouseDown=function(func){$('html').mousedown(func)}
+
+
+
+
 
 MD=function(a){return qq($('html')).o('mousedown', a)}
 

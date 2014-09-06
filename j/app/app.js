@@ -1,39 +1,31 @@
 //changed for git stake
 //more
 
-$(function(){
+
+appInit = function(){
+
+    $.getJSON('/loggedIn',   function(username){    if(username=='guest' || !username){ renderGuestPage(); return }
+        _username   =usr= username
+        socket.emit('id', username)
+        socket.emit( 'joinRoom',  _username )
+         $.get('/getMug', function(m){ _userMug = mug = m  } )
+        renderHomePage()})
+}
+
+$( appInit )
 
 
-    $.getJSON('/loggedIn', {},
 
-        function(username){
 
-            _username   =usr=username
-
-            if(username=='guest' || !username){ renderGuestPage() }
-
-            else {
-
-                kk.emit('id', username)
-
-                joinSelf()
-
-                wM(function(m){ _userMug= mug = m})
-
-                renderHomePage()
-
-            }
-        })
-})
 
 
 $password=function(){
    return $input().type('password').class('form-control')
-}
+}//dep
 
 lc=function(a){
     if(D(a)){  $w.location=a  }; return $w.location
-}
+}//dep
 
 
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
@@ -101,52 +93,69 @@ renderGuestPage =guest=function(){ z('r')
 
   var container=ContainerDiv(
 
-      HeaderDiv(
+     $.headerDiv().A(
 
-            $ul().k("nav nav-pills pull-right")(
-                $liA('home').k('active'),
-                $liA('About'),
-                $liA('Contact')),
-            $h1('jason yanofski presents..')
+
+          $.ul().K( "nav nav-pills pull-right" ).A(
+
+              $.lIA('home').K('active'),
+              $.lIA('About'),
+              $.lIA('Contact')
+
+          ),
+
+          $.h1( 'jason yanofski presents..' )
+
+     ).A(),
+
+
+      $.Jumbo(
+
+          'a graphics-based real-time social gaming creativity web app','woo hoo!').A(
+
+          $.buttonL('log in', LoginForm ).C('y','b'),
+
+          $.span(' '),
+
+          $.buttonL('sign up', SignUpForm).C('b','y')
+
 
       ),
 
 
-      JumbotronDiv(
-          'a graphics-based real-time social gaming creativity web app','woo hoo!',
-          ButtonLarge('log in', LoginForm),
-          $span(' '),
-          ButtonLarge('sign up', SignUpForm)
-      ).cen(),
 
 
-      ROW(    $h1('fun!'),  $div()(   $h4('graphics'),  $pg('cool cool cool'),  $h4('social'),      $pg('cool cool')  ))  //,  FT('&copy;2013')
+      ROW(    $h1('fun!'),  $div()(
+
+          $h4('graphics'),
+
+          $pg('cool cool cool'),
+
+          $h4('social'),
+
+          $pg('cool cool')
+
+      ))  //,  FT('&copy;2013')
 
     )
 
     container.pp().drg().c('o').s('a', .9).t(100).l(100)}
 
+Y={}
 
-renderHomePage   = home=function(){
+Y.run=function(app){
 
+    if( $w[ app = uC(app) ] ){  $w[app](); return true  }
+
+    return false}
+
+
+renderHomePage =  home= function(){
     WappyNav( $r() ) //load navigator
-
-    $.getJSON('/loggedIn',
-
-        function(username){
-
-            $('#uname').text(username) //.append(data)
-
-            _username = username
-        })
+    Y.run(app)
+    $.getJSON('/loggedIn', function(username){$('#uname').text( _username  = username)})}
 
 
-        //update user name on UI dash  //qi('uname').jLoad('/lgd')
-
-
-
-    if( $w[ app=uC(app) ] ){  $w[app]()  }  // should be passed in?
-}
 
 
 
@@ -222,91 +231,22 @@ SignUpForm2 = function(){
 
 
 
+LoginForm=function(){
 
+    var verifyLogin=function(username){
+         if(username==='guest'){ $('#mod' ).modal('toggle'); pop('try again.. idiot')}
+         else {renderHomePage(); pop( 'welcome '+ username + '!' )}}
 
+     var form=$('<form>').C('g').pad(4).A(
+            $.formGroupDiv().A(  $label('username: ','username').q,  $.textInput('username')  ),
+            $.formGroupDiv().A(  $label('password: ', 'password').q,  $.passwordInput('password')),
+            $.submitInput( 'log in' ))
 
+     form.submit(function(e){  e.preventDefault()
+         $.post('/login', $l(form.serializeJSON()),  verifyLogin) })
 
+     pop( form ).drg().id('mod')}
 
-
-
-
-
-
-verifyLogin=function(username){
-
-    if(username==='guest'){
-
-        //close the login form
-        qi('mod').m()
-
-
-        //pop a UI alert message
-        pop('try again.. idiot')
-
-    }
-
-    else {
-
-
-        renderHomePage()
-
-        pop( 'welcome '+ username + '!' )
-    }
-}
-
-
- LoginForm= function(){
-
-    var username, password, f
-
-    pop(
-
-        f = $form().P(4).c('g')(
-
-
-
-            username=$div().k('form-group')(
-
-                $label('username: ','username'),
-
-                $textInput().id('username')
-
-                ).f(20).nm('username'),
-
-
-
-            password=$div().k('form-group')(
-
-                $label('password: ', 'password'),
-
-                $password().id('password')
-
-            ).f(20).nm('p'),
-
-
-            $input().V('log in').type('submit').f(16)
-
-
-
-        ).o('s',   function(q, e){
-
-                e.e.preventDefault() // pD(e.e)
-
-                if(username){
-
-                    $.post(  '/login',
-
-                    {
-                        username: qq( username.ch(1) ).V(),
-
-                        password: qq( password.ch(1) ).V()
-
-                    },   verifyLogin)   }
-            })
-
-    ).drg().id('mod')
-
-}
 
 
 
@@ -314,11 +254,7 @@ verifyLogin=function(username){
 
 logOut = function(){qJ('/logOut',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
-getUsers =  function(func){
-
-  $.get('/users', func)
-
-}//usrs =
+getUsers =  function(func){ $.get('/users', func) }//usrs =
 
 
 
@@ -335,8 +271,6 @@ removeUser = rmU=function(a,b){
 
 
 clearApps = fresh=function(){ z();WappyNav() }
-
-
 
 
 

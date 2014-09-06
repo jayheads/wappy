@@ -243,8 +243,12 @@ FONTSTRETCH={n:"normal",sc:"semi-condensed",c:"condensed",ec:"extra-condensed",u
 TEXTDECORATION={u:"underline",o:"overline",l:"line-through",b:"blink"}
 TEXTALIGNMENT={l:"left",r:"right",c:"center",j:"justify"}
 TEXTBASELINE={s:'sub',S:'super',t:'top',tt:'text-top',m:'middle',b:'bottom',tb:'text-bottom'}
+
+
 OLSTYLE={
+
     n:'none',
+
     h:'hidden',
 
     '.':'dotted',
@@ -259,7 +263,12 @@ OLSTYLE={
     i:'inset',
     o:'outset',
 
-    "#":'inherit'}
+    "#":'inherit'
+}
+
+
+
+
 OLWIDTH={
 
     '|':'thin',

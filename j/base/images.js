@@ -109,14 +109,45 @@ imgs=function(f){
 
 
 
-qim=function(a,z,f){
+qim=function(img,z,func){
 
 // puts im on screen, chose Z and onClick
 
-    var i=qq(im(a))
-    if(N(z)){i.Z(z)}
-    if(f){i.o(f)}
-    return i.a()}
+    var image = qq( im( img ) )
+
+    if( N( z ) ){ image.Z( z ) }
+
+    if( func ){ image.$( func ) }
+
+    return image.a()
+
+}
+
+$.img=function(srcUrl, onReadyFunc){
+
+    var i = $('<img>')
+
+    i.attr('src', src( srcUrl ))
+
+return i}
+
+
+
+$.qim = function(img,z,func){
+
+// puts im on screen, chose Z and onClick
+
+    var image = $.img( img )
+
+    if( N( z ) ){image.W(z).H(z) }
+
+    if( func ){image.$( func ) }
+
+    return image.A()
+
+}
+
+
 
 
 del = function(item, url){

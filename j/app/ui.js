@@ -78,6 +78,7 @@ ChatRoom=function(title, color, id){
                         function(){
 
                             alert('clicked '+username)
+
                             $.post('/mug', {u: username},
 
                                 function(userMug){
@@ -93,23 +94,22 @@ ChatRoom=function(title, color, id){
 
 
                                     $win(
+
                                         $div()(
+
+                                            $br(), $hr(), $h3('User: '+ username),
+
                                             $br(),
-                                            $hr(),
-                                            $h3('User: '+ username),
-                                            $br(),
-                                            xc().w(300).h(300).fit( userMug ),
-                                            theH1,
-                                            theDiv,
 
-                                            ms = $textarea().c('w','z'),
+                                            xc().w(300).h(300).fit( userMug ),  theH1,   theDiv,
 
-                                            $mailButton(ms, username),
+                                            ms = $textarea().c( 'w', 'z' ),
 
-                                            $chatButton(username, ms),
+                                            $mailButton( ms, username ),
 
-                                            fullProfileButton)
-                                    )
+                                            $chatButton( username, ms ),
+
+                                            fullProfileButton  ) )
 
 
 
@@ -174,18 +174,20 @@ BasicLayout =format=function(){
 
     ContainerDiv( row39(s1, s2) )}
 
-ContainerDiv  =CT=function(){//cnt=buff=bff=
 
-    var args=G(arguments),
+
+ContainerDiv  = CT = function(){
+
+    var args = G(arguments),
 
         theDiv = $div().k('container')
 
-    if(args.N){ theDiv( $br(4) ).a()}
+    if(args.N){ theDiv( $br(4) ).a() }
 
-    _.each(args,
-        function(v){theDiv(v)})
+    _.each(args,  function(v){ theDiv(v) } )
 
     return theDiv}
+
 
 
 

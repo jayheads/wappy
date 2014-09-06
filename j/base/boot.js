@@ -121,15 +121,36 @@ FT=function(){
 HeaderDiv=HD=function(){
 
     var args=G(arguments),
+
         theDiv=$div().k('header')
 
     _.each(args,function(v){
         if(S(v)){v=h3(v)}
         theDiv(v)})
 
-    if(args.p){theDiv.cen()}
-    return theDiv.id('header').mb(20)}
+    if(args.p){  theDiv.cen()  }
 
+    return theDiv.id('header').mb(20)
+
+}
+
+$.headerDiv=function(){
+
+
+    var div= $.div().K('header').K('text-center').id('header')
+        .css('margin-bottom-width', 40).C('y')
+
+    return div
+}
+
+
+
+$.Jumbo=function(h1text){
+
+   var div = $.div().K('jumbotron').K('text-center').id('jumbo')
+    if(h1text){ div.A( $.h1(h1text)  ) }
+  return div
+}
 
 
 
@@ -138,7 +159,7 @@ Jumbotron=JumbotronDiv=JT=function(){
 
         theDiv=$div().k('jumbotron')
 
-    theDiv(h1(args.f))
+    theDiv( h1(args.f) )
 
     _.each(args.r,
         function(v){

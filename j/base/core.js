@@ -125,11 +125,30 @@ OL=function OL(o,o2,o3){if(Oo('c',o)){o={c:o,w:o2,s:o3}}
     return $l(_j([$r('c',o.c),N(o.w)?_p(o.w):$r('ow',o.w),
         $r('os',o.s)]))}
 
-qs=function f(a,b){var o={},s=function(o,a,b){
-    o[oO('s',a)]=oO(a,b,'R');return o}
-    if(S(a)){ s(o,a,b)}
-    else{_e(a,function(v,k){s(o,k,v)})}
-    return o}
+
+
+qs=function f(a,b){
+
+    var o = {},
+
+        s = function( o, a, b ){
+
+        o [ oO ( 's' , a ) ]  = oO( a , b , 'R' )
+
+            return o }
+
+    if( S( a ) ){ s( o , a , b ) }
+
+    else{
+
+        _.each( a , function( v , k ) { s ( o , k , v ) } ) }
+
+    return o
+
+}
+
+
+
 
 //tf=function(){n=1;t=true;T(function(){t=false},1000);I(function(){if(t==true){co();n=n+1}else{$l(n)}},1)}
 

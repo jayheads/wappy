@@ -40,7 +40,7 @@ ButtonLarge = function(t,f,C,c){
         c=c||'y'
 
 
-    b=qq('b').ty('b').k('b').k(k).c(C,c)
+    b=qq('b').ty('b').k('btn').k('btn-lg').c(C, c)
 
     b(t)
     if(f){b.o(f)}

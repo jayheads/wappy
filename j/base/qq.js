@@ -135,7 +135,7 @@ qq = function(e,b,c,d){
                 if(a.ob && iSt(a.ob)){ a=a.Q}
                 q.q.append(Q(a))})}}
 
-        if(g.p){ qq(a).p('s')  }
+        if( g.p ){ qq(a).p('s')  }
 
         return q}
 
@@ -222,6 +222,8 @@ qq = function(e,b,c,d){
     q.k=q.class=function(a){ kl(q)(a); return q}
 
 
+
+
     //color
     q.c= q.backgroundColor=function c(a,b){
         var g=G(arguments),
@@ -239,8 +241,6 @@ qq = function(e,b,c,d){
         q.s({C:a,c:b})
         return q}
 
-
-
     q.w=function(w,b){
         if(U(w)){return q.q.width()}
         if(w==='+'){return q.w(q.w()+b)}
@@ -251,8 +251,6 @@ qq = function(e,b,c,d){
         return q}
 
 
-
-
     q.h=function(h,b){
         if(U(h)){return q.q.height()}
         if(h==='+'){return q.h( q.h()+b ) }
@@ -261,6 +259,7 @@ qq = function(e,b,c,d){
         q.q.height(h)
         //q.q.height(  (h<10)?h*100:h)
         return q}
+
     q.wh=function(a,b){return q.w(a).h(b)}
 
     q.full=function(){q.wh(W(),H())}//make something full height
@@ -371,12 +370,18 @@ qq = function(e,b,c,d){
 
 
     //positioning
-    q.p  =q.positioning=function(a,l,t){
+    q.p  =q.positioning=function(a, l, t){
+
         if(U(a)){return ss(q,'p')}
-        q.s('p',a);
-        if(l){q.l(l)};
+
+        q.s('p', a)
+
+        if(l){q.l(l)}
+
         if(t){q.t(t)}
+
         return q}
+
 
         //z index
     q.z=function(a){var g=G(arguments),
@@ -437,6 +442,7 @@ qq = function(e,b,c,d){
 
 
 
+    //shortcut for click
     //gets passed qt and then e (e.x, e.y =offset x,y)
     q.$=function(f){
         if(f){return q.o('$',f)}
@@ -444,51 +450,38 @@ qq = function(e,b,c,d){
         return q}
 
 
+    //shortcut for $doubleclick
     q.$$=function(f){if(f){return q.o('$$',f)}
         q.q.dblclick();
         return q}
 
 
-
-
-
-
+    //shortcut for _bind
     q.bind=function(a){return _.bind(q.c[a],q.c)}
 
 
     q.ngModel=function(m){q.at('ng-model',m)
         return q}
-
     q.ngCont=function(m){
         q.at('ng-controller',m)
         return q}
-
     q.ngSwitch=function(m){q.at('ng-switch',m)
         return q}
-
     q.ngClick=function(m){q.at('ng-click',m)
         return q}
-
     q.ngRepeat=function(m){q.at('ng-repeat',m)
         return q}
-
     q.ngShow=function(m){q.at('ng-show',m)
         return q}
-
     q.ngIf=function(m){q.at('ng-if',m)
         return q}
-
     q.ngSubmit=function(m){q.at('ng-submit',m)
         return q}
-
     q.jLoad=function(a){
         qJ(a, function(d){q(d)})
         return q
 
     }
-
-
-
 
 
 
@@ -569,7 +562,9 @@ qq = function(e,b,c,d){
     q.pr=function(a){if(U(a)){return ss(q,'gr')};q.s('gr',a);return q}
 
     q.mt=function(a){if(U(a)){return ss(q,'mt')};return q.s('mt',a)}
+
     q.mb=function(a){if(U(a)){return ss(q,'mb')};return q.s('mb',a)}
+
     q.ml=function(a){if(U(a)){return ss(q,'ml')};return q.s('ml',a)}
     q.mr=function(a){if(U(a)){return ss(q,'mr')};return q.s('mr',a)}
 
@@ -599,11 +594,23 @@ qq = function(e,b,c,d){
 
     q.ol= q.outline=function(a){return q.s('o',OL(a||'m'))}
     q.bw= q.borderWidth=function(a){return q.s({dw:a})}
-    q.bs= q.borderStyle=function(a){return q.s({ds:a})}
+
+    q.bs= q.borderStyle=function(a){
+        return q.s({ ds : a })
+    }
+
+
+
+
     q.bc= q.borderColor=function(a){return q.s({dc:a})}
 
-    q.f=q.font=function(a){if(N(a)){return q.s('fz',a)}
-        return q.s('f',FO(a))}//font
+    q.f=q.font=function(a){
+        if(N(a)){return q.s('fz',a)}
+        return q.s('f',FO(a))
+    }//font
+
+
+
 
     q.overflowAuto=function(){}
 
@@ -621,8 +628,11 @@ qq = function(e,b,c,d){
     q.hr= q.href=function(a){return q.at({href:a})}
 
 
-    q.at= q.attribute=function(a,b){q.res=aa(q.e,a,b)   // get/set attr//for,name,id,val, etc...
+    q.at= q.attribute=function(a,b){
+        q.res = aa(q.e,a,b)   // get/set attr//for,name,id,val, etc...
         return q}
+
+
 
     q.v= q.V= q.value=function(a){var g=G(arguments),a=g[0],v=q.q.val()
         if(U(a)){if(g.N){q.q.val('')};return v}
@@ -630,6 +640,7 @@ qq = function(e,b,c,d){
         return q}//q.vx=
 
     q.m= q.modalToggle=function(a){q.q.modal(a||'toggle');return q}
+
 
     q.mpfd= q.multipartFormData=function(){return q.at({enctype:'multipart/form-data'})}
 
@@ -658,11 +669,27 @@ qq = function(e,b,c,d){
     q.wh1=function(a){q.j({h:'100%',w:'100%'})}
 
     q.animate=q.j=function(b,c){
-        if(N(b)){q.q.delay(b);return q}
-        b=qs(b)
-        if(D(c)){q.q.animate(b,c)}
-        else {q.q.animate(b)}
+
+        if( N(b) ){
+            q.q.delay(b)
+            return q
+        }
+
+        b = qs(b)
+
+        if( D(c) ){q.q.animate(b,c)}
+
+        else { q.q.animate(b) }
+
         return q}
+
+
+
+
+
+
+
+
 
     q.jj=function(a,b){var i=is(a),
             m=i('t')?'toggle'
@@ -690,8 +717,6 @@ qq = function(e,b,c,d){
 
     q.backgroundImage=q.bgi=function(a){////////
         q.s('bi',_s(a,'+'));return q}
-
-
 
     q.da= q.data= function(a,b){q.at('data-'+a,b)}
 

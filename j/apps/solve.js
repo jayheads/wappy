@@ -318,29 +318,117 @@ GRID=function(){
 
 
 
-TANGLE=function(){
-    z()
+TANGLE=function(){z()
 
-    a=dva(50,50,50)
-    b=dva(100,100,100,100)
-    c=dva(200,200,200,200)
-    d=dva(400,400,400,400)
+    a = $.div('r',50,50).P('a').top(50).left(50).A().pad(10)
 
-    y=function(aa,bb,cc,dd){if(bb){bb.a(aa,'+')}
-        if(dd){dd.a(cc,'+')}}
+    b = $.div('b',100,100).P('a').top(100).left(100).A().pad(10)
+
+    c = $.div('g',200,200).P('a').top(200).left(200).A().pad(10)
+
+    d = $.div('y',400,400).P('a').top(400).left(400).A().pad(10)
+
+    y=function(aa,bb,cc,dd){
+
+
+        if(aa && U(bb)){  aa.A().P('a') }
+
+
+        if( bb ){ bb.A( aa.P('s') )  }
+
+        if( dd ){ dd.A( cc.P('s') )  }
+
+    }
+
+
 }
 
 
 
-BORDERS=function(){
+
+
+ZX=function(){
+
+    z()
+
+    a = $.editDiv().A().C('a')
+
+    b = $.editDiv().A().C('b')
+
+}
+
+
+
+
+
+
+BORDERS=function(){z()
+
+    change=function(){
+
+
+
+        $.qim('me', 100).A().borderColor('g').borderStyle('dashed')//.borderWidth(20)
+
+            .J({"border-top-width": 10}, 1000)
+            .J({"border-bottom-width": 10}, 1000)
+            .J({"border-left-width": 10}, 1000)
+            .J({"border-right-width": 10}, 1000)
+
+
+            .J({"padding-top":10}, 1000)
+            .J({"padding-bottom":10}, 1000)
+
+            .J({"padding-left":10},1000)
+            .J({"padding-right":10},1000)
+
+            .J({"margin-top":10},1000)
+            .J({"margin-bottom":10},1000)
+            .J({"margin-left":10},1000)
+            .J({"margin-right":10},1000)
+            .J({"margin-top":0},1000)
+            .J({"margin-bottom":0},1000)
+            .J({"margin-left":0},1000)
+            .J({"margin-right":0},1000)
+            .J({"padding-top":0},1000)
+            .J({"padding-bottom":0},1000)
+            .J({"padding-left":0},1000)
+            .J({"padding-right":0},1000)
+
+            .J({"border-top-width":0},1000)
+            .J({"border-bottom-width":0},1000)
+            .J({"border-left-width":0},1000)
+            .J({"border-right-width":0},1000)
+    }
+
+
+    $.$$(
+
+        function(){
+            z();
+            _.times(10, change)}
+    )
+
+    _.times(10, change)
+}
+
+
+BORDERS1=function(){
 
    change=function(){
 
-           qim('me').a().bc('g').bs('-')
+           qim( 'me' ).a().bc( 'g' ).bs( '-' )
 
-           .j({bt:40},1000).j({bb:40},1000).j({bl:40},1000)
-           .j({br:40},1000).j({gt:40},1000).j({gb:40},1000)
-           .j({gl:40},1000).j({gr:40},1000).j({mt:40},1000)
+           .j({bt:40},1000)
+
+               .j({bb:40},1000)
+               .j({bl:40},1000)
+
+               .j({br:40}, 1000)
+               .j({gt:40}, 1000)
+               .j({gb:40}, 1000)
+
+               .j({gl:40},1000).j({gr:40},1000).j({mt:40},1000)
            .j({mb:40},1000).j({ml:40},1000).j({mr:40},1000)
            .j({mt:0},1000).j({mb:0},1000).j({ml:0},1000).j({mr:0},1000)
            .j({gt:0},1000).j({gb:0},1000).j({gl:0},1000).j({gr:0},1000)
@@ -348,67 +436,110 @@ BORDERS=function(){
    }
 
 
-    m$$(
-        function(){
-        z();_.times(10,change)}
-    )
+    m$$(   function(){  z();   _.times(10, change)}  )
 
     _.times(10, change)
 }
 
 
 
+ANIMLOOP=function(){
 
+    z()
+
+    d= $.div('b',500,500).A()
+
+    $(function () {
+
+
+        var runIt=function(){
+
+            d.show( "slow" )
+
+            d.animate({ "marginLeft" : "300px" } , 2000 ).animate({ "marginLeft" : "0px" } , 2000 )
+
+            d.hide( "slow", runIt )
+
+        }
+
+        runIt()
+    })
+}
 
 
 
 
 CORNERS=function(){
 
-    q=dva(2,2,2,2 )
+    q = dva(2, 2, 2, 2 )
 
-    q(dv('r',20,20).p('a').t(-10).l(-10),
-        dv('y',20,20).p('a').bo(-10).r(-10),
-        dv('g',20,20).p('a').t(-10).r(-10),
-        dv('b',20,20).p('a').bo(-10).l(-10))
 
-    i=_d().a().p('f').c('u','w')
-        .f(20).s({a:.2,ta:'c'}).w('100%').t(100)
+    q( dv('r',20, 20).P('a').top(-10).left(-10),
 
-    i.H(W()+' * '+H())
+        dv('y', 20, 20).P('a').bottom(-10).right(-10),
 
-    Z(function(){i.H(W()+' * '+H())})
+        dv('g', 20, 20).P('a').top(-10).right(-10),
 
-    $h().o(function(){
-        rat(function(){co()},10)})
+        dv('b', 20, 20).P('a').bottom(-10).left(-10)
+
+    )
+
+
+    i = $.div().a().P('f').C('u','w').fontSize( 20).opacity(.2).textAlign('center')
+
+
+
+        .W('100%').top( 100 )
+
+
+    i.H( W() + ' * ' + H() )
+
+    Z(function(){  i.H(  W() + ' * ' + H() )  })
+
+
+    $.$( function(){
+
+        rat( function(){ co() } , 10 )
+
+    })
+
+
 
 
     grow=function(d){
-        d=qq(d)
 
-        w= d.w()
-        h= d.h()
+        //d = qq(d)
 
-        d.o('d',function(q,e){  $l('d')
+        w= d.W()
+        h= d.H()
+
+        d.on('mousedown', function(q, e){
+
             se=e
+
             mx=e.x
+
             my=e.y
 
 
+            $.MM( function( qq , e ){
 
+                d.W( w +  e.x - mx )
 
-            MM(function(qq,e){
-                d.w(w+ e.x-mx)
-                d.h(h+ e.y-my)
+                d.H( h +  e.y - my )
+
             })
 
-            MU(function(h){  h.q.off() })
 
-            qq(d.ch()).e('d',  function(q,e){    e.sp()  })
+            $.MU(   function( h ){  this.off()  })
+
+
+           d.children() .on( 'mousedown',  function(   e ){  e.stopPropagation()  })
 
         })
 
     }
+
     grow(q)
 }
 

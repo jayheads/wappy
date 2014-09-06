@@ -15,8 +15,54 @@ $b=function $b(a,b){var B=qq($('body'))
         :O(a)? B.s(a)
         :B}
 
+ $hr = hr=function(c,h,w){var e=qq('hr');
+     if(N(c)){return hr('z',c,h)}
+     e.h(h||2);e.c(c||'z');
+     if(w){e.w(w)};return e}
 
-co=function co(a,b){
+
+
+ $h1=h1=function(){
+     var g=G(arguments),
+         h=qq($('<h1>'))
+
+     _a(h,g)
+
+     return h}
+
+ $span = sp=function(){
+
+     var g=G(arguments),     theSpan=qq('s'),     str=''
+
+     _.each(g,
+
+         function(val){
+
+             if(A(val)){theSpan.k(val[0])}
+
+             else if(S(val)){str+= val }
+
+             else {theSpan.a( val )}})
+
+     if(str){ theSpan.T(str) }
+
+     return theSpan}
+
+
+
+ $h2=h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
+ $h3=h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
+ $h4=h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
+ $h5=h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
+ $h6=h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
+
+ $br =br =function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
+
+ $pg = pg=function(a){var g=G(arguments),p=_p()
+     _e(g,function(v){if(A(v)){p.k(v[0])} else{ if(S(v)){v=sp(v)};p(v)}});return p}
+
+
+ co=function co(a,b){
     return O(a)? ss(a,'C', $r('c',b) ):co($b(),a)}
 
 
@@ -65,135 +111,7 @@ ifra=function(){return qq('I')}
 
 _y=function(a){return qq('sl')}
 
-$hr = hr=function(c,h,w){var e=qq('hr');
-    if(N(c)){return hr('z',c,h)}
-    e.h(h||2);e.c(c||'z');
-    if(w){e.w(w)};return e}
-
-
-
-$h1=h1=function(){
-    var g=G(arguments),
-        h=qq($('<h1>'))
-
-    _a(h,g)
-
-    return h}
-$h2=h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
-$h3=h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
-$h4=h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
-$h5=h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
-$h6=h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
-
-$br =br =function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
-
-$pg = pg=function(a){var g=G(arguments),p=_p()
-    _e(g,function(v){if(A(v)){p.k(v[0])} else{ if(S(v)){v=sp(v)};p(v)}});return p}
-
-
-
-
-
-$span = sp=function(){
-
-    var g=G(arguments),     theSpan=qq('s'),     str=''
-
-    _.each(g,
-
-        function(val){
-
-            if(A(val)){theSpan.k(val[0])}
-
-            else if(S(val)){str+= val }
-
-            else {theSpan.a( val )}})
-
-    if(str){ theSpan.T(str) }
-
-    return theSpan}
-
-
-
-
-
-
-
-sc=function(a,b){return qq($('<section>')).id(a).s(b)}
-
-
-
-
-
-
-
-
-//header
-hd=function(n,v){return ip('h',v).nm(n)}
-
-//footer
-ft=function(){
-    return qq('F')}
-
-//well
-well=function(a){
-    return row().k('well')(a)}
-
-
-
-$li =li=function(){var g=G(arguments),
-    l=qq('li')
-
-    //klass or add
-    _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
-    if(g.p){l.k('A')}//active
-    if(g.n){l.k('dd')}//dropdown
-    return l}
-
-
-
-$a= lk=function(a,f){
-
-    var g=G(arguments), a=g[0], f=g[1],
-        l=qq('a').id(a)(a)
-
-    if(F(f)){l.o(f)} else {l.hr(f||'#')}
-
-    if(g.n){l.dd()}
-
-    if(g.p){l=li(l)}
-
-    if(g.m){l=li(l).k('A')}
-
-    return l}
-
-
-
-
-
-$ul = ul=function(){
-    var tLi=function(a){
-        var iLi=function(a){return _h('HTMLLIElement', E(a))}
-        return iLi(a)?a:li(a)}
-
-    var g=G(arguments),
-        e=qq('ul')
-    _e(g,function(v){if(A(v)){e.k(v[0])}
-        else{e(tLi(v))}})
-    if(g.n){e.k('ddm')}//dropdown menu
-    if(g.p){e.k('n nbn')}//navbar nav
-    return e}
-
-
-
-
- $li = li=function(){var g=G(arguments),
-     l=qq('li')
-
-     //klass or add
-     _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
-     if(g.p){l.k('A')}//active
-     if(g.n){l.k('dd')}//dropdown
-     return l}
+ sc=function(a,b){return qq($('<section>')).id(a).s(b)}
 
 
 
@@ -218,25 +136,30 @@ $ul = ul=function(){
          :theEl}
 
 
+ //header
+ hd=function(n,v){return ip('h',v).nm(n)}
 
- $a = lk=function(a, func){
-     var g=G(arguments), a=g[0], f=g[1],
+ //footer
+ ft=function(){
+     return qq('F')}
 
-         theEl=qq('a').id(a)(a)
-
-     if(F(func)){theEl.o(func)} else {theEl.hr(func||'#')}
-
-     if(g.n){theEl.dd()}
-
-   //  "<div data-toggle="dropdown" class="dropdown-toggle"></div>"
-
-     if(g.p){theEl=li(theEl)}
+ //well
+ well=function(a){
+     return row().k('well')(a)}
 
 
 
-     if(g.m){theEl=li(theEl).k('active')}
+ $li =li=function(){var g=G(arguments),
+     l=qq('li')
 
-     return theEl}
+     //klass or add
+     _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
+     if(g.p){l.k('A')}//active
+     if(g.n){l.k('dd')}//dropdown
+     return l}
+
+
+
 
 
  $liA = lik=function(a,b){//dep by li (+/*)
