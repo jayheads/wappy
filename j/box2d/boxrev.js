@@ -1,5 +1,5 @@
 
-rev =function(a,b, c,d, e,f){var g=G(arguments)
+RevoluteJointDef=rev =function(a,b, c,d, e,f){var g=G(arguments)
 
     //pass in body1, body2, world-bV
     //world-bV defaults to body1-center
@@ -20,9 +20,22 @@ rev =function(a,b, c,d, e,f){var g=G(arguments)
         if(c!='-'){j.eM(1)}
         return j}
 
-    j.lm=function(a,b,c){j.lA(a).uA(b)
+
+
+    j.lm=function( a, b, c ){
+
+        j.lA(a).uA(b)
+
         if(c!='-'){j.eL(1)}
-        return j}
+
+        return j
+
+    }
+
+
+
+
+
 
     if(U(c)){c=a.c()}
 
@@ -62,7 +75,10 @@ rJtX=function(o){//rJD=
         if(o.rA){j.rA(o.rA)}
         if(o.eL){j.eL(o.eL)}
         if(o.lA){j.lA(o.lA)}
-        if(o.uA){j.uA(o.uA)}
+
+        if(o.uA){ j.uA(o.uA) }
+
+
         if(o.eM){j.eM(o.eM?true:false)}
 
         if(o.mS){j.mS(o.mS)}

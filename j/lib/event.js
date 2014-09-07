@@ -16,16 +16,26 @@ m$$=function(f){return _D('$$',f)}
 
 
 
-kD=function(a,b,c){var g=G(arguments),a=g[0],b=g[1]
+kD=function(a,b,c){
 
-    if(U(b)){return _D('kd',function(e){
-        _v(a)(g.n?_W(e):fCC(_W(e)))})}
+    var g=G(arguments),a=g[0],b=g[1]
+
+    if ( U( b ) ){ return _D( 'kd' , function ( e ) {
+
+        _v(a)(g.n?_W(e) : fCC(_W(e)))
+
+    })}
 
 
     kD(function(e){
+
         if(e==(a=='l'?'37':a=='u'?'38':a=='r'?'39':a=='d'?'40'
                 :a=='s'?'32':a=='e'?13:0)){
-            _v(b)(c)} },'-')}
+            _v(b)(c)}
+
+    },'-')
+
+}
 
 
 
@@ -122,6 +132,7 @@ moveElemUp=function(a){
 
 
 sE=function(e){
+
     var f=function(a){var g=G(arguments)
         return g.p?f.w>=a:g.n?f.w<=a:f.w==a}
 

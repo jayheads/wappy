@@ -4,7 +4,7 @@ bDf=function(){return new b2BodyDef}
 
 //super body wrapper!
 //depends on a body.. it only extends it with mets!
-sBd=function(b){
+SuperBoxBody=sBd=function(b){
 
     b.cF   =b.f=function(a){
 
@@ -12,18 +12,23 @@ sBd=function(b){
 
         return b.CreateFixture(a)
     }
+
     b.m    =b.gM  =function(m){if(U(m)){return b.GetMass()}}
+
     b.wC   =b.c=  b.gWC=function(){return b.GetWorldCenter()}
+
     b.aw   =function(){
         var g=G(arguments)
         b.SetAwake(g.n?false:true)
         return b}
+
     b.wP   =function(x,y){
 
         var p= b.GetWorldPoint( bV(x/30,y/30) )
 
         return bV(p.x*30, p.y*30)
     }
+
     b.ps   = b.p  =function(x,y){
 
         var p=b.GetPosition()
@@ -83,6 +88,8 @@ sBd=function(b){
         if(U(a)){return b.GetType()}
         b.SetType(a)
         return b}
+
+
     b.t=function(a){
         if(U(a)){return b.type}
         b.type=a;
@@ -94,6 +101,7 @@ sBd=function(b){
 
         b.SetTransform(a)
         return b}
+
 
     b.aV=function(a){
 
@@ -118,7 +126,7 @@ sBd=function(b){
         return b}
 
     //get next
-    b.n= b.gN=function(){return sBd(b.GetNext())}
+    b.n= b.gN=function(){ return sBd(b.GetNext())  }
 
 
     b.dF=function(a){
@@ -274,7 +282,8 @@ kBD=function(x,y){return sBdD().T(1).xy(N(x)?x:300,N(y)?y:300)}
 
 //super fixture wrapper!
 //depends on a fixture.. it only extends it with mets!
-sFx=function(f){
+SuperFixture=sFx=function(f){
+
     f.d=function(a){f.density=a;return f}
     f.f=function(a){f.friction=a;return f}
     f.r=function(a){f.restitution=a;return f}
@@ -286,6 +295,7 @@ sFx=function(f){
     f.sh= f.s=function(a){
         f.shape=a;
         return f}
+
     f.gSh=function(){
 
         return sSh(f.GetShape())
@@ -304,22 +314,33 @@ sFx=function(f){
         else{ f.shape.SetAsOrientedBox(a/30,b/30,p,A)}
         return f}
 
-    f.tP=function(m,y){//f.txPt=
-        if(N(y)){m=bV(m,y)}
 
-        return f.gSh().tPt(
-            f.gB().tf(), m
-        )}
+    f.testPoint= f.tP=function( m, y ){
+
+        if( N(y) ){ m = bV(m, y) }
+
+        return  SuperShape( f.GetShape() ).tPt(
+
+            SuperBoxBody( f.GetBody() ).GetTransform(),
+
+            m
+
+        )
+    }
+
 
 
 
     f.gT=function(a){
 
-        var t=f.gB().T()
+        var t = SuperBoxBody( f.GetBody() ).GetType()
 
-        if(D(a)){return t==a}
+        return  D(a)?  (t == a) : t }
 
-        return t}
+
+
+
+
     f.gI=function(a){
         if(U(a)){return f.filter.groupIndex}
         f.filter.groupIndex=a; return f}
@@ -349,14 +370,20 @@ sFxD=function(f){
     f.d=function(a){f.density=a;return f}
     f.f=function(a){f.friction=a;return f}
     f.r=function(a){f.restitution=a;return f}
-    f.gB=  f.bd=function(){
 
-        return sBd(f.GetBody())
+
+    f.gB =   function(){
+
+        return SuperBoxBody( f.GetBody() )
 
     }
+
+
     f.sh= f.s=function(a){
         f.shape=a;
         return f}
+
+
     f.gSh=function(){
 
         return sSh(f.GetShape())
@@ -372,15 +399,33 @@ sFxD=function(f){
 
         else{ f.shape.SetAsOrientedBox(a/30,b/30,p,A)}
         return f}
-    f.tP=f.txPt=function(m,y){
-        if(N(y)){m=bV(m,y)}
 
-        return f.gSh().tPt(f.gB().tf(),m)}
 
-    f.gT=function(a){
-        var t=f.gB().T()
-        if(D(a)){return t==a}
+    f.tP = f.txPt=function( m, y ){
+
+        if( N( y ) ){ m = bV(m,y) }
+
+        return sSh( f.GetShape() ).tPt(
+
+            SuperBoxBody( f.GetBody() ).getTransform(),
+
+            m
+
+        )}
+
+
+
+
+    f.getType=f.gT=function(a){
+
+        var t=SuperBoxBody( f.GetBody() ).T()
+
+        if( D(a) ){return t==a}
+
         return t}
+
+
+
 
 
     f.gI=function(a){

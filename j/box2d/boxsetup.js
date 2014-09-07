@@ -1,32 +1,47 @@
-handleJointsAlt=0
+//prevent iphone/ipad default scrolling
 
-mW=makeWorld=function(o){o=ob(o)
+$(function(){
 
-    //var slBody
-    mJoint=0
-    mDown=0;
+    $('body').on('touchmove', function(e){ e.preventDefault() })
 
-    if(o.z !=0){ z()}
 
-    o.g=N(o.g)?o.g:40
+})
 
-    w=bW(bV(0,o.g))
 
-    makeStage(1200, 600,o)
+handleJointsAlt = 0
 
-    cvPx=gEP(did())
-    startLoop(o.cb)
+
+
+makeWorld = mW = function(o){ o = ob(o)
+    o.gravityY= o.g
+ 
+    _mouseJoint = 0
+    _mouseIsDown = 0
+   
+
+    if(o.z !=0){z()}
+
+    o.gravityY = N( o.gravityY )? o.gravityY : 40
+
+    world= w = World( bV( 0 , o.gravityY ) )
+
+    
+    makeStage( 1200 , 600 , o )
+
+    canvasPosition = _getPosition(  $('#canvas')[0]  )
+
+    startLoop( o.cb )
+
     checkMouseDown()
+
     setupDebugDraw()
+
     setFixtures()
 
+    if( D ( o.w) ){  $w[o.w]()  } else {  makeWalls() }
 
-    if(D(o.w)){$w[o.w]()} else {makeWalls()}
 
-
-if(!o.$$==0){
-    makeShapeOnDblClk()
-}
+if(!o.$$==0){  makeShapeOnDblClk() }
 
 
     return w}
@@ -36,91 +51,210 @@ if(!o.$$==0){
 
 makeStage=function(X,Y,o){
 
-    c = $can(X,Y).a().bc('z')
+    c = $can( X, Y ).a().bc( 'z' )
 
-    c.q.id('canvas')  // why not just c.id('canvas')?
+    c.q.id( 'canvas' )  // why not just c.id('canvas')?
 
-    s=St(c)
-    STOP()
-    x=xx(c)
-    s.ob.autoClear=false
+    s = SuperStage(c)
 
-if(o.bg){s.b(o.bg)}
+    T$.removeAllEventListeners()
+
+    x = xx(c)
+
+    s.ob.autoClear = false
+
+    if( o.bg ){  s.b(o.bg)  }
 
 }
 
 
 
 
-     //why not s.autoClear(0)?
-gEP=function(e){
 
-    iBE=function(e){return O(e) && uC(e.tagName)=='BODY'}//isBodyElement
 
+
+//doesnt work YET
+$.fn.getPosition=function(){
+
+    var e=this
 
 //=getElementPosition//osP=offsetParent
-    var x=0,y= 0
-    while(E(e)){ //O(e)&&D(e.tagName)
-        y+=osT(e);x+=osL(e)
-        if(iBE(e)){e=0}
-        e=osP(e)||e}
-    return {x:x,y:y}
+    var x=0,  y= 0
+
+    while( E(e) ){ //O(e)&&D(e.tagName)
+
+        y += e.offsetTop
+
+        x += e.offsetLeft
+
+        if( isBodyElement(e)  ){ e = 0 }
+
+        e = e.offsetParent || e
+    }
+
+    return { x:x, y:y }
+
+
+    function isBodyElement(e){
+
+        return O(e) && uC(e.tagName) == 'BODY'
+
+    }//isBodyElement
+
+
 
 }//just gets the TOTAL offset of ANY element
-mouseJoint =function(b){return w.cJ(
-    m=mJD(w.gB(),b.aw(1))
-        .cC(1)
-        .sT(mX,mY)
-        .mF(300*b.m()))}//create mouse joint with a body
+
+
+
+     //why not s.autoClear(0)?
+_getPosition=gEP=function( e ){
+
+//=getElementPosition//osP=offsetParent
+    var x=0,  y= 0
+
+    while( E(e) ){ //O(e)&&D(e.tagName)
+
+        y += e.offsetTop
+
+        x += e.offsetLeft
+
+        if( isBodyElement(e)  ){ e = 0 }
+
+        e = e.offsetParent || e
+    }
+
+    return { x:x, y:y }
+
+
+    function isBodyElement(e){
+
+        return O(e) && uC(e.tagName) == 'BODY'
+
+    }//isBodyElement
+
+
+
+}//just gets the TOTAL offset of ANY element
 
 
 
 
-  gBAM=function(mX,mY){var slBody  //getBodyAtMouse=
 
-    w.Q(
 
-        function(f){f=sFx(f)
-            if(!f.gT(sB) && f.tP(mX,mY)){       // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
-                slBody=f.gB()
-                return false}
-            return true},
 
-        AB001(mX,mY))
 
-    if(O(slBody)){return sBd(slBody)}}
+mouseJoint =function(b){
+
+    var m = MouseJointDef(  w.gB(),  b.aw(1)  )
+
+    m.target.Set( mX, mY )
+
+    m.maxForce=( 300 * b.m() )
+
+    m.collideConnected = true
+
+    return w.cJ(m)
+
+}//create mouse joint with a body
+
+
+
+
+  getBodyAtMouse=  function( mX, mY ){
+
+      var _selectedBody
+
+      var queryFunc= function(fxt){
+
+
+          if( !SuperFixture(fxt).gT( sB ) &&  fxt.testPoint( mX , mY )){       // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
+
+              _selectedBody = fxt.gB()
+
+              return false
+          }
+
+          return true}
+
+
+
+      w.QueryAABB( queryFunc, AB( mX-.001, mY-.001, mX+.001, mY+.001 ) )
+
+    if( O( _selectedBody ) ){  return SuperBoxBody(_selectedBody)  }
+
+  }
+
+
+
+
+
+
+
 
 
 handleJoints=function(){
 
-    if(mDown && !mJoint){
+    //if there is no current joint
+        // but the mouse is down.. then this is a potential selection..
 
-        var b=gBAM(mX,mY)
+    if( _mouseIsDown && ! _mouseJoint ){
 
-        if(b){
+        //if there is a body at the mouse location..
+        //then make a joint from that body ( stored at _mouseJoint )
 
-            mJoint=mouseJoint(b.aw(1)) }
+        var body = getBodyAtMouse( mX, mY )
+
+
+        if(body){ _mouseJoint = mouseJoint( body)//.aw(1) )
+        }
+
     }
 
-    if(mJoint){ if(mDown){ mJoint.sT(mX,mY) }
+    //if there IS a joint
+        //if mouse is down, then set the mouseJoint's 'target' to the mouse location (wherever it is!)
+
+    if( _mouseJoint ){
+
+        if( _mouseIsDown ){ _mouseJoint.SetTarget( bV(mX, mY) )  }
+
+        //but if mouse was lifted up, then release any potential joint
 
         else{
 
-            w.dJ(mJoint);
-            mJoint=null
+            w.DestroyJoint(_mouseJoint)
 
-        }}}
+            _mouseJoint=null
+
+        }
+
+
+    }
+}
+
 
 
 
 
 startLoop =function(cb){
 
-    var debugWorld=function(){w.st(1/60,10,10).dD().cF()}
+    var debugWorld = function(){
 
-    I(function(){//start the ticker
+        w.Step( 1/60, 10, 10 )
 
-        if(handleJointsAlt==true){handleJoints2()} else {handleJoints()}
+        w.DrawDebugData()
+
+        w.ClearForces()
+
+    }
+
+
+
+    setInterval(function(){//start the ticker
+
+        if(handleJointsAlt==true){ handleJoints2() }
+
+        else { handleJoints() }
 
 
         debugWorld()
@@ -128,52 +262,106 @@ startLoop =function(cb){
         if (F(cb)){cb()}
         s.u()
 
-    }, 1000/60)}
+    }, 1000/60)
+
+}
 
 
 
 checkMouseDown =function(){
 
-    var oMM=function(e){e=sE(e)
-        MX=e.cx-cvPx.x
-        mX=MX/30
-        MY=e.cy-cvPx.y
-        mY=MY/30}
 
-    dL('d',
-        function(e){
-            mDown=true
-            oMM(e)
-            dL('m',
-                oMM,true)},
-        true)
+    $('body').on('mousedown', function(event){
+
+            _mouseIsDown = true
 
 
-    dL('u',function(){mDown=false
-            //dR('m',oMM,true)
-            //tUd(mX,mY)
-        }, true)}
+            MX = event.clientX - canvasPosition.x
+            MY = event.clientY - canvasPosition.y
+            mX = MX / 30
+            mY = MY / 30
+
+            $('body').on('mousemove',  function(event){
+
+                MX = event.clientX - canvasPosition.x
+                MY = event.clientY - canvasPosition.y
+
+                mX = MX / 30
+                mY = MY / 30
+            })
+
+    })
+
+
+    $('body').on('touchstart', function(event){
+
+        _mouseIsDown = true
+
+
+        MX =  event.originalEvent.touches[0].clientX - canvasPosition.x
+        MY =  event.originalEvent.touches[0].clientY
+        mX = MX / 30
+        mY = MY / 30
+
+        $('body').on('touchmove',  function(event){
+
+            MX = event.originalEvent.touches[0].clientX - canvasPosition.x
+            MY = event.originalEvent.touches[0].clientY - canvasPosition.y
+
+            mX = MX / 30
+            mY = MY / 30
+        })
+
+
+
+
+    })
+
+    $('body').on('mouseup', function(){   _mouseIsDown = false})
+    $('body').on('touchend', function(){   _mouseIsDown = false})
+
+
+}
+
+
+
+
+
+
+
+
 
 
 setupDebugDraw =function(){
+    debugDraw = DebugDraw()
 
+    debugDraw.SetSprite( $('#canvas')[0].getContext("2d") )
+    debugDraw.dS( 30 )
+
+    debugDraw.SetFillAlpha( .6 )
+
+    //debugDraw.SetLineThickness( 3000 )
+
+    debugDraw.SetFlags(  shB||jB   )
     w.dD(
+debugDraw
 
-        debugDraw=dbD()
 
-            .sp(xid())
-            .dS(30)
-            .fA(.6)
-            .lT(1)
-            .sF(
-
-                shB||jB
-        ))
+    )
 }
 
+
+
+
+
+
 setFixtures =function(){
+
     bD = sBD()
-    fD = fDf().d(1).f(.5).r(.8).sh(pSh())}
+
+    fD = fDf().d(1).f(.5).r(.8).sh(pSh())
+}
+
 
 makeWalls =function(){
 
@@ -188,37 +376,34 @@ makeWalls =function(){
 
 
 mBody =makeShapeOnDblClk=function(){//DEMO: add a 'fix' on $$ //DEMO: add 10 dynamic sq or cir to world
+
     x.$$(function(x,y){
         w.a(  yn()?dBD(x,y):  sBD(x,y),  fix())
-    })}
+    })
 
-
-
+}
 
 
 
 handleJoints2=function(){// so far unchanged.. need to think
 
-    if(mDown && !mJoint){
+    if(mDown && !_mouseJoint){
 
-        var b=gBAM(mX,mY)
+        var b = getBodyAtMouse ( mX, mY )
 
-        bb=b
+        bb = b
 
-        if(b){
+        if(b){   _mouseJoint = mouseJoint(b.aw(1))   }
 
-            mJoint=mouseJoint(b.aw(1)) }
-    else {
-
-            bb.aI(10000,10000)}
+        else { bb.aI( 10000, 10000 ) }
 
     }
 
-    if(mJoint){
+    if(_mouseJoint){
 
         if(mDown){
 
-       // mJoint.sT(mX,mY)
+       // _mouseJoint.sT(mX,mY)
 
     }
 
@@ -230,8 +415,8 @@ handleJoints2=function(){// so far unchanged.. need to think
                 bbb.y()- MY
         )
 
-        w.dJ(mJoint);
-        mJoint=null
+        w.dJ( _mouseJoint )
+        _mouseJoint = null
 
     }
 
@@ -248,6 +433,9 @@ makeWallsPinball=function(){
 
    // bii(300, 590, 3000, 20)//bottom
 }
+
+
+
 
 SLINGSHOT=function(){
 

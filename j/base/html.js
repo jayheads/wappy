@@ -1,8 +1,20 @@
  bd=function(){return qq($('body'))}
 
 did=function(a){return document.getElementById(a||'canvas')}
-xid=function(a){return did(a).getContext("2d")}
+
+
+xid=function(a){
+
+    return did(a).getContext("2d")
+
+}
+
+
+
 dL=function(a,b,c){document.addEventListener(oE(a),b,c)}
+
+
+
 dR=function(a,b,c){document.removeEventListener(oE(a),b,c)}
 
 $d=function(a){return $(document)}

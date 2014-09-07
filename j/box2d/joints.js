@@ -1,10 +1,14 @@
 sJD=function(j){
+
     j.i=function(){
         var g=G(arguments)
         _a(j.Initialize,g,j)
         return j}
+
     j.A=function(a){j.bodyA=a; return j}
+
     j.B=function(a){j.bodyB=a; return j}
+
     j.cC=function(a){j.collideConnected=a?true:false; return j}
 
     //pops
@@ -13,14 +17,21 @@ sJD=function(j){
         j.SetTarget(a)
 
         return j}
+
     j.f=function(a){j.frequencyHz=a;return j}
     j.l=function(a){j.length=a/30;return j}
     j.d=function(a){j.dampingRatio=a;return j}
-    j.rA=function(a){j.referenceAngle= tRad(a);return j}
+
+    j.rA=function(a){j.referenceAngle= tRad(a); return j}
+
     j.lAA=function(a){j.localAnchorA=a; return j}
+
     j.lAB=function(a){j.localAnchorB=a; return j}
+
     j.r=function(a){j.ratio=a; return j}
+
     j.lXA=function(a){j.localAxisA=a; return j}
+
 
     //MOTOR
     j.mMS=function(a){j.maxMotorSpeed=a;return j}
@@ -33,7 +44,9 @@ sJD=function(j){
 
     //LIMITS
     j.lA=function(a){j.lowerAngle=tRad(a);return j}
+
     j.uA=function(a){j.upperAngle=tRad(a);return j}
+
     j.lT=function(a){j.lowerTranslation=a;return j}
     j.uT=function(a){j.upperTranslation=a;return j}
     j.eL=function(a){j.enableLimit=a?true:false;return j}
@@ -45,6 +58,9 @@ sJD=function(j){
 
 
     return j}
+
+
+
 
 sJt=function(j){
 
@@ -68,6 +84,8 @@ sJt=function(j){
         j.SetTarget(a)
 
         return j}
+
+
     j.f  =function(a){j.frequencyHz=a;return j}
     j.l  =function(a){j.length=a/30;return j}
     j.d  =function(a){j.dampingRatio=a;return j}
@@ -323,8 +341,8 @@ PULLEY=function(){makeWorld()
 
 
 //MOUSE JOINTS
-mJD=function(a,b){//MouseJDef=b2MJD=
-    $l('mmmmmm')
+MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
+
     var j=new b2MouseJointDef()
 
     j.sT=function(a,b){//=j.tS=    j.tg=j.tgS=j.ts=
@@ -333,8 +351,10 @@ mJD=function(a,b){//MouseJDef=b2MJD=
 
 
     j.cC=   j.clC= j.clCn=  j.cc=function(a){
-        j.collideConnected=a?true:false
+        j.collideConnected= a ? true:false
         return j}
+
+
 
     j.mF=j.mf=function(a){
         j.maxForce=a;return j}

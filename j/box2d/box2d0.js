@@ -13,39 +13,49 @@ AB=function(a,b,c,d){
 }//get rectangle by two coords
 
 
-AB001 =function(a,b){return AB( a-.001,b-.001, a+.001, b+.001)}
 
 
-dbD  =function(){var d=new b2DebugDraw()//dbD =DebugDraw =bDD=b2DD=
+AB001 =function(a,b){return AB( a-.001, b-.001, a+.001, b+.001 )}
+
+
+
+DebugDraw=dbD  =function(){
+    var d=new b2DebugDraw()//dbD =DebugDraw =bDD=b2DD=
 
     d.sp =d.sSp = d.sS=d.ss=function(a){
         if(U(a)){return d.GetSprite()}
-        d.SetSprite(a);return d}
+        d.SetSprite(a)
+        return d}
 
     d.dS =d.sDS =function(a){
         if(U(a)){return d.GetDrawScale()}
-        d.SetDrawScale(a);return d}
+        d.SetDrawScale(a)
+        return d}
 
     d.fA = d.sFA =function(a){
         if(U(a)){return d.GetFillAlpha()}
-        d.SetFillAlpha(a);return d}
+        d.SetFillAlpha(a)
+        return d}
 
     d.lT = d.sLT =function(a){
         if(U(a)){return d.GetLineThickness()}
-        d.SetLineThickness(a);return d}
+        d.SetLineThickness(a)
+        return d}
 
     d.sF =function(a){
-        d.SetFlags(a);return d}
+        d.SetFlags(a)
+        return d}
 
     d.fl=function(a){
         if(U(a)){return d.GetFlags()}
         d.SetFlags(a)
         return d}
 
-
     //append flags
     //clear flags
     return d}
+
+
 
 
 bW   =World=function(a,b){
@@ -53,28 +63,28 @@ bW   =World=function(a,b){
 
     var w=new b2World(a,D(b)?b:false)
 
-    w.e = function(f,uD){//w.eB=for each body
+    w.each = w.eachBody =  w.e = function( func, userData ){
+
+        //w.eB=for each body
         //can pass a cb to be run on EACH body
         //can also pass a uD to restrict cb to
         //run only on bodies with that uD
 
-        var a=w.bL()
+        var a = SuperBoxBody( w.GetBodyList() )
 
-        _t(w.bC()-1,
+        _.times( w.GetBodyCount() - 1,
 
-            function(){sBd(a)
+            function(){
 
-                if(uD){
-                      if(a.uD()==uD){f(a)}}
+                SuperBoxBody(a)
 
+                if( !userData ){func(a) }
 
-                    else {f(a)}
+                else { if( a.GetUserData() == userData ){ func(a) } }
 
-                a=a.n()
+                a = SuperBoxBody( a.GetNext() )
 
             })
-
-
 
 
     return w}
@@ -85,8 +95,9 @@ bW   =World=function(a,b){
     w.bC =w.gBC=function(){return w.GetBodyCount()}
 
     w.dD= w.sDD=w.sdd=w.dDD=function(a){
-        if(U(a)){w.DrawDebugData()}
-        else{w.SetDebugDraw(a)}
+
+        if(U(a)){  w.DrawDebugData() }
+        else{  w.SetDebugDraw(a) }
 
         return w}
 
@@ -95,13 +106,22 @@ bW   =World=function(a,b){
 
 
     w.st=function(){var g=G(arguments)
-         _a(w.Step,g,w);return w}
+         _a(
+
+             w.Step, g,  w
+
+         )
+
+        return w}
+
+
 
     w.cF=w.clF=function(){//w.cf=
         w.ClearForces();return w}
 
     w.b =w.cB=function(d){
         return sBd(w.CreateBody(d||bDf()))}
+
     w.a =function(b,f){
         b=w.cB(b)
 
@@ -114,6 +134,7 @@ bW   =World=function(a,b){
 
 
     w.sCF =w.SetContactFilter
+
     w.sCL =w.SetContactListener
 
     w.oB=function(f){

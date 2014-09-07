@@ -1,3 +1,133 @@
+PINBALL=function(){
+
+
+    mW({  w : 'makeWallsPinball'  })
+
+    c.w( 430 )
+
+    c.q.drg()
+
+    baa(215,520,30)
+
+    bii(215,100,100,10)
+
+    ba(215,90)
+
+    var leftJoint = baa(100,430)
+
+    var leftFlip = bi(100,430, 100,25)
+
+    var rightJoint = baa(330,430)
+
+    var rightFlip = bi(330,430, 100,25)
+
+
+    j1= w.CreateJoint(
+
+        RevoluteJointDef(  leftJoint , leftFlip ,  0,0,  40,0  ).lm(150,250)
+
+    )
+
+
+
+
+    j2= w.CreateJoint(
+
+        RevoluteJointDef(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lm(-70,30)
+
+    )
+
+
+    bii(420,400,20,2000)
+
+
+
+    $('body').on('keyup',  function(){ leftFlip.aI(100, 0);
+
+        rightFlip.aI(-100,0)
+
+    })
+
+
+
+    $('body').on('keydown',  function(){ ba(rnd()*300+40  ,140,20)} )
+
+
+
+
+    $('body').mousedown(function(){
+
+
+        ba(rnd()*300+40,140,20)
+        leftFlip.aI(100, 0);
+        rightFlip.aI(-100,0)
+
+    })
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////
+
+PINBALL1=function(){
+
+    mW({w:'makeWallsPinball'})
+
+    // c.w(430)
+    // c.q.drg()
+
+    baa(215,520,30)
+
+    bii(215,100,100,10)
+    ba(215,90)
+
+
+    j1= w.CreateJoint(a)(
+
+        RevoluteJointDef(
+            r1=baa(100,430),
+            r2=bi(100,430, 100,25),
+            0,0,
+            40,0
+        ).lm(150,250)
+
+    )
+
+
+    j2= w.CreateJoint(a)(
+        RevoluteJointDef(
+            r1b=baa(330,430),
+
+            r2b=bi(330,430, 100,25),
+
+            0,0,
+            40,0
+
+        ).lm(-70,30)
+    )
+    bii(420,400,20,2000)
+
+    //makeTim(10)
+    //ba(300,200,50)
+
+
+    flip=function(){ r2.aI(100, 0); r2b.aI(-100,0)}
+
+
+    kD('u',flip)
+    kD('d', function(){  ba(rnd()*300+40  ,140,20)} )
+}
+
+
 //DEMO
 IMPULSE =function(){mW({g:0})
 
@@ -22,6 +152,9 @@ IMPULSE =function(){mW({g:0})
     }
 
 }
+
+
+
 SCALECIRC =function(){
     mW()
 
