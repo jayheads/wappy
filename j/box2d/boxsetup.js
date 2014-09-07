@@ -387,7 +387,7 @@ mBody =makeShapeOnDblClk=function(){//DEMO: add a 'fix' on $$ //DEMO: add 10 dyn
 
 handleJoints2=function(){// so far unchanged.. need to think
 
-    if(mDown && !_mouseJoint){
+    if(_mouseIsDown && !_mouseJoint){
 
         var b = getBodyAtMouse ( mX, mY )
 
@@ -401,7 +401,7 @@ handleJoints2=function(){// so far unchanged.. need to think
 
     if(_mouseJoint){
 
-        if(mDown){
+        if(_mouseIsDown){
 
        // _mouseJoint.sT(mX,mY)
 
@@ -440,11 +440,13 @@ makeWallsPinball=function(){
 SLINGSHOT=function(){
 
 
-handleJointsAlt = true
+ handleJointsAlt = true
 
 
     mW({
+
         w:'makeWallsFull',
+
         g:0
     })
 
