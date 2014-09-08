@@ -23,90 +23,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="jqueryplugins.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/app/jqueryplugins.js">
+      <file leaf-file-name="nav.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/j/app/nav.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.0769231" vertical-offset="9414" max-vertical-offset="14958">
-              <caret line="573" column="0" selection-start-line="572" selection-start-column="0" selection-end-line="573" selection-end-column="0" />
-              <folding>
-                <element signature="e#6193#6437#0" expanded="false" />
-                <element signature="e#7168#7488#0" expanded="false" />
-                <element signature="e#7517#7564#0" expanded="false" />
-                <element signature="e#7580#7654#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="1846" max-vertical-offset="5301">
+              <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="time.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/lib/time.js">
+      <file leaf-file-name="boxSetup.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/j/box2d/boxSetup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="219" max-vertical-offset="2057">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.45315486" vertical-offset="3" max-vertical-offset="5820">
+              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding>
-                <element signature="e#69#731#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="easel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/create/easel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3947" max-vertical-offset="4530">
-              <caret line="276" column="0" selection-start-line="276" selection-start-column="0" selection-end-line="276" selection-end-column="0" />
-              <folding>
-                <element signature="e#357#504#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="boxShapes.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/box2d/boxShapes.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.923077" vertical-offset="677" max-vertical-offset="1365">
-              <caret line="313" column="8" selection-start-line="313" selection-start-column="8" selection-end-line="313" selection-end-column="8" />
-              <folding>
-                <element signature="e#52#131#0" expanded="false" />
-                <element signature="e#133#151#0" expanded="false" />
-                <element signature="e#294#836#0" expanded="false" />
-                <element signature="e#914#972#0" expanded="false" />
-                <element signature="e#1056#1168#0" expanded="false" />
-                <element signature="e#1198#1310#0" expanded="false" />
-                <element signature="e#1340#1451#0" expanded="false" />
-                <element signature="e#1478#1584#0" expanded="false" />
-                <element signature="e#1835#1884#0" expanded="false" />
-                <element signature="e#1901#2061#0" expanded="false" />
-                <element signature="e#2084#2184#0" expanded="false" />
-                <element signature="e#2222#2318#0" expanded="false" />
-                <element signature="e#2357#2529#0" expanded="false" />
-                <element signature="e#2567#2708#0" expanded="false" />
-                <element signature="e#2737#2968#0" expanded="false" />
-                <element signature="e#2784#2966#0" expanded="false" />
-                <element signature="e#2984#3304#0" expanded="false" />
-                <element signature="e#3042#3296#0" expanded="false" />
-                <element signature="e#3323#3554#0" expanded="false" />
-                <element signature="e#3574#3623#0" expanded="false" />
-                <element signature="e#3641#3796#0" expanded="false" />
-                <element signature="e#3682#3794#0" expanded="false" />
-                <element signature="e#3850#3964#0" expanded="false" />
-                <element signature="e#3983#4138#0" expanded="false" />
-                <element signature="e#4024#4136#0" expanded="false" />
-                <element signature="e#4192#4302#0" expanded="false" />
-                <element signature="e#4322#4534#0" expanded="false" />
-                <element signature="e#4382#4532#0" expanded="false" />
-                <element signature="e#4553#4833#0" expanded="false" />
-                <element signature="e#4852#5160#0" expanded="false" />
-                <element signature="e#5185#5375#0" expanded="false" />
-                <element signature="e#5400#5538#0" expanded="false" />
-                <element signature="e#5563#5704#0" expanded="false" />
-                <element signature="e#5729#5871#0" expanded="false" />
-                <element signature="e#5892#6003#0" expanded="false" />
-                <element signature="e#6456#6538#0" expanded="false" />
-                <element signature="e#6556#6640#0" expanded="false" />
-                <element signature="e#6656#6786#0" expanded="false" />
-                <element signature="e#6804#6949#0" expanded="false" />
+                <element signature="e#53#124#0" expanded="false" />
+                <element signature="e#179#1119#0" expanded="false" />
+                <element signature="e#1155#1412#0" expanded="false" />
+                <element signature="e#1441#1506#0" expanded="false" />
+                <element signature="e#5815#6021#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -115,82 +52,11 @@
       <file leaf-file-name="wheel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/j/box2d/wheel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.192307" vertical-offset="793" max-vertical-offset="12030">
-              <caret line="74" column="31" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12030">
+              <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
               <folding>
                 <element signature="e#3874#4369#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="event.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/j/lib/event.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16826004" vertical-offset="1667" max-vertical-offset="3015">
-              <caret line="332" column="0" selection-start-line="332" selection-start-column="0" selection-end-line="332" selection-end-column="0" />
-              <folding>
-                <element signature="e#130#191#0" expanded="false" />
-                <element signature="e#285#594#0" expanded="false" />
-                <element signature="e#343#427#0" expanded="false" />
-                <element signature="e#378#425#0" expanded="false" />
-                <element signature="e#448#586#0" expanded="false" />
-                <element signature="e#556#579#0" expanded="false" />
-                <element signature="e#616#923#0" expanded="false" />
-                <element signature="e#665#751#0" expanded="false" />
-                <element signature="e#703#749#0" expanded="false" />
-                <element signature="e#772#917#0" expanded="false" />
-                <element signature="e#1071#1171#0" expanded="false" />
-                <element signature="e#1101#1148#0" expanded="false" />
-                <element signature="e#1189#1266#0" expanded="false" />
-                <element signature="e#1284#1361#0" expanded="false" />
-                <element signature="e#1379#1483#0" expanded="false" />
-                <element signature="e#1411#1457#0" expanded="false" />
-                <element signature="e#1503#1616#0" expanded="false" />
-                <element signature="e#1637#1891#0" expanded="false" />
-                <element signature="e#1674#1715#0" expanded="false" />
-                <element signature="e#1751#1784#0" expanded="false" />
-                <element signature="e#1818#1889#0" expanded="false" />
-                <element signature="e#1909#1961#0" expanded="false" />
-                <element signature="e#1982#2043#0" expanded="false" />
-                <element signature="e#2004#2041#0" expanded="false" />
-                <element signature="e#2066#2173#0" expanded="false" />
-                <element signature="e#2125#2171#0" expanded="false" />
-                <element signature="e#2201#2288#0" expanded="false" />
-                <element signature="e#2234#2286#0" expanded="false" />
-                <element signature="e#2253#2285#0" expanded="false" />
-                <element signature="e#2313#2346#0" expanded="false" />
-                <element signature="e#2366#3057#0" expanded="false" />
-                <element signature="e#2390#2454#0" expanded="false" />
-                <element signature="e#3105#3964#0" expanded="false" />
-                <element signature="e#3390#3492#0" expanded="false" />
-                <element signature="e#3433#3466#0" expanded="false" />
-                <element signature="e#3549#3942#0" expanded="false" />
-                <element signature="e#3632#3931#0" expanded="false" />
-                <element signature="e#3986#4048#0" expanded="false" />
-                <element signature="e#4126#4174#0" expanded="false" />
-                <element signature="e#4442#4880#0" expanded="false" />
-                <element signature="e#4533#4830#0" expanded="false" />
-                <element signature="e#4910#5553#0" expanded="false" />
-                <element signature="e#5011#5525#0" expanded="false" />
-                <element signature="e#5301#5441#0" expanded="false" />
-                <element signature="e#5580#5649#0" expanded="false" />
-                <element signature="e#5674#5907#0" expanded="false" />
-                <element signature="e#6767#6842#0" expanded="false" />
-                <element signature="e#7371#8156#0" expanded="false" />
-                <element signature="e#8179#8308#0" expanded="false" />
-                <element signature="e#8261#8294#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nav.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/j/app/nav.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1846" max-vertical-offset="5301">
-              <caret line="110" column="5" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -340,20 +206,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wappy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wappy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="j" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -468,7 +320,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="109" y="22" width="1303" height="811" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -480,7 +332,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.04842105" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19187209" sideWeight="0.7610526" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18265541" sideWeight="0.8950159" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18265541" sideWeight="0.8950159" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -858,16 +710,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/j/box2d/boxSetup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.423077" vertical-offset="1245" max-vertical-offset="6960">
-          <caret line="108" column="10" selection-start-line="108" selection-start-column="10" selection-end-line="108" selection-end-column="10" />
-          <folding>
-            <element signature="e#5815#6021#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/j/box2d/boxShapes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.923077" vertical-offset="677" max-vertical-offset="1365">
@@ -916,28 +758,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/j/box2d/wheel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.192307" vertical-offset="793" max-vertical-offset="12030">
-          <caret line="74" column="31" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
-          <folding>
-            <element signature="e#3874#4369#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/j/base/buts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1007" max-vertical-offset="2790">
           <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/j/app/nav.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1846" max-vertical-offset="5301">
-          <caret line="110" column="5" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -1046,6 +870,38 @@
             <element signature="e#7371#8156#0" expanded="false" />
             <element signature="e#8179#8308#0" expanded="false" />
             <element signature="e#8261#8294#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/j/app/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1846" max-vertical-offset="5301">
+          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/j/box2d/wheel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12030">
+          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+          <folding>
+            <element signature="e#3874#4369#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/j/box2d/boxSetup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45315486" vertical-offset="3" max-vertical-offset="5820">
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding>
+            <element signature="e#53#124#0" expanded="false" />
+            <element signature="e#179#1119#0" expanded="false" />
+            <element signature="e#1155#1412#0" expanded="false" />
+            <element signature="e#1441#1506#0" expanded="false" />
+            <element signature="e#5815#6021#0" expanded="false" />
           </folding>
         </state>
       </provider>
