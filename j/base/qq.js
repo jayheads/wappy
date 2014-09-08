@@ -78,7 +78,7 @@ qq = function(e,b,c,d){
     //appending / adding to stage
 
 
-    q.a=  q.append=function(a, b){var g=G(arguments), a=g[0], b=g[1]
+    q.A = q.a=  q.append=function(a, b){var g=G(arguments), a=g[0], b=g[1]
 
 
         var theElement= b,
@@ -219,7 +219,7 @@ qq = function(e,b,c,d){
     q.O=function(){ _o(q); return q}
 
     //class
-    q.k=q.class=function(a){ kl(q)(a); return q}
+    q.K = q.k=q.class=function(a){ kl(q)(a); return q}
 
 
 

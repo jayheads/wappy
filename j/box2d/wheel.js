@@ -11,7 +11,11 @@ PINBALL=function(){
 
     bii(215,100,100,10)
 
-    ba(215,90)
+    ball= ba(215,90)
+
+    bindr('sun', ball,.24)
+
+
 
     var leftJoint = baa(100,430)
 
@@ -58,12 +62,18 @@ PINBALL=function(){
     $('body').mousedown(function(){
 
 
-        ba(rnd()*300+40,140,20)
+       var b= ba(rnd()*300+40,140,20)
+
+      if(Math.random() > .9) { bindr('me', b,.24)}
+
         leftFlip.aI(100, 0);
         rightFlip.aI(-100,0)
 
     })
 
+    setInterval(function(){
+        ball.rt( ball.rt() + 10)
+    },100)
 
 }
 
@@ -193,30 +203,41 @@ SCALECIRC =function(){
 
 
 bindr=function(im,spr,sxy,rt){
+
     sxy= sxy||.4
 
 
     rt= N(rt)?rt:6
 
 
-    s.b(im,
+    var stage = s
+
+    stage.bm(
+
+        im,
 
         function(b){
 
             b.rgc('+')
 
-            if (A(sxy)){ b.sx(sxy[0]).sy(sxy[1]) } else { b.sxy(sxy) }
+            if (A(sxy)){ b.sx( sxy[0] ).sy( sxy[1] ) } else { b.sxy( sxy ) }
 
-            b.rt(rt)
+            b.rt( rt )
 
-            s.t(function(){ b.xy(spr.x(),spr.y()); b.rt(rt + spr.rt() )})
+            stage.t( function(){
 
-            spr.kS=function(){b.XX()}
+                b.xy(spr.x(), spr.y()); b.rt(rt + spr.rt() )
+
+            })
+
+            spr.kS = function(){ b.XX() }
 
         })
 
 
 }
+
+
 
 
 
@@ -288,9 +309,12 @@ makeMe=function(){
         else {  p.aI(-3,0) }
         return p}
     p.gFL().SetFriction(1)
-    bindr('me',p)
+
+    bindr('me', p)
 
     return p}
+
+
 
 
 
@@ -641,3 +665,157 @@ PLAYER4=function(){mW()
 
 
 
+//BRAIN GAMES
+MEMORY=function(){z()
+
+    grid=[
+
+        ['guy','me',0,0],
+        [0,'me',0,0],
+        [0,0,0,0],
+        [0,'me','chicks','me']
+
+    ]
+
+
+
+    wGuy=function(){
+        var x=0,y=0
+        _e(grid,  function(row,i){
+            _e(row,function(cell,j){if(cell=='guy'){ x=j, y=i}})})
+
+
+        return {x:x,y:y}}
+
+
+    dGuy=function(){
+
+        var p=wGuy()
+
+        grid[p.y][p.x]=0
+
+        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
+        else if( grid[p.y+1][p.x]==0){
+            grid[p.y+1][p.x]='guy'
+            playerGrid()
+
+        } else {alert('lose!')}}
+
+
+
+    rGuy=function(){
+        var p=wGuy()
+        grid[p.y][p.x]=0
+
+        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
+        else if( grid[p.y][p.x+1]==0) {
+            grid[p.y][p.x+1]= 'guy'
+            playerGrid()} else {alert('lose!')}}
+
+
+
+
+    s=St(1000,1000).a()
+
+    s.a(ct=Ct())
+
+    _e(grid, function(row,i){
+        _e(row, function(cell,j){
+            ct.a(rct().xy(j*100+100,i*100+100))
+            if(cell=='me'){
+                ct.b('me',
+                    function(b){  b.xy(j*100+100,  i*100+100 ).sxy(.1)})}})})
+
+
+
+
+    playerGrid=function(){  _e(grid, function(row,i){
+
+        _e(row, function(cell,j){
+
+            ct.a(rct().xy(j*100+100,i*100+100))
+
+            if(cell=='guy'||cell=='chicks'){  ct.b(cell, function(b){ b.xy(  j*100+100,  i*100+100 ).sxy(.1)})}
+
+        })})}
+
+
+    T( function(){ ct.XX()
+
+        s.a(ct=Ct())
+        playerGrid()},  3000)
+
+
+
+
+    kD('d',dGuy)
+
+    kD('r',rGuy)
+
+
+
+}
+
+
+
+
+
+
+
+SLING=function(){
+
+    startpoint={}
+
+
+    slingshot=Shape.new()
+
+    addChild(self.slingshot)
+
+
+    onMouseDown=function(event){
+
+        if(ball.hitTestPoint(event.x, event.y)){
+            mouseJoint = w.j( b2.createMouseJointDef(self.ground, self.ball.body, event.x, event.y, 100000) )
+
+            startpoint.x = event.x
+            startpoint.y = event.y
+
+        }
+    }
+
+
+    onMouseMove=function(event){
+        if(mouseJoint !=null){
+
+            mouseJoint.setTarget(event.x, event.y)
+            slingshot.clear()
+            self.slingshot.setLineStyle(5, 0xff0000, 1)
+            self.slingshot.beginPath()
+            self.slingshot.moveTo(self.startpoint.x, self.startpoint.y)
+            self.slingshot.lineTo(event.x, event.y)
+            self.slingshot.endPath()}
+    }
+
+
+    onMouseUp=function(event){
+
+
+
+        if (mouseJoint != null){
+            w.dJ( mouseJoint)
+
+            mouseJoint = null
+
+            slingshot.clear()
+
+            strength = 1
+
+            xVect = ( startpoint.x-event.x)*strength
+            yVect = ( startpoint.y-event.y)*strength
+
+            ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
+
+        }
+    }
+
+}

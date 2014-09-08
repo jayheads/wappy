@@ -335,12 +335,23 @@ $li=function(){var g=G(arguments),
     if(g.p){l.k('A')}//active
     if(g.n){l.k('dd')}//dropdown
     return l}
+
+
+
+//finish later..
 $.a= function(a,f){
 
-    var g=G(arguments), a=g[0], f=g[1],
-        l=qq('a').id(a)(a)
+    var g=G(arguments),
 
-    if(F(f)){l.o(f)} else {l.hr(f||'#')}
+        a=g[0],
+
+        f=g[1],
+
+        l = $('<a>').id(a).A(a)
+
+    if(F(f)){
+        l.click(f)} else {
+        l.hr(f||'#')}
 
     if(g.n){l.dd()}
 
@@ -349,6 +360,10 @@ $.a= function(a,f){
     if(g.m){l=li(l).k('A')}
 
     return l}
+
+
+
+
 
 $ul = ul=function(){
     var tLi=function(a){
@@ -569,6 +584,7 @@ EDITRANGE=function(){
     b=editDiv().C('b')
     c=editDiv().C('c')
 }
+
 
 FUNNY=function(){z()
 
@@ -839,16 +855,18 @@ VOLUME=function(){
 // o[key] defaults to object or array, depending if nextKey is an array index (int or '') or an object key (string)
                 if (f.isUndefined(o[key])) {
                     if (nextKey === '') { // '' is used to push values into the array.
-                        o[key] = [];
+                        o[key] = []
                     } else if (opts.useIntKeysAsArrayIndex && f.isValidArrayIndex(nextKey)) { // if 1, 2, 3 ... then use an array, where nextKey is the index
-                        o[key] = [];
+                        o[key] = []
                     } else { // for anything else, use an object, where nextKey is going to be the attribute name
-                        o[key] = {};
+                        o[key] = {}
                     }
                 }
 // Recursively set the inner object
-                tail = keys.slice(1);
-                f.deepSet(o[key], tail, value, opts);
+
+                tail = keys.slice(1)
+
+                f.deepSet(o[key], tail, value, opts)
             }
         }
     }}(window.jQuery || window.Zepto || window.$))

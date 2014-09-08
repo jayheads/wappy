@@ -1,10 +1,7 @@
 T=function(a,b){return setTimeout(_v(a),b)}
 
 
-
-
-
-dt=function(a){var d=new Date(a)
+dateTime=dt=function(a){var d=new Date(a)
 
     d.y=d.getFullYear
 
@@ -65,50 +62,7 @@ sec=function(f){return T(f,1000)}
 
 
 
-Ed=function(ob){//var o=function f(){return f.main? f.main.apply(f, arguments):(f.obj||false)}
-    var o={ob:ob}//o.super=true
-    o.hel=function(a,b){return ob.hasEventListener(oO('e',a))}
-    o.o=function(a,b,c,d,e){
-        if(!Oo('e',a)){return o.o('$',a,b,c,d)}
 
-        var f=ob.on(oE(a),
-            b.handleEvent?b:b.ob?b.ob:b.st?b.st
-                :function(e,data){b(o,sJE(e),e)},c,d,o,e)
-
-        return function(){
-            o.O(a,f)
-            return _p(o.o,a,b,c,d,e)}}
-    o.e=function(a,b,c){ob.dispatchEvent(a,b,c);return a}
-    o.O=function(t,f){var g=G(arguments), t=g[0], f=g[1]
-
-        $l('O')
-
-        if(F(t)){$l('F(t)')
-            return o.O('$',t)}
-
-        t=oE(t)
-
-        if(F(f)){$l('F(f)')
-
-            if(g.p){ob.removeEventListener(t,f,true) }
-            else if(g.n){ ob.removeEventListener(t,f,false) }
-            else {$l('removing: ' + t + ' '+ _S(f))
-
-                ob.removeEventListener(t,f)}}
-
-        else {$l('!F(f)')
-
-            if(S(t)){ob.removeAllEventListeners(t)}
-            else{ob.removeAllEventListeners()}
-        }
-
-        return o}
-    o.wt=function(type){return o.ob.willTrigger(type)}
-    o.t=function(a,b,c,d){if(U(a)){Ed(T$).t(o);return o};return o.o('t',a,b,c,d)}
-    o.$=function(a,b,c,d){return o.o('$', a,b,c,d)}
-    o.$$=function(a,b,c,d){return o.o('$$',a,b,c,d)}
-    o.str=function(){return ob.toString()}
-    return o}
 
 keep=function(f){I(f,50)}
 

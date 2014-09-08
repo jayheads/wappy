@@ -3,23 +3,26 @@ $button = bt=function(t,f,C,c){
 
     var g=G(arguments),
 
-        t=g[0],f=g[1],C=g[2],c=g[3],
+        t=g[0]||'ok',
 
-        t=t||'ok',
+        f=g[1],
 
-        k=g.p? 'btn-lg':'btn-mini',
+        C=g[2]||'b',
 
-        C=C||'b',
+        c=g[3]||'y',
 
-        c=c||'y'
+        buttonClass = g.p? 'btn-lg':'btn-mini'
+
+    var button=qq('b').type('button').k('btn').k(buttonClass).c(C, c)
 
 
-    b=qq('b').ty('b').k('b').k(k).c(C,c)
+    button(t)
 
-    b(t)
-    if(f){b.o(f)}
-    if(g.n){ b.dd() }//dropdown
-    return b
+    if(f){ button.$(f) }
+
+    if(g.n){ button.dd() }//dropdown
+
+    return button
 
 }
 
@@ -40,11 +43,14 @@ ButtonLarge = function(t,f,C,c){
         c=c||'y'
 
 
-    b=qq('b').ty('b').k('btn').k('btn-lg').c(C, c)
+    b = qq('b').ty('b').k('btn').k('btn-lg').c(C, c)
 
     b(t)
-    if(f){b.o(f)}
-    if(g.n){b.dd()}//dropdown
+
+    if(f){ b.o( f ) }
+
+    if( g.n ){ b.dd() }//dropdown
+
     return b
 
 }
@@ -55,19 +61,20 @@ SubmitButton=function(){
 
     var args=G(arguments),
 
-        button = bt.apply(0, args)
+        button = $button.apply(0, args)
 
-   return button.ty('s')}
-
-
-
+   return button.type('submit')
+}
 
 
 
 
 
 
-bti=function(a,b,s){return bt(a).id(b).s(s)}
+
+
+
+bti = function(a,b,s){ return $button(a).id(b).s( s ) }
 
 
 
@@ -77,9 +84,21 @@ bti=function(a,b,s){return bt(a).id(b).s(s)}
 bts=function(a,b){
     var g=G(arguments),d=dva(2)
 
-    if(g.p){return bts(['start',a],['stop',b]).auto()}
-    _e(g,function(v){v=A(v)?v:[v]
-        d(bt(v[0],v[1]).k(g.p?('fc'):'').M(4))})
+
+    if(g.p){
+        return bts(['start',a],['stop',b]).auto()
+    }
+
+    _.each(g,function(v){v=A(v)?v:[v]
+
+        d(
+
+            $button( v[0], v[1] ).k( g.p?('fc'):'' ).M(4)
+
+        )
+
+    })
+
     return d}
 
 
@@ -94,8 +113,8 @@ btg=function(a){
     if(g.n){return bt('-')(
         a||'menu'+' ',car())}
 
-    _e(g,function(v){
-        b(S(v)?bt(v):A(v)?bt(v[0],v[1]):v)})
+    _.each(g,function(v){
+        b(S(v)?bt(v):A(v)?$button(v[0],v[1]):v)})
     return b}
 
 
@@ -107,9 +126,14 @@ btd=function(a){var g=G(arguments),a=g[0],
 
     u=ul('-')
 
-    _e(g.r,function(v){
-        if(S(v)){v=lik(v)}
-        u(v)});return b(u)}
+    _.each(g.r,function(v){
+
+        if(S(v)){
+            v=lik(v)}
+        u(v)})
+    return b(u)
+}
+
 
 
 
@@ -129,11 +153,21 @@ $buttonLeft=function(t,f,C,c){return bt(t,f,C,c)
 
 sm=function(a){
     var g=G(arguments)
-    if(g.p){return _n().ty('s').k('b bdf').T(ok(a)) }
-    return ip('s').k('s').v(ok(a))}
+
+    if(g.p){
+
+        return $button().type('submit').k('btn btn-mini button-default').T( ok(a) )
+    }
+
+    return ip('submit').k('show').v( ok(a) )
+
+}
 
 
-fSm=function(){return qq($('.submit'))}
+
+
+
+fSm = function(){ return qq($('.submit')) }
 
 
 

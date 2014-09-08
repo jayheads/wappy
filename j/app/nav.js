@@ -89,25 +89,48 @@ WappyNav =  function(color){
 NavHeader=function(){
 
     _IconBars=function(num){
-        var theSpan = _s()
-        _.times(num||1, function(){ theSpan( $span().k('icon-bar') ) })
-        return theSpan}
 
-    var theButton = $button().k('navbar-toggle').at({'data-target':'#navbar','data-toggle':'collapse'})
-    ( //button contents:
-        '',  //not sure why should be necessary. w/o it -> 'ok'
-        $span('toggle nav').k('sr-only'),
-        _IconBars(4) )
+        var span = $.span()
+
+        _.times(num||1, function(){
+
+            span.A( $.span().K('icon-bar') ) })
+
+        return span}
+
+
+
+
+    var theButton = $button().k('navbar-toggle')
+        .at({'data-target':'#navbar','data-toggle':'collapse'})
+    (
+        '',
+
+
+        _IconBars(4)
+    )
 
     var theBrand = $a('wappy', function(){$w.location='/wap'}).k('navbar-brand')
 
+
+
     return $div().k('navbar-header')(theButton, theBrand) }
-Nav=function(){return $ul().k("nav navbar-nav").apply(0, G(arguments))}
+
+
+
+Nav=function(){
+    return $ul().k("nav navbar-nav").apply(0, G(arguments))
+}
+
+
+
 NavRight=function(){
 
     return $ul().k("nav navbar-nav navbar-right").apply(0, G(arguments))
 
 }
+
+
 
 
 Dropdown=function(){  // DropdownMenu =
@@ -155,6 +178,9 @@ Dropdown=function(){  // DropdownMenu =
 
 
 }
+
+
+
 DropdownLoader=function(){
 
     LiALoader = function(a){  return $liA(a, function(){load(a)}   )   }
@@ -171,7 +197,7 @@ DropdownLoader=function(){
             if(
                 S(arg)){
 
-                arg=LiALoader(arg)   // $liA(arg, function(){load(arg)}   )
+                arg = LiALoader(arg)   // $liA(arg, function(){load(arg)}   )
 
             } // *****
 
@@ -217,18 +243,22 @@ StandardNavbar=function(){
     ).pp()
 
 }
+
+
 SearchNavRight =  function(){
 
-    return $form().k("navbar-form navbar-right").at({role:'search'})
+    return $form().k("navbar-form navbar-right")//.at({role:'search'})
 
         (
-            $div().k('form-group')
-                (
-                    TextInput().k('form-control').ph('search')
-                ),
+            $.div().K('form-group').A(
+
+                $('<input>').K('form-control').attr('placeholder','search')
+
+            ),
 
 
-            SubmitButton( Glyphicon('search') )
+
+            sb=SubmitButton( Glyphicon('search') )
         )
 
 }

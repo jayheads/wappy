@@ -331,13 +331,34 @@ EASELTOUCH=function(){z()
 
 
 
-botWinScroll=function(){dv().s({p:'f',b:0,l:0,w:'100%',h:'30%', nh:110,mh:318,z:4  })().a()}
+botWinScroll=function(){
+
+
+
+    $.div('r').css({
+
+        positioning: 'fixed',
+
+        bottom: 0,  left: 0,
+
+        width: '50%',  height: '50%',  'min-width' :110,   'max-width' :318,
+
+        opacity: 4
+
+    }).el().A().A($.img('me'))
+
+
+
+    // call and then play with browser size
+
+
+}
 
 
 
 
 parallax=function(){z()
-   var l=function(i){return dk('layer').s({w:'100%',h:256,p:'a'}).id(i)},
+   var l=function(i){return c('layer').s({w:'100%',h:256,p:'a'}).id(i)},
        t=function(a,b){return 'transparent url('+a+'.png)' +b+'% 0px'}
    l('back').s({bg:t('me',10)}).a()
    l('front').s({bg:t('guy',60)}).a()}
@@ -345,7 +366,7 @@ parallax=function(){z()
 
 jslay=function(){z()
 
-    var l=function(i){return dk('layer').s({w:'100%',h:256,p:'a'}).id(i)},
+    var l=function(i){return $div().k('layer').s({w:'100%',h:256,p:'a'}).id(i)},
         t=function(a){return 'transparent url('+a+'.png)'},
         b=l('back').s({bg:t('me')}).a(),
         f=l('front').s({bg:t('guy')}).a()
@@ -366,20 +387,23 @@ jslay=function(){z()
 
 
 
-fadeWhite=function f(a){z()
+fadeWhite=function f(a){
+
+    //makes a yellow square and black dot??
+
+    z()
     c=cx().a().cir(10,10,10)
     a=U(a)?0.2:parseFloat(a)+.02
     c.fs('w').op(a).fr()
-  if(a<1){T(function(){f(a)},30)}}
+  if(a<1){T(function(){f(a)},30)}
+}
 
 ////
-
-
-
 
 dh=function(c,i){c.dI(i, -i.width/2, -i.h/2)}
 
 fuzzy=function(range,base){return (base||0)+(_r()-.5)*range*2}
+
 v2=function(x,y){
 
     var v={x:x,y:y}
@@ -400,8 +424,6 @@ v2=function(x,y){
     v.set=function(x,y){v.x=x;v.y=y}
 
     return v}
-
-
 particle=function(pos){
     var p={}
 

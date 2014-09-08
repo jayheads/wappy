@@ -12,25 +12,46 @@ handleJointsAlt = 0
 
 
 
-makeWorld = mW = function(o){ o = ob(o)
-    o.gravityY= o.g
+makeWorld = mW = function(o){
+
+    o = ob(o)
+
+    var options = o
+
+    options.gravityY = options.g
  
     _mouseJoint = 0
+
     _mouseIsDown = 0
    
 
-    if(o.z !=0){z()}
+    if( options.z !=0 ){z()}
 
-    o.gravityY = N( o.gravityY )? o.gravityY : 40
+    options.gravityY = N( options.gravityY )? options.gravityY : 40
 
-    world= w = World( bV( 0 , o.gravityY ) )
+    world= w = World( bV( 0 , options.gravityY ) )
 
     
-    makeStage( 1200 , 600 , o )
+    makeStage( 1200 , 600 , options )
+
 
     canvasPosition = _getPosition(  $('#canvas')[0]  )
 
-    startLoop( o.cb )
+    setInterval( function(){//start the ticker
+
+                if( handleJointsAlt == true ){ handleJoints2() }  else { handleJoints() }
+
+                world.Step( 1/60, 10, 10 )
+
+                world.DrawDebugData()
+
+                world.ClearForces()
+
+                if( F(options.cb) ){ options.cb() }
+
+                s.u()},
+
+                1000/60 )
 
     checkMouseDown()
 
@@ -38,50 +59,48 @@ makeWorld = mW = function(o){ o = ob(o)
 
     setFixtures()
 
-    if( D ( o.w) ){  $w[o.w]()  } else {  makeWalls() }
+    if( D ( options.w ) ){  $w[options.w]()  } else {  makeWalls() }
+
+    if( ! options.$$ == 0 ){  makeShapeOnDblClk() }
+
+    return world}
 
 
-if(!o.$$==0){  makeShapeOnDblClk() }
+makeStage=function(X, Y, options){
 
+    canvas = c = $can( X, Y ).a().bc( 'z' )
 
-    return w}
+    canvas.id( 'canvas' )
 
-
-
-
-makeStage=function(X,Y,o){
-
-    c = $can( X, Y ).a().bc( 'z' )
-
-    c.q.id( 'canvas' )  // why not just c.id('canvas')?
-
-    s = SuperStage(c)
+    stage = s = SuperStage( canvas )
 
     T$.removeAllEventListeners()
 
-    x = xx(c)
+    ctx = x = xx( canvas )
 
-    s.ob.autoClear = false
+    stage.ob.autoClear = false
 
-    if( o.bg ){  s.b(o.bg)  }
+    if( options.bg ){  stage.b( options.bg )  }
 
 }
 
 
 
+isBodyElement=function(e){
+
+    e=$(e)[0]
+
+    return O(e) && uC( e.tagName ) == 'BODY'  }//isBodyElement
 
 
 
 
 //doesnt work YET
-$.fn.getPosition=function(){
+$.fn.getPosition = $.fn.getTotalOffset = function(){
 
-    var e=this
+    var e = this, x=0,  y= 0
 
-//=getElementPosition//osP=offsetParent
-    var x=0,  y= 0
-
-    while( E(e) ){ //O(e)&&D(e.tagName)
+    while( E( e ) && e.tagName ){
 
         y += e.offsetTop
 
@@ -92,14 +111,8 @@ $.fn.getPosition=function(){
         e = e.offsetParent || e
     }
 
-    return { x:x, y:y }
+    return { x: x, y: y }
 
-
-    function isBodyElement(e){
-
-        return O(e) && uC(e.tagName) == 'BODY'
-
-    }//isBodyElement
 
 
 
@@ -108,7 +121,7 @@ $.fn.getPosition=function(){
 
 
      //why not s.autoClear(0)?
-_getPosition=gEP=function( e ){
+_getPosition = gEP = function( e ){
 
 //=getElementPosition//osP=offsetParent
     var x=0,  y= 0
@@ -236,35 +249,6 @@ handleJoints=function(){
 
 
 
-startLoop =function(cb){
-
-    var debugWorld = function(){
-
-        w.Step( 1/60, 10, 10 )
-
-        w.DrawDebugData()
-
-        w.ClearForces()
-
-    }
-
-
-
-    setInterval(function(){//start the ticker
-
-        if(handleJointsAlt==true){ handleJoints2() }
-
-        else { handleJoints() }
-
-
-        debugWorld()
-
-        if (F(cb)){cb()}
-        s.u()
-
-    }, 1000/60)
-
-}
 
 
 
@@ -357,17 +341,27 @@ debugDraw
 
 setFixtures =function(){
 
-    bD = sBD()
+    // dep?
 
-    fD = fDf().d(1).f(.5).r(.8).sh(pSh())
+    bD = StaticBodyDef()
+
+    fD = SuperFixtureDef( new b2FixtureDef ).d( 1 ).f( .5 ).r( .8 )
+
+    fD.shape = PolyShape()
+
 }
+
+
 
 
 makeWalls =function(){
 
     bii(10,300, 40, 600).uD('leftWall') //left
+
     bii(990,300, 40, 600).uD('rightWall')//right
+
     bii(300, 0, 2400, 40).uD('ceiling')//top
+
     bii(300, 590, 2400, 40).uD('floor')//bottom
 
 }
@@ -375,10 +369,18 @@ makeWalls =function(){
 
 
 
-mBody =makeShapeOnDblClk=function(){//DEMO: add a 'fix' on $$ //DEMO: add 10 dynamic sq or cir to world
 
-    x.$$(function(x,y){
-        w.a(  yn()?dBD(x,y):  sBD(x,y),  fix())
+
+makeShapeOnDblClk = function(){//DEMO: add a 'fix' on $$ //DEMO: add 10 dynamic sq or cir to world
+
+    x.$$(function( x, y ){
+
+        world.a(
+
+            yn()?  DynamicBodyDef(x,y) :  StaticBodyDef(x,y),  fix()
+
+        )
+
     })
 
 }
@@ -399,7 +401,7 @@ handleJoints2=function(){// so far unchanged.. need to think
 
     }
 
-    if(_mouseJoint){
+    if( _mouseJoint){
 
         if(_mouseIsDown){
 
@@ -416,13 +418,15 @@ handleJoints2=function(){// so far unchanged.. need to think
         )
 
         w.dJ( _mouseJoint )
-        _mouseJoint = null
+
+            _mouseJoint = null
 
     }
 
     }
 
 }
+
 
 makeWallsPinball=function(){
 
@@ -437,6 +441,7 @@ makeWallsPinball=function(){
 
 
 
+
 SLINGSHOT=function(){
 
 
@@ -445,15 +450,17 @@ SLINGSHOT=function(){
 
     mW({
 
-        w:'makeWallsFull',
+        w: 'makeWallsFull',
 
-        g:0
+        g: 0
     })
 
     bbb=ba(300,300,30).lD(4).aD(10)
+
     ba(300,300,10).lD(4).aD(10);
     ba(300,300,10).lD(4).aD(10);
     ba(300,300,10).lD(4).aD(10)
+
    // ba(300,300,30).lD(4).aD(10)
 
 }

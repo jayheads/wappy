@@ -107,8 +107,6 @@ revJoint2=function(){return w.j( rev(bi(400,50,50), bi(400,50,50)).mt(10 ) )}
 revJoint3=function(){return w.j( rev(bi(400,30,30,50), bi(400,30,30,50)).mt(10 ) )}
 
 
-
-
 revJoint4=function(){
 
     return w.j(
@@ -128,14 +126,6 @@ revJoint4=function(){
 
 
 }
-
-
-
-
-
-
-
-
 
 
 
