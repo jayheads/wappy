@@ -23,10 +23,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="wappy.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="jqueryplugins.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/app/jqueryplugins.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.3076923" vertical-offset="3964" max-vertical-offset="12750">
+              <caret line="270" column="17" selection-start-line="270" selection-start-column="17" selection-end-line="270" selection-end-column="17" />
+              <folding>
+                <element signature="e#6262#6506#0" expanded="false" />
+                <element signature="e#7237#7557#0" expanded="false" />
+                <element signature="e#7586#7633#0" expanded="false" />
+                <element signature="e#7649#7723#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wappy.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/w/wappy.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47468355" vertical-offset="0" max-vertical-offset="2670">
+            <state vertical-scroll-proportion="-8.653846" vertical-offset="0" max-vertical-offset="2670">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding>
                 <element signature="e#146#535#0" expanded="false" />
@@ -34,6 +49,16 @@
                 <element signature="e#554#649#0" expanded="false" />
                 <element signature="e#1935#1973#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="amazon" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/w/api/amazon">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -53,12 +78,23 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/app/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.1538461" vertical-offset="1215" max-vertical-offset="3945">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.769231" vertical-offset="1234" max-vertical-offset="4605">
+              <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
               <folding>
                 <element signature="e#3200#4113#0" expanded="false" />
                 <element signature="e#4139#5197#0" expanded="false" />
-                <element signature="e#5221#5854#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wheel.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/box2d/wheel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.828" vertical-offset="966" max-vertical-offset="12375">
+              <caret line="92" column="16" selection-start-line="92" selection-start-column="16" selection-end-line="92" selection-end-column="16" />
+              <folding>
+                <element signature="e#4240#4735#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -79,36 +115,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="2108" max-vertical-offset="2670">
               <caret line="165" column="0" selection-start-line="20" selection-start-column="13" selection-end-line="165" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nav.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/nav.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="248" max-vertical-offset="4185">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="modelsMini.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/w/o/modelsMini.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5010">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="learn.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/w/o/learn.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -144,9 +150,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/j/base/struct.js" />
-        <option value="$PROJECT_DIR$/j/create/orbs.js" />
-        <option value="$PROJECT_DIR$/w/sockets.js" />
         <option value="$PROJECT_DIR$/jqueryplugins.js" />
         <option value="$PROJECT_DIR$/j/app/socket.js" />
         <option value="$PROJECT_DIR$/j/base/images.js" />
@@ -192,9 +195,12 @@
         <option value="$PROJECT_DIR$/w/wappyMini.js" />
         <option value="$PROJECT_DIR$/w/o/wappyMini.js" />
         <option value="$PROJECT_DIR$/routes/bookRoutes.js" />
-        <option value="$PROJECT_DIR$/js/app/app.js" />
         <option value="$PROJECT_DIR$/views/wap.jade" />
         <option value="$PROJECT_DIR$/w/wappy.js" />
+        <option value="$PROJECT_DIR$/w/api/amazon" />
+        <option value="$PROJECT_DIR$/js/app/app.js" />
+        <option value="$PROJECT_DIR$/js/app/jqueryplugins.js" />
+        <option value="$PROJECT_DIR$/js/box2d/wheel.js" />
       </list>
     </option>
   </component>
@@ -246,6 +252,56 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wappy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -439,14 +495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/w/api/amazon">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="504">
-          <caret line="20" column="46" selection-start-line="20" selection-start-column="2" selection-end-line="20" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/box2d/joints.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1" max-vertical-offset="3180">
@@ -580,19 +628,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/jqueryplugins.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0769231" vertical-offset="9414" max-vertical-offset="14958">
-          <caret line="573" column="0" selection-start-line="572" selection-start-column="0" selection-end-line="573" selection-end-column="0" />
-          <folding>
-            <element signature="e#6193#6437#0" expanded="false" />
-            <element signature="e#7168#7488#0" expanded="false" />
-            <element signature="e#7517#7564#0" expanded="false" />
-            <element signature="e#7580#7654#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/lib/time.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="219" max-vertical-offset="2057">
@@ -684,16 +719,6 @@
             <element signature="e#7371#8156#0" expanded="false" />
             <element signature="e#8179#8308#0" expanded="false" />
             <element signature="e#8261#8294#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/box2d/wheel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12030">
-          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-          <folding>
-            <element signature="e#3874#4369#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -941,27 +966,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+    <entry file="file://$PROJECT_DIR$/w/api/amazon">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.1538461" vertical-offset="1215" max-vertical-offset="3945">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding>
-            <element signature="e#3200#4113#0" expanded="false" />
-            <element signature="e#4139#5197#0" expanded="false" />
-            <element signature="e#5221#5854#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/w/wappy.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47468355" vertical-offset="0" max-vertical-offset="2670">
+        <state vertical-scroll-proportion="-8.653846" vertical-offset="0" max-vertical-offset="2670">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
           <folding>
             <element signature="e#146#535#0" expanded="false" />
             <element signature="e#376#532#0" expanded="false" />
             <element signature="e#554#649#0" expanded="false" />
             <element signature="e#1935#1973#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.769231" vertical-offset="1234" max-vertical-offset="4605">
+          <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+          <folding>
+            <element signature="e#3200#4113#0" expanded="false" />
+            <element signature="e#4139#5197#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/jqueryplugins.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3076923" vertical-offset="3964" max-vertical-offset="12750">
+          <caret line="270" column="17" selection-start-line="270" selection-start-column="17" selection-end-line="270" selection-end-column="17" />
+          <folding>
+            <element signature="e#6262#6506#0" expanded="false" />
+            <element signature="e#7237#7557#0" expanded="false" />
+            <element signature="e#7586#7633#0" expanded="false" />
+            <element signature="e#7649#7723#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/box2d/wheel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.828" vertical-offset="966" max-vertical-offset="12375">
+          <caret line="92" column="16" selection-start-line="92" selection-start-column="16" selection-end-line="92" selection-end-column="16" />
+          <folding>
+            <element signature="e#4240#4735#0" expanded="false" />
           </folding>
         </state>
       </provider>

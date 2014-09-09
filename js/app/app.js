@@ -329,8 +329,38 @@ lgrBarX=function(){
 
 
 
+jQuery.fn.centerOnWindow = function () {
+    this.css("position","absolute");
+    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+        $(window).scrollTop()) + "px");
+    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+        $(window).scrollLeft()) + "px" )
+    return this}
+
+$.fn.xCenter=function(){
+
+   return this.P( 'a' ).css({  left: '50%', 'margin-left': '-100px'  })}
 
 
+MOBILETIPS=function(){
+
+    z()
+
+    $('body').C('u')
+
+
+    d = $.div('o', 400, 200).A().drag().pad( 20 ).A(
+
+        dd = $.div( 'u',  200 , 100 ).xCenter(),
+
+        $.div( 'g',  100 , 80).xCenter( )
+
+    ).P('r')
+
+
+
+
+}
 
 
 

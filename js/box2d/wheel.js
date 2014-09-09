@@ -1,6 +1,7 @@
 PINBALL=function(){
 
 
+
     mW({  w : 'makeWallsPinball'  })
 
     c.w( 430 )
@@ -14,8 +15,6 @@ PINBALL=function(){
     ball= ba(215,90)
 
     bindr('sun', ball,.24)
-
-
 
     var leftJoint = baa(100,430)
 
@@ -74,6 +73,30 @@ PINBALL=function(){
     setInterval(function(){
         ball.rt( ball.rt() + 10)
     },100)
+
+
+       pop(
+
+
+           $.div(  'y').A(
+
+
+            $.h1('welcome to gamey pinball'),
+
+
+
+            $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
+
+
+            $.h4('goal: knockdown the fireball'),
+
+               $.h5('click the game to start')
+
+           )
+
+        )//.A().click(function(){ $(this).remove() })
+
+
 
 }
 

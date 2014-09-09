@@ -267,13 +267,32 @@ $.h1=function(){
     h.A.apply(h,G(arguments))
     return h}
 
+$.h2=function(){
+    var h=$( '<h2>' )
+    h.A.apply(h,G(arguments))
+    return h}
+$.h3=function(){
+    var h=$( '<h3>' )
+    h.A.apply(h,G(arguments))
+    return h}
+
+$.h4=function(){
+    var h=$( '<h4>' )
+    h.A.apply(h,G(arguments))
+    return h}
+
+$.h5=function(){
+    var h=$( '<h5>' )
+    h.A.apply(h,G(arguments))
+    return h}
+
+$.h6=function(){
+    var h=$( '<h6>' )
+    h.A.apply(h,G(arguments))
+    return h}
 
 
-$.h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
-$.h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
-$.h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
-$.h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
-$.h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
+
 
 $.br=function(a){
     var s=sp()
