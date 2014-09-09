@@ -34,7 +34,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     //ash schema?
 
-    ashSM=mongoose.s({
+    ashSM=mongoose.Schema({
 
         v:String,    //?
 
@@ -119,17 +119,18 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
      pic:{
 
-         u: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
+         user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
          //user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
 
-         d: {type:Date, default: Date.now},
          date: {type:Date, default: Date.now},
 
-         s: Number, score: Number,
+         modified: Date,
 
-         n: String, name: String,
+         size: Number,
 
-         e: String, extname: String
+         name: String,
+
+         ext: String
 
      },
 
@@ -229,9 +230,9 @@ var $m={}
 
 for(var m in MODELS){
 
-    $m[m] =  mongoose.m(
+    $m[m] =  mongoose.model(
         cL(m),
-        mongoose.s(MODELS[m])
+        mongoose.Schema(MODELS[m])
     )
 
 
@@ -243,7 +244,7 @@ for(var m in MODELS){
 
 
 //book schema
-bookSch=mongoose.s({
+bookSch=mongoose.Schema({
 
     name: String,
 
@@ -257,7 +258,7 @@ bookSch=mongoose.s({
 
 
 //chapter schema
-chapterSch=mongoose.s({
+chapterSch=mongoose.Schema({
     book:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Book'
@@ -272,7 +273,7 @@ chapterSch=mongoose.s({
 
 
 //page schema
-pageSch=mongoose.s({
+pageSch=mongoose.Schema({
 
     chapter:{
         type:mongoose.Schema.Types.ObjectId,
@@ -284,7 +285,7 @@ pageSch=mongoose.s({
 
 
 
-sectionSch=mongoose.s({page:{
+sectionSch=mongoose.Schema({page:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'Page'
 },content:S,heading:S})
@@ -294,10 +295,10 @@ sectionSch=mongoose.s({page:{
 
 
 
-Book=mongoose.m('Book',bookSch)
-Chapter=mongoose.m('Chapter',chapterSch)
-Page=mongoose.m('Page',pageSch)
-Section=mongoose.m('Section',sectionSch)
+Book=mongoose.model('Book',bookSch)
+Chapter=mongoose.model('Chapter',chapterSch)
+Page=mongoose.model('Page',pageSch)
+Section=mongoose.model('Section',sectionSch)
 
 
 

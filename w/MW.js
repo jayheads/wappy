@@ -1,4 +1,4 @@
-l('~mw~')
+$l('~mw~')
 
 Midware =  W = function(q,p,n){
 
@@ -11,11 +11,8 @@ Midware =  W = function(q,p,n){
     p.d  = p.redirect
 
 
-
-
-
     q.b  = q.body
-    q.f  = q.files
+    //q.f  = q.files
     q.n  = q.flash
     q.s  = q.session
     q.q= q.query

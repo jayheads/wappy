@@ -11,7 +11,7 @@ cl=function(db,b){var c=db.collection(b)
     c.X=function(){db.close}
     return c}
 
-q('mongodb').MongoClient.connect(MURL='mongodb://127.0.0.1:27017/test',
+require('mongodb').MongoClient.connect(MURL='mongodb://127.0.0.1:27017/test',
 
      function(z,db){if(z){throw z}
 
@@ -19,7 +19,7 @@ q('mongodb').MongoClient.connect(MURL='mongodb://127.0.0.1:27017/test',
 
          c.fta(//   {n:'jason'},
 
-             function(z,r){l(r);c.X()})})
+             function(z,r){$l(r);c.X()})})
 
 
  
