@@ -65,8 +65,8 @@ PINBALL=function(){
 
       if(Math.random() > .9) { bindr('me', b,.24)}
 
-        leftFlip.aI(100, 0);
-        rightFlip.aI(-100,0)
+        leftFlip.aI(120, 0);
+        rightFlip.aI(-120,0)
 
     })
 

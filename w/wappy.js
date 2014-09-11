@@ -33,109 +33,54 @@ http = require('http')
 path = require('path')
 fs = require('fs')
 
-
 mongoose  =   require('mongoose')
 models = $m = require('./models')
 mongoose.connect("mongodb://localhost/brain", function(){ $l('mongo connected') })
 require('./mong')
-
 express = require('express')
 mongoStore = new(require('connect-mongo')(express))({db:'brain'})
 
 a = express()
+a.set('port', process.env.PORT||4000)
 
 $l('env: ' + a.get('env'))
 
-a.l = a.locals
-
-a.r = a.router
-
-middleware   = $w = w =  require('./MW')
-
-a.set('port', process.env.PORT||4000)
-
 a.set('view engine' ,'jade')
+a.set( 'views' , __dirname + '/../views/' )
 
-console.log('dirname: '+ __dirname)
-
-a.set('views' , __dirname + '/../views/')
-
-a.use( express.logger('dev') )
-
-if(a.get('env')=="development"){
-    a.use(express.errorHandler())}
-
-
-cookieParser =  express.cookieParser('xyz')
-
-
-
-a.use(
-    express.bodyParser(
-        {
-            keepExtensions:true,
-            uploadDir:__dirname+"/public/uploads"
-        }
-    ))
-
-
-a.use(cookieParser)
-
+//a.use( express.logger('dev') )
+//if(a.get('env')=="development"){a.use(express.errorHandler())}
+a.use(express.bodyParser({uploadDir:__dirname+"/public/uploads",keepExtensions:true}))
+a.use(cookieParser=express.cookieParser('xyz'))
 a.use(express.session({
 
-    store:mongoStore,
+    store: mongoStore,
 
-    secret:'xyz'
+    secret: 'xyz'
 
 }))
+a.use( express.favicon() )
+a.use( middleware = $w = w =  require('./MW') )
 
-
-//a.use(  require('connect-flash')())
-
-
-a.use(express.favicon())
-
-a.use(middleware)
-
-
-
-
-//render a jade page
-
-a.get(
-
-    '/render/:page',
-
-    function(req, res, next){
-        res.render(req.params.page)}
-    )
-
-
-
-
-require('../routes/routes')()
-
-require('../routes/social')()
-
+a.get('/render/:page', function(req, res, next){res.render(req.params.page)})
+//
+require( '../routes/routes' )()
+require( '../routes/social' )()
 //require('../routes/bookRoutes')()
-
-require('../routes/restRoutes')()
-
-a.use(a.router)
-
+require( '../routes/restRoutes' )()
+a.use( a.router )
+//
+//where i can publically, statically fetch items from
 fileDirs = [
 
+    // its really assets
     '/public/deps',// css, fonts, js (bs, cjs, jq, string, us)
-
-
     '/public/deps/css',
-
     '/public/deps/js',
-
     '/public/pics',
     '/public/graphics',
     '/public/uploads',
-
+    '/public/deps/ui-images',
 
     //front-end js
     '/../js',
@@ -154,9 +99,6 @@ fileDirs = [
     '/../js/g'
 
 ]
-
-$l('dirname: '+__dirname)
-
 _.each(fileDirs, function(dir){
 
    a.use(
@@ -166,27 +108,28 @@ _.each(fileDirs, function(dir){
 
 })
 
-
 httpServer = http.createServer(a)
-
-
-$l('host: '+ a.get('env'))
-
-
 httpServer.listen(80, function(){$l('server listening on port 80')} )
 
-
 io =  require('socket.io').listen(httpServer)
-
 io.set('log level', 1)
-
 sio = require('session.socket.io')
+require('./sockets')(io,new sio(io,mongoStore,cookieParser))
 
 
-require('./sockets')(
-    io,
-    new sio(io,mongoStore,cookieParser)
-)
 
+
+
+
+
+
+
+
+//a.l = a.locals
+
+//a.r = a.router
+
+
+//a.use(  require('connect-flash')())
 
 

@@ -1,9 +1,33 @@
+JQUI=function(){z()
+
+    ('<link rel="stylesheet" href="/jquery-ui.min.css">').A()
+    ('<script src="/jquery-ui.min.js">').A()
+
+
+    t=$.textInput('date').A().datepicker()
+
+
+d= $.div('b',400,400).A().A(t).pad(20)
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 chatRoomsObject={}
-
-
-
-
 ChatRoom=function(title, color, id){
 
     title = title||'chatbox'

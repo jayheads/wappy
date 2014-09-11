@@ -2,16 +2,6 @@ module.exports=function(){
 
     $a=a;  a.p=a.post;  a.g= a.get;
 
-    //$N=Number
-
-    //  gU= agU= function(u,f){ $a.get(u, $w.u ,f)  }
-   // pU= apU= function(u,f){  $a.post(u, $w.u ,f) }
-        //qU=qu= function(q){  return {u: q.u} }
- //   qqU=function(q){return {u: q.q.u}}
- //   qbu=function(q){return {u: q.b.u}}
-//    qI=function(q){return  {u: q.I}}
-    //pjd0=function(res){return function(err, data){res.json(data[0])}}
-    //quc=function(q){return {u: q.u, c: q.b.c }}
 
 
     jD=pjd=function(res, str){
@@ -99,12 +89,7 @@ module.exports=function(){
 
     fById=function(m,o,f){
 
-        $m[m].findById(o,
-
-            F(f)? f:
-
-                pjd(f)
-        )}
+        $m[m].findById(o,  F(f)? f:  pjd(f)  )}
 
     ALL=function(route, model){
 
@@ -136,11 +121,7 @@ module.exports=function(){
 
 
 
-    $a.get('/', function(req,res){
-
-        res.send('this is a test')
-
-    })
+    $a.get('/', function(req,res){  res.send('this is a test')   })
 
     $a.get('/pinball', function(req,res){  res.render('pinball')   })
 
@@ -149,10 +130,16 @@ module.exports=function(){
 
     $a.get('/wap/:app/:pam?', function(req, res){
 
-        res.render('wap', {
-            app: req.params.app,
-            pam: req.params.pam
-        })})
+        res.render('wap', {  app: req.params.app,   pam: req.params.pam    })})
+
+
+
+    $a.get('/ui/:app/:pam?', function(req, res){
+
+        res.render('ui', {  app: req.params.app,   pam: req.params.pam    })})
+
+
+
 
 
 
@@ -533,3 +520,13 @@ module.exports=function(){
 }
 
 
+//$N=Number
+
+//  gU= agU= function(u,f){ $a.get(u, $w.u ,f)  }
+// pU= apU= function(u,f){  $a.post(u, $w.u ,f) }
+//qU=qu= function(q){  return {u: q.u} }
+//   qqU=function(q){return {u: q.q.u}}
+//   qbu=function(q){return {u: q.b.u}}
+//    qI=function(q){return  {u: q.I}}
+//pjd0=function(res){return function(err, data){res.json(data[0])}}
+//quc=function(q){return {u: q.u, c: q.b.c }}

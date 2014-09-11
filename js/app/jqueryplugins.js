@@ -291,7 +291,11 @@ $.h6=function(){
     h.A.apply(h,G(arguments))
     return h}
 
+$.input=function(){
+   return $('<input type="text">')
 
+
+}
 
 
 $.br=function(a){
@@ -675,9 +679,11 @@ $.textInput=function(name){
 
     var el = $('<input>').attr('type', 'text')
 
-    if(val){  el.attr('name', name)  }
+    if(name){  el.attr({name: name, id:name})  }
 
     return el}
+
+
 
 $.passwordInput=function(name){
 
