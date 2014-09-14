@@ -40,11 +40,6 @@ BINDINGS={
     T:'template'
 }
 
-
-
-
-
-
 JMET={
 
     tb:'getTransformedBounds',

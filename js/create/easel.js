@@ -298,7 +298,9 @@ Ed=function(ob){//var o=function f(){return f.main? f.main.apply(f, arguments):(
 
         return o}
     o.wt=function(type){return o.ob.willTrigger(type)}
-    o.t=function(a,b,c,d){if(U(a)){Ed(T$).t(o);return o};return o.o('t',a,b,c,d)}
+
+    o.tick = o.t=function(a,b,c,d){if(U(a)){Ed(T$).t(o);return o};return o.o('t',a,b,c,d)}
+
     o.$=function(a,b,c,d){return o.o('$', a,b,c,d)}
     o.$$=function(a,b,c,d){return o.o('$$',a,b,c,d)}
     o.str=function(){return ob.toString()}

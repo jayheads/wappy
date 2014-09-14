@@ -902,35 +902,32 @@ var eq = function(a, b, aStack, bStack) {
             while (size--) {
                 if (!(result = eq(a[size], b[size], aStack, bStack))) break;
             }
-        }
-    } else {
+        }}
+
+    else {
         // Deep compare objects.
         for (var key in a) {
             if (_.has(a, key)) {
                 // Count the expected number of properties.
-                size++;
+                size++
                 // Deep compare each member.
                 if (!(result = _.has(b, key) && eq(a[key], b[key], aStack, bStack))) break;
-            }
-        }
+            }}
         // Ensure that both objects contain the same number of properties.
         if (result) {
             for (key in b) {
-                if (_.has(b, key) && !(size--)) break;
-            }
-            result = !size;
-        }
+                if (_.has(b, key) && !(size--)) break}
+            result = !size}
     }
     // Remove the first object from the stack of traversed objects.
-    aStack.pop();
-    bStack.pop();
-    return result;
-};
+    aStack.pop()
+    bStack.pop()
+    return result}
 
 // Perform a deep comparison to check if two objects are equal.
 _.isEqual = function(a, b) {
     return eq(a, b, [], []);
-};
+}
 
 // Is a given array, string, or object empty?
 // An "empty" object has no enumerable own-properties.
@@ -1038,8 +1035,8 @@ _.random = function(min, max) {
         max = min;
         min = 0;
     }
-    return min + Math.floor(Math.random() * (max - min + 1));
-};
+    return min + Math.floor(Math.random() * (max - min + 1))
+}
 
 // List of HTML entities for escaping.
 var entityMap = {
@@ -1051,24 +1048,30 @@ var entityMap = {
         "'": '&#x27;',
         '/': '&#x2F;'
     }
-};
-entityMap.unescape = _.invert(entityMap.escape);
+}
+
+
+entityMap.unescape = _.invert(entityMap.escape)
 
 // Regexes containing the keys and values listed immediately above.
 var entityRegexes = {
     escape:   new RegExp('[' + _.keys(entityMap.escape).join('') + ']', 'g'),
     unescape: new RegExp('(' + _.keys(entityMap.unescape).join('|') + ')', 'g')
-};
+}
+
+
+
+
 
 // Functions for escaping and unescaping strings to/from HTML interpolation.
 _.each(['escape', 'unescape'], function(method) {
     _[method] = function(string) {
-        if (string == null) return '';
+        if (string == null) return ''
         return ('' + string).replace(entityRegexes[method], function(match) {
-            return entityMap[method][match];
-        });
-    };
-});
+            return entityMap[method][match]
+        })
+    }
+})
 
 // If the value of the named `property` is a function then invoke it with the
 // `object` as context; otherwise, return it.
@@ -1109,7 +1112,7 @@ _.templateSettings = {
 // When customizing `templateSettings`, if you don't want to define an
 // interpolation, evaluation or escaping regex, we need one that is
 // guaranteed not to match.
-var noMatch = /(.)^/;
+var noMatch = /(.)^/
 
 // Certain characters need to be escaped so that they can be put into a
 // string literal.
@@ -1121,9 +1124,9 @@ var escapes = {
     '\t':     't',
     '\u2028': 'u2028',
     '\u2029': 'u2029'
-};
+}
 
-var escaper = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+var escaper = /\\|'|\r|\n|\t|\u2028|\u2029/g
 
 // JavaScript micro-templating, similar to John Resig's implementation.
 // Underscore templating handles arbitrary delimiters, preserves whitespace,
@@ -1140,8 +1143,11 @@ _.template = function(text, data, settings) {
     ].join('|') + '|$', 'g');
 
     // Compile the template source, escaping string literals appropriately.
-    var index = 0;
-    var source = "__p+='";
+
+    var index = 0
+
+    var source = "__p+='"
+
     text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
         source += text.slice(index, offset)
             .replace(escaper, function(match) { return '\\' + escapes[match]; });
@@ -1157,7 +1163,8 @@ _.template = function(text, data, settings) {
         }
         index = offset + match.length;
         return match;
-    });
+    })
+
     source += "';\n";
 
     // If a variable is not specified, place data values in local scope.

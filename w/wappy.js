@@ -34,7 +34,12 @@ path = require('path')
 fs = require('fs')
 
 mongoose  =   require('mongoose')
+//////////////////////////////////////
+
+
+
 models = $m = require('./models')
+
 mongoose.connect("mongodb://localhost/brain", function(){ $l('mongo connected') })
 require('./mong')
 express = require('express')

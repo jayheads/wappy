@@ -123,7 +123,15 @@ module.exports=function(){
 
     $a.get('/', function(req,res){  res.send('this is a test')   })
 
-    $a.get('/pinball', function(req,res){  res.render('pinball')   })
+    $a.get( '/pinball', function(req,res){  res.render('pinball')   })
+
+
+    $a.get('/game/:app/:pam?', function(req, res){
+
+        res.render('game', {  app: req.params.app,   pam: req.params.pam    })})
+
+
+     
 
     $a.get('/wap', function(req,res){ res.render('wap') })
 

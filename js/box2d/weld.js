@@ -1,7 +1,9 @@
 //weld seems to hurt mouse drag.  but sJt is ok?!
+//makeWeldJointOnDblClick=mWJ=function(){x.$$(SuperWeldJoint)}
 
+WeldJoint=wJt =function(a,b,c,d,e){
 
-wJt =function(a,b,c,d,e){var j=sJt(new BXJ.b2WeldJointDef())
+    var j=sJt(new BXJ.b2WeldJointDef())
 
     j.i=function(){
         var g=G(arguments)
@@ -15,29 +17,47 @@ wJt =function(a,b,c,d,e){var j=sJt(new BXJ.b2WeldJointDef())
     if(N(e)){j.referenceAngle = tRad(e)}
 
     return j}
-sWJ=function(x,y){
 
-    x=N(x)?x:100
-    y=N(y)?y:x
+SuperWeldJoint=sWJ=function( x , y ){
 
-    b11=w.a(dBD(x,y),fix())
+    x = N(x) ? x : 100
 
-    b22=w.a(dBD(x,y),fix())
+    y = N(y) ? y : x
 
-    j=wJt(b11,b22, bV(-.5,-.5), bV(.5,.5), 9)
+    var b11 = world.addBody( DynamicBodyDef( x , y ), fix() )
 
-    w.cJ(j)}
-mWJ=function(){x.$$(sWJ)}
+    var b22 = world.addBody( DynamicBodyDef( x , y ), fix() )
 
-weld=function(a,b,c,d,e,f,g){c=c||0;d=d||0; e=e||0; f=f||0
-    var j=wJt(a,b, bV(c/30,d/30), bV(e/30 , f/30), g||10)
-    return j}
+    var joint = wJt( b11, b22, bV( -.5 , -.5 ), bV(.5,.5), 9)
+
+    world.createJoint( joint )
+
+}
+
+
+Welding = weld=function(a,b,c,d,e,f,g){   c=c||0;d=d||0; e=e||0; f=f||0
+
+    return WeldJoint(a,b, bV(c/30,d/30), bV(e/30 , f/30), g||10)
+
+
+}
+
+
 
 WELD=function(){makeWorld()
 
-    w.j(weld(baa(100,100),ba(100,100),0,0))
-    w.j(weld(baa(200,100),ba(200,100),0,10))
-    w.j(weld(baa(300,100),ba(300,100),0,-10))
+    world.createJoint(
+
+        Welding(
+
+            baa(100,100),
+
+            ba(100,100),0,0
+        )
+    )
+
+    world.j(weld(baa(200,100),ba(200,100),0,10))
+    world.j(weld(baa(300,100),ba(300,100),0,-10))
     w.j(weld(baa(400,100),ba(400,100),10,10))
     w.j(weld(baa(500,100),ba(500,100),10,-10))
     w.j(weld(baa(600,100),ba(600,100),10,-20))

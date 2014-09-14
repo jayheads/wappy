@@ -1,5 +1,4 @@
-
-RevoluteJointDef=rev =function(a,b, c,d, e,f){var g=G(arguments)
+RevoluteJointDef = rev =function(a,b, c,d, e,f){var g=G(arguments)
 
     //pass in body1, body2, world-bV
     //world-bV defaults to body1-center
@@ -7,18 +6,28 @@ RevoluteJointDef=rev =function(a,b, c,d, e,f){var g=G(arguments)
     //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
 
 
-    var j=sJD(new BXJ.b2RevoluteJointDef())
+    var j= SuperJointDef( new BXJ.b2RevoluteJointDef() )
 
-    j.i=function(){var g=G(arguments)
-        _a(j.Initialize,g,j)
+
+    j.i = function(){var g=G(arguments)
+
+       j.Initialize.apply(j,g)
+
         return j}
 
 
-    j.mt=function(a,b,c){
+
+    j.mt = function(a,b,c){
+
         j.mS(a)
+
         j.mMT(N(b)?b:100)
+
         if(c!='-'){j.eM(1)}
-        return j}
+
+        return j
+    }
+
 
 
 
@@ -33,10 +42,6 @@ RevoluteJointDef=rev =function(a,b, c,d, e,f){var g=G(arguments)
     }
 
 
-
-
-
-
     if(U(c)){c=a.c()}
 
     if(O(c)){j.i(a,b,c)}
@@ -45,64 +50,43 @@ RevoluteJointDef=rev =function(a,b, c,d, e,f){var g=G(arguments)
 
     else if(N(c)){ j.i(a,b, bV(c/30,d/30)) }
 
-    sJD(j)
+    SuperJointDef(j)
 
     return j}
 
-rJtX=function(o){//rJD=
-
-    var j=sJD(new BXJ.b2RevoluteJointDef())
-
-    j.i=function(a,b,c,d,e,f){
-        var g=G(arguments)
-
-        if(U(c)){c=a.c()}
-        j.Initialize(a,b,c)
-
-        return j}
-
-    if(O(o)){
-
-        if(o.i){  _a(j.i, o.i, j  )}
 
 
-        if(N(o.l)){j.l(o.l)} else {j.l(1)}
-        if(N(o.f)){j.f(o.f)} else {j.f(3)}
-        if(N(o.d)){j.d(o.d)} else {j.d(.1)}
-        if((o.c)){j.cC(1)}  else {j.cC(0)}
-        if(o.lAA){j.lAA(o.lAA)}
-        if(o.lAB){j.lAB(o.lAB)}
-        if(o.rA){j.rA(o.rA)}
-        if(o.eL){j.eL(o.eL)}
-        if(o.lA){j.lA(o.lA)}
-
-        if(o.uA){ j.uA(o.uA) }
 
 
-        if(o.eM){j.eM(o.eM?true:false)}
 
-        if(o.mS){j.mS(o.mS)}
-        if(o.mMT){j.mMT(o.mMT)}
+revJoint=function(){
 
-        //localAnchorA - the point in body A around which it will rotate
-        //localAnchorB - the point in body B around which it will rotate
-        //referenceAngle - an angle between bodies considered to be zero for the joint angle
-        //enableLimit - whether the joint limits will be active
-        //lowerAngle - angle for the lower limit
-        //upperAngle - angle for the upper limit
-        //enableMotor - whether the joint motor will be active
-        //motorSpeed - the target speed of the joint motor
-        //maxMotorTorque - the maximum allowable torque the motor can use
+    //world.createRevoluteJoint
 
-        return w.cJ(j)}
+    return world.createJoint(
 
-    return sJt(j)
+        RevoluteJointDef( ba(), bi() )
+
+)
+
 
 }
 
 
-revJoint=function(){return w.j(rev(ba(),bi()))}
-revJoint1=function(){return w.j( rev(baa(400,200),bi(400,200,200)).mt(200 ) )}
+
+revJoint1=function(){return world.createJoint(
+
+    RevoluteJointDef(
+
+    baa(400, 200),
+    bi(400, 200, 200)
+
+).mt(200 ) )
+
+}
+
+
+
 revJoint2=function(){return w.j( rev(bi(400,50,50), bi(400,50,50)).mt(10 ) )}
 revJoint3=function(){return w.j( rev(bi(400,30,30,50), bi(400,30,30,50)).mt(10 ) )}
 
@@ -193,15 +177,17 @@ RABBIT=function(){
 
     mW()
 
-    w.j( rev(
+    world.createJoint(
+
+
+        rev(
 
         baa(300,300,100),
 
-            w.a(
-                dBD(300,300),
-                [cFx(50) ,
-                pFx(10,80,20,160)]
-            )
+
+            //world.addDynamicBody
+
+            world.addBody(   DynamicBodyDef(300,300),   [  CircleFixture(50) ,   PolyFixture(10,80,20,160)   ]  )
 
 
         )
@@ -252,35 +238,127 @@ CAR=function(){mW()
 }
 
 
+SuperGearJoint=function(gearJoint){
+
+
+return gearJoint}
+
+
+
+
+
+
 gear=function(bA, bB, ratio){
 
-    ratio=N(ratio)?ratio:1
+    ratio = N(ratio)? ratio : 1
 
-    j= new BXJ.b2GearJointDef()
+   var gearJoint = new BXJ.b2GearJointDef()
 
-    j.joint1=bA
-    j.joint2=bB
-    j.ratio=ratio
+    gearJoint.joint1 = bA
+    gearJoint.joint2 = bB
+    gearJoint.ratio = ratio
 
-    j.bodyA= bA.GetBodyA()
-    j.bodyB= bB.GetBodyA()
+    gearJoint.bodyA= bA.GetBodyA()
+    gearJoint.bodyB= bB.GetBodyA()
 
-    return j}
-GEARDEMO=function(){makeWorld()
+    return gearJoint
 
-    w.j(
+}
+
+
+
+
+
+
+
+DEMO_GEAR=function(){makeWorld()
+
+    //world.Joint()
+    //world.Gear()
+    world.createJoint(
+
         gear(
 
-            j1=w.j(rev( baa(100,220), bi(100,220,100,20))),
+            j1 = world.createJoint(
 
-            j2=w.j(rev( baa(250,220), bi(250,220,100,20))),
+                rev(
+                    baa(100,220),
+                    bi(100,220,100,20)
+                )
+
+            ),
+
+
+
+            j2 = world.createJoint(
+
+                rev( baa(250,220), bi(250,220,100,20))
+
+            ),
 
             1
-    ))}
+    )
+
+
+    )
+
+}
 
 
 
 
 
 
+
+
+rJtX=function(o){
+
+    var j=SuperJointDef(new BXJ.b2RevoluteJointDef())
+
+    j.i=function(a,b,c,d,e,f){
+        var g=G(arguments)
+
+        if(U(c)){c=a.c()}
+        j.Initialize(a,b,c)
+
+        return j}
+
+    if(O(o)){
+
+        if(o.i){  _a(j.i, o.i, j  )}
+
+
+        if(N(o.l)){j.l(o.l)} else {j.l(1)}
+        if(N(o.f)){j.f(o.f)} else {j.f(3)}
+        if(N(o.d)){j.d(o.d)} else {j.d(.1)}
+        if((o.c)){j.cC(1)}  else {j.cC(0)}
+        if(o.lAA){j.lAA(o.lAA)}
+        if(o.lAB){j.lAB(o.lAB)}
+        if(o.rA){j.rA(o.rA)}
+        if(o.eL){j.eL(o.eL)}
+        if(o.lA){j.lA(o.lA)}
+
+        if(o.uA){ j.uA(o.uA) }
+
+
+        if(o.eM){j.eM(o.eM?true:false)}
+
+        if(o.mS){j.mS(o.mS)}
+        if(o.mMT){j.mMT(o.mMT)}
+
+        //localAnchorA - the point in body A around which it will rotate
+        //localAnchorB - the point in body B around which it will rotate
+        //referenceAngle - an angle between bodies considered to be zero for the joint angle
+        //enableLimit - whether the joint limits will be active
+        //lowerAngle - angle for the lower limit
+        //upperAngle - angle for the upper limit
+        //enableMotor - whether the joint motor will be active
+        //motorSpeed - the target speed of the joint motor
+        //maxMotorTorque - the maximum allowable torque the motor can use
+
+        return w.cJ(j)}
+
+    return sJt(j)
+
+}
 

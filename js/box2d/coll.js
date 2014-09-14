@@ -1,3 +1,5 @@
+
+
 //CONTACTS AND SENSORS
 
 pair=function(c, p1, p2){
@@ -31,7 +33,7 @@ sCon=function(c){
     c.sS=function(a){c.SetSensor(a?true:false);return c}// Change this to be a sensor or-non-sensor contact.
 
 
-    c.uD=function( u){
+    c.userData = c.uD=function( u){
         return c.A().uD()==u || c.B().uD()==u
     }
 
@@ -45,24 +47,25 @@ sImp=function(i){
     i.t= i.tI=function(){return i.tangentImpulses}
     return i}
 
-bCL=function(){var l= new BXD.b2ContactListener
+ContactListener=bCL=function(){var l= new BXD.b2ContactListener
 
-    l.b  =function(f){
+    l.beginContact=l.b  =function(f){
         l.BeginContact=function(c){
             f(sCon(c))}
         return l}
 
-    l.e  =function(f){l.EndContact=function(con){
+    l.endContact=l.e  =function(f){
+        l.EndContact=function(con){
         c=sCon(con)
         f(c)}; return l}
 
 
-    l.p  =function(f){
+    l.preSolve=l.p  =function(f){
         l.PreSolve=function(c,m){
             f(sCon(c),sMf(m))}
         return l}
 
-    l.P=function(f){
+    l.postSolve=l.P=function(f){
         l.PostSolve=function(c,i){
             f(sCon(c),sImp(i))}
         return l}

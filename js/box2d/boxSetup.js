@@ -1,3 +1,70 @@
+
+
+CATAPULT=function(){
+
+
+
+    cat = world.a(
+
+        DynamicBodyDef(350,200),[
+
+            pFx(125,20,0,0,0),
+
+            pFx(20,60,-80,-40,200 )
+
+        ])
+
+
+
+
+    cat_arm  = w.a(dBD(210,210),[
+
+        pFx(150, 10,  0,0,0 ,1),
+        pFx(10, 20,  -140,-30 ,0 ,1)
+
+    ])
+
+
+
+    joint=w.cJ( rev(cat,cat_arm,bV(0,0)) )
+
+        .eM(1).eL(1)
+        .lAA(bV(-80,-90))
+        .lAB(bV(60,0))
+        .sMS(1000)
+        .sL(-180,60)
+        .sMMT(1)
+
+    cannonball =w.a(dBD(90,90), cFx(10,20))
+
+    // s.$(fire=function(e){ the_joint.sMMT(10000)})
+
+//  draw_box=function(px,py,w,h,d,ud):void {
+//
+//   ground = new dBD(px,py)
+//
+//ground.position.Set(px, py);
+//if (d) {
+//    ground.type=b2Body.b2_dynamicBody;
+//}
+//
+//my_box = pSh().sAB(w/2, h/2)
+//
+//  my_fixture  = fDf(my_box)
+//
+//
+//
+//the_ground =w.cB(ground);
+//
+//the_ground.sUD(ud);
+//the_ground.cF(my_fixture);
+
+}
+
+
+JASON = 1
+
+
 //prevent iphone/ipad default scrolling
 
 $(function(){
@@ -29,7 +96,7 @@ makeWorld = mW = function(o){
 
     options.gravityY = N( options.gravityY )? options.gravityY : 40
 
-    world= w = World( bV( 0 , options.gravityY ) )
+    world = w = World( bV( 0 , options.gravityY ) )
 
     
     makeStage( 1200 , 600 , options )
@@ -59,7 +126,28 @@ makeWorld = mW = function(o){
 
     setFixtures()
 
-    if( D ( options.w ) ){  $w[options.w]()  } else {  makeWalls() }
+    if( D ( options.w ) ){
+
+
+        if( S( options.w ) ){   $w[ options.w ]() }
+
+
+        if( F( options.w ) ){     options.w() }
+
+
+
+
+    }
+
+
+
+    else {  makeWalls() }
+
+  controller()
+
+
+
+
 
     if( ! options.$$ == 0 ){  makeShapeOnDblClk() }
 
@@ -358,13 +446,13 @@ setFixtures =function(){
 
 makeWalls =function(){
 
-    bii(10,300, 40, 600).uD('leftWall') //left
+    bii(10,300, 40, 600).uD('leftWall')
 
-    bii(990,300, 40, 600).uD('rightWall')//right
+    bii(990,300, 40, 600).uD('rightWall')
 
-    bii(300, 0, 2400, 40).uD('ceiling')//top
+    bii(300, 0, 2400, 40).uD('ceiling')
 
-    bii(300, 590, 2400, 40).uD('floor')//bottom
+    bii(300, 590, 2400, 40).uD('floor')
 
 }
 

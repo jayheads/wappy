@@ -1,237 +1,197 @@
-PINBALL=function(){
 
 
+_directionPressed  = dirPush=function(){
 
-    mW({  w : 'makeWallsPinball'  })
+    pushRight = 0
+    pushLeft = 0
+    pushUp = 0
+    pushDown = 0
 
-    c.w( 430 )
+    kD('l',  function(e){
 
-    c.q.drg()
+            // ee = e
 
-    baa(215,520,30)
+            pushLeft = 1
 
-    bii(215,100,100,10)
-
-    ball= ba(215,90)
-
-    bindr('sun', ball,.24)
-
-    var leftJoint = baa(100,430)
-
-    var leftFlip = bi(100,430, 100,25)
-
-    var rightJoint = baa(330,430)
-
-    var rightFlip = bi(330,430, 100,25)
-
-
-    j1= w.CreateJoint(
-
-        RevoluteJointDef(  leftJoint , leftFlip ,  0,0,  40,0  ).lm(150,250)
-
-    )
+        })
 
 
 
 
-    j2= w.CreateJoint(
+    kU(  'l',  function(){pushLeft = 0} )
+    kD('r',function(){pushRight=1})
+    kU('r',function(){pushRight=0})
+    kD('u',function(){pushUp=1})
+    kU('u',function(){pushUp=0})
+    kD('d',function(){pushDown=1})
+    kU('d',function(){pushDown=0})
 
-        RevoluteJointDef(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lm(-70,30)
-
-    )
-
-
-    bii(420,400,20,2000)
+}
 
 
 
-    $('body').on('keyup',  function(){ leftFlip.aI(100, 0);
 
-        rightFlip.aI(-100,0)
+
+
+makeTim=function(n){
+    if(U(n)){
+        var b=ba().uD('tim')
+        bindr('guy',b,.3)
+        return b}
+
+    _t(n,function(){
+        var b=ba().uD('tim')
+        bindr('guy',b,.3)})}
+makeMe=function(){
+
+    var bodyDef = DynamicBodyDef(100,100)
+    var fix1 =    PolyFixture(50,100).rest(0).den()
+    var fix2 =    PolyFixture(10,30,0,40).uD('feet').sensor(1)
+
+    player = p = world.addBody(  bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
+
+    player._direction = 1
+
+    player.direction = player.dr = function(direction){
+
+        if(U(direction)){return this._direction}
+
+        this._direction = direction
+
+        return this}
+
+
+    player.speed = 40
+
+    player.moveX =  function(n){
+
+        if (n == '-'){  return player.move( - player.speed )}
+
+        n = N(n) ? n : player.speed
+
+        if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
+
+        return player
+
+    }
+
+
+
+
+
+
+
+    player.gFL().SetFriction(1)
+
+    bindr('me', player)
+
+    return player}
+footListener=function(){
+
+    feetTouch = 0  // if make this local, graphics dissapear!?
+
+
+    var contactListener = ContactListener()
+
+
+    contactListener.beginContact(function (contact) {
+        var a = contact.A(),
+            b = contact.B()
+
+        if (a.userData() == 'feet' || b.userData() == 'feet') {  feetTouch = 1  }
 
     })
 
 
 
-    $('body').on('keydown',  function(){ ba(rnd()*300+40  ,140,20)} )
+    contactListener.endContact(function(contact){
+        var a = contact.A(),
+            b = contact.B()
 
-
-
-
-    $('body').mousedown(function(){
-
-
-       var b= ba(rnd()*300+40,140,20)
-
-      if(Math.random() > .9) { bindr('me', b,.24)}
-
-        leftFlip.aI(120, 0);
-        rightFlip.aI(-120,0)
+            if (a.userData() == 'feet' || b.userData() == 'feet') {  feetTouch = 0   }
 
     })
 
-    setInterval(function(){
-        ball.rt( ball.rt() + 10)
-    },100)
 
 
-       pop(
-
-
-           $.div(  'y').A(
-
-
-            $.h1('welcome to gamey pinball'),
-
-
-
-            $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
-
-
-            $.h4('goal: knockdown the fireball'),
-
-               $.h5('click the game to start')
-
-           )
-
-        )//.A().click(function(){ $(this).remove() })
-
-
-
+    world.setContactListener( contactListener  )
 }
 
 
 
 
+moveListener=function(){  stage.tick(function(){
+
+
+    player.rt( 0 )
+
+
+    world.eachBody(
+
+        function(body){ if(body.is('destroy')){world.destroyBody(body)}    })
+
+
+    if (feetTouch) {  if (pushUp) {
+
+                if (pushRight) {  player.aI(0, -10)   }
+                else if (pushLeft) {  player.aI(0, -10)  }
+
+                else {  player.aI(0, -10)   }
+
+            }  else {
+
+                if (pushLeft) {
+                    player.direction( 0 )
+                    player.aI( -5, 0 )  }
+
+
+                if (pushRight) {
+                    player.direction(1)
+                    player.aI(5, 0)  }
+            }  }
+
+
+    else {
+            if(pushLeft){
+                player.direction(0)
+                player.aI(-1,0)
+            }
+
+            if(pushRight){
+                player.direction(1)
+                player.aI(1, 0)
+            }
+        }
 
 
 
 
 
 
-/////////////////////////////
-
-PINBALL1=function(){
-
-    mW({w:'makeWallsPinball'})
-
-    // c.w(430)
-    // c.q.drg()
-
-    baa(215,520,30)
-
-    bii(215,100,100,10)
-    ba(215,90)
-
-
-    j1= w.CreateJoint(a)(
-
-        RevoluteJointDef(
-            r1=baa(100,430),
-            r2=bi(100,430, 100,25),
-            0,0,
-            40,0
-        ).lm(150,250)
-
-    )
-
-
-    j2= w.CreateJoint(a)(
-        RevoluteJointDef(
-            r1b=baa(330,430),
-
-            r2b=bi(330,430, 100,25),
-
-            0,0,
-            40,0
-
-        ).lm(-70,30)
-    )
-    bii(420,400,20,2000)
-
-    //makeTim(10)
-    //ba(300,200,50)
-
-
-    flip=function(){ r2.aI(100, 0); r2b.aI(-100,0)}
-
-
-    kD('u',flip)
-    kD('d', function(){  ba(rnd()*300+40  ,140,20)} )
-}
-
-
-//DEMO
-IMPULSE =function(){mW({g:0})
-
-
-    w.a(dBD(100,500).rt(2).fR(0) , pFx(30,30))
-
-    b=w.a(dBD(300,500).rt(1).fR(.2) ,  pFx(30,30) )
-
-
-    test={
-    i:function(){b.ApplyImpulse(bV(10,-30), b.wC())},
-
-    v:function(){
-        b.SetLinearVelocity( bV(10,-60) )},
-
-    f:function(){
-        I(function(){
-            b.ApplyForce(bV(0, -3), b.wC())
-        }, 100)
-
-    }
-    }
-
-}
+    }) }
 
 
 
-SCALECIRC =function(){
-    mW()
-
-    baa(400,300,40);
-    baa(290,350,40);
-    baa(280,220,40)
-
-    r=10
-    x=400
-    y=440
-    v={x:0,y:0}
-
-    f1=function(){
-
-        b=w.a(
-             dBD(x,y)//.lV(v)
-            ,
-             f=cFx(r)
-        )}
-
-    f2=function(){
-
-        b.dF( b.gFL() )//b.dF(f)
-        r+=.1
-        x=b.x()
-        y=b.y()
-        v=b.lV()
-
-        f1()
-    }
-
-     f1()
-    s.t(f2)
-
-}
 
 
-bindr=function(im,spr,sxy,rt){
-
-    sxy= sxy||.4
 
 
-    rt= N(rt)?rt:6
 
+
+
+
+
+
+
+
+
+
+
+bindr = function( im, spr, sxy, rt ){
+
+    sxy = sxy||.4
+
+    rt = N(rt) ? rt : 6
 
     var stage = s
 
@@ -247,105 +207,110 @@ bindr=function(im,spr,sxy,rt){
 
             b.rt( rt )
 
-            stage.t( function(){
+            stage.tick( function(){
 
-                b.xy(spr.x(), spr.y()); b.rt(rt + spr.rt() )
+                b.xy(spr.x(), spr.y()); b.rt( rt + spr.rt() )
 
             })
 
-            spr.kS = function(){ b.XX() }
+            spr.killSprite = spr.kS = function(){ b.XX() }
 
         })
+}
+
+DEMO_IMPULSE =function(){
+
+    mW({g:0})
+
+    world.addBody(
+        DynamicBodyDef(100,500).rt(2).fR(0) , PolyFixture(30,30))
+
+    body =world.addBody(
+        DynamicBodyDef(300,500).rt(1).fR(.2) , PolyFixture(30,30) )
+
+    test={
+
+
+        impulse: function(){
+
+            body.ApplyImpulse(
+
+                bV(10, -30), body.worldCenter()
+
+            )},
+
+
+
+        velocity: function(){body.SetLinearVelocity( bV( 10, -60 ) )},
+
+
+
+        force: function(){
+
+            setInterval(
+
+                function(){
+
+                    body.ApplyForce(   bV(0, -3),    body.worldCenter()    )
+
+                }, 100)
+
+        }
+
+
+
+    }
+
+
 
 
 }
+DEMO_SCALE =function(){
+
+    mW()
+
+    world.baa(400,300,40)
+
+    world.baa(290,350,40)
+
+    world.baa(280,220,40)
+
+    var body, radius=10, x=400, y=440, v={x:0,y:0}
 
 
+    addBody()
+
+    stage.tick( destroyAndAddBody )
+
+    stage.bm( 'me' )
+
+    function addBody(){
+
+        body = world.addBody( DynamicBodyDef(x,y).linVel(v), fixture=CircleFixture(radius)  ) }
 
 
+    function destroyAndAddBody(){
 
-control=function(p){
+        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
 
-    kD('l',function(){
-        p.dr(0);p.mv()})
+        radius += .1
 
-    kD('r',function(){
-        p.dr(1); p.mv()
-    })
+        x = body.x()
 
-    kD('u',function(){
-        if(p.dr()==1){p.aI(5,-12)}
-        if(p.dr()==0){p.aI(-5,-12)}})
+        y = body.y()
 
+        v = body.lV()
 
-    return p}
+        addBody() }
 
 
-
-
-dirPush=function(){
-    pushRight=0
-    pushLeft=0
-    pushUp=0
-    pushDown=0
-    kD('l',function(e){
-        ee=e
-        pushLeft=1})
-    kU('l',function(){pushLeft=0})
-    kD('r',function(){pushRight=1})
-    kU('r',function(){pushRight=0})
-    kD('u',function(){pushUp=1})
-    kU('u',function(){pushUp=0})
-    kD('d',function(){pushDown=1})
-    kU('d',function(){pushDown=0})}
-
-
-
-makeTim=function(n){
-    if(U(n)){
-        var b=ba().uD('tim')
-        bindr('guy',b,.3)
-        return b}
-
-    _t(n,function(){
-        var b=ba().uD('tim')
-        bindr('guy',b,.3)})}
-
-makeMe=function(){
-
-    p= w.a(dBD(100,100),[
-        pFx(50,100).r(0).d(),
-        pFx(10,30,0,40).iS(1).uD('feet')
-    ]).uD('guy')
-
-    p.direction=1
-    p.dr=function(a){
-        if(U(a)){return p.direction}
-        p.direction = a;
-        return p}
-    p.speed=40
-    p.mv=function(n){
-        if (n=='-'){  return p.mv(-p.speed)}
-        n = N(n) ? n : p.speed
-
-        if (p.dr()) {  p.aI(3,0) }
-        else {  p.aI(-3,0) }
-        return p}
-    p.gFL().SetFriction(1)
-
-    bindr('me', p)
-
-    return p}
-
-
-
-
+}
 
 PLAYER=function(){
 
     mW({w:'makeWallsFull',g:0, $$:0})
 
-    p=makeMe().aD(10000)
+    player = p = makeMe().aD(10000)
 
 
     makeTim(30)
@@ -358,19 +323,19 @@ PLAYER=function(){
                 ydif= MY -p.y(),
                 po=p.wP(0,-75)
 
-        //thrust ship
-        p.aI(xdif/20, ydif/20)
+            //thrust ship
+            p.aI(xdif/20, ydif/20)
 
 
 
 
-        //rotate ship
-        p.rt(
-                tDeg($M.atan(ydif/xdif))+(xdif >0?90:270) )
+            //rotate ship
+            p.rt(
+                    tDeg($M.atan(ydif/xdif))+(xdif >0?90:270) )
 
 
-        //shoot
-        ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')
+            //shoot
+            ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')
 
 
         }
@@ -389,61 +354,61 @@ PLAYER=function(){
 
             var a= c.A(),b=c.B()
 
-        //if either obj is a bullet an neither is tim ('guy')
+            //if either obj is a bullet an neither is tim ('guy')
 
-        if(
+            if(
 
-            (
-                a.gB().uD()=='bul' || b.gB().uD()=='bul'  )
-
-
-            &&!
+                (
+                    a.gB().uD()=='bul' || b.gB().uD()=='bul'  )
 
 
-            (
-                a.gB().uD()=='guy'||
+                &&!
+
+
+                (
+                    a.gB().uD()=='guy'||
 
                     b.gB().uD()=='guy'
+                    )
+
+
+
                 )
 
 
-
-            )
-
-
-        {
+            {
 
 
-            //if it is a bullet
-            //destroy it
-            //if the other is tim, destory tim, too
+                //if it is a bullet
+                //destroy it
+                //if the other is tim, destory tim, too
 
-            if(a.gB().uD()=='bul'){
-
-                a.gB().uD('destroy')
-
-                if(b.gB().uD()=='tim'){
-
-                    b.gB().uD('destroy')
-
-                }
-            }
-
-
-            //if it is not a bullet
-            //destrory it
-            //if the other is tim, destory tim, too
-
-            else {
-                b.gB().uD('destroy')
-                if(a.gB().uD()=='tim'){
+                if(a.gB().uD()=='bul'){
 
                     a.gB().uD('destroy')
 
-                }
-            }}
+                    if(b.gB().uD()=='tim'){
 
-    })
+                        b.gB().uD('destroy')
+
+                    }
+                }
+
+
+                //if it is not a bullet
+                //destrory it
+                //if the other is tim, destory tim, too
+
+                else {
+                    b.gB().uD('destroy')
+                    if(a.gB().uD()=='tim'){
+
+                        a.gB().uD('destroy')
+
+                    }
+                }}
+
+        })
 
 
 
@@ -455,70 +420,69 @@ PLAYER=function(){
 
             w.e(function(b){if(b.uD()=='destroy'){
 
-        w.dB(b)
-
-    }})})
-
-}
-
-
-
-
-
-
-
-PLAYER1=function(){mW({w:'makeWallsFull',g:0, $$:0,bg:'space.jpg'})
-
-    p=makeMe().aD(10000)
-    makeTim(3)
-
-
-    w.oB(function(c){
-        var a= c.A(),
-            b= c.B()
-
-        if(
-
-            (a.gB().uD()=='bul' ||  b.gB().uD()=='bul' )
-
-            && !(  a.gB().uD()=='guy' ||  b.gB().uD()=='guy' )
-
-            )
-
-
-        {
-
-
-            if(a.gB().uD()=='bul'){
-                a.gB().uD('destroy')
-
-                if(b.gB().uD()=='tim'){
-                    b.gB().uD('destroy')}}
-
-            else {b.gB().uD('destroy')
-                if(a.gB().uD()=='tim'){
-
-                    a.gB().uD('destroy')}
-
-            }}
-
-
-    })
-
-    s.t(function(){
-        w.e(function(b){
-
-            if(b.uD()=='destroy'){
-
-                b.kS()
                 w.dB(b)
 
             }})})
 
+}
+PLAYER1=function(){
+
+    mW({
+
+        w:'makeWallsFull',
+        g:0,
+        $$:0,
+        bg:'space.jpg'
+
+    })
+
+    p=player = makeMe().angDamp( 10000 )
+
+    makeTim( 3 )
+
+    world.onBeginContact(function(contact){   var a= contact.A().gB(), b= contact.B().gB()
+
+
+        // if either a or b is a bullet.. and neither is the guy
+        // if a bullet hits a non-guy...
+        if(   ( a.is('bul') ||  b.is('bul') )   && !a.is('guy')    &&  !b.is('guy')  )
+
+
+        // destroy the bullet, and if it hit tim, destroy tim too
+        { if( a.is('bul') ){
+
+            a.uD( 'destroy' )
+
+            if( b.is( 'tim' ) ){ b.uD( 'destroy' )  }
+
+        }else { b.uD('destroy')
+
+            if( a.is('tim') ){ a.uD('destroy') }
+
+        }}
+
+
+    })
+
+
+
+
+    //key function! the safe way (time) to remove objects
+    stage.tick(function(){
+
+        world.eachBody(function(body){
+
+            if(body.is('destroy')){
+
+                body.killSprite()
+
+                world.destroyBody( body )  }})  })
+
     dirPush()
 
 
-    s.t(function(){
+
+    stage.tick(function(){
         if(pushLeft){p.rt(p.rt()-2)}
         if(pushRight){p.rt(p.rt()+2)}
         if(pushUp){var v= p.GetWorldVector(bV(0,-100))
@@ -527,113 +491,44 @@ PLAYER1=function(){mW({w:'makeWallsFull',g:0, $$:0,bg:'space.jpg'})
             p.aI(-v.x/40, -v.y/40 )}})
 
 
-   kD('s', function(){
-       var v= p.GetWorldVector(bV(0,-100)),
-           po= p.wP(0,-75),
 
-           b=ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul')
+    kD('s', function(){
+        var v= p.GetWorldVector(bV(0,-100)),
+            po= p.wP(0,-75),
 
-       bindr('me',b,.1)
+            b=ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul')
 
-   })
+        bindr('me',b,.1)
 
-
-   // s.sx(2).sy(2)
-   // s.t(function(){s.xy( 250-p.x() , -50-p.y()  )})
-
-}
-
-footListener=function(){feetTouch=0
-    w.sCL(bCL().b(function (c) {
-        var a = c.A(), b = c.B()
-        if (a.uD() == 'feet' || b.uD() == 'feet') {
-            feetTouch = 1
-        }
-    }).e(function (c) {
-        var a = c.A(), b = c.B();
-        if (a.uD() == 'feet' || b.uD() == 'feet') {
-            feetTouch = 0
-        }
-    }))
-}
-moveListener=function(){
-    s.t(function () {
-        p.rt(0)
-        w.e(function (b) {
-            if (b.uD() == 'destroy') {
-                w.dB(b)
-            }
-        })
-        if (feetTouch) {
-            if (pushUp) {
-                if (pushRight) {
-                    p.aI(0, -10)
-                }
-                else if (pushLeft) {
-                    p.aI(0, -10)
-                }
-                else {
-                    p.aI(0, -10)
-                }
-            }
-            else {
-                if (pushLeft) {
-                    p.dr(0);
-                    p.aI(-5, 0)
-                }
-                if (pushRight) {
-                    p.dr(1);
-                    p.aI(5, 0)
-                }
-            }
-        } else {
-            if (pushLeft) {
-                p.dr(0);
-                p.aI(-1, 0)
-            }
-            if (pushRight) {
-                p.dr(1);
-                p.aI(1, 0)
-            }
-        }
     })
+
+
+    // s.sx(2).sy(2)
+    // s.t(function(){s.xy( 250-p.x() , -50-p.y()  )})
+
 }
-
-
-
 PLAYER2=function(){
 
     mW()
+    bii(800,300,100)
+    bii(260,240,40)
+    bii(550,250,100)
+    bii(1350,550,100)
+    bindr('guy', bii(300,200,100),[.4,1.2])
+    bindr('guy', bii(300,500,60,30),[.4,1.2])
+    bindr('guy', bii(150,400,60,30))
 
-    p=makeMe().aD(10000)
+     player = p = makeMe().aD( 10000 )
 
     dirPush()
     footListener()
     moveListener()
 
-    bindr('guy', bii(300,200,100),[.4,1.2])
-    bindr('guy',bii(300,500,60,30),[.4,1.2])
-    bindr('guy', bii(150,400,60,30))
-   // bindr('guy',
-        bii(800,300,100)
-       // ,[.4,1.2])
-    //bindr('guy',
-        bii(260,240,40)
-    //)
-    //bindr('guy',
-        bii(550,250,100)
-            //,[1.8,1.2])
-
-    //bindr('guy',
-        bii(1350,550,100),[1.8,1.2]
-    //)
 
     //s.sx(2).sy(2)
    // s.t(function(){  // s.x( 450-p.x()  )  //  if(s.x() > 0){s.x(0) }  // s.y( -50-p.y()  ) })
 
 }
-
-
 PLAYER3=function(){mW()
     warpping=false
     p=makeMe().aD(10000)
@@ -654,29 +549,55 @@ PLAYER3=function(){mW()
     bii(500,600,30,200)
     bii(600,600,30,200)
 
-    w.a(sBD(550,580), pFx(100,20).uD('warp'))
-    w.a(dBD(650,580), pFx(100,20).uD('tramp'))}
+    world.addBody(sBD(550,580), pFx(100,20).uD('warp'))
+    world.addBody(dBD(650,580), pFx(100,20).uD('tramp'))}
+PLAYER4=function(){
 
+    mW()
 
-
-PLAYER4=function(){mW()
     warpping=false
-    p=makeMe().aD(10000)
-    dirPush()
-    warpp =function(){ p.sY(100);p.sX(200) }
-    s.t(function(){if(warpping){warpp(); warpping=false}})
-    w.sCL(bCL()
 
-        .b(function(c){
-            var a=c.A(),b=c.B()
-            if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=1}
-            if(c.pair('feet','tramp')){p.aI(0,-150)}
-            if(c.pair('feet','warp')){warpping=true}
+   player = p = makeMe().angDamp( 10000 )
+
+    dirPush()
+
+
+    warpp =function(){ player.sY(100); player.sX(200) } //setY, setX
+
+
+    stage.tick(
+        function(){
+
+            if(warpping){ warpp(); warpping = false }
+
         })
 
-        .e(function(c){var a=c.A(),b=c.B();
-            if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=0}
-        }))
+
+    world.setContactListener(
+
+        ContactListener()
+
+        .beginContact( function( contact ){
+
+                var a = contact.A(), b = contact.B()
+
+                if( a.uD()=='feet' || b.uD() == 'feet' ){ feetTouch = 1 }
+
+                if( contact.pair( 'feet', 'tramp' )){ p.aI( 0, -150 ) }
+
+                if( contact.pair( 'feet', 'warp' )){ warpping = true }
+
+        })
+
+        .endContact( function( contact ){ var a = contact.A(),  b = contact.B()
+
+                if( a.uD() == 'feet' || b.uD() == 'feet' ){ feetTouch = 0 }
+
+            })
+
+    )
+
+
 
     moveListener()
 
@@ -684,11 +605,6 @@ PLAYER4=function(){mW()
     makeCar()
 
 }
-
-
-
-
-//BRAIN GAMES
 MEMORY=function(){z()
 
     grid=[
@@ -778,13 +694,6 @@ MEMORY=function(){z()
 
 
 }
-
-
-
-
-
-
-
 SLING=function(){
 
     startpoint={}
@@ -842,3 +751,212 @@ SLING=function(){
     }
 
 }
+PINBALL=function(){
+
+
+
+    mW({  w : 'makeWallsPinball'  })
+
+    c.w( 430 )
+
+    c.q.drg()
+
+    baa(215,520,30)
+
+    bii(215,100,100,10)
+
+    ball= ba(215,90)
+
+    bindr('sun', ball,.24)
+
+    var leftJoint = baa(100,430)
+
+    var leftFlip = bi(100,430, 100,25)
+
+    var rightJoint = baa(330,430)
+
+    var rightFlip = bi(330,430, 100,25)
+
+
+    j1= w.CreateJoint(
+
+        RevoluteJointDef(  leftJoint , leftFlip ,  0,0,  40,0  ).lm(150,250)
+
+    )
+
+
+
+
+    j2= w.CreateJoint(
+
+        RevoluteJointDef(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lm(-70,30)
+
+    )
+
+
+    bii(420,400,20,2000)
+
+
+
+    $('body').on('keyup',  function(){ leftFlip.aI(100, 0);
+
+        rightFlip.aI(-100,0)
+
+    })
+
+
+
+    $('body').on('keydown',  function(){ ba(rnd()*300+40  ,140,20)} )
+
+
+
+
+    $('body').mousedown(function(){
+
+
+        var b= ba(rnd()*300+40,140,20)
+
+        if(Math.random() > .9) { bindr('me', b,.24)}
+
+        leftFlip.aI(120, 0);
+        rightFlip.aI(-120,0)
+
+    })
+
+    setInterval(function(){
+        ball.rt( ball.rt() + 10)
+    },100)
+
+
+    pop(
+
+
+        $.div(  'y').A(
+
+
+            $.h1('welcome to gamey pinball'),
+
+
+
+            $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
+
+
+            $.h4('goal: knockdown the fireball'),
+
+            $.h5('click the game to start')
+
+        )
+
+    )//.A().click(function(){ $(this).remove() })
+
+
+
+}
+
+controller=function(){
+
+
+
+    d=$.div().A(
+
+        $.button('left').id('left'),
+        $.button('jump').id('jump'),
+        $.button('right').id('right')
+
+    ).A()
+
+
+
+
+}
+controllerListener=function(){
+
+
+
+    pushRight = 0
+    pushLeft = 0
+    pushUp = 0
+
+
+    $('#left').on('mousedown mouseover', function(){  pushLeft = 1 })
+
+    $('#left').on('mouseup mouseout', function(){ pushLeft = 0 })
+
+
+    $('#jump').on('mousedown mouseover', function(){  pushUp=1  })
+
+    $('#jump').on('mouseup mouseout', function(){  pushUp=0 })
+
+    $('#right').on('mousedown mouseover', function(){  pushRight=1})
+
+    $('#right').on('mouseup mouseout', function(){pushRight=0})
+
+
+
+
+}
+
+
+PHONEJUMP=function(){z()
+
+    makeWorld({  w:function(){
+
+
+            bii(10,300, 40, 600).uD('leftWall')
+
+            bii(450,300, 40, 600).uD('rightWall')
+
+            bii(300, 0, 2400, 40).uD('ceiling')
+
+            bii(300, 590, 2400, 40).uD('floor')
+
+
+        }    })
+
+
+    world.bii(200,400, 80,20)
+
+    world.bii(300,200,80,20)
+
+
+   // bindr('guy', bii(300,500,60,30),[.4,1.2])
+  //  bindr('guy', bii(150,400,60,30))
+
+    player = p = makeMe().aD( 10000 )
+
+    dirPush()
+    footListener()
+    moveListener()
+
+    controllerListener()
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+controlX=function(p){
+    var player = p
+
+    kD('l',function(){
+        player.direction(0); player.move()})
+
+    kD('r',function(){
+        player.direction(1); player.move()
+    })
+
+    kD('u',function(){
+        if(player.direction()==1){player.aI(5,-12)}
+        if(player.direction()==0){player.aI(-5,-12)}})
+
+
+    return player}
+

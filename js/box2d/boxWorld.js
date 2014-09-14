@@ -119,7 +119,43 @@ bW   =World=function(a,b){
 
     var w=new b2World(a,D(b)?b:false)
 
-    w.each = w.eachBody =  w.e = function( func, userData ){
+    w.debugData  =w.dD=w.sDD=w.sdd=w.dDD=function(a){
+
+        if( U(a) ){  w.DrawDebugData() }   else{  w.SetDebugDraw(a) }
+
+        return w
+
+    }
+    w.step = w.st=function(){
+
+        var g=G(arguments)
+
+        _a( w.Step, g,  w )
+
+        return w }
+    w.clearForces = w.cF =w.clF=function(){  w.ClearForces(); return w }
+    w.createBody = w.b  = w.cB=function(d){
+
+        return SuperBoxBody(
+
+            w.CreateBody( d  || BodyDef()  )
+
+        )
+    }
+    w.addBody = w.add = w.a =function(b,f){
+
+        b=w.createBody(b)
+
+        if(f){   if(A(f)){
+
+            _.each( f, function(f){   b.createFixture(f)   } )}
+
+            else { b.createFixture(f) } }
+
+        return b}
+    w.destroyBody = w.destroy = w.dB=function(a){ w.DestroyBody(a); return w }
+    w.getBodyList = w.bL =function(){return SuperBoxBody(  w.GetBodyList() )}
+    w.eachBody = w.each =  w.e = function( func, userData ){
 
         //w.eB=for each body
         //can pass a cb to be run on EACH body
@@ -134,7 +170,7 @@ bW   =World=function(a,b){
 
                 SuperBoxBody(a)
 
-                if( !userData ){func(a) }
+                if( !userData ){ func(a) }
 
                 else { if( a.GetUserData() == userData ){ func(a) } }
 
@@ -142,84 +178,97 @@ bW   =World=function(a,b){
 
             })
 
+    return w}
+    w.getBodyCount = w.bC = w.gBC=function(){  return w.GetBodyCount()  }
+    w.createJoint=w.j=w.cJ=function(a){var j=w.CreateJoint(a)
+
+        return sJt(j)}
+    w.destroyJoint=w.dJ=w.dj=function(a){ w.DestroyJoint(a); return w}
+    w.setContactFilter = w.sCF = w.SetContactFilter
+    w.setContactListener = w.sCL = w.SetContactListener
+    w.onBeginContact = w.oB=function(f){
+
+        w.sCL(
+            ContactListener().b(f)
+        )
+
+        return w
+    }
+    w.onEndContact = w.oE = function(func){
+
+        w.setContactListener(
+
+            ContactListener().endContact( func ) )
+
+        return w}
+
+    w.getGroundBody = w.gB =w.gGB=function(){  return w.GetGroundBody()  }
+
+
+    w.queryAABB = w.Q =w.q =w.qAB=function(a,b){  w.QueryAABB(a,b); return w}
+
+
+
+    w.ba  =function(x,y,r){
+
+        x = x || 100
+
+        y = N(y) ? y : x
+
+        r = r || 20
+
+        return this.addBody(
+
+            DynamicBodyDef( x, y ),
+
+            CircleFixture( r )
+
+        )
+
+    }
+    w.baa =function(x,y,r){
+        x=x||100
+        y=N(y)?y:x
+        r=r||20
+
+        return this.addBody( StaticBodyDef(x,y), CircleFixture(r) )
+
+    }
+    w.bi  =function(x,y,W,H){//=brk=brick=
+
+        x = N(x) ? x : 60; y = N(y) ? y : x
+        W = N(W) ? W : 30; H = N(H) ? H : W
+
+        return this.addBody(
+
+            DynamicBodyDef(x,y),    PolyFixture(W, H).r(0))
+
+    }
+    w.bii =function(x,y,W,H){//brk2=brick=
+
+        x=N(x)?x:60;
+        y=N(y)?y:x
+        W=N(W)?W:30; H=N(H)?H:W
+
+        return this.addBody(StaticBodyDef(x,y),   PolyFixture(W, H).r(0) )
+
+    }
+
+
 
     return w}
 
 
 
 
-    w.bC =w.gBC=function(){return w.GetBodyCount()}
-
-    w.dD= w.sDD=w.sdd=w.dDD=function(a){
-
-        if(U(a)){  w.DrawDebugData() }
-        else{  w.SetDebugDraw(a) }
-
-        return w}
 
 
 
 
 
-    w.st=function(){var g=G(arguments)
-         _a(
-
-             w.Step, g,  w
-
-         )
-
-        return w}
 
 
 
-    w.cF=w.clF=function(){//w.cf=
-        w.ClearForces();return w}
-
-    w.b =w.cB=function(d){
-        return sBd(w.CreateBody(d||bDf()))}
-
-    w.a =function(b,f){
-        b=w.cB(b)
-
-        if(f){
-            if(A(f)){ _e(f,function(f){b.cF(f)})}
-
-            else {b.cF(f)} }
-
-        return b}
-
-
-    w.sCF =w.SetContactFilter
-
-    w.sCL =w.SetContactListener
-
-    w.oB=function(f){
-        w.sCL(bCL().b(f))
-        return w}
-
-    w.oE=function(f){
-        w.sCL(bCL().e(f))
-        return w}
-
-
-
-    w.j=w.cJ=function(a){var j=w.CreateJoint(a)
-
-
-
-        return sJt(j)}
-
-    w.dB=function(a){w.DestroyBody(a);return w}
-    w.dJ=w.dj=function(a){w.DestroyJoint(a);return w}
-
-    w.gB =w.gGB=function(){return w.GetGroundBody()}
-
-    w.Q =w.q =w.qAB=function(a,b){w.QueryAABB(a,b);return w}
-
-    w.bL =function(){//w.gBL=
-       return sBd(w.GetBodyList())}
-
-    return w}//=b2W
 
 
 aII=function(a){a.aI(100,100)}//for w.e testing
@@ -238,16 +287,19 @@ BodyDef=bDf=function(){return new b2BodyDef}
 //depends on a body.. it only extends it with mets!
 SuperBoxBody=sBd=function(b){
 
-    b.cF   =b.f=function(a){
+    b.createFixture=b.cF   =b.f=function(a){
 
-        a=a||fix()
+        a = a||fix()
 
         return b.CreateFixture(a)
     }
 
+
+
     b.m    =b.gM  =function(m){if(U(m)){return b.GetMass()}}
 
-    b.wC   =b.c=  b.gWC=function(){return b.GetWorldCenter()}
+    b.worldCenter = b.wC   =b.c=  b.gWC=function(){
+        return b.GetWorldCenter()}
 
     b.aw   =function(){
         var g=G(arguments)
@@ -315,7 +367,9 @@ SuperBoxBody=sBd=function(b){
         b.position.y= (y?y:r10())/30
         return b}
 
-    b.gFL=function(){return sFx(b.GetFixtureList())}
+    b.fixtureList=b.gFL=function(){return sFx(b.GetFixtureList())}
+
+
     b.T= b.ty=function(a){
         if(U(a)){return b.GetType()}
         b.SetType(a)
@@ -344,7 +398,7 @@ SuperBoxBody=sBd=function(b){
         return b}
 
 
-    b.lV=function(n1,n2){
+    b.linearVelocity=b.lV=function(n1,n2){
 
         if(U(n1)){return b.GetLinearVelocity()}
 
@@ -352,6 +406,7 @@ SuperBoxBody=sBd=function(b){
         b.SetLinearVelocity(a)
 
         return b}
+
 
     //set fixed rotation
     b.sFR= b.fR=function(a){b.SetFixedRotation(a)
@@ -361,7 +416,7 @@ SuperBoxBody=sBd=function(b){
     b.n= b.gN=function(){ return sBd(b.GetNext())  }
 
 
-    b.dF=function(a){
+    b.destroyFixture=b.dF=function(a){
         b.DestroyFixture(a)
         return b}
 
@@ -373,10 +428,11 @@ SuperBoxBody=sBd=function(b){
 
 
 
-    b.aD=function(a){
+    b.angDamp= b.aD=function(a){
         if(U(a)){return b.GetAngularDamping()}
         b.SetAngularDamping(a)
         return b}
+
 
     b.lD=function(a){
         if(U(a)){return b.GetLinearDamping()}
@@ -401,6 +457,11 @@ SuperBoxBody=sBd=function(b){
         if(U(a)){return b.GetUserData()}
         b.SetUserData(a);
         return b}
+
+    b.is=function(userData){
+
+        return b.uD() == userData
+    }
 
     //user data first fixture?
     b.uDF=function(a){
@@ -468,7 +529,8 @@ SuperBodyDef=sBdD=function(d){
         if(U(a)){return d.linearDamping}
         d.linearDamping=a
         return d}
-    d.lV=function(a){
+
+    d.linVel = d.lV=function(a){
         if(U(a)){return d.linearVelocity}
         d.linearVelocity=a
         return d}
@@ -501,7 +563,7 @@ SuperBodyDef=sBdD=function(d){
         return d}
 
 
-    d.D=d.uD=function(a){
+    d.userData= d.D=d.uD=function(a){
         d.active=a?true:false
         return d}
     return d}
@@ -520,9 +582,13 @@ KinematicBodyDef=kBD=function(x,y){return SuperBodyDef().type(1).xy( N(x)?x:300,
 //depends on a fixture.. it only extends it with mets!
 SuperFixture=sFx=function(f){
 
-    f.d=function(a){f.density=a;return f}
-    f.f=function(a){f.friction=a;return f}
-    f.r=function(a){f.restitution=a;return f}
+    f.den=f.d=function(a){f.density=a;return f}
+    f.fric = f.f=function(a){f.friction=a;return f}
+    f.rest= f.r=function(a){
+        f.restitution=a;
+        return f}
+
+
 
     f.gB=  f.bd=function(){
 
@@ -594,21 +660,29 @@ SuperFixture=sFx=function(f){
         if(U(a)){return f.filter.groupIndex}
         f.filter.groupIndex=a; return f}
 
-    f.iS=function(a){
-        if(U(a)){return f.isSensor}
-        f.isSensor =a?true:false
+
+    f.sensor = f.iS= function(a){
+        if(U(a)){
+            return f.isSensor
+        }
+
+        f.isSensor =a? true: false
+
         return f}
 
-    f.uD=function(a){
+
+
+
+    f.userData=f.uD=function(a){
         if(U(a)){return f.GetUserData() }
         f.SetUserData(a);return f}
     return f
 }
 
 SuperFixtureDef=sFxD=function(f){
-    f.d=function(a){f.density=a;return f}
-    f.f=function(a){f.friction=a;return f}
-    f.r=function(a){f.restitution=a;return f}
+    f.den = f.d=function(a){f.density=a;return f}
+    f.fric=f.f=function(a){f.friction=a;return f}
+    f.rest=f.r=function(a){f.restitution=a;return f}
 
 
     f.gB =   function(){
@@ -682,7 +756,7 @@ SuperFixtureDef=sFxD=function(f){
         if(U(a)){return f.filter.groupIndex}
         f.filter.groupIndex=a; return f}
 
-    f.iS=function(a){
+    f.sensor= f.iS=function(a){
         if(U(a)){return f.isSensor}
         f.isSensor =a?true:false
         return f}
@@ -729,6 +803,9 @@ AFixture=aFx=function(){
         _m(arguments,function(a){return bV(a[0]/30, a[1]/30)})
     ))
 }
+
+
+
 
 //makes a circle fixture
 CircleFixture = cFx =function(a,x,y){//fC=

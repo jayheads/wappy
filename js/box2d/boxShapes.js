@@ -1,42 +1,57 @@
 
 //super shape wrapper
-SuperShape=sSh   =function(s){
+//base class for shapes
+SuperShape  =   sSh   =function(shape){
 
-    s.tP    =s.tPt=s.tp=function(a,b){return s.TestPoint(a,b)}
-    return s}
+    shape.testPoint =shape.tP    =shape.tPt=shape.tp=function(a,b){
+
+        return this.TestPoint(a,b)
+
+    }
+
+    return shape}
+
 
 //poly shape maker
 //handles both box and set as box!
 //x,y -> box
 //x,y,P,A -> oriented box
 //x,y,p1,p2,A ->oriented box
-PolyShape = pSh   =function(x,y,P,A,A2){
+PolyShape = pSh   =function( x, y, P, A, A2 ){
 
-    var p=sSh(new b2PolygonShape)
+    var p = SuperShape( new b2PolygonShape )
 
-    p.sAB=function(a,b,P,A,A2){//p.z=p.sab=
+    p.setAsBox = p.sAB = function( a, b, P, A, A2 ){//p.z=p.sab=
 
         var g=G(arguments),
-            a=g[0], b=g[1]||a,
-            P=g[2], A=g[3]
 
-        if(A){A=tRad(A)}
+            a=g[0],
 
-        if(U(P)){p.SetAsBox(a/30/2,b/30/2)}
+            b=g[1]||a,
 
-        else if(N(P)){p.SetAsOrientedBox(a/30, b/30, bV(P/30,A/30), A2)}
+            P=g[2],
 
-        else {p.SetAsOrientedBox(a/30,b/30, P, A)}
+            A=g[3]
 
-        return p}
+        if(A){ A = tRad(A) }
+
+        if( U(P) ){ p.SetAsBox(a/30/2,b/30/2) }
+
+        else if( N(P) ){ p.SetAsOrientedBox( a/30, b/30, bV( P/30, A/30 ), A2 ) }
+
+        else { p.SetAsOrientedBox( a/30, b/30, P, A ) }
+
+        return p
+
+    }
 
     p.sAA=p.saa=function(a,b){
 
         p.SetAsArray(a,b)
+
         return p}  //if(P){p.z(x,y,P,A);return p}
 
-    if(N(x)){p.sAB(x,y,P,A,A2)}
-
+    if( N(x) ){ p.sAB( x, y, P, A, A2 ) }
 
     return p}
 
@@ -44,68 +59,94 @@ PolyShape = pSh   =function(x,y,P,A,A2){
 // radius -> circle shape
 CircleShape=cSh   =function(a){
 
-    var s=sSh(new b2CircleShape(a/30))
+    var s = SuperShape( new b2CircleShape(a/30) )
 
     return s
 
 }
+AShape=aSh=function(){   return PolyShape().sAA(arguments) }
 
-AShape=aSh=function(){   return pSh().sAA(arguments) }
 
-Triangle=tri=function(x,y){
+
+
+//add to world
+Triangle  =tri= function( x, y ){
+
+    x = N(x)? x : 400
+
+    y = N(y)? y : 400
+
+    world.addBody(
+
+        DynamicBodyDef( x, y ),
+
+        AFixture( [ -100, 0 ], [ 0, -100 ], [ 100, 0 ] )
+
+    )
+
+
+}
+Triangle2 =tri2=function(x,y){
     x=N(x)?x:400
     y=N(y)?y:400
 
-    w.a(
-        dBD(x,y),
-        aFx([-100,0],[0,-100],[100,0])
+    world.addBody(
+
+        DynamicBodyDef(x,y),
+
+        AFixture([-200,0],[0,-200],[200,0])
 
     )
 
 }
+Triangle3 =tri3=function(x,y){
 
-Triangle2=tri2=function(x,y){
     x=N(x)?x:400
+
     y=N(y)?y:400
 
-    w.a(
-        dBD(x,y),
-        aFx([-200,0],[0,-200],[200,0])
+    world.addBody(
+
+        DynamicBodyDef(x,y),
+
+        AFixture(
+
+            [-100,0],
+            [0,-50],
+            [400,0]
+        )
 
     )
 
 }
-
-Triangle3=tri3=function(x,y){
+Polygon  =thi=function(x,y){
     x=N(x)?x:400
     y=N(y)?y:400
 
-    w.a(
-        dBD(x,y),
-        aFx([-100,0],[0,-50],[400,0])
+    world.addBody(
 
-    )
+        DynamicBodyDef(x,y),
 
+        AFixture([-100,0],[0,-100],[100,0],[60,50])
+    )}
+tenBalls=function(){_.times(10, function(i){ba(100 + (i*80), 200)})}
+hundBalls =function(){
+    _.times(100, function(i){
+        ba( 100  +(i*8),  50, 10) })
 }
+addShapes  =addTenShapes=mBodies=function(n){
 
-Polygon=thi=function(x,y){
-    x=N(x)?x:400
-    y=N(y)?y:400
+    _.times(
+            n||10,
 
-    w.a(dBD(x,y),
-        aFx([-100,0],[0,-100],[100,0],[60,50]))
+        function(){
 
-
-}
-
-//single fixture(shape) bodies!!!
-tenBalls=function(){_.times(10, function(i){ ba(100 + (i*80), 200) })}
-hundBalls=function(){_.times(100, function(i){ ba( 100  +(i*8),  50, 10) })}
-addShapes=addTenShapes=mBodies=function(n){_.times(n||10,function(){
-
-    world.a( DynamicBodyDef().xy(), fix() )
-
+        world.addBody( DynamicBodyDef().xy(), fix() )
 })}
+
+
+
+
 fix=function(){
 
     return fD.s(
@@ -122,21 +163,39 @@ fix=function(){
 
 }
 
-ba   =function(x,y,r){//fCS=
 
-    x=x||100
-    y=N(y)?y:x
-    r=r||20
 
-    return w.a( DynamicBodyDef(x,y),  cFx(r)  )
 
-}//dynamic circle
+
+
+
+ba   =function(x,y,r){
+
+    x = x || 100
+
+    y = N(y) ? y : x
+
+    r = r || 20
+
+    return world.addBody(
+
+        DynamicBodyDef( x, y ),
+
+        CircleFixture( r )
+
+    )
+
+}
+
+//dynamic circle
+
+
 baa  =function(x,y,r){//=ba2
     x=x||100
     y=N(y)?y:x
     r=r||20
 
-    return w.a( StaticBodyDef(x,y), cFx(r) )
+    return w.addBody( StaticBodyDef(x,y), CircleFixture(r) )
 
 }//static circle
 bi   =function(x,y,W,H){//=brk=brick=
@@ -144,7 +203,7 @@ bi   =function(x,y,W,H){//=brk=brick=
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
 
-    return w.a(
+    return w.addBody(
 
         DynamicBodyDef(x,y),    PolyFixture(W, H).r(0))
 
@@ -158,6 +217,15 @@ bii  =function(x,y,W,H){//brk2=brick=
     return w.a(StaticBodyDef(x,y),   PolyFixture(W, H).r(0) )
 
 }//static rect
+
+
+
+
+
+
+
+
+
 str1=function(){
 
     return world.a(DynamicBodyDef(300,200), [
@@ -198,9 +266,13 @@ strStar=function(){return world.a(
         PolyFixture(4,80,100,0, 90),
         PolyFixture(4,80,0,0,180)
     ])}
+
+
 platform=function(){
     bii(300,300,200,20)
     bii(300,300,20,80)}
+
+
 fricky=function(){return w.a(DynamicBodyDef(300,200),
     [PolyFixture(10,10),
         PolyFixture(20,40,0,0, 90).f(0).r(0),
@@ -216,6 +288,8 @@ fluffy=function(){return w.a(DynamicBodyDef(300,200),[
     PolyFixture(10,10),
     PolyFixture(20,40,0,0,90).d(.1).f(1),
     PolyFixture(20,40,0,0,180).d(.1).f(1)])}
+
+
 cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
     return w.a(DynamicBodyDef(x,y),[
         PolyFixture(10,10).d(5),
@@ -291,18 +365,11 @@ TRIANGLE=function(){makeWorld()  // f.s(h= pSh().sAA(   [bV(-1,0), bV(0,-1), bV(
 
 
 }
+
+
 BILLIARDS=function(){
 
-    z()
-
-    mJoint=0;mDown=0;
-    w=bW(bV(0,0))
-    makeStage(1000,600)
-    cvPx=gEP(did())
-
-    startLoop()
-    checkMouseDown()
-    setupDebugDraw()
+    mW()
 
     bii(10,300,40,920) //left
     bii(990,300, 40, 920)//right
@@ -315,6 +382,7 @@ BILLIARDS=function(){
     makeTim(15)
 
 }
+
 
 
 MAKEWORLD=function(){return makeWorld()}

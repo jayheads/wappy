@@ -1,34 +1,38 @@
-sJD=function(j){
+SuperJointDef =sJD=function(j){
 
-    j.i=function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j)
+
+
+    j.init= j.i=function(){
+
+        j.Initialize.apply(j, G(arguments))
+
         return j}
 
     j.A=function(a){j.bodyA=a; return j}
 
     j.B=function(a){j.bodyB=a; return j}
 
-    j.cC=function(a){j.collideConnected=a?true:false; return j}
+
+    j.collide = j.cC=function(a){j.collideConnected=a?true:false; return j}
 
     //pops
-    j.sT    =j.tg=j.sTg=j.st=function(a,b){
+    j.target = j.sT    =j.tg=j.sTg=j.st=function(a,b){
         if(!O(a)){a=bV(a,b)}
         j.SetTarget(a)
 
         return j}
 
-    j.f=function(a){j.frequencyHz=a;return j}
-    j.l=function(a){j.length=a/30;return j}
-    j.d=function(a){j.dampingRatio=a;return j}
+    j.freq=j.f=function(a){j.frequencyHz=a;return j}
+    j.len=j.l=function(a){j.length=a/30;return j}
+    j.dampRat=j.d=function(a){j.dampingRatio=a;return j}
 
-    j.rA=function(a){j.referenceAngle= tRad(a); return j}
+    j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
 
     j.lAA=function(a){j.localAnchorA=a; return j}
 
     j.lAB=function(a){j.localAnchorB=a; return j}
 
-    j.r=function(a){j.ratio=a; return j}
+    j.rat = j.r=function(a){j.ratio=a; return j}
 
     j.lXA=function(a){j.localAxisA=a; return j}
 
@@ -59,157 +63,173 @@ sJD=function(j){
 
     return j}
 
-
-
-
-sJt=function(j){
+SuperJoint = sJt=function(j){
 
 
     //shared
-    j.i  =function(){
+    j.init= j.i  = j.i1=function(){
         var g=G(arguments)
+
         _a(j.Initialize,g,j)
+
         return j}
 
-    j.cC=function(a){j.collideConnected=a?true:false; return j}
 
-    j.i1=function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j);
-        return j}
+
+
+    j.collide = j.cC=function(a){
+        j.collideConnected=a?true:false; return j
+    }
 
     //pops
-    j.sT    =j.tg=j.sTg=j.st=function(a,b){
+    j.target = j.sT    =j.tg=j.sTg=j.st=function(a,b){
         if(!O(a)){a=bV(a,b)}
         j.SetTarget(a)
 
         return j}
 
-
-    j.f  =function(a){j.frequencyHz=a;return j}
-    j.l  =function(a){j.length=a/30;return j}
-    j.d  =function(a){j.dampingRatio=a;return j}
+    j.freq =j.f  =function(a){j.frequencyHz=a;return j}
+    j.len = j.l  =function(a){j.length=a/30;return j}
+    j.dampRat =j.d  =function(a){j.dampingRatio=a;return j}
 
     //motor
-    j.mMS=function(a){
+    j.maxMotorSpeed=j.mMS=function(a){
         j.maxMotorSpeed=a
         return j}
 
-
-
     //motor rev
 
-    j.mS=function(a){
-
+    j.motorSpeed=j.mS=function(a){
         j.SetMotorSpeed(a)
-
         return j}
 
     //j.eM=function(a){bwJ.enableMotor=a?true:false;return j}
 
-    j.eM=function(a){
+    j.enableMotor=j.eM=function(a){
         j.EnableMotor( a?true:false)
         return j}
 
+    j.maxTorque=j.mMT=j.mT=function(a,b,c){j.SetMaxMotorTorque(a,b,c); return j}
 
-    j.mMT=j.mT=function(a,b,c){j.SetMaxMotorTorque(a,b,c); return j}
-    j.mMF=j.mT=function(a,b,c){j.SetMaxMotorForce(a,b,c); return j}
+    j.maxForce = j.mMF=j.mT=function(a,b,c){j.SetMaxMotorForce(a,b,c); return j}
 
 
-    j.sL=function(a,b){
+    j.setLimits=j.sL=function(a,b){
         a=N(a)?a:20
         b=N(b)?b:180
         j.SetLimits(tRad(a),tRad(b))
-
         return j}
 
-    j.eL=function(a){
+
+    j.enableLimit = j.eL=function(a){
         j.EnableLimit( a?true:false)
         return j}
 
 
 
-
-
     return j}
 
-
+Joints={}
+Complex={}
 
 //DISTANCE JOINTS
 //makes a distance joint def
-dJt =function(o){
+Joints.distance = DistanceJoint = dJt =function(o){
 
-    var j=sJt(new BXJ.b2DistanceJointDef())
+    var j=SuperJoint( new BXJ.b2DistanceJointDef() )
 
     //this initialize function for distance, not revolute
-    j.i=function(a,b,c,d){
-        if(U(c)){c=a.c()}
-        if(U(d)){d=b.c()}
+    j.init = j.i=function(a,b,c,d){
+
+        if( U(c) ){ c = a.worldCenter()}
+
+        if( U(d) ){ d = b.worldCenter()}
+
         j.Initialize(a,b,c,d)
+
         return j}
 
     //set length, freq, damp to a default
-
     //j.l(1).f(3).d(.1)
 
+    if( O(o) ){
 
+        if(o.i){ j.init.apply(j, o.i)  }
 
-    if(O(o)){
+        if(N(o.l) ){ j.len( o.l ) } else { j.len(1) }
 
-        if(o.i){_a(j.i,o.i,j)}
-        if(N(o.l)){j.l(o.l)} else {j.l(1)}
-        if(N(o.f)){j.f(o.f)} else {j.f(3)}
-        if(N(o.d)){j.d(o.d)} else {j.d(.1)}
-        if((o.c)){j.cC(1)}  else {j.cC(0)}
+        if(N(o.f) ){ j.freq( o.f ) } else { j.freq(3) }
 
-        return w.cJ(j)
+        if(N(o.d ) ){  j.dampRat( o.d ) } else { j.dampRat( .1 ) }
+
+        if((o.c) ){ j.collide( 1 ) }  else { j.collide( 0 ) }
+
+        return world.createJoint( j )
 
     }
 
-
-
     return j}
-rod =function(a,b){return dJt().i(a,b)}
-spring =function(a,b){return dJt().i(a,b).l(1) .f(3) .d(.1)}
-sDJ=function(x,y){
-    w.cJ(
+
+Joints.rod = Rod = rod =function(a,b){ return DistanceJoint().init(a,b) }
+
+Joints.spring = Spring = spring =function(a,b){
+
+    return DistanceJoint().init(a,b).len(1).freq(3).dampRat(.1)
+
+}
+
+RandomDistanceJoint = sDJ=function(x, y){
+
+    world.createJoint(
 
         spring(
 
-        w.a( dBD(x,y), fix() ),
+        world.add( DynamicBodyDef(x,y), fix() ),
 
-        w.a( dBD(x,y), fix() )
+        world.add( DynamicBodyDef(x,y), fix() )
 
     ))
 }
-mDJ=function(){x.$$(sDJ)}
-bridge=function(x,y){
+RandomDistanceJoint.$$=function(){x.$$(sDJ)}
 
-    x=N(x)?x:400
-    y=N(y)?y:300
+
+Complex.bridge = bridge=function(x,y){
+
+    x = N( x ) ? x : 400
+    y = N( y ) ? y : 300
 
     var  b1 = baa(x, y),
-        b2 = bi(),
-        b3 = bi(),
-        b4 = bi(),
-        b5 = bi(),
-        b6 = bi(),
-        b7 = bi(),
-        b8 = bi(),
-        b9 = bi(),
+
+        b2 = bi(), b3 = bi(),
+        b4 = bi(), b5 = bi(),
+        b6 = bi(), b7 = bi(),
+        b8 = bi(), b9 = bi(),
 
         b10 = baa(x+300, y)
 
-    w.cJ(dJt().i(b1, b2).l(10).f(5).d(.01))
-    w.cJ(dJt().i(b2, b3).l(10).f(5).d(2))
-    w.cJ(dJt().i(b3, b4).l(10).f(5).d(.1))
-    w.cJ(dJt().i(b4, b5).l(10).f(5).d(2))
-    w.cJ(dJt().i(b5, b6).l(10).f(5).d(2))
-    w.cJ(dJt().i(b6, b7).l(10).f(5).d(2))
-    w.cJ(dJt().i(b7, b8).l(10).f(5).d(2))
-    w.cJ(dJt().i(b8, b9).l(10).f(5).d(2))
-    w.cJ(dJt().i(b9, b10).l(10).f(5).d(2))
+    w.cJ(
+        DistanceJoint().i(b1, b2).len(10).freq(5).d(.01)
+    )
+
+    w.cJ(DistanceJoint().i(b2, b3).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b3, b4).l(10).f(5).d(.1))
+
+    w.cJ(DistanceJoint().i(b4, b5).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b5, b6).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b6, b7).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b7, b8).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b8, b9).l(10).f(5).d(2))
+
+    w.cJ(DistanceJoint().i(b9, b10).l(10).f(5).d(2))
+
 }
+
+
 BRIDGE=function(){makeWorld()
 
 
@@ -222,24 +242,25 @@ BRIDGE=function(){makeWorld()
 
 
 }
-DIST=function(){makeWorld()
+
+DEMO_DIST=function(){makeWorld()
 
 
-    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(.01) )
-    w.cJ( dJt().i(ba(),ba()).l(100).f(1).d(2) )
+    w.cJ( DistanceJoint().i(ba(),ba()).l(100).f(1).d(.01) )
+    w.cJ( DistanceJoint().i(ba(),ba()).l(100).f(1).d(2) )
 
 
-    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(.1) )
-    w.cJ( dJt().i(bi(),bi()).l(100).f(5).d(2) )
+    w.cJ( DistanceJoint().i(bi(),bi()).l(100).f(5).d(.1) )
+    w.cJ( DistanceJoint().i(bi(),bi()).l(100).f(5).d(2) )
 
 
 
 
-    //  w.cJ( dJt().i(ba(),ba()).l(4).f(3).d(.1) )
-    //  w.cJ( dJt().i(ba(),ba()).l(8).f(3).d(.1) )
-    //  w.cJ( dJt().i(ba(),ba()).l(16).f(3).d(.1) )
-    //  w.cJ( dJt().i(ba(),ba()).l(32).f(1).d(.1) )
-    //  w.cJ( dJt().i(ba(),ba()).l(200).f(1).d(.8) )
+    //  w.cJ( DistanceJoint().i(ba(),ba()).l(4).f(3).d(.1) )
+    //  w.cJ( DistanceJoint().i(ba(),ba()).l(8).f(3).d(.1) )
+    //  w.cJ( DistanceJoint().i(ba(),ba()).l(16).f(3).d(.1) )
+    //  w.cJ( DistanceJoint().i(ba(),ba()).l(32).f(1).d(.1) )
+    //  w.cJ( DistanceJoint().i(ba(),ba()).l(200).f(1).d(.8) )
 
 
     cup2()
@@ -247,73 +268,147 @@ DIST=function(){makeWorld()
 
 
 }
-CANCOLLIDE=function(){makeWorld()
-    w.cJ(dJt().i(ba(200,200,50),
-        ba(300,200,40))
-        .l(50).f(3).d(.1))
-    w.cJ(dJt().i(ba(200,200,50),ba(300,200,60))
-        .l(50).f(3).d(.1).cC(1))
-    w.cJ(dJt().i(bi(200,200,50),bi(300,200,40))
-        .l(50).f(3).d(.1))
-    w.cJ(dJt().i(bi(200,200,50),bi(300,200,60))
-        .l(50).f(3).d(.1).cC(1))}
-RAGD=function(){makeWorld()
+DEMO_COLLIDE=function(){
 
+    makeWorld()
 
-    w.cJ(spring(
-        b11=ba(100,100,30),
-        b22=ba(100,200,40)
-    ))
+    world.createJoint(
 
+        DistanceJoint().init(
 
-    w.cJ(rod(
-        b33=bi(100,400,30),
-        b44=bi(100,500,40)
-    ))
+            ba(200,200,50),
+
+            ba(300,200,40)
+
+        )
+
+            .len(50).freq(3).dampRat(.1))
 
 
 
-    makeMe()
-    w.cJ(spring(b11,p))
+    world.createJoint(DistanceJoint().init(
+        ba(200,200,50),
+        ba(300,200,60)
+    )
+        .len(50).freq(3).dampRat(.1).collide(1))
 
-    w.cJ(spring(b33,p))
+
+
+    world.createJoint(DistanceJoint().init(
+        bi(200,200,50),
+        bi(300,200,40)
+    )
+        .len(50).freq(3).dampRat(.1))
+
+
+
+    world.createJoint(DistanceJoint().init(
+        bi(200,200,50),
+        bi(300,200,60)
+    )
+        .lel (50).freq(3).dampRat(.1).collide(1))
+
+}
+
+RAGD = function(){
+
+
+    makeWorld()
+
+    //world.Spring =
+    world.createJoint(
+        Spring(
+        b11=ba(100,100,30),    b22=ba(100,200,40)
+        ))
+
+
+    //world.Rod =
+    world.createJoint(
+
+        Rod(
+
+            b33=bi(100,400,30),
+            b44=bi(100,500,40)
+    )
+
+    )
+
+
+
+    player = makeMe()
+
+    world.createJoint(Spring(b11,player))
+
+    world.createJoint(Spring(b33,player))
 
 
 
 
 }
 
-//PULLEY JOINTS
-pJt =function(){
+
+PulleyJoint =pJt =function(){
 
     bPJD =BXJ.b2PulleyJointDef
     bPJ =BXJ.b2PulleyJoint
 
-    var j=sJt(new bPJD())
-    j.i=function(){var g=G(arguments)
-        _a(j.Initialize,g,j)
+    var j = SuperJoint( new BXJ.b2PulleyJointDef() )
+
+
+    j.init= j.i=function(){
+         j.Initialize.apply(j,  G(arguments))
         return j}
 
-    j.lA=function(a){j.lengthA=a;return j}
-    j.lB=function(a){j.lengthB=a;return j}
-    j.mLA=function(a){j.maxLengthA=a;return j}
-    j.mLB=function(a){j.maxLengthB=a;return j}
-
-
+    j.lenA = j.lA=function(a){j.lengthA=a;return j}
+    j.lenB = j.lB=function(a){j.lengthB=a;return j}
+    j.maxLenA = j.mLA=function(a){j.maxLengthA=a;return j}
+    j.maxLenB = j.mLB=function(a){j.maxLengthB=a;return j}
 
     return j}
-sPJ= function(x,y){
+
+SuperPulleyJoint = sPJ= function(x,y){
+
+
     x=N(x)?x:100
     y=N(y)?y:x
 
-    b11=w.a(bx1= dBD(x,y),fix())
-    b22=w.a(bx2= dBD(x,y),fix())
+    b11 = world.addBody( bx1 = DynamicBodyDef(x,y), fix() )
 
-    p=pJt().i(b11,b22,bV(15,1),bV(15,2),b11.c(),b22.c(),1)
-        .lA(8).lB(4).mLA(10).mLB(5)
+    b22 = world.addBody( bx2 = DynamicBodyDef(x,y), fix() )
 
-    w.cJ(p)}
-mPJ=function(){x.$$(sPJ)}
+
+
+    var pulley = PulleyJoint()
+
+        .init(
+
+        b11,
+
+        b22,
+
+        bV(15,1),
+
+        bV(15,2),
+
+        b11.worldCenter(),
+
+        b22.worldCenter(),
+
+        1
+    )
+
+        .lenA(8)
+        .lenB(4)
+        .maxLenA(10)
+        .maxLenB(5)
+
+    world.createJoint(pulley)
+
+}
+
+
+SuperPulleyJoint.$$=function(){x.$$(sPJ)}
+
 
 PULLEY=function(){makeWorld()
 
@@ -324,18 +419,20 @@ PULLEY=function(){makeWorld()
 
     b22= bi(500,300,200,10)
 
-    p=pJt().i(
+    var pulley = PulleyJoint().init(
         b11,
         b22,
         bV(15,1), bV(25,2),
-        b11.c(),b22.c(),1)
+        b11.worldCenter(),
+        b22.worldCenter(),1)
 
-        .lA(8).lB(4).mLA(10).mLB(5)
+        .lenA(8).lenB(4).maxLenA(10).maxLenB(5)
 
-    w.cJ(p)
+   world.createJoint( pulley )
 
     makeMe()
     makeTim(10)
+    makeCar()
 
 }
 
@@ -360,15 +457,17 @@ MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
         j.maxForce=a;return j}
 
     j.A=function(a){
-        j.bodyA=a;
+        j.bodyA=a
         return j}
 
     j.B=function(b){
-        j.bodyB=b;
-        return j}
 
-    if(a){j.A(a)}
-    if(b){j.B(b)}
+        j.bodyB=b
+
+        return j }
+
+    if(a){ j.A(a) }
+    if(b){ j.B(b) }
 
     return j}
 

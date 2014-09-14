@@ -29,8 +29,6 @@ prJt=function(a,b,c,d,e,f){
 
     return j}
 
-
-
 PRISM=function(){makeWorld()
 
     cart=w.a(dBD(500,200), pFx(20,20))
@@ -75,10 +73,19 @@ sPrJ=function(x,y){
 BUMPER=function(){mW()
 
     w.j(
+        //world.PrismaticJoint
         prJt(
-            ride=w.a(dBD(200,500), cFx(40)).uD('ride'),
-            cart=w.a(sBD(200,500), pFx(40).uD('cart'))
+
+            //world.DynamicCircle
+            ride = w.a(
+                dBD(200,500), cFx(40)).uD('ride'),
+
+            //world.StaticRect
+            cart = w.a(
+                sBD(200,500), pFx(40).uD('cart'))
+
         ).lm(-1,2).mt(-100,1000))
+
 
 
     w.j(
@@ -87,11 +94,14 @@ BUMPER=function(){mW()
               w.a(sBD(400,500), pFx(40).uD('cart'))
         ).lm(-1,2).mt(-100,1000))
 
+
     w.j(
         prJt(
             w.a(dBD(600,500), cFx(40)).uD('ride'),
             w.a(sBD(600,500), pFx(40).uD('cart'))
         ).lm(-1,2).mt(-100,1000))
+
+
 
     w.oB(function(c){
             if(c.uD('cart')){
@@ -106,6 +116,8 @@ BUMPER=function(){mW()
                // ride.aI(0,-1000)
 
             }})
+
+
 
     ba(200,200,100)}
 
