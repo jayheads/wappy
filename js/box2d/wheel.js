@@ -878,18 +878,24 @@ controllerListener=function(){
     pushUp = 0
 
 
-    $('#left').on('mousedown mouseover', function(){  pushLeft = 1 })
+    $('#left').on('mousedown mouseover touchenter', function(e){
 
-    $('#left').on('mouseup mouseout', function(){ pushLeft = 0 })
+        pushLeft = 1
+
+        e.preventDefault()
+
+    })
+
+    $('#left').on('mouseup mouseout touchleave', function(){ pushLeft = 0 })
 
 
-    $('#jump').on('mousedown mouseover', function(){  pushUp=1  })
+    $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })
 
-    $('#jump').on('mouseup mouseout', function(){  pushUp=0 })
+    $('#jump').on('mouseup mouseout touchleave', function(){  pushUp=0 })
 
-    $('#right').on('mousedown mouseover', function(){  pushRight=1})
+    $('#right').on('mousedown mouseover touchenter', function(){  pushRight=1})
 
-    $('#right').on('mouseup mouseout', function(){pushRight=0})
+    $('#right').on('mouseup mouseout touchleave', function(){pushRight=0})
 
 
 
