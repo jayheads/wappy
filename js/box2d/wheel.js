@@ -899,7 +899,7 @@ controllerListener=function(){
 
 PHONEJUMP=function(){z()
 
-    makeWorld({  w:function(){
+    makeWorld({  W:300, H:400, w:function(){
 
 
             bii(10,300, 40, 600).uD('leftWall')
@@ -908,7 +908,7 @@ PHONEJUMP=function(){z()
 
             bii(300, 0, 2400, 40).uD('ceiling')
 
-            bii(300, 590, 2400, 40).uD('floor')
+            bii(300, 400, 800, 40).uD('floor')
 
 
         }    })

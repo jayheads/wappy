@@ -131,7 +131,7 @@ module.exports=function(){
         res.render('game', {  app: req.params.app,   pam: req.params.pam    })})
 
 
-     
+
 
     $a.get('/wap', function(req,res){ res.render('wap') })
 

@@ -99,7 +99,16 @@ makeWorld = mW = function(o){
     world = w = World( bV( 0 , options.gravityY ) )
 
     
-    makeStage( 1200 , 600 , options )
+
+    makeStage(
+
+        options.W ||  1200 ,
+
+       options.H || 600 ,
+
+        options )
+
+
 
 
     canvasPosition = _getPosition(  $('#canvas')[0]  )
@@ -133,8 +142,6 @@ makeWorld = mW = function(o){
 
 
         if( F( options.w ) ){     options.w() }
-
-
 
 
     }
