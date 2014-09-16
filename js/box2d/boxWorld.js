@@ -288,8 +288,6 @@ bW   =World=function(a,b){
             if( enable != '-' ){ joint.enableMotor(1) }
 
             return joint }
-
-
         joint.limits= joint.lm= function( lowAng, upAng, enable ){
 
             joint.lowAng( lowAng ).upAng( upAng )
@@ -307,15 +305,61 @@ bW   =World=function(a,b){
 
         else if(N(c)){    joint.init(a,b, bV(c/30,d/30)) }
 
-        SuperJointDef( joint )
 
-        w.createJoint(joint)
+
+        w.createJoint( joint )
 
         return joint}
 
+
+
+
+    w.Rev=function(a,b,c,d){
+
+    return world.createJoint(
+
+        RevoluteJointDef( a, b, c, d)
+
+    )}
+
+    w.Prism=function(a,b,c,d,e,f,g,h){
+
+        var joint= world.createJoint(
+
+            PrismaticJointDef( a, b, c, d,e,f,g,h)
+
+        )
+
+    return SuperPrismatic(joint)}
+
+
+
+
     w.Gear=function(a,b,c){
 
-     return world.createJoint( Gear(a,b,c) ) }
+     return world.createJoint( Gear(a,b,c) )
+       function Gear(bA, bB, ratio){
+            var gearJoint = new BXJ.b2GearJointDef()
+            gearJoint.joint1 = bA
+            gearJoint.joint2 = bB
+            gearJoint.bodyA = bA.GetBodyA()
+            gearJoint.bodyB = bB.GetBodyA()
+            gearJoint.ratio = N(ratio)? ratio : 1
+            return gearJoint}}
+
+
+
+
+
+
+
+    w.FixBody=function(x,y){
+
+       return w.addBody(  dBD(x,y),fix())
+    }
+
+
+
 
     return world}
 

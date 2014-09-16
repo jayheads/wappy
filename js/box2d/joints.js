@@ -53,6 +53,7 @@ SuperJointDef =sJD=function(joint){var j=joint
 
     j.rat = j.r=function(a){j.ratio = a; return j }
 
+
     j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
 
     //slider
@@ -77,6 +78,7 @@ SuperJointDef =sJD=function(joint){var j=joint
 
     j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
 
+
     j.limits=j.eL=function(a){ j.enableLimit=a?true:false;return j}
 
     j.init=j.i=function(){
@@ -84,6 +86,8 @@ SuperJointDef =sJD=function(joint){var j=joint
         return j}
 
     return j}
+
+
 
 SuperJoint = sJt=function(j){
 
@@ -136,21 +140,29 @@ SuperJoint = sJt=function(j){
 
     //motor rev
 
-    j.speed = j.motorSpeed=j.mS=function(a){
-        j.SetMotorSpeed(a)
-        return j}
+
 
     j.mt=j.motor =j.enableMotor = j.eM = function(a){
         j.EnableMotor( a ? true : false )
         return j}
 
+    j.speed = j.motorSpeed=j.mS=function(speed){
+        if(U(speed)){return this.GetMotorSpeed()}
+        this.SetMotorSpeed(speed)
+        return this}
 
+    j.torque = function(torq){
+        if(U(torq)){
+            return this.GetMotorTorque()}
+        this.SetMaxMotorTorque(torq)
+        return this}
 
     j.maxTorque = j.mMT=  j.mT=function(a,b,c){
         j.SetMaxMotorTorque(a,b,c); return j}
 
     j.maxForce = j.mMF=  j.mF=function(a,b,c){
         j.SetMaxMotorForce(a,b,c); return j}
+
 
     j.lm= j.limits =j.setLimits = j.sL = function(a,b){
 
@@ -169,6 +181,8 @@ SuperJoint = sJt=function(j){
 
 
     return j}
+
+
 
 
 

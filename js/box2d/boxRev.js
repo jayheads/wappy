@@ -129,6 +129,7 @@ Stuff.Seesaw = seesaw=function(){
 
         ).collide(0)
     )}
+
 //makes random rev pair
 Stuff.RandomRev = refFix=function(x,y){
     x=N(x)?x:100
@@ -146,40 +147,33 @@ Stuff.RandomRev = refFix=function(x,y){
 
 }
 Stuff.Car = makeCar=function(){
-    var car = w.a(dBD(240, 350), pFx(90,30)),
-        bWh = w.a(dBD(200, 400), cFx(30)),
-        fWh = w.a(dBD(300, 400), cFx(30))
 
-    w.j(rev(fWh, car))
-    w.j(rev(bWh, car).mt(-10, 20))
+    var car = world.bi(240,350,90,30)
+
+    world.Rev(
+        world.ba( 300, 400, 30  ),
+        car
+    ).speed(-500).torque(40).motor(1)
+
+    world.Rev(
+        world.ba( 200, 400,30),
+        car
+    ).speed(-500).torque(40).motor(1)
 
     return car}
-
 
 ROULETTE=function(){
 
     mW()
 
-    world.createJoint(
+    //Dynamic
+    var body =  world.addBody(   DynamicBodyDef(300,300),
+        [
+            CircleFixture(50) ,
+            PolyFixture(10,80,20,160)
+        ])
 
-
-         RevoluteJointDef(
-
-            world.baa(300,300,100),
-
-
-            //world.addDynamicBody
-
-            world.addBody(   DynamicBodyDef(300,300),   [  CircleFixture(50) ,   PolyFixture(10,80,20,160)   ]  )
-
-
-        )
-
-
-    )
-
-
-}
+    world.Rev( world.baa(300,300,100), body )}
 
 DEMO_REV=function(){
     makeWorld()
@@ -241,13 +235,12 @@ DEMO_REV=function(){
 
 }
 
-
 CHANGELIMITS=function(){makeWorld()
 
+    j=world.Rev( baa(400,220), bi(500,220,200,40) )
+    j.limits(0, 30)
+    j.EnableLimit(true)
 
-    j=world.createJoint(
-
-        RevoluteJointDef( baa(400,220), bi(500,220,200,40) ).limits(0, 30)       )
 
  setTimeout(function(){ j.limits(0,200) }, 2000)
 
@@ -257,99 +250,46 @@ CHANGELIMITS=function(){makeWorld()
 
 CHANGEMOTOR=function(){makeWorld()
 
+    j=world.Rev(
 
-    j=world.createJoint(
+            world.baa(400,280),
 
-        RevoluteJointDef(  baa(400,280), bi(500,280,200,40)   ).motor( 4, 1000000 )
+            world.bi(500,280,200,40)
+)
 
-    )
-
-
+    j.speed(4).torque(1000000).motor(1)
 
     setTimeout(function(){  j.speed(-4)  }, 2000)
 }
 
-
-
-
-
-CAR=function(){
-
-    mW()
+CAR=function(){makeWorld()
 
     //world.make.Car
     makeCar()
 
     //world.make.Spinner
-    d = Stuff.Spinner(500, 400)
-        .enableLimits(1).setLimits(20,240)
-        .enableMotor(1).maxMotorSpeed(100).motorSpeed(40)
-
-}
-
-
-
-
-
-Gear = gear =function(bA, bB, ratio){
-
-
-    var gearJoint = new BXJ.b2GearJointDef()
-
-    gearJoint.joint1 = bA
-    gearJoint.joint2 = bB
-    gearJoint.bodyA = bA.GetBodyA()
-    gearJoint.bodyB = bB.GetBodyA()
-    gearJoint.ratio = N(ratio)? ratio : 1
-
-    return gearJoint
-
-}
-
-
-
-//SuperGearJoint=function( gearJoint ){ return gearJoint }
-
-
-
-
+    Stuff.Spinner(500,400)
+        .enableLimits( 1 )
+        .setLimits( 20, 240 )
+        .enableMotor( 1 )
+        //.maxMotorSpeed( 100 )  ?
+        .motorSpeed( 40 )}
 
 DEMO_GEAR=function(){makeWorld()
+    world.Gear(
+        world.Rev( world.baa(100,220,40), world.bi(100,220,100,20) ),
+        world.Rev( world.baa(250,220), world.bi(250,220,100,20) ),
+        .5
+    )}
 
-    //world.Joint()
-    //world.Gear()
-    world.createJoint(
-
-        gear(
-
-            j1 = world.createJoint(
-
-                rev(
-                    baa(100,220),
-                    bi(100,220,100,20)
-                )
-
-            ),
-
-
-
-            j2 = world.createJoint(
-
-                rev( baa(250,220), bi(250,220,100,20))
-
-            ),
-
-            1
-        )
-
-
-    )
+CARS=function(){
 
 }
 
+REVPRISMGEAR=function(){
 
 
-
+}
 
 
 
