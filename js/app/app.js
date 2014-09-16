@@ -4,15 +4,26 @@
 
 appInit = function(){
 
-    $.getJSON('/loggedIn',   function(username){    if(username=='guest' || !username){ renderGuestPage(); return }
+    $.getJSON('/loggedIn',
+
+        function(username){    if(username=='guest' || !username){ renderGuestPage(); return }
+
         _username   =usr= username
+
         socket.emit('id', username)
+
         socket.emit( 'joinRoom',  _username )
+
          $.get('/getMug', function(m){ _userMug = mug = m  } )
-        renderHomePage()})
+
+        renderHomePage()
+
+    })
 }
 
 $( appInit )
+
+
 
 
 

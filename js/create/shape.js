@@ -1,66 +1,101 @@
 
+Shape = EaselShape = Hx = function(graphic, funcOrStage){
 
+    if( O( graphic ) ){ return SuperDisplayObject(  new createjs.Shape( graphic )  ) }
 
-Hx = function(a,b){
+    var shape =  SuperDisplayObject( new createjs.Shape() )
 
-    if(O(a)){ return Do( H$(a) ) }
+    shape.g = shape.ob.graphics
 
-    var h = Do( H$() )
+    if( S(graphic) ){ shape.g.f( graphic ) }
+    if( F( funcOrStage) ){ funcOrStage(shape.g, shape) }
+    if( iSt( funcOrStage) ){ funcOrStage.a(shape) }
 
-    h.g = h.ob.graphics
+    shape.fillColor = shape.f  = shape.fC =  function(color){
 
-    if(S(a)){ h.g.f(a)}
+        shape.g.f( oC(color) )
 
-    if(F(b)){ b(h.g, h)}
+        return shape}
+    shape.strokeColor = shape.s= shape.sC=function(a){shape.g.s(oC(a))
+        return shape}
+    shape.clear = shape.clr=function(){shape.g.clear()
+        return shape}
+    shape.circle = shape.c= shape.cir=function(x,y,r,c,d){
 
-    if(iSt(b)){ b.a(h)}
+        if(!N(r)){return shape.c( 0,0, x,y,r )}
 
+        if(c){shape.f(c)}
 
-    h.f= h.fC=function(a){
+        if(d){shape.s(d)}
 
-        h.g.f( oC(a) )
+        shape.g.dc(x,y,r)
 
-        return h
+        return shape
+
     }
+    shape.rectangle = shape.r = shape.rec = function l(x,y,wd,ht,fc,sc){
 
-
-
-    h.s= h.sC=function(a){h.g.s(oC(a))
-        return h}
-
-    h.clr=function(){h.g.clear()
-        return h}
-
-    h.c= h.cir=function(x,y,r,c,d){
-        if(!N(r)){return h.c(0,0,x,y,r)}
-        if(c){h.f(c)}
-        if(d){h.s(d)}
-        h.g.dc(x,y,r);
-        return h}
-
-
-    h.r= h.rec=function l(x,y,wd,ht,fc,sc){
         if(!N(wd)){return l(0,0,x,y,wd,ht)}
-        x=x||0;y=y||0;wd=wd||100; h=h||wd;
-        fc=oC(fc||'x');
+
+        x=x||0; y=y||0
+
+        wd=wd||100
+
+        ht = ht||wd
+
+        fc=oC(fc||'x')
+
         sc=oC(sc||'y')
-        if(fc){h.f(fc)}
-        if(sc){h.s(sc)}
-        h.g.r(x,y,wd,ht)
-        return h}
+
+        if(fc){shape.f(fc)}
+
+        if(sc){shape.s(sc)}
+
+        shape.g.r(x,y,wd,ht)
+
+        return shape}
+
+    shape.ss = function(a,b,c,d){  shape.g.ss( a, b, c, d ); return shape}
+
+    return shape}
 
 
-    h.ss=function(a,b,c,d){
-        h.g.ss(a,b,c,d);return h
+
+
+
+Graphic = EaselGraphic = Gx = function( stage ){
+
+    var g, graphic
+
+        graphic = g =  new createjs.Graphics()
+
+
+
+    graphic.fs = function(a,b){
+
+        graphic.f( oC(a) )
+
+        if( S(b) ){ graphic.s( oC(b) ) }
+
+        return graphic
     }
 
-    return h}
 
+    graphic.d = function(stage){ g.draw( stage || s ) }
 
+    graphic.dr0 = function( w, h ){
 
+        w = N(w)? w : 100
 
+        h = N(h)? h : w
 
+        graphic.dr( 0, 0, w, h )
 
+        return graphic }
+
+    graphic.shape = graphic.H = function(){ return EaselShape( graphic ) }
+
+    return graphic}
 
 
 
@@ -76,48 +111,11 @@ EaselRect=rct=function l(x,y,w,h,fc,sc){
     fc=oC(fc||'x');
     sc=oC(sc||'y')
 
-    var sh = Hx()//.fn(SL)
+    var sh = EaselShape()//.fn(SL)
 
     sh.g.f(fc).s(sc).r(x,y,w,h)
 
     return sh}
-
-
-
-
-
-
-Gx = function(st){
-
-    var g = G$()
-
-    g.fs = function(a,b){
-
-        g.f( oC(a) )
-
-        if( S(b) ){ g.s( oC(b) ) }
-
-        return g
-    }
-
-
-    g.d = function(s){ g.draw( st || s ) }
-
-    g.dr0 = function(w,h){
-
-        w = N(w)? w : 100
-        h = N(h)? h : w
-        g.dr( 0, 0, w, h )
-
-        return g }
-
-    g.H = function(){ return Hx(g) }
-
-    return g}
-
-
-
-
 
 EaselCircle = cir=function p(x,y,r,fc,sc){
 
@@ -138,12 +136,9 @@ EaselCircle = cir=function p(x,y,r,fc,sc){
     gx.ss(r/8).fs(fc,sc||'z').dc(0,0,r)
 
 
-    return Hx( gx ).xy(x||100,y||100)
+    return EaselShape( gx ).xy(x||100,y||100)
 
 }
-
-
-
 
 
 
@@ -174,48 +169,76 @@ ball=function(z,fc,sc){
 
 
 
-box=function(w,h,fc,sc){
-    w=w||200;
-    h=h||w
+box=function( w, h, fc, sc ){
+
+    w = w||200
+
+    h = h||w
 
     var b=rct(
-        0-w/2,0-h/2,w,h,fc,sc)
 
-    b.wr=w/2
-    b.hr=h/2
-    b.wd=w
-    b.hd=h
+        0 - w/2, 0-h/2, w, h, fc, sc
+    )
 
+    b.wr = w/2
 
-    b.T=function(a){
-        if(U(a)){return b.y()-b.hr}
-        b.y(a+ b.hr);
-        return b}
+    b.hr = h/2
 
+    b.wd = w
 
-    b.B=function(a){
-        if(U(a)){return b.y()+b.hr}
-        b.y(a-b.hr);
-        return b}
+    b.hd = h
 
 
-    b.L=function(a){
-        if(U(a)){return b.x()-b.wr}
-        b.x(a+b.wr);
-        return b}
+    b.T = function( a ){
+
+        if( U(a) ){ return b.y() - b.hr }
+
+        b.y( a + b.hr )
+
+        return b }
 
 
-    b.R=function(a){if(U(a)){return b.x()+b.wr}
+    b.B = function(a){
+
+        if( U(a) ){  return b.y() + b.hr   }
+
+
+        b.y( a - b.hr )
+
+        return b
+    }
+
+
+    b.L = function(a){
+
+        if( U(a) ){ return b.x() - b.wr }
+
+        b.x( a + b.wr )
+
+        return b
+    }
+
+
+    b.R = function(a){
+
+        if(U(a)){ return b.x() + b.wr }
         b.x(a- b.wr);return b}
 
 
     b.fall=function(){
 
         b.t(function(){
+
             if(b.F){b.y(40,'+')}  //****
-            if(ballBox(b,r)){b.F=0}})}
+
+            if(ballBox(b,r)){b.F=0}
+
+        })}
 
     return b}
+
+
+
 ballBox=function(bl,bx,buff){ buff=buff||100
     var b= bl.B()>=bx.T()  && bl.T()<=bx.T()+buff  &&
 
@@ -224,9 +247,6 @@ ballBox=function(bl,bx,buff){ buff=buff||100
     if(b){bl.B(bx.T())}
 
     return b}
-
-
-
 
 
 EaselText = TX=function(words, color, font, x, y){//var g=G(arguments); if(g.N){text.bl( 'alphabetic' )}   //if(g.p){ TR(text) }
@@ -250,35 +270,49 @@ EaselText = TX=function(words, color, font, x, y){//var g=G(arguments); if(g.N){
 
 
 
-
-
-
-
-
-
 //shooty  //b=circle('w', 8, j.x()+75, j.y())
-circle2=function p(r,z,x,y){
-    var gx=Gx()
+circle2=function(r,z,x,y){
 
-    if(!S(r)){
-        return p('r',r,z,x)}
-    z=N(z)?z:32;
-    x=N(x)?x:100;
-    y=N(y)?y:100
-    gx.ss(z/8).fs(r,'z').dc(0,0,z)
+    var graphic = EaselGraphic()
 
-    return Hx( gx ).xy(x||100,y||100)}
-cir0=function l(x,y,r,fc,sc){var h=Hx()
-    if(O(x)){return l(x.x,x.y,x.r,x.fc,x.sc)}
-    x=x||0;
-    y=y||0;
-    r=r||8
+    if( !S( r ) ){  return circle2( 'r', r, z, x )}
 
-    fc=fc||'w';
-    sc=sc||'z';
+    z = N(z) ? z : 32
 
-    h.c(x,y,r,fc,sc)
+    x = N(x) ? x : 100
 
-    SL(h)
+    y = N(y) ? y : 100
 
-    return h}
+    graphic.ss( z/8 ).fs( r, 'z' ).dc( 0, 0, z )
+
+    return EaselShape( graphic ).xy( x || 100, y || 100 )
+
+}
+
+
+
+
+
+cir0 = function( x, y, r, fc, sc ){
+
+    var shape, h
+
+    shape = h = EaselShape()
+
+    if( O(x) ){  return cir0(   x.x,    x.y,   x.r,    x.fc,   x.sc  ) }
+
+    x = x || 0
+
+    y = y || 0
+
+    r = r || 8
+
+    fc = fc || 'w'
+
+    sc = sc || 'z'
+
+    shape.circle( x, y, r, fc, sc )
+
+    SL( shape )
+
+    return shape }

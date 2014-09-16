@@ -117,9 +117,9 @@ DebugDraw=dbD  =function(){
 bW   =World=function(a,b){
 
 
-    var w=new b2World(a,D(b)?b:false)
+    var w = new b2World(a,D(b)?b:false),world = w
 
-    w.debugData  =w.dD=w.sDD=w.sdd=w.dDD=function(a){
+    world.debugData  =w.dD=w.sDD=w.sdd=w.dDD=function(a){
 
         if( U(a) ){  w.DrawDebugData() }   else{  w.SetDebugDraw(a) }
 
@@ -180,9 +180,17 @@ bW   =World=function(a,b){
 
     return w}
     w.getBodyCount = w.bC = w.gBC=function(){  return w.GetBodyCount()  }
-    w.createJoint=w.j=w.cJ=function(a){var j=w.CreateJoint(a)
 
-        return sJt(j)}
+
+    w.createJoint=w.j=w.cJ=function(a){
+
+        var j=w.CreateJoint(a)
+
+        return SuperJoint(j)
+    }
+
+
+
     w.destroyJoint=w.dJ=w.dj=function(a){ w.DestroyJoint(a); return w}
     w.setContactFilter = w.sCF = w.SetContactFilter
     w.setContactListener = w.sCL = w.SetContactListener
@@ -255,8 +263,61 @@ bW   =World=function(a,b){
     }
 
 
+    w.Revolute = function(a,b, c,d, e,f){var g=G(arguments)
 
-    return w}
+        //pass in body1, body2, world-bV = body1-center
+        //can also pass body1, body2, world-x, world-y
+        //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
+
+
+        var j= SuperJointDef( new BXJ.b2RevoluteJointDef() )
+
+        var joint = j
+
+        joint.init =joint.i = function(){
+            joint.Initialize.apply(joint,  G(arguments) )
+            return joint}
+
+        //convenience functions
+        joint.motor = joint.mt = function(speed, torque, enable){
+
+            joint.speed(speed)
+
+            joint.maxTorque( N(torque)? torque : 100)
+
+            if( enable != '-' ){ joint.enableMotor(1) }
+
+            return joint }
+
+
+        joint.limits= joint.lm= function( lowAng, upAng, enable ){
+
+            joint.lowAng( lowAng ).upAng( upAng )
+
+            if( enable != '-' ){ joint.enableLimits(1) }
+
+            return joint }
+
+
+        if( U(c) ){ c = a.worldCenter() }
+
+        if( O(c) ){  joint.init( a, b, c )}
+
+        else if(N(e)){   joint.A(a).B(b).lAA( bV(c/30,d/30)).lAB( bV(e/30,f/30)) }
+
+        else if(N(c)){    joint.init(a,b, bV(c/30,d/30)) }
+
+        SuperJointDef( joint )
+
+        w.createJoint(joint)
+
+        return joint}
+
+    w.Gear=function(a,b,c){
+
+     return world.createJoint( Gear(a,b,c) ) }
+
+    return world}
 
 
 
@@ -389,7 +450,7 @@ SuperBoxBody=sBd=function(b){
         return b}
 
 
-    b.aV=function(a){
+    b.angVel=b.aV=function(a){
 
         if(U(a)){return b.GetAngularVelocity()}
 
@@ -525,6 +586,9 @@ SuperBodyDef=sBdD=function(d){
     d.iS=function(a){if(U(a)){return d.insertiaScale}
         d.insertiaScale=a
         return d}
+
+
+
     d.lD=function(a){
         if(U(a)){return d.linearDamping}
         d.linearDamping=a
@@ -649,12 +713,15 @@ SuperFixture=sFx=function(f){
     f.gI=function(a){
         if(U(a)){return f.filter.groupIndex}
         f.filter.groupIndex=a; return f}
-    f.cB=function(a){
+
+    f.category = f.cB=function(a){
         if(U(a)){return f.filter.categoryBits}
         f.filter.categoryBits=a; return f}
-    f.mB=function(a){
+
+    f.mask = f.mB=function(a){
         if(U(a)){return f.filter.maskBits}
         f.filter.maskBits=a; return f}
+
 
     f.gI=function(a){
         if(U(a)){return f.filter.groupIndex}
@@ -745,10 +812,10 @@ SuperFixtureDef=sFxD=function(f){
         if(U(a)){return f.filter.groupIndex}
         f.filter.groupIndex=a; return f}
 
-    f.cB=function(a){
+    f.category=f.cB=function(a){
         if(U(a)){return f.filter.categoryBits}
         f.filter.categoryBits=a; return f}
-    f.mB=function(a){
+    f.mask=f.mB=function(a){
         if(U(a)){return f.filter.maskBits}
         f.filter.maskBits=a; return f}
 

@@ -35,7 +35,9 @@ G$   =function(a){return new C$.Graphics(a)}
 
 
 
-H$  =function(a){ return new C$.Shape(a) }
+H$  =function(a){ return new createjs.Shape(a) }
+
+
 
 B$=function(a){ return new C$.Bitmap(a) }
 

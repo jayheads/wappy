@@ -132,7 +132,6 @@ module.exports=function(){
 
 
 
-
     $a.get('/wap', function(req,res){ res.render('wap') })
 
 

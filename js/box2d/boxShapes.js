@@ -237,6 +237,8 @@ str1=function(){
         PolyFixture(84,10,15,80,-120)
 
     ])}
+
+
 str2=function(){
 
     return world.a(
@@ -257,15 +259,28 @@ str2=function(){
 
 
         ]      )}
+
+
 strStar=function(){return world.a(
 
-    DynamicBodyDef(300,200),[
-        PolyFixture(10,10),cFx(20),
-        PolyFixture(4,80,0,0,135),
+    DynamicBodyDef(300,200),
+
+    [
+        PolyFixture(10,10),
+
+        CircleFixture(20),
+
+        PolyFixture(4,80,300, 300,   135),
         PolyFixture(4,80,0,0,45),
+
         PolyFixture(4,80,100,0, 90),
         PolyFixture(4,80,0,0,180)
-    ])}
+    ]
+
+)}
+
+
+
 
 
 platform=function(){
@@ -274,20 +289,47 @@ platform=function(){
 
 
 fricky=function(){return w.a(DynamicBodyDef(300,200),
-    [PolyFixture(10,10),
+    [
+        PolyFixture(10,10),
         PolyFixture(20,40,0,0, 90).f(0).r(0),
+
         PolyFixture(20,40,0,0,180).f(0).r(0)])}
+
+
+
+
 bouncy=function(){return w.a(DynamicBodyDef(300,200),[PolyFixture(10,10),
         PolyFixture(20,40,0,0, 90).r(.9).f(1),
         PolyFixture(20,40,0,0,180).r(.9).f(1)])}
+
 massy=function(){return w.a(DynamicBodyDef(300,200),
     [PolyFixture(10,10),
         PolyFixture(20,40,0,0, 90).d(2).f(1),
         PolyFixture(20,40,0,0,180).d(2).f(1)])}
-fluffy=function(){return w.a(DynamicBodyDef(300,200),[
-    PolyFixture(10,10),
-    PolyFixture(20,40,0,0,90).d(.1).f(1),
-    PolyFixture(20,40,0,0,180).d(.1).f(1)])}
+
+
+
+fluffy=function(){
+    return world.addBody(
+
+        DynamicBodyDef(300,200),[
+
+
+
+            PolyFixture(10,10),
+
+            PolyFixture(20,40,0,0,90).d(.1).f(1),
+
+            PolyFixture(20,40,0,0,180).d(.1).f(1)]
+
+
+    )}
+
+
+
+
+
+
 
 
 cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
@@ -316,7 +358,6 @@ cup3=function(x,y){
             PolyFixture(100,20,80,-40,-80),
             CircleFixture(34,-80,-130),
             CircleFixture(34,80,-130)])}
-
 
 
 makeWalls2=function(){
@@ -382,6 +423,8 @@ BILLIARDS=function(){
     makeTim(15)
 
 }
+
+
 
 
 

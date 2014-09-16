@@ -1,65 +1,87 @@
-SuperJointDef =sJD=function(j){
+SuperJointDef =sJD=function(joint){var j=joint
 
 
+    joint.init = joint.i=function(){
 
-    j.init= j.i=function(){
-
-        j.Initialize.apply(j, G(arguments))
+        joint.Initialize.apply(joint, G(arguments))
 
         return j}
 
-    j.A=function(a){j.bodyA=a; return j}
+    joint.A=function(bodyA){ joint.bodyA = bodyA; return j }
 
-    j.B=function(a){j.bodyB=a; return j}
+    joint.B=function(bodyB){ joint.bodyB = bodyB; return j }
 
+    joint.collide = joint.cC=function(a){ j.collideConnected = a? true : false; return j }
 
-    j.collide = j.cC=function(a){j.collideConnected=a?true:false; return j}
+    //mouse
+    j.target = j.sT  =function(a,b){
 
-    //pops
-    j.target = j.sT    =j.tg=j.sTg=j.st=function(a,b){
-        if(!O(a)){a=bV(a,b)}
+        if( !O(a) ){ a = bV(a,b) }
+
         j.SetTarget(a)
 
         return j}
 
+
+    //distance
     j.freq=j.f=function(a){j.frequencyHz=a;return j}
-    j.len=j.l=function(a){j.length=a/30;return j}
+
+    j.len=j.l=function(a){
+        j.length=a/30
+        return j
+    }
+
+
     j.dampRat=j.d=function(a){j.dampingRatio=a;return j}
 
+
+
+    //revolute
     j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
 
-    j.lAA=function(a){j.localAnchorA=a; return j}
-
-    j.lAB=function(a){j.localAnchorB=a; return j}
-
-    j.rat = j.r=function(a){j.ratio=a; return j}
-
-    j.lXA=function(a){j.localAxisA=a; return j}
-
-
-    //MOTOR
-    j.mMS=function(a){j.maxMotorSpeed=a;return j}
-    j.mMT=function(a){
+    j.maxTorque=j.mMT=function(a){
         j.maxMotorTorque=a
         return j}
-    j.mMF=function(a){j.maxMotorForce=a;return j}
-    j.mS=function(a){j.motorSpeed=a; return j}
-    j.eM=function(a){j.enableMotor=a?true:false; return j}
+
+    j.lowAng= j.lA = function(a){j.lowerAngle=tRad(a);return j}
+
+    j.upAng= j.uA = function(a){j.upperAngle=tRad(a);return j}
+
+    j.localA =j.lAA=function(a){ j.localAnchorA = a; return j }
+
+    j.localB =j.lAB=function(a){ j.localAnchorB = a; return j }
+
+    j.rat = j.r=function(a){j.ratio = a; return j }
+
+    j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
+
+    //slider
+    j.maxForce= j.mMF=function(a){
+        j.maxMotorForce = a;return j
+    }
+
+
+    //slider and revolute
+    j.speed=j.mS=function(a){
+        j.motorSpeed = a; return j}
+    j.motor=j.eM=function(a){
+        j.enableMotor = a?true:false; return j}
+
+    j.maxSpeed =j.mMS=function(a){ j.maxMotorSpeed=a; return j }
+
+
 
     //LIMITS
-    j.lA=function(a){j.lowerAngle=tRad(a);return j}
 
-    j.uA=function(a){j.upperAngle=tRad(a);return j}
+    j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
 
-    j.lT=function(a){j.lowerTranslation=a;return j}
-    j.uT=function(a){j.upperTranslation=a;return j}
-    j.eL=function(a){j.enableLimit=a?true:false;return j}
+    j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
 
-    j.i=function(){var g=G(arguments)
-        _a(j.Initialize,g,j)
+    j.limits=j.eL=function(a){ j.enableLimit=a?true:false;return j}
+
+    j.init=j.i=function(){
+        j.Initialize.apply(j,G(arguments))
         return j}
-
-
 
     return j}
 
@@ -68,13 +90,11 @@ SuperJoint = sJt=function(j){
 
     //shared
     j.init= j.i  = j.i1=function(){
-        var g=G(arguments)
 
-        _a(j.Initialize,g,j)
+
+       j.Initialize.apply(j,  G(arguments))
 
         return j}
-
-
 
 
     j.collide = j.cC=function(a){
@@ -82,55 +102,80 @@ SuperJoint = sJt=function(j){
     }
 
     //pops
-    j.target = j.sT    =j.tg=j.sTg=j.st=function(a,b){
+    j.target = j.sT    = function(a,b){
         if(!O(a)){a=bV(a,b)}
         j.SetTarget(a)
 
         return j}
 
     j.freq =j.f  =function(a){j.frequencyHz=a;return j}
-    j.len = j.l  =function(a){j.length=a/30;return j}
+
+    j.len = j.l  =function(a){
+        j.length=a/30
+        return j}
+
+
+    j.len2 =function(len){
+
+        if( U(len) ){ return j.GetLength() * 30 }
+
+        j.SetLength( len/30 )
+
+        return j
+
+    }
+
+
     j.dampRat =j.d  =function(a){j.dampingRatio=a;return j}
 
+
     //motor
-    j.maxMotorSpeed=j.mMS=function(a){
+    j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
         j.maxMotorSpeed=a
         return j}
 
     //motor rev
 
-    j.motorSpeed=j.mS=function(a){
+    j.speed = j.motorSpeed=j.mS=function(a){
         j.SetMotorSpeed(a)
         return j}
 
-    //j.eM=function(a){bwJ.enableMotor=a?true:false;return j}
-
-    j.enableMotor=j.eM=function(a){
-        j.EnableMotor( a?true:false)
-        return j}
-
-    j.maxTorque=j.mMT=j.mT=function(a,b,c){j.SetMaxMotorTorque(a,b,c); return j}
-
-    j.maxForce = j.mMF=j.mT=function(a,b,c){j.SetMaxMotorForce(a,b,c); return j}
-
-
-    j.setLimits=j.sL=function(a,b){
-        a=N(a)?a:20
-        b=N(b)?b:180
-        j.SetLimits(tRad(a),tRad(b))
+    j.mt=j.motor =j.enableMotor = j.eM = function(a){
+        j.EnableMotor( a ? true : false )
         return j}
 
 
-    j.enableLimit = j.eL=function(a){
+
+    j.maxTorque = j.mMT=  j.mT=function(a,b,c){
+        j.SetMaxMotorTorque(a,b,c); return j}
+
+    j.maxForce = j.mMF=  j.mF=function(a,b,c){
+        j.SetMaxMotorForce(a,b,c); return j}
+
+    j.lm= j.limits =j.setLimits = j.sL = function(a,b){
+
+        a = N( a ) ? a : 20
+
+        b = N( b ) ? b : 180
+
+        j.SetLimits( tRad(a), tRad(b) )
+
+        return j}
+
+
+    j.enableLimits= j.enableLimit = j.eL=function(a){
         j.EnableLimit( a?true:false)
         return j}
 
 
-
     return j}
 
+
+
+
 Joints={}
-Complex={}
+
+Stuff=Complex={}
 
 //DISTANCE JOINTS
 //makes a distance joint def
@@ -170,13 +215,23 @@ Joints.distance = DistanceJoint = dJt =function(o){
 
     return j}
 
-Joints.rod = Rod = rod =function(a,b){ return DistanceJoint().init(a,b) }
+Joints.rod = Rod = rod =function(a, b){ return DistanceJoint().init(a,b) }
 
 Joints.spring = Spring = spring =function(a,b){
 
-    return DistanceJoint().init(a,b).len(1).freq(3).dampRat(.1)
+    return DistanceJoint().init( a, b ).len(1).freq(3).dampRat(.1)
 
 }
+
+
+
+
+
+
+
+
+
+
 
 RandomDistanceJoint = sDJ=function(x, y){
 
@@ -190,10 +245,15 @@ RandomDistanceJoint = sDJ=function(x, y){
 
     ))
 }
-RandomDistanceJoint.$$=function(){x.$$(sDJ)}
 
 
-Complex.bridge = bridge=function(x,y){
+
+
+
+RandomDistanceJoint.$$=function(){ x.$$(sDJ) }
+
+
+Stuff.Bridge = Stuff.bridge = bridge=function(x,y){
 
     x = N( x ) ? x : 400
     y = N( y ) ? y : 300
@@ -207,41 +267,81 @@ Complex.bridge = bridge=function(x,y){
 
         b10 = baa(x+300, y)
 
-    w.cJ(
-        DistanceJoint().i(b1, b2).len(10).freq(5).d(.01)
+    w.cJ(   DistanceJoint().init(b1, b2).len(10).freq(5).d(.01)  )
+
+    w.cJ(  DistanceJoint().i(b2, b3).l(10).f(5).d(2)
     )
 
-    w.cJ(DistanceJoint().i(b2, b3).l(10).f(5).d(2))
+    w.cJ(    DistanceJoint().i(b3, b4 ).l(10).f(5).d(.1))
 
-    w.cJ(DistanceJoint().i(b3, b4).l(10).f(5).d(.1))
+    w.cJ(   DistanceJoint().i(b4, b5 ).l(10).f(5).d(2))
 
-    w.cJ(DistanceJoint().i(b4, b5).l(10).f(5).d(2))
+    w.cJ(    DistanceJoint().i(b5, b6 ).l(10).f(5).d(2))
 
-    w.cJ(DistanceJoint().i(b5, b6).l(10).f(5).d(2))
+    w.cJ(   DistanceJoint().i(b6, b7 ).l(10).f(5).d(2) )
 
-    w.cJ(DistanceJoint().i(b6, b7).l(10).f(5).d(2))
+    w.cJ(
+        DistanceJoint().i( b7, b8 ).l(10).f(5).d(2))
 
-    w.cJ(DistanceJoint().i(b7, b8).l(10).f(5).d(2))
+    w.cJ(
+        DistanceJoint().i( b8, b9 ).l(10).f(5).d(2))
 
-    w.cJ(DistanceJoint().i(b8, b9).l(10).f(5).d(2))
-
-    w.cJ(DistanceJoint().i(b9, b10).l(10).f(5).d(2))
+    w.cJ(
+        DistanceJoint().i( b9, b10 ).l(10).f(5).d(2))
 
 }
+
+
+CHANGEDISTJOINT=function(){
+
+    z()
+
+    makeWorld()
+
+
+   j1 = world.createJoint(
+
+       j0= DistanceJoint().init( ba(), bi() ).len(200).freq(5).dampRat(.1)
+
+    )
+
+
+    setInterval( function(){ j1.len2( j1.len2()-1) }   ,100 )
+
+
+    j2 = world.createJoint(
+
+          Spring( ba(), bi() ).len(20).freq(5).dampRat(.1).collide(0)
+
+    )//.collideConnected=false
+
+    j3 = world.createJoint(
+
+        Spring( ba(), bi() ).len(20).freq(5).dampRat(.1).collide(1)
+
+    )//.collideConnected=true
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 BRIDGE=function(){makeWorld()
-
-
-
     bridge(100,200)
-    bridge(500,200)
+    bridge(500,200)}
 
 
 
-
-
-}
 
 DEMO_DIST=function(){makeWorld()
 
@@ -268,37 +368,65 @@ DEMO_DIST=function(){makeWorld()
 
 
 }
+
+
 DEMO_COLLIDE=function(){
 
     makeWorld()
+
 
     world.createJoint(
 
         DistanceJoint().init(
 
-            ba(200,200,50),
 
-            ba(300,200,40)
+            ba( 200, 200, 50 ),
+
+            ba( 300, 200, 40 )
+
+
 
         )
 
-            .len(50).freq(3).dampRat(.1))
+            .len( 50 ) .freq( 3 ) .dampRat( .1 )
+
+    )
+
+
+
+
+
 
 
 
     world.createJoint(DistanceJoint().init(
+
         ba(200,200,50),
+
         ba(300,200,60)
+
     )
         .len(50).freq(3).dampRat(.1).collide(1))
 
 
 
-    world.createJoint(DistanceJoint().init(
-        bi(200,200,50),
-        bi(300,200,40)
+
+    world.createJoint(
+
+        DistanceJoint().init(
+
+            bi(200,200,50),
+
+            bi(300,200,40)
+
+        )
+
+        .len( 50 ).freq( 3 ).dampRat( .1 )
+
     )
-        .len(50).freq(3).dampRat(.1))
+
+
+
 
 
 
@@ -306,7 +434,7 @@ DEMO_COLLIDE=function(){
         bi(200,200,50),
         bi(300,200,60)
     )
-        .lel (50).freq(3).dampRat(.1).collide(1))
+        .len (50).freq(3).dampRat(.1).collide(1))
 
 }
 
@@ -317,9 +445,12 @@ RAGD = function(){
 
     //world.Spring =
     world.createJoint(
+
         Spring(
-        b11=ba(100,100,30),    b22=ba(100,200,40)
-        ))
+
+            b11=ba(100,100,30),    b22=ba(100,200,40)
+        )
+    )
 
 
     //world.Rod =
@@ -327,9 +458,10 @@ RAGD = function(){
 
         Rod(
 
-            b33=bi(100,400,30),
-            b44=bi(100,500,40)
-    )
+            b33=bi(100, 400, 30),
+            b44=bi(100, 500, 40)
+
+        )
 
     )
 
@@ -337,14 +469,20 @@ RAGD = function(){
 
     player = makeMe()
 
-    world.createJoint(Spring(b11,player))
+    world.createJoint(
+        Spring( b11, player )
+    )
 
-    world.createJoint(Spring(b33,player))
+    world.createJoint(
+        Spring( b33, player)
+    )
 
 
 
 
 }
+
+
 
 
 PulleyJoint =pJt =function(){
@@ -361,6 +499,7 @@ PulleyJoint =pJt =function(){
 
     j.lenA = j.lA=function(a){j.lengthA=a;return j}
     j.lenB = j.lB=function(a){j.lengthB=a;return j}
+
     j.maxLenA = j.mLA=function(a){j.maxLengthA=a;return j}
     j.maxLenB = j.mLB=function(a){j.maxLengthB=a;return j}
 
@@ -406,11 +545,11 @@ SuperPulleyJoint = sPJ= function(x,y){
 
 }
 
-
 SuperPulleyJoint.$$=function(){x.$$(sPJ)}
 
 
-PULLEY=function(){makeWorld()
+PULLEY=function(){
+    makeWorld()
 
     x=500
     y=200
@@ -419,14 +558,13 @@ PULLEY=function(){makeWorld()
 
     b22= bi(500,300,200,10)
 
-    var pulley = PulleyJoint().init(
-        b11,
-        b22,
-        bV(15,1), bV(25,2),
-        b11.worldCenter(),
-        b22.worldCenter(),1)
 
-        .lenA(8).lenB(4).maxLenA(10).maxLenB(5)
+    var pulley = PulleyJoint().init(
+
+        b11,  b22,  bV(15,1), bV(25,2),   b11.worldCenter(),  b22.worldCenter(), 1
+    )
+
+        .lenA(8).lenB(4).maxLenA( 10 ).maxLenB( 5 )
 
    world.createJoint( pulley )
 

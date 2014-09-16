@@ -4,71 +4,111 @@
 
 pair=function(c, p1, p2){
 
-    var a=c.A(), b=c.B(), aD=a.uD(), bD= b.uD()
+    var a=c.A(),
+
+        b=c.B(),
+
+        aD=a.uD(),
+
+        bD= b.uD()
 
     return  (p1==aD && p2==bD) || (p1==bD && p2==aD)
 
 }
 
 
-//super contact
-sCon=function(c){
-    c.pair=function(a,b){return pair(c,a,b)}
-    c.fFF=function(){c.FlagForFiltering(); return c}// Flag this contact for filtering.// Filtering will occur the next time step.
-    c.A=function(){return sFx(c.GetFixtureA())}
-    c.B=function(){return sFx(c.GetFixtureB())}
-    c.gM=function(){return c.GetManifold()}
-    c.lPN=function(){return c.gM().m_localPlaneNormal}
-    c.lP=function(){return c.gM().m_localPoint}
-    c.pC=function(){return c.gM().m_pointCount}
-    c.p=function(){return c.gM().m_points}
-    c.t=function(){return c.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
-    c.gN=function(){return c.GetNext()}//Get the next contact in the world's contact list.
-    c.gWM=function(){return c.GetWorldManifold()}
-    c.iC=function(){return c.IsContinuous()}//Does this contact generate TOI events for continuous simulation
-    c.iE=function(){return c.IsEnabled()}//Has this contact been disabled?
-    c.iS=function(){return c.IsSensor()}//Is this contact a sensor?
-    c.iT=function(){return c.IsTouching()}//Is this contact touching.
-    c.sE=function(a){c.SetEnabled(a?true:false);return c} // Enable/disable this contact.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
-    c.sS=function(a){c.SetSensor(a?true:false);return c}// Change this to be a sensor or-non-sensor contact.
 
 
-    c.userData = c.uD=function( u){
-        return c.A().uD()==u || c.B().uD()==u
+
+
+SuperContact = sCon=function(contact){  var  c=contact
+
+    contact.pair=function(a,b){return pair(contact,a,b)}
+    contact.filtering =contact.fFF=function(){contact.FlagForFiltering(); return contact}// Flag this contact for filtering.// Filtering will occur the next time step.
+
+    contact.A=function(){return SuperFixture( contact.GetFixtureA() )}
+    contact.B=function(){return SuperFixture( contact.GetFixtureB() )}
+
+    contact.manifold =contact.gM=function(){return contact.GetManifold()}
+
+    contact.localPlaneNormal =contact.lPN=function(){return contact.gM().m_localPlaneNormal}
+
+    contact.localPoint =contact.lP=function(){return contact.gM().m_localPoint}
+
+    contact.pointCount = contact.pC=function(){return contact.gM().m_pointCount}
+
+    contact.points =contact.p=function(){return contact.gM().m_points}
+
+    contact.type =contact.t=function(){return contact.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
+
+    contact.next =contact.gN=function(){return contact.GetNext()}//Get the next contact in the world's contact list.
+
+    contact.worldManifold =contact.gWM=function(){return contact.GetWorldManifold()}
+
+    contact.continuous =contact.iC=function(){return contact.IsContinuous()}//Does this contact generate TOI events for continuous simulation
+
+    contact.iE=function(){return contact.IsEnabled()}//Has this contact been disabled?
+
+    contact.enabled = contact.sE=function(a){contact.SetEnabled(a?true:false);return contact} // Enable/disable this contact.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
+
+
+    contact.sensor = contact.iS=function(){return contact.IsSensor()}//Is this contact a sensor?
+    contact.setSensor  =contact.sS=function(a){contact.SetSensor(a?true:false);return contact}// Change this to be a sensor or-non-sensor contact.
+
+
+    contact.touching = contact.iT=function(){return contact.IsTouching()}//Is this contact touching.
+
+
+    contact.userData = contact.uD=function( u){
+        return contact.A().uD()==u || contact.B().uD()==u
     }
 
-    return c}
+    return contact}
 
 
 
-//forces - impulse
-sImp=function(i){
-    i.n= i.nI=function(){return i.normalImpulses}
-    i.t= i.tI=function(){return i.tangentImpulses}
-    return i}
 
-ContactListener=bCL=function(){var l= new BXD.b2ContactListener
 
-    l.beginContact=l.b  =function(f){
+
+
+ContactListener=bCL=function(){
+
+    var l = new BXD.b2ContactListener
+
+    l.beginContact=l.b  =function(func){
         l.BeginContact=function(c){
-            f(sCon(c))}
+            func(SuperContact(c))
+        }
         return l}
 
-    l.endContact=l.e  =function(f){
-        l.EndContact=function(con){
-        c=sCon(con)
-        f(c)}; return l}
+    l.endContact= l.e  =function(func){
+        l.EndContact=function(contact){
 
+        func( SuperContact(contact)  )
+        }; return l}
 
-    l.preSolve=l.p  =function(f){
-        l.PreSolve=function(c,m){
-            f(sCon(c),sMf(m))}
+    l.preSolve=l.p  =function(func){
+        l.PreSolve=function(contact,manifold){
+            func(SuperContact(contact),
+
+               SuperManifold(manifold))
+       }
         return l}
 
-    l.postSolve=l.P=function(f){
-        l.PostSolve=function(c,i){
-            f(sCon(c),sImp(i))}
+    l.postSolve=l.P=function(func){
+
+        l.PostSolve=function(contact,impulses){
+            func(
+                SuperContact(contact),
+                SuperImpulses(impulses)
+            )}
         return l}
+
+    function SuperImpulses(impulses){
+        impulses.n= impulses.nI=function(){return impulses.normalImpulses}
+        impulses.t= impulses.tI=function(){return impulses.tangentImpulses}
+        return impulses}
+
 
     return l}
 
@@ -77,65 +117,66 @@ ContactListener=bCL=function(){var l= new BXD.b2ContactListener
 //touch ball to 'button.' hit triggers new ball.
 LAVA=function(){makeWorld()
 
-    p=bii(400,500,40,20).uD('platform')
-    b=ba(300,40).uD('ball')
-    hit=0
+    _hit=0
 
-    s.t(function(){
-        if(hit){ba(300,40).uD('ball'); hit=0}})
+    world.bii(400, 500, 40, 20).uD('platform')
 
-    w.sCL(
-        bCL().b(function(c){
-            var d1=c.A().gB().uD(),
-                d2=c.B().gB().uD()
-        if((d1=='ball' && d2=='platform')||(d2=='ball' && d1=='platform')){
-            hit=1
-            $l('hit')}}))}
+    stage.tick(function(){
+
+        if(_hit){
+
+            world.ba(300,40).uD('ball')
+
+            _hit = 0
+
+        }})
+    world.setContactListener(
+        ContactListener().beginContact(
+            function(contact){
+
+            var d1 = contact.A().gB(),
+                d2 = contact.B().gB()
+
+            if(
+                ( d1.is('ball') && d2.is('platform') )
+                ||
+                ( d2.is('ball') && d1.is('platform'))
+
+                ){  _hit = 1  }
+
+            }))
+
+    world.ba(300, 40).uD('ball')
+
+
+}
+
+
+
 
 
 //only breaks at high impulse
 POSTSOLVE=function(){
-    makeWorld();ba()
-    newB=false
-    s.t(function(){if(newB){ba()}; newB=false})
-    w.sCL(bCL().P(function(c,i){if($l(i.n()[0])>100){newB=true}}))
-}
-
-
-//triggers listeners!
-LISTENER=function(){
-    _bC=0
-    _eC=0
-    _pS=0
-    _PS=0
-
     makeWorld()
+    world.ba()
 
-    ba()
-    b1=function(){bi()}
+    newB=false
 
-    var bb=bCL()
-        .bC(function(){
+    stage.tick(function(){
+        if(newB){world.ba()}; newB=false})
 
-            b1()
-            // $l('bC: '+_bC++)
+    world.setContactListener(
 
-        })
-        .eC(function(){
-            // $l('eC: '+_eC++)
-            //ba()
-        })
-        .pS(function(){
-            // $l('pS: '+_pS++)
-            // ba()
-        })
-        .PS(function(){
-            // bi()
-            //    $l('PS: '+_PS++)
-        })
+        ContactListener().postSolve(
 
-    w.sCL(bb)
+            function(c, i){
 
+                if(  $l( i.n()[0] ) > 100 ){ newB = true }
+
+            }
+        )
+
+    )
 }
 
 
@@ -143,48 +184,76 @@ LISTENER=function(){
 
 //shows category and mask bits
 //the big circles dont collide??
-PRESOLVE=function(){makeWorld();ba()
+PRESOLVE=function(){
+
+    makeWorld()
+    world.ba()
     newB=false
-    s.t(function(){if(newB){ba()}; newB=false})
 
-    w.sCL(
+    stage.tick(
+        function(){
+            if( newB ){  world.ba() }
+            newB = false
+        })
 
-        bCL().p(function(c,m){
 
-            if($l(i.n()[0])>100){newB=true}
+    world.setContactListener(
+
+        ContactListener().preSolve(function(c, m){
+
+            if( $l( m.n()[0]  ) > 100){ newB = true }
     }))
 
 }
 
 
 
+
+
+
+
+
+
+
+
 CONTACTS=function(){makeWorld()
 
-    centerFx=cFx(60).uD('center')
+    var centerFx = CircleFixture(60).uD('center')
 
-    t1= w.a(dBD(500,300),[
+    t1= world.addBody(dBD(500,300),[
+
         centerFx,
-        sensor1=pFx(60,90,0,40,10).iS(1).uD('sensor1')
 
-    ]).aV(100)
+        sensor1 = PolyFixture(60,90,0,40,10).sensor( 1 ).uD( 'sensor1' )
 
-    t2= w.a(dBD(700,300),[
+    ]).angVel(100)
+
+
+    t2= world.addBody(dBD(700,300), [
         centerFx,
-        sensor2=cFx(100).iS(1).uD('sensor2')
-    ]).aV(100)
+        sensor2 = CircleFixture(100).sensor(1).uD('sensor2')
 
-     w.sCL(
+    ]).angVel(100)
 
-        bCL().b(function(c,m){
-            a=c.A()
+     world.setContactListener(
 
-            b=c.B()
+        ContactListener().beginContact(
+
+            function( c, m ){
+
+            var a = c.A()
+
+            var b = c.B()
 
 
-            $l('a '+a.uD()); $l('b '+b.uD())
+            $l( 'a '+ a.uD() ); $l( 'b ' + b.uD() )
 
-            if( (a.uD()=='sensor1'  && b.uD()=='sensor2') ||
-                (a.uD()=='sensor2'  && b.uD()=='sensor1')
+            if(
+                ( a.is('sensor1')  && b.is('sensor2') )
+
+                ||
+
+                ( a.is('sensor2')  && b.is('sensor1') )
 
                 ){$l('!!!!!!!!')}
 
@@ -201,85 +270,104 @@ CONTACTS=function(){makeWorld()
 
 BITS=function(){makeWorld()
 
+    cir = CircleFixture( 80 ).category(0x0002).mask(0x0005),
+    rec = PolyFixture( 60, 90, 0, 40, 10 ).category(0x0003).mask(0x0003)
 
-    var cir=cFx(80)
-            .cB(0x0002).mB(0x0005),
+    world.addBody( dBD(300,300), cir )
+    world.addBody( dBD(400,300), cir )
+    world.addBody( dBD(300,300), rec )
+    world.addBody( dBD(400,300), rec )
 
-        rec=pFx(60,90,0,40,10)
-            .cB(0x0003).mB(0x0003)
-
-    cir=cFx(80)
-        .cB(0x0002).mB(0x0005)
-
-    rec=pFx(60,90,0,40,10)
-        .cB(0x0004).mB(0x0003)
-
-    w.a(dBD(300,300),cir)
-    w.a(dBD(400,300),cir)
-    w.a(dBD(300,300),rec)
-    w.a(dBD(400,300),rec)
 
 }
+
+
+
+
 GROUPINDEX=function(){
 
  makeWorld()
 
+    cir = CircleFixture(80).category(0x0002).mask(0x0005)
 
-        var cir=cFx(80)
-                .cB(0x0002).mB(0x0005),
+    rec = PolyFixture(60,90,0,40,10).category(0x0003).mask(0x0003)
 
-            rec=pFx(60,90,0,40,10)
-                .cB(0x0003).mB(0x0003)
+    world.addBody( dBD(300,300), cir )
 
-        cir=cFx(80).gI(-3)
-            //.cB(0x0002).mB(0x0005)
+    world.addBody( dBD(300,300), rec )
 
-        rec=pFx(60,90,0,40,10).gI(-3)
-            //.cB(0x0004).mB(0x0003)
+    cir = CircleFixture( 80 ).gI( -3 )
 
-        w.a(dBD(300,300),cir)
-        w.a(dBD(400,300),cir)
-        w.a(dBD(300,300),rec)
-        w.a(dBD(400,300),rec)}
+    rec = PolyFixture( 60, 90, 0, 40, 10 ).gI( -3 )
+
+    world.addBody( dBD( 400, 300 ), cir )
+
+    world.addBody( dBD( 400, 300 ), rec ) }
 
 
 
 
-bCM=function(){var m= new BXD.b2ContactManager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//do any of these get used? i think filterData does
+ContactManager = bCM=function(){
+    var m= new BXD.b2ContactManager
     m.c= m.cl= m.Collide
     m.a= m.aP=m.AddPair
     m.f= m.fNC= m.FindNewContacts
     m.d= m.ds= m.Destroy
     return m}
 
-
-bCF=function(){
+ContactFilter =bCF=function(){
     var f=new BXD.b2ContactFilter
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
 
+FilterData = bFD=function(d){
 
-bFD=function(d){var d= new BXD.b2FilterData
+    var d = new BXD.b2FilterData
+
 
     d.gI=function(a){
+
         if(U(a)){return d.groupIndex}
+
         d.groupIndex=a; return d}
 
-    d.cB=function(a){
+
+    d.category=d.cB=function(a){
         if(U(a)){return d.categoryBits}
         d.categoryBits=a; return d}
 
-    d.mB=function(a){
-        if(U(a)){return d.maskBits}
-        d.maskBits=a; return d}
 
-    return d}
+    d.mask=d.mB=function(a){
+
+        if(U(a)){  return d.maskBits}
+
+        d.maskBits=a; return d
+
+    }
 
 
+    return d
 
-//advanced
-sMf=function(m){
+}
+
+SuperManifold = sMf=function(m){
     m.lPN=m.m_localPlaneNormal
     m.lP=m.m_localPoint
     m.pC=m.m_pointCount

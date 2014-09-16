@@ -218,6 +218,10 @@ bindr = function( im, spr, sxy, rt ){
         })
 }
 
+
+
+
+
 DEMO_IMPULSE =function(){
 
     mW({g:0})
@@ -869,6 +873,8 @@ controller=function(){
 
 
 }
+
+
 controllerListener=function(){
 
 
@@ -886,7 +892,9 @@ controllerListener=function(){
 
     })
 
+
     $('#left').on('mouseup mouseout touchleave', function(){ pushLeft = 0 })
+
 
 
     $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })

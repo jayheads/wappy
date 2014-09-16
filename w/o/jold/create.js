@@ -136,9 +136,7 @@ tkr=function(){
         if(a>10){ t[sf](a) }
         else{t[si]( a * 1000 )}}}
 
-
-
-Do=function(x){
+Do = function(x){
     var  tb="getTransformedBounds",
         iv="isVisible",
         gs="getStage",
@@ -277,7 +275,6 @@ Bm=function(a,b){// if(I(a)){return B$(a) }
     return a}
 
 
-
 Ct=function(x){
     var ac = "addChild",  aca ="addChildAt",  nc="getNumChildren",  ca="getChildAt",
         cbn="getChildByName",  ch="children",gi="getChildIndex",  si="setChildIndex",
@@ -340,9 +337,6 @@ Ct=function(x){
     return o}
 
 
-
-
-
 St=function(x,z){
 
     var ud="update",  cl="clear",  ac="autoClear",
@@ -383,8 +377,6 @@ St=function(x,z){
     //o.hE=function(a){if(U(a)){return x[he]}; x[he]=a; return o}
 
     return o}
-
-
 
 Ql=function(a){
 
@@ -428,10 +420,6 @@ Ql=function(a){
     if(a){q.l(a)}
 
     return q}
-
-
-
-
 
 Mf=function(a){
 

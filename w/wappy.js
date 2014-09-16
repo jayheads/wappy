@@ -5,6 +5,7 @@ U = _.isUndefined
 D = function(a,b){return !U(a)}
 A = _.isArray
 O = _.isObject
+
 G = function(a){
     if(!_.isArguments(a)){return}
     var p, n, m,d
@@ -24,25 +25,30 @@ G = function(a){
 
     })
 }
+
 $l = function(a,b){cL=function(a){console.log(a);return a}
     if(!b){return cL(a)} cL('{'+a+':'+b+'}');return b}
 $d = function(a,b){cD=function(a){console.dir(a);return a}
     if(!b){return cD(a)} cL(a);return cD(b)}
+
 $l('------- wappy --------')
 http = require('http')
 path = require('path')
 fs = require('fs')
 
 mongoose  =   require('mongoose')
+mongoose.connect("mongodb://localhost/brain", function(){ $l('mongo connected') })
+
+
+express = require('express')
+
 //////////////////////////////////////
-
-
 
 models = $m = require('./models')
 
-mongoose.connect("mongodb://localhost/brain", function(){ $l('mongo connected') })
+
 require('./mong')
-express = require('express')
+
 mongoStore = new(require('connect-mongo')(express))({db:'brain'})
 
 a = express()
@@ -64,8 +70,11 @@ a.use(express.session({
     secret: 'xyz'
 
 }))
+
 a.use( express.favicon() )
+
 a.use( middleware = $w = w =  require('./MW') )
+
 
 a.get('/render/:page', function(req, res, next){res.render(req.params.page)})
 //
@@ -113,13 +122,21 @@ _.each(fileDirs, function(dir){
 
 })
 
+
 httpServer = http.createServer(a)
+
 httpServer.listen(80, function(){$l('server listening on port 80')} )
 
-io =  require('socket.io').listen(httpServer)
+io=require('socket.io').listen(httpServer)
+
 io.set('log level', 1)
+
 sio = require('session.socket.io')
-require('./sockets')(io,new sio(io,mongoStore,cookieParser))
+
+
+require('./sockets')(io,
+
+    new sio(io,mongoStore,cookieParser))
 
 
 
@@ -131,10 +148,7 @@ require('./sockets')(io,new sio(io,mongoStore,cookieParser))
 
 
 //a.l = a.locals
-
 //a.r = a.router
-
-
 //a.use(  require('connect-flash')())
 
 

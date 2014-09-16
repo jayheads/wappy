@@ -1,58 +1,50 @@
-RevoluteJointDef = rev =function(a,b, c,d, e,f){var g=G(arguments)
+RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
 
-    //pass in body1, body2, world-bV
-    //world-bV defaults to body1-center
+    //pass in body1, body2, world-bV = body1-center
     //can also pass body1, body2, world-x, world-y
     //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
 
 
     var j= SuperJointDef( new BXJ.b2RevoluteJointDef() )
 
+    var joint = j
 
-    j.i = function(){var g=G(arguments)
+    joint.init =joint.i = function(){
+        joint.Initialize.apply(joint,  G(arguments) )
+        return joint}
 
-       j.Initialize.apply(j,g)
+    //convenience functions
+    joint.motor = joint.mt = function(speed, torque, enable){
 
-        return j}
+        joint.speed(speed)
+
+        joint.maxTorque( N(torque)? torque : 100)
+
+        if( enable != '-' ){ joint.enableMotor=true }
+
+        return joint }
+
+    joint.limits = joint.lm= function( lowAng, upAng, enable ){
+
+        joint.lowAng( lowAng ).upAng( upAng )
+
+        if( enable != '-' ){ joint.enableLimit = true}
+
+        return joint }
+
+    if( U(c) ){ c = a.worldCenter() }
+
+    if( O(c) ){  joint.init( a, b, c )}
+
+    else if(N(e)){   joint.A(a).B(b).lAA( bV(c/30,d/30)).lAB( bV(e/30,f/30)) }
+
+    else if(N(c)){    joint.init(a,b, bV(c/30,d/30)) }
+
+    //SuperJointDef( joint )
+
+    return joint}
 
 
-
-    j.mt = function(a,b,c){
-
-        j.mS(a)
-
-        j.mMT(N(b)?b:100)
-
-        if(c!='-'){j.eM(1)}
-
-        return j
-    }
-
-
-
-
-    j.lm=function( a, b, c ){
-
-        j.lA(a).uA(b)
-
-        if(c!='-'){j.eL(1)}
-
-        return j
-
-    }
-
-
-    if(U(c)){c=a.c()}
-
-    if(O(c)){j.i(a,b,c)}
-
-    else if(N(e)){ j.A(a).B(b).lAA( bV(c/30,d/30)).lAB( bV(e/30,f/30)) }
-
-    else if(N(c)){ j.i(a,b, bV(c/30,d/30)) }
-
-    SuperJointDef(j)
-
-    return j}
 
 
 
@@ -60,109 +52,100 @@ RevoluteJointDef = rev =function(a,b, c,d, e,f){var g=G(arguments)
 
 
 revJoint=function(){
+    return world.Revolute(world.ba(), world.bi())}
 
-    //world.createRevoluteJoint
 
-    return world.createJoint(
 
-        RevoluteJointDef( ba(), bi() )
 
-)
 
+revJoint1=function(){return world.Revolute(
+        world.baa(400, 200),
+        world.bi(400, 200, 200) ).motor(1).speed(2000)  //speed
+}
+
+
+revJoint2=function(){return world.Revolute(
+    world.bi( 400, 50, 50 ),
+    world.bi( 400, 50, 50 ) ).motor(10)
 
 }
 
 
-
-revJoint1=function(){return world.createJoint(
-
-    RevoluteJointDef(
-
-    baa(400, 200),
-    bi(400, 200, 200)
-
-).mt(200 ) )
-
-}
+revJoint3=function(){return world.Revolute(
+    world.bi( 400, 30, 30, 50 ),  world.bi( 400, 30, 30, 50 ) ).motor(10)}
 
 
-
-revJoint2=function(){return w.j( rev(bi(400,50,50), bi(400,50,50)).mt(10 ) )}
-revJoint3=function(){return w.j( rev(bi(400,30,30,50), bi(400,30,30,50)).mt(10 ) )}
 
 
 revJoint4=function(){
 
-    return w.j(
+    return world.Revolute(
 
-        rev(
+        world.bi( 400,30,10,80 ),
 
-            bi(400,30,10,80),   bi(400,30,20,160)
+        world.bi( 400,30,20,160 )
 
-        ).mt(10 )
+        ).motor(10)
 
-
-
-
-    )
+    }
 
 
 
 
-}
 
 
 
+Stuff={}
+Stuff.Spinner = spinner=function(x,y,s,t){
 
-spinner=function(x,y,s,t){
-    $l('spinner')
+    x = N(x)? x : 500
 
-    x=N(x)?x:500
-    y=N(y)?y:200
-    s=N(s)?s: 100
-    t=N(t)?t: 100
+    y = N(y)? y : 200
 
-    dial= bi(x,y,200,40)//w.a(dBD(x,y), pFx(200,40))
-    rock= bii(x,y,10,10)//w.a(sBD(x,y), pFx(10,10))
+    s = N(s)? s : 100
 
-    return w.cJ(
+    t = N(t)? t : 100
 
-        rev( dial, rock ).mt(s,t) // rJt({  i:[rock, dial, dial.c()],  eM:1,  mS:-10,  mMT:100  })
+    dial= world.bi(x,y,200,40)//w.a(dBD(x,y), pFx(200,40))
+
+    rock= world.bii(x,y,10,10)//w.a(sBD(x,y), pFx(10,10))
+
+    return world.createJoint(
+
+        RevoluteJointDef( dial, rock ).motor(s, t) // rJt({  i:[rock, dial, dial.c()],  eM:1,  mS:-10,  mMT:100  })
 
     )}
-seesaw=function(){
+Stuff.Seesaw = seesaw=function(){
 
-    anc=bi(400,300,60,60)
-    lev=bi(400,300,300,20)
+    anc = world.bi(400,300,60,60)
 
-    w.j(
+    lev = world.bi(400,300,300,20)
 
-        rev(
+    world.createJoint(
 
-            anc,  lev,  anc.c(),  lev.c()
+        RevoluteJointDef(
 
-        ).cC(0)
+            anc,  lev,  anc.worldCenter(),  lev.worldCenter()
 
-    )
-
-
-}
-refFix=function(x,y){
+        ).collide(0)
+    )}
+//makes random rev pair
+Stuff.RandomRev = refFix=function(x,y){
     x=N(x)?x:100
     y=N(y)?y:x
 
-    b11=w.a(  bx1=dBD(x,y),fix())
+    b11 = world.addBody(  bx1=DynamicBodyDef(x,y), fix() )
 
-    b22=w.a(  bx2= dBD(x ,y ) ,fix())
+    b22 = world.addBody(  bx2= DynamicBodyDef(x ,y ) ,fix() )
 
-    w.j(
+    world.createJoint(
 
-        rev( b11,b22,  b11.c(),b22.c() )//.l(10).f(3).d(.1)//.cC(1)
+        RevoluteJointDef( b11,b22,  b11.worldCenter(), b22.worldCenter() )  //.l(10).f(3).d(.1)//.cC(1)
 
     )
 
 }
-makeCar=function(){
+Stuff.Car = makeCar=function(){
     var car = w.a(dBD(240, 350), pFx(90,30)),
         bWh = w.a(dBD(200, 400), cFx(30)),
         fWh = w.a(dBD(300, 400), cFx(30))
@@ -173,16 +156,16 @@ makeCar=function(){
     return car}
 
 
-RABBIT=function(){
+ROULETTE=function(){
 
     mW()
 
     world.createJoint(
 
 
-        rev(
+         RevoluteJointDef(
 
-        baa(300,300,100),
+            world.baa(300,300,100),
 
 
             //world.addDynamicBody
@@ -197,17 +180,23 @@ RABBIT=function(){
 
 
 }
-REVDEMO=function(){makeWorld()
 
-    w.j(rev( baa(100,100), bi(100,100,100,40)) .mt(5,1))
-    w.j(rev( baa(250,100), bi(250,100,100,40)) .mt(5,2))
-    w.j(rev( baa(400,100), bi(400,100,100,40)) .mt(5,10000))
-    w.j(rev( baa(550,100), bi(550,100,100,40)) .mt(20,5))
-    w.j(rev( baa(700,100), bi(700,100,100,40)) .mt(20,10))
-    w.j(rev( baa(850,100), bi(850,100,100,40)) .mt(20,10000))
+DEMO_REV=function(){
+    makeWorld()
 
-    w.j(rev( baa(100,220), bi(100,220,100,40)).lm(0,0) )
-    w.j(rev( baa(250,220), bi(250,220,100,40)).lm(0,10)  )
+    w.j( rev( baa(100,100), bi(100,100,100,40) ).motor(5, 1) )
+    w.j( rev( baa(250,100), bi(250,100,100,40) ).motor(5, 2) )
+    w.j(
+        rev( baa(400,100), bi(400,100,100,40)) .motor(5, 10000)
+    )
+
+    w.j( rev( baa(550,100), bi(550,100,100,40)) .mt(20,5))
+    w.j( rev( baa(700,100), bi(700,100,100,40)) .mt(20, 10))
+    w.j( rev( baa(850,100), bi(850,100,100,40)) .mt(20, 10000) )
+
+    w.j(rev( baa(100,220), bi(100,220,100,40)).limits(0, 0) )
+    w.j(rev( baa(250,220), bi(250,220,100,40)).limits(0,10)  )
+
     w.j(rev( baa(400,220), bi(400,220,100,40)).lm(0,180)  )
     w.j(rev( baa(550,220), bi(550,220,100,40)).lm(-180,0)  )
     w.j(rev( baa(700,220), bi(700,220,100,40)).lm(-360,180)  )
@@ -220,52 +209,106 @@ REVDEMO=function(){makeWorld()
     w.j(rev( baa(700,340), bi(700,340,100,40)).lm(-360,180).mt(20,10)  )
     w.j(rev( baa(850,340), bi(850,340,100,40)).lm(0,1000).mt(20,10000)  )
 
-    w.j(rev( baa(100,460), bi(100,460,100,40)).lm(0,0).mt(-5,1) )
-    w.j(rev( baa(250,460), bi(250,460,100,40)).lm(0,10).mt(-5,2)  )
-    w.j(rev( baa(400,460), bi(400,460,100,40)).lm(0,180).mt(-5,10000)  )
-    w.j(rev( baa(550,460), bi(550,460,100,40)).lm(-180,0).mt(-20,5)  )
-    w.j(rev( baa(700,460), bi(700,460,100,40)).lm(-360,180).mt(-20,10)  )
-    w.j(rev( baa(850,460), bi(850,460,100,40)).lm(0,1000).mt(-20,10000)  )}
-CAR=function(){mW()
+    w.j(
+        rev( baa(100,460), bi(100,460,100,40)).lm(0,0).mt(-5,1) )
 
-    makeCar()
+    w.j(
+        rev( baa(250,460), bi(250,460,100,40)).lm(0,10).mt(-5,2)  )
 
-    d=spinner(500,400)
-        .sL(20,240).eL(1)
-        .mS(40).mMT(100).eM(1)
+    w.j(
+        rev( baa(400,460), bi(400,460,100,40)).lm(0,180).mt(-5,10000)  )
+
+
+
+    world.createJoint(
+        rev(
+            baa(550,460), bi(550,460,100,40)
+        )
+            .lm(-180,0).mt(-20,5)  )
+
+    world.createJoint(
+
+        rev( baa(700,460), bi(700,460,100,40)).lm(-360,180).mt(-20,10)  )
+
+
+    world.createJoint(
+
+        rev(   baa( 850, 460 ), bi( 850, 460, 100, 40 )  ).lm( 0, 1000 ).mt( -20, 10000 )
+
+    )
+
 
 
 }
 
 
-SuperGearJoint=function(gearJoint){
+CHANGELIMITS=function(){makeWorld()
 
 
-return gearJoint}
+    j=world.createJoint(
+
+        RevoluteJointDef( baa(400,220), bi(500,220,200,40) ).limits(0, 30)       )
+
+ setTimeout(function(){ j.limits(0,200) }, 2000)
+
+
+}
+
+
+CHANGEMOTOR=function(){makeWorld()
+
+
+    j=world.createJoint(
+
+        RevoluteJointDef(  baa(400,280), bi(500,280,200,40)   ).motor( 4, 1000000 )
+
+    )
+
+
+
+    setTimeout(function(){  j.speed(-4)  }, 2000)
+}
 
 
 
 
 
+CAR=function(){
 
-gear=function(bA, bB, ratio){
+    mW()
 
-    ratio = N(ratio)? ratio : 1
+    //world.make.Car
+    makeCar()
 
-   var gearJoint = new BXJ.b2GearJointDef()
+    //world.make.Spinner
+    d = Stuff.Spinner(500, 400)
+        .enableLimits(1).setLimits(20,240)
+        .enableMotor(1).maxMotorSpeed(100).motorSpeed(40)
+
+}
+
+
+
+
+
+Gear = gear =function(bA, bB, ratio){
+
+
+    var gearJoint = new BXJ.b2GearJointDef()
 
     gearJoint.joint1 = bA
     gearJoint.joint2 = bB
-    gearJoint.ratio = ratio
-
-    gearJoint.bodyA= bA.GetBodyA()
-    gearJoint.bodyB= bB.GetBodyA()
+    gearJoint.bodyA = bA.GetBodyA()
+    gearJoint.bodyB = bB.GetBodyA()
+    gearJoint.ratio = N(ratio)? ratio : 1
 
     return gearJoint
 
 }
 
 
+
+//SuperGearJoint=function( gearJoint ){ return gearJoint }
 
 
 
@@ -297,7 +340,7 @@ DEMO_GEAR=function(){makeWorld()
             ),
 
             1
-    )
+        )
 
 
     )
@@ -309,56 +352,4 @@ DEMO_GEAR=function(){makeWorld()
 
 
 
-
-
-rJtX=function(o){
-
-    var j=SuperJointDef(new BXJ.b2RevoluteJointDef())
-
-    j.i=function(a,b,c,d,e,f){
-        var g=G(arguments)
-
-        if(U(c)){c=a.c()}
-        j.Initialize(a,b,c)
-
-        return j}
-
-    if(O(o)){
-
-        if(o.i){  _a(j.i, o.i, j  )}
-
-
-        if(N(o.l)){j.l(o.l)} else {j.l(1)}
-        if(N(o.f)){j.f(o.f)} else {j.f(3)}
-        if(N(o.d)){j.d(o.d)} else {j.d(.1)}
-        if((o.c)){j.cC(1)}  else {j.cC(0)}
-        if(o.lAA){j.lAA(o.lAA)}
-        if(o.lAB){j.lAB(o.lAB)}
-        if(o.rA){j.rA(o.rA)}
-        if(o.eL){j.eL(o.eL)}
-        if(o.lA){j.lA(o.lA)}
-
-        if(o.uA){ j.uA(o.uA) }
-
-
-        if(o.eM){j.eM(o.eM?true:false)}
-
-        if(o.mS){j.mS(o.mS)}
-        if(o.mMT){j.mMT(o.mMT)}
-
-        //localAnchorA - the point in body A around which it will rotate
-        //localAnchorB - the point in body B around which it will rotate
-        //referenceAngle - an angle between bodies considered to be zero for the joint angle
-        //enableLimit - whether the joint limits will be active
-        //lowerAngle - angle for the lower limit
-        //upperAngle - angle for the upper limit
-        //enableMotor - whether the joint motor will be active
-        //motorSpeed - the target speed of the joint motor
-        //maxMotorTorque - the maximum allowable torque the motor can use
-
-        return w.cJ(j)}
-
-    return sJt(j)
-
-}
 

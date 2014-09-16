@@ -2,7 +2,7 @@ collide=function(){
 
     //  I have 3 categories of things: players, obstacles and triggers.
 
-    //      players and obstacles collide with each other  but not with themselves.
+    //  players and obstacles collide with each other  but not with themselves.
 
     circleDef.filter.categoryBits = 0x2
     circleDef.filter.maskBits = 0x4
