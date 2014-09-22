@@ -8,6 +8,25 @@ $canvas=function(a,b){
 }
 
 
+NEWCANVAS=function(){z();
+
+    c = $.canvas().A()
+
+    //draw does not return c ??!
+    c.draw( 'me' )
+
+    c.draw( 'guy' )
+
+    c.draw( 'guy' , 100, 100 )
+
+
+    //c.fit ?
+
+}
+
+
+
+
 
 
 
@@ -16,19 +35,9 @@ xx = function xx(c, w, h, t, l){
 
     if (C(c) ){  c=C(c)  }
 
-    else if(!S(c)){
+    else if(!S(c)){   return xx($r(),c,w,h,t) }
 
-        return xx($r(),c,w,h,t)}
-
-    else {
-
-        var g=G(arguments),
-
-            can=$canvas(),
-
-            left,
-
-            top
+    else {  var g=G(arguments),  can = $canvas(),   left,    top
 
 
         c=g[0]
@@ -92,9 +101,12 @@ xx = function xx(c, w, h, t, l){
 
         return x.res}
 
-    x.canvas=  x.can  =x.c=c
+    x.canvas=  x.can  =x.c  = c
+
     x.context=  x.ctx  =x.x =  X(x.c)
+
     x.pop  =x.p =  xP(x.x)
+
     x.met  =x.m=   xM(x.x)
 
 
@@ -360,15 +372,18 @@ xx = function xx(c, w, h, t, l){
         if(!z){x.fit(u)}
         return x}
 
-    x.wh=function(w,h){if(!w){
-        return $V(x.w(),x.h())}
+    x.wh=function(w,h){
+        if(!w){
+            return $V(x.w(),x.h())}
         var u=x.u()
         x.w(w)
         x.h(h||w)
         x.fit(u)
         return x}
 
-    x.Z=function(w,h){w=w||5;return x.wh(w*100,(h||w)*100)}
+
+    x.Z=function(w,h){
+        w=w||5;return x.wh(w*100,(h||w)*100)}
 
     //COPY/PASTE
     x.copy=x.C=function(){x.img.src=x.u();return x}
@@ -387,6 +402,7 @@ xx = function xx(c, w, h, t, l){
         x.met('fr',a,b,c,d)
         return x}
 
+
     //clear screen [+ fill with color || run fx]
     x.X=function(a){
         if(S(a)){x.fs(a);return x.fr()}
@@ -400,8 +416,6 @@ xx = function xx(c, w, h, t, l){
         x({f:_a(tCl,g)},'fr',0,0,x.w(),x.h())
         x('R')
         return x}
-
-
 
     // FONT/TEXT
     //set font
@@ -418,8 +432,9 @@ xx = function xx(c, w, h, t, l){
         if(g.n){x.x.strokeText(t,X,Y)}
         else if(g.p){x.tx(t,X,Y,'-');x.tx(t,X,Y)}
         else x.x.fillText(t,X,Y)
-
         return x}
+
+
 
     x.ftc=function(t,p2){
 
@@ -1650,8 +1665,6 @@ ci=function(a){return qq($canvas()).id(a)}
 
 
 
-
-
 $imageSizeFuncCan = xc=function(image, size, func){
 
     var x = xx( $canvas() ).bc('X')
@@ -1668,8 +1681,6 @@ $imageSizeFuncCan = xc=function(image, size, func){
 
 
 
-
-
 c1=function(m){return cx().bc('-').Z(1).mug(m)}
 
 //makes image but as a CANVAS :)
@@ -1679,7 +1690,6 @@ xxx=function(a){var x=xx()
     x.bc('-')
     im(a,function(i){x.w(i.w());x.h(i.h());x.d(i)})
     return x}
-
 
 
 
@@ -1806,8 +1816,6 @@ fade=function(im){
     var imD=_d(im), l=_z(imD)
     for(var i=7;i<l;i+=4){imD[i]=80}
     return _d(im, imD  ) }
-
-
 
 pixelz=function(){
     var d=x('G', 0,0,300,300)

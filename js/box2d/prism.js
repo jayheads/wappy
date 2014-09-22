@@ -43,6 +43,8 @@ SuperPrismatic=function(p){
         this.enableLimit(true)
         return this }
 
+    //p.maxForce=function(){}
+
     return p}
 
 
@@ -68,16 +70,18 @@ PRISM=function(){makeWorld()
 
         cart.worldCenter(),  5)
 
-
         .lT(-12)
         .uT(12.5)
         .eL(1)
+
         .mMF(10)
         .eM(1)
         .mS(-100000)
 
     j = world.createJoint( pulleyJoint)
 }
+
+
 
 
 PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ makeWorld()
@@ -111,9 +115,6 @@ PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ makeWorld()
 
 
 
-
-
-
 //makes random shaped prismatic joint
 RandomPrismPair = sPrJ=function(x,y){
 
@@ -134,76 +135,49 @@ RandomPrismPair = sPrJ=function(x,y){
 }
 
 
-
-
-
 BUMPER=function(){mW()
 
-    w.j(
-        //world.PrismaticJoint
-        prJt(
 
-            //world.DynamicCircle
-            ride = w.a(
-                dBD(200,500), cFx(40)).uD('ride'),
+    circle = w.ba( 600,500,40).uD('ride')
 
-            //world.StaticRect
-            cart = w.a(
-                sBD(200,500), pFx(40).uD('cart'))
-
-        ).lm(-1,2).mt(-100,1000))
+    bindr('me', circle)
 
 
 
-    w.j(
-        prJt(
-              w.a(dBD(400,500), cFx(40)).uD('ride'),
-              w.a(sBD(400,500), pFx(40).uD('cart'))
-        ).lm(-1,2).mt(-100,1000))
+    world.Prism(
+
+        w.ba( 200,500, 40).uD('ride'),
+
+        w.bii( 200,500,40,40).uDF('cart')
+
+        ).limits(-30, 60).speed(-100).motor(1).maxForce(1000)
 
 
+    world.Prism(     w.ba( 400,500,40 ).uD('ride'),  w.bii(400,500,40,40).uDF('cart')
 
-    circle = w.a(dBD(600,500), cFx(40)).uD('ride')
-
-    bindr('me',circle)
-
-    w.j(
-
-        prJt(
-
-            circle
-
-            ,
-
-            w.a(sBD(600,500), pFx(40).uD('cart'))
+    ).limits(-30, 60).speed(-100).maxForce(1000).motor(1)
 
 
-        ).lm( -1, 2 ).mt( -100, 1000 )
+    world.Prism( circle,  w.bii(    600,500,40, 40).uDF('cart')
 
-    )
+    ).limits(-30, 60).speed(-100).motor(1).maxForce(1000)
 
+    world.onBeginContact(   function(contact){
 
+            if( contact.involves('cart') ){
 
-    w.oB(function(c){
-
-            if(c.uD('cart')){
-
-                w.e(
-                    
-                    function(b){
-
-                        if(b.uD()=='ride'){
-
-                            b.aI(0,-1000)
-                        }}
-
+                world.eachBody(
+                    function(b){ if( b.is('ride') ){  b.aI(0,-1000)  }  }
                 )
 
-               // ride.aI(0,-1000)
+            }
 
-            }})
+        })
+
+
+    w.ba( 200, 200, 100 )
 
 
 
-    ba( 200, 200, 100 )}
+}
 

@@ -705,6 +705,65 @@ $.col = function(){  var args = G(arguments),
 
 
 
+$.canvas=function(col, width, height){
+
+    var el
+
+    if( U ( col ) ){  return $( '<canvas>' ).C( 'b' )   }
+
+    if( N(col) ){ return $.canvas( 'x', col, width )}
+
+    if( S(col) ) {
+
+        el = $( '<canvas>' )
+
+        el.css( 'backgroundColor', oO( 'c' , col ) )
+
+        if( N ( width ) ){ el.attr('width', width ) }
+
+        if( N ( height ) ){ el.attr('height', height ) }}
+
+    el.canvas = el[0]
+
+    el.context = el.canvas.getContext('2d')
+
+    el.stage = new createjs.Stage( el.canvas )
+
+    el.drawImage = el.dI=function(i){
+
+        var args=G(arguments);
+
+        args[1] = args[1]||0
+        args[2] = args[2]||0
+        el.context.drawImage.apply(el.context, args)
+
+    }
+
+    el.draw=function(img){
+
+        var args=G(arguments),  img=args[0]
+
+        im(img, function(i){
+
+            args[0] = i
+
+            el.drawImage.apply(el, args)
+
+        })  }
+
+
+
+    return el}
+
+
+
+
+
+
+
+
+
+
 VOLUME=function(){
 
     outerDiv = $.div('y', 400, 200 ).A().drag()
@@ -895,3 +954,5 @@ VOLUME=function(){
             }
         }
     }}(window.jQuery || window.Zepto || window.$))
+
+

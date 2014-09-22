@@ -1,20 +1,38 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 _can=function(){
-    return qq($("<canvas>"))
+    return qq( $("<canvas>") )
 }
 
 
+sCan=function( can ){
 
-sCan=function(can){
+    can = can || $("<canvas>").C('b')
 
-    can=can || _can().c('b')
+    //can= qq(can)
 
-    can=qq(can)
+    can.cx = X(can)
 
-    can.cx=X(can)
-
-    can.pC=xP(can.cx)
-    can.mC=xM(can.cx)
+    can.pC = xP(can.cx)
+    can.mC = xM(can.cx)
 
 
     //can.l=function(n){if(!n){return osl(can.q)};return _i(n-can.l())}
@@ -22,20 +40,25 @@ sCan=function(can){
     //can.rm=function(){qq(x.c).X()}
     //can.backgroundColor= can.bc=function(c){var g=G(arguments),c=g[0];if(g.n){c='X'};can.q.c(c);return can}//b
 
-    can.sv  =can.snap= can.saveImage= function(){sv(x)}//b
+    can.sv  =can.snap= can.saveImage= function(){  sv(x)  }//b
 
     can.S   =can.saveState= function(){can.cx.save();return can}
 
     can.R   =can.restoreState= function(){
-        can.cx.restore();
+        can.cx.restore()
         return can}
+
 
 
     //DRAWING
     can.dI=function(i){
+
         var g=G(arguments);
+
         g[1]=g[1]||0;g[2]=g[2]||0;
-        _a(can.mC,_c('d',g))}
+
+        _a(can.mC,_c('d',g))
+    }
 
 
    can.d=function(i){
@@ -517,12 +540,9 @@ can2=function(){
     can.scale=x.sc=function(X,Y){var g=G(arguments),
         X=g[0]||1,Y=g[1]||X
         x.x.scale(X,Y)}
-
     can.translate=x.tr=function(X,Y){var g=G(arguments),
         X=g[0]||1,Y=g[1]||X
         x.x.translate(X,Y)}
-
-
     can.rotate=x.rt=function(r){var g=G(arguments),
         r=g[0]||1
         //r=pi(-6)*r
@@ -535,6 +555,9 @@ can2=function(){
     can.setTransform=x.stf=function rc(a,c,e,b,d,f){var g=G(arguments)
         if(g.p){return rc(2,0,0,2,0,0)}
         return x('st',a,c,e,b,d,f)}
+
+
+
 
 
 

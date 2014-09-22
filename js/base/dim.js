@@ -1,4 +1,48 @@
-//dims
+$.fn.transform=function(transform){return this.css({transform: transform})}
+
+
+CSSROTATE=function(){z()
+
+    //works
+
+    $.h1('css transform: rotate').A()
+
+    d = $.div('x', null, 200).A().transform( 'translateY(300px) rotateZ(120deg)' )}
+
+
+
+CSSSCALE=function(){z()
+
+
+    $.h1('css transform: scale').A()
+
+    i= $.img('me').A()
+
+   // d = $.div('r', null, 200,200).A()
+
+
+    $.img('me').A().transform( 'scaleX(2)' )
+    $.img('me').A().transform( 'scaleY(2)' )
+
+    $.img('me').A().transform( 'scaleZ(2)' ) //does nothing?!
+
+
+    $.img('me').A().transform( 'rotate3d(100,100,100,100)' )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 offset=os=function(element){
 

@@ -1,6 +1,4 @@
-sJE=sEventObj=function(e){
-
-    return {
+sJE=sEventObj=function(e){ return {
 
 
         P:function(){e.preventDefault()},
@@ -42,7 +40,7 @@ sJE=sEventObj=function(e){
 
         u: function(s){return s.uP(e)}
 
-    }}
+    } }
 
 
 
@@ -58,7 +56,6 @@ SuperDisplayObject=Do=function(ob, func){
 
     //pass in a stage, and the obj will be appended to it
     o.ap=function(stage){  stage.a(o); return o}
-
 
     //custom
     //this will run one (or more) functions ON the display object
@@ -77,7 +74,6 @@ SuperDisplayObject=Do=function(ob, func){
 
 
     o.emit= o.dispatchEvent= o.dE=function(a,b,c){ o.object.dispatchEvent(a,b,c);  return a  }
-
 
     o.o= o.on=function(a,b,c,d,e){
 
@@ -124,12 +120,9 @@ SuperDisplayObject=Do=function(ob, func){
 
     }
 
-
     o.name = o.n= o.nm=function(name){o.object.name=name;return o}
 
-
     o.set = o.s=function(a){o.ob.set(a);return o}
-
 
     o.tick= o.ticker =o.t=function(a,b,c,d){
 
@@ -300,18 +293,27 @@ SuperDisplayObject=Do=function(ob, func){
         return o
 
     }
-    o.w=function(a){if(U(a)){return o.bn().width*o.sx()}
+
+
+    o.w=function(a){
+        if(U(a)){return o.bn().width*o.sx()}
         o.sx(o.sx()*a/o.w())}
+
     o.h=function(a){if(U(a)){return o.bn().height * o.sy()}
         o.sy(o.sy()*a/o.h())}
+
+
+
     o.wh=function(a,b){
         if(U(a)){return {w:o.w(),h:o.h()}}
         o.w(a||0)
         o.h(N(b)?b:a)
         return o}
+
     o.cx=function f(a){
         if(U(a)){return o.x()+o.w()/2 }
         return o.x(a-o.w()/2)}
+
     o.cy=function f(a){
         if(U(a)){return o.y()+o.h()/2}
         return o.y(a-o.h()/2)}
@@ -358,7 +360,6 @@ SuperDisplayObject=Do=function(ob, func){
     o.lineTo= o.lT =o.lt=function(a,b){ o.g.lt(a,b);return o}
 
     o.moveTo = o.mT= o.mt=function(a,b){ o.g.mt(a,b);return o}
-
 
     o.beginStroke =o.gs=function(a){ o.g.s(a);return o}
 
@@ -460,16 +461,21 @@ SuperDisplayObject=Do=function(ob, func){
     o.halt=function(){
         o.vx=0
         o.vy=0}
+
+
     o.mv=function(){var g=G(arguments)
         if(g.p){ o.tk(function(){ o.mv() })}
         return o.xy( o.vx, o.vy, '+' )}
+
     //?
     o.ctr=function(n){
+
         n=N(n)?n:200
         o.st().o('sd',function(e){
             o.dxy((e.X-o.x())/n,(e.Y-o.y())/n,'+')})
         return o.mv('+')
     }
+
 
     //clone
     o.cl=function(){ return o.ob.clone() }
@@ -483,7 +489,8 @@ SuperDisplayObject=Do=function(ob, func){
         return o}
 
     //id
-    o.id=function(i){if(U(i)){return o.ob.id  }
+    o.id=function(i){
+        if(U(i)){return o.ob.id  }
         o.ob.id=i;return o}
 
     //shadow

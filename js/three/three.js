@@ -1,10 +1,17 @@
 $3=THREE
 
-makeScene=function(){ z()
-    ren=renderer=new $3.WebGLRenderer()
+makeScene=function(){
+    z()
+    ren=renderer=new THREE.WebGLRenderer()
     ren.setSize(W(),H())
+
     document.body.appendChild(ren.domElement)
-    return new THREE.Scene()}
+
+    return new THREE.Scene()
+}
+
+
+
 tV=function(a,b,c){return new THREE.Vector3(a,b,c)}
 tC=function(a){return new THREE.Color(a)}
 
@@ -40,7 +47,7 @@ THRE=function(){scene=makeScene()
     cam.position.z=10
 
 
-    scene.add(
+   s= scene.add(
         cube=Mesh(
             CubeGeo(1,2,3),
             MeshBM({color:'red'})
@@ -234,13 +241,18 @@ THREEE=function(){scene=makeScene()
 Texture=function(a){return new THREE.ImageUtils.loadTexture(src(a))}
 
 
-THRE5=function(){scene=makeScene()
+THRE5=function(){
 
+    scene=makeScene()
 
-    cam=pCam(45,W()/H(),1,100)
-    cam.position.set(0,0,10)
-    cam.lookAt(scene.position)
-    scene.add(cam)
+    cam = pCam( 45, W()/H(), 1, 100 )
+
+    cam.position.set( 0, 0, 10 )
+
+    cam.lookAt( scene.position )
+
+    scene.add( cam )
+
 
 
     cubeMesh=Mesh(
@@ -255,12 +267,14 @@ THRE5=function(){scene=makeScene()
     scene.add(cubeMesh)
 
     xRot=0;yRot=0;zRot=0
+
     render=function(){RAF(render)
         xRot+=.03;yRot+=.02;zRot+=.04
         cubeMesh.rotation.set(xRot,yRot,zRot)
         ren.render(scene,cam)}
 
-    render()}
+    render()
+}
 
 
 

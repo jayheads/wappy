@@ -149,7 +149,7 @@ _y=function(a){return qq('sl')}
 
 
  //header
- hd=function(n,v){return ip('h',v).nm(n)}
+ hdx=function(n,v){return ip('h',v).nm(n)}
 
  //footer
  ft=function(){
@@ -230,6 +230,7 @@ ifra=function(){
     d(ifr).P(30)
 
 }
+
 
 
  th=function(a){

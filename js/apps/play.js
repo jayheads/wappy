@@ -486,9 +486,11 @@ HIT=function(){z()
 
     //Boolean: A Boolean indicting whether a visible portion of the DisplayObject intersect the specified local Point.
 
-    stage=St(1000).a()
+    stage = St(1000).a()
 
-    stage.mg(function(mug){
+    stage.mg(
+
+        function(mug){
 
         SL(mug)
 
@@ -502,9 +504,14 @@ HIT=function(){z()
 
 
             //this works, but must click on SOMETHING on the stage
-            stage.o('$$', function(g, e){
+            stage.o('$$',
+
+                function(g, e){
+
                 fireBall.xy(e.X, e.Y)
+
             })
+
 
 
             stage.o('D', function(g,e){
@@ -513,21 +520,33 @@ HIT=function(){z()
 
                 hit = mug.ht(localCoords.x, localCoords.y)
 
+
+
                 if( $l(hit) ){   stage.c('r'); $l(e.X+ ' '+ e.Y)   }
 
                 else {stage.c('y')}
+
+
             })
+
+
+
+
 
             stage.o('M', function(g,e) {
 
 
-                localCoords= mug.gTL(fireBall.x(), fireBall.y())
+                localCoords = mug.gTL(fireBall.x(), fireBall.y())
+
 
                 hit = mug.hT(localCoords.x, localCoords.y)
 
+
                 if( $l(hit)  ){ stage.c('r'); $l(e.X+ ' '+ e.Y)}
 
-                else {stage.c('y')}
+
+                else {
+                    stage.c('y')}
 
             })
 
@@ -536,10 +555,13 @@ HIT=function(){z()
 
     })
 
+
+
     stage.b('me', function(b){
             b.sxy(.4).xy(300)
 
             b=b.ob
+
 
             C$.Tween.get(b, {loop:true})
                 .wait(100)
@@ -551,6 +573,10 @@ HIT=function(){z()
 
         })
 }
+
+
+
+
 
 HITCIRCLES=function(){
 

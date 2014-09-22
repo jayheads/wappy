@@ -5,9 +5,14 @@ EaselSpriteSheet = jss=function(a){ a=a||$w['ss']; return EaselSprite(SS$(a)) }
 
 
 Sp=function(ss,f,st){
+
     return Ql({m:makeMan(ss),c:function(i){var s=jss(s)
-    if(st){st.a(s)}
-    if(f){
+
+        if(st){st.a(s)}
+
+        if(f
+
+            ){
 
         f( SuperSprite(s), s )
 
@@ -15,14 +20,14 @@ Sp=function(ss,f,st){
 
 
 
-SuperSprite = spr=function(x){
+
+SuperSprite =  function(x){
 
     var o = Do( x )
 
-    o.ob=x
+    o.ob = x
 
-    o.sS= o.ss=o.ob.spriteSheet
-
+    o.sS = o.ss = o.ob.spriteSheet
 
     o.numFrames=o.nF=function(){return o.sS.getNumFrames()}
 
@@ -154,11 +159,17 @@ SuperSprite = spr=function(x){
 
 
     o.cAF= o.caf=function(a){
-        if(U(a)){
-            return o.ob.currentAnimationFrame}
+        if( U(a) ){
+            return o.ob.currentAnimationFrame
+        }
     }
 
+
+
     return o}
+
+
+
 
 
 

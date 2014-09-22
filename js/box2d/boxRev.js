@@ -45,12 +45,6 @@ RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
     return joint}
 
 
-
-
-
-
-
-
 revJoint=function(){
     return world.Revolute(world.ba(), world.bi())}
 

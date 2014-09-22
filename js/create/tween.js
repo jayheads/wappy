@@ -33,91 +33,245 @@ ww=function(o){var w={}
 
 
 
+Ea = function(e){ return createjs.Ease[ oO( 'E', e ) ] }
 
-EaselTween=tw=function(a,b){
+tweenGet = twg=function(a){
+    //this returns tween-get on a display obj
+    //you can optionally pass an array (ob, op1, op2..)
+    return A(a) ? W$.get( bj(a[0] ),
 
-    if(U(b)){return twg(a)}
+        tweenPops.apply( this, _.rest(a) )
 
-    //first arg passed to twg, and then rest of args are 'to' pams
+    )
 
+        :createjs.Tween.get( bj(a) )}
+tweenPops = twp = function(){
 
-    var  g=G(arguments),
-        Ea=function(e){return C$.Ease[oO('E',e)]},
-        twp=function(){
-        var g=G(arguments),o={}
-        _e(g,function(p){
-            if(p=='l'){o.loop=true}
-            if(p=='t'){o.useTicks=true}
-            if(p=='i'){o.ignoreGlobalPause=true}
-            if(p=='o'){o.override=true}
-            if(p=='p'){o.paused=true}
-            if(N(p)){o.position=p}
-            if(F(p)){o.onChange=p}})
-        return o},
-        twg=function(a){
-        //this returns tween-get on a display obj
-        //you can optionally pass an array (ob, op1, op2..)
-        return A(a)? W$.get(bj(a[0]),_a(twp,_r(a)))
-            :W$.get(bj(a))},
-        Tw=function(){ var g=G(arguments),
+    var g=G(arguments),
 
-            w=function(){}
+        o={}
 
-            w.tw=g[0]
+    _.each(g, function(p){
 
+        if( p=='l' ){ o.loop = true }
 
-            w.tg=w.tw.target//cant change
+        if( p=='t' ){ o.useTicks = true }
 
+        if( p=='i' ){ o.ignoreGlobalPause = true }
 
-        w.p=function(){w.tw.setPaused(false);return w}
-        w.s=function(){w.tw.setPaused(true);return w}
-        w.ps=function(a,b){var acm=function(m){//get or set position of tween (in time in ms)// see w.dr
-            var M={l:W$.LOOP,n:W$.NONE,r:W$.REVERSE};if(D(m)){return M[m]}}
-            if(U(a)){return w.tw.position}
-            w.tw.setPosition(a,acm(b))
-            //default is loop, can use r|n
-            return w}
-        w.dr=function(a){
-            //get time of tween in ms
-            //duration:read only
-            if(U(a)){return w.tw.duration}}
-        w.c=function(a){w.ob.call(a);return w}
-        w.g=function(a){w.ob.get(a);return w}
-        w.w=function(a){w.ob.wait(a);return w}
-        w.s=function(a){w.ob.set(a);return w}
-        w.tk=function(a){w.tw.tick(a);return w}
-        w.iGP=function(a){if(U(a)){return w.tw.ignoreGlobalPause};w.tw.ignoreGlobalPause=a;return w}
-        w.lp=function(a){if(U(a)){return w.tw.loop};w.tw.loop=a;return w}
-        w.psv=function(){ return w.tw.passive}//Read-only. Indicates the tween's current position is within a passive wait.
+        if( p=='o' ){ o.override = true }
 
+        if( p=='p' ){ o.paused = true }
 
-            w.plgD=function(a,b){
-            var g=G(arguments),a=g[0],b=g[1];if(U(a)){return g.p? w.tw.pluginData.data: w.tw.pluginData};if(U(b)){w.tw.pluginData=a;return w};w.tw.tw.pluginData[a]=b;return w }
+        if( N(p) ){ o.position = p }
 
-
-            return w},
-        a=twg(g[0])
-
-    _e(g.r,function(b){
-
-        if(A(b)){
-            if(b[2]){a=a.to(ww(b[0]),b[1],Ea(b[2]))}
-            else if(b[1]){
-                if(O(b[1])){a=a.set(ww(b[0]),bj(b[1]))}
-                else{a=a.to(ww(b[0]),b[1])}}
-            else{a=a.tick(a[0])}}
-        else if(F(b)){a=a.call(b,[])}
-        else if(N(b)){
-            if(b<0){a=a.wait(b*-1,true)}
-            else{a= a.wait(b)}}
-        else if(_z(b)==1){
-            if(b.p){a=a.play(b.p)}
-            else if(b.s){a=a.stop(b.s)}}
-        else{a=a.to(ww(b))}
+        if( F(p) ){ o.onChange = p }
 
     })
 
-    return Tw(a)}
+    return o}
+
+
+
+
+EaselTween=tw=function(a, b){  var displayObject = a
+
+    if( U(b) ){ return tweenGet( displayObject ) }
+
+    //first arg passed to twg, and then rest of args are 'to' pams
+
+    var  g = G(arguments)
+
+    displayObject = tweenGet ( g[0] )
+
+    _.each(g.r, function(b){
+
+        //can pass obj, time ,ease
+        if( A(b) ){
+
+            if( b[2] ){
+
+                displayObject = displayObject.to( ww(b[0]), b[1], Ea(b[2])  )
+
+            }
+
+            //can pass obj, time
+            else if(b[1]){
+
+                //can set pops to another obj??
+                if(O(b[1])){
+                    displayObject = displayObject.set( ww(b[0]), bj(b[1]) )}
+
+                else{ displayObject=displayObject.to( ww(b[0]), b[1]) }
+            }
+
+
+            else{ displayObject = displayObject.tick(a[0]) }
+
+        }
+
+//can pass a function and it will run when it's its turn
+        else if( F(b)  ){ displayObject = displayObject.call(b, []) }
+
+
+        //make it wait, optionally pass in true! ?
+
+        else if(   N( b )){
+
+            if(b<0){
+                // TELLING IT NOT TO UPDATE OTHER TWEEN PROPERTIES DURING THE WAIT (if mult tweens on same target)
+                displayObject=displayObject.wait(b * -1, true) }
+
+            else{displayObject= displayObject.wait(b) }
+        }
+
+
+
+        //for playing/stopping?
+        else if( O(b) && b.length == 1 ){
+
+            if( b.p ){ displayObject = displayObject.play( b.p )}
+
+            else if( b.s ){   displayObject = displayObject.stop( b.s )}}
+
+        else { displayObject = displayObject.to( ww(b) )  }
+
+    })
+
+    return Tw( displayObject )
+
+}
+
+
+
+Tw =function(tween){
+
+    var g=G(arguments),  w=tween
+
+    //w.target
+
+
+    //use when returned
+   // w.play  = w.P=w.p=function(){ w.setPaused(false);return w}
+   // w.stop  = w.S=w.s=function(){ w.setPaused(true);return w}
+
+
+    //use in queue
+    w.then=function(tweens, a, b){ return this.to( ww(tweens),a,b ) }
+
+    w.pos = w.ps=function(a,b){
+
+
+            //get or set position of tween (in time in ms)// see w.dr
+
+
+        if( U(a) ){return w.position}
+
+        if(b=='n'){b=createjs.Tween.NONE}//0
+
+        if(b=='l'){b=createjs.Tween.LOOP}//1 default
+
+        if(b=='r'){b=createjs.Tween.REVERSE}//2
+
+        w.setPosition( a, acm(b) )
+
+
+
+        //default is loop, can use r|n
+        return w}
+
+
+    //total time duration
+    w.dur =w.dr= function(a){
+        //get time of tween in ms
+        //duration:read only
+        if(U(a)){return w.duration}}
+
+
+    w.tk=function(a){w.tick(a); return w }
+
+
+    w.ignore = w.iGP=function(a){
+        if(U(a)){return w.ignoreGlobalPause}
+        w.ignoreGlobalPause=a;return w}
+
+    w.setLoop = w.lp=function(a){
+        if(U(a)){return w.loop}
+        w.loop=a;  return w}
+
+    //w.psv=function(){ return w.passive}
+    //Read-only. Indicates the tween's current position is within a passive wait.
+
+    w.Plugin =function(a,b){
+
+        var g=G(arguments),a=g[0],b=g[1]
+
+        if(U(a)){ return g.p? w.pluginData.data: w.pluginData}
+
+        if(U(b)){ w.pluginData=a;return w}
+        w.pluginData[a]=b
+        return w }
+
+    return w}
+
+
+
+
+
+TWEENPOS1=function(){z()
+
+   s = SuperStage(500).A()
+
+    s.bm('me',function(bm){b=bm
+
+        s.bm('guy',function(guy){g=guy
+
+            guy.xy(200)
+
+            w0 = EaselTween(guy,   [{r:3000}, 100000]  )
+
+            w = EaselTween(bm,  [{sx:3}, 1000]) .wait(1000)
+                .pause(w0)
+                .then({sy:3}, 4000)
+                .play(w0)
+                .then({sy:.3}, 4000)
+
+
+    })
+    })
+}
+
+TWEENPOS=function(){z()
+
+    s = SuperStage(500).A()
+
+
+
+    s.bm('me',  function(bm){b=bm;
+
+
+        s.bm('guy',     function(guy){
+
+            g = guy
+
+            guy.xy(200)
+
+            w0 = EaselTween(guy, [ {r:90}, 100 ] ).pause().then({r: 3000}, 100000)
+
+            w = EaselTween(bm, [{sx:3}, 10000] ).play( w0 )   })
+
+    })
+
+
+
+
+
+}
+
+
+
+
+
 
 
 
@@ -152,19 +306,61 @@ tweens.lpunch=function(lf){
 
 }
 
-tweens.shakeY=function(a){return tw([a,'l'],[{y:-10},500],[{y:10},500],[{y:-10},500])}
-tweens.shakeX=function(a){return tw([a,'l'],[{x:-20},50],[{x:20},50],[{x:-20},50])}
+tweens.shakeY=function(a){
 
-tweens.rott=function(a){
-
-    return tw(
+    return EaselTween(
         a,
+
         [
             {r:180,y:200,sxy:.5},
             500
         ]
+    )(
+
+        [a,'l'],
+        [ {y:-10}, 500 ],
+        [ {y:10}, 500 ],
+        [ {y:-10}, 500 ]
+    )
+
+}
+
+
+
+
+tweens.shakeX=function(a){return EaselTween(
+    a,
+
+    [
+        {r:180, y:200, sxy:.5},  500
+    ]
+
+)(
+    [a,'l'],
+    [{x:-20},50],
+    [{x:20},50],
+    [{x:-20},50]
+
+)}
+
+
+
+
+
+
+tweens.rott=function(a){
+
+    return EaselTween(
+        a,
+
+         [    {r:180, y:200, sxy:.5},   500    ]
     )
 }
+
+
+
+
+
 
 tweens.prod1=function(a){return tw(
 
@@ -184,10 +380,6 @@ tweens.prod2=function(a){
         {a:0}
     )
 }
-
-
-
-
 
 
 

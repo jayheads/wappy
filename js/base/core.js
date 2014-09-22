@@ -153,20 +153,79 @@ qs=function f(a,b){
 //tf=function(){n=1;t=true;T(function(){t=false},1000);I(function(){if(t==true){co();n=n+1}else{$l(n)}},1)}
 
 
-uu=function fz(a,b){
-    var sy=function(a){
-            return "<style type='text/css'>"+a+"</style>"},
 
-        cl =function(a,b){
-            var c=function(a,b){
-                return '.' +  a  +  '{' + b|| '' + '}'  }
-            return hd(sy( c(a,b) ))
-        },
-        rl=function f(a,b){var s=''
-            if(O(a)){_e(qs(a), function(v,k){s += f(k,v)})
-                return s}
-            return  a + ':' +  b  + '; ' }
-    if(O(a)){ _e( a, function(v,k){f(k, v)})}
 
-    cl(a, rl(b))}
+CSSRule = setRule = uu=function f( a, b ){
+var sy, cl ,rl
+
+
+      style = sy=function(style){   return "<style type='text/css'>" + style + "</style>"   }
+
+    theRule  =rl = function f(a,b){
+
+        var style=''
+
+        if(O(a)){   _.each(   qs(a), function(v,k){  style += f(k, v)   })
+
+            return style}
+
+        return  a + ':' +  b  + '; '  }
+
+        createRule = function(a,b){
+
+            var rule = function(clas, css){ return '.' +  clas  +  '{' + css|| '' + '}'  }
+
+            return hd( style( rule(a, b) ))
+
+        }
+
+
+
+    if( O(a) ){ _.each( a, function(v, k){ f(k,v) }) }
+
+    createRule( a, theRule(b) )
+
+}
+
+
+UU=function(){
+z()
+$.div('b',400,400).A().A( $.span('hifds') )
+
+
+    CSSRule('div', 'color:Orange')
+
+
+}
+
+
+
+UU2=function(){//WORKS
+
+    $.div('b',400,400).A().A( $.span('hifds')).id('div')
+
+
+    var style = document.createElement('style');
+
+    style.type = 'text/css';
+
+    var rule = '.cssClass { color: #F00; }'
+
+    style.innerHTML = rule
+
+    $( 'head' ).append(style)
+
+//////
+
+    $( '#div' ).K( 'cssClass' )
+
+
+
+}
+
+
+
+
+
+
 

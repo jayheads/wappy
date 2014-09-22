@@ -2,19 +2,24 @@
 
 //CONTACTS AND SENSORS
 
-pair=function(c, p1, p2){
+pair=function(c, p1, p2){//is
 
-    var a=c.A(),
+    var a = c.A(),
 
-        b=c.B(),
+        b = c.B(),
 
         aD=a.uD(),
 
         bD= b.uD()
 
-    return  (p1==aD && p2==bD) || (p1==bD && p2==aD)
+    return  (  aD==p1 && bD==p2  )
+        ||
+
+        (   bD==p1 && aD==p2  )
 
 }
+
+
 
 
 
@@ -59,12 +64,17 @@ SuperContact = sCon=function(contact){  var  c=contact
     contact.touching = contact.iT=function(){return contact.IsTouching()}//Is this contact touching.
 
 
-    contact.userData = contact.uD=function( u){
-        return contact.A().uD()==u || contact.B().uD()==u
+    contact.involves= contact.eitherIs=contact.userData = contact.uD=function( u){
+
+        return contact.A().uD() == u
+
+            ||
+
+            contact.B().uD() ==u
+
     }
 
     return contact}
-
 
 
 
@@ -76,24 +86,28 @@ ContactListener=bCL=function(){
     var l = new BXD.b2ContactListener
 
     l.beginContact=l.b  =function(func){
-        l.BeginContact=function(c){
-            func(SuperContact(c))
-        }
+        l.BeginContact=function(c){ func( SuperContact(c) ) }
         return l}
 
     l.endContact= l.e  =function(func){
         l.EndContact=function(contact){
 
-        func( SuperContact(contact)  )
-        }; return l}
+        func( SuperContact(contact)  ) }; return l}
 
-    l.preSolve=l.p  =function(func){
-        l.PreSolve=function(contact,manifold){
-            func(SuperContact(contact),
+    l.preSolve = l.p  =function(func){
 
-               SuperManifold(manifold))
+        l.PreSolve = function(contact,manifold){
+
+            func(
+
+                SuperContact(contact),
+
+                SuperManifold(manifold)
+            )
        }
+
         return l}
+
 
     l.postSolve=l.P=function(func){
 
@@ -130,6 +144,7 @@ LAVA=function(){makeWorld()
             _hit = 0
 
         }})
+
     world.setContactListener(
         ContactListener().beginContact(
             function(contact){
@@ -140,7 +155,11 @@ LAVA=function(){makeWorld()
             if(
                 ( d1.is('ball') && d2.is('platform') )
                 ||
-                ( d2.is('ball') && d1.is('platform'))
+
+                (
+                    d2.is('ball') && d1.is('platform')
+
+                    )
 
                 ){  _hit = 1  }
 
@@ -150,8 +169,6 @@ LAVA=function(){makeWorld()
 
 
 }
-
-
 
 
 
@@ -180,14 +197,13 @@ POSTSOLVE=function(){
 }
 
 
-
-
 //shows category and mask bits
 //the big circles dont collide??
 PRESOLVE=function(){
 
     makeWorld()
     world.ba()
+
     newB=false
 
     stage.tick(
@@ -199,21 +215,15 @@ PRESOLVE=function(){
 
     world.setContactListener(
 
-        ContactListener().preSolve(function(c, m){
+        ContactListener().preSolve(
 
-            if( $l( m.n()[0]  ) > 100){ newB = true }
-    }))
+            function( c, m ){ mm=m
 
-}
-
-
+             if(  m.n()[0]   > 100){ newB = true }
+    })
 
 
-
-
-
-
-
+    )}
 
 
 CONTACTS=function(){makeWorld()
@@ -266,21 +276,19 @@ CONTACTS=function(){makeWorld()
 }
 
 
-
-
 BITS=function(){makeWorld()
 
     cir = CircleFixture( 80 ).category(0x0002).mask(0x0005),
+
     rec = PolyFixture( 60, 90, 0, 40, 10 ).category(0x0003).mask(0x0003)
 
     world.addBody( dBD(300,300), cir )
+
     world.addBody( dBD(400,300), cir )
+
     world.addBody( dBD(300,300), rec )
-    world.addBody( dBD(400,300), rec )
 
-
-}
-
+    world.addBody( dBD(400,300), rec )}
 
 
 
@@ -323,7 +331,7 @@ GROUPINDEX=function(){
 
 
 //do any of these get used? i think filterData does
-ContactManager = bCM=function(){
+ContactManager = bCM=function(){//used?
     var m= new BXD.b2ContactManager
     m.c= m.cl= m.Collide
     m.a= m.aP=m.AddPair
@@ -331,13 +339,13 @@ ContactManager = bCM=function(){
     m.d= m.ds= m.Destroy
     return m}
 
-ContactFilter =bCF=function(){
+ContactFilter =bCF=function(){//used?
     var f=new BXD.b2ContactFilter
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
 
-FilterData = bFD=function(d){
+FilterData = bFD=function(d){//used?
 
     var d = new BXD.b2FilterData
 
@@ -353,7 +361,6 @@ FilterData = bFD=function(d){
         if(U(a)){return d.categoryBits}
         d.categoryBits=a; return d}
 
-
     d.mask=d.mB=function(a){
 
         if(U(a)){  return d.maskBits}
@@ -363,14 +370,24 @@ FilterData = bFD=function(d){
     }
 
 
-    return d
+    return d}
 
-}
 
-SuperManifold = sMf=function(m){
-    m.lPN=m.m_localPlaneNormal
+
+
+SuperManifold = sMf=function(m){//used????
+
+      m.lPN = m.m_localPlaneNormal
+
     m.lP=m.m_localPoint
+
     m.pC=m.m_pointCount
+
     m.p=m.m_points
+
     m.t=m.m_type
+
     return m}
+
+
+

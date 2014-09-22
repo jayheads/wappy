@@ -1,35 +1,19 @@
-sss=function(){var args=G(arguments)
-
-    z()
-
-
-    stage = SuperStage(600).a()
-
-
-    if(args.f){
-
-        stage.a(args.f)
-
-        _.each(args.r,  function(arg){ if(F(arg)){ arg(args.f) }  })
-    }
-
-    return stage}
 
 
 
 
-stg=function(){var args=G(arguments)
+stg=function(){
+    var args=G(arguments)
 
     container=EaselContainer().fn( SL )
 
     stage=SuperStage(1000)( container )
 
-    ct=ContainerDiv(stage)
+    ct = ContainerDiv(stage)
 
     _.each(args, function(arg){ container(arg) })
 
     return container}
-
 
 tSt=function(stage){
 
@@ -67,43 +51,37 @@ iCt=function(container){
 
 
 
+EaselContainer= Ct=function(o){
 
+    var args = G(arguments),  g=args,  o=g[0]
 
-
-
-
-EaselContainer=Ct=function(o){
-
-
-    var args=G(arguments),g=args,  o =g[0]
-
-
-
-
-    if( !iCt( o ) ){
+    if(  !iCt( o )  ){
 
         //if its not already a container, then make a blank container
+
         //(passing along the '+', which makes it slidable)
 
         return args.p?  EaselContainer( Ct$(), '+' ) :  EaselContainer(Ct$())
 
     }
 
-
-
     //this makes the function object one that will 'add' its arguments to the container
     var func=function o(){
 
         var args=G(arguments)
 
-        _.each(args,
-            function(arg){ o.a(arg) })
+        _.each(args,  function(arg){
+
+            o.a(arg)
+
+        })
 
         return o}
 
 
     //now make the container, itself, a super display object!!! (before we give it additional methods)
-    o=SuperDisplayObject(args.f, func  )
+
+    o = SuperDisplayObject(args.f, func  )
 
 
     o.children = o._ch = o.ob.children
@@ -112,14 +90,12 @@ EaselContainer=Ct=function(o){
 
     //appendTo
     //add
-    o.a=function(child,location){
+    o.A = o.a=function(child,location){
 
         var g=G(arguments),a=g[0], location=g[1]
 
-
         if( U(child) ){ o.qqC().a();  return o }
         //append canvas //hmm.. a double use for a????
-
 
         if(A(a)){
 
@@ -130,8 +106,6 @@ EaselContainer=Ct=function(o){
             }) //call bm on everything in array, and also slidify them
 
             return o} //this is also a funny use!!
-
-
 
         //the real meat:
 
@@ -144,31 +118,68 @@ EaselContainer=Ct=function(o){
         else { o.ob.addChild( a ) }
 
         return o
+    }
+
+
+
+    o.Shape=function(graphics){
+
+        var s = Shape(graphics)
+        o.A( s  )
+        return s
+
+    }
+
+    o.Circle=function(a,b,c,d,e,f){
+
+       return o.Shape().circle(a,b,c,d,e,f)
 
     }
 
 
 
-    o.wCh=o.withChildren=o.wC=function(f){//iterates over SuperDisplayObject(children)
 
 
-        var a=arguments,g=G(arguments),f=g[0]
 
-        if(F(f)){
-            _.each( o.ch(), f)
+
+
+    o.withChildren =o.wCh=o.wC=function(func){//iterates over SuperDisplayObject(children)
+
+        var ags=arguments,   g=G(arguments),  func=g[0]
+
+
+
+        if(  F(func) ){
+
+            _.each( o.ch(), func )
+
             return o }
 
-        if(S(f)){
 
-            o.wCh(function(b){
 
-            if(D(_r(a)[0])){_a(b[f],_r(a))}
+        if( S(func) ){
 
-            else{b[f]()}});return o
+            o.withChildren(
+
+                function(child){
+
+            if(  D( _.rest(ags)[0] ) ){
+
+                 child[func].apply(child, _.rest(ags))
+
+            }
+
+            else{ child[func]() }
+
+                })
+
+            return o
         }
 
 
         return o}
+
+
 
 
 
@@ -197,6 +208,8 @@ EaselContainer=Ct=function(o){
         o1=SuperDisplayObject(o1)
         o2=SuperDisplayObject(o2)
         return (o1.y()>o2.y())?1 : (o1.y() < o2.y())? -1 : 0}
+
+
     o.sort=function(func){if(F(func)){o.ob.sortChildren(func); return o}}
 
     o.ch=function(a,b){ var g=G(arguments), a=g[0], b=g[1]
@@ -216,7 +229,7 @@ EaselContainer=Ct=function(o){
 
 
     //get/set mouseChildren property
-    o.mCh=o.mouseChildren=o.mC=function(m){
+    o.mouseChildren=o.mCh=o.mC=function(m){
         var g=G(arguments), m=g[0]
 
         if(U(m)){ return o.ob.mouseChildren }
@@ -226,22 +239,20 @@ EaselContainer=Ct=function(o){
 
 
     //get/set tickChildren property
-    o.tCh= o.tickChildren = o.tC=function(m){var g=G(arguments),m=g[0]
+    o.tickChildren =o.tCh=o.tC=function(m){
+        var g=G(arguments),m=g[0]
         if(U(m)){return o.ob.tickChildren}
         o.ob.tickChildren=g.n?false:true
         return o}
 
 
-
-    o.uP=function(x,y,f){var g=G(arguments),x=g[0],y=g[1],f=g[2],ob
-        if(O(x)){return o.uP(x.X, x.Y)}
-        if(g.p){return _m(o.ob.getObjectsUnderPoint(x,y),SuperDisplayObject)}
-        ob=o.ob.getObjectUnderPoint(x,y)
-        if(ob){ob=SuperDisplayObject(ob)}
-        return ob}
-
-
-
+    o.objectsUnderPoint = o.uP = function(x, y, f){
+        if(O(x)){ return o.objectsUnderPoint( x.X, x.Y ) }
+            return _.map(  o.ob.getObjectsUnderPoint( x, y ),   SuperDisplayObject  )}
+    o.objectUnderPoint = o.uP = function(x, y, f){
+        if( O(x) ){ return o.objectUnderPoint( x.X, x.Y ) }
+        var ob = o.ob.getObjectUnderPoint(x,y)
+        if(ob){ return SuperDisplayObject( ob ) }}
 
     //add bitmap at bottom.. ?
     o.bgI=o.backgroundImage=o.bgi=function(a){var g=G(arguments)
@@ -356,10 +367,7 @@ EaselContainer=Ct=function(o){
             }
         )
 
-
     }
-
-
 
     o.wBm=function(object, func){
 
@@ -383,12 +391,6 @@ EaselContainer=Ct=function(o){
 
 
     }
-
-
-
-
-
-
 
     o.bData=function(data){
        return o.b( $img(  $.parseJSON(data) ))
@@ -430,15 +432,17 @@ EaselContainer=Ct=function(o){
 
 
 
-SuperStage =St=function(n1,n2,c){
+SuperStage = St = function(n1,n2,c){
 
     var g=G(arguments),
 
         st=iCt(g[0])?g[0]:
             C(g[0])?S$(C(g[0])):
+
                 S$(C(_a(can,g))),
 
-        o=EaselContainer(st)
+
+        o = EaselContainer( st )
 
     o.st=o.ob //o.st=st
 

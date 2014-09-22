@@ -126,11 +126,38 @@ module.exports=function(){
     $a.get( '/pinball', function(req,res){  res.render('pinball')   })
 
 
-    $a.get('/game/:app/:pam?', function(req, res){
-
-        res.render('game', {  app: req.params.app,   pam: req.params.pam    })})
+    $a.get('/game/:app/:pam?', function(req, res){  res.render('game', {  app: req.params.app,   pam: req.params.pam    })})
 
 
+    $a.get('text1',
+        function(req,res){
+            res.send('/text')})
+
+
+    $a.get('text2',
+        function(req,res){
+
+        fs = require( "fs" )
+
+        console.log( "Starting" )
+
+       //fs.readFile( "sample.txt",  function(error, data) {   console.log("Contents of file: " + data)   })
+
+        console.log("Carrying on executing")
+
+        res.json( 'hi' )
+
+    })
+
+
+    $l('ok')
+
+
+
+
+
+
+    ///
 
     $a.get('/wap', function(req,res){ res.render('wap') })
 

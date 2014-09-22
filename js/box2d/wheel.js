@@ -1,3 +1,145 @@
+BOXCANNON=function(){
+
+
+    mW() // hmm.. want to matchs screen size
+
+    a= world.baa(300,600, 200)
+
+    b= world.bi(300,400, 100,100)
+
+    world.Rev( a,b  )
+
+}
+EASELCANNON=function(){z()
+
+
+    stage = SuperStage(600,600).A()
+
+
+    circle  =  Shape().circle(200, 'r','b').rxy(100).xy(400,700)
+
+
+    rect =  Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
+
+    stage.A( circle )
+
+    stage.A( rect )
+
+    RTT( rect )
+
+}
+EASELBOXCANNON=function(){
+
+    mW() // hmm.. want to matchs screen size
+
+    world.Rev(
+
+        dome = world.baa(300,600, 200),
+
+        cannon = world.bi(300,400, 100,100)
+
+     )
+
+
+
+    //stage = SuperStage( 600, 600 ).A()
+
+    circle = Shape().circle( 200, 'r', 'b' ).rxy(100).xy(400,700)
+
+    rect = Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
+
+    stage.A( circle )
+
+    stage.A( rect )
+stage.tick(function(){
+
+    if(rect.rt()>60){rect.rt(60)  }
+    if(rect.rt()<-60){rect.rt(-60)  }
+
+
+    cannon.aF(   bV( 0, -420 ),    cannon.worldCenter()    )
+
+})
+    RTT( rect )
+
+}
+EASELBOXCANNON1=function(){
+
+    mW({g:0}) // hmm.. want to matchs screen size
+
+    world.Rev(
+        dome = world.baa(300,600, 200),
+        cannon = world.bi(300,400, 100,100))
+
+
+
+
+    //stage = SuperStage( 600, 600 ).A()
+
+    circle = Shape().circle( 200, 'r', 'b' ).rxy(100).xy(400,700)
+
+    rect = Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
+
+    ball = ba()
+
+    stage.A( circle )
+
+    stage.A( rect )
+    stage.tick(function(){
+
+        if(rect.rt()>60){rect.rt(60)  }
+        if(rect.rt()<-60){rect.rt(-60)  }
+
+
+       ball.aF(   bV( 0, 100 )  )
+
+        cannon.rt(  rect.rt()   )
+
+    })
+
+
+    RTT( rect )
+
+
+
+
+}
+GRAVITY=function(){
+    mW()
+
+
+   bi1= ba(100,100,100)
+   bi2= ba(100,100,100)
+
+
+    stage.tick(function(){
+
+        bi2.aF( 0,-2000 )
+
+    })
+}
+GRAVITY0=function(){
+    mW({g:0})
+
+
+    bi1= ba(100,100,100)
+    bi2= ba(100,100,100)
+
+
+    stage.tick(function(){
+
+        bi2.aF( 0, 2000 )
+
+    })
+}
+
+
+
+
+
+
+
+
 
 
 _directionPressed  = dirPush=function(){
@@ -15,10 +157,7 @@ _directionPressed  = dirPush=function(){
 
         })
 
-
-
-
-    kU(  'l',  function(){pushLeft = 0} )
+    kU('l',function(){pushLeft = 0} )
     kD('r',function(){pushRight=1})
     kU('r',function(){pushRight=0})
     kD('u',function(){pushUp=1})
@@ -27,10 +166,6 @@ _directionPressed  = dirPush=function(){
     kU('d',function(){pushDown=0})
 
 }
-
-
-
-
 
 
 makeTim=function(n){
@@ -60,7 +195,6 @@ makeMe=function(){
 
         return this}
 
-
     player.speed = 40
 
     player.moveX =  function(n){
@@ -76,16 +210,14 @@ makeMe=function(){
     }
 
 
-
-
-
-
-
     player.gFL().SetFriction(1)
 
     bindr('me', player)
 
     return player}
+
+
+
 footListener=function(){
 
     feetTouch = 0  // if make this local, graphics dissapear!?
@@ -116,8 +248,6 @@ footListener=function(){
 
     world.setContactListener( contactListener  )
 }
-
-
 
 
 moveListener=function(){  stage.tick(function(){
@@ -173,20 +303,6 @@ moveListener=function(){  stage.tick(function(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bindr = function( im, spr, sxy, rt ){
 
     sxy = sxy||.4
@@ -217,6 +333,33 @@ bindr = function( im, spr, sxy, rt ){
 
         })
 }
+
+
+
+
+bindShape = function( shape, spr  ){
+
+    stage.A( shape )
+
+    stage.tick( function(){   shape.xy(  spr.x(), spr.y()    )    })
+
+}
+
+
+
+BINDSHAPE=function(){z()
+mW()
+
+    bindShape( Shape().circle(20, 'x','b'), ba() )
+
+    bindShape( Shape().circle(20, 'p','b'), ba() )
+
+    bindShape( Shape().circle(20, 'u','b'), ba() )
+
+}
+
+
+
 
 
 
@@ -255,7 +398,7 @@ DEMO_IMPULSE =function(){
 
                 function(){
 
-                    body.ApplyForce(   bV(0, -3),    body.worldCenter()    )
+                    body.ApplyForce(   bV( 0, -3 ),    body.worldCenter()    )
 
                 }, 100)
 
@@ -429,6 +572,8 @@ PLAYER=function(){
             }})})
 
 }
+
+
 PLAYER1=function(){
 
     mW({
@@ -870,8 +1015,6 @@ controller=function(){
     ).A()
 
 
-
-
 }
 
 
@@ -895,8 +1038,6 @@ controllerListener=function(){
 
     $('#left').on('mouseup mouseout touchleave', function(){ pushLeft = 0 })
 
-
-
     $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })
 
     $('#jump').on('mouseup mouseout touchleave', function(){  pushUp=0 })
@@ -904,9 +1045,6 @@ controllerListener=function(){
     $('#right').on('mousedown mouseover touchenter', function(){  pushRight=1})
 
     $('#right').on('mouseup mouseout touchleave', function(){pushRight=0})
-
-
-
 
 }
 
@@ -924,9 +1062,7 @@ PHONEJUMP=function(){z()
 
             bii(300, 400, 800, 40).uD('floor')
 
-
         }    })
-
 
     world.bii(200,400, 80,20)
 
@@ -943,7 +1079,6 @@ PHONEJUMP=function(){z()
     moveListener()
 
     controllerListener()
-
 
 }
 

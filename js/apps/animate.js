@@ -159,7 +159,13 @@ SPRITE=function(sprite){
 
         stage = SuperStage(  'o', 400 ).a().drg().op(.7),
 
-        sprite = SuperSprite(  EaselSpriteSheet( sprite )  ).xy(10),
+        sprite = SuperSprite(
+
+            EaselSpriteSheet( sprite )
+
+        ).xy(10),
+
+
 
         controls={
             jump:function(){ sprite.play('jump') },
@@ -182,6 +188,7 @@ SPRITE=function(sprite){
 
     )
 
+    s = sprite
     return  controls}
 
 

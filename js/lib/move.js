@@ -32,13 +32,69 @@ LS=function(b,b2){var g=G(arguments),
 
 
 
-RT=function(b,b2){
-    var g=G(arguments),b=bj(g[0]),b2=bj(g[1]),d=oE('d'),pm=oE('pm'),b2=b2||b
-    if(g.p){b.rgc('+')}
+RT=function(b, b2){
 
-    return b.on(d,function(e){var X=rX(e),Y=rY(e),r=rt(b2)
 
-             b.on(pm,function(e){rt(b2,r-((rY(e)-Y)/500)-((rX(e)-X)))})})}
+    //b = what the control is
+    //b2 what it should control (default = itself!)
+
+
+    var g=G(arguments),  b = bj( g[0] ),  b2 = bj( g[1] ) || b
+
+
+
+    if(g.p){   b.rgc( '+' )   }
+
+    return b.on(  'mousedown',
+
+        function(e){
+
+            var X= e.rawX,  Y= e.rawY,  r = b2.rotation
+
+             b.on('pressmove',   function(e){
+
+
+                         b2.rotation =    r - (   (e.rawY - Y) / 500   ) -  (   e.rawX - X  )
+
+
+                 })})
+
+}
+
+
+RTT=function(b, b2){
+
+
+    //b = what the control is
+    //b2 what it should control (default = itself!)
+
+
+    var g=G(arguments),  b = bj( g[0] ),  b2 = bj( g[1] ) || b
+
+
+
+    if(g.p){   b.rgc( '+' )   }
+
+    return b.on(  'mousedown',
+
+        function(e){
+
+            var X= e.rawX,  Y= e.rawY,  r = b2.rotation
+
+            b.on('pressmove',   function(e){
+
+
+                b2.rotation =    r + (   (e.rawY - Y) / 500   ) +  (   e.rawX - X  )
+
+
+            })})
+
+}
+
+
+
+
+
 
 SC=function(b,b2){
     var g=G(arguments),b=bj(g[0]),b2=bj(g[1]),

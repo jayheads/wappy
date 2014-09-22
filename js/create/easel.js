@@ -4,7 +4,7 @@ T$  =C$.Ticker
 
 SS$  =function(a){return new C$.SpriteSheet(a)}
 
-S$  =function(a){return new C$.Stage(a)}
+S$  =function(a){return new createjs.Stage(a)}
 
 Q$  =function(){return new C$.LoadQueue(true)}
 
@@ -154,7 +154,6 @@ SuperBitmapAsync = Bm=function(img,func){
 //If it is a URI, a new Image object will be constructed and assigned to the .image property.
 
     if( O(img) && S(img.d) ){ img = img.d }
-
 
     $img(img, function(image){
 
@@ -307,3 +306,7 @@ Ed=function(ob){//var o=function f(){return f.main? f.main.apply(f, arguments):(
     o.$$=function(a,b,c,d){return o.o('$$',a,b,c,d)}
     o.str=function(){return ob.toString()}
     return o}
+
+
+
+

@@ -1,6 +1,6 @@
 $l('tween')
 
- W$=C$.Tween;
+ W$=C$.Tween
 tw=W$.get
 
 

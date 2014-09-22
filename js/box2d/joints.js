@@ -237,16 +237,6 @@ Joints.spring = Spring = spring =function(a,b){
 
 }
 
-
-
-
-
-
-
-
-
-
-
 RandomDistanceJoint = sDJ=function(x, y){
 
     world.createJoint(
@@ -260,12 +250,7 @@ RandomDistanceJoint = sDJ=function(x, y){
     ))
 }
 
-
-
-
-
 RandomDistanceJoint.$$=function(){ x.$$(sDJ) }
-
 
 Stuff.Bridge = Stuff.bridge = bridge=function(x,y){
 
@@ -305,7 +290,6 @@ Stuff.Bridge = Stuff.bridge = bridge=function(x,y){
 
 }
 
-
 CHANGEDISTJOINT=function(){
 
     z()
@@ -337,26 +321,9 @@ CHANGEDISTJOINT=function(){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 BRIDGE=function(){makeWorld()
     bridge(100,200)
     bridge(500,200)}
-
-
-
-
 DEMO_DIST=function(){makeWorld()
 
 
@@ -382,8 +349,6 @@ DEMO_DIST=function(){makeWorld()
 
 
 }
-
-
 DEMO_COLLIDE=function(){
 
     makeWorld()
@@ -451,7 +416,6 @@ DEMO_COLLIDE=function(){
         .len (50).freq(3).dampRat(.1).collide(1))
 
 }
-
 RAGD = function(){
 
 
@@ -460,22 +424,15 @@ RAGD = function(){
     //world.Spring =
     world.createJoint(
 
-        Spring(
-
-            b11=ba(100,100,30),    b22=ba(100,200,40)
-        )
+        Spring( body1 = ba(100,100,30),     ba(100,200,40)   )
     )
+
 
 
     //world.Rod =
     world.createJoint(
 
-        Rod(
-
-            b33=bi(100, 400, 30),
-            b44=bi(100, 500, 40)
-
-        )
+        Rod( body2 = bi(100, 400, 30),   bi(100, 500, 40)   )
 
     )
 
@@ -484,11 +441,12 @@ RAGD = function(){
     player = makeMe()
 
     world.createJoint(
-        Spring( b11, player )
+        Spring( body1, player )
     )
 
     world.createJoint(
-        Spring( b33, player)
+
+        Spring( body2, player)
     )
 
 
@@ -518,7 +476,6 @@ PulleyJoint =pJt =function(){
     j.maxLenB = j.mLB=function(a){j.maxLengthB=a;return j}
 
     return j}
-
 SuperPulleyJoint = sPJ= function(x,y){
 
 
@@ -558,33 +515,37 @@ SuperPulleyJoint = sPJ= function(x,y){
     world.createJoint(pulley)
 
 }
-
 SuperPulleyJoint.$$=function(){x.$$(sPJ)}
-
-
 PULLEY=function(){
     makeWorld()
 
     x=500
     y=200
 
-    b11= bi(300,300,200,10)
+    body1= bi(300,300,200,10)
 
-    b22= bi(500,300,200,10)
+    body2= bi(500,300,200,10)
 
 
     var pulley = PulleyJoint().init(
 
-        b11,  b22,  bV(15,1), bV(25,2),   b11.worldCenter(),  b22.worldCenter(), 1
-    )
+        body1,  body2,  bV(20, 1), bV(25, 2),
 
-        .lenA(8).lenB(4).maxLenA( 10 ).maxLenB( 5 )
+        body1.worldCenter(),
+
+        body2.worldCenter(),
+
+        1 )
+
+        //.lenA( 8 ).lenB( 4 ).maxLenA( 10 ).maxLenB( 5 )
 
    world.createJoint( pulley )
 
-    makeMe()
-    makeTim(10)
-    makeCar()
+
+
+    //makeMe()
+    //makeTim(10)
+    //makeCar()
 
 }
 

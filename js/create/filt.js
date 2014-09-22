@@ -39,14 +39,45 @@ blr=function(){
     })}
 
 
+
 msk=function(){
+    sss=function(){var args=G(arguments)
+
+        z()
+
+
+        stage = SuperStage(600).a()
+
+
+        if(args.f){
+
+            stage.a(args.f)
+
+            _.each(args.r,
+                function(arg){
+
+                    if( F(arg) ){ arg(args.f) }
+
+                })
+        }
+
+        return stage}
+
+
+
     wMb(function(b){
-        sss(b,TR)
+
+        sss(b, TR)
+
+
         b.fl([
 
             aMF(Gx().lf(trx(1,0),[0,1],0,0,200,200).dr0(400).H().cc(400).cc('*'))
 
         ]).cc(400)})}
+
+
+
 
 
 

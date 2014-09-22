@@ -202,6 +202,8 @@ bW   =World=function(a,b){
 
         return w
     }
+
+
     w.onEndContact = w.oE = function(func){
 
         w.setContactListener(
@@ -401,24 +403,25 @@ SuperBoxBody=sBd=function(b){
 
 
 
-    b.m    =b.gM  =function(m){if(U(m)){return b.GetMass()}}
+    b.mass = b.m    =b.gM  =function(m){if(U(m)){return b.GetMass()}}
 
     b.worldCenter = b.wC   =b.c=  b.gWC=function(){
         return b.GetWorldCenter()}
 
-    b.aw   =function(){
+    b.awake= b.aw   =function(){
         var g=G(arguments)
         b.SetAwake(g.n?false:true)
         return b}
 
-    b.wP   =function(x,y){
+    b.worldPoint =b.wP   =function(x,y){
 
         var p= b.GetWorldPoint( bV(x/30,y/30) )
 
         return bV(p.x*30, p.y*30)
     }
 
-    b.ps   = b.p  =function(x,y){
+
+    b.position = b.pos = b.ps   = b.p  =function(x,y){
 
         var p=b.GetPosition()
 
@@ -518,7 +521,7 @@ SuperBoxBody=sBd=function(b){
         return b}
 
     //get next
-    b.n= b.gN=function(){ return sBd(b.GetNext())  }
+    b.next = b.n= b.gN=function(){ return sBd(b.GetNext())  }
 
 
     b.destroyFixture=b.dF=function(a){
@@ -526,7 +529,7 @@ SuperBoxBody=sBd=function(b){
         return b}
 
 
-    b.aV=function(a){
+    b.angVel=b.aV=function(a){
         if(U(a)){return b.angularVelocity}
         b.angularVelocity=a;
         return b}
@@ -539,14 +542,14 @@ SuperBoxBody=sBd=function(b){
         return b}
 
 
-    b.lD=function(a){
+    b.linDamp=b.lD=function(a){
         if(U(a)){return b.GetLinearDamping()}
         b.SetLinearDamping(a)
         return b}
 
 
     //fixed rotation?
-    b.fR=function(a){
+    b.fixedRot=b.fR=function(a){
 
         b.fixedRotation=a?true:false
         return b}
@@ -575,6 +578,9 @@ SuperBoxBody=sBd=function(b){
         f.SetUserData(a);
         return b}
 
+
+
+
     //apply impulse. pass impulse as two nums, or obj
     //and pass in location, defaults to body center
     b.aI  = function(v,c,c2){
@@ -586,12 +592,22 @@ SuperBoxBody=sBd=function(b){
     //apply force. pass impulse as two nums, or obj
     //and pass in location, defaults to body center
     b.aF  = function(v,c,c2){
-        if(N(c)){return b.aF(bV(v,c),c2)}
-        if(U(c)){c=b.c()}
-        b.ApplyForce(v,c)
+
+        if(N(c)){return b.aF(
+
+            bV(v, c), c2
+
+        )}
+
+        if( U(c) ){ c = b.worldCenter() }
+
+        b.ApplyForce(v, c)
+
         return b}
 
     return b}
+
+
 
 
 SuperBodyDef=sBdD=function(d){
