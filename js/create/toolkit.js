@@ -459,7 +459,7 @@ BRIT2=function(){
 
 SCROLLER=function(){
 
-    //z()
+     z()
 
 
      (function (lib, img, cjs) {
@@ -575,7 +575,6 @@ SCROLLER=function(){
          p.nominalBounds = new cjs.Rectangle(61,272,1087,289);
 
      })(lib =  {}, images =  {}, createjs)
-
 
 
      $.canvas(550,400).id('canvas').A()
