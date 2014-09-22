@@ -459,10 +459,10 @@ BRIT2=function(){
 
 SCROLLER=function(){
 
-     z()
-
 
      (function (lib, img, cjs) {
+
+         z()
 
          var p; // shortcut to reference prototypes
 
@@ -549,6 +549,8 @@ SCROLLER=function(){
              this.shape_9.graphics.f("#0066CC").s().p("AmOE2IAApqIMdAAIAAJqg");
              this.shape_9.setTransform(101,227);
 
+
+
              this.addChild(
                  this.shape_9,this.shape_8,this.shape_7,this.shape_6,this.shape_5,this.shape_4,
                  this.shape_3,this.shape_2,this.shape_1,this.shape);
@@ -580,9 +582,9 @@ SCROLLER=function(){
      $.canvas(550,400).id('canvas').A()
 
 
-         canvas = document.getElementById("canvas");
 
-     stuff=exportRoot = new lib.scroller2()
+    canvas = document.getElementById("canvas");
+    stuff=exportRoot = new lib.scroller2()
 
          stage = new createjs.Stage(canvas);
          stage.addChild( exportRoot )
@@ -622,7 +624,7 @@ boundaries.x=500
 
 
 
-    $('body').click(function(){
+    $('canvas').click(function(){
         _vy=-20
 
     })
@@ -714,9 +716,10 @@ boundaries.x=500
          scrollStage()
      })
 
+    $('<br>').prependTo('body')
+    $.button('start', function(){   createjs.Tween.get(boundaries).to({x: -500}, 10000)  }).prependTo('body')
 
-    $.button('start', function(){
-        createjs.Tween.get(boundaries).to({x: -500}, 10000)  }).prependTo('body')
+
 
 }
 
