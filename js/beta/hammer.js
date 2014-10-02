@@ -97,8 +97,4 @@ HAMMER1=function(){
     ctx = c.can.getContext('2d')
 
 
-
-
-
-
 }

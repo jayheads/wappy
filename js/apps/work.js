@@ -1,3 +1,100 @@
+//nav
+$.container=function(){return $.div().K('container')}
+$.iconBar=function(){return $.span().K("icon-bar")}
+$.caret=function(){return $.span().K("caret")}
+$.fn.toggle=function(a){return this.attr("data-toggle", a)}
+$.fn.target=function(a){return this.attr("data-target", a)}
+
+$.liAWap = function(a){   return $.liA(a,   function(){   $w.location='/wap/'+a   }   )   }
+
+$.dropdownToggle = function(a){
+    return $.a( a ).K("dropdown-toggle").toggle("dropdown").A(  $.caret()  )
+
+}
+$.dropdownMenu=function(){
+
+   var menu= $.ul().K("dropdown-menu")
+
+    _.each(arguments,
+        function(arg){
+        menu.A( $.liAWap(arg) )})
+
+    return menu}
+
+$.nav=function(){
+  var nav = $.ul().K("nav navbar-nav")
+    _.each(arguments, function(arg){ nav.A( arg ) })
+    return nav}
+$.navRight=function(){
+    var nav = $.ul().K("nav navbar-nav navbar-right")
+    _.each(arguments, function(arg){ nav.A( arg ) })
+    return nav}
+
+$.navbar=function(){return $.div().K("navbar navbar-default").A($.div().K("container-fluid"))}
+
+$.dropdown=function(a,b){var toggle=$.dropdownToggle(a)
+    var menu= $.dropdownMenu.apply(this, b)
+  return  $.li().K("dropdown").A(toggle, menu)}
+
+
+
+
+$.navbarHeader=function(brand){
+
+   return $.div().K("navbar-header").A(
+
+        $.button().K("navbar-toggle collapsed").toggle('collapse').target(".navbar-collapse").A(
+
+            $.span("Toggle navigation").K("sr-only"),
+
+            $.iconBar(),$.iconBar(),$.iconBar()),
+
+        $.a(brand).K("navbar-brand")
+
+    )
+
+}
+
+$.navbarCollapse=function(){
+  return  navbarCollapse= $.div().K("navbar-collapse collapse")
+
+}
+
+
+NEWNAV=function(){z()
+    navbarCollapse= $.navbarCollapse().A(
+        $.nav(
+            $.dropdown('create',['upload','uploads','edit','cutouts']),
+            $.dropdown('games',['upload','uploads','edit','cutouts'])),
+        $.navRight( $.dropdown('account',['profile','logout']) ))
+  $.container().A(  $.navbar().A( $.navbarHeader('wappy'), navbarCollapse )).A()}
+
+
+
+NEWMODAL=function(){
+
+
+}
+
+
+
+
+
+
+
+PHASER=function(){}
+
+
+
+
+
+
+
+
+
+
+
+
 BOOK=function(){
 
     format()

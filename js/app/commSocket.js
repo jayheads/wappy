@@ -41,7 +41,13 @@ socket.on('receivePrivateMessage',
 ///////////////////////////////////////////////////////   chatrooms
 
 socket.on('receiveChatMessage', function(data){
-    chatRoomsObject[data.chatRoomName].write( data.username+': '+ data.message)})
+
+    $l( data.username+': '+ data.message)
+    chatRoomsObject[data.chatRoomName].write( data.username+': '+ data.message)
+
+})
+
+
 
 socket.on('roomUpdate', function(update){
 

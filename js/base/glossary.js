@@ -112,6 +112,11 @@ E=function E(a,b,c){
         a=$(a)[0]
         if (_.isElement(a)){return a}}}
 
+
+
+
+
+
 _e=function e(p,q,w){
     var eW=function (a,b){return l$(a,_z(b))==b}
     if(U(p)){return qq('li')}
@@ -120,6 +125,12 @@ _e=function e(p,q,w){
     return (S(p) && S(q))? eW(p,q)
     :S(q)? e(p,function(v,k){eval(q)}, w)
     :_.each(p,q,w)}
+
+
+
+
+
+
 
 _F=function(a){if (A(a)){return _.flatten(a)}}
 
@@ -149,8 +160,16 @@ _f=function(a, b, c){
 
 
 
-_g=function(a){if(A(a)){a=_f(a)};
-    return F(a)?a: O(a)?(a.target? a.target: Q(a)[0]):a}
+_g=function(a){
+    if(A(a)){a=_f(a)};
+    return F(a)?a
+
+        : O(a)?(a.target? a.target: Q(a)[0])
+
+        :a
+
+}
+
 
 
 G=function(a){
@@ -163,12 +182,25 @@ G=function(a){
         if(_l(a)==='/'){d=a.pop()}
 
     return D(a,{
-        z: a.length, f:_f(a),l:_l(a),r:_r(a),i:_i(a),
-        p:p,P:!p,m:m,M:!m,d:d,D:!d,n:n,N:!n
 
+        z: a.length,
+        f:_f(a),
+        l:_l(a),
+        r:_r(a),
+        i:_i(a),
+        p:p,
+        P:!p,
+        m:m,
+        M:!m,
+        d:d,
+        D:!d,
+        n:n,
+        N:!n
 
     })}
-G.t=function(){return G(arguments)}
+
+
+
 
 
 
@@ -284,6 +316,7 @@ _l=function(a,b){
 
     if(F(b)){$(a).load(b);return a}
     return _.last(a,b)}
+
 
 _m=function(a,b,c){return F(b)? _.map(a,b,c)
         :A(a)?_.min(a):function(z){return z*a}}
@@ -441,9 +474,16 @@ _S=function(a,b){return b? $S(a).split(b):a.toString()}
 _s=function s(a,b,c){
 
     var g=G(arguments)
+
     if(D(g[1])){a[b]=c;return a}
+
     if(U(a)){return qq('s')}
-    return g.p? url(src(a)):src(a)}
+
+    return src(a)
+}
+
+
+
 
 S=function(a,b,c){return U(b)? (_.isString(a)?_s().H(a):0)
     :N(b)? a.substr(b,c)

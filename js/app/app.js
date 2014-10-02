@@ -1,6 +1,3 @@
-//changed for git stake
-//more
-
 
 appInit = function(){
 
@@ -281,11 +278,16 @@ getUsers =  function(func){ $.get('/users', func) }//usrs =
 
 //Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
 
-getBuds = buds=function(func){ qG('/buds', func) }
+getBuds = buds=function(func){$.get('/buds', func) }
+
+
 
 removeUser = rmU=function(a,b){
 
-    if(S(a)){rmU({u:a},b)};qP('/rmU',a,b)}
+    if(S(a)){rmU({u:a},b)}
+    $.post('/rmU',a,b)
+
+}
 
 
 clearApps = fresh=function(){ z();WappyNav() }

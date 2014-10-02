@@ -67,7 +67,9 @@ rY =function(a){return a.rawY}
 
 withYourMugId = gMg=function(func){  $.get('/gMg',  func)}  //should it try websocket first?
 
-wM = withYourMugData = getMug=function(func){  $.get('/getMug',  func)}
+wM = withYourMugData = getMug=function(func){  $.get('/getMug',  func) }
+
+
 
 
 
@@ -86,22 +88,46 @@ wMD=function(f){
 
 
 
-wMb=function(f,stage){
+wMb=function(f, stage){
     var g=G(arguments),
-        f=g[0],stage=g[1]
+        f=g[0],
+        stage=g[1]
 
     wM(function(a){
 
-        SuperBitmapAsync(a, function(b){
+        SuperBitmapAsync(
 
-            if(stage){stage.a(b)} // if stage passed, add bm to stage
+            a,
 
-                f(b, stage) //run cb, and pass it bm and stage
+            function(b){
+
+            if(stage){stage.a(b)}   // if stage passed, add bm to stage
+
+                f(b, stage)         //run cb, and pass it bm and stage
 
         })
+
+
     })
 
     return stage}
+
+
+$wMb=function(f, stage){
+
+    wM(function(a){
+
+
+       createjs.Bm(  a,  function(b){
+
+                if(stage){stage.A( b )}   // if stage passed, add bm to stage
+
+                f(b, stage)         //run cb, and pass it bm and stage
+
+            })  })
+
+    return stage}
+
 
 
 
@@ -131,6 +157,24 @@ wMs=function(func,w,h,bg){ var g=G(arguments)
 
 
 
+$wMs=function(func,w,h,bg){ var g=G(arguments)
+
+    func=g[0]
+    w=g[1]
+    h=g[2]
+    bg=g[3]
+
+    var stage =St(  w||1000,  h||800,  '+'  )
+
+    if(g.p){ stage.drg() }
+
+    if(g.n){ s2(stage) }
+
+    if( bg ){ stage.bgi( bg ) }
+
+    return wMb(func, stage)
+
+}
 
 
 
@@ -145,7 +189,11 @@ return superBitmap}
 
 
 
-SuperBitmapAsync = Bm=function(img,func){
+
+
+
+
+SuperBitmapAsync =  function(img,func){
 
 
 //source obj can be:
@@ -167,6 +215,36 @@ SuperBitmapAsync = Bm=function(img,func){
 
     })
 
+
+    return img}
+
+
+createjs.BmSync =function(img,stage){
+
+    var bm = new createjs.Bitmap( src(img) )
+
+    if( O(stage) ){  stage.A(bm) }
+
+    return bm
+}
+createjs.Bm = $bitmapAsync = Bm=function(img,func){
+
+//source obj can be:
+// Image|HTMLCanvasElement|HTMLVideoElement
+// |String URIto an image file to load and use.
+//If it is a URI, a new Image object will be constructed and assigned to the .image property.
+
+    if( O(img) && S(img.d) ){ img = img.d }
+
+    $.img(img, function(image){
+
+        var bitmap = new createjs.Bitmap( image )
+
+        if( F(func) ){ func( bitmap ) }
+
+        if( S(func) ){ $w[func] = bitmap }
+
+    })
 
     return img}
 

@@ -412,7 +412,9 @@ EaselContainer= Ct=function(o){
 
 
     if(g.p){ SL(o) }
-    return o}
+    return o
+
+}
 
 
 
@@ -519,6 +521,8 @@ SuperStage = St = function(n1,n2,c){
         if(U(c)){return o.X.bc()}
         o.X.bc(c);return o}
 
+
+
     o.w=function(a){if(U(a)){return o.X.w()}
         o.X.w(a)
         return o}
@@ -588,8 +592,12 @@ SuperStage = St = function(n1,n2,c){
 
 
 
-    o.bgi=function(a){o.bm(a,function(b){
-        o.ob.setChildIndex(b.ob, 0)});return o}
+    o.bgi=function(a){
+        o.bm(a,function(b){
+        o.ob.setChildIndex(b.ob, 0)});
+        return o}
+
+
 
     o.D=function(a,b,c,d){
 

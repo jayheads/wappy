@@ -292,9 +292,31 @@ lev4=function(){
 
 
 
-SPACE=function(){wMs(function(b,s){
-    s.wh(2000).bgi('/space.jpg')
-    b.sxy(.2).fn(RT,SL)})}
+SPACEOLD=function(){  wMs(function(b, s){
+
+        stage = s
+
+    stage.wh(2000)
+
+   stage.bgi('/space.jpg')
+
+    b.sxy(.2)
+
+        b.fn(RT, SL)
+
+})}
+SPACE=function(){z()
+        $stage(2000,2000).tick().A().backgroundImage('/space.jpg').mug(
+            function(mug){
+                mug.sXY(.2).drag().rotate()
+            })}
+
+
+
+
+
+
+
 
 BOXES=function(){CT(ROW(s=St(800,600),
         d=_d().P(20).c('y')(h1('controls'),
@@ -388,21 +410,18 @@ SHIP=function(){
 
 }
 
-SOLAR=function(){
 
+SOLAR1=function(){
 
     wMs(  function(b,s){
 
-            CT( ROW(  _d()(  br(), br(), br(), br(),  s)))
+            //CT( ROW(  _d()(  br(), br(), br(), br(),  s)))
 
 
 
          b.sxy(.4).x(400);
             SL(b);
             b.wrp()
-
-
-
 
 
             s.bm('sun',function(b){
@@ -423,24 +442,106 @@ SOLAR=function(){
                 b.dxy(3,3).sxy(.2)
 
 
-                    I(function(){
+                setInterval(function(){
                         if(sunIn()){b.sxy(.04,'+')
                             b.dx(.2,'+')
                             b.dy(.2,'+')
                         }},100)})
 
 
-            s.bgi('/space.jpg')
-
-
-
-
+            //s.bgi('/space.jpg')
 
         }
 
 
 
     )}
+
+
+SOLAR=function(){
+
+    sunIsIn=function(){
+
+        return pntInCir(
+
+            lsun.centerX(),
+
+            lsun.centerY(),
+
+            {
+
+
+                x:sun.x + (sun.W()/2),
+
+                y:sun.y + (sun.H()/2),
+
+                r:sun.H()/2
+    })
+
+    }
+
+
+
+    z()
+
+    s=$stage(1000,500).A().tick()
+
+   s.mug(function(b){m=b
+
+
+            b.sXY(.4).X(400).drag()
+
+
+            b.warp()
+
+
+            s.bm('sun',function(b){
+                sun=b
+
+                b.drag()
+
+               b.move('+').dx(_r(10)+1  ).dy( _r(10)+1).X(_r(800)).Y(_r(600))
+
+                b.bounce(0)
+
+            })
+
+
+
+
+            s.bm('sun', function(b){
+
+               lsun=b
+
+                b.drag().move('+').dx(10).dy(10).sXY(.2)
+
+                b.warp(0);
+
+                setInterval(function(){
+
+                   if(sunIsIn()){
+
+                       b.sX( b.scaleX + .1  )
+                       b.sY( b.scaleY + .1  )
+
+                       b.vx += .2
+                       b.vy += .2
+
+
+                   }
+
+                }, 100)
+
+            })
+
+
+            s.backgroundImage('/space.jpg')
+
+        }
+
+
+    )}
+
 
 SHOOTY=function(){
 
@@ -465,118 +566,94 @@ SHOOTY=function(){
 
     })}
 
-
-
 HIT=function(){z()
-//hitTest ( x  y ) Boolean
-
-//Tests whether the display object intersects the specified local point
-// (ie. draws a pixel with alpha > 0 at the specified position).
-// This ignores the alpha, shadow and compositeOperation of the display object,
-// and all transform properties including regX/Y.
-    //  Example
 
 
+    s=$stage(900, 600).A().tick().mug(function(mug){
 
-//x Number
-//The x position to check in the display object's local coordinates.
-//y Number
-//The y position to check in the display object's local coordinates.
-//Returns:
+        mug.drag()
 
-    //Boolean: A Boolean indicting whether a visible portion of the DisplayObject intersect the specified local Point.
+        s.bm('flame', function(flame){
+f=flame
 
-    stage = St(1000).a()
+            flame.drag()
+                flame.scaleX=.1
+            flame.scaleY=.1
+            flame.regX= flame.getBounds().width / 2
 
-    stage.mg(
+            flame.regY=500
 
-        function(mug){
-
-        SL(mug)
-
-
-        stage.b('flame', function(fireBall){
-
-            SL(fireBall)
-
-            fireBall.sxy(.1).rx(fireBall.w()/2).ry(500).xy(400)
+                flame.x=400
+            flame.y=400
 
 
 
-            //this works, but must click on SOMETHING on the stage
-            stage.o('$$',
 
-                function(g, e){
+        s.on('dblclick',  function(e){
+            ee=e
+       flame.x= e.rawX
+          flame.y= e.rawY
 
-                fireBall.xy(e.X, e.Y)
-
-            })
-
-
-
-            stage.o('D', function(g,e){
-
-                localCoords= mug.gTL(e.X, e.Y)
-
-                hit = mug.ht(localCoords.x, localCoords.y)
+        })
 
 
 
-                if( $l(hit) ){   stage.c('r'); $l(e.X+ ' '+ e.Y)   }
 
-                else {stage.c('y')}
+
+
+
+            s.on('stagemousedown', function(e){
+
+                localCoords= mug.globalToLocal(e.rawX, e.rawY)
+
+                hit = mug.hitTest(   localCoords.x, localCoords.y   )
+
+
+                if( $l(hit) ){
+                    $l('hit')
+                 s.backgroundColor('r'); $l( e.X+ ' '+ e.Y )
+                }
+
+                else {
+                $l('no hit')
+                  s.backgroundColor('y')
+                }
 
 
             })
 
 
 
+            s.on('stagemousemove', function(e) {
 
 
-            stage.o('M', function(g,e) {
+                localCoords = mug.globalToLocal(flame.x, flame.y)
 
 
-                localCoords = mug.gTL(fireBall.x(), fireBall.y())
+
+                hit = mug.hitTest(localCoords.x, localCoords.y)
 
 
-                hit = mug.hT(localCoords.x, localCoords.y)
+                if( $l(hit)  ){  $l('HIT')
 
 
-                if( $l(hit)  ){ stage.c('r'); $l(e.X+ ' '+ e.Y)}
+             s.backgroundColor('r')
+
+                $l(e.rawX+ ' '+ e.rawY)
+
+                }
 
 
                 else {
-                    stage.c('y')}
+                $l('NO HIT')
+
+                    s.backgroundColor('y')
+                }
 
             })
+        })})
 
-
-        })
-
-    })
-
-
-
-    stage.b('me', function(b){
-            b.sxy(.4).xy(300)
-
-            b=b.ob
-
-
-            C$.Tween.get(b, {loop:true})
-                .wait(100)
-                .wait(300)
-                .to({x:450}, 1200, C$.Ease.backInOut)
-                .wait(100)
-                .wait(300)
-                .to({x:50}, 1200, C$.Ease.backInOut)
-
-        })
 }
-
-
-
-
 
 HITCIRCLES=function(){
 
@@ -616,17 +693,13 @@ HITCIRCLES=function(){
 }
 }
 
-
 canon=function(r,x,y){
 
     x= x||r.x()||100;
     y= y||r.y()||500
 
 
-
-    var vx,vy,
-
-        c = ball(12).xy(x,y).ap(s)
+    var vx, vy,  c = ball(12).xy(x,y).ap(s)
 
 
     if(r.rt()>0){
@@ -651,8 +724,6 @@ canon=function(r,x,y){
     })
 
 }
-
-
 
 CANON=function(){
 
@@ -680,9 +751,6 @@ CANON=function(){
 
 
 }
-
-
-
 
 
 

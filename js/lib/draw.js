@@ -72,7 +72,11 @@ cage=function c(n){
 
 
 sunIn=function(){return pntInCir(lsun.cx(),lsun.cy(),{
-    x:sun.x()+(sun.w()/2),y:sun.y()+(sun.h()/2),r:sun.h()/2})}
+
+    x:sun.x()+(sun.w()/2),y:sun.y()+(sun.h()/2),r:sun.h()/2
+})}
+
+
 
 mugIn=function(){return pntInCir(lsun.cx(),lsun.cy(),{
     x:mug.x()+(mug.w()/2),y:mug.y()+(mug.h()/2),r:mug.h()/2})}

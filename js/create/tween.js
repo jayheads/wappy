@@ -271,18 +271,6 @@ TWEENPOS=function(){z()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 tweens={}
 
 tweens.rpunch=function(arm){
@@ -308,14 +296,9 @@ tweens.lpunch=function(lf){
 
 tweens.shakeY=function(a){
 
-    return EaselTween(
-        a,
+   // EaselTween(  a,  [  {r:180, y:200, sxy:.5},  500  ]  )
 
-        [
-            {r:180,y:200,sxy:.5},
-            500
-        ]
-    )(
+    EaselTween(
 
         [a,'l'],
         [ {y:-10}, 500 ],
@@ -323,10 +306,8 @@ tweens.shakeY=function(a){
         [ {y:-10}, 500 ]
     )
 
+    return a
 }
-
-
-
 
 tweens.shakeX=function(a){return EaselTween(
     a,
@@ -343,11 +324,6 @@ tweens.shakeX=function(a){return EaselTween(
 
 )}
 
-
-
-
-
-
 tweens.rott=function(a){
 
     return EaselTween(
@@ -356,11 +332,6 @@ tweens.rott=function(a){
          [    {r:180, y:200, sxy:.5},   500    ]
     )
 }
-
-
-
-
-
 
 tweens.prod1=function(a){return tw(
 
@@ -380,6 +351,5 @@ tweens.prod2=function(a){
         {a:0}
     )
 }
-
 
 

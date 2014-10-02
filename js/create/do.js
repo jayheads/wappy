@@ -134,15 +134,22 @@ SuperDisplayObject=Do=function(ob, func){
             a,b,c,d)}
 
 
+
     o.x=function(a){
         var g=G(arguments)
         if(U(a)){return ob.x}
-        if(g.p){ob.x=ob.x+a}
+
+        if(g.p){ ob.x = ob.x+a }
+
         else if(g.n){ob.x=ob.x-a}
         else if(g.m){ob.x=ob.x*a}
         else if(g.d){ob.x=ob.x/a}
         else{ob.x=a}
+
         return o}
+
+
+
     o.y=function(a){
         var g=G(arguments)
         if(U(a)){return ob.y}
@@ -223,7 +230,10 @@ SuperDisplayObject=Do=function(ob, func){
         b=g[1]
         if(U(a)){return gX(ob)}
 
-        if(g.p){o.x(a, o.rx()-a,'+')}
+        if(g.p){
+
+            o.x(a, o.rx()-a, '+')
+        }
 
         gX(ob,a)
 
@@ -237,6 +247,8 @@ SuperDisplayObject=Do=function(ob, func){
         gY(ob,a)
 
         return o}
+
+
     o.rxy=function(a,b){ var g=G(arguments)
         a=g[0]
         b= g[1]
@@ -249,13 +261,16 @@ SuperDisplayObject=Do=function(ob, func){
 
 
         if(g.p){
-            o.x(a, o.rx()-a,'+')
-            o.y(b, o.ry()-b,'+')
+
+            o.x(a, o.rx()-a, '+')
+
+            o.y(b, o.ry()-b, '+')
         }
 
         o.rx(a)
         o.ry(N(b)?b:a)
         return o}
+
     o.rgc=function(){var g=G(arguments),
         x=o.w()/2, y=o.h()/2
 
@@ -296,10 +311,13 @@ SuperDisplayObject=Do=function(ob, func){
 
 
     o.w=function(a){
-        if(U(a)){return o.bn().width*o.sx()}
-        o.sx(o.sx()*a/o.w())}
+        if(U(a)){ return o.bn().width * o.sx() }
+        o.sx(o.sx()*a/o.w())
+    }
 
-    o.h=function(a){if(U(a)){return o.bn().height * o.sy()}
+
+    o.h=function(a){
+        if(U(a)){return o.bn().height * o.sy()}
         o.sy(o.sy()*a/o.h())}
 
 
@@ -310,9 +328,10 @@ SuperDisplayObject=Do=function(ob, func){
         o.h(N(b)?b:a)
         return o}
 
-    o.cx=function f(a){
+    o.cx=function(a){
         if(U(a)){return o.x()+o.w()/2 }
         return o.x(a-o.w()/2)}
+
 
     o.cy=function f(a){
         if(U(a)){return o.y()+o.h()/2}
@@ -380,7 +399,10 @@ SuperDisplayObject=Do=function(ob, func){
         if(g.p){return St(o.ob.getStage())}
         p=o.ob.parent
         if(n==2){return o.pa(o.pa())}
-        return iSt(p)?St(p):Ct(p)}
+        return iSt(p)?St(p):Ct(p)
+    }
+
+
 
     //remove
     o.XX=function(){
@@ -435,6 +457,8 @@ SuperDisplayObject=Do=function(ob, func){
     o.vy=0
     //o.p=function(f){f=f||function(){o.mv()};var fn=o.o('t',f);return o}
     //o.P=function(){o.O('t',fn);return o}
+
+
     o.dx=function(a){var g=G(arguments);  a=g[0]
         if(g.p){o.vx=o.vx+a;return o}
         else if(g.n){if(N(a)){o.vx=o.vx-a}
@@ -442,6 +466,9 @@ SuperDisplayObject=Do=function(ob, func){
             return o}
         else if(U(g[0])){return o.vx}
         o.vx=a;return o}
+
+
+
     o.dy=function(a){var g=G(arguments);a=g[0]
         if(g.p){o.vy=o.vy+a;return o}
         else if(g.n){if(N(a)){o.vy=o.vy-a}
@@ -451,6 +478,10 @@ SuperDisplayObject=Do=function(ob, func){
 
         o.vy=a
         return o}
+
+
+
+
     o.dxy=function(a,b){var g=G(arguments);a=g[0];b=g[1]
         if(O(a)){return o.dxy(a.dx(),a.dy())}
         if(U(a)){return {x:o.dx(),y:o.dy()}}
@@ -466,6 +497,8 @@ SuperDisplayObject=Do=function(ob, func){
     o.mv=function(){var g=G(arguments)
         if(g.p){ o.tk(function(){ o.mv() })}
         return o.xy( o.vx, o.vy, '+' )}
+
+
 
     //?
     o.ctr=function(n){
@@ -537,6 +570,7 @@ SuperDisplayObject=Do=function(ob, func){
         if(g.p){o.ob.updateCache(g[0]);return o}
         if(g.m){return o.ob.cacheCanvas}
         if(g.d){return o.ob.cacheID}
+
         if(U(g[2])){return o.cc(0,0,g[0],g[1])}
         if(N(g[2])){g[3]=g[3]||g[2]}
         w=g[2]||o.w();h=g[3]||o.h()
@@ -607,6 +641,8 @@ SuperDisplayObject=Do=function(ob, func){
             o.x(wrp(n,dm.w-n)(o.x()))
             o.y(wrp(n,dm.h-n)(o.y()))})
         return o}
+
+
     o.cap=function(n){
 
         var cap=function(a,b,c){c=c||0

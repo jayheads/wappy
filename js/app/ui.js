@@ -9,25 +9,12 @@ JQUI=function(){z()
 
 d= $.div('b',400,400).A().A(t).pad(20)
 
-
-
-
-
-
-
 }
 
 
-
-
-
-
-
-
-
-
-
 chatRoomsObject={}
+
+
 ChatRoom=function(title, color, id){
 
     title = title||'chatbox'
@@ -36,10 +23,10 @@ ChatRoom=function(title, color, id){
 
     id=id||'cbo'
 
-    var theTextInput = $textInput(),
 
+    var theTextInput=$textInput(),
 
-        theSendButton = $button('send', function(){
+        theSendButton=$button('send', function(){
 
             socket.emit('sendChatMessage', {
 
@@ -47,9 +34,7 @@ ChatRoom=function(title, color, id){
 
                 username: _username,
 
-                message: theTextInput.V()
-
-            })
+                message: theTextInput.V() })
 
         }),
 
@@ -60,7 +45,6 @@ ChatRoom=function(title, color, id){
 
 
         theMessages = $div().id( 'cbi' ).s({overflow:'auto', C:'x'}),
-
 
         usersInRoomBox= $div()
 
@@ -107,9 +91,9 @@ ChatRoom=function(title, color, id){
 
                                 function(userMug){
 
-                                    var theH1=$h1(),
+                                    var theH1 = $h1(),
 
-                                        theDiv=$div(),
+                                        theDiv = $div(),
 
                                         fullProfileButton=$button('full', function(){
                                                 $l('/wap/profiles/'+ username);
@@ -184,6 +168,141 @@ ChatRoom=function(title, color, id){
 }
 
 
+$.chatRoom=function(title, color, id){ title = title||'chatbox';color=color||'b'; id=id||'cbo'
+
+    var theTextInput= $.textInput().K('form-control'),
+
+        theSendButton= $.button('send', function(){
+
+            $l('sending: '+theTextInput.val())
+
+            socket.emit('sendChatMessage', {
+
+                chatRoomName: title,
+
+                username: _username,
+
+                message: theTextInput.val() })  }).K("btn btn-mini" ),
+
+
+        thePicButton= $.button('pic',function(){  pop('pic select')  }).K("btn btn-mini" ),
+        thePopButton= $.button('pop', function(){ socket.emit('p', theTextInput.val(), title)}).K("btn btn-mini" ),
+
+
+        theMessages = $.div('x').id( 'cbi' ).overflow('auto'),
+
+        usersInRoomBox= $.div()
+
+
+    theWindow = $.win('chatroom: '+title).id(id).minW(600).minH(400).C(color)
+
+    theWindow.A(
+
+        $.row(
+
+            $.col(8,
+
+                theMessages,
+                theTextInput,
+                theSendButton,
+                thePopButton,
+                thePicButton ),
+
+            $.col(4, $.h5('users:'),
+
+            // "<div class="m4"><h5>users:</h5></div>"
+            // class should be.. "col-md-4" ?!
+
+
+                usersInRoomBox
+            ))
+    )
+
+
+    var updateUsersDiv=function(u){
+
+        usersInRoomBox.empty()
+
+        if(A(u)){ _.each(u,  function(username){
+
+                usersInRoomBox(
+
+                    $.h5(username).$(
+
+                        function(){
+
+                            alert('clicked '+username)
+
+                            $.post('/mug', {u: username},
+
+                                function(userMug){
+
+                                    var theH1 = $.h1(),
+
+                                        theDiv = $.div(),
+
+                                        fullProfileButton=$button('full', function(){
+                                            $l('/wap/profiles/'+ username);
+                                            window.location= '/wap/profiles/'+ username
+                                        })
+
+
+                                    $.win(
+
+                                        $.div()(
+
+                                            $.br(), $.hr(), $.h3('User: '+ username),
+
+                                            $.br(),
+
+                                            $.canvas(300, 300).fit( userMug ),  theH1,   theDiv,
+
+                                            ms = $.textarea().C('w','z'),
+
+                                            $mailButton( ms, username ),
+
+                                            $chatButton( username, ms ),
+
+                                            fullProfileButton  ) )
+
+                                    showStatus(username, theDiv)
+
+                                    makeProfile(username, theDiv) }
+
+                            )}  )
+
+                )})}
+
+        else { usersInRoomBox.A($.h5('no users'))}}
+
+    var chatController={
+
+        u: updateUsersDiv,
+        updateUsersDiv: updateUsersDiv,
+
+        w: theWindow,
+        window: theWindow,
+
+
+        t: function(){return theWindow.toggle()},
+        toggle: function(){return theWindow.toggle()},
+
+        b:function(m){  theMessages.A($.h5(m).col('w'))  },
+        write:function(m){  theMessages.A( $.h5(m).col('w'))  },
+
+
+        s:function(m){  theMessages.A($.h5(m).col('z'))  },
+        writeBlack: function(m){  theMessages.A( $.h5(m).col('z')) }}
+
+    //add room to client rooms list
+    chatRoomsObject[title] = chatController
+
+    //repeatedly emit 'room', which launches room user updates!
+    setInterval( function(){ socket.emit('room', title)}, 1000)
+
+    return chatController
+}
+
 
 
 
@@ -199,7 +318,6 @@ BasicLayout =format=function(){
     ContainerDiv( row39(s1, s2) )}
 
 
-
 ContainerDiv  = CT = function(){
 
     var args = G(arguments),
@@ -210,7 +328,11 @@ ContainerDiv  = CT = function(){
 
     _.each(args,  function(v){ theDiv(v) } )
 
-    return theDiv}
+    return theDiv
+
+}
+
+
 
 
 
@@ -311,9 +433,6 @@ add=function rc( messagesArray, a ){
 
 
 
-
-
-
 //runs a fn on the qq of all obs of certain class
 all=function(s,func){
     _.each($('.'+s),
@@ -331,8 +450,12 @@ getMessages = gMsgs=function rc(u,M){
     qJ(u,
         function(d){
             add(M,d)
+
         all('msg', function(m){
-            m.$$(pof('/nMsg',{n:m.T()},rc))})
+
+            m.$$(pof('/nMsg',{n:m.T()},rc))
+
+        })
 
         })}
 
@@ -350,10 +473,6 @@ dataValue=dV=function rc(title, content){
     if(title){data.t =data.title =data.topic=title.V()}
 
     return data}
-
-
-
-
 
 
 
@@ -582,22 +701,9 @@ sendMessage =iMsg=function( toWho, message ){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
     var size,  theWindow,  text,  moreButton,  lessButton, closeButton
-
 
     moreButton = $buttonRight('>', function(){
 
@@ -620,8 +726,6 @@ $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
         .P(10).B(4).bs('-').bc('o').auto()
 
     (  moreButton,  lessButton.hd(), closeButton  ).drg().a()
-
-
 
     if(S(a)){ text= a }
 
@@ -665,6 +769,71 @@ $window =$win=win=function(  a, c,  id ){//title/ob?,color,id
 
 
 
+
+
+$.win =$.window=function(  a, c,  id ){
+
+    var size,
+        theWindow,
+        text,
+        moreButton,
+        lessButton,
+        closeButton
+
+
+    moreButton = $.buttonRight('>', function(){
+        theWindow.WH(400)
+        lessButton.show()
+        moreButton.hide()
+        })
+
+
+    lessButton = $.buttonRight('<', function(){
+        theWindow.WH('auto')
+        moreButton.show()
+        lessButton.hide()
+    }).hide()
+
+    closeButton = $.buttonLeft('X',function(){ theWindow.remove() })
+
+    theWindow=$.divA(size||400)
+
+
+        theWindow.C('b').opacity(.9).overflow('auto')
+
+        theWindow.pad(10).borderWidth(4).borderStyle('dashed')
+
+            theWindow.WH('auto').A(  moreButton,  lessButton.hide(), closeButton  ).drag().A()
+
+    if(S(a)){ text= a }
+
+    if(N(a)){ size= a }
+
+    if(O(a)){ theWindow.A(a) }
+
+
+    if(text){
+
+        theWindow.A(
+
+            $.p(text).fontSize(24).K('text-center').C('X').marHor(10).padHor(30),
+            $.hr().col(c||'z').fontSize(10)
+
+        )
+    }
+
+
+    if(id){ theWindow.id(id) }
+
+    return theWindow
+
+}
+
+
+
+
+
+
 PrivateChatRoom  = function(roomName){
 
 
@@ -680,7 +849,6 @@ PrivateChatRoom  = function(roomName){
 
         socket.emit('j', roomName)//why cant i change this emit name to joinRoom ???
     }
-
 
 
 
@@ -712,9 +880,7 @@ _pop=function(){
 
 }
 
-
-
-pop=function(message, ops){
+pop =function(message, ops){
 
     if( S(ops) ){ return pop(ops, { t: message } )    }
 
@@ -724,12 +890,9 @@ pop=function(message, ops){
 
         message = message || 'pop pop',
 
-        modalBody = ModalBody(  $h2(message)),
+        modalBody = ModalBody(  $h2(message) ),
 
         theModal =   _pop(   modalBody  )
-
-
-
 
     var titleColor= ops.tc|| 'z',
         headerColor =ops.hc||'z',
@@ -771,61 +934,135 @@ pop=function(message, ops){
         //color
         else { theModal.s({  c: ops.c   }) } }
 
-
-
     //color of background of modal itself
     if(ops.C){ modalBody.s({ C: ops.C })    }
-
-
 
     //this color takes over the whole screen!
     //this is the background color of the hiding body
     if(ops.bc) {  theModal.s({  C: ops.bc   })}
-
 
     return theModal
 
 }
 
 
+$._pop=function(){
+
+    var modalContent = $.modalContent()
+
+    _.each(arguments,
+
+        function(arg){  modalContent.A(
+
+            S( arg )? $.div().text(arg) : arg
+
+        )}
+    )
+
+    return $.modalFade().A(  $.modalDialog().A(  modalContent   ) )
+
+}
 
 
 
 
+$.pop=function(message, ops){
+
+    if( S(ops) ){ return $.pop(ops, { title: message } )    }
+
+    ops = O(ops)? ops : {}
 
 
-dang=function(t,e){//random cool text input/alert
+        message = message || 'pop pop'
+
+        modalBody = $.modalBody().A( $.h2( message ) )
+
+        theModal =  $.modalFade().A(  $.modalDialog().A(  $.modalContent().A( modalBody)   ) )
+
+
+
+    if(!ops.hide){ theModal.modal() }
+    if(ops.title){
+
+
+        modalBody.prepend(
+            $.h1(ops.title).col(ops.titleColor||'z'),
+
+            $.hr().C( ops.headerColor||'z'  ).css('height', 2)
+
+
+
+        )
+    }
+    if(ops.button ){ modalBody.A( $.button( ops.button )  )}
+    if(ops.drag ){  theModal.drag() }
+    if(ops.opacity ){ theModal.opacity( ops.opacity ) }
+
+
+    //text color of the MESSAGE
+    if(ops.col){  theModal.col( ops.col)}
+
+    //color of background of modal itself
+    if(ops.C){
+        //flash like crazy
+        if( ops.C == '*' ){ setInterval( function(){ modalBody.C( $r() ) }, 100) }
+
+        else { modalBody.C( ops.C ) }
+    }
+
+
+
+    //this color takes over the whole screen!
+    //this is the background color of the hiding body
+    if(ops.backgroundColor) {  theModal.C( ops.backbroundColor)  }
+    return theModal}
+
+$.dangMessage=function(msg){
+
+
+    var theForm = $.span().delButton()
+
+        theForm.A(   $.h2(msg).K('alert alert-danger')  )
+
+    return theForm.prependTo('body')}
+$.floatingInput=function(text, func){
 
     var args=G(arguments),
-        theForm
 
-    if(args.n){
+        theForm=$.form().K('text-center').C('o').fontSize(20).drag().minW(200 )
 
-        theForm = $span().xb()(
+    theForm.A(
 
-            $h2(args.f).k('alert alert-danger')
+        $.button(text).type('submit'),
+        $.input()
 
-        ).pp()}
+    )
 
+    if( F(func) ){ theForm.submit(func) }
 
-    else {
-
-        theForm=form().k('text-center').c('o').font(20)(
-
-            dv(t).k('btn').font(30),
-
-            tx(),
-
-            $span(' ')
-        )}
-
-
-    if( F(e) ){ theForm.o('s', e) }
-
-
-    // if '+' : make it drag, and give it a min width
-    if(args.p){ theForm.drg().s({'min-width':200}) }
 
     return theForm}
 
+$.$modalHeader=function(title){
+   return $.modalHeader().A(
+        $.button('x').K("close").dismiss("modal"),
+        $.h4(title).K("modal-title").id("myModalLabel")
+    )
+}
 
+    MOODAL=function(){z()
+
+        var header= $.$modalHeader('title')
+
+        var body=$.modalBody().A(  $.h3('modal body')  )
+
+        var footer= $.modalFooter().A(
+            $.button('close').K("btn").dismiss('modal'),
+            $.button('save').K("btn").C('r'))
+
+      m= $.div().K("modal fade").id("basicModal").A(
+           $.modalDialog().A(
+               $.modalContent().A(   header,body,footer )   )
+       ).A()
+
+    }

@@ -10,18 +10,22 @@ $.fn.C = function(col, c2){
     return this.css('backgroundColor', oO('c', col))}
 
 
-$.fn.A=function(stuff) {
-
-   if( U(stuff)){ $('body').append(this); return this}
-
+$.fn.A=function(stuff){
+   if( U(stuff)){$('body').append(this); return this}
     this.append.apply(this, arguments)
-    return this
+    return this}
 
-}
 
-$.fn.W=function(width){return width?this.width(width):this.width()}
+$.fn.W=function(width){return width? this.width(width): this.width()}
+$.fn.H=function(height){return height? this.height(height): this.height()}
+$.fn.WH=function(w,h){h=h||w;return this.W(w).H(h)}
 
-$.fn.H=function(height){return height?this.height(height):this.height()}
+$.fn.minW=function(a){return this.css('min-width',a)}
+$.fn.minH=function(a){return this.css('min-height',a)}
+
+$.fn.maxW=function(a){return this.css('max-width',a)}
+$.fn.maxH=function(a){return this.css('max-height',a)}
+
 $.fn.Z=function(w,h){return this.W(w).H(h||w)}
 $.fn.Y=$.fn.top=function(top){return top?this.css('top', top):this.css('top')}
 $.fn.X=$.fn.left=function(left){return left?this.css('left', left):this.css('left')}
@@ -73,11 +77,39 @@ this.each(function(){
 }
 
 
+
+
 $.fn.mar=function(margin){
 
     if(U(margin)){ return this.css('margin') }
 
     this.css( 'margin' , margin ); return this }
+$.fn.marBottom=function(margin){
+
+    if(U(margin)){ return this.css('marginBottom') }
+
+    this.css( 'marginBottom' , margin ); return this }
+$.fn.marTop=function(margin){
+
+    if(U(margin)){ return this.css('marginTop') }
+
+    this.css( 'marginTop' , margin ); return this }
+$.fn.marLeft=function(margin){
+
+    if(U(margin)){ return this.css('marginLeft') }
+
+    this.css( 'marginLeft' , margin ); return this }
+$.fn.marRight=function(margin){
+
+    if(U(margin)){ return this.css('marginRight') }
+
+    this.css( 'marginRight' , margin ); return this }
+
+$.fn.marHor=function(a){return this.marLeft(a).marRight(a)}
+$.fn.marVer=function(a){return this.marTop(a).marBottom(a)}
+
+
+
 
 $.fn.J= $.fn.animate
 $.fn.K= function(){  $.fn.addClass.apply(this, arguments); return this  }
@@ -94,17 +126,38 @@ $.fn.textAlign=function(z){
 
     return this}
 
-$.fn.opacity=function(z){
+$.fn.opacity=$.fn.alpha=function(z){
 
     this.css('opacity', z)
 
     return this}
 
-$.fn.alpha=function(z){
+$.fn.type=function(type){
+    if(U(type)){return this.attr('type')}
+    this.attr('type',type);return this
+}
 
-    this.css('opacity', z)
+$.fn.display=function(display){
+    if(U(display)){return this.css('display')}
+    this.css('display',display);return this
+}
 
-    return this}
+
+
+$.fn.float=function(float){
+    if(U(float)){return this.css('float')}
+    this.css('float',float);return this
+}
+
+$.fn.overflow=function(overflow){
+    if(U(overflow)){return this.css('overflow')}
+    this.css('overflow',overflow);return this
+}
+
+$.fn.href=function(href){
+    if(U(href)){return this.attr('href')}
+    this.attr('href',href);return this
+}
 
 $.fn.borderStyle= function(style){
 
@@ -122,8 +175,6 @@ $.fn.borderWidth=function(w){
     this.css('border-width',w)
 
     return this}
-
-
 $.fn.hold=function(a){
 
     a.P('s')
@@ -133,11 +184,32 @@ $.fn.hold=function(a){
 }
 
 
-
-
 $.fn.pad=function(padding){
     if(U(padding)){return this.css('padding')}
     this.css('padding',padding);return this}
+
+$.fn.padTop=function(padding){
+    if(U(padding)){return this.css('paddingTop')}
+    this.css('paddingTop',padding);return this}
+$.fn.padBottom=function(padding){
+    if(U(padding)){return this.css('paddingBottom')}
+    this.css('paddingBottom',padding);return this}
+$.fn.padLeft=function(padding){
+    if(U(padding)){return this.css('paddingLeft')}
+    this.css('paddingLeft',padding);return this}
+
+$.fn.padRight=function(padding){
+    if(U(padding)){return this.css('paddingRight')}
+    this.css('paddingRight',padding);return this}
+
+
+
+$.fn.padHor=function(a){return this.padLeft(a).padRight(a)}
+$.fn.padVer=function(a){return this.padTop(a).padBottom(a)}
+
+
+
+
 
 
 $.fn.bor=function(border){
@@ -147,7 +219,6 @@ $.fn.bor=function(border){
 $.fn.zIndex=function(z){
     if(U(z)){return this.css('z-index')}
     this.css('z-index',z);return this}
-
 $.fn.el = function(e){
     if(U(e)){
         console.log( $('<div>').append(  this.clone()  ).html() )
@@ -168,7 +239,7 @@ $.div = function(col, width, height){
 
     if( U ( col ) ){
 
-        return $( '<div>' ).C( 'n' )
+        return $( '<div>' )
 
     }
 
@@ -184,23 +255,51 @@ $.div = function(col, width, height){
 
         return d }
 
-    if(N(col)){ return $.div( 'o', col, width )}
+
+    if(N(col)){
+
+        var d = $( '<div>' )
+
+         d.W( col )
+
+        if( N ( width ) ){ d.H( width ) }
+
+        return d
+
+    }
+
+
 
  }
+
+$.fn.dismiss=function(a){
+    return this.attr('data-dismiss',a)
+}
+
+$.fn.delButton=function(){
+var that=this
+
+        this.prepend(
+
+            $.div().A(
+                $.button(  'x', function(){ that.remove() }).K('pull-right').mar(20)
+            )
+
+        )
+
+
+        return this}
+
+
 
 $.divA = function(col, width, height){
 
 
-
-    if( U ( col ) ){
-
-        return $( '<div>' ).C( 'n' )
-
-    }
+    if( U ( col ) ){   return $( '<div>' ).C( 'n' ).P('absolute') }
 
     if( S(col)) {
 
-        var d = $( '<div>' )
+        var d = $( '<div>' ).P('absolute')
 
         d.css( 'backgroundColor', oO( 'c' , col ) )
 
@@ -210,9 +309,11 @@ $.divA = function(col, width, height){
 
         return d }
 
-    if(N(col)){ return $.div( 'o', col, width )}
+    if(N(col)){ return $.div( 'o', col, width).P('absolute') }
 
 }
+
+
 
 $.button = function(buttonText, func){
     if(F(buttonText)){return $.button('submit', buttonText)}
@@ -228,6 +329,7 @@ $.buttonL = function(buttonText, func){
     b.click(func)
     return b.K('btn-lg')}
 
+$.hr=function(){return $('<hr>')}
 $.span = function(text){
 
     var span = $( '<span>' )
@@ -235,6 +337,29 @@ $.span = function(text){
     if( text ){  span.text(text)  }
 
     return span }
+
+
+$.p = function(text){var p = $( '<p>' ); if( text ){ p.text(text)  }; return p}
+
+$.paragraphs=function(){ _.each(arguments,function(arg){$.p(arg).A()})}
+
+
+
+$.submit= $.submitButton = function(buttonText, func){
+    return $.button(buttonText, func).type('submit')
+}
+
+
+$.form=function(){
+    return $('<form>')
+}
+
+
+$.glyph=$.glyphicon=function(glyph, a){
+
+    var s = $.span(a).K("glyphicon glyphicon-" + glyph)
+
+    return s}
 
 
 ///
@@ -319,10 +444,7 @@ $.pg=function(a){
 
     else {
 
-        if( S(v) ){
-
-            v = sp(v)
-        }
+        if( S(v) ){  v = sp(v)   }
 
         p(v)
     }
@@ -350,6 +472,8 @@ $.span2=function(){
     if(str){ theSpan.T(str) }
 
     return theSpan}
+
+
 $li=function(){var g=G(arguments),
     l=qq('li')
 
@@ -361,30 +485,54 @@ $li=function(){var g=G(arguments),
 
 
 
+
+
 //finish later..
 $.a= function(a,f){
 
-    var g=G(arguments),
+    var g=G(arguments),   a=g[0],  f=g[1],l
 
-        a=g[0],
-
-        f=g[1],
+    a=a||''
 
         l = $('<a>').id(a).A(a)
 
-    if(F(f)){
-        l.click(f)} else {
-        l.hr(f||'#')}
+    if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )   }
 
-    if(g.n){l.dd()}
+   // if(g.n){ l.K('dropdown-toggle').attr({ 'data-target' : 'dropdown' }) }
 
-    if(g.p){l=li(l)}
 
-    if(g.m){l=li(l).k('A')}
+    //if(g.p){ l = $.li( l ) }
+
+    //if(g.m){ l = $.li( l ).K('active') }
 
     return l}
 
+//twitter
 
+$.dropDown=function(a,f){   var l = $('<a>').id(a).A(a)
+    if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
+        return   l.K('dropdown-toggle').attr({ 'data-target' : 'dropdown' })}
+
+$.active=function(a,f){   var l = $('<a>').id(a).A(a)
+    if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
+        return   l.K('active') }
+
+$.liA=function(a,f){
+
+    var l = $('<a>').id(a).A(a)
+
+    if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
+
+      return $.li().A( l )
+
+}
+
+
+$.b=function(a){
+    var b= $('<b>')
+    if(a){b= b.A(b)}
+    return b
+}
 
 
 
@@ -405,29 +553,18 @@ $ul = ul=function(){
 $.li =function(something){var g=G(arguments),
     l=$('<li>')
 
-   if(U(something)) {return l}
+   if(D(something)) {l.A(something)}
     //klass or add
 
-    _.each(g,
-        function(v){
-
-            if( A(v) ){
-
-                l.k(v[0])
-            }
-
-            else{
-
-                l(v)
-            }
-        })
 
 
-    if(g.p){l.k('A')}//active
 
-    if(g.n){l.k('dd')}//dropdown
+   // if(g.p){ l.k('A')}//active
+
+    //if(g.n){ l.k('dd')}//dropdown
 
     return l}
+
 
 
 
@@ -449,6 +586,8 @@ $a =function(a, func){
     if(g.m){theEl=li(theEl).k('active')}
 
     return theEl}
+
+
 
 ////
 
@@ -709,26 +848,86 @@ $.canvas=function(col, width, height){
 
     var el
 
-    if( U ( col ) ){  return $( '<canvas>' ).C( 'b' )   }
+    if( U ( col ) ){ return superCanvas( $( '<canvas>' ) ).C( 'b' )   }
 
-    if( N(col) ){ return $.canvas( 'x', col, width )}
+    if( N(col) ){ return  $.canvas( 'x', col, width   )}
 
-    if( S(col) ) {
+    if( S(col) ){
 
         el = $( '<canvas>' )
 
         el.css( 'backgroundColor', oO( 'c' , col ) )
 
-        if( N ( width ) ){ el.attr('width', width ) }
+        if( N ( width ) ){
 
-        if( N ( height ) ){ el.attr('height', height ) }}
+            el.attr('width', width )
+
+            el.attr('height', height || width)
+        }
+
+
+    return superCanvas(el)}
+
+
+    return el}
+
+
+$.fn.src  = function(a){
+
+
+    if( U(a) ){return this.attr('src')}
+
+    this.attr('src',  src(a) )
+
+    return this
+}
+
+
+IMAGE=function(){
+
+    i = $.img('me')//.A()
+
+}
+
+
+
+$.img=function(src, func){
+
+
+   var img = $( new Image() )
+
+    img.load(function(i){
+
+        i= $(i)
+
+       // i.W( i.W() )
+       // i.H( i.H() )
+
+    })
+
+    if(func) {
+
+        img.load(function (i) {
+            func(i.target)
+        })
+    }
+
+
+    if(src){ img.src(src)  }
+
+    return img}
+
+
+
+
+
+
+
+function superCanvas(el){
 
     el.canvas = el[0]
-
     el.context = el.canvas.getContext('2d')
-
-    el.stage = new createjs.Stage( el.canvas )
-
+    el.stage = new createjs.Stage(el.canvas)
     el.drawImage = el.dI=function(i){
 
         var args=G(arguments);
@@ -738,25 +937,48 @@ $.canvas=function(col, width, height){
         el.context.drawImage.apply(el.context, args)
 
     }
-
     el.draw=function(img){
 
         var args=G(arguments),  img=args[0]
 
-        im(img, function(i){
+        $img(img, function(i){
 
             args[0] = i
 
             el.drawImage.apply(el, args)
 
-        })  }
+        })}
 
+    el.W=function(w){
+        if(U(w)){return el.attr('width')}
+        el.attr('width',w); return el}
+
+    el.H=function(h){
+        if(U(h)){return el.attr('height')}
+        el.attr('height',h); return el}
+
+    el.WH=function(w,h){
+
+        if(U(w)){
+            var width=this.W(), height=this.H()
+            return {
+                width:width,  w:width,
+                height:height, h:height}}
+
+        h=h||w
+        return this.W(w).H(h)}
+
+
+
+    el.fit=function(a, X, Y){
+        a||'me'
+        X=X||0
+        Y=Y||0
+        el.draw(a, X, Y, el.W(), el.H())
+        return el}
 
 
     return el}
-
-
-
 
 
 
@@ -809,7 +1031,7 @@ VOLUME=function(){
 
     a= addBook('a')
     b=addBook('b')
-}
+};
 
 
 //mongoError: kill mongod processess!!!!  ps ax | grep mongod

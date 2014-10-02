@@ -64,7 +64,15 @@ SubmitButton=function(){
         button = $button.apply(0, args)
 
    return button.type('submit')
+
 }
+
+
+
+
+
+
+
 
 
 
@@ -139,9 +147,40 @@ btd=function(a){var g=G(arguments),a=g[0],
 
 
 //bt: green/white, block-float left
-$buttonRight=btr=function(t,f,C,c){return bt(t,f,C,c)
-    .s({C:'g',c:'w',y:'b',fl:'r'})}
+$buttonRight=btr=function(t,f,C,c){
 
+    return bt(t,f,C,c)
+    .s({
+            C:'g',
+            c:'w',
+            y:'b',
+            fl:'r'  })
+
+}
+
+
+
+$.buttonRight=function(text, func){
+
+    var b = $.button(text, func).float('right')//.display('block')
+
+    return b}
+
+$.buttonLeft=function(text, func){
+
+    var b = $.button(text, func).float('left')//.display('block')
+
+    return b}
+
+
+BUTTONRIGHT=function(){z()
+
+d= $.div('b', 500, 500).drag()
+
+    d.A(
+        b=$.buttonRight('yes')
+    )
+}
 
 
 

@@ -9,15 +9,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 _can=function(){
     return qq( $("<canvas>") )
 }
@@ -79,14 +70,23 @@ sCan=function( can ){
 
 
     //fit
-    can.f= can.fit=function f(a,X,Y){
+    can.f= can.fit=function f(a, X, Y){
+
         a||'me'
+
         X=X||0
+
         Y=Y||0
 
-        can.d(a,X,Y, can.w(),can.h())
+        can.d(a, X, Y, can.w(), can.h())
 
-        return can}
+        return can
+
+    }
+
+
+
+
 
 
     can.me=function me(n){//randomly draw my face

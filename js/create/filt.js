@@ -12,7 +12,10 @@ clF=function(a,b,c,d,e,f,g){return new C$.ColorFilter(a,b,c,d,e,f,g)}
 
 clMF=function(m){return new C$.ColorMatrixFilter(m)}
 
-CM=function(){var c=new C$.ColorMatrix()
+
+
+CM=function(){
+    var c=new createjs.ColorMatrix()
     c.b=c.adjustBrightness
     c.c=c.adjustColor
     c.C=c.adjustContrast
@@ -25,6 +28,8 @@ CM=function(){var c=new C$.ColorMatrix()
     c.A=c.toArray
     c.S=c.toString
     return c}
+
+
 
 
 blr=function(){

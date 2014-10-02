@@ -35,15 +35,6 @@ CSSSCALE=function(){z()
 
 
 
-
-
-
-
-
-
-
-
-
 offset=os=function(element){
 
     if(C(element)){element=C(element)};

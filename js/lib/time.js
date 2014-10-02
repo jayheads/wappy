@@ -73,19 +73,32 @@ STOP=function(){
     T$.removeAllEventListeners()
 }
 
-tt=function(a,b,c){var g=G(arguments),
+
+
+tt=function(a,b,c){
+
+    var g=G(arguments),
     t=true,
     f=false,
     a=g[0],
     b=g[1],
     c=g[2]
 
-    if(F(a)){return aEL(T$,'tick',
+    if(F(a)){
+
+        return aEL(T$,'tick',
         g.N? a
             :function(e){
-            if(!e.paused){a(e)}})}
 
-    if(O(a)){return aEL(T$,'tick',a)}
+            if(!e.paused){ a(e) }
+        })
+
+    }
+
+
+
+    if(O(a)){
+        return aEL(T$,'tick',a)}
 
     if(a=='?'){return !T$.getPaused()}
     if(a=='p'){T$.setPaused(f);return tt('?')}
@@ -93,15 +106,27 @@ tt=function(a,b,c){var g=G(arguments),
     if(a=='s'){T$.setPaused(t);
         return tt('?')}
 
-    if(a=='g'){return tt(tt('?')?'s':'p')}
+    if(a=='g'){return tt(
+
+        tt('?')? 's': 'p'
+
+    )}
 
 
-    if(a=='@'){return T$.init()}
-    if(a=='!'){return T$.reset()}
+    if(a=='@'){
+        return T$.init()}
+
+    if(a=='!'){
+        return T$.reset()}
+
     if(a=='e'){return T$.getEventTime(g.p?t:f)}
+
     if(a=='t'){return T$.getTime(g.p?t:f)}
+
     if(a=='#'){return T$.getTicks(g.n?t:f)}
+
     if(a=='md'){return t$.maxDelta}
+
     if(a=='M'){return T$.timingMode}
 
     if(a=='i'){
@@ -124,6 +149,11 @@ tt=function(a,b,c){var g=G(arguments),
     if(a=='tk'){return Ed(T$)}
 
 }
+
+
+
+
+
 
 
 tick=function(e){j.y(e.delta/1000*100,'-' )}

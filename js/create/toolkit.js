@@ -4,9 +4,13 @@ RUNNER=function() {
     canvas =   $.canvas(500, 500).id('canvas').A()[0]
 
     $.button('start', function(){
+
         imgMonsterARun = $img("/MonsterARun.png", handleImageLoad)
+
         imgMonsterAIdle = $img("/MonsterAIdle.png", handleImageLoad)
+
     }).A()
+
     $.button('reset', function(){
         stage.removeAllChildren()
         createjs.Ticker.removeAllListeners()
@@ -76,7 +80,6 @@ RUNNER=function() {
 
         sprite.gotoAndPlay("walk_h") 	//walking from left to right
 
-
         //sprite.shadow = new createjs.Shadow("#454", 10, 15, 14)
 
         sprite.name = "monster1"
@@ -86,36 +89,24 @@ RUNNER=function() {
         sprite.x = 16
         sprite.y = 32
         sprite.currentFrame = 10
-
         stage.addChild( sprite )
-
         // we want to do some work before we update the canvas,  // otherwise we could use Ticker.addListener(stage);
         createjs.Ticker.setFPS(40)
+        createjs.Ticker.addEventListener('tick', tick)}
 
-
-        createjs.Ticker.addEventListener('tick', tick)
-
-
-    }
-
-
-    tick= function(){
+    tick=function(){
 
         if (sprite.x >= screen_width - 16) {  sprite.direction = -90;  sprite.gotoAndPlay("walk")  } // Hit testing the screen width, otherwise our sprite would disappear // We've reached the right side of our screen   // We need to walk left now to go back to our initial position
-
         if (sprite.x < 16) {   // We've reached the left side of our screen // We need to walk right now
 
 
             sprite.direction = 90
 
-
             sprite.gotoAndStop("walk")
 
             stage.removeChild( sprite )
 
-
             spriteIdle.gotoAndPlay( "idle" )
-
 
             stage.addChild( spriteIdle )
 
@@ -137,6 +128,8 @@ RUNNER=function() {
 
 
 }
+
+
 cjs=createjs
 
 
@@ -366,8 +359,6 @@ BRITNEY=function(){
     loader.loadManifest(lib.properties.manifest)
 
 }
-
-
 BRIT2=function(){
 
     $.canvas(550,400).id('canvas').A()
@@ -457,76 +448,66 @@ BRIT2=function(){
 
 
 
-SCROLLER=function(){
+SCROLLER=function(){z()
+
+    var p
+
+    images =  {}
 
 
-     (function (lib, img, cjs) {
-
-         z()
-
-         var p; // shortcut to reference prototypes
-
-// library properties:
-         lib.properties = {
-             width: 550,
-             height: 400,
-             fps: 24,
-             color: "#FFFFFF",
-             manifest: []
-         };
-
-// symbols:
-
-
+    lib={properties : {  width: 550, height: 400,  fps: 24,  color: "#FFFFFF",  manifest: [] }};
 
          (lib.StartMarker = function() {
              this.initialize();
 
-             // Layer 1
+
              this.shape = new cjs.Shape();
              this.shape.graphics.f("#339933").s().p("Ah0B0QgvgwgBhEQABhDAvgxQAxgvBDgBQBEABAwAvQAwAxABBDQgBBEgwAwQgwAwhEABQhDgBgxgwg");
              this.shape.setTransform(0,0,1.515,1.515);
 
              this.addChild(this.shape);
-         }).prototype = p = new cjs.Container();
-         p.nominalBounds = new cjs.Rectangle(-25,-25,50,50);
+         }).prototype =  new cjs.Container().bounds(-25,-25,50,50);
 
 
-         (lib.Player = function() {
-             this.initialize();
+         (lib.Player = function(){
+             this.initialize()
 
              // Layer 1
-             this.shape = new cjs.Shape();
+             this.shape = new cjs.Shape()
              this.shape.graphics.f("#CC0000").s().p("AhtDHIAAmOIDaAAIAAGOg");
-             this.shape.setTransform(0,-20);
 
-             this.addChild(this.shape);
+             this.shape.setTransform(0, -20)
+
+             this.addChild( this.shape )
+
+
          }).prototype = p = new cjs.Container();
-         p.nominalBounds = new cjs.Rectangle(-11,-40,22,40);
+
+    p.nominalBounds = new cjs.Rectangle(-11,-40,22,40);
 
 
          (lib.Boundries = function() {
              this.initialize();
 
              // Layer 1
-             this.shape = new cjs.Shape();
+             this.shape = new cjs.Shape()
              this.shape.graphics.f().s("#0066CC").ss(38,1,1).p("AhPBfICfi9")
              this.shape.setTransform(846,100.5)
 
-             this.shape_1 = new cjs.Shape();
+             this.shape_1 = new cjs.Shape()
              this.shape_1.graphics.f().s("#0066CC").ss(38,1,1).p("AjCB9ICgifIDlha")
              this.shape_1.setTransform(777.5,163.5);
 
-             this.shape_2 = new cjs.Shape();
+             this.shape_2 = new cjs.Shape()
              this.shape_2.graphics.f().s("#0066CC").ss(38,1,1).p("Aw2FtIBGlAIHMDwQBXixCLhwQEJBtDPBgQBMAkBGg1QAegXANgkICgAAQBQlqFUANIBQiMIBQAA");
              this.shape_2.setTransform(627,261.5);
 
-             this.shape_3 = new cjs.Shape();
-             this.shape_3.graphics.f().s("#0066CC").ss(38,1,1).p("AikhAIjSCBAikhAIhQAAAF3APIobhP");
+             this.shape_3 = new cjs.Shape()
+             this.shape_3.graphics.f().s("#0066CC").ss(38,1,1).p("AikhAIjSCBAikhAIhQAAAF3APIobhP")
              this.shape_3.setTransform(-157.5,229.5);
 
-             this.shape_4 = new cjs.Shape();
-             this.shape_4.graphics.f().s("#0066CC").ss(38,1,1).p("AEYjHIszhGIQ3IbImulx");
+             this.shape_4 = new cjs.Shape()
+             this.shape_4.graphics.f().s("#0066CC").ss(38,1,1).p("AEYjHIszhGIQ3IbImulx")
              this.shape_4.setTransform(-17,253);
 
              this.shape_5 = new cjs.Shape();
@@ -543,7 +524,7 @@ SCROLLER=function(){
 
              this.shape_8 = new cjs.Shape();
              this.shape_8.graphics.f().s("#0066CC").ss(38,1,1).p("AsujgIBuAAID0A/QHfAfG2DcQBVAqBdAUQBxAYBDAxAnMihIBCARIAoAAQAjAtAPAHImkhIQCGgFCCAIgAmojgIkYAA");
-             this.shape_8.setTransform(222.5,239.5);
+             this.shape_8.setTransform(222.5,239.5)
 
              this.shape_9 = new cjs.Shape();
              this.shape_9.graphics.f("#0066CC").s().p("AmOE2IAApqIMdAAIAAJqg");
@@ -554,62 +535,50 @@ SCROLLER=function(){
              this.addChild(
                  this.shape_9,this.shape_8,this.shape_7,this.shape_6,this.shape_5,this.shape_4,
                  this.shape_3,this.shape_2,this.shape_1,this.shape);
-         }).prototype = p = new cjs.Container()
-         p.nominalBounds = new cjs.Rectangle(-214,72,1087,289);
-
-
-// stage content:
-         (lib.scroller2 = function() {
-             this.initialize();
-
-             // Layer 1
-             this._player = new lib.Player();
-             this._player.setTransform(115,147,1,1,0,0,0,11,20);
-
-             this._boundaries = new lib.Boundries();
-             this._boundaries.setTransform(40,31,1,1,0,0,0,40,31);
-
-             this._startMarker = new lib.StartMarker();
-             this._startMarker.setTransform(120.5,135.5,1,1,0,0,0,16.5,16.5);
-
-             this.addChild(this._startMarker,this._boundaries,this._player);
-         }).prototype = p = new cjs.Container();
-         p.nominalBounds = new cjs.Rectangle(61,272,1087,289);
-
-     })(lib =  {}, images =  {}, createjs)
-
-
-     $.canvas(550,400).id('canvas').A()
+         }).prototype = p = new cjs.Container().bounds(-214,72,1087,289);
 
 
 
+
+    lib.scroller2 = function(){// stage content:
+             this.initialize()
+
+        this._player = new lib.Player()//.transform(115,147,1,1,0,0,0,11,20);
+
+        this._boundaries = new lib.Boundries().transform(40,31,1,1,0,0,0,40,31);
+
+        this._startMarker = new lib.StartMarker()//.transform(120.5,135.5,1,1,0,0,0,16.5,16.5);
+
+        this.addChild(this._startMarker,this._boundaries,this._player)}
+
+    lib.scroller2.prototype = new cjs.Container().bounds(61,272,1087,289)
+
+    $.canvas(550,400).id('canvas').A()
     canvas = document.getElementById("canvas");
-    stuff=exportRoot = new lib.scroller2()
-
-         stage = new createjs.Stage(canvas);
-         stage.addChild( exportRoot )
-         stage.update();
-
-         createjs.Ticker.setFPS(lib.properties.fps);
-         createjs.Ticker.addEventListener("tick", stage)
-
+    exportRoot = new lib.scroller2()
+    stage = new createjs.Stage(canvas)
+    createjs.Ticker.setFPS( lib.properties.fps )
+    createjs.Ticker.addEventListener( "tick", stage )
+    stage.addChild( exportRoot )
 
 ///
 
-     startMarker = stuff._startMarker
-     player = stuff._player
-     boundaries =   stuff._boundaries
+     startMarker = exportRoot._startMarker
+     player = exportRoot._player
+     boundaries =  exportRoot._boundaries
 
      boundaries.x=0
      boundaries.y=0
 
     player.regY=0
 
+    player.regX=0
+
    startMarker.x=275
      player.x=275
 
     startMarker.visible=false
-
+    boundaries.x=500
      _vx=0
      _vy=0
 
@@ -618,96 +587,50 @@ SCROLLER=function(){
      kD('u', function(){   _vy=-20  })
      kU('l', function(){   _vx=0  })
      kU('r', function(){   _vx=0  })
-
-
-boundaries.x=500
-
-
-
-    $('canvas').click(function(){
-        _vy=-20
-
-    })
+    $('canvas').click(function(){_vy=-20})
 
 
   processCollisions=function(){
 
 
-    if(_vy > 0){
+    if(_vy>0){
 
-
-    if(player.y > canvas.height){
-        $l('fell off')
-        player.x=startMarker.x
-        player.y=startMarker.y
-        boundaries.x=500
-        boundaries.y=0
-        _vy=0 }
-
-    else {
-
-        collision =false
-
-
-        localCoords= boundaries.globalToLocal(player.x, player.y)
-
-
-       // if( boundaries.hitTest( player.x, player.y ) )
-
-            if( boundaries.hitTest( localCoords.x, localCoords.y) )
-        {
-            collision=true
-
-        }
-
-        if(collision){
-
-
-            while(collision){
-
-                _vy=0
-                player.y -= .1
-
-                collision = false
-
-                localCoords = boundaries.globalToLocal(player.x, player.y)
-
-
-                // if( boundaries.hitTest( player.x, player.y ) )
-
-                if( boundaries.hitTest( localCoords.x, localCoords.y) )
-
-                { collision=true }
+        if(player.y > canvas.height){
+            $l('fell off')
+            createjs.Tween.removeAllTweens()
+            boundaries.x=500
+            boundaries.y=0
+            _vy=0
+            player.x=startMarker.x
+            player.y=startMarker.y
 
             }
 
 
-           // $l('collsion done')
-
-            _vy=0
-        }
-
-    }
+        else {  collision =false
+                localCoords= boundaries.globalToLocal(player.x, player.y)
+                if(boundaries.hitTest(   localCoords.x, localCoords.y    )){collision=true}
 
 
-}
 
-}
+        if(collision){
+            while(collision){
+                _vy=0
+                player.y -= .1
+                collision=false
+                localCoords=boundaries.globalToLocal(player.x, player.y)
+                if( boundaries.hitTest( localCoords.x, localCoords.y) ){ collision=true } }
+            _vy=0}
+        }}}
 
 
      scrollStage=function(){
-
           boundaries.x += (canvas.width * .5) -  player.x
-
-          player.x = canvas.width * .5
-
-     }
-
+          player.x = canvas.width * .5}
 
 
 
      createjs.Ticker.addEventListener('tick', function(){
-
 
          _vy +=2
           player.x += _vx;
@@ -723,12 +646,6 @@ boundaries.x=500
 
 }
 
-
-SCROLLTEST=function(){
-
-
-
-}
 
 
 

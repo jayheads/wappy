@@ -1,25 +1,3 @@
-tweens={}
-tweens.rpunch=function(arm){
-
-    //arm=arm|| c1.g('arm')
-
-    tw(arm,
-        [{r:100,sx:-1 },800],
-        [{r:-20,sx:-2,sy:2},400,'eO'],
-        [{r:0,sy:1,sx: -.8},200])
-}
-tweens.lpunch=function(lf){
-
-    tw(lf,
-
-        [{r:10,s:1},800],
-
-        [{r:-140,s:2.5}, 600, 'eO'],
-
-        [{s:.8, r:0}, 1600])
-
-}
-
 QUEUE=function(){z()
 
     s=St(500).a()
@@ -32,8 +10,6 @@ QUEUE=function(){z()
         image=queue.getResult("myImage")
         s.b(image)}
 }
-
-
 QUEUEMUG=function(){z()
 
     s=St(500).a()
@@ -50,38 +26,6 @@ QUEUEMUG=function(){z()
         me=s.b( qu.gR("me") ).fn(SL)}
 
 }
-
-
-
-
-
-
-cycle=function(){
-
-    var cont=Ct()
-
-    cont.mg(function(mug){
-
-            mug.sxy(.4)
-
-
-        cont.b('uni', function(bitmap){
-
-                bitmap.nm('uni').sx(-.8).xy(-20, 200).rxy(240, 80)
-
-                TR(mug, cont)
-
-                RT(bitmap, cont)
-
-            })
-
-        })
-
-
-    return cont}
-
-
-
 mugCont=function(stage){
 
     var cont=Ct()
@@ -90,15 +34,10 @@ mugCont=function(stage){
 
 
     function onMug(){
-
         cont.mug= cont.bData(qu.gR("mug")).rgc('+')
-
-
-
         cont.flame=function(){cont.desuit()
             cont.a(
                 cont.suit= Ct().b('flame', function(flame){  }))}
-
         cont.uni=function(){
             cont.desuit()
             cont.a(
@@ -108,14 +47,8 @@ mugCont=function(stage){
                     cont.mug.sxy(.2).x(300)
 
                 }))}
-
-
-
         cont.guy=function(){cont.desuit()
             cont.a( cont.suit=Ct().b('guy', function(guy){  }))}
-
-
-
         cont.desuit=function(){
 
             cont.mug.sxy(1).xy(200)
@@ -125,13 +58,7 @@ mugCont=function(stage){
                 cont.suit=null
             }
         }}
-
     return cont}
-
-
-
-
-
 CONTMUG=function(){z()
 
     s=St(1000).a()
@@ -142,227 +69,254 @@ CONTMUG=function(){z()
 
 }
 
+Cycle1=function(){
+
+    var cont=new createjs.Container()
+
+    cont.mug(
+
+        function(mug){
+
+        mug.sXY(.4)
 
 
+        cont.bm('uni',
 
+            function(bitmap){
 
-cycle2=function(){
+            bitmap.sX(-.8).X(-20).Y(200).rX(240).rY(80)
 
-    var cont=Ct()
+                bitmap.name='uni'
+            TR(mug, cont)
 
-    var qu=Ql().c(graphics).l([
+            RT(bitmap, cont)
+
+        })
+
+    })
+
+    return cont}
+Cycle2=function(){
+
+    var cont= new createjs.Container()
+
+    var qu =  new createjs.LoadQueue().complete( graphics ).manifest([
+
         {id:"mug", src:"/getMug" },
-        {id:"uni", src:"/uni.png"}])
+        {id:"uni", src:"/uni.png"}
 
+    ])
 
     function graphics(){
 
-        mug=cont.bData(qu.gR("mug")).sxy(.4)
 
-        TR(mug, cont)
+        cont.bm(
+            qu.getResult("uni"),
+            function(b){bitmap = b.sX(-.8).X(-20).Y(200).rX(240).rY(80) })
+        bitmap.name=('uni')
+        cont.bm(
+              $img($.parseJSON(qu.getResult("mug"))),
+              function(b){mug =b.sXY(.4)})
 
-        tw([mug,'l'],
-            [{y:-10},200],
-            [{y:10},200],
-            [{y:0},200])
+        SL(mug, cont)
 
-        bitmap=cont.b(qu.gR("uni")).nm('uni').sx(-.8).xy(-20, 200).rxy(240, 80)
-        RT(bitmap, cont)
+        EaselTween([mug,'l'],   [{y:-10},200],   [{y:10},200],  [{y:0},200])
+
     }
 
 
     return cont}
+CYCLE=function(){z()
+    s= $stage(800, 800).A().tick()
+   c1=Cycle1()
+    c2=Cycle2()
+    s.A( c1, c2 )}
 
+Flame1=function(){
 
-
-
-
-
-
-
-flame=function(){
-
-    var c=Ct().fn(SL)
-
+    var c=new createjs.Container().drag()
 
     c.bm('flame',
 
         function(b){
 
-            tweens.shakeY(b)
+             tweens.shakeY(b)
 
-            wMb(function(b){
+            c.mug(function(b){
 
-                c.a(b)
-                b.rgc()
+                b.rCenter()
+
                 tweens.shakeX( tweens.rott(b) )
 
-                c.b('flame', tweens.shakeX)
+                    c.bm('flame', tweens.shakeX)
 
-            })
+                })
 
+            c.on('dblclick',function(){
 
-            c.o('$$',function(){
-
-                c.b('flame',
+                c.bm('flame',
                     function(b){
-                        b.sxy(.2)
+                        b.sXY(.2)
                         tweens.prod1(b)})
 
-                c.b('flame',
+                c.bm('flame',
 
                     function(b){
-                        b.sxy(.2)
+                        b.sXY(.2)
                         tweens.prod2(b)
 
 
 
-                    })})})
+                    })})
+
+        })
 
 
     return c}
+FLAME=function(){
+    s= $stage(800, 800).A().tick()
+    f=Flame1().X(300)
+    s.A(  f )
+}
+
+Bod2=function(){
+
+    var c1=new createjs.Container(),
+
+        cL=new createjs.Container()
+
+
+    c1.mug(function(m){
+
+        SL(m, c1)
+        m.sXY(.4);
+
+        c1.cI(m, 0)
+
+    })
+
+
+    c1.bm('arm',function(b){//arm=b;
+        b.name = 'arm';
+        b.sX(-.8).X(140).Y(100).rX(200).rY(80)
+
+        RT(b)
+
+        b.on('dblclick',function(){tweens.rpunch(b)})})
+
+    cL.bm('uparm',
+        function(b){//lu=b
+            b.name=('lu')
+            RT(b, cL)
+            b.sX(.8).X(80).Y(180).rX(200).rY(80)
+
+            cL.on('dblclick',
+                function(){
+                    tweens.lpunch(cL)})
+
+            cL.X(140).Y(100).rX(100).rY(100)
+        })
 
 
 
+    cL.bm('forearm',
+
+        function(b){//lf=b
+            b.name = ('lf')
+
+            b.sX(.8).X(-100).Y(140).rX(20).rY(120)
+
+            RT(b)
+
+        })
 
 
+    return c1.A(cL) }
+Bod1=function(){
 
-bod1=function(){
+    var  outerCont = new createjs.Container().drag()
 
-        var outerCont=Ct(), innerCont=Ct()
-
-        SL(outerCont)
-
-        outerCont(innerCont)
+    var  innerCont= new createjs.Container()
 
 
-        outerCont.mg(
+    outerCont.A( innerCont )
 
-            function(m){m.sxy(.4);SL(m,outerCont)
+    outerCont.mug(
+
+        function(m){
+            m.sXY(.4)
+
+            SL(m, outerCont)
 
 
-            outerCont.b('arm',function(b){
+            outerCont.bm('arm', function(b){
 
-                b.n('arm')
-                b.sx(-.8).xy(140,100).rxy(200,80)
+                b.name = 'arm'
+
+                b.sX(-.8).X(140).Y(100).rX(200).rY(80)
 
                 RT(b)
 
-                b.o('$$',function(){tweens.rpunch(b)})
+                b.on('dblclick',function(){  tweens.rpunch(b)  })
 
             })
 
+            innerCont.rX(40).rY(100).X(40).Y(120)
 
+            innerCont.bm('uparm', function(b){
 
-            innerCont.rx(40).ry(100).x(40).y(120)
+                b.name  = 'lu'
 
-            innerCont.b('uparm', function(b){
-
-                b.n('lu')
-
-                b.sx(.8).xy(80,180).rxy(200,80)
+                b.sX(.8).X(80).Y(180).rX(200).rY(80)
 
                 RT(b,innerCont)})
 
-            innerCont.b('forearm',  function(b){
+            innerCont.bm('forearm',  function(b){
 
-                b.n('lf')
+                b.name='lf'
 
-                b.sx(.8).xy(-100,140).rxy(20,120)
+                b.sX(.8).X(-100).Y(140).rX(20).rY(120)
 
                 RT(b)
 
 
-                innerCont.o('$$',function(){tweens.lpunch(b)
+                innerCont.on('dblclick', function(){tweens.lpunch(b)
 
 
                 })
 
 
-            })})
+            })
 
+        }  )
 
-    return outerCont}
+    return b=outerCont}
+BODS=function(){ z()
 
-
-
-
-bod2=function(){
-
-    var c1=Ct(), cL=Ct()
-
-
-
-    c1.mg(function(m){ SL(m,c1);m.sxy(.4); c1.cI(m,0) })
-
-    c1.b('arm',function(b){//arm=b;
-        b.n('arm');   b.sx(-.8).xy(140,100).rxy(200,80)
-        RT(b)
-        b.o('$$',function(){tweens.rpunch(b)})})
-
-    cL.bm('uparm',
-        function(b){//lu=b
-            b.n('lu')
-            RT(b, cL)
-            b.sx(.8).xy(80,180).rxy(200,80)
-
-            cL.o('$$',
-                function(){
-                    tweens.lpunch(cL)})
-
-            cL.xy(140,100).rxy(100,100)})
-
-
-
-    cL.bm('forearm',
-        function(b){//lf=b
-            b.n('lf')
-            b.sx(.8).xy(-100,140).rxy(20,120)
-            RT(b)
-
-
-
-
-
-
-        })
-
-
-    return c1.a(cL)}
-
-
-
-
-
-
+    s= $stage(800, 800).A().tick()
+    b1 = Bod1()
+    b2=Bod2()
+    s.A(   b1  )
+    s.A(   b2 )
+}
 
 BOD=function(){z()
+    s= $stage(800, 800).A().tick()
 
-    var b1=bod1(),
+    var b1=Bod1(),
 
-        b2=bod2().xy(300),
-        f=flame().xy(300,500),
-        cyc=cycle().x(400),
+        b2=Bod2().X(300).Y(300),
+
+        f=Flame1().X(300).Y(500),
+
+        cyc=Cycle1().X(400),
+
+        cyc2=Cycle2().X(500)
 
 
-        cyc2=cycle2().x(800)
 
-    stage=St(2000).a()
-
-    stage.a(b1)
-
-    stage.a(f)
-
-    stage.a(b2)
-
-    stage.a(cyc)
-
-    stage.a(cyc2)
+    s.A(b1, f, b2, cyc, cyc2)
 
 
 
 }
-
-
-
-

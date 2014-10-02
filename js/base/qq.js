@@ -200,6 +200,7 @@ qq = function(e,b,c,d){
 
     //del button
     q.xb= q.delBt=function(){//x button!!!
+
         q.pp(
             $div()(
                 $button.k( 'dropdown-toggle' ).at({ 'data-target' : 'dropdown' })(
@@ -614,7 +615,7 @@ qq = function(e,b,c,d){
 
     q.overflowAuto=function(){}
 
-    q.cen=function(){return q.k('tc')}
+    q.cen=function(){return q.K('text-center')}
 
     q.ty=q.type=function(t){return q.at({
         type:oO('i',t)})}//type
@@ -625,7 +626,11 @@ qq = function(e,b,c,d){
 
 
 
-    q.hr= q.href=function(a){return q.at({href:a})}
+    q.hr= q.href=function(a){
+        return q.at({href:a})
+    }
+
+
 
 
     q.at= q.attribute=function(a,b){

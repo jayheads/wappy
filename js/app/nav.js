@@ -11,18 +11,21 @@ WappyNav =  function(color){
     if(args.N){ z() }
 
 
-
     StandardNavbar(
 
         Nav(
-            DropdownLoader(Glyph('picture','create'),
+
+            DropdownLoader(
+
+                $.glyph('picture', 'create'),
+
                     'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
                 'tween','tweenart', 'easing', 'pack','sprite','transform' ,
                 'can' ,'rub','fan' ),
 
 
 
-            DropdownLoader(Glyph('glass','youplay'),
+            DropdownLoader($.glyph('glass','youplay'),
 
                'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
                 'groupvsgroup','shooty','hit','space','maggots'   ),
@@ -30,17 +33,17 @@ WappyNav =  function(color){
 
 
             DropdownLoader(
-                Glyph('tw','play'),
+                $.glyph('tw','play'),
                'iso1', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
                 'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'),
 
 
-            DropdownLoader(Glyph('glass','share'),'universe',
+            DropdownLoader($.glyph('glass','share'),'universe',
                 'users', 'status' , 'messages','posts','chatrooms',
                 'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
 
 
-            DropdownLoader(Glyph('glass','phaser'),
+            DropdownLoader($.glyph('glass','phaser'),
             'tanks','genmatch','breakout','tilecallbacks',
                 'acceleratetopointer','angularvelocity','oneway','impactevents',
                'ninjaimpact', 'aabbaabb',   'ninjalab',
@@ -49,7 +52,7 @@ WappyNav =  function(color){
 
             ),
 
-            DropdownLoader(Glyph('glass','phaser2'),
+            DropdownLoader($.glyph('glass','phaser2'),
 
                 'pixelpickscrolling','inputpriority', 'callallanimations','callall','displayorder','hsp',
                 'extendingagroup','getfirstdead','recycling','swapchildren','removebetween','removing',
@@ -57,9 +60,10 @@ WappyNav =  function(color){
 
             ),
 
+
             DropdownLoader(
 
-                Glyph('glass','box2d'),
+                $.glyph('glass','box2d'),
                     'box2d', 'wheel','heads', 'cups','pinball',
                     'revdemo','player','player1','player2', 'player3'
             )
@@ -73,13 +77,21 @@ WappyNav =  function(color){
 
 
         NavRight(
+
             Dropdown(
-                Glyph('user',_s().id('uname'),'-'),
-                $liA('view' ),   //   $liA(   Glyph('zoom-in','profile').o(  ldr('profile')  )  ),
-                $liA('logout').o(logOut))),
+
+                $.glyphicon('user',  $.span().id('uname') ),
+
+                $.liA('view' ),   //   $liA(   Glyph('zoom-in','profile').o(  ldr('profile')  )  ),
+
+                $.liA('logout', logOut)
+
+            )
+
+        ),
 
 
-        SearchNavRight()
+        $.searchNavRight()
     )
 
 
@@ -99,82 +111,72 @@ NavHeader=function(){
         return span}
 
 
-
-
-    var theButton = $button().k('navbar-toggle')
-        .at({'data-target':'#navbar','data-toggle':'collapse'})
-    (
+    var theButton = $.button().K('navbar-toggle').attr({'data-target':'#navbar','data-toggle':'collapse'}).A(
         '',
 
 
-        _IconBars(4)
-    )
-
-    var theBrand = $a('wappy', function(){$w.location='/wap'}).k('navbar-brand')
+        _IconBars(4))
 
 
 
-    return $div().k('navbar-header')(theButton, theBrand) }
+    var theBrand = $.a('wappy', function(){$w.location='/wap'}).K('navbar-brand')
 
+    return $.div().K('navbar-header').A(theButton, theBrand) }
 
 
 Nav=function(){
-    return $ul().k("nav navbar-nav").apply(0, G(arguments))
-}
+    return $ul().k("nav navbar-nav").apply(0, G(arguments))}
+
+
+NavRight=function(){return $ul().k("nav navbar-nav navbar-right").apply(0, G(arguments))}
 
 
 
-NavRight=function(){
-
-    return $ul().k("nav navbar-nav navbar-right").apply(0, G(arguments))
-
-}
-
-
-
-
-Dropdown=function(){  // DropdownMenu =
-
+Dropdown=function(){
 
     DropdownToggle0 =   function(dropdownName, glyphicon){
 
-        return    $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})
+        return    $.a().K('dropdown-toggle').attr({'data-toggle':'dropdown'}).A(
+            $.glyphicon(glyphicon),
+            $.b('&nbsp;'+ dropdownName),
+            $.span().K("caret")
+        )}
 
-        ( Glyphicon(glyphicon),  $bold('&nbsp;'+ dropdownName),  _s().k("caret") )}
 
 
-    var args=G(arguments),  theInnerUl, theOuterLi
+
+    var args=G(arguments),  theInnerUl= $.ul().K('dropdown-menu'), theOuterLi
 
 
-    theInnerUl = $ul().k('dropdown-menu')
 
 
     _.each(args.r,
         function(arg){
 
-            if(
-                S(arg)){
+            if(  S(arg)){
                 
                 arg=args.p?
 
-                    LiALoader(arg)   // $liA(arg, function(){load(arg)}   )
+                    LiALoader.A(arg)   // $liA(arg, function(){load(arg)}   )
 
-                    :   $liA(arg) } // *****
+                    : $.liA(arg) } // *****
  
-            theInnerUl( arg ) })
+            theInnerUl.A( arg ) })
 
 
 
     theOuterLi = $li().k('dropdown')(
         
-        $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})
-            (args.f,  _s().k('caret'))
+        $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})(
+            args.f,
+            $.span().K('caret')
+        )
 
     )
 
 
 
-    return theOuterLi( theInnerUl )
+    return theOuterLi.A( theInnerUl )
 
 
 }
@@ -183,38 +185,36 @@ Dropdown=function(){  // DropdownMenu =
 
 DropdownLoader=function(){
 
-    LiALoader = function(a){  return $liA(a, function(){load(a)}   )   }
+    LiALoader = function(a){return $.liA(a,   function(){ load(a) }   )   }
+
+
+
+
+
+
+
+
+
 
 
     var args=G(arguments),  theInnerUl, theOuterLi
 
 
-    theInnerUl = ul().k('dropdown-menu')
+    theInnerUl = $.ul().K('dropdown-menu')
 
 
-    _.each(args.r,
-        function(arg){
-            if(
-                S(arg)){
-
-                arg = LiALoader(arg)   // $liA(arg, function(){load(arg)}   )
-
-            } // *****
+    _.each(args.r,   function(arg){
+        if(  S(arg)){  arg = LiALoader(arg)    }
+        theInnerUl.A( arg ) })
 
 
+    theOuterLi = $li().K('dropdown').A(
 
-
-            theInnerUl( arg ) })
-
-
-
-    theOuterLi = li().k('dropdown')(
-
-        $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})
+        $a().K('dropdown-toggle').at({'data-toggle':'dropdown'})
         (
             args.f,
 
-            _s().k('caret')
+            $.span().K('caret')
 
         )
 
@@ -225,43 +225,48 @@ DropdownLoader=function(){
     return theOuterLi( theInnerUl )
 
 }
+
+
+
 // just pass in the contents of the collapsable part
 StandardNavbar=function(){
 
 
-   var navbar =  $div().k('navbar navbar-default navbar-inverse navbar-fixed-top').at({role:'naviation'})
+   var navbar =  $div().k('navbar navbar-default navbar-inverse navbar-fixed-top')
 
     //NavCollapse = function(a){return $div().k('collapse navbar-collapse').id('navbar').apply(0, a)}
 
+    var div= $div().k('collapse navbar-collapse').id('navbar')
 
-    return navbar(
+    div.apply(0,  G(arguments) )
+
+
+    navbar.A(
 
         NavHeader(),
 
-        $div().k('collapse navbar-collapse').id('navbar').apply(0, G(arguments))
-
-    ).pp()
-
-}
+        div
 
 
-SearchNavRight =  function(){
+    )
 
-    return $form().k("navbar-form navbar-right")//.at({role:'search'})
+    navbar.pp()
 
-        (
+return navbar}
+
+
+
+
+$.searchNavRight =  function(){
+
+    return $.form().K("navbar-form navbar-right").A(
             $.div().K('form-group').A(
 
                 $('<input>').K('form-control').attr('placeholder','search')
 
-            ),
+            ),    $.submitButton().A( $.glyphicon('search')))}
 
 
-
-            sb=SubmitButton( Glyphicon('search') )
-        )
-
-}
 
 
 

@@ -2,9 +2,8 @@ roomsObject = { }
 
 instantMessagesObject={ }
 
-
 //connect to the socket //..need to change this on the deployment server!!!
-socket = kk=io.connect()
+socket = kk = io.connect()
 
 
 
@@ -61,9 +60,14 @@ upop=function(image,  size){
 
 }
 
+
+
 dud=function(d,n){   $.post('/dud', {d:d},   function(u){   upop(u,n)  })}
 //sk-send du of your (first) can-el
+
 du=function(){var u=c0().toDataURL();socket.emit('du',u);return u}
+
+
 sendPopBox=function(){
 
     $('.pop').click(function(){
@@ -112,9 +116,6 @@ socket.on('pop',function(e){pop(e)})
 
 //this is triggered within a chatroom when someone clicks on a user and 'chats' them up
 //will need to update other parts to also activate this (instant messages from other parts of the site)
-
-
-
 
 
 

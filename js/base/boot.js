@@ -1,7 +1,150 @@
-//bs
-elip =function(a){return a+'&hellip;'}
 
-ex = function(){return '&times;'}
+ROWS=function(){z()
+
+
+
+    $.row(
+
+        $.colX(2, $.img('me') ),
+
+        $.colX(6, $.img('me')),
+
+        $.colX(4, $.img('me'))
+
+    ).A()
+
+
+}
+
+
+ROWS2=function(){z()
+
+    $.row(
+
+
+
+        $.div().K('col-xs-12 col-sm-6').A($.img('me') ),
+
+        $.div().K('col-xs-6 col-lg-4').A($.img('me') )
+
+    ).A()
+
+}
+
+ROWS3=function(){z()
+
+    $.row(
+
+        $.div().K('col-xs-6 col-sm-4').A($.img('me') ),
+
+        $.div().K('col-xs-6 col-sm-4').A($.img('guy')).C('o'),
+
+        $.div().K('col-xs-6 col-sm-4').A($.img('sun') )
+
+    ).C('b').A()
+
+}
+
+ROWS4=function(){z()
+
+    $.row(
+
+        $.div().K('col-xs-6 col-sm-4').A($.span('me') ),
+
+        $.div().K('col-xs-6 col-sm-4').A($.span('guy')).C('o'),
+
+        $.div().K('col-xs-6 col-sm-4').A($.span('sun') )
+
+    ).C('b').A()
+
+}
+
+
+
+H1=function(){
+z()
+
+    rule = "h1 {  font-size: 40px;  margin-bottom: 20px;  margin-left: 20px; }"
+
+    addStyle(rule)
+
+    $h1('this is a big font').A()
+
+}
+
+
+H12=function(){
+    z()
+
+
+    rule = "h1 {  font-size: 22px; margin: bottom 10px;  @media (min-width:@screen-tablet) {font-size: 40px;   margin-bottom: 20px;   margin-left: 20px; } }"
+
+    addStyle(rule)
+
+    $h1('this is a small font').A()
+
+}
+BREAK=function(){z()
+
+
+    addStyle( "h1 { @media (min-width:400px) {font-size: 10px;} }" )
+    addStyle( "h1 { @media (max-width:400px) {font-size: 20px;} }" )
+  // addStyle( "h1 { @media (min-width:1281px) {font-size: 40px;} }" )
+
+    $.h1('afsdfdsasdf').A()
+}
+
+
+
+$.addStyle=function(){
+    _.each(arguments, function(rule){
+
+        $('<style>'+ rule + '</style>').A()
+    })
+
+
+}
+
+
+BREAK2=function(){
+
+
+   // @media screen and (min-width: 600px) { .sixhundredminwidthclass {  width: 30%;  float: right;  } }
+
+  //  @media screen and (max-width: 600px) {.sixhundredmaxwidth {  clear: both; font-size: 1.3em; } }
+
+}
+
+BREAK3=function(){z()
+//works
+
+    $.addStyle(
+
+        "@media all and (min-width: 960px) { body {font-size: 80px;}  }",
+        "@media all and (max-width: 959px) and (min-width: 600px) {body{font-size: 40px;}}",
+        "@media all and (max-width: 599px) and (min-width: 320px) {body{font-size: 20px;}}"
+    )
+
+    $.addStyle(
+
+        "@media all and (min-width: 960px) { body {color:blue;}  }",
+        "@media all and (max-width: 959px) and (min-width: 600px) {body{color:red;}}",
+        "@media all and (max-width: 599px) and (min-width: 320px) {body{color:yellow;}}"
+    )
+
+
+    $.span('fasd').A()
+
+    $.h1('fasd').A() //doesnt respond
+}
+
+
+
+
+
+//elip =function(a){return a+'&hellip;'}
+
+//ex = function(){return '&times;'}
 
 
 
@@ -27,6 +170,15 @@ Row = row=function(n){
     return theDiv}
 
 
+$.row=function(n){
+
+    var theDiv= $.div().K('row')
+
+    _.each(arguments, function(arg){ theDiv.A(arg) })
+
+    return theDiv}
+
+
 
 //pass in size, and then args(contents) as a list (or as an array)
 Col = col = function(){var args=G(arguments),
@@ -41,7 +193,28 @@ Col = col = function(){var args=G(arguments),
 
 
 
-       //backhead
+$.col = function(){var args=G(arguments),
+
+    theDiv= $.div().K('col-md-' + args[0]),
+
+    iter = A(args[1])?  args[1] : args.r
+
+    _.each(iter, function(v){theDiv.A(v)})
+
+    return theDiv}
+
+
+$.colX = function(){var args=G(arguments),
+
+    theDiv= $.div().K('col-xs-' + args[0]),
+
+    iter = A(args[1])?  args[1] : args.r
+
+    _.each(iter, function(v){theDiv.A(v)})
+
+    return theDiv}
+
+
 
 
 row2=function(a,b){return row(col(6,a),col(6,b))}
@@ -247,9 +420,19 @@ ModalFooter = MFOOT=function(){
 
     var theDiv=$div().k('modal-footer')
 
-    _.each(G(arguments),function(arg){theDiv(arg)})// :)
+    _.each(G(arguments),function(arg){theDiv(arg)})
 
     return theDiv}
+
+
+
+$.modalFooter=function(){
+    var theDiv= $.div().K('modal-footer')
+    _.each( arguments, function(arg){theDiv.A(arg)})
+    return theDiv}
+
+
+
 
 
 ModalBody = MBODY= function(){
@@ -261,6 +444,12 @@ ModalBody = MBODY= function(){
 
     return theDiv}
 
+$.modalBody =   function(){
+    var theDiv = $.div().K('modal-body')
+    _.each( arguments, function(arg){theDiv.A(arg)})
+    return theDiv}
+
+
 
 ModalHeader = MHEAD= function(){
 
@@ -270,6 +459,18 @@ ModalHeader = MHEAD= function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
+
+
+$.modalHeader =   function(){
+
+    var theDiv = $.div().K('modal-header')
+
+    _.each( arguments,
+        function(arg){theDiv.A(arg)})
+
+    return theDiv}
+
+
 ModalContent =MCT=function(){
     var theDiv=$div().k('modal-content')
 
@@ -278,9 +479,27 @@ ModalContent =MCT=function(){
         function(arg){theDiv(arg)})
 
     return theDiv}
+
+$.modalContent = function(){
+    var theDiv= $.div().K('modal-content')
+
+    _.each(
+        arguments,
+        function(arg){theDiv.A(arg)})
+
+    return theDiv}
+
+
 ModalDialog =MDIALOG=function(){
     var theDiv=$div().k('modal-dialog')
     _.each(G(arguments),function(arg){theDiv(arg)});
+    return theDiv}
+
+
+
+$.modalDialog=function(){
+    var theDiv= $.div().K('modal-dialog')
+    _.each(arguments,function(arg){theDiv.A(arg)});
     return theDiv}
 
 
@@ -291,6 +510,11 @@ ModalForm =MFADE = function(){
 
 
 
+
+$.modalFade  = function(){
+    var theDiv= $.div().K('modal fade')
+    _.each(arguments,function(arg){theDiv.A(arg)});
+    return theDiv}
 
 
 
@@ -325,4 +549,32 @@ Modal = MODAL=function(a,b,contents){
 
 
 
+
+
+$.modal=function(a,b, contents){
+
+    var footer= $.modalFooter(
+
+        $.button('close').attr({  type:'submit',  'data-dismiss':'modal'  })
+
+    )
+
+    if(contents){ footer.A(contents) }
+
+    return $.modalForm(
+
+        $.modalDialog(
+
+            $.modalContent(
+
+                $.modalHeader(
+                    $.button('ooo').K('close').attr({'data-dismiss':'modal'}),
+                    $.h4(a).K('modal-title')   ),
+
+                $.modalBody(b),
+
+                footer
+
+            ))
+    )}
 

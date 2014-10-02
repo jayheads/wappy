@@ -1,19 +1,28 @@
 
-eaI=function(f){imgs(function(i){_e(i,f)})}
+eaI=function(f){
+
+
+    $.getJSON('/img',
+        function(i){ _.each(i, f) } )
+
+
+
+}
+
+
 
 
 sav=function(stage,a){ return function(){ stage.sv(a) }   }
 
+
+
 EDIT=function(){
 
+    stage = St(800)
 
+    var theDiv = $div()
 
-    stage=St(800);
-
-    var theDiv=$div()
-
-    CT(theDiv, stage).o('$$',     sav(stage, 'edit')    )
-
+    CT(   theDiv,     stage   ).o( '$$', sav(stage, 'edit'))
 
     eaI(function( img ){
 
@@ -21,7 +30,14 @@ EDIT=function(){
 
             $imageSizeFuncCan(
 
-                img.d,     1,      function(){  stage.bm(   img.d,  TR,  '+'  ) } //rgc
+                img.d,  1,   function(){
+                    stage.bm(   img.d,
+
+                        function(bm){
+                            //bm.rgc('+');
+                            TR(bm);
+
+                        },    '+'  ) }
 
             )
         )
@@ -31,6 +47,34 @@ EDIT=function(){
     return stage}
 
 
+
+EDIT1=function(){
+
+    stage = St(800)
+
+    var theDiv = $div()
+
+  container=  CT(   theDiv,     stage   )
+
+        container.o( '$$', sav(stage, 'edit'))
+
+    eaI(function( img ){
+
+        theDiv.A(
+
+            $.canvas('X',100, 100).fit(img.d).click(function(){
+
+
+                stage.bm(   img.d,
+
+                    function(bm){    bm.rCenter('+'); TR(bm)  }   ) })
+
+
+        )
+
+    })
+
+    return stage}
 
 
 
@@ -596,10 +640,26 @@ INDEXX=function(){z()
 
 
 FILTERS=function(){
+
     s=St(1000).a()
-    wMb(function(b){b.xy(-100,-50)
-        b.cc().clMF('a','+').clMF('w','+')
-        SL(b)},s)
+
+    wMb(
+
+        function(b){
+
+            b.xy(-100,-50)
+
+            b.cc().clMF('a','+').clMF('w','+')
+
+            SL(b)
+
+        },
+
+        s
+
+    )
+
+
 
     wMb(function(b){b.xy(400,0).cc()
         SL(b)
@@ -618,6 +678,8 @@ FILTERS=function(){
         b.xy(500,300).cc();SL(b)
         tt(function(e){
             v=sin(ag+=sp)*rg;b.cc('+').fl([blF(v,v,2)]) })},s)}
+
+
 
 
 

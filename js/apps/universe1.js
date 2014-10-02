@@ -7,8 +7,6 @@ fetchMugByUserModel2 =fetchMugByMugId= function(user, func){ //
 }
 
 
-
-
 fetchMugByUserModel =  function(user, func){ //
 
    // $.post( '/dud' , {d: user.m}, func)
@@ -67,7 +65,11 @@ SpeechBubble =  function( text, x, y ){
 
 
 //relies on 'you'.. actually just makes a similar object
-guyLocation=function(){  if( $w['you'] ){   return { u:_username,  x: you.x, y: you.y } }}
+guyLocation=function(){
+
+    if( $w['you'] ){
+
+        return { u:_username,  x: you.x(), y: you.y()} }}
 
 
 
@@ -77,25 +79,19 @@ guyLocation=function(){  if( $w['you'] ){   return { u:_username,  x: you.x, y: 
 addGuy=function(username, bitmap){
 
     //add guy to guysArray
-    guysArray.push({
+    guysArray.push(
 
-        u: username, username:username,  b: bitmap,  bitmap: bitmap
-
-    })
+        { u: username, username:username,  b: bitmap,  bitmap:bitmap}
+    )
 
     //add guy's bitmap to universe
 
-    bitmap.rCenter().X(600).Y(600).sXY(.4)
+    bitmap.rgc().xy(600).sxy(.4)
 
-   // bitmap.o('$$', function(bm){   bm.XX(); socket.emit('X', _username) })
+    bitmap.o('$$', function(bm){   bm.XX(); socket.emit('X', _username) })
 
-    uni.A( bitmap )
+    uni.a(bitmap)
 }
-
-
-
-
-
 
 
 
@@ -130,7 +126,7 @@ updateGuy =  function(user){
 
         var bitmap = getGuy( user.u ).bitmap
 
-        if(bitmap){ bitmap.X( user.x ).Y( user.y )  }
+        if(bitmap){ bitmap.x( user.x ).y( user.y )  }
 
     }
 
@@ -191,11 +187,9 @@ startUniverse = function(username){
 
             function(userMug){
 
-                Bm( userMug,  function( bitmap ){   addGuy(username, bitmap)
+                Bm( userMug,
 
-                    }  )
-
-            })
+                    function( bitmap ){  addGuy(username, bitmap)  }  )  })
     }
 
 }
@@ -210,19 +204,18 @@ startUniverse = function(username){
 UNIVERSE=function(){z()
 
 
-    uni = $stage(1000, 800).tick().A().backgroundImage('/beach.jpg')
 
+    var onMugReady=function(b, s){
 
-    uni.mug(
+        uni = s
 
-        function(b){
+        b.rgc().xy(600).sxy(.4);
 
-        you = b.rCenter().X(600).Y(600).sXY(.4).drag()
+        b.o('$$', function(bm){   bm.XX(); socket.emit('X', _username)})
 
+        you = b.fn(SL)
 
-        //b.o('$$', function(bm){   bm.XX(); socket.emit('X', _username)})
-
-        guysArray.push({ u :_username, b :you })
+        guysArray.push( {u:_username, b:you} )
 
         setInterval(updateGuy, 100)
 
@@ -230,16 +223,16 @@ UNIVERSE=function(){z()
 
             var theRow = row().a()
 
-            _.each(users,  function(user){
+                _.each(users,  function(user){
 
-                fetchMugByMugId( user,
+                    fetchMugByMugId( user,
 
-                    function(userMug){
+                        function(userMug){
 
-                        theRow( Thumbnail(   $pg(user.u),  $br(), userMug)
-                            .$(  function(){ inviteToUniverse(user.u)   })  )
+                            theRow( Thumbnail(   $pg(user.u),  $br(), userMug)
+                                .$(  function(){ inviteToUniverse(user.u)   })  )
 
-                    })   })
+            })   })
 
         })
 
@@ -247,17 +240,13 @@ UNIVERSE=function(){z()
         dv('b', 1000, 'auto').pp()(  $br(3),  $textInput('...', 'tx'),    $button('send', function(){ SpeechBubble(  qi('tx').V(),   '+')  }))
 
 
-    })
+    }
 
-
+    wMs(onMugReady,   1000,    800,  '/beach.jpg')
 
 
 
 }
-
-
-
-
 
 
 //RECIEVE speech bubble
@@ -276,10 +265,7 @@ socket.on('acceptUniverseInvitation', function(data){
     d = data
     //if it was YOUR invitation that was accepted
 
-    if( _username == data.toWho){
-
-        startUniverse(data.from)
-    }
+    if( _username == data.toWho){  startUniverse(data.from)   }
 
     // here u should really just be able to 'addUser'
 
@@ -304,15 +290,15 @@ socket.on('invite', function(invitation){  //dd=invitation
         var popInvitation = pop(
 
 
-            $div().A(
+            $div()(
 
-                $.img( userMug ).W( 200 ).H( 200 ),
+                $img( userMug ).w( 200 ).h( 200 ),
 
-                $.h1( 'chat with '+ invitation.from + '?' ),
+                $h1( 'chat with '+ invitation.from + '?' ),
 
-                $.button( 'ya' , function(){
+                $button( 'ya' , function(){
 
-                    popInvitation.m()
+                    popInvitation.m( )
 
                     startUniverse( invitation.from )  //so u are just adding them in?  // ah the function also supposedly takes into account the app not even being open // i could nix that for now
 
@@ -320,7 +306,7 @@ socket.on('invite', function(invitation){  //dd=invitation
 
                 }),
 
-                $.button( 'na' , function(){ popInvitation.m()  })
+                $button( 'na' , function(){ popInvitation.m()  })
 
             )
 

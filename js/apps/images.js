@@ -104,7 +104,7 @@ dim=draggableImage=function(){var g=G(arguments)
 pics=function(f){qG('/myPix',f)}
 
 imgs=function(f){
-    qJ('/img',f)
+    qJ('/img', f)
 }
 
 
@@ -123,7 +123,7 @@ qim=function(img,z,func){
 
 }
 
-$.img=function(srcUrl, onReadyFunc){
+$.imag=function(srcUrl, onReadyFunc){
 
     var i = $('<img>')
 

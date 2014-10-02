@@ -1,28 +1,27 @@
 
 //brilliant demo
-MATRIX=function(){// b2.o('rv',function(q,e){}  ,'-' )//c.uP(e.X, e.Y).y(10,'+')//SL(b2,ct)// SL(mid); //RT(b2,m)// gg= c.uP(e.X, e.Y,'+')
+MATRIX1=function(){// b2.o('rv',function(q,e){}  ,'-' )//c.uP(e.X, e.Y).y(10,'+')//SL(b2,ct)// SL(mid); //RT(b2,m)// gg= c.uP(e.X, e.Y,'+')
+
+    z()
+
+    $.div('b', 50, 50).A()
 
     s=St(1600,1000).a()
-
 
     // on stage enter, change background color, though you
     // cant see it here because stage fills screen
     // this lets u see, but messes other stuff up: qq(s.ob.canvas).drg()
-    s.o('e',co)
-
-
-
+    s.o('e', co)
 
     //make a container
-    s.ct(function(c,s){
-
-
+    s.ct(function(c, s){
 
         //the little me clicks do not hit the 'big' me underneath it.  that's normal.
         //but it does hit the container.  but this example shows off 'remove', so it only hits once
         //however, it continues to propogate on to the container. hmmm..
 
         c.b('me',
+
             function(b){
                 b.sxy(.2).xy(100,80)
                 b.o('$',fL('lit'),'/')  //on click, log('lit'), just once (remove listener)!
@@ -186,6 +185,323 @@ MATRIX=function(){// b2.o('rv',function(q,e){}  ,'-' )//c.uP(e.X, e.Y).y(10,'+')
 
 
 }
+
+MATRIX=function(){// b2.o('rv',function(q,e){}  ,'-' )//c.uP(e.X, e.Y).y(10,'+')//SL(b2,ct)// SL(mid); //RT(b2,m)// gg= c.uP(e.X, e.Y,'+')
+
+    z()
+
+
+    $.div('b', 50, 50).A()
+
+    s=$stage(1600,1000).A().tick()
+
+
+    // on stage enter, change background color, though you
+    // cant see it here because stage fills screen
+    // this lets u see, but messes other stuff up: qq(s.ob.canvas).drg()
+    s.on('mouseenter', co)
+
+    s.A(
+
+        c= new createjs.Container()
+
+    )
+
+    c.bm('me',
+
+        function(b){
+            //b.sxy(.2).xy(100,80)
+
+            //b.o('$', fL('lit'), '/')  //on click, log('lit'), just once (remove listener)!
+
+        })
+
+
+
+
+    //make a container
+    s.ct(function(c,s){
+
+
+
+        //the little me clicks do not hit the 'big' me underneath it.  that's normal.
+        //but it does hit the container.  but this example shows off 'remove', so it only hits once
+        //however, it continues to propogate on to the container. hmmm..
+
+
+
+
+
+
+
+// the middle size me demonstrates stopPropogation
+// if you click it, the container does not feel the click
+        c.b('me',function(b){
+            b.sxy(.4).xy(100,180)
+
+            b.o('$', fL('mid'), '-')  //on click, log('mid'), and stop prop
+
+        })
+
+
+
+
+
+
+        c.b('me',function(b){
+            b.sxy(1.5)
+            b.o('$',fL('big'))  //on click, log('big')
+
+        })
+
+        //on click, log('con')
+        c.o('$',  fL('con'))
+
+    })
+
+
+
+    s.ct(
+
+        function(c){
+
+            var vn=0,
+                rvn=0,
+                on=0,
+                ron=0
+
+
+            c.x(200)
+
+
+            c.mg(
+                function(b){
+                    b.sxy(.8).xy(200,80)
+                })
+
+
+            c.mg(
+                function(b){
+                    b.sxy(.8).xy(100,280)
+                })
+
+
+            c.mg(
+                function(b){
+                    b.sxy(.8).xy(340,180)
+                })
+
+            //this shows over/out vs rollover/rollout
+            //over/out get retriggered when switching between connected sprites
+            //rollover/rollout does not because it is still touching 'something'
+
+            c.o('v',function(){c.x(10,'+');$l('v: '+vn++)})
+            c.o('rv',function(){c.x(20,'-');$l('rv: '+rvn++)})
+            c.o('o',function(){c.y(10,'+');$l('o: '+on++)})
+            c.o('ro',function(){c.y(20,'-');$l('ro: '+ron++)})
+
+        }
+
+    ).MV(40)
+
+
+
+
+
+    s.ct(function(c,s){
+
+        c.x(700)
+        c.mg(function(b){b.sxy(.8).xy(200,80)})
+        c.mg(function(b){b.sxy(.8).xy(100,280)})
+        c.mg(function(b){b.sxy(.8).xy(340,180)})
+
+        //this example shows which sprites are acted upon with over/rollover
+        //over only affects one
+        //rollover affects ALL
+        //if you enter a sprite from outside, they all grow (via rollover),
+        //and the one sprite grows double (via over)
+
+
+
+        c.o('v',function(g,e){
+            $l('v')
+            g.sxy(.01,'+')})
+
+        c.o('rv',function(g,e){
+            $l('rv')
+            g.sxy(.01,'+')})
+
+        c.o('o',function(q,e,g){ })
+        c.o('ro',function(q,e,g){ })
+
+
+        // in summary,
+        // rollover sees all touching sprites as just one sprite, ignoring crossing the mouse over their boundaries..
+        // BUT, they will all recieve events separately
+
+    }).MV(40)
+
+
+
+
+    s.ct(function(c,s){
+
+        c.x(1400)
+
+        c.b('me',function(b){
+
+
+            //make the little me slide the entire container
+            //it acts as a handle! (for its container)
+            lit=b.sxy(.2).xy(100,80)
+            SL(b,c)
+
+
+
+
+
+            c.b('me',function(b){
+//big me will scale the little me
+                big=b.sxy(2).xy(100,180)
+                SC(b,lit)
+
+                c.b('me',function(b){ b.sxy(.6).xy(150,180)
+                    SL(b)
+                    RT(b,big) })
+            })
+
+        })
+
+
+//guy slides stage
+        c.b('guy',function(b){
+            b.sxy(.4).xy(100,180)
+            SL(b,s)
+        })
+
+
+
+    })
+
+
+
+
+}
+
+
+
+
+MOUSEENTERSTAGE=function(){z()
+    s=$stage(500, 500).A().tick()
+    s.bm('me')
+    s.on('mouseenter', function(){$('body').prepend('once<br>')}, null, true)
+    s.on('mouseenter', function(){$('body').prepend('many<br>')}, null, false)}
+
+
+HANDLEEVENT=function(){z()
+
+    s=$stage(500, 500).A().tick()
+
+
+    s.bm('me', function(b){me=b
+        cb = b.on('pressmove', function(){this.x++})
+    })
+
+
+    s.bm('guy', function(b){
+
+        b.handleEvent=function(){
+            this.y++
+        }
+
+        b.on('pressmove', b)
+
+
+
+    })
+
+
+
+}
+REMOVEEVENT=function(){z()
+
+    s=$stage(500, 500).A().tick()
+
+
+    s.bm('me', function(b){me=b
+        cb = b.on('pressmove', function(){this.x++})
+    })
+
+
+    s.bm('guy', function(b){
+
+        b.handleEvent=function(){
+            this.y++
+            me.off('pressmove', cb)
+        }
+
+        b.on('pressmove', b)
+
+    })
+
+
+
+}
+
+
+
+BUBBLE=function(){z()
+
+    stage=$stage(500, 500).A()
+
+    output = new createjs.Text(
+            "try clicking on the background vs the label text\n\nthe background & label are both inside of a Container named 'button'",
+            "13px courier").lWH(280,13).XY(190,10)
+
+
+    background = new createjs.Shape().N("background")
+
+    background.graphics.beginFill("red").drawRoundRect(0, 0, 150, 60, 10)
+
+
+   label=new createjs.Text("click me!", "bold 24px Arial", "#FFFFFF").N('label').tA("center").tB("middle").XY(150/2, 60/2)
+
+
+    button=new createjs.Container().N('button').XY(20).A(background, label)
+
+    // setting mouseChildren to false will cause events to be dispatched directly from the button instead of its children.
+    // button.mouseChildren = false;
+
+    stage.A(button, output)
+
+    // set up listeners for all display objects, for both the non-capture (bubble / target) and capture phases:
+
+
+    _.each([stage,button,label,background], function(target){
+        target.on("click", handleClick, false);
+        target.on("click", handleClick, true)})
+
+    stage.update()
+}
+
+
+function handleClick(evt){
+
+    if (evt.currentTarget == stage && evt.eventPhase == 1) {
+        // this is the first dispatch in the event life cycle, clear the output.
+        output.text = "target : eventPhase : currentTarget\n"}
+
+    output.text += evt.target.name+" : "+evt.eventPhase+" : "+evt.currentTarget.name+"\n";
+
+    if (evt.currentTarget == stage && evt.eventPhase == 3) {
+        // this is the last dispatch in the event life cycle, render the stage.
+        stage.update()}
+
+
+}
+
+
+
 
 
 
