@@ -443,7 +443,6 @@ SuperStage = St = function(n1,n2,c){
 
                 S$(C(_a(can,g))),
 
-
         o = EaselContainer( st )
 
     o.st=o.ob //o.st=st

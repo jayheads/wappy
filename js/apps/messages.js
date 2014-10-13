@@ -2,6 +2,13 @@ navtabs=function(){
     return ul().k('n nt')
 }
 
+
+
+$.navTabs=function(){ return $.ul().K("nav nav-tabs")  }
+
+
+
+
 $autoDiv= auto=function(){
     var args=G(arguments),
         theDiv=$div().auto()
@@ -20,9 +27,6 @@ showTab =shw=function(a){
     //return a
 }
 
-
-
-
 firstChild =ch$ =function(a){  a.ch(0).$()  }
 
 
@@ -38,8 +42,6 @@ Tab =tab=function(tabText, func){
     if(args.m){  theLi.k('active')  }
 
     return theLi}
-
-
 
 $password=function(){return ip().type('password').k('form-control')}
 
@@ -83,6 +85,45 @@ tabs=function(a){
     return d
 
 }
+
+
+
+$.tab=function(tabText, func){
+
+    var args=G(arguments), tabText=args[0], func=args[1],
+
+        theLi= $liA(
+
+            tabText,
+
+            function(){ showTab( tabText ); func()  }
+        )
+
+
+    theLi.load=function(){ showTab(tabText); func()  }
+
+    if(args.m){  theLi.k('active')  }
+
+    return theLi}
+
+$.tabs=function(a){
+
+    var   u = $.ul().K("nav nav-tabs"),
+
+    d = $.div().WH('auto').A(  u,     TABS= $.span()   )
+
+    if( A(a) ){ a =   _a(tab, a) }
+
+    u.A( a )
+
+    _.each(_.rest(arguments),  function(a){   if( A(a) ){a = _a(tab, a)};   u.A(a)  })
+
+    d.load = function(){ ch$(a); return d }
+
+   return d.C('X')
+
+}
+
 
 
 
@@ -278,5 +319,53 @@ MESSAGES=function(){format()
 
 
 
+PILLS=function(){z()
+
+   pills= $.ul().K("nav nav-pills").A(
+
+        $.li().K('active').A(    $.a('home').toggle('tab')     ),
+
+        $.li().A(  $.a('profile').K('profile')  ),
+
+        $.li().A( $.a('messages') ) )
 
 
+    div=$.div('b').WH('auto').pad(40).drag()
+
+    content = $.div('y',300).pad(40).mar(40)
+
+    div.A( pills , content)
+
+
+    $('a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+
+   // $('a:first').tab('show')
+
+
+    $('a.profile').on('shown.bs.tab', function(e){
+
+       content.empty()
+
+        content.A(
+            $.div().text('asfdasfdfasd')
+        )
+
+    })
+
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+
+       // alert('yay')
+
+        ee=e.target
+        e.target // activated tab
+        e.relatedTarget // previous tab
+    })
+
+
+
+}

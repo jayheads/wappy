@@ -156,7 +156,6 @@ module.exports=function(){
 
 
 
-
     ///
 
     $a.get('/wap', function(req,res){ res.render('wap') })
@@ -171,7 +170,6 @@ module.exports=function(){
     $a.get('/ui/:app/:pam?', function(req, res){
 
         res.render('ui', {  app: req.params.app,   pam: req.params.pam    })})
-
 
 
 
@@ -241,11 +239,14 @@ module.exports=function(){
                     })}  })    })
 
 
+
     $a.get('/logOut', $w.u, function(req,res){
 
-        req.session.username =   req.session.u = null
+        $l('logging out')
 
-        req.session.loggedIn=  req.session.li=   false
+        req.session.username = req.session.u = null
+
+        req.session.loggedIn = req.session.li = false
 
 
         req.session.save(function(){
@@ -253,6 +254,8 @@ module.exports=function(){
             res.json('false')
 
         })})
+
+
     //is logged in?
 
     $a.get('/loggedIn', $w.u, function(req, res){
@@ -479,8 +482,7 @@ module.exports=function(){
 
     //get User's ACTUAL IMAGE (data-url) (by id)
 
-    $a.get('/getMug',  $w.u,
-        function(req,res,next){
+    $a.get('/getMug',  $w.u,   function(req,res,next){
 
            models.img.findById(
 
@@ -494,7 +496,6 @@ module.exports=function(){
 
     //change a user's mug (dataUrl id)
     //make this an oid?
-
 
 
     $a.post('/changeMug', $w.u, function(req,res){
@@ -512,8 +513,6 @@ module.exports=function(){
 
         )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
     //
-
-
 
 
 
@@ -538,20 +537,60 @@ module.exports=function(){
     ////
     ///
 
+    $a.get('/things',    function(req,res,next){  res.render('things')   })
 
+    $a.get('/thing',    function(req,res,next){
 
+        console.log('get thing')
 
+        models.thing.find({},
 
+            function(err, things){
 
+                console.log('err: ', err)
 
+                if(things){
+                    console.log('things')
+                    console.log(things)
+                    res.json( things ) }
 
+            })   })
 
+    $a.get('/thingAdd',    function(req,res,next){
 
+        console.log('get thing')
 
+        models.thing.create({name:'helloAgain', age:4}, function(err, things){
 
+            if(things){
+                console.log('things')
+                console.log(things)
+                res.json( things ) }
 
+        })
+
+    })
+
+    $a.post('/thing',    function(req,res,next){
+
+        console.log('get thing')
+
+        models.thing.create(req.body, function(err, things){
+
+            if(things){
+                console.log('things')
+                console.log(things)
+                res.json( things ) }
+
+        })  })
 
 }
+
+
+
+
+
+
 
 
 //$N=Number

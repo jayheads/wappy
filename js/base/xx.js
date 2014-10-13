@@ -26,11 +26,6 @@ NEWCANVAS=function(){z();
 
 
 
-
-
-
-
-
 xx = function xx(c, w, h, t, l){
 
     if (C(c) ){  c=C(c)  }
@@ -127,10 +122,8 @@ xx = function xx(c, w, h, t, l){
 
         return x}
 
-    x.roundRect.test=function(){
+    x.roundRect.test=function(){  x.roundRect(    100,100,200,400,20)}
 
-        x.roundRect(    100,100,200,400,20)
-    }
 
     //dont work?
     x.invert= function(src, dst){
@@ -159,6 +152,7 @@ xx = function xx(c, w, h, t, l){
         this.quadraticCurveTo(x + width / 2 | 0, y + height - height * blowY | 0, x, y + height);
         this.quadraticCurveTo(x + width * blowX | 0, y + height / 2 | 0, x, y);
     }
+
 
     //inherit from q
     x.qq =x.q=qq(x.c)
@@ -702,41 +696,74 @@ xx = function xx(c, w, h, t, l){
             cY=function(e){return e.clientY}
 
         x.q.q.mousemove(function(e){f( cX(e)-osl(x.q.q), cY(e)-ost(x.q.q))})}
+
+
     x.MD=function(f){
         var cX=function(e){return e.clientX},
             cY=function(e){return e.clientY}
 
         x.q.q.mousedown(function(e){
             f(cX(e)-osl(x.q.q),
-                    cY(e)-ost(x.q.q))})}
+                    cY(e)-ost(x.q.q))})
+    }
 
 
-    x.clip=function(){x.x.clip();return x}
+    x.clip=function(){
+
+        x.x.clip()
+
+        return x
+
+    }
+
+
+
+
     x.closePath=x.cp=function(){x.x.closePath();return x}
 
     x.dots=function(){
+
         x.DOTS=[]
+
         x.dats=[]
+
         x.$(function(X,Y){
+
             x.cir(X,Y)
-            x.DOTS.push([X,Y])
-            x.dats.push(pI(X))
-            x.dats.push(pI(Y))
-            x.ln(x.DOTS)})
+
+            x.DOTS.push( [ X, Y ] )
+
+            x.dats.push( pI(X) )
+
+            x.dats.push( pI(Y) )
+
+            x.ln( x.DOTS )
+
+        })
+
+
 
         x.$$(function(X,Y){var du
 
+
+            //save
             x.S()
+
             x.closePath()
+
             x.q.off()
+
             x.q.c('X')
 
-            du=x.du()
+            du = x.du()
 
             x.X()
+
             x.clip()
             x.fit(du)
-            x.bc('w')})
+            x.bc('w')
+
+        })
 
         return x}
 

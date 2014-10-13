@@ -66,7 +66,7 @@ sec=function(f){return T(f,1000)}
 
 keep=function(f){I(f,50)}
 
-T$=C$.Ticker
+T$ = createjs.Ticker
 
 
 STOP=function(){

@@ -1,77 +1,137 @@
- bd=function(){return qq($('body'))}
 
-did=function(a){return document.getElementById(a||'canvas')}
+// now i would just do $('body')
+bd=function(){
+     return qq($('body'))
+ }
 
 
+
+
+//this is just $(a||'#canvas')[0]
+did=function(a){
+    return document.getElementById(a||'canvas')}
+
+
+
+//this is same but returns the context
 xid=function(a){
-
-    return did(a).getContext("2d")
-
-}
+    return did(a).getContext("2d")}
 
 
+events={}
+events.dL=dL=function(a,b,c){
+    document.addEventListener(
+        oE(a),b,c)}
 
-dL=function(a,b,c){document.addEventListener(oE(a),b,c)}
+events.dR=dR=function(a,b,c){document.removeEventListener(oE(a),b,c)}
 
 
 
-dR=function(a,b,c){document.removeEventListener(oE(a),b,c)}
 
+//??
 $d=function(a){return $(document)}
 
-$b=function $b(a,b){var B=qq($('body'))
 
+//dont need
+$b=function $b(a,b){
+    var B=qq($('body'))
     if(U(a)){return B}
     if(E(a)){B(a);return a}
     return S(a)? B.c(a,b)
         :O(a)? B.s(a)
         :B}
 
- $hr = hr=function(c,h,w){var e=qq('hr');
-     if(N(c)){return hr('z',c,h)}
-     e.h(h||2);e.c(c||'z');
-     if(w){e.w(w)};return e}
 
 
+//*
+ $hr =  function(c,h,w){
 
+     var e = qq('hr')
+
+     if( N(c) ){  return hr('z', c, h)  }
+
+     e.h(h||2)
+
+     e.c(c||'z')
+
+     if(w){ e.w(w) };return e
+ }
  $h1=h1=function(){
-     var g=G(arguments),
-         h=qq($('<h1>'))
 
-     _a(h,g)
+     var g = G(arguments),
+
+         h=qq( $('<h1>') )
+
+     _a(h, g)
 
      return h}
-
- $span = sp=function(){
-
-     var g=G(arguments),     theSpan=qq('s'),     str=''
-
-     _.each(g,
-
-         function(val){
-
-             if(A(val)){theSpan.k(val[0])}
-
-             else if(S(val)){str+= val }
-
-             else {theSpan.a( val )}})
-
-     if(str){ theSpan.T(str) }
-
-     return theSpan}
-
-
-
  $h2=h2=function(){var g=G(arguments),h= qq($('<h2>'));_a(h,g);return h}
  $h3=h3=function(){var g=G(arguments),h= qq($('<h3>'));_a(h,g);return h}
  $h4=h4=function(){var g=G(arguments),h= qq($('<h4>'));_a(h,g);return h}
  $h5=h5=function(){var g=G(arguments),h= qq($('<h5>'));_a(h,g);return h}
  $h6=h6=function(){var g=G(arguments),h= qq($('<h6>'));_a(h,g);return h}
+$span = function(){
 
- $br =br =function(a){var s=sp();_t(a||1,function(){s($('<br>'))});return s}
+    var args=G(arguments), theSpan=qq('s'), str=''
 
- $pg = pg=function(a){var g=G(arguments),p=_p()
-     _e(g,function(v){if(A(v)){p.k(v[0])} else{ if(S(v)){v=sp(v)};p(v)}});return p}
+    _.each(args,
+
+        function(val){
+
+            //check for classname
+            if(A(val)){ theSpan.L(val[0]) }
+
+            else if(S(val)){ str+= val }
+
+            else { theSpan.A( val ) }})
+
+    if(str){ theSpan.T(str) }
+
+    return theSpan}
+
+
+
+
+ $br = function(a){
+
+     var theSpan = $span();
+
+     _.times(  a||1,  function(){  theSpan( $('<br>') )  }  )
+
+     return theSpan}
+
+
+ $pg = function(a){
+
+     var   p = _p()
+
+     _.each(arguments,
+         function(v){
+
+        // if( S(v) ){  v = $span(v)  }
+
+                 p(v)
+
+              })
+
+     return p}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  co=function co(a,b){

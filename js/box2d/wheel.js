@@ -177,6 +177,9 @@ makeTim=function(n){
     _t(n,function(){
         var b=ba().uD('tim')
         bindr('guy',b,.3)})}
+
+
+
 makeMe=function(){
 
     var bodyDef = DynamicBodyDef(100,100)
@@ -215,6 +218,8 @@ makeMe=function(){
     bindr('me', player)
 
     return player}
+
+
 
 
 
@@ -303,36 +308,102 @@ moveListener=function(){  stage.tick(function(){
 
 
 
+
+
+
 bindr = function( im, spr, sxy, rt ){
 
     sxy = sxy||.4
 
     rt = N(rt) ? rt : 6
 
-    var stage = s
 
-    stage.bm(
+    stage.bm(  im,
 
-        im,
+        function(b){bb=b
 
-        function(b){
+             b.rCenter('+')
 
-            b.rgc('+')
+             if ( A(sxy) ){  b.sX( sxy[0] ).sY( sxy[1] ) }
 
-            if (A(sxy)){ b.sx( sxy[0] ).sy( sxy[1] ) } else { b.sxy( sxy ) }
+             else { b.sXY( sxy ) }
 
-            b.rt( rt )
+            b.rotation=  rt
 
-            stage.tick( function(){
+          createjs.Ticker.on('tick', function(){   b.XY( spr.x(), spr.y());    b.rotation= rt + spr.rt()   })
 
-                b.xy(spr.x(), spr.y()); b.rt( rt + spr.rt() )
-
-            })
-
-            spr.killSprite = spr.kS = function(){ b.XX() }
+            // spr.killSprite = spr.kS = function(){  b.XX() }
 
         })
 }
+
+
+
+STAGR=function(){
+
+    z()
+
+    canvas = $.canvas('r', 400, 400).A()
+
+    stage = new createjs.Stage( canvas[0])
+
+    stage.tick()
+
+    stage.bm('me', function(me){  m=me    })
+
+}
+
+
+
+// fix .X(), .Y()
+
+
+BINDR=function(){
+
+    z()
+
+     makeStage()
+
+   //w= makeWorld()
+
+  //  b= w.ba()
+
+    s.tick()
+
+
+   s.bm('me', function(me){
+
+        m=me
+
+    })
+
+
+
+}
+
+
+
+BINDD=function(){
+
+
+    z()
+
+    c = $.canvas( 'y',  500,  500 ).A()
+    s = new createjs.Stage( c[0]  )
+    s.bm('me', function(){
+        s.update()
+    })
+
+
+
+
+
+
+
+}
+
+
+
 
 
 
@@ -341,14 +412,20 @@ bindShape = function( shape, spr  ){
 
     stage.A( shape )
 
-    stage.tick( function(){   shape.xy(  spr.x(), spr.y()    )    })
+    stage.tick(
+
+        function(){   shape.XY(  spr.x(), spr.y()    )    }
+
+    )
 
 }
 
 
 
+
 BINDSHAPE=function(){z()
-mW()
+
+makeWorld()
 
     bindShape( Shape().circle(20, 'x','b'), ba() )
 
@@ -367,7 +444,7 @@ mW()
 
 DEMO_IMPULSE =function(){
 
-    mW({g:0})
+    makeWorld({ gravity: 0})
 
     world.addBody(
         DynamicBodyDef(100,500).rt(2).fR(0) , PolyFixture(30,30))
@@ -412,9 +489,11 @@ DEMO_IMPULSE =function(){
 
 
 }
+
+
 DEMO_SCALE =function(){
 
-    mW()
+    makeWorld()
 
     world.baa(400,300,40)
 
@@ -452,6 +531,8 @@ DEMO_SCALE =function(){
 
 
 }
+
+
 
 PLAYER=function(){
 
@@ -667,7 +748,7 @@ PLAYER2=function(){
     bindr('guy', bii(300,500,60,30),[.4,1.2])
     bindr('guy', bii(150,400,60,30))
 
-     player = p = makeMe().aD( 10000 )
+    player = p = makeMe().aD( 10000 )
 
     dirPush()
     footListener()
@@ -906,17 +987,15 @@ PINBALL=function(){
 
     mW({  w : 'makeWallsPinball'  })
 
-    c.w( 430 )
-
-    c.q.drg()
+    canvas.W( 430 ).drag()
 
     baa(215,520,30)
 
     bii(215,100,100,10)
 
-    ball= ba(215,90)
+    ball= world.ba(215,90)
 
-    bindr('sun', ball,.24)
+    bindr('sun', ball, .24)
 
     var leftJoint = baa(100,430)
 
@@ -947,9 +1026,9 @@ PINBALL=function(){
 
 
 
-    $('body').on('keyup',  function(){ leftFlip.aI(100, 0);
+    $('body').on('keyup',  function(){
 
-        rightFlip.aI(-100,0)
+        leftFlip.aI(100, 0);   rightFlip.aI(-100,0)
 
     })
 
@@ -962,39 +1041,28 @@ PINBALL=function(){
 
     $('body').mousedown(function(){
 
-
         var b= ba(rnd()*300+40,140,20)
 
-        if(Math.random() > .9) { bindr('me', b,.24)}
+        if(Math.random() > .9) {
+
+             bindr('me', b,.24)  }
 
         leftFlip.aI(120, 0);
         rightFlip.aI(-120,0)
 
     })
 
-    setInterval(function(){
-        ball.rt( ball.rt() + 10)
-    },100)
 
 
-    pop(
+    setInterval(function(){   ball.rt( ball.rt() + 10) }, 100)
 
 
+    $.pop(
         $.div(  'y').A(
-
-
             $.h1('welcome to gamey pinball'),
-
-
-
             $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
-
-
             $.h4('goal: knockdown the fireball'),
-
-            $.h5('click the game to start')
-
-        )
+            $.h5('click the game to start')  )
 
     )//.A().click(function(){ $(this).remove() })
 

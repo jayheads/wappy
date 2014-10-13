@@ -13,9 +13,6 @@ $label = lb=function lb(l,f,n,p){
     sl.at({for:f}).k('ctl').H(l)
     if(!g[2]){return sl}
 
-
-
-
     st=tx().at({
 
         id:f,

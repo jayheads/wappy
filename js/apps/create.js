@@ -1,5 +1,5 @@
 
-eaI=function(f){
+eachImage = eaI=function(f){
 
 
     $.getJSON('/img',
@@ -12,21 +12,23 @@ eaI=function(f){
 
 
 
-sav=function(stage,a){ return function(){ stage.sv(a) }   }
+sav=function(stage,a){
+    return function(){ stage.sv(a) }
+}
 
 
 
-EDIT=function(){
+EDIT0=function(){
 
     stage = St(800)
 
-    var theDiv = $div()
+    var imgHolder = $div()
 
-    CT(   theDiv,     stage   ).o( '$$', sav(stage, 'edit'))
+    CT(   imgHolder,     stage   ).o( '$$', sav(stage, 'edit'))
 
     eaI(function( img ){
 
-        theDiv(
+        imgHolder(
 
             $imageSizeFuncCan(
 
@@ -52,15 +54,15 @@ EDIT1=function(){
 
     stage = St(800)
 
-    var theDiv = $div()
+    var imgHolder = $div()
 
-  container=  CT(   theDiv,     stage   )
+  container=  CT(   imgHolder,     stage   )
 
         container.o( '$$', sav(stage, 'edit'))
 
     eaI(function( img ){
 
-        theDiv.A(
+        imgHolder.A(
 
             $.canvas('X',100, 100).fit(img.d).click(function(){
 
@@ -177,6 +179,43 @@ z()
 
 }
 
+EDIT=function(){
+
+    container=$.containerDiv()
+    imgHolder = $.div()
+    stage=createjs.stage(800).tick()
+
+    container.A(
+        imgHolder,
+        stage.canvas
+    )
+
+    $.getJSON('/img', function(i){ _.each(i,
+
+            function(img){
+
+                var can = $.canvas('X', 100, 100).A().fit(img.d) // must be in body in order to use FIT!
+
+                can.click(function(){
+                    stage.bm(img.d, function(bm){
+                                bm.rCenter().X(400).Y(400)
+                                TR(bm)})
+
+                        })
+
+                imgHolder.A( can )
+
+
+            }) } )
+
+    container.dblclick(function(){
+        $.post(
+            '/img',
+            {d: stage.canvas.toDataURL()},  //, dats: x.dats
+            function(){window.location=window.location})
+    })
+
+    return stage}
 
 
 
@@ -374,12 +413,12 @@ EDITOR=function(){z()
 
     var stage = dragStage()
 
-    theDiv = $div().a().drg().c('y')
+    imgHolder = $div().a().drg().c('y')
 
 
     eaI(function( img ){
 
-        theDiv(  $imageSizeFuncCan(
+        imgHolder(  $imageSizeFuncCan(
 
                 img.d,     1,      function(){  stage.bm(   img.d,
 

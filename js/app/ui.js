@@ -168,6 +168,8 @@ ChatRoom=function(title, color, id){
 }
 
 
+
+
 $.chatRoom=function(title, color, id){ title = title||'chatbox';color=color||'b'; id=id||'cbo'
 
     var theTextInput= $.textInput().K('form-control'),
@@ -297,6 +299,7 @@ $.chatRoom=function(title, color, id){ title = title||'chatbox';color=color||'b'
     //add room to client rooms list
     chatRoomsObject[title] = chatController
 
+
     //repeatedly emit 'room', which launches room user updates!
     setInterval( function(){ socket.emit('room', title)}, 1000)
 
@@ -318,6 +321,18 @@ BasicLayout =format=function(){
     ContainerDiv( row39(s1, s2) )}
 
 
+
+
+$.format=function(){
+    section1= s1= $.span()
+    section2 =s2= $.span()
+    $.containerDiv($.row($.col(3,section1), $.col(9,section2))  )
+
+}
+
+
+
+
 ContainerDiv  = CT = function(){
 
     var args = G(arguments),
@@ -333,7 +348,19 @@ ContainerDiv  = CT = function(){
 }
 
 
+$.containerDiv =  function(){
 
+    var args = G(arguments),
+
+        theDiv = $.div().K('container')
+
+    if(args.N){ theDiv.A( $.br(4) ).A() }
+
+    _.each(arguments, function(v){ theDiv.A(v) })
+
+    return theDiv
+
+}
 
 
 
@@ -605,7 +632,7 @@ ipt=function(h1Title, buttonText, url, ob, func){
 
 
 
-inputBox=function(ob){
+inputBox1=function(ob){
     ob=ob||{}
 
     var func=ob.func,
@@ -853,8 +880,6 @@ PrivateChatRoom  = function(roomName){
 
 
 }
-
-
 
 
 

@@ -3,7 +3,9 @@ appInit = function(){
 
     $.getJSON('/loggedIn',
 
-        function(username){    if(username=='guest' || !username){ renderGuestPage(); return }
+        function(username){
+            $l('username: '+username)
+            if(username=='guest' || !username){ renderGuestPage(); return }
 
         _username   =usr= username
 
@@ -22,19 +24,9 @@ $( appInit )
 
 
 
+$password=function(){return $input().type('password').class('form-control')}//dep
 
-
-
-
-
-$password=function(){
-   return $input().type('password').class('form-control')
-}//dep
-
-lc=function(a){
-    if(D(a)){  $w.location=a  }; return $w.location
-}//dep
-
+lc=function(a){if(D(a)){  $w.location=a  }; return $w.location}//dep
 
 pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
 
@@ -95,59 +87,28 @@ ldr=function(a){return function(){$w.location='/wap/'+a }} //never called?
 load=function(a){  $w.location='/wap/'+a }
 
 
-
-
-renderGuestPage =guest=function(){ z('r')
-
-  var container=ContainerDiv(
-
-     $.headerDiv().A(
-
-
+renderGuestPage = function(){z('r')
+  var container= $.containerDiv().A(
+      $.headerDiv().A(
           $.ul().K( "nav nav-pills pull-right" ).A(
-
               $.lIA('home').K('active'),
               $.lIA('About'),
-              $.lIA('Contact')
-
-          ),
-
-          $.h1( 'jason yanofski presents..' )
-
-     ).A(),
-
-
+              $.lIA('Contact')),
+          $.h1( 'jason yanofski presents..' )),
       $.Jumbo(
-
           'a graphics-based real-time social gaming creativity web app','woo hoo!').A(
-
           $.buttonL('log in', LoginForm ).C('y','b'),
-
           $.span(' '),
+          $.buttonL('sign up', SignUpForm).C('b','y')),
+      $.row(
+          $.h1('fun!'),
+          $.div().A(
+              $.h4('graphics'),
+              $.p('cool cool cool'),
+              $.h4('social'),
+              $.p('cool cool'))))
+    container.drag().C('o').opacity(.9).top(100).left(100)}
 
-          $.buttonL('sign up', SignUpForm).C('b','y')
-
-
-      ),
-
-
-
-
-      ROW(    $h1('fun!'),  $div()(
-
-          $h4('graphics'),
-
-          $pg('cool cool cool'),
-
-          $h4('social'),
-
-          $pg('cool cool')
-
-      ))  //,  FT('&copy;2013')
-
-    )
-
-    container.pp().drg().c('o').s('a', .9).t(100).l(100)}
 
 Y={}
 
@@ -168,13 +129,7 @@ renderHomePage =  home= function(){
 
 
 
-
-
-
-
-
-
-SignUpForm = function(){ var username, password,  submit, form
+SignUpFormX = function(){ var username, password,  submit, form
 
     username= $div().k('form-group')($label('uname: ','uname'),  TextInput().k('form-control').at({type:'text'})().id('uname')).f(20).nm('u')
 
@@ -205,41 +160,48 @@ SignUpForm = function(){ var username, password,  submit, form
     //return formObject
 }
 
-SignUpForm2 = function(){
+SignUpForm = function(){
+
+    var username= $.div().K('form-group').A(
+            $.label('username: ','username'),
+            $.input().K('form-control').id('uname')).fontSize(20).name('username'),
+
+        password= $.div().K('form-group').A(
+            $.label('password: ','password'),
+            $.password().id('password')).fontSize(20).name('password'),
+
+        submit= $.button('sign up').type('submit').fontSize(16),
+
+        verify= function(){
+            return {
+                u:  username.find('input').val(),
+                p:  password.find('input').val()}
+        },
+
+    form = $.form().C('o').pad(4).A(   username, password, submit  )
+    v=verify
+
+    u= username
+
+    $.pop(   form).id('mod').drag()
 
 
+    form.submit(function(e){
 
+        e.preventDefault()
 
-    var formObject={
+        $.post('/user', {
+                u:  username.find('input').val(),
+                p:  password.find('input').val()},
 
-        username: $div().k('form-group')($label('uname: ','uname'),  TextInput().k('form-control').at({type:'text'})().id('uname')).f(20).nm('u'),
+            function(username){
 
-        password: $div().k('form-group')( $label('pword: ','pword'), $password().id('pword') ).f(20).nm('p'),
+                if(username==='guest'){ $('#mod').modal(); $.pop('try again.. idiot') }
 
-        submit:   $input().V('sign up').type('submit').f(16)   ,
-
-        verify: function(){ return {  u: qq( formObject.username.ch(1) ).V(), p: qq( formObject.password.ch(1) ).V()  }}
-    }
-
-
-    formObject.form = $form().c('o').P(4)(  formObject.username,   formObject.password,  formObject.submit  )
-
-    pop(formObject.form).id('mod').drg()
-
-
-
-    formObject.form.o('s', function( q, e ){  e.e.preventDefault() //pD(e.e)
-
-        $.post('/user',  formObject.verify(),  function(username){
-
-                if(username === 'guest'){ qi('mod').m(); pop('try again.. idiot') }
-
-                else { renderHomePage(); pop( 'welcome ' + username + '!' )   }  //WAPNAV() //qi('username').jLoad( '/loggedIn' )//uplog()
-
-            })
+                else { renderHomePage();  $.pop( 'welcome ' + username + '!' )   }
+  })
 
     })
-
 
     //return formObject
 }
@@ -252,34 +214,45 @@ LoginForm=function(){
          if(username==='guest'){ $('#mod' ).modal('toggle'); pop('try again.. idiot')}
          else {renderHomePage(); pop( 'welcome '+ username + '!' )}}
 
-     var form=$('<form>').C('g').pad(4).A(
-            $.formGroupDiv().A(  $label('username: ','username').q,  $.textInput('username')  ),
-            $.formGroupDiv().A(  $label('password: ', 'password').q,  $.passwordInput('password')),
-            $.submitInput( 'log in' ))
 
-     form.submit(function(e){  e.preventDefault()
-         $.post('/login', $l(form.serializeJSON()),  verifyLogin) })
+     var form=$.form().C('g').pad(4).A(
 
-     pop( form ).drg().id('mod')}
+            $.formGroupDiv().A(
+
+                $.label('username: ','username'),
+                $.textInput('username')  ),
+
+         $.formGroupDiv().A(
+             $.label('password: ', 'password'),
+             $.passwordInput('password')),
+
+         $.submitInput( 'log in' ))
+
+     form.submit(function(e){
+         e.preventDefault()
+         $.post('/login', $l(form.serializeJSON()),
+             verifyLogin) })
+
+    $.pop( form ).drag().id('mod')
+
+}
+
+logOut = function(){
+
+    $.getJSON('/logOut', renderGuestPage())
+
+} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
 
 
-
-
-
-logOut = function(){qJ('/logOut',guest)} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
 
 getUsers =  function(func){ $.get('/users', func) }//usrs =
-
-
-
 
 
 
 //Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
 
 getBuds = buds=function(func){$.get('/buds', func) }
-
 
 
 removeUser = rmU=function(a,b){

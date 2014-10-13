@@ -1,4 +1,41 @@
 
+BASICWORLD=function(){
+
+z()
+
+
+    world = w =    World(  bV(0, 40) )
+
+    canvas = c = $.canvas('X', 500, 500).id('canvas').A()[0]
+
+
+    stage = s = new createjs.Stage(canvas)
+
+    debugDraw = DebugDraw()
+
+
+    debugDraw.SetSprite(  $('#canvas')[0].getContext("2d")  )
+
+
+    debugDraw.dS( 30 )
+
+
+
+    debugDraw.SetFillAlpha( .6 )
+        //debugDraw.SetLineThickness( 3000 )
+
+
+    debugDraw.SetFlags(  shB||jB   )
+
+
+
+    w.dD(  debugDraw )
+
+
+    w.bii(300, 200)
+
+}
+
 
 CATAPULT=function(){
 
@@ -62,7 +99,6 @@ CATAPULT=function(){
 }
 
 
-JASON = 1
 
 
 //prevent iphone/ipad default scrolling
@@ -74,42 +110,77 @@ $(function(){
 
 })
 
-
 handleJointsAlt = 0
 
 
+mW2 = function(){z()
+      canvas = $.canvas('z', 1200, 600 ).A().id( 'canvas' )[0]
+      context = canvas.getContext("2d")
+      stage=new createjs.Stage( canvas )
+      stage.autoClear = false
 
-makeWorld = mW = function(o){
+      world=World(  bV(0, 40) )
 
-    o = ob(o)
+      debugDraw = DebugDraw()
+      debugDraw.SetSprite(  context )
+      debugDraw.dS( 30 )
+      debugDraw.SetFillAlpha( .6 )
+      debugDraw.SetFlags(  shB||jB   )
+      world.dD( debugDraw )
 
-    var options = o
+      setInterval(function(){
+              world.ClearForces()
+              world.Step(1/60, 10, 10)
+              //this must clear the screen?
+              //that's why i don't need the stage to autoclear
+              world.DrawDebugData()
+          stage.update()
 
-    options.gravityY = options.g
- 
+      }, 1000/60)
+      world.bii(400,400, 600, 40)
+      b=world.ba()
+      stage.bm('me', function(bitmap){
+          bm=bitmap.rCenter()
+          createjs.Ticker.on('tick', function(){bm.XY(b.x(), b.y())}) })
+
+      return world}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+makeWorld = mW = function(o){  var options = ob(o); options.gravityY = options.g
+
+    //if( options.z !=0 ){ z() }
+
+
+
     _mouseJoint = 0
 
     _mouseIsDown = 0
    
 
-    if( options.z !=0 ){z()}
-
     options.gravityY = N( options.gravityY )? options.gravityY : 40
 
-    world = w = World( bV( 0 , options.gravityY ) )
+    world = w =    World(  bV(0, options.gravityY) )
 
-    
 
     makeStage(
 
-        options.W ||  1200 ,
+            options.W || 1200 ,
+            options.H|| 600 ,
 
-       options.H || 600 ,
-
-        options )
-
-
-
+        options  )
 
     canvasPosition = _getPosition(  $('#canvas')[0]  )
 
@@ -117,15 +188,13 @@ makeWorld = mW = function(o){
 
                 if( handleJointsAlt == true ){ handleJoints2() }  else { handleJoints() }
 
-                world.Step( 1/60, 10, 10 )
 
+                world.Step(1/60, 10, 10)
                 world.DrawDebugData()
-
                 world.ClearForces()
-
                 if( F(options.cb) ){ options.cb() }
-
-                s.u()},
+                s.update()
+        },
 
                 1000/60 )
 
@@ -140,12 +209,10 @@ makeWorld = mW = function(o){
 
         if( S( options.w ) ){   $w[ options.w ]() }
 
-
         if( F( options.w ) ){     options.w() }
 
 
     }
-
 
 
     else {  makeWalls() }
@@ -153,15 +220,35 @@ makeWorld = mW = function(o){
   controller()
 
 
-
-
-
     if( ! options.$$ == 0 ){  makeShapeOnDblClk() }
 
     return world}
 
 
+
+
 makeStage=function(X, Y, options){
+
+    canvas = $.canvas('z', X, Y ).A().id( 'canvas' )
+
+    s = stage = new createjs.Stage( canvas[0] )
+
+    stage.autoClear = false
+
+    createjs.Ticker.removeAllEventListeners()
+
+    if(options.backgroundImage){ stage.bm(options.backgroundImage)}
+
+}
+
+
+
+
+
+
+makeStage1=function(X, Y, options){
+
+
 
     canvas = c = $can( X, Y ).a().bc( 'z' )
 
@@ -414,22 +501,29 @@ checkMouseDown =function(){
 
 
 setupDebugDraw =function(){
+
     debugDraw = DebugDraw()
 
-    debugDraw.SetSprite( $('#canvas')[0].getContext("2d") )
+
+    debugDraw.SetSprite(
+
+        $('#canvas')[0].getContext("2d")
+
+    )
+
     debugDraw.dS( 30 )
 
-    debugDraw.SetFillAlpha( .6 )
 
+    debugDraw.SetFillAlpha( .6 )
     //debugDraw.SetLineThickness( 3000 )
 
     debugDraw.SetFlags(  shB||jB   )
-    w.dD(
-debugDraw
 
 
-    )
+    w.dD(  debugDraw )
+
 }
+
 
 
 

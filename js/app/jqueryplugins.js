@@ -1,48 +1,43 @@
-console.log('jquery plugins')
-
-
 
 $.fn.col = function(col){
     return this.css('color', oO('c', col))}
-
 $.fn.C = function(col, c2){
     if(c2){return this.C(col).col(c2)}
     return this.css('backgroundColor', oO('c', col))}
-
-
 $.fn.A=function(stuff){
    if( U(stuff)){$('body').append(this); return this}
     this.append.apply(this, arguments)
     return this}
-
-
 $.fn.W=function(width){return width? this.width(width): this.width()}
 $.fn.H=function(height){return height? this.height(height): this.height()}
-$.fn.WH=function(w,h){h=h||w;return this.W(w).H(h)}
 
+$.fn.V=function(){
+    var val= this.val()
+    this.val('')
+    return val
+}
+$.fn.E=function(html){
+    this.empty(); this.html(html); return this
+}
+
+$.fn.WH=function(w,h){h=h||w;return this.W(w).H(h)}
 $.fn.minW=function(a){return this.css('min-width',a)}
 $.fn.minH=function(a){return this.css('min-height',a)}
-
 $.fn.maxW=function(a){return this.css('max-width',a)}
 $.fn.maxH=function(a){return this.css('max-height',a)}
-
 $.fn.Z=function(w,h){return this.W(w).H(h||w)}
 $.fn.Y=$.fn.top=function(top){return top?this.css('top', top):this.css('top')}
 $.fn.X=$.fn.left=function(left){return left?this.css('left', left):this.css('left')}
- $.fn.right=function(right){return right?this.css('right', right):this.css('right')}
- $.fn.bottom=function(bottom){return bottom?this.css('bottom', bottom):this.css('bottom')}
-
+$.fn.right=function(right){return right?this.css('right', right):this.css('right')}
+$.fn.bottom=function(bottom){return bottom?this.css('bottom', bottom):this.css('bottom')}
 $.fn.P = function(pos,left,top){
     if( U(pos) ){ return this.css('position') }
     this.css('position', oO('p',pos))
     if(left){this.left(left)}
     if(top){this.top(top)}
     return this}
-
-
 $.fn.id=function(id){ if(U(id)){ return this.attr('id')}; this.attr('id', id);return this     }
 $.fn.name=function(name){ if(U(name)){ return this.attr('name')}; this.attr('name', name);return this     }
-
 $.fn.drag = function(){
 
     this.A()
@@ -75,10 +70,6 @@ this.each(function(){
     return this
 
 }
-
-
-
-
 $.fn.mar=function(margin){
 
     if(U(margin)){ return this.css('margin') }
@@ -104,61 +95,43 @@ $.fn.marRight=function(margin){
     if(U(margin)){ return this.css('marginRight') }
 
     this.css( 'marginRight' , margin ); return this }
-
 $.fn.marHor=function(a){return this.marLeft(a).marRight(a)}
 $.fn.marVer=function(a){return this.marTop(a).marBottom(a)}
-
-
-
-
 $.fn.J= $.fn.animate
 $.fn.K= function(){  $.fn.addClass.apply(this, arguments); return this  }
-
-
-
 $.fn.fontSize=function(z){ this.css('font-size', z)
 
     return this}
-
 $.fn.textAlign=function(z){
 
     this.css('text-align', z)
 
     return this}
-
 $.fn.opacity=$.fn.alpha=function(z){
 
     this.css('opacity', z)
 
     return this}
-
 $.fn.type=function(type){
     if(U(type)){return this.attr('type')}
     this.attr('type',type);return this
 }
-
 $.fn.display=function(display){
     if(U(display)){return this.css('display')}
     this.css('display',display);return this
 }
-
-
-
 $.fn.float=function(float){
     if(U(float)){return this.css('float')}
     this.css('float',float);return this
 }
-
 $.fn.overflow=function(overflow){
     if(U(overflow)){return this.css('overflow')}
     this.css('overflow',overflow);return this
 }
-
 $.fn.href=function(href){
     if(U(href)){return this.attr('href')}
     this.attr('href',href);return this
 }
-
 $.fn.borderStyle= function(style){
 
   this.css('border-style', style)
@@ -169,7 +142,6 @@ $.fn.borderColor=function(c){
     this.css('border-color', oO('c', c))
 
     return this}
-
 $.fn.borderWidth=function(w){
 
     this.css('border-width',w)
@@ -182,12 +154,9 @@ $.fn.hold=function(a){
 
 
 }
-
-
 $.fn.pad=function(padding){
     if(U(padding)){return this.css('padding')}
     this.css('padding',padding);return this}
-
 $.fn.padTop=function(padding){
     if(U(padding)){return this.css('paddingTop')}
     this.css('paddingTop',padding);return this}
@@ -197,25 +166,14 @@ $.fn.padBottom=function(padding){
 $.fn.padLeft=function(padding){
     if(U(padding)){return this.css('paddingLeft')}
     this.css('paddingLeft',padding);return this}
-
 $.fn.padRight=function(padding){
     if(U(padding)){return this.css('paddingRight')}
     this.css('paddingRight',padding);return this}
-
-
-
 $.fn.padHor=function(a){return this.padLeft(a).padRight(a)}
 $.fn.padVer=function(a){return this.padTop(a).padBottom(a)}
-
-
-
-
-
-
 $.fn.bor=function(border){
     if(U(border)){return this.css('border')}
     this.css('border',border);return this}
-
 $.fn.zIndex=function(z){
     if(U(z)){return this.css('z-index')}
     this.css('z-index',z);return this}
@@ -223,14 +181,41 @@ $.fn.el = function(e){
     if(U(e)){
         console.log( $('<div>').append(  this.clone()  ).html() )
         return this}}
-
-
 $.fn.free=function(){
 
     $('body').A( this )
 
     this.P('a')
 }
+$.fn.dismiss=function(a){
+    return this.attr('data-dismiss',a)}
+$.fn.delButton=function(){
+    var that=this
+
+    this.prepend(
+
+        $.div().A(
+            $.button(  'x', function(){ that.remove() }).K('pull-right').mar(20)
+        )
+
+    )
+
+
+    return this}
+$.fn.for=function(forWhat){return this.attr('for', forWhat)}
+$.fn.placeholder=function(forWhat){return this.attr('placeholder', forWhat)}
+$.fn.src  = function(a){
+
+
+    if( U(a) ){return this.attr('src')}
+
+    this.attr('src',  src(a) )
+
+    return this
+}
+
+
+
 
 
 $.div = function(col, width, height){
@@ -271,27 +256,6 @@ $.div = function(col, width, height){
 
 
  }
-
-$.fn.dismiss=function(a){
-    return this.attr('data-dismiss',a)
-}
-
-$.fn.delButton=function(){
-var that=this
-
-        this.prepend(
-
-            $.div().A(
-                $.button(  'x', function(){ that.remove() }).K('pull-right').mar(20)
-            )
-
-        )
-
-
-        return this}
-
-
-
 $.divA = function(col, width, height){
 
 
@@ -312,49 +276,76 @@ $.divA = function(col, width, height){
     if(N(col)){ return $.div( 'o', col, width).P('absolute') }
 
 }
-
-
-
 $.button = function(buttonText, func){
     if(F(buttonText)){return $.button('submit', buttonText)}
     var b=$('<button>')
     b.text(buttonText)
     b.click(func)
     return b}
-
 $.buttonL = function(buttonText, func){
     if(F(buttonText)){return $.button('submit', buttonText)}
     var b=$('<button>')
     b.text(buttonText)
     b.click(func)
     return b.K('btn-lg')}
+$.hr=function f(color,height,width){
 
-$.hr=function(){return $('<hr>')}
-$.span = function(text){
+    if( N(color) ){  return f('z', color, height)  }
 
-    var span = $( '<span>' )
+    var hr = $('<hr>').H(height||2).C(color||'z')
 
-    if( text ){  span.text(text)  }
+    if(width){ hr.W(width) }
 
-    return span }
+    return hr
+}
 
 
-$.p = function(text){var p = $( '<p>' ); if( text ){ p.text(text)  }; return p}
 
+
+
+$.p=function(){
+
+    theSpan=$( '<p>' )
+
+    _.each(arguments,   function(val){ theSpan.A( val )    })
+
+    return theSpan}
+//$.p = function(text){var p = $( '<p>' ); if( text ){ p.text(text)  }; return p}
 $.paragraphs=function(){ _.each(arguments,function(arg){$.p(arg).A()})}
+$.pgX=function(a){
+    var g=G(arguments),
 
+        p= $('<pg>')
 
+    _.each( g , function( v ){
 
+        if( A(v) ){ p.k( v[0] ) }
+
+        else {
+
+            if( S(v) ){  v = sp(v)   }
+
+            p(v)  }
+
+    })
+
+    return p
+}
+
+$li=function(){var g=G(arguments),
+    l=qq('li')
+
+    //klass or add
+    _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
+    if(g.p){l.k('A')}//active
+    if(g.n){l.k('dd')}//dropdown
+    return l}
 $.submit= $.submitButton = function(buttonText, func){
     return $.button(buttonText, func).type('submit')
 }
-
-
 $.form=function(){
     return $('<form>')
 }
-
-
 $.glyph=$.glyphicon=function(glyph, a){
 
     var s = $.span(a).K("glyphicon glyphicon-" + glyph)
@@ -362,36 +353,28 @@ $.glyph=$.glyphicon=function(glyph, a){
     return s}
 
 
-///
 
 
-$hr = hr=function(c,h,w){var e=qq('hr');
-    if(N(c)){return hr('z',c,h)}
-    e.h(h||2);e.c(c||'z');
-    if(w){e.w(w)};return e}
 
-//<li> <a href="#" id="Contact">Contact</a> </li>
+$.lIA=$.liA=function(a, f){
 
 
-$.lIA=function(a){
+    var anchor = $('<a>').id(a).attr('href', '#')
 
-    var anchor = $('<a>').id(a).attr('href', '#').html(a)
+    if(S(a)) {anchor.html(a)} else {anchor.A(a)}
 
-    var listItem  = $('<li>')
+    if(F(f)){  anchor.click(f)  } else {  anchor.href( f|| '#' )}
 
-        return listItem.A(anchor)
-
+        return $('<li>').A(anchor)
 
 }
 
 
 
-
 $.h1=function(){
-    var h=$( '<h1>' )
+    var h=$('<h1>')
     h.A.apply(h,G(arguments))
     return h}
-
 $.h2=function(){
     var h=$( '<h2>' )
     h.A.apply(h,G(arguments))
@@ -400,17 +383,14 @@ $.h3=function(){
     var h=$( '<h3>' )
     h.A.apply(h,G(arguments))
     return h}
-
 $.h4=function(){
     var h=$( '<h4>' )
     h.A.apply(h,G(arguments))
     return h}
-
 $.h5=function(){
     var h=$( '<h5>' )
     h.A.apply(h,G(arguments))
     return h}
-
 $.h6=function(){
     var h=$( '<h6>' )
     h.A.apply(h,G(arguments))
@@ -422,69 +402,47 @@ $.input=function(){
 
 }
 
+$.password=function(){
+    return $('<input type="password">')
+
+
+}
 
 $.br=function(a){
-    var s=sp()
 
-    _.times( a || 1, function(){ s( $('<br>') )  })
+    if (U(a) ){ return $('<br>') }
 
-    return s
+    var span = $.span()
+
+    _.times(a,
+        function(){ span.A( $('<br>') )  })
+
+    return span
+
 }
 
 
+$.span=function(){theSpan=$( '<span>' ); _.each(arguments,   function(val){ theSpan.A( val )    }); return theSpan}
+$.span2=function(c1, c2){return $('<span>').col(c1).C(c2)}
 
-$.pg=function(a){
-    var g=G(arguments),
 
-        p= $('<pg>')
+$.label =  function lb(labelText, labelFor, name, placeholder){
 
-    _.each( g , function( v ){
+    var g=G(arguments), theLabel = $('<label>'), theInput;
 
-        if( A(v) ){ p.k( v[0] ) }
+    if( !g[0] ){ return theLabel }
 
-    else {
+    theLabel.for(labelFor).K('control-label').html(labelText)
 
-        if( S(v) ){  v = sp(v)   }
+    if( !g[2] ){ return theLabel }
 
-        p(v)
-    }
+    theInput = $.input().id(labelFor).name(name).placeholder(placeholder||'...')
 
-    })
+    if(g.N){ theInput.K('form-control')}
 
-    return p
+    return $.span().A(  theLabel,   theInput )
+
 }
-
-
-$.span2=function(){
-
-    var g=G(arguments),     theSpan=qq('s'),     str=''
-
-    _.each(g,
-
-        function(val){
-
-            if(A(val)){theSpan.k(val[0])}
-
-            else if(S(val)){str+= val }
-
-            else {theSpan.a( val )}})
-
-    if(str){ theSpan.T(str) }
-
-    return theSpan}
-
-
-$li=function(){var g=G(arguments),
-    l=qq('li')
-
-    //klass or add
-    _e(g,function(v){if(A(v)){l.k(v[0])}else{l(v)}})
-    if(g.p){l.k('A')}//active
-    if(g.n){l.k('dd')}//dropdown
-    return l}
-
-
-
 
 
 //finish later..
@@ -494,11 +452,11 @@ $.a= function(a,f){
 
     a=a||''
 
-        l = $('<a>').id(a).A(a)
+    l = $('<a>').id(a).A(a)
 
     if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )   }
 
-   // if(g.n){ l.K('dropdown-toggle').attr({ 'data-target' : 'dropdown' }) }
+    // if(g.n){ l.K('dropdown-toggle').attr({ 'data-target' : 'dropdown' }) }
 
 
     //if(g.p){ l = $.li( l ) }
@@ -507,8 +465,9 @@ $.a= function(a,f){
 
     return l}
 
-//twitter
 
+
+//twitter
 $.dropDown=function(a,f){   var l = $('<a>').id(a).A(a)
     if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
         return   l.K('dropdown-toggle').attr({ 'data-target' : 'dropdown' })}
@@ -517,15 +476,6 @@ $.active=function(a,f){   var l = $('<a>').id(a).A(a)
     if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
         return   l.K('active') }
 
-$.liA=function(a,f){
-
-    var l = $('<a>').id(a).A(a)
-
-    if(F(f)){  l.click(f)  } else {  l.href( f|| '#' )}
-
-      return $.li().A( l )
-
-}
 
 
 $.b=function(a){
@@ -535,19 +485,6 @@ $.b=function(a){
 }
 
 
-
-$ul = ul=function(){
-    var tLi=function(a){
-        var iLi=function(a){return _h('HTMLLIElement', E(a))}
-        return iLi(a)?a:li(a)}
-
-    var g=G(arguments),
-        e=qq('ul')
-    _e(g,function(v){if(A(v)){e.k(v[0])}
-    else{e(tLi(v))}})
-    if(g.n){e.k('ddm')}//dropdown menu
-    if(g.p){e.k('n nbn')}//navbar nav
-    return e}
 
 
 $.li =function(something){var g=G(arguments),
@@ -568,26 +505,6 @@ $.li =function(something){var g=G(arguments),
 
 
 
-$a =function(a, func){
-    var g=G(arguments), a=g[0], f=g[1],
-
-        theEl=qq('a').id(a)(a)
-
-    if(F(func)){theEl.o(func)} else {theEl.hr(func||'#')}
-
-    if(g.n){theEl.dd()}
-
-    //  "<div data-toggle="dropdown" class="dropdown-toggle"></div>"
-
-    if(g.p){theEl=li(theEl)}
-
-
-
-    if(g.m){theEl=li(theEl).k('active')}
-
-    return theEl}
-
-
 
 ////
 
@@ -597,7 +514,6 @@ $.$$=function(a,b,c){
     $('body').dblclick(a,b,c)
 
     return $}
-
 $.$=function(){
 
     var b=$('html')
@@ -668,8 +584,6 @@ $.editDiv=function(words){
 
 
 
-
-
     if(U(words)) {
 
       return d.A( xButton, $br().q, span.hide(), input,
@@ -705,11 +619,7 @@ $.editDiv=function(words){
       return d.drag() }
 
 }
-
-
 $.editDiv.top=0
-
-
 editDiv=function(a){
 
 
@@ -738,62 +648,10 @@ editDiv=function(a){
 }
 
 
-EDITRANGE=function(){
-
-    z()
-
-    a=editDiv().C('a')
-    b=editDiv().C('b')
-    c=editDiv().C('c')
-}
 
 
-FUNNY=function(){z()
-
-      word = function(text, c1, c2){
-
-        var s= $.span(text).C(c1, c2).A().drag()
-
-    return s}
-
-
-     w=word('hello', 'b', 'g')
-
-    word('sicko', 'g', 'b')
-
-   word('why, i oughta..', 'p', 'x')
-
-    word('it was raining..', 'j', 'k')
-
-    word('who ya gonna call?', 'h', 'i')
-    word('dag nabit!', 'f', 'g')
-
-    word('i like', 'd', 'e')
-    word('tomorrow', 'a', 'c')
-
-    word('me', 'r', 'b')
-
-}
-
-
-
-
-JQPLUGS=function(){ z()
-
-    d = $.div().Z( 100 ).C( 'r' ).A().append( 'abc' )
-
-    e = $.div().Z( 100 ).col( 'r' ).A().append( 'abc' )
-
-    f = $.div().Z( 100 ).C( 'r' , 'b' ).A().append( 'abc' )
-
-    g = $.div( 'b' , 500 , 500 ).A() }
-
-
-
-//TWITTER GRID
 
 $.ul=function(){  return $('<ul>') }
-
 
 $.row=function(n){
 
@@ -822,8 +680,6 @@ $.textInput=function(name){
 
     return el}
 
-
-
 $.passwordInput=function(name){
 
     var el = $('<input>').attr('type', 'password')
@@ -841,17 +697,12 @@ $.col = function(){  var args = G(arguments),
     _.each( iter, function(v){ div.A(v) } )
 
     return div }
-
-
-
 $.canvas=function(col, width, height){
 
     var el
 
     if( U ( col ) ){ return superCanvas( $( '<canvas>' ) ).C( 'b' )   }
-
     if( N(col) ){ return  $.canvas( 'x', col, width   )}
-
     if( S(col) ){
 
         el = $( '<canvas>' )
@@ -872,15 +723,59 @@ $.canvas=function(col, width, height){
     return el}
 
 
-$.fn.src  = function(a){
 
 
-    if( U(a) ){return this.attr('src')}
 
-    this.attr('src',  src(a) )
 
-    return this
-}
+
+
+
+$a =function(a, func){
+    var g=G(arguments), a=g[0], f=g[1],
+
+        theEl=qq('a').id(a)(a)
+
+    if(F(func)){theEl.o(func)} else {theEl.hr(func||'#')}
+
+    if(g.n){theEl.dd()}
+
+    //  "<div data-toggle="dropdown" class="dropdown-toggle"></div>"
+
+    if(g.p){theEl=li(theEl)}
+
+
+
+    if(g.m){theEl=li(theEl).k('active')}
+
+    return theEl}
+
+$ul = ul=function(){
+    var tLi=function(a){
+        var iLi=function(a){return _h('HTMLLIElement', E(a))}
+        return iLi(a)?a:li(a)}
+
+    var g=G(arguments),
+        e=qq('ul')
+    _e(g,function(v){if(A(v)){e.k(v[0])}
+    else{e(tLi(v))}})
+    if(g.n){e.k('ddm')}//dropdown menu
+    if(g.p){e.k('n nbn')}//navbar nav
+    return e}
+$hr = hr=function(c,h,w){var e=qq('hr');
+    if(N(c)){return hr('z',c,h)}
+    e.h(h||2);e.c(c||'z');
+    if(w){e.w(w)};return e}
+
+
+JQPLUGS=function(){ z()
+
+    d = $.div().Z( 100 ).C( 'r' ).A().append( 'abc' )
+
+    e = $.div().Z( 100 ).col( 'r' ).A().append( 'abc' )
+
+    f = $.div().Z( 100 ).C( 'r' , 'b' ).A().append( 'abc' )
+
+    g = $.div( 'b' , 500 , 500 ).A() }
 
 
 IMAGE=function(){
@@ -888,6 +783,45 @@ IMAGE=function(){
     i = $.img('me')//.A()
 
 }
+
+
+EDITRANGE=function(){
+
+    z()
+
+    a=editDiv().C('a')
+    b=editDiv().C('b')
+    c=editDiv().C('c')
+}
+
+
+FUNNY=function(){z()
+
+    word = function(text, c1, c2){
+
+        var s= $.span(text).C(c1, c2).A().drag()
+
+        return s}
+
+
+    w=word('hello', 'b', 'g')
+
+    word('sicko', 'g', 'b')
+
+    word('why, i oughta..', 'p', 'x')
+
+    word('it was raining..', 'j', 'k')
+
+    word('who ya gonna call?', 'h', 'i')
+    word('dag nabit!', 'f', 'g')
+
+    word('i like', 'd', 'e')
+    word('tomorrow', 'a', 'c')
+
+    word('me', 'r', 'b')
+
+}
+
 
 
 
@@ -971,11 +905,13 @@ function superCanvas(el){
 
 
     el.fit=function(a, X, Y){
+
         a||'me'
         X=X||0
         Y=Y||0
-        el.draw(a, X, Y, el.W(), el.H())
+        el.draw(a, X, Y, el.width(), el.height())
         return el}
+
 
 
     return el}
@@ -990,12 +926,13 @@ VOLUME=function(){
 
     outerDiv = $.div('y', 400, 200 ).A().drag()
 
-
     r=$.row().W(600)
 
-    r.A(  $.div().id('booksDiv').addClass('col-md-6').A(    ) )
+    r.A(
+        $.div().id('booksDiv').addClass('col-md-6').A(    ) )
 
-    r.A(  $.div().id('displayDiv').addClass('col-dm-6').A(   $.img('guy')  )    )
+    r.A(
+        $.div().id('displayDiv').addClass('col-dm-6').A(   $.img('guy')  )    )
 
     r.A().drag()
 
@@ -1007,10 +944,6 @@ VOLUME=function(){
         book.display = $.img('me').hide().addClass('display')
 
     return book}
-
-
-
-
     addBook=function(title){
 
         var book=Book(title)
@@ -1034,6 +967,7 @@ VOLUME=function(){
 };
 
 
+
 //mongoError: kill mongod processess!!!!  ps ax | grep mongod
 
 
@@ -1054,6 +988,9 @@ VOLUME=function(){
         });
         return serializedObject;
     };
+
+
+
 // Use $.serializeJSON as namespace for the auxiliar functions
 // and to define defaults
     $.serializeJSON = {

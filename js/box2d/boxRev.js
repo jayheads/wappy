@@ -50,8 +50,6 @@ revJoint=function(){
 
 
 
-
-
 revJoint1=function(){return world.Revolute(
         world.baa(400, 200),
         world.bi(400, 200, 200) ).motor(1).speed(2000)  //speed
@@ -276,9 +274,7 @@ DEMO_GEAR=function(){makeWorld()
         .5
     )}
 
-CARS=function(){
-
-}
+CARS=function(){}
 
 REVPRISMGEAR=function(){
 

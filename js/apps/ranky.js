@@ -1,33 +1,104 @@
-RANKY=function(tp){
+$.inputBox=function(ob){  ob = ob||{}
 
-    format()
+    var func       = ob.func,
+        url        = ob.url || '/',
+        boxTitle   = ob.boxTitle,
+        inputType  = ob.inputType||'text',
+        defaults   = ob.defaults||{},
+        buttonText = ob.buttonText || 'submit'
 
-    s1( h1('topics!'),
+
+    var theDiv = $.div().WH('auto').pad(10)
+
+    if(boxTitle){ theDiv.A(   $.h1(boxTitle)   )  }
+
+    if(inputType == 'text'){
+
+        var theTextInput= $.input().K('form-control')
+
+        theDiv.A( theTextInput )
+
+        theDiv.A(
+
+            $.button(buttonText, function(){
+                $.post(
+                    url,
+                    _.defaults( dataValue(theTextInput), defaults),
+                    func
+                )
+            })
+
+        )}
+
+    if(inputType == 'textArea') {
+
+        var theTextAreaInput = $('<textarea>').K('form-control')
+
+        theDiv.A(
+
+            theTextAreaInput,
+            $.button(buttonText, function () {
+                $.post(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
+        )}
+
+    if(inputType == 'textAndTextArea') {
+
+        var theTextInput =  $.input().K('form-control'),
+            theTextAreaInput = $('<textarea>').K('form-control')
+
+        theDiv.A(theTextInput, theTextAreaInput)
+
+        theDiv.A(
+
+            $.button(buttonText, function () {
+                $.post(url,
+                    _.defaults(dataValue(theTextInput,theTextAreaInput), defaults),
+                    func)
+
+            }))
+    }
+
+
+    //z(); theDiv.a()
+
+    return theDiv}
+
+
+
+
+
+RANKY=function(tp){z()
+
+    $.format()
+
+    section1.A(
+
+        $.h1('topics!'),
 
        // ipt('new topic', 'post', '/tpc') ,
 
-
-        collection=inputBox({
-
+        collection = $.inputBox({
             boxTitle:'new topic',
             url:'/tpc',
             buttonText:'post',
-            func:home,
-            inputType:'textArea' }),
+            func:function(){},
+            inputType:'textArea'
+        }),
 
+        $.h4('recent: ')
 
-        h4('recent: '))
+    )
 
+    $.get('/tpc', function(topics){
 
-    qGE('/tpc',   function(topic){
+        _.each(topics, function(topic){
 
-            s1(
-
-                bt(topic.t,  function(){ ranky(topic) }),
-
-                br(2))
+            section1.A(
+                $.button(topic.t,
+                    function(){ ranky(topic) }),
+                $.br(2))
+        })
     })
-
 
 
 //ranky takes a topic model from the database
@@ -36,64 +107,56 @@ RANKY=function(tp){
 
 ranky=function(topic){//var collection
 
-    s2.E(
+    section2.empty()
 
-        h1('topic page: '+ topic.t),
+    section2.A(
 
+        $.h1('topic page: '+ topic.t),
 
-        bt('live chat',function(){ priv(topic.t) }),
+        $.button('live chat', function(){ priv(topic.t) }),
         //ipt('new item', 'post','/itm', {t: t.t}, function(){qG('/tpc1', {t: t.t},function(t){ranky(t)})}, '-'),
 
-
-        inputBox({
+        $.inputBox({
 
             boxTitle:'new item',
             url:'/itm',
             buttonText:'post',
             defaults:{t: topic.t},
             func:function(){
-                qG('/tpc1', {t: topic.t}, function(t){ranky(t)})},
+                $.get('/tpc1', {t: topic.t}, function(t){ranky(t)})},
             inputType:'text'
 
         }),
 
-        collection=dv())
-
-
+        collection=$.div())
 
      itemCollection=new ItemCollection()
 
-
-     _e(topic.i, function(i){
+    _.each(topic.i, function(i){
 
              if(O(i)){
 
-                 var itemModel=new ItemModel({
+                 var itemModel=new ItemModel({  topic:topic.t,  text: i.t,   score: i.s   })
 
-                     topic:topic.t,
-                     text: i.t,
-                     score: i.s
-
-                 })
-
-                 itemCollection.add(itemModel)
+                 itemCollection.add( itemModel )
 
                 // var itemView=new ItemView({model: itemModel}).render().el
                 // collection(itemView)
                 // itemCollection.render()
              }
 
-
     })
 
 
-     itemsView=new ItemsView({  collection:itemCollection  })
+     itemsView = new ItemsView({  collection:itemCollection  })
 
      itemsView.render()
 
 
 
  }
+
+
 ItemModel=Backbone.Model.extend({initialize:function(){}})
 ItemCollection=Backbone.Collection.extend({
     model:ItemModel,
@@ -191,6 +254,12 @@ ItemView=Backbone.View.extend({
 
 }
 
+
+
+
+
+
+
 test=function(){
 
     itemModel=new ItemModel({topic:'yano', text:'hi', score:0})
@@ -203,8 +272,6 @@ test=function(){
 
 
 }
-
-
 
 OBJECT=function(){
 
@@ -246,72 +313,53 @@ OBJECT=function(){
 
 }
 
+DIRTPAGE=function(){ z()
 
+    MessageModel=Backbone.Model.extend({  })
 
-DIRTPAGE=function(){
+    MessageCollection=Backbone.Collection.extend({   model:'MessageModel'  })
 
-    MessageModel=Backbone.Model.extend({
+    MessageView=Backbone.View.extend({  })
 
+    MessagesView=Backbone.View.extend({ })
 
-    })
+    $.h1().A(   $.a(  'Dirtpage', '/wap/dirtpage/' )       ).A()
 
-
-    MessageCollection=Backbone.Collection.extend({
-        model:'MessageModel'
-    })
-
-
-
-    MessageView=Backbone.View.extend({
-    })
-
-
-
-    MessagesView=Backbone.View.extend({
-    })
-
-
-
-    z()
-
-    h1( lk(  'Dirtpage', '/wap/dirtpage/' ) ).a()
-
-
-
-    dv().a().id('content')
+    $.div().A().id('content')
 
 
     if(!pam){
-      var newMessageBox=dv(4).auto()(
-            h1('new message'),
-            tx().id('newTopic'),
-            tx().id('newMessage'),
-            bt('ok', function(){
+
+        var newMessageBox=$.div().WH('auto').A(
+            $.h1('new message'),
+            $.input().K('form-control').id('newTopic'),
+            $.input().K('form-control').id('newMessage'),
+            $.button('ok', function(){
 
                 var newTopic = $('#newTopic').val()
 
                 var newMessage = $('#newMessage').val()
 
-                qP('/messages',
+                $.post('/messages',
                     {topic:newTopic,
                         message:newMessage}, function(){})}))
 
 
 
-      var searchBox=dv(4).auto()(
-            h1('search'),
-            tx().id('searchInput'),
-            bt('ok', function(){
+      var searchBox= $.div().WH('auto').A(
+          $.h1('search'),
+           $.input().K('form-control').id('searchInput'),
+          $.button('ok', function(){
 
-                window.location=   '/wap/dirtpage/'+$('#searchInput').val()
+                window.location=   '/wap/dirtpage/'+ $('#searchInput').val()
 
 
                 var searchInput = $('#searchInput').val()
 
-                qG('/topics/' + searchInput, function(messages){
+               $.get('/topics/' + searchInput, function(messages){
 
 
-                    qi('results').E(   h5('length: '+messages.length)  )
+                    $('#results').html($.h5('length: '+messages.length)  )
 
 
 
@@ -319,21 +367,19 @@ DIRTPAGE=function(){
 
                         function(message){
 
-                            qi('results')( h6( message.message ))
+                            $('#results').A( $.h6( message.message ) )
 
                         })
-
-
 
 
                 })
 
             }))
 
-        dv().id('results').a()
 
-        qi('content')(newMessageBox, searchBox)
+        $div().id('results').A()
 
+        $('#content').A(newMessageBox, searchBox)
 
 
         qG('/messages', function(messages){
@@ -341,13 +387,15 @@ DIRTPAGE=function(){
             _.each(messages, function(message){
 
 
-                qi('results')(
+              $('#results').A(
 
-                    h2(lk('topic: '+message.topic,'/wap/dirtpage/'+message.topic)),
+                    $h2().A(
+
+                        $.a('topic: '+message.topic,'/wap/dirtpage/'+message.topic)),
 
 
 
-                   h3( 'message: '+message.message)
+                    $.h3( 'message: '+message.message)
                 )
             })
 
@@ -358,21 +406,18 @@ DIRTPAGE=function(){
 
     }
 
-
-
-
     else {
 
 
-        var newMessageBox=dv(4).auto()(
-            h1('new message'),
-            tx().id('newMessage'),
-            bt('ok', function(){
+        var newMessageBox= $.div().WH('auto').A(
+            $.h1('new message'),
+            $.input().K('form-control').id('newMessage'),
 
+            $.button('ok', function(){
 
                 var newMessage = $('#newMessage').val()
 
-                qP('/messages' ,
+              $.post('/messages' ,
                     {topic:pam, message:newMessage},
                     function(){
 
@@ -383,24 +428,30 @@ DIRTPAGE=function(){
             }))
 
 
-    qi('content')(
-        h1('the '+ pam + ' page'),
+    $('#content').A(
+
+        $.h1('the '+ pam + ' page'),
+
         newMessageBox,
-        di('results'))
+
+        $.div().id('results')
+    )
 
 
         loadResults=function(){
-        qG('/topics/' + pam, function(messages){
-            qi('results').E( h5('length: '+messages.length)  )
+
+       $.get('/topics/' + pam, function(messages){
+
+           $('#results').html( $.h5('length: '+messages.length)  )
+
             _.each(messages,
                 function(message){
-                    qi('results')( h6( message.message ))
+                    $('#results').A($.h6( message.message ))
                         })})}
 
         loadResults()
 
-    }
+    }}
 
 
-}
 

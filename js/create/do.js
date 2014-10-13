@@ -296,6 +296,10 @@ SuperDisplayObject=Do=function(ob, func){
         if(U(a)){return o.ob.rotation}
         o.ob.rotation=a
         return o}
+
+
+
+
     o.al=function(n){
         var g=G(arguments),
             n=g[0]

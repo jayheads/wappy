@@ -61,14 +61,6 @@ $.navbarCollapse=function(){
 }
 
 
-NEWNAV=function(){z()
-    navbarCollapse= $.navbarCollapse().A(
-        $.nav(
-            $.dropdown('create',['upload','uploads','edit','cutouts']),
-            $.dropdown('games',['upload','uploads','edit','cutouts'])),
-        $.navRight( $.dropdown('account',['profile','logout']) ))
-  $.container().A(  $.navbar().A( $.navbarHeader('wappy'), navbarCollapse )).A()}
-
 
 
 NEWMODAL=function(){

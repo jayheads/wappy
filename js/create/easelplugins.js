@@ -1,8 +1,11 @@
-$stage=function(a,b,c){
+createjs.stage = $stage = function(a,b,c){
 
-    return new createjs.Stage( $.canvas(a,b,c)[0] )
+    return new createjs.Stage( $.canvas(a, b, c)[0] )
 
 }
+
+
+
 
 $tick = function(func){
     createjs.Ticker.addEventListener('tick', func)
@@ -267,17 +270,24 @@ p.H=function(a){
 //CONTAINER
 p=createjs.Container.prototype
 
+
 p.bm = function(img, func){
 
     var that =this
 
-    $img(img, function(image){
+    $.img(img, function(image){
+
         var bm = new createjs.Bitmap( image )
         that.addChild( bm );
         if(func){func( bm )}
+
     })
 
     return this}
+
+
+
+
 p.tick = function(){
     createjs.Ticker.addEventListener('tick', this)
     return this

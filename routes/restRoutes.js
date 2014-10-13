@@ -3,26 +3,13 @@ module.exports=function() { $a = a
 
 
 
-    $a.get('/avail', function(req, res){
-
-        $m.avail.find(function(err, avails){
-
-
-            res.j(  $l(avails)   )   })
-
-    })
-
-
-
+    $a.get('/avail', function(req, res){  $m.avail.find(function(err, avails){  res.j(  $l(avails)   )   })  })
 
 
     $a.post('/avail', function(q,p,n){    l('pposting..');l(q.b)
 
-        $m.avail.create({c: q.b.c},
-                function(z,course){
-                    if(z){l(z)} else {p.j(course)}
 
-                })})
+        $m.avail.create({c: q.b.c},   function(z,course){  if(z){l(z)} else {p.j(course)}   })})
 
 
     $a.put('/avail/:id', function(q,p,n){

@@ -130,9 +130,6 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
     $a.get('/objs',
         $w.u,function(q,p,n){
 
-
-
-
         MC.connect(mUrl,
             function(z,db){if(z)throw z
 

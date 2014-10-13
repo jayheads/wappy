@@ -217,13 +217,19 @@ $.colX = function(){var args=G(arguments),
 
 
 
-row2=function(a,b){return row(col(6,a),col(6,b))}
+row2=function(a,b){
+    return row(col(6,a),col(6,b))
+}
+
+
+
 row3=function(a,b,c){return row(col(4,a),col(4,b),col(4,c))}
 row4=function(a,b,c,d){return row(col(3,a),col(3,b),col(3,c),col(3,d))}
 row84=function(a,b){return row(col(8,a),col(4,b))}
 
 row48=function(a,b){return row(col(4,a), col(8,b))}//
 row39=function(a,b){return row(col(3,a), col(9,b))}//
+
 
 row210=function(a,b){return row(col(2,a),col(10,b))}//
 row111=function(a,b){return row(col(1,a),col(11,b))}//

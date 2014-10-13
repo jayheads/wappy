@@ -429,18 +429,32 @@ BILLIARDS=function(){
 
 
 MAKEWORLD=function(){return makeWorld()}
+
+
+
 BOX2D=function(a){
 
     makeWorld()
 
 
     str1()
+
     platform()
 
     addTenShapes()
+
     makeMe()
 
 }
+
+
+
+
+
+
+
+
+
 
 
 RORC=function(){mW()

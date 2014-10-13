@@ -647,9 +647,10 @@ qq = function(e,b,c,d){
     q.m= q.modalToggle=function(a){q.q.modal(a||'toggle');return q}
 
 
-    q.mpfd= q.multipartFormData=function(){return q.at({enctype:'multipart/form-data'})}
+    q.mpfd= q.multipartFormData=function(){return q.at({enctype: 'multipart/form-data'})}
 
-    q.act= q.action=function(a){return q.at({a:a||'/upl'})}
+
+    q.act= q.action=function(a){return q.at({a: a||'/upl'})}
 
     q.dd=  q.dropDown= function(a){
         return q.k('dropdown-toggle').at({'data-target':'dropdown'})

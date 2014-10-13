@@ -34,9 +34,13 @@ _a=function(a,b,c,d,e){//U(a)? qq('a')
 _b=function(a,b,c){
     return  U(a)? qq($('body'))//--
         :F(a)?_.bind(a,b,c)//
-        :S(a)? a.split(b||'.')[0] //before('.')
+
+        :S(a)?   a.split(b||'.')[0] //before('.')
+
         :_.bindAll(a,b,c)//
 }
+
+
 
 
 C=function c(a){
@@ -90,7 +94,11 @@ df=function(a,b){a=ob(a)
     return G(arguments).p? D(a, oO(b||''+'D'))
         :D(a)?a :b}
 
-Du=function(a){return _h(a,'data:')}
+
+
+Du=function(a){ return s$(a).contains('data:') }
+
+
 
 
 
@@ -161,8 +169,10 @@ _f=function(a, b, c){
 
 
 _g=function(a){
-    if(A(a)){a=_f(a)};
-    return F(a)?a
+
+    if(A(a)){ a = _.first(a) }
+
+    return F(a)? a
 
         : O(a)?(a.target? a.target: Q(a)[0])
 
@@ -207,9 +217,13 @@ G=function(a){
 
 
 _h=function _h(a,b,c){
+
     if(O(b)){return _h(_S(b),a)}
-    if(S(a)){return s$(a).contains(b,c)}
+
+    if(S(a)){ return s$(a).contains(b,c)}
+
     if(O(a)){
+
         if(U(b)){
             return a.height?(F(a.height)?a.height():a.height):F(a.h)?a.h():N(a.h)?a.h:false}
         if(N(b)){
@@ -280,6 +294,7 @@ K=function(a,b,c){return N(a)? I(b, a*1000)
 
 _k=function(a){return O(a) && a.complete}
 
+
 L=function(a,b){var g=G(arguments)
     return S(b)? (g.N?  s$(a).ensureLeft(b).s
         :s$(a).chompLeft(b).s):0}
@@ -315,7 +330,9 @@ Lc=function(a){if(S(a)){return s$(a).isLower()}}
 _l=function(a,b){
 
     if(F(b)){$(a).load(b);return a}
-    return _.last(a,b)}
+    return _.last(a,b)
+
+}
 
 
 _m=function(a,b,c){return F(b)? _.map(a,b,c)
@@ -387,13 +404,21 @@ _p=function(a,b,c){
 
     if(U(a)){return qq('p')}
 
-    return(c===0)?function(c,d){return a(c,b,d)}
+    return(c===0)?function(c,d){  return a(c,b,d)}
+
         :F(a)?_a(_.partial,arguments)
+
         :O(a)?(G(arguments).N?$(a).parents(f)
+
         :$(a).parent(f))
+
         :S(b)?(S(a,b)?a:b+a)
+
         :nN(a)?a+'px'
-        :a}
+
+        :a
+}
+
 
 
 
@@ -485,10 +510,15 @@ _s=function s(a,b,c){
 
 
 
-S=function(a,b,c){return U(b)? (_.isString(a)?_s().H(a):0)
+S=function(a,b,c){
+
+    return U(b)? (_.isString(a)? $.span().html(a):0  )
     :N(b)? a.substr(b,c)
     :S(b)? s$(a).startsWith(b)
-    :_.some(a, b||F,c)}
+    :_.some(a, b||F,c)
+}
+
+
 
 
 
@@ -615,18 +645,19 @@ W=function(a){var g=G(arguments)
     var oW=function(a){if(O(a=a||$$w)){
         return Q(a).outerWidth()}}
     a=a||$$w;
-    return N(a)?W()/a:oW(Q(a))}
+    return N(a)?W()/a:oW(Q(a))
+}
+
 
 
 fCC=function(a){ return $S.fromCharCode(a) }
 
-
-
-_x=function(a, b){
-
-    if(S(a)){return(_h(a,'.'))?a:
-    R(a,b||'.png')}
+$.extension=_x=function(a, b){
+    //if(S(a)){
+        return  s$(a).contains('.')  ? a:  s$(a).ensureRight(b||'.png').s
+    //}
 }
+
 
 
 
@@ -640,9 +671,9 @@ Z=function(a){
 
 
 
-z=function(c){
-    if(c){co(c)}
-    return $b().E()}
+z=function(){
+   $('body').empty()
+}
 
 
 

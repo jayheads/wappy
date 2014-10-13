@@ -113,10 +113,6 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
     },// array of usernames?
 
-
-
-
-
      pic:{
 
          user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
@@ -135,9 +131,6 @@ var S=String, N=Number, O=Object, D=Date, t=true,
      },
 
 
-
-
-
      img:{
 
          u:String,  username:String,
@@ -154,17 +147,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
+    thing:{   name: String,  age: Number   },
 
 
      guy:{n:{type:S, required:true}, m:S,  x:N, y:N}, //map:{n:S, guys:O},
@@ -293,13 +276,10 @@ sectionSch=mongoose.Schema({page:{
 
 
 
-
-
 Book=mongoose.model('Book',bookSch)
 Chapter=mongoose.model('Chapter',chapterSch)
 Page=mongoose.model('Page',pageSch)
 Section=mongoose.model('Section',sectionSch)
-
 
 
 

@@ -1,6 +1,53 @@
 
+WappyNav=function(){
 
-WappyNav =  function(color){
+  z()
+
+    navbarCollapse= $.navbarCollapse().A(
+
+
+        $.nav(
+            $.dropdown('create',[ 'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
+                'tween','tweenart', 'easing', 'pack','sprite','transform' ,
+                'can' ,'rub','fan' ]),
+
+            $.dropdown('youplay',[ 'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
+                'groupvsgroup','shooty','hit','space','maggots']),
+
+    $.dropdown('play',[ 'iso1', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
+        'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'  ]),
+
+
+    $.dropdown('share',[ 'universe',
+        'users', 'status' , 'messages','posts','chatrooms',
+        'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'   ]),
+
+    $.dropdown('box2d',[     'box2d', 'wheel','heads', 'cups','pinball',
+        'revdemo','player','player1','player2', 'player3'  ])
+
+
+    ),
+
+
+        $.navRight(
+
+            $.liA('logged: '+ _username),
+
+            $.liA('logout', logOut)
+
+
+            )
+
+    )
+
+
+
+
+    $.container().A(  $.navbar().A( $.navbarHeader('wappy'), navbarCollapse )).A()}
+
+
+
+WappyNavX =  function(color){
 
     var args=G(arguments)
 
@@ -22,7 +69,6 @@ WappyNav =  function(color){
                     'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
                 'tween','tweenart', 'easing', 'pack','sprite','transform' ,
                 'can' ,'rub','fan' ),
-
 
 
             DropdownLoader($.glyph('glass','youplay'),
@@ -253,9 +299,6 @@ StandardNavbar=function(){
     navbar.pp()
 
 return navbar}
-
-
-
 
 $.searchNavRight =  function(){
 

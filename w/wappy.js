@@ -63,20 +63,17 @@ a.set( 'views' , __dirname + '/../views/' )
 //if(a.get('env')=="development"){a.use(express.errorHandler())}
 a.use(express.bodyParser({uploadDir:__dirname+"/public/uploads",keepExtensions:true}))
 a.use(cookieParser=express.cookieParser('xyz'))
+
 a.use(express.session({
-
     store: mongoStore,
+    secret: 'xyz' }))
 
-    secret: 'xyz'
-
-}))
 
 a.use( express.favicon() )
-
 a.use( middleware = $w = w =  require('./MW') )
 
-
 a.get('/render/:page', function(req, res, next){res.render(req.params.page)})
+
 //
 require( '../routes/routes' )()
 require( '../routes/social' )()
