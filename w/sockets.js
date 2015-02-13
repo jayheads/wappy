@@ -273,6 +273,7 @@ module.exports=function(io, K){
 
             //data message blank!
 
+            $l('...')
             $l(data)
 
             $l('send message')

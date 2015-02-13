@@ -311,6 +311,7 @@ g$="var t=this,g=_.toArray(arguments), str='',arr=[], obj={},   gz=_.size(g),gf=
 
 f1=$f=function(a){return $F("a","b","c",g$+"\n"+"return("+a+")")}
 
+
 ft=$ft=function(a,b){
     return $F("a","b","c", g$+"\n"+a+";return t")}
 

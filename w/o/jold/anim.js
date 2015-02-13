@@ -49,11 +49,14 @@ tweeny=function(a){  return fn=function f(b){W$.get(a).to(b); return f}}
         if(a){x[gts](a)}
         else{x.stop()}
         return o}
+
     o.av=function(a){x[av](a*1000)
         return o}
-    o.end=function(a){o.o(ae, a)
+
+     o.end=function(a){o.o(ae, a)
         return o}
-    o.pa=function(a){
+
+     o.pa=function(a){
         if(!a){return x[pa]}
         x[pa]=a
         return o}
@@ -77,15 +80,21 @@ tweeny=function(a){  return fn=function f(b){W$.get(a).to(b); return f}}
 
     return o}
 
+
+
 EaselSprite   = sprX
 
-    Sp=function(ss, f, st){
+    Sp=function(ss, f, stage){
 
-    return Ql( { m: makeMan(ss),
+    return Ql({
 
-    c:function(i){var s=jss(s)
+        m: makeManifest(ss),
 
-        if(st){st.a(s)}
+    c:function(i){
+
+        var s=jss(s)
+
+        if(stage){ stage.A(s) }
 
         if(f){
 
@@ -93,7 +102,9 @@ EaselSprite   = sprX
 
             }
 
-    }})}
+    }})
+
+    }
 
 
 
