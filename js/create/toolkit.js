@@ -5,9 +5,9 @@ RUNNER=function() {
 
     $.button('start', function(){
 
-        imgMonsterARun = $img("/MonsterARun.png", handleImageLoad)
+        imgMonsterARun = $.img("/MonsterARun.png", handleImageLoad)
 
-        imgMonsterAIdle = $img("/MonsterAIdle.png", handleImageLoad)
+        imgMonsterAIdle = $.img("/MonsterAIdle.png", handleImageLoad)
 
     }).A()
 
@@ -84,6 +84,7 @@ RUNNER=function() {
 
         sprite.name = "monster1"
         sprite.direction = 90
+
         sprite.vX = 1
         sprite.vY = 0
         sprite.x = 16
@@ -108,13 +109,7 @@ RUNNER=function() {
 
             spriteIdle.gotoAndPlay( "idle" )
 
-            stage.addChild( spriteIdle )
-
-        }
-
-
-
-
+            stage.addChild( spriteIdle )}
 
 
         // Moving the sprite based on the direction & the speed
@@ -129,10 +124,9 @@ RUNNER=function() {
 
 }
 
-
 cjs=createjs
 
-
+//ok an export using toolkit!
 TOOLKIT=function(){ z()
 
     var  stage, exportRoot, lib, images
@@ -299,155 +293,7 @@ TOOLKIT=function(){ z()
 
     loader.loadManifest(lib.properties.manifest)}
 
-
-BRITNEY=function(){
-
-    var p
-    lib = {}
-    img = images = {}
-    cjs = createjs
-    $.canvas( 550, 400 ).id( 'canvas' ).A()
-    canvas = document.getElementById( "canvas" )
-
-    lib.properties={  width: 550,  height: 400,   fps: 24,   color: "#FFFFFF",   manifest: [
-        {src:"/britney2.jpeg", id:"britney2"} ]}
-
-
-    lib.britney2 = function() {this.initialize(img.britney2)}
-
-    lib.britney2.prototype = p = new cjs.Bitmap(); p.nominalBounds = new cjs.Rectangle(0,0,259,194);
-
-    lib.britney_1 = function(){this.initialize();  this.instance=new lib.britney2();  this.addChild(this.instance) }
-
-
-    lib.britney_1.prototype = p = new cjs.Container(); p.nominalBounds = new cjs.Rectangle(0,0,259,194)
-
-
-
-    lib.britney = function(mode, startPosition, loop){
-        this.initialize(mode, startPosition, loop, { firstChange:0, "firstChange":4 })
-        this.britney = new lib.britney_1()
-        this.britney.setTransform(224,180,1,1,0,0,0,129.5,97)
-        this.timeline.addTween(
-            cjs.Tween.get(this.britney).wait(4).to({x:295.9,y:126},0).wait(5).to({x:160,y:121},0)
-                .wait(5).to({x:224,y:180},0).wait(1))}
-    lib.britney.prototype = p = new createjs.MovieClip()
-
-
-    p.nominalBounds = new cjs.Rectangle(369.5,283,259,194)
-
-    loader = new createjs.LoadQueue(false)
-    loader.addEventListener("fileload", function(evt){if (evt.item.type == "image") { images[evt.item.id] = evt.result } })
-
-
-    loader.addEventListener("complete", function(){
-
-        exportRoot = new lib.britney()
-        stage = new createjs.Stage( canvas )
-
-        //stage.addChild(exportRoot)
-
-        stage.addChild(  b = new lib.britney() )
-
-        stage.update()
-        createjs.Ticker.setFPS(lib.properties.fps);
-        createjs.Ticker.addEventListener("tick", stage)
-
-    })
-
-
-    loader.loadManifest(lib.properties.manifest)
-
-}
-BRIT2=function(){
-
-    $.canvas(550,400).id('canvas').A()
-    canvas=document.getElementById("canvas")
-
-    cjs=createjs
-
-    lib={}
-
-    img=images={}
-
-    var p;
-
-
-    lib.properties = {
-        width: 550,
-        height: 400,
-        fps: 24,
-        color: "#FFFFFF",
-        manifest: [
-            {src:"/bird.jpg", id:"bird"},
-            {src:"/britney2.jpeg", id:"britney2"},
-            {src:"/britney.jpeg", id:"britney"}
-        ]};
-
-
-
-    (lib.Bird = function() {
-        this.initialize()
-        this.A( this.instance = new lib.bird().transform(0, 0, .099, .257)  )
-    }).prototype = new cjs.Container().bounds(0,0,159.2,308);
-
-
-
-    (lib.bird = function(){  this.initialize(img.bird)  }).prototype = new cjs.Bitmap().bounds(0,0,1600,1200);
-
-
-    //bitmap
-    (lib.britney2 = function() {  this.init( img.britney2 )  }).prototype =  new cjs.Bitmap().bounds(0,0,259,194);
-
-    (lib.britney = function() {
-        this.init(img.britney)   }).prototype =   new cjs.Bitmap().bounds(0,0,259,194);
-
-
-    (lib.Britney=function(){
-        this.init().A(this.instance = new lib.britney()
-        )}).prototype =   new cjs.Container().bounds(0,0,259,194);
-
-
-    /////exportRoot!
-
-    (lib.brit2=function(){
-
-        this.init().A(
-
-            this.britney=  new lib.Britney().transform(207,148,1,1,0,0,0,129.5,97),
-
-            this.bird=     new lib.Bird().transform(444.8,185,1,1,0,0,0,79.5,154)
-
-        )}).prototype=   new cjs.Container().bounds(352.5,231,447,308)
-
-
-
-    loader=new createjs.LoadQueue(false)
-        .fileload(handleFileLoad)
-        .complete( handleComplete)
-        .manifest(lib.properties.manifest  )
-
-    function handleFileLoad(evt){
-        if (evt.item.type == "image") { images[evt.item.id] = evt.result}}
-
-    function handleComplete(){
-
-        exportRoot = new lib.brit2();
-        stage = new createjs.Stage(canvas);
-        stage.addChild(exportRoot);
-        stage.update();
-        createjs.Ticker.setFPS(lib.properties.fps);
-        createjs.Ticker.addEventListener("tick", stage);
-    }
-
-
-}
-
-
-
-
-
-
+// ****  THIS WORKS!!!
 SCROLLER=function(){z()
 
     var p

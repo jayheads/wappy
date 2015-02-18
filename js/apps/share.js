@@ -1,85 +1,118 @@
 
+
+
+
 //used for LISTING things (blog posts, etc)
-blp=function(s,d){
+$.blip = blp=function(s, div){
 
-    var g=G(arguments),   s=g[0],   d=g[1],
+    //topic, datetime, content
 
+    var g=G(arguments),
+        s=g[0],
 
-        theSpan = $span()
+        div=g[1],
+
+        theSpan = $.span(),
+        post=s
+
+    post.topic = post.t
+    post.user = post.u
+    post.datetime = post.dt
+    post.content = post.c
 
     if(g.p){
 
-        theSpan(
+        theSpan.A(
 
-            $button('topic: '+ s.t,  function(){  topic=s.t;  tab4.load()  }   ),
+            $.button('topic: '+ post.topic,
+                function(){
+                    topic = post.topic;  tab4.load()  }   ),
 
-            $h5( dt(s.dt).dt() ),
+            $.h3( post.content )
 
-            $h3( s.c)
+        )
+        if(post.datetime){
+            theSpan.A($.h5( dt(post.datetime).dt() ) )
+        }
 
-        )}
+
+
+
+    }
 
 
     else if(g.n){
 
-        theSpan(
-            $button('user: '+s.u, function(){from=s.u;tab3.load()}),
+        theSpan.A(
+            $.button('user: '+ post.user, function(){from=post.user;tab3.load()}),
 
-            $br(),
+            $.br(),
 
-            $button('topic: '+s.t, function(){topic=s.t;tab4.load()}),
+            $.button( 'topic: '+post.topic, function(){topic=s.t;tab4.load()}),
 
-            $h5(  dt(s.dt).dt()  ),
 
-            $h3(s.c))
+
+            $.h3(post.content) )
+
+
+        if(post.datetime){
+            theSpan.A( $.h5( dt(post.datetime).dt() ) )
+        }
     }
 
     else if(g.d){
 
-        theSpan(
+        theSpan.A(
 
-            $button('user: '+s.u,function(){from=s.u;tab3.load()}),
-            $br(),
+            $.button('user: '+post.user, function(){
+                from=post.user;
+                tab3.load()}),
+
+            $.br(),
 
 
-            $h5(s.dt), $h3(s.c))}
+            $.h3(post.content)
+        )
+
+        if(post.datetime){
+            theSpan.A($.h5( dt(post.datetime).dt() ) )
+        }
+
+    }
 
     else {
 
-        theSpan(
+        if(post.datetime){
+            theSpan.A($.h4( dt(post.datetime).dt() ) )
+        }
 
-            $h4( dt(s.dt).dt() ),
+        theSpan.A(
 
-            $h1(s.c)
+
+
+            $.h1(post.content)
         )
 
     }
 
+    if(post.du){
 
+        theSpan.A(
 
-
-
-    if(s.du){
-        theSpan(
-
-            cx(400).f(s.du).bc('-')
+            $.canvas('X', 400).A().fit( post.du )
 
     )}
 
 
-    theSpan($hr())
+    theSpan.A($.hr())
 
-    return D(d)? d(theSpan): theSpan
+
+    return D(div)? div.A( theSpan ): theSpan
 
 }
 
-
-
-
-
-
 //api calls
-withStatus = wUSt=function(user,func){//with first status?
+withStatusX = wUSt=function(user,func){//with first status?
 
     qG('/sts1',
 
@@ -88,31 +121,22 @@ withStatus = wUSt=function(user,func){//with first status?
         function(status){ func(status.c) })
 }
 
-
 $mailButton = btMail=function(message, user){
 
-   return $button('mail',
+   return $.button('mail',
 
        function(){
 
-           $.post('/sMsg',
+           $.post('/sMsg',   {m: message.V(), to: user.u}
 
-               {
-
-               m: message.V(), to: user.u
-
-           }
-
-           )})
-
-}
+           )})}
 
 $chatButton  =function(username, message){ //= btChat  //_$username,  messageTextarea
 
 
     mmm=message
 
-    return $button('chat',
+    return $.button('chat',
 
 
         function(){
@@ -149,69 +173,55 @@ $buddyRequestButton =btRq=function(user){
 
         })}
 
-$postsButton =btPst=function(){return $button('see posts', function(){})  }
+$postsButton =btPst=function(){return $.button('see posts', function(){})  }
+
+POSTS=function(){
+
+    $.format()
+
+    s1.A(
 
 
-c3=function(a){return xc().w(300).h(300).f(a) }
-
-
-
-POSTS=function(){format()
-
-    s1(
-
-        //dd= ipt('new post', 'post', '/pst',  home, '+'),
-
-        dd=inputBox({
+        dd= $.inputBox({
 
             boxTitle:'new post',
             url:'/pst',
             buttonText:'post',
-            func:home,
+            func: home,
             inputType:'textAndTextArea'
         }),
 
 
 
-        $h2('attach:'),
+        $.h2('attach:'),
 
 
-        $button('pic', function(){
+        $.button('pic', function(){
 
-            m=pop(
-
-                ps=_d()( h3('pic select')  )
-
-            )
+            m= $.pop(  ps= $.div().A( $.h3('pic select')  ) )
 
 
+            $.getJSON('/img', function(pics){
 
-            imgs( function(p){  _e(p, function(p){
-
-
-                ps(
-                    qq(
-                        im(p.d)
-                    ).Z(1).o(
-
-                            function(){
-
-                                attached.E( qq( im(p.d) ).Z(2) )
-
-                                m.q.modal( 'hide' )
-
-                            }
-                        )
-                    )
+                _.each(pics, function(p){
 
 
-                    })
+                    ps.A(  $.img(p.d)  .W(40).H(40).click(  function(){
+
+                        attached.E( $.img(p.d).W(20).H(20) )
+
+                        m.modal( 'hide' )
+
+                    } ))
+
 
                 })
 
+            })
+
         }),
 
-        attached=_d()
+        attached= $.div().A()
     )
 
 
@@ -220,7 +230,7 @@ POSTS=function(){format()
 
         'buds',
 
-        function(){  TABS.E( h1('bud posts') )  }
+        function(){  TABS.E( $.h1('bud posts') )  }
 
     ]
 
@@ -230,16 +240,22 @@ POSTS=function(){format()
 
         function(){
 
-            TABS.E(h1('public posts'))
+            TABS.E($.h1('public posts'))
 
-            qG('/psts', function(i){  blp(i, TABS, '-')}, '+')
+            qGE('/psts',
+
+                function(i){
+
+                    blp(i, TABS, '-')
+
+                })
 
         }
     ]
 
 
 
-    tab3=tab('user',function(){
+    tab3= $.tab('user',function(){
         u=$w['from']||'a'
 
         s1.E(sp('topics: '))
@@ -250,7 +266,7 @@ POSTS=function(){format()
                 blp(i, TABS, '+') },'+')})
 
 
-    tab4=tab('topic',function(){
+    tab4= $.tab('topic',function(){
 
         TOPIC=$w['topic']||'fantasy'
 
@@ -264,465 +280,106 @@ POSTS=function(){format()
 
         function(){
 
-            TABS.E(h1('your posts'))
+            TABS.E($.h1('your posts'))
 
-            qG('/pst', function(i){blp(i,TABS,'+')},'+')
-
-        }]
+            qGE('/pst', function(i){blp(i,TABS,'+')})   }]
 
 
-    s2(t=tabs(tab1,tab2,tab3,tab4,tab5))
+    s2.A(
+        t= $.tabs(tab1,tab2,tab3,tab4,tab5))
 
     t.load()
 
 }
-
-
-
-
-
-
-USERS=function(){format()
-
-    s1(
-        $h1('filter'),
-        $h1('order'),
-        $h1('view'))
-
-    tab1=['users', function(){
-
-
-        TABS.E(
-            $h1('Users: '),
-            $br())
-
-
-
-        $.get('/users',
-
-
-            function(u){
-
-                uuu=u
-                $l('getUsers')
-
-                _.each(u,
-
-
-                    function(u){
-
-                        $.get('/mug/'+ u.m ,
-
-                            function(m){
-
-                                TABS(
-
-                                    tn(
-                                        $pg(u.u),
-
-                                        $br(), m ).$( function(){
-
-                                            window.location='/wap/profiles/'+ u.u;//return
-
-                                        })
-
-                                )})})}
-
-        )
-
-
-
-
-
-
-    }]
-
-    tab2=['buds',function(){
-
-
-        TABS.E(
-
-            $h1('Buds: '),
-
-            $br()
-        )
-
-        buds(function(u){
-
-            b=u; rr=row()
-
-            _.each(u,function(u){
-
-                $.get('/mug/' +u.m, function(m){
-
-
-
-                TABS(tn(
-                    $pg(u.u),
-                    $br(),m).o(function(){$win(
-                        $div()(
-                            $br(),$hr(),
-                    $h3('User: '+ u.u),
-                    $br(),
-                    xc().w(300).h(300).f(m),
-                    d=$div(),
-                    ms=$textarea().c('w','z') ,
-
-                            $button('send message',function(){
-
-                       $.post('/sMsg',{m:ms.V(),  to:u.u})
-
-                    }),
-
-                    $button('send buddy request')))
-                    prof(u.u, d)}))})})
-
-            })
-
-    }]
-
-
-    tab3=tab('user2',function(){TABS.E()(h1('users'))})
-
-    tab4=['user', function(){
-
-        from=$w['from']||'b'
-
-        TABS.E()(h1('page: '+from))
-
-        TABS(
-
-            $pg('about'),
-            $pg('activity'),
-            $pg('buds'),
-            $pg('posts'),
-            $pg('relations') )
-
-    }]
-
-    s2(
-        theTabs=tabs(tab1,tab2,tab3,tab4)
-    )
-
-    theTabs.load()
-
-}
-
-
-
-
-
-
-makeProfile = prof=function(user, theDiv){
-
-    user=user || 'a'
-
-
-    $.post('/gPf', {u:user}, function(data){
-
-        if(O(data)){ theDiv = theDiv||dva(3)
-
-        theDiv(  h4('things i like'), $h5(data.things),
-
-            $h4('words that describe me'),  $h5(data.words),
-
-            $h4('more about me..'),   $h5(data.about),
-
-            $h4('what i want..'),  $h5(data.want),
-
-            $h4('my best feature'),   $h5(data.best))
-
-    }})
-
-
-
-
-}
-
-
-
-
-
-showStatus =stat=function(user, theDiv){
-
-    withStatus(user,
-
-        function(status){
-            theDiv( $h3('STATUS: '+ status))
-        })
-
-}
-
-PROFILES=function(){
-
-    format()
-
-    _$username = u = pam
-
-    s1(   $h1(pam),   statusSpan = $span(),   image = $img()   )
-
-    withStatus( _$username, function(status){  _$username( $h3('STATUS: '+ status))  })
-
-    $.post(  '/mug',  {u: _$username||'a'}, function(data){  // user 'a' ????? is this just MOCKED?
-
-        image.src = data
-
-        qq(image).wh(200)
-
-    })
-
-
-
-
-    s1(
-
-        messageTextarea=$textarea().c('w','z'),
-
-       $chatButton( _$username,  messageTextarea)
-
-
-    )
-
-
-
-    tab1=tab('about',function(){
-        TABS.E();prof(u,TABS)})
-
-    tab2=tab('pics',function(){TABS.E()
-
-        imgs(function(p){
-            _e(p,function(p){  TABS(  qq(im(p.d)).Z(1).o(  function(){  } )
-                ) })})
-
-    })
-
-    tab3= tab('blog',function(){
-
-            TABS.E()
-
-            qG('/pstu',{u:u},  function(i){  blp(i, TABS, '+') },'+')
-    })
-
-    tab4=tab('buds',function(){ TABS.E() })
-
-    tab5=tab('groups',function(){ TABS.E() })
-
-
-
-    tab6=tab('email', function(){
-
-        //TABS.E( messageTextarea=$textarea().c('w','z'),btMail(messageTextarea,u)  )
-
-
-        from = _$username
-
-        var messageTextarea = $textarea()
-
-        _$username = $w['from'] || 'b'
-
-        TABS.E()($h1('convo with '+u))
-
-        TABS(
-
-            $h1('Messages'),
-            $br()
-
-        )
-
-
-        qG( '/gMsgW', { u: _$username },
-
-
-            function( message ){
-
-                var c = cx().bc('-').Z(1)
-
-                $.post('/mug', {u:m.fr}, function(mug){ c.fit(mug) })
-
-                TABS(
-
-                    row(col(2,c),
-
-                        col(10,
-
-                            $h6('from: ' + message.fr),
-
-                            $h4(
-
-                                dt( message.dt ).dt()
-
-                            ).k('pull-right'),
-
-                            $h5(m.m))),
-                    $hr()
-
-                )},
-
-            '+')
-
-
-        TABS(
-
-            messageTextarea,
-
-            $button('new message', function(){
-
-                $.post( '/sMsg' ,
-
-                    {m: messageTextarea.V(), to: from})
-
-            }),
-
-
-            $br(2)
-        )
-
-
-
-
-
-
-
-
-
-    })
-
-
-
-    s2(theTabs=tabs(tab1,tab2,tab3,tab4,tab5,tab6))
-
-    theTabs.load()
-
-    //s2( br(), d=_d() )
-
-
-
-
-}
-
-STATUS=function(o){var things, words,about,want,best
-
-    format()
-
-
-    s1(
-
-        ipt(
-            'status',
-            'post',
-            '/sts',
-            function(){}
-        )
-    )
-
-
-
-Status=function(i){
-    return _s()(
-
-        h5( dt(i.dt).dt() ),
-        h3( i.c),
-        hr()
-
-    )
-}
-
-
-
-    tab1=tab('status', function(){
-
-
-            TABS.E(h1('status'), hr())
-
-            qGE('/sts', function(i){
-
-                  TABS( Status(i) )
-
-                })
-
-        })
-
-
-
-
-
-
-    tab2=['profile',function(){
-
-        TABS.E(
-
-            h1('profile')
-
-        )
-
-
-        f=fo(
-
-            lb('things you like'),
-
-            things=tx('things you like..'),
-
-            br(),
-            lb('words that describe you'),
-            words=tx('words that describe you'),
-
-
-            br(),
-            lb('about you'),
-            about=$textarea(),
-
-
-            br(),
-            lb('what you want'),
-            want=$textarea(),
-
-
-            br(),
-            lb('your best feature'),
-            best=tx('..')
-
-        )
-
-        if(O(o)){
-
-            things.V(o.things)
-            words.V(o.words)
-            about.V(o.about)
-            want.V(o.want)
-            best.V(o.best)
-
-        }
-
-        else {
-
-            f(bt('submit',
-
-                function(){
-
-                pro={things:things.V(),words:words.V(),about:about.V(),want:want.V(),best:best.V()}
-
-                qP('/uPf',pro)}))}
-
-        TABS(f)
-
-    }]
-
-
-
-    s2(t=tabs(tab1,tab2))
-
-
-    t.load()
-
-}
-
-
 
 //avail=bbM({url:'/sts'})
 
 //avails=bbC({model:avail, url:'/sts'})
 
+c3X=function(a){ return $.canvas(300).A().fit(a) }
 
 
 
+johnX=function(){
+
+    var o={}
+
+    o.d=3
+
+    o.a=function(){o.d++}
+
+    o.g=function(){return o.d}
+
+    return o}
+
+
+fredX=function(){
+    var o = john();
+
+    o.m =function(){o.d--}
+    return o
+}
+
+
+
+REQUESTSX=function(){var c=CT(),d=dv('y',800,600)
+    c(d(h1('Buddy requests'),br(),
+        MB=_d().w(600).h(500)( )).$$(function(){d.drg()}))
+    qG('/gRq',function(msgs){_e(msgs,function(msg){MB(_d()(
+        h6('from '+msg.fr+' on '+msg.dt),
+        h5(msg.m),
+        bt('accept',function(){qP('/yRq',{u:msg.fr})}),bt('deny'),hr()))})})}
+USERSX=function(){
+
+    CT(h1('Users: '),br(),rr=row())
+    getUsers(function(u){
+
+
+
+
+        _e(u,function(u){  qP('/dud',{d:u.m}, function(m){
+            rr(tn(pg(u.u),br(),m).o(function(){
+                win(_d()(br(),hr(),h3('User: '+ u.u), br(),
+                    xc().w(300).h(300).f(m), s=h1(),  d=_d(),
+                    ms=ta().c('w','z'),bt('mail',function(){qP('/sMsg',{m:ms.V(),to:u.u})}),
+                    bt('chat',function(){iMsg(u.u,ms.V())}),
+                    bt('buddy-request',function(){qP('/sRq',{to:u.u})})))
+
+                prof(u.u, d)
+
+                wUSt(u.u,function(s){
+                    d(h1('STATUS: '+s))
+                    d(bt('comment',function(){iMsg(u.u,ms.V())}),
+                        bt('see feed',function(){iMsg( u.u, ms.V())}),
+                        bt('see blog',function(){BLOG(u.u)}),
+                        bt('challenge',function(){qP('/sRq',{to:u.u})}))})}))})})})
+
+
+
+    tab1=['users',function(){
+
+
+    }]
+
+    tab2=['a',function(){}]
+    tab3=['a',function(){}]
+    tab4=['a',function(){}]
+
+    s2(t=tabs(tab1,tab2,tab3,tab4))
+    t.load()
+
+}
+
+
+BLOGX=function(u){
+
+    z()
+    WAPNAV()
+
+    format()
+
+    s1(h1('user '+u+' blog'))
+
+
+    qG('/pstu',{u:u}, function(i){blp(i, s2, '+')},'+')}
 

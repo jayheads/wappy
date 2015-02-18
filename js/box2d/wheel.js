@@ -10,24 +10,27 @@ BOXCANNON=function(){
     world.Rev( a,b  )
 
 }
+
+
+
 EASELCANNON=function(){z()
 
 
-    stage = SuperStage(600,600).A()
+    stage = createjs.stage(600,600).tick().A()
 
 
-    circle  =  Shape().circle(200, 'r','b').rxy(100).xy(400,700)
+    circle  =  createjs.shape().circle(200, 'r','b').rXY(100).XY(400,700)
 
+    rect =  createjs.shape().rect( 100, 100, 'b', 'r' ).XY(300, 600).rXY(50, 250)
 
-    rect =  Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
+    stage.A(circle)
+    stage.A(rect)
 
-    stage.A( circle )
-
-    stage.A( rect )
-
-    RTT( rect )
+    RTT(rect)
 
 }
+
+
 EASELBOXCANNON=function(){
 
     mW() // hmm.. want to matchs screen size
@@ -63,6 +66,7 @@ stage.tick(function(){
     RTT( rect )
 
 }
+
 EASELBOXCANNON1=function(){
 
     mW({g:0}) // hmm.. want to matchs screen size
@@ -104,8 +108,10 @@ EASELBOXCANNON1=function(){
 
 
 }
+
 GRAVITY=function(){
-    mW()
+
+    makeWorld()
 
 
    bi1= ba(100,100,100)
@@ -114,10 +120,14 @@ GRAVITY=function(){
 
     stage.tick(function(){
 
-        bi2.aF( 0,-2000 )
+        bi2.aF( 0,-20000 )
 
     })
 }
+
+
+
+
 GRAVITY0=function(){
     mW({g:0})
 
@@ -174,9 +184,10 @@ makeTim=function(n){
         bindr('guy',b,.3)
         return b}
 
-    _t(n,function(){
+    _.times(n,function(){
         var b=ba().uD('tim')
-        bindr('guy',b,.3)})}
+        bindr('guy',b,.3)})
+}
 
 
 
@@ -1034,14 +1045,14 @@ PINBALL=function(){
 
 
 
-    $('body').on('keydown',  function(){ ba(rnd()*300+40  ,140,20)} )
+    $('body').on('keydown',  function(){ ba(Math.random()*300+40  ,140,20)} )
 
 
 
 
     $('body').mousedown(function(){
 
-        var b= ba(rnd()*300+40,140,20)
+        var b= ba(Math.random()*300+40,140,20)
 
         if(Math.random() > .9) {
 

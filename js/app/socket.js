@@ -5,6 +5,67 @@ instantMessagesObject={ }
 //connect to the socket //..need to change this on the deployment server!!!
 socket = kk = io.connect()
 
+///
+///
+///
+/// communication
+/////////////////////////////////////////////////////// instant messages
+
+InstantMessage = function(messageObject){  //=imBox
+
+    var theTextInput = $textInput()
+
+    var instantMessage = $win()(
+
+        $h3( 'instant message from ' + messageObject.from ),
+
+        $h4( 'message: ' + messageObject.message ),
+
+        theTextInput,
+
+        $button( 'reply' , function(){
+
+            socket.emit( 'sendPrivateMessage' , {
+
+                message: theTextInput.V() ,
+
+                toWho: messageObject.from ,
+
+                from: _username }) }) )
+
+
+    instantMessagesObject[messageObject.from]=instantMessage
+
+    return instantMessage
+
+}
+
+socket.on('receivePrivateMessage',
+    function(messageObject){
+
+        var iMsg = instantMessagesObject[messageObject.from]
+        if(iMsg){ iMsg.A( $.h4(messageObject.message)) } else {
+
+            InstantMessage(messageObject)}
+    })
+
+///////////////////////////////////////////////////////   chatrooms
+
+socket.on('receiveChatMessage', function(data){
+
+    $l( data.username + ': ' + data.message)
+    chatRoomsObject[data.chatRoomName].write( data.username+': '+ data.message)
+
+})
+
+socket.on('roomUpdate', function(update){
+
+    var room = chatRoomsObject[ update.room ]
+
+    if(room){ room.updateUsersDiv(  update.users)  }
+
+})
+
 
 
 //var e=function(a,b){return kk.emit(a,b)},o=function(a,b){return kk.on(a,b)}, b=function(a,b){return kk.broadcast.emit(a,b)  }
@@ -62,8 +123,14 @@ upop=function(image,  size){
 
 
 
-dud=function(d,n){   $.post('/dud', {d:d},   function(u){   upop(u,n)  })}
+dud=function(d,n){
+
+    $.P('/getImageById', {data: d},   function(u){   upop(u,n)  })
+}
+
 //sk-send du of your (first) can-el
+
+
 
 du=function(){var u=c0().toDataURL();socket.emit('du',u);return u}
 

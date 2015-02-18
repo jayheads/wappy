@@ -7,16 +7,17 @@ ACTIONONCLICK=function(){z()
 
      function preload(){g=$G(game)
 
-         g.l.ss('button', '/assets/buttons/button_sprite_sheet.png', 193, 71)
-         g.l.i('background','/assets/misc/starfield.jpg')}
+         game.l.ss('button', '/assets/buttons/button_sprite_sheet.png', 193, 71)
+         game.l.i('background','/assets/misc/starfield.jpg')}
 
 
      function create() {background = g.tSp(0, 0, 800, 600, 'background')
 
-       g.bt(g.cX()-95, 400, 'button',
+       game.bt( game.cX() - 95, 400, 'button',
            function(){background.visible =! background.visible},
            this,2,1,0)}
  }
+
 
  BUTTONSCALE=function(){z()
 

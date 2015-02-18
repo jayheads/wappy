@@ -1,64 +1,39 @@
-
-
 CHATROOMS= function(){
 
-    chats= $.divA('o', 200, 200).drag().left(400).WH('auto').pad(10).C('bb').A().A(
-
-        $.button('general',function(){ PrivateChatRoom('general')  }).mar(40),
-        $.button('fun',function(){ PrivateChatRoom('fun')  }).mar(40),
-        $.button('sexy',function(){ PrivateChatRoom('sexy')  }).mar(40),
-
-        theTextInput= $.input().K('form-control'),
-
+    chats = $.divA('bb', 200, 200).drag().left(400).WH('auto').pad(10).A().A(
+        ChatButton('general'), ChatButton('fun'), ChatButton('sexy'),
+        theTextInput = $.input().K('form-control'),
         $.button('PrivateChatRoomate', function(){
-
-            PrivateChatRoom(theTextInput.val())
-
+            $.privateChatRoom(theTextInput.val())
         }).mar(40))
 
+    function ChatButton(name){
+        return $.button(name,function(){
+            $.privateChatRoom(name)
+        }).mar(40)}
+    }
+
+$.privateChatRoom  = function(roomName){
+
+
+    //bug.. if they CLOSE the window...this needs to TRIGGER something
+    //in this case (removal from the chatRoomsObject)..
+    //but more generally, i need to allow a sophisticated options obj to $win
+
+    if(
+        chatRoomsObject[ roomName ]){
+        $l('already in this room') }
+
+    else {
+
+        $.chatRoom(roomName)
+
+        socket.emit('j', roomName)//why cant i change this emit name to joinRoom ???
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-SORTY=function(){
-
-    format()
-
-    s1(
-
-        h1('your sorts'),
-
-        ipt('new sort',
-            'post',
-            '/srt',
-            '-'
-
-        ),
-
-
-        h4('recent: '))
-
-
-    qG('/srt',function(t){
-
-        d1($button(t.t,function(){sorty(t.t)}),
-
-        br(2))
-
-    },'+')
-
-    s2(im('me'))}
-
-
-
-
-ChatRoom3=function(title, color, id){
+$.chatRoom=function(title, color, id){
 
     title = title||'chatbox'
 
@@ -83,32 +58,31 @@ ChatRoom3=function(title, color, id){
 
         usersInRoomBox= $.div()
 
-    theWindow = $win('chatroom: ' + title).id(id).s({'min-width':600,  'min-height':400, 'background-color': color })
+    theWindow = $.win('chatroom: ' + title).id(id).css({'min-width':600,  'min-height':400, 'background-color': color })
 
     theWindow.A(
 
-        row(
+        $.row(
 
-            col(8,  theMessages,   theTextInput, theSendButton,  thePopButton,  thePicButton ),
+            $.col(8,  theMessages,   theTextInput, theSendButton,  thePopButton,  thePicButton ),
 
-            col(4, $.h5('users:'), usersInRoomBox))
+            $.col(4, $.h5('users:'), usersInRoomBox)
+        )
     )
 
-
-
-    var updateUsersDiv=function(u){
+    var updateUsersDiv=function(users){
 
         usersInRoomBox.E()
 
-        if(A(u)){
+        if(A(users)){
 
-            _.each(u,
+            _.each(users,
 
-            function(username){
+                function(username){
 
-                usersInRoomBox.A(  $.h5(username).click(  function(){ popUser(username) }  ) )
+                    usersInRoomBox.A(  $.h5(username).click(  function(){ popUser(username) }  ) )
 
-            })
+                })
         }
 
 
@@ -133,69 +107,86 @@ ChatRoom3=function(title, color, id){
     return chatController}
 
 
-popUser=function(username){
-    alert('clicked '+username)
 
-    $.post('/mug', {u: username},  function(userMug){
+$.popUser=function(username){
 
-            var theH1 = $h1(),
 
-                theDiv = $div(),
+    $.post('/getMugByUsername', {username: username},  function(mug){
+            $l('clicked '+username)
+            $l(mug)
 
-                fullProfileButton=$button('full', function(){
+
+            var fullProfileButton = $.button('full', function(){
 
                     $l('/wap/profiles/'+ username);
 
-                    window.location='/wap/profiles/'+ username
+                    window.location = '/wap/profiles/'+ username
 
                 })
 
 
+            $.win(
 
-            $win(
+                $.div().A(
 
-                $div()(
+                    $.br(), $.hr(), $.h3('User: '+ username),
 
-                    $br(), $hr(), $h3('User: '+ username),
+                    $.br(),
 
-                    $br(),
+                    $.canvas(300).A().fit(mug),
 
-                    xc().w(300).h(300).fit( userMug ),  theH1,   theDiv,
+                    theDiv = $.div(),
 
-                    ms = $textarea().c( 'w', 'z' ),
+                    message = $.textarea().C('white','black'),
 
-                    $mailButton( ms, username ),
+                    //$.mailButton( message, username ),
 
-                    $chatButton( username, ms ),
+                   // $.chatButton( username, message ),
 
-                    fullProfileButton  ) )
+                    fullProfileButton  )
+            )
 
 
+            //$.status(username, theDiv)
 
+          //  $.profile(username, theDiv)
 
-            showStatus(username, theDiv)
-
-            makeProfile(username, theDiv) }
+        }
 
     )}
 
-$.privateChatRoom  = function(roomName){
 
 
-    //bug.. if they CLOSE the window...this needs to TRIGGER something
-    //in this case (removal from the chatRoomsObject)..
-    //but more generally, i need to allow a sophisticated options obj to $win
+SORTY=function(){
 
-    if(chatRoomsObject[ roomName ]){ $l('already in this room') }
+    format()
 
-    else {
 
-        ChatRoom3(roomName)
+    s1(
 
-        socket.emit('j', roomName)//why cant i change this emit name to joinRoom ???
-    }
+        $.h1('your sorts'),
 
+
+        $.div().WH('auto').A(
+
+            $.h1('new sort'),
+
+            textInputSpan('post','/srt')
+
+        ),
+
+        $.h4('recent: '))
+
+
+    qG('/srt',function(t){
+
+        d1($.button(t.t,function(){sorty(t.t)}),
+
+            $.br(2))
+
+    },'+')
+
+    s2(
+        $.img('me'))
 
 }
-
-

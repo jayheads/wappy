@@ -1,101 +1,149 @@
 QUEUE=function(){z()
 
-    s=St(500).a()
+    s= cjs.stage(500).tick().A()
 
-    queue=new createjs.LoadQueue()
+    queue = new createjs.LoadQueue()
+
     queue.on("complete", handleComplete, this)
-    queue.loadManifest([{id:"myImage", src:"/me.png"}])
+
+    queue.loadManifest(
+
+        [{id:"myImage", src:"/me.png"}, {id:"guyImage", src:"/guy.png"}])
 
     function handleComplete(){
-        image=queue.getResult("myImage")
-        s.b(image)}
+
+        image = queue.getResult("myImage")
+
+        s.A(   cjs.bm(image)   )
+
+    }
+
 }
+
 QUEUEMUG=function(){z()
 
-    s=St(500).a()
+    s = cjs.stage(500, 500).tick().A()
 
-    qu=Ql().c(graphics, this).l([
+    qu = Ql().c(graphics, this).l([
         {id:"mug", src:"/getMug" },
-        {id:"me",src:"/me.png"}])
+        {id:"me", src:"/me.png"}
 
+    ])
 
+    ////// ok, this is what i thought.. its how i can preload someone's mug as 'mug' !
     function graphics(){
 
-        mug=s.bData( qu.gR("mug")  ).fn(SL)
+       // mug= s.bData( qu.gR("mug") ).drag()
 
-        me=s.b( qu.gR("me") ).fn(SL)}
+        me = cjs.bm( qu.gR("me") ).drag()
+        s.A( me )
+
+
+    }
 
 }
+
+
+//// ***
 mugCont=function(stage){
 
-    var cont=Ct()
 
-    var qu=Ql().c(onMug).l([   {id:"mug", src:"/getMug" }  ])
+
+      qu= new cjs.LoadQueue().complete(onMug).manifest([{id:"mug", src:"/myMug" }  ])
+
+    cont= cjs.container()
+
+    cont.flame=function(){
+        cont.desuit()
+        cont.A(
+
+            cont.suit = cjs.container().bm('flame', function(flame){  })
+        )
+    }
+
+    cont.uni=function(){
+        cont.desuit()
+        cont.A(
+
+            cont.suit= cjs.container().bm('uni', function(uni){
+                uni.x(200).y(200)
+                cont.mug.sxy(.2).x(300)
+
+            }))}
+    cont.guy=function(){cont.desuit()
+        cont.A(
+
+            cont.suit= cjs.container().bm('guy', function(guy){
+
+                guy.spin()
+                cont.spin()
+
+            })
+        )}
+
+    cont.desuit=function(){
+
+        cont.mug.sXY(1).XY(200)
+        if(cont.suit){
+            cont.suit.remove()
+            cont.suit=null
+        }
+    }
 
 
     function onMug(){
-        cont.mug= cont.bData(qu.gR("mug")).rgc('+')
-        cont.flame=function(){cont.desuit()
-            cont.a(
-                cont.suit= Ct().b('flame', function(flame){  }))}
-        cont.uni=function(){
-            cont.desuit()
-            cont.a(
 
-                cont.suit= Ct().b('uni', function(uni){
-                    uni.x(200).y(200)
-                    cont.mug.sxy(.2).x(300)
+        mug = qu.getResult("mug")
 
-                }))}
-        cont.guy=function(){cont.desuit()
-            cont.a( cont.suit=Ct().b('guy', function(guy){  }))}
-        cont.desuit=function(){
+        // cont.bData( mug )//.rgc('+')
 
-            cont.mug.sxy(1).xy(200)
 
-            if(cont.suit){
-                cont.suit.XX()
-                cont.suit=null
-            }
-        }}
+        cont.A( cont.mug = cjs.bm(mug))
+
+
+
+    }
+
     return cont}
+
+
 CONTMUG=function(){z()
 
-    s=St(1000).a()
+    s= cjs.stage(1000).A()
 
-    s.a(  m=mugCont()  ).rgc('+')
+    s.A(  m = mugCont()  )//.rgc('+')
 
-    SL(m)
+   // SL(m)
 
 }
+//// ***
+
+
+
+
 
 Cycle1=function(){
 
     var cont=new createjs.Container()
 
-    cont.mug(
-
-        function(mug){
+    cont.mug(function(mug){
 
         mug.sXY(.4)
 
-
-        cont.bm('uni',
-
-            function(bitmap){
+        cont.bm('uni', function(bitmap){
 
             bitmap.sX(-.8).X(-20).Y(200).rX(240).rY(80)
-
                 bitmap.name='uni'
-            TR(mug, cont)
-
-            RT(bitmap, cont)
+                createjs.bindTransform(mug, cont)
+                createjs.bindRotate(bitmap, cont)
 
         })
 
     })
 
     return cont}
+
+
 Cycle2=function(){
 
     var cont= new createjs.Container()
@@ -112,20 +160,26 @@ Cycle2=function(){
 
         cont.bm(
             qu.getResult("uni"),
-            function(b){bitmap = b.sX(-.8).X(-20).Y(200).rX(240).rY(80) })
-        bitmap.name=('uni')
+            function(b){bitmap = b.sX(-.8).X(-20).Y(200).rX(240).rY(80)
+                bitmap.name=('uni')
+
+            })
+
         cont.bm(
-              $img($.parseJSON(qu.getResult("mug"))),
-              function(b){mug =b.sXY(.4)})
+            $.img($.parseJSON(qu.getResult("mug"))),
+              function(b){mug =b.sXY(.4)
+              })
 
         SL(mug, cont)
 
-        EaselTween([mug,'l'],   [{y:-10},200],   [{y:10},200],  [{y:0},200])
+       cjs.tween([mug,'l'],   [{y:-10},200],   [{y:10},200],  [{y:0},200])
 
     }
 
 
     return cont}
+
+
 CYCLE=function(){z()
     s= $stage(800, 800).A().tick()
    c1=Cycle1()
@@ -133,12 +187,8 @@ CYCLE=function(){z()
     s.A( c1, c2 )}
 
 Flame1=function(){
-
-    var c=new createjs.Container().drag()
-
-    c.bm('flame',
-
-        function(b){
+    var c=new cjs.Container().drag()
+    c.bm('flame', function(b){
 
              tweens.shakeY(b)
 
@@ -170,14 +220,16 @@ Flame1=function(){
                     })})
 
         })
-
-
     return c}
+
+
 FLAME=function(){
     s= $stage(800, 800).A().tick()
     f=Flame1().X(300)
     s.A(  f )
 }
+
+
 
 Bod2=function(){
 
@@ -189,9 +241,10 @@ Bod2=function(){
     c1.mug(function(m){
 
         SL(m, c1)
-        m.sXY(.4);
 
-        c1.cI(m, 0)
+        m.sXY(.4)
+
+       // c1.cI(m, 0)
 
     })
 
@@ -232,6 +285,8 @@ Bod2=function(){
 
 
     return c1.A(cL) }
+
+
 Bod1=function(){
 
     var  outerCont = new createjs.Container().drag()
@@ -246,38 +301,38 @@ Bod1=function(){
         function(m){
             m.sXY(.4)
 
-            SL(m, outerCont)
+           createjs.bindSlide(m, outerCont)
 
 
             outerCont.bm('arm', function(b){
 
                 b.name = 'arm'
 
-                b.sX(-.8).X(140).Y(100).rX(200).rY(80)
+                b.sX(-.8).XY(140,100).rXY(200,80)
 
-                RT(b)
+                createjs.bindRotate(b)
 
                 b.on('dblclick',function(){  tweens.rpunch(b)  })
 
             })
 
-            innerCont.rX(40).rY(100).X(40).Y(120)
+            innerCont.XY(40, 120).rXY(40, 100)
 
             innerCont.bm('uparm', function(b){
 
                 b.name  = 'lu'
 
-                b.sX(.8).X(80).Y(180).rX(200).rY(80)
+                b.sX(.8).XY(80,180).rXY(200, 80)
 
-                RT(b,innerCont)})
+               createjs.bindRotate(b, innerCont)})
 
             innerCont.bm('forearm',  function(b){
 
                 b.name='lf'
 
-                b.sX(.8).X(-100).Y(140).rX(20).rY(120)
+                b.XY(-100,140).sX(.8).rXY(20,120)
 
-                RT(b)
+                createjs.bindRotate(b)
 
 
                 innerCont.on('dblclick', function(){tweens.lpunch(b)
@@ -291,32 +346,26 @@ Bod1=function(){
         }  )
 
     return b=outerCont}
-BODS=function(){ z()
 
-    s= $stage(800, 800).A().tick()
-    b1 = Bod1()
-    b2=Bod2()
-    s.A(   b1  )
-    s.A(   b2 )
+
+BODS=function(){ z()
+    createjs.stage(800, 800).A().tick()
+        .A( Bod1(),  Bod2() )
 }
 
+
+
+
 BOD=function(){z()
-    s= $stage(800, 800).A().tick()
 
-    var b1=Bod1(),
+    s= createjs.stage(800, 800).A().tick()
 
-        b2=Bod2().X(300).Y(300),
+    var b1=Bod1(), b2=Bod2().XY(300),
 
-        f=Flame1().X(300).Y(500),
+        f=Flame1().XY(300,500),
 
-        cyc=Cycle1().X(400),
-
-        cyc2=Cycle2().X(500)
-
-
+        cyc=Cycle1().X(400), cyc2=Cycle2().X(500)
 
     s.A(b1, f, b2, cyc, cyc2)
-
-
 
 }

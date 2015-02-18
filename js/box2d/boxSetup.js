@@ -159,7 +159,11 @@ mW2 = function(){z()
 
 
 
-makeWorld = mW = function(o){  var options = ob(o); options.gravityY = options.g
+makeWorld = mW = function(options){var o=options
+
+    if(!O(options)){options={}}
+
+    options.gravityY = options.g
 
     //if( options.z !=0 ){ z() }
 
@@ -173,7 +177,6 @@ makeWorld = mW = function(o){  var options = ob(o); options.gravityY = options.g
     options.gravityY = N( options.gravityY )? options.gravityY : 40
 
     world = w =    World(  bV(0, options.gravityY) )
-
 
     makeStage(
 
@@ -237,9 +240,13 @@ makeStage=function(X, Y, options){
 
     createjs.Ticker.removeAllEventListeners()
 
-    if(options.backgroundImage){ stage.bm(options.backgroundImage)}
+    if(options.backgroundImage){
+        stage.bm(options.backgroundImage)
+    }
 
 }
+
+
 
 
 

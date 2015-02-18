@@ -21,9 +21,7 @@ qIn=Phaser.Easing.Quadratic.In
 qOut=Phaser.Easing.Quadratic.Out
 Rectangle=function(a,b,c,d){return new Phaser.Rectangle(a,b,c,d)}
 
-
 Game=function(a,b,c,d,e,f,g){return new Phaser.Game(a,b,c,d,e,f,g)}
-
 
 $G=function(g){
     g.ph=g.physics
@@ -75,21 +73,16 @@ $G=function(g){
 
     return g}
 
-
     g.ccU=   function(a){g.physics.arcade.checkCollision.up= a?true:false;return g}
     g.ccD= function(a){g.physics.arcade.checkCollision.down=a?true:false;return g}
     g.ccL= function(a){g.physics.arcade.checkCollision.left=a?true:false;return g}
     g.ccR=  function(a){g.physics.arcade.checkCollision.right=a?true:false;return g}
-
-
-
 
     g.bc=function(a){g.stage.backgroundColor=a;return g}
     g.n=function(a){var n=g.time.now; if(N(a)){n+=a}; return n}
     g.lX=function(){return g.camera.atLimit.x}
     g.lY=function(){return g.camera.atLimit.y}
     g.bn=function(a,b,c,d){g.world.setBounds(a,b,c,d); return g}
-
 
     g.w=function(a){if(U(a)){return g.world.width}
         g.world.width=a;return g
@@ -103,7 +96,9 @@ $G=function(g){
     }
     g.rX=function(){return g.W.randomX}
     g.rY=function(){return g.W.randomY}
+
     g.cX=function(){return g.W.centerX}
+
     g.cY=function(){return g.W.centerY}
 
     g.ARC=function(a){
@@ -179,8 +174,7 @@ $G=function(g){
         g.physics.startSystem(Phaser.Physics.NINJA); return g}
 
     g.cA=function(){
-        _a(g.world.callAll, arguments, g.world);return g
-    }
+        _a(g.world.callAll, arguments, g.world);return g}
 
     g.K= g.keys= function(){return sCu(g.ip.kb.createCursorKeys())}
     g.k=function(a){ return g.ip.kb.addKey(a) }
@@ -200,9 +194,7 @@ $G=function(g){
           g.ph.arcade.distanceBetween,
           arguments,
           g.ph.arcade
-      )
-
-    }
+      )}
 
 
     g.cRC=function(){return _a(g.physics.p2.createRevoluteConstraint,arguments, g.physics.p2)}
@@ -334,24 +326,22 @@ g.sIE=function(a){
 
     return g}
 
-
-
 sSp=function(s){
     s.inputEnabled=true
     s.mOver=false
     s.mDown=false
 
-    s.events.onInputOver.add(function(){s.mOver=true  })
+    s.events.onInputOver.add(function(){ s.mOver=true  })
 
-    s.events.onInputOut.add(function(){s.mOver=false  })
+    s.events.onInputOut.add(function(){ s.mOver=false  })
 
     s.events.onInputDown.add(function(){
 
         s.downX= g.input.x
         s.downY= g.input.y
 
-        s.delX= s.x-g.input.x
-        s.delY= s.y-g.input.y
+        s.delX= s.x - g.input.x
+        s.delY= s.y - g.input.y
 
 
         s.mDown=true
@@ -697,7 +687,6 @@ return s}
     s.an.s= s.an.stop
     return s}
 
-
 sGr=function(gr){
 
     gr.cA=function(){
@@ -745,8 +734,6 @@ sGr=function(gr){
      }
 
     return gr}
-
-
 
 PhP=Pnt=function(a,b){
     var p= new Phaser.Point(a,b)
@@ -806,7 +793,6 @@ sCu=function(c){
 
     return c}
 
-
 sEm=function(e){
 
          e.mP=function(a){e.makeParticles(a);return e}
@@ -834,8 +820,6 @@ sEm=function(e){
 
 
              return e}
-
-
 
 sTS=function(ts){
     ts.f= ts.ftc = ts.fTC=function(a){ts.fixedToCamera=a?true:false;return ts}
@@ -881,7 +865,6 @@ sTM=function(m) {
 
     return m}
 
-
 sBt=function(b){return b}
 sSB=function(b){return b}
 
@@ -901,7 +884,6 @@ sIm=function(i){
 
     return i}
 
-
 sGx=function(gx){
 
 gx.mT=function(){
@@ -915,9 +897,7 @@ gx.mT=function(){
     return gx}
 
 
-
-
-pG=function(preload,create,update,render){
+_startGame = pG=function(preload, create, update, render){
 
     update=update||function(){}
     render=render||function(){}
@@ -925,25 +905,31 @@ pG=function(preload,create,update,render){
 z()
 
 
-wMD(
+withYourMug(
 
-    function(m){
+    function(mug){
 
-    g=game=Game(1400,600, Phaser.CANVAS, 'phaser-example',{
+    g=game=Game(1400, 600, Phaser.CANVAS, 'phaser-example',{
 
             preload:function(){
-                g=$G(g)
+                game=$G(game)
+                game.cache.addImage('me', mug, $.img(mug.data)[0])
+                game.cache.addImage('m', mug, $.img(mug.data)[0])
+                dats = mug.dats
+                preload()
+            },
 
-                g.cache.addImage('me',m, im(m.d))
-                g.cache.addImage('m',m, im(m.d))
-                dats= m.dats
-                preload()},
             create:function(){create()},
-            update:function(){update()}
-                , render:render
+
+            update:function(){update()},
+            render:render
             }
         )
-    })}
+    }
+)}
+
+
+
 
 
 DATAURL=function(){z()
@@ -1014,8 +1000,6 @@ DATAURL=function(){z()
 
 }
 
-
-
 STATES=function(){z()
 
     di('game_div').a().s({w:400, margin:'auto', mt:50})
@@ -1034,7 +1018,6 @@ STATES=function(){z()
 
     game.state.add('main', state.main)
     game.state.start('main')}
-
 
 m100=function(cu,s){
     if(cu.L()){s.mL(100)}

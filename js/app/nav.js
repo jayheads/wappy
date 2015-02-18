@@ -1,304 +1,45 @@
-
-WappyNav=function(){
-
-  z()
-
-    navbarCollapse= $.navbarCollapse().A(
-
-
-        $.nav(
-            $.dropdown('create',[ 'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
-                'tween','tweenart', 'easing', 'pack','sprite','transform' ,
-                'can' ,'rub','fan' ]),
-
-            $.dropdown('youplay',[ 'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
-                'groupvsgroup','shooty','hit','space','maggots']),
-
-    $.dropdown('play',[ 'iso1', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
-        'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'  ]),
-
-
-    $.dropdown('share',[ 'universe',
-        'users', 'status' , 'messages','posts','chatrooms',
-        'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'   ]),
-
-    $.dropdown('box2d',[     'box2d', 'wheel','heads', 'cups','pinball',
-        'revdemo','player','player1','player2', 'player3'  ])
-
-
-    ),
-
-
-        $.navRight(
-
-            $.liA('logged: '+ _username),
-
-            $.liA('logout', logOut)
-
-
-            )
-
-    )
-
-
-
-
-    $.container().A(  $.navbar().A( $.navbarHeader('wappy'), navbarCollapse )).A()}
-
-
-
-WappyNavX =  function(color){
-
-    var args=G(arguments)
-
-    color=args[0]
-
-    if(color){ co(color) }
-
-    if(args.N){ z() }
-
-
-    StandardNavbar(
-
-        Nav(
-
-            DropdownLoader(
-
-                $.glyph('picture', 'create'),
-
-                    'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
-                'tween','tweenart', 'easing', 'pack','sprite','transform' ,
-                'can' ,'rub','fan' ),
-
-
-            DropdownLoader($.glyph('glass','youplay'),
-
-               'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
-                'groupvsgroup','shooty','hit','space','maggots'   ),
-
-
-
-            DropdownLoader(
-                $.glyph('tw','play'),
-               'iso1', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
-                'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'),
-
-
-            DropdownLoader($.glyph('glass','share'),'universe',
-                'users', 'status' , 'messages','posts','chatrooms',
-                'ranky',   'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'),
-
-
-            DropdownLoader($.glyph('glass','phaser'),
-            'tanks','genmatch','breakout','tilecallbacks',
-                'acceleratetopointer','angularvelocity','oneway','impactevents',
-               'ninjaimpact', 'aabbaabb',   'ninjalab',
-                'anglepointer','shootpointer', 'launcherfollow',
-                'movearoundworld','bringchildtop','tweenrelative','worldsprite','fixedtocamera','cannonballs'
-
-            ),
-
-            DropdownLoader($.glyph('glass','phaser2'),
-
-                'pixelpickscrolling','inputpriority', 'callallanimations','callall','displayorder','hsp',
-                'extendingagroup','getfirstdead','recycling','swapchildren','removebetween','removing',
-                'bringgrouptotop','multipleanims','combinedtweens'
-
-            ),
-
-
-            DropdownLoader(
-
-                $.glyph('glass','box2d'),
-                    'box2d', 'wheel','heads', 'cups','pinball',
-                    'revdemo','player','player1','player2', 'player3'
-            )
-
-
-    // DropdownLoader(Glyph('glass','phaserDisplay'),'actiononclick','buttonscale','changingtheframes','rotatedbuttons','rasterbounce','alphamask','floodfill','bitmapdatapixel','bitmapdataprocess','bitmapdatawobble','cachedbitmapdata','extractmask','graphics','fullscreen','rendercrisp','rendertexturemirror','rendertexturestarfield','rendertexturetrail')
-
-
-    ),
-
-
-
-        NavRight(
-
-            Dropdown(
-
-                $.glyphicon('user',  $.span().id('uname') ),
-
-                $.liA('view' ),   //   $liA(   Glyph('zoom-in','profile').o(  ldr('profile')  )  ),
-
-                $.liA('logout', logOut)
-
-            )
-
-        ),
-
-
-        $.searchNavRight()
-    )
-
+$.iconBar=function(){return $.span().K("icon-bar")}
+$.caret=function(){return $.span().K("caret")}
+$.fn.toggle=function(a){return this.attr("data-toggle", a)}
+$.fn.target=function(a){return this.attr("data-target", a)}
+
+Wappy = {}
+
+
+// Wappy.nav makes a $.navbarCollapse and $.navbarHeader.  then it makes a $.navbar.
+// it puts the navbarHeader and navbarCollapse in the navbar
+//then it appends the navbar wrapped in a container
+
+Wappy.Nav = Wappy.nav = WappyNav=function(){z()
+
+    var navbarCollapse =
+
+        $.navbarCollapse().A(
+            $.nav(
+                $.dropdown('create',[ 'upload','uploads','cutouts',  'edit', 'avatar','paint', 'filters','showcase',
+                    'tween','tweenart', 'easing', 'pack','sprite','transform' ,
+                    'can' ,'rub','fan' ]),
+                $.dropdown('youplay',[ 'bod', 'invaders','thrust', 'starstruck', 'massvelocitytest','contactevents',  'ninjatilemap','launcher',
+                    'groupvsgroup','shooty','hit','space','maggots']),
+                $.dropdown('play',[ 'iso', 'connect','matrix', 'ship',  'circle','boxes','solar','canon','fullcan',
+            'tangle','corners','borders','gquery','grid', 'bowl',  'gamer', 'melon','meltut'  ]),
+                $.dropdown('share',[ 'universe',
+            'users', 'status' , 'messages','posts','chatrooms',
+            'ranky',  'profile', 'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'   ]),
+                $.dropdown('box2d',[     'box2d', 'wheel','heads', 'cups','pinball',
+            'revdemo','player','player1','player2', 'player3'  ])),
+            $.navRight(
+                $.liA('logged: '+ _username),
+                $.liA('logout', Y.logOut)))
+
+
+
+    $.container().A().A(
+        $.navbar().A(
+            $.navbarHeader('wappy', '/wap'), navbarCollapse ))
 
 }
 
-
-NavHeader=function(){
-
-    _IconBars=function(num){
-
-        var span = $.span()
-
-        _.times(num||1, function(){
-
-            span.A( $.span().K('icon-bar') ) })
-
-        return span}
-
-
-    var theButton = $.button().K('navbar-toggle').attr({'data-target':'#navbar','data-toggle':'collapse'}).A(
-        '',
-
-
-        _IconBars(4))
-
-
-
-    var theBrand = $.a('wappy', function(){$w.location='/wap'}).K('navbar-brand')
-
-    return $.div().K('navbar-header').A(theButton, theBrand) }
-
-
-Nav=function(){
-    return $ul().k("nav navbar-nav").apply(0, G(arguments))}
-
-
-NavRight=function(){return $ul().k("nav navbar-nav navbar-right").apply(0, G(arguments))}
-
-
-
-Dropdown=function(){
-
-    DropdownToggle0 =   function(dropdownName, glyphicon){
-
-        return    $.a().K('dropdown-toggle').attr({'data-toggle':'dropdown'}).A(
-            $.glyphicon(glyphicon),
-            $.b('&nbsp;'+ dropdownName),
-            $.span().K("caret")
-        )}
-
-
-
-
-    var args=G(arguments),  theInnerUl= $.ul().K('dropdown-menu'), theOuterLi
-
-
-
-
-    _.each(args.r,
-        function(arg){
-
-            if(  S(arg)){
-                
-                arg=args.p?
-
-                    LiALoader.A(arg)   // $liA(arg, function(){load(arg)}   )
-
-                    : $.liA(arg) } // *****
- 
-            theInnerUl.A( arg ) })
-
-
-
-    theOuterLi = $li().k('dropdown')(
-        
-        $a().k('dropdown-toggle').at({'data-toggle':'dropdown'})(
-            args.f,
-            $.span().K('caret')
-        )
-
-    )
-
-
-
-    return theOuterLi.A( theInnerUl )
-
-
-}
-
-
-
-DropdownLoader=function(){
-
-    LiALoader = function(a){return $.liA(a,   function(){ load(a) }   )   }
-
-
-
-
-
-
-
-
-
-
-
-    var args=G(arguments),  theInnerUl, theOuterLi
-
-
-    theInnerUl = $.ul().K('dropdown-menu')
-
-
-    _.each(args.r,   function(arg){
-        if(  S(arg)){  arg = LiALoader(arg)    }
-        theInnerUl.A( arg ) })
-
-
-    theOuterLi = $li().K('dropdown').A(
-
-        $a().K('dropdown-toggle').at({'data-toggle':'dropdown'})
-        (
-            args.f,
-
-            $.span().K('caret')
-
-        )
-
-    )
-
-
-
-    return theOuterLi( theInnerUl )
-
-}
-
-
-
-// just pass in the contents of the collapsable part
-StandardNavbar=function(){
-
-
-   var navbar =  $div().k('navbar navbar-default navbar-inverse navbar-fixed-top')
-
-    //NavCollapse = function(a){return $div().k('collapse navbar-collapse').id('navbar').apply(0, a)}
-
-    var div= $div().k('collapse navbar-collapse').id('navbar')
-
-    div.apply(0,  G(arguments) )
-
-
-    navbar.A(
-
-        NavHeader(),
-
-        div
-
-
-    )
-
-    navbar.pp()
-
-return navbar}
 
 $.searchNavRight =  function(){
 
@@ -309,10 +50,70 @@ $.searchNavRight =  function(){
 
             ),    $.submitButton().A( $.glyphicon('search')))}
 
+$.dropdownToggle = function(a){return $.a( a ).K("dropdown-toggle").toggle("dropdown").A(  $.caret()  )}
+
+$.dropdownMenu=function(){
+
+    var menu= $.ul().K("dropdown-menu")
+
+    _.each(arguments,
+        function(arg){
+            menu.A(  liAWap(arg) )})
+
+    return menu
 
 
+    function liAWap(appName){
+        return $.liA(appName,   function(){window.location='/wap/' + appName   }   )   }
 
 
+}
+$.dropdown=function(a,b){
+    var toggle=$.dropdownToggle(a)
+    var menu= $.dropdownMenu.apply(this, b)
+    return  $.li().K("dropdown").A(toggle, menu)}
+
+//this a ul element
+$.nav=function(){
+    var nav = $.ul().K("nav navbar-nav")
+    _.each(arguments, function(arg){ nav.A( arg ) })
+    return nav}
+
+//this a ul
+$.navRight=function(){
+    var nav = $.ul().K("nav navbar-nav navbar-right")
+    _.each(arguments, function(arg){ nav.A( arg ) })
+    return nav}
+
+// this a div
+$.navbar=function(){return $.div().K("navbar navbar-default").A($.div().K("container-fluid"))}
+
+$.navbarHeader=function(brand, link){
+
+    var header = $.div().K("navbar-header")
+
+    header.A(
+
+        $.button().K("navbar-toggle collapsed").toggle('collapse').target(".navbar-collapse").A(
+
+            $.span("Toggle navigation").K("sr-only"),
+
+            $.iconBar(),$.iconBar(),$.iconBar()
+        ),
+
+        $.a(brand).K("navbar-brand").click(function(){
+
+           if(link){
+               window.location = link
+           }
+
+        })
+
+    )
+
+
+return header}
+$.navbarCollapse=function(){return  $.div().K("navbar-collapse collapse")}
 
 
 

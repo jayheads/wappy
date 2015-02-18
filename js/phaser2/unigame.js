@@ -8,28 +8,28 @@ UNIGAME=function(){z()
     pG(
 
         function preload(){
-            g.bn(0,0,1420,700).P2().ru(1.2)
+            game.bn(0,0,1420,700).P2().ru(1.2)
 
-            g.l.i('stars','/assets/misc/starfield.jpg')
-            g.l.i('ship','/assets/sprites/thrust_ship2.png')
-            g.l.i('jets','/assets/sprites/jets.png')
-            g.l.i('bullet', '/assets/sprites/purple_ball.png')
-            g.l.i('jason','/me.png')
+            game.l.i('stars','/assets/misc/starfield.jpg')
+            game.l.i('ship','/assets/sprites/thrust_ship2.png')
+            game.l.i('jets','/assets/sprites/jets.png')
+            game.l.i('bullet', '/assets/sprites/purple_ball.png')
+            game.l.i('jason','/me.png')
 
         },
 
-        function create(){cu=g.K()
+        function create(){cu=game.K()
 
 
-            starfield=g.tSp(0,0,800,600,'stars').fTC(1)
+            starfield=game.tSp(0,0,800,600,'stars').fTC(1)
 
-            trail=g.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
+            trail=game.em(0,0,1000).mP('jets').rt(0,0).a(1,0,6000).sc(1,0,1,0,6000)
 
-            p=g.sp(200,200,'me').w(80).h(80).p2().fw()
+            p=game.sp(200,200,'me').w(80).h(80).p2().fw()
 
-            j=g.sp(200,300,'jason').arc().clWB(1).bo(.9).sc(1)
+            j= game.sp(200,300,'jason').arc().clWB(1).bo(.9).sc(1)
 
-            bs=g.gr().arc().eB(1).mult(50,'bullet')
+            bs=game.gr().arc().eB(1).mult(50,'bullet')
                 .sA('checkWorldBounds',true)
                 .sA('outOfBoundsKill',true)
 
@@ -39,7 +39,7 @@ UNIGAME=function(){z()
         function update(){
             isThrusting=false
 
-            g.col(bs,j,function(){
+            game.col(bs,j,function(){
 
                 j.scale.x= j.scale.x -.01
                 j.scale.y= j.scale.y -.01

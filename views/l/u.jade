@@ -1,27 +1,21 @@
-mixin s(a)
-    script(src="/#{a}.js")
+mixin css(fileName)
+    link(rel="stylesheet", href="/#{fileName}.css")
 
+mixin s(fileName)
+    script(src="/#{fileName}.js")
 
+mixin S(scripts)
+    - each script in scripts
+        +s(script)
 
-mixin S(a)
-    - each b in a
-        +s(b)
-
-
-
-mixin j(j)
+mixin j(javascript)
     script.
-        #{j}
+        #{javascript}
 
 
-mixin css(a)
-    link(rel="stylesheet",href="/#{a}.css")
-
-
-
-mixin v(i,v)
+mixin v(varName, val)
     script.
-        #{i}="#{v}"
+        #{varName} = "#{val}"
 
 
 

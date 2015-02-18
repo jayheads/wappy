@@ -1,101 +1,67 @@
+Y = {}
 
-appInit = function(){
+Y.directTo = Y.load = load = function(a){  window.location= '/wap/' + a }
 
-    $.getJSON('/loggedIn',
+Y.run = function(app){
 
-        function(username){
-            $l('username: '+username)
-            if(username=='guest' || !username){ renderGuestPage(); return }
+    app = app.toUpperCase()
 
-        _username   =usr= username
+    app = Y[app] || window[app]
+
+    if(app){app(); return true}
+
+    return false}
+
+Y.render = function(page){
+
+
+
+    page = Y[page]
+
+    if(page){page(); return true}
+
+    return false}
+
+$( appInit )
+
+function appInit(){
+
+
+    //getUserName
+
+    $.getJSON('/loggedIn', function(username){
+
+
+
+        $l('username: ' + username)
+
+        Y._userName = _username = username
+
+        if(username=='guest' || !username){
+
+          return  Y.render('GuestPage')  //renderGuestPage();
+
+        }  //usr=
+
+        $.get('/getMug', function(mug){Y._userMug =  _userMug  = mug })// =m|mug
 
         socket.emit('id', username)
-
         socket.emit( 'joinRoom',  _username )
 
-         $.get('/getMug', function(m){ _userMug = mug = m  } )
-
-        renderHomePage()
+        Y.render('HomePage')
 
     })
 }
 
-$( appInit )
-
-
-
-$password=function(){return $input().type('password').class('form-control')}//dep
-
-lc=function(a){if(D(a)){  $w.location=a  }; return $w.location}//dep
-
-pof=function(a,b,c){return function(){qP(a,b,c)}} //an api shortcut
-
-qPd=function(u,o){qP(u,o,function(da){d=da})  }// to test qP
-
-
-qJ=function rc(u,d,f){var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.getJSON(u,d,g.P?f:function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-qJE=function rc(u,d,f){var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.getJSON(u,d, function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-qP=function rc(u,d,f){var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.post(u,d,g.P?f:function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-
-qPE=function rc(u,d,f){var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.post(u,d, function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-qG=function rc(u,d,f){
-    var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.get(u,d,g.P?f:function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-
-qGE=function rc(u,d,f){
-    var g,u,d,f
-    if(U(d)){return _p(rc,u)}
-    g=G(arguments);u=g[0];d=g[1];f=g[2]
-    if(F(d)){f=d;d={}}
-    $.get(u,d,function(ss){
-        _e(ss,function(s){f(s,ss)})})}
-
-
-ldr=function(a){return function(){$w.location='/wap/'+a }} //never called?
-
-
-
-load=function(a){  $w.location='/wap/'+a }
-
-
-renderGuestPage = function(){z('r')
+Y.GuestPage =  function(){z('r')
   var container= $.containerDiv().A(
       $.headerDiv().A(
           $.ul().K( "nav nav-pills pull-right" ).A(
-              $.lIA('home').K('active'),
-              $.lIA('About'),
-              $.lIA('Contact')),
+              $.liA('home').K('active'),
+              $.liA('About'),
+              $.liA('Contact')),
           $.h1( 'jason yanofski presents..' )),
-      $.Jumbo(
+      $.jumbo(
           'a graphics-based real-time social gaming creativity web app','woo hoo!').A(
           $.buttonL('log in', LoginForm ).C('y','b'),
           $.span(' '),
@@ -108,289 +74,145 @@ renderGuestPage = function(){z('r')
               $.h4('social'),
               $.p('cool cool'))))
     container.drag().C('o').opacity(.9).top(100).left(100)}
+Y.HomePage =  function(){
 
+    WappyNav( $r()
+    ) //load navigator
 
-Y={}
-
-Y.run=function(app){
-
-    if( $w[ app = uC(app) ] ){  $w[app](); return true  }
-
-    return false}
-
-
-renderHomePage =  home= function(){
-
-    WappyNav( $r() ) //load navigator
     Y.run( wappyApp )
-    $.getJSON('/loggedIn', function(username){$('#uname').text( _username  = username)})
+
+    $.getJSON('/loggedIn',
+
+        function(username){
+
+            $l('----' + username)
+
+            $('#uname').text( _username  = username)})
 
 }
 
 
+_SignUpForm = function(){
 
-SignUpFormX = function(){ var username, password,  submit, form
-
-    username= $div().k('form-group')($label('uname: ','uname'),  TextInput().k('form-control').at({type:'text'})().id('uname')).f(20).nm('u')
-
-    password= $div().k('form-group')( $label('pword: ','pword'), $password().id('pword') ).f(20).nm('p')
-
-    submit= $input().V('sign up').type('submit').f(16)
-
-    form = $form().c('o').P(4)( username, password, submit ).o('s', function( q, e ){  e.e.preventDefault() //pD(e.e)
-
-        $.post('/user', {
-
-                u: username.ch(1).V(),
-                p: password.ch(1).V()
-            },
-
-            function(username){
-
-            if(username === 'guest'){ qi('mod').m(); pop('try again.. idiot') }
-
-            else { renderHomePage(); pop( 'welcome ' + username + '!' )   }  //WAPNAV() //qi('username').jLoad( '/loggedIn' )//uplog()
-
-        })
-
-    })
-
-    pop( form ).id('mod').drg()
-
-    //return formObject
-}
-
-SignUpForm = function(){
-
-    var username= $.div().K('form-group').A(
+    var usernameInput= $.div().K('form-group').fontSize(20).name('username').A(
             $.label('username: ','username'),
-            $.input().K('form-control').id('uname')).fontSize(20).name('username'),
+            $.input().K('form-control').id('uname')
+        ),
 
-        password= $.div().K('form-group').A(
+
+        passwordInput= $.div().K('form-group').A(
             $.label('password: ','password'),
-            $.password().id('password')).fontSize(20).name('password'),
+            $.password().id('password')
+        ).fontSize(20).name('password'),
+
 
         submit= $.button('sign up').type('submit').fontSize(16),
 
-        verify= function(){
+        verify = function(){
             return {
-                u:  username.find('input').val(),
-                p:  password.find('input').val()}
+                username:  username.find('input').val(),
+                password:  password.find('input').val()}
         },
 
-    form = $.form().C('o').pad(4).A(   username, password, submit  )
-    v=verify
-
-    u= username
-
-    $.pop(   form).id('mod').drag()
 
 
-    form.submit(function(e){
 
-        e.preventDefault()
+        form = $.form().C('o').pad(4).A(
+            usernameInput,  passwordInput,
+            submit)
+
+
+
+    form.submit(function(e){ e.preventDefault()
+
+        username = usernameInput.find('input').val()
+
+        password = passwordInput.find('input').val()
+
+
 
         $.post('/user', {
-                u:  username.find('input').val(),
-                p:  password.find('input').val()},
 
-            function(username){
+                username: username,
+                password: password
+            }, function(username){
 
-                if(username==='guest'){ $('#mod').modal(); $.pop('try again.. idiot') }
+                if(username==='guest'){
+                    $('.modal').modal('toggle');
+                    $.pop('try again.. idiot')
+                }
 
-                else { renderHomePage();  $.pop( 'welcome ' + username + '!' )   }
+                else {
+                    Y.render('HomePage');
+                    $.pop( 'welcome ' + username + '!' )
+                }
   })
 
     })
 
-    //return formObject
+
+
+    return form
+
 }
 
 
-
-LoginForm=function(){
-
-    var verifyLogin=function(username){
-         if(username==='guest'){ $('#mod' ).modal('toggle'); pop('try again.. idiot')}
-         else {renderHomePage(); pop( 'welcome '+ username + '!' )}}
+_LoginForm = function(){
 
 
-     var form=$.form().C('g').pad(4).A(
-
-            $.formGroupDiv().A(
-
+     var form = $.form().C('green').pad(4).A(
+         $.formGroupDiv().A(
                 $.label('username: ','username'),
-                $.textInput('username')  ),
-
+                $.textInput('username')),
          $.formGroupDiv().A(
              $.label('password: ', 'password'),
              $.passwordInput('password')),
-
-         $.submitInput( 'log in' ))
+         $.submitInput( 'log in' )
+     )
 
      form.submit(function(e){
+
          e.preventDefault()
-         $.post('/login', $l(form.serializeJSON()),
-             verifyLogin) })
 
-    $.pop( form ).drag().id('mod')
+         var formData = form.serializeJSON() // $l(formData)
 
-}
+         $.post('/login', formData, verifyLogin)
 
-logOut = function(){
-
-    $.getJSON('/logOut', renderGuestPage())
-
-} // fresh() ? problem?  // function(){guest()})//uplog()//qi('uname').jLoad('/lgd')
+     })
 
 
 
+    function verifyLogin( username ){
 
-getUsers =  function(func){ $.get('/users', func) }//usrs =
+        if(username==='guest'){
 
+            $('.modal').modal('toggle')
 
+            $.pop('try again.. idiot')
+        }
 
-//Us =function(f){  qJ('/gU',  f||function(u){_e(u,function(u){card(u)})})}  //'with users' [show their cards]
+        else {Y.render('HomePage');
 
-getBuds = buds=function(func){$.get('/buds', func) }
+            $.pop( 'welcome '+ username + '!' )}
 
+    }
 
-removeUser = rmU=function(a,b){
-
-    if(S(a)){rmU({u:a},b)}
-    $.post('/rmU',a,b)
+    return form
 
 }
+LoginForm = function(){ $.pop( _LoginForm() ).drag() }
 
+SignUpForm = function(){ $.pop( _SignUpForm() ).drag() }
 
-clearApps = fresh=function(){ z();WappyNav() }
-
-
-
-
-
-
-// OLD
-
-//qGetLoadFunc=function(a,b){return function(){qJ(a,  function(d){  qi(b)(d) })}} //no idea who is using this
-//make a function appends result of jGET-url-a to EL-id=b
-//its like load?  it says to id-get
-//something(b), and put some server data(a) in it
-//lgdIntoUname=uplog=   qGetLoadFunc('/lgd','uname') // qi('uname').jLoad('/lgd')
-
-//lgd=function(f){qJ('/lgd',f||pop)}
+Y.logOut = function(){
+    $.getJSON('/logOut', function(){
+        Y.render('GuestPage')})} //logOut =
+Y.clear  =function(){
+    z();
+    WappyNav()}//= clearApps = fresh
 
 
 
-lgrX=function(){
-
-    var log=function(c){
-        return sp('?').id('log')
-            .c(c||'g')
-            .M(10).P(10)}
-
-    dva(3).id('lgr').c('b').pp()(
-
-            sp('log: '),
-
-            log()
-
-        ).o({
-
-            $:
-                function(d){  qi('log').jLoad('/loggedIn') },
-
-            $$:logOut
-
-        }).$()
-
-}//depr?
-
-
-lgrBarX=function(){
-    di('lgr').pp().c('b').o({
-        $: function(d){  qi('log').jLoad('/loggedIn') },
-        $$:logOut
-    })(sp('log: '),log())}//depr?
-
-
-
-jQuery.fn.centerOnWindow = function () {
-    this.css("position","absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
-        $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
-        $(window).scrollLeft()) + "px" )
-    return this}
-
-$.fn.xCenter=function(){
-
-   return this.P( 'a' ).css({  left: '50%', 'margin-left': '-100px'  })}
-
-
-MOBILECENTER=function(){
-
-
-    z()
-
-    $('body').C('u')
-
-
-    d = $.div('o', 400, 200).A().drag().pad( 20 ).A(
-
-        dd = $.div( 'u',  200 , 100 ).xCenter(),
-
-        $.div( 'g',  100 , 80).xCenter( )
-
-    ).P('r')
-
-
-}
-MOBILETIPS=function(){
-
-    z()
-
-    $('body').C('u')
-
-    $.div('b', 10, 10).drag()
-    $.div('b', 10, 10).drag()
-    $.div('b', 10, 10).drag()
-
-
-    d = $.div('o', 400, 200).A().drag().pad( 20 )
-
-    d.A(  $.h3( 'mobile tips').C( 'x' , 'w' )  )
-
-    d.A(  $.h4( 'tip1:  First and foremost, screen sizes can vary greatly between different device categories as can screen resolutions and aspect ratios ').C( 'x', 't' )  )
-
-    d.A(  $.h4( 'tip2:  If you want your HTML5 games to work well on mobile devices, you should make sure they either support multiple resolutions or don’t exceed the WVGA frame size of 800x480.').C( 'x', 't' )  )
-
-    d.A(  $.h4( 'tip3: ').C( 'x' , 't' )  )
-
-    d1 = $.div('p', 400, 200).A().drag().pad( 20 )
-
-    d1.A(  $.h3( 'mobile devices  zoom and pan -  counterproductive for games. term them off with: viewport meta tag' ).C( 'x' , 'w' )  )
-
-    d1.A(  $.h4(   "ex: cause your game’s viewport to occupy all of the available horizontal screen real estate.").C( 'x', 't' )  )
-
-    d1.A(  $.h4(  "ex: cause your game’s viewport to occupy all of the available horizontal screen real estate.").C( 'x', 't' )  )
-
-    d1.A(  $.h4( '<meta name="Viewport"content="width=device-width; user-scaleable=no; initial-scale=1.0" />').C( 'x' , 't' )  )
-
-    d1.A(  $.h4(    '[ user-scaleable = no ] ->  disables pinch-zooming'  ).C( 'x' , 't' )  )
-
-    d2 = $.div('g', 400, 200).A().drag().pad( 20 )
-
-    d2.A(  $.h3( 'mobile tips').C( 'x' , 'w' )  )
-
-    d2.A(  $.h4( 'tip1: ').C( 'x', 't' )  )
-
-    d2.A(  $.h4( 'tip2: ').C( 'x', 't' )  )
-
-    d2.A(  $.h4( 'tip3: ').C( 'x' , 't' )  )
-
-
-}
 
 
 

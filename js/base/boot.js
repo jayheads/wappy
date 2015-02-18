@@ -1,7 +1,110 @@
+//fixed width
+$.container =function(){return $.div().K('container')}
 
-ROWS=function(){z()
+//full width
+$.containerFluid =function(){return $.div().K('container-fluid')}
 
 
+// -rows must be placed within a .container(-fluid) for proper alignment and padding
+
+
+
+// -only columns may be immediate children of rows
+// -Columns create gutters (gaps between column content) via padding.
+ //   That padding is offset in rows for the first and last column via negative margin on .rows
+
+
+$.boot = function(){z()
+
+    var row = $.row()
+
+    _.each(arguments, function(arg){
+        row.A(arg)
+    })
+
+   return cont = $.container().A(row).A()}
+
+
+
+$.row= function(n){
+    var theDiv= $.div().K('row')
+    _.each(arguments,
+        function(arg){ theDiv.A(arg) })
+    return theDiv}
+
+//pass in size, and then args(contents) as a list (or as an array)
+
+$.col = function(){var args=G(arguments),
+
+    theDiv= $.div().K('col-md-' + args[0]),
+
+    iter = A(args[1])?  args[1] : args.r
+
+    _.each(iter, function(v){theDiv.A(v)})
+
+    return theDiv}
+
+$.row2=function(a,b){
+    return $.row(
+        $.col(6, a),
+        $.col(6,b)
+    )
+}
+$.row3=function(a,b,c){
+    return $.row(
+        $.col(4,a),
+        $.col(4,b),
+        $.col(4,c)
+    )}
+$.row4=function(a,b,c,d){
+    return $.row(
+        $.col(3,a),
+        $.col(3,b),
+        $.col(3,c),
+        $.col(3,d))}
+$.row84=function(a,b){return $.row($.col(8,a),$.col(4,b))}
+
+$.row48=function(a,b){return $.row($.col(4,a), $.col(8,b))}//
+$.row39=function(a,b){return $.row($.col(3,a), $.col(9,b))}//
+
+$.row210=function(a,b){return $.row($.col(2,a),$.col(10,b))}//
+$.row111=function(a,b){return $.row($.col(1,a),$.col(11,b))}//
+
+//row48([4],[ 8 ]) //row39([3],[ 9 ])
+
+$.push4=function(a){return $.row48([],a)}
+$.push3=function(a){return $.row39([],a)}
+$.push2=function(a){return $.row210([],a)}
+$.push1=function(a){return $.row111([],a)}
+
+$.row93=function(a,b){return $.row($.col(9,a),$.col(3,b))}
+$.row363=function(a,b,c){
+    return $.row(
+        $.col(3,a),
+        $.col(6,b),
+        $.col(3,c)
+    )}
+$.ROW=function(a,b,c,d){
+
+    var g=G(arguments),  z=g.z
+
+
+    if(z==1){return $.row($.col(12,a))}
+
+    if(z==2){
+        return g.p?$.row93(a,b)
+            :g.n? $.row39(a,b)
+            :$.row2(a,b)
+    }
+
+
+    if(z==3){return g.n?$.row363(a,b,c):$.row3(a,b,c)}
+
+    if(z==4){return $.row4(a,b,c,d)}
+
+}
+
+testRows=function(){z()
 
     $.row(
 
@@ -13,11 +116,8 @@ ROWS=function(){z()
 
     ).A()
 
-
 }
-
-
-ROWS2=function(){z()
+testRows2=function(){z()
 
     $.row(
 
@@ -30,22 +130,20 @@ ROWS2=function(){z()
     ).A()
 
 }
-
-ROWS3=function(){z()
+testRows3=function(){z()
 
     $.row(
 
-        $.div().K('col-xs-6 col-sm-4').A($.img('me') ),
+        $.div().K('col-xs-6 col-sm-4').A( $.img('me') ),
 
-        $.div().K('col-xs-6 col-sm-4').A($.img('guy')).C('o'),
+        $.div().K('col-xs-6 col-sm-4').A( $.img('guy')).C('o'),
 
-        $.div().K('col-xs-6 col-sm-4').A($.img('sun') )
+        $.div().K('col-xs-6 col-sm-4').A( $.img('sun') )
 
     ).C('b').A()
 
 }
-
-ROWS4=function(){z()
+testRows4=function(){z()
 
     $.row(
 
@@ -61,221 +159,441 @@ ROWS4=function(){z()
 
 
 
-H1=function(){
-z()
+$.xs = $.phones = function self(color, num){
 
-    rule = "h1 {  font-size: 40px;  margin-bottom: 20px;  margin-left: 20px; }"
+    if(N(color)){return self(null,color)}
 
-    addStyle(rule)
+        var div = $.div()
 
-    $h1('this is a big font').A()
+    if(color){div.C(color)}
+
+     div.K('col-xs-'+num)
+
+    return div}
+$.sm = $.tablets = function self(color, num){
+
+    if(N(color)){return self(null,color)}
+
+    var div = $.div()
+
+    if(color){div.C(color)}
+
+    div.K('col-sm-'+num)
+
+    return div}
+$.md = $.desktops = function self(color, num){
+
+    if(N(color)){return self(null,color)}
+
+    var div = $.div()
+
+    if(color){div.C(color)}
+
+    div.K('col-md-'+num)
+
+    return div}
+$.lg = $.largeDesktops =function self(color, num){
+
+    if(N(color)){return self(null,color)}
+
+    var div = $.div()
+
+    if(color){div.C(color)}
+
+    div.K('col-lg-'+num)
+
+    return div}
+
+/*
+
+ The following table summarizes how the Bootstrap grid system works across multiple devices:
+
+ Extra small devices
+ Phones (<768px)	Small devices
+ Tablets (>=768px)	Medium devices
+ Desktops (>=992px)	Large devices
+ Desktops (>=1200px)
+ Grid behaviour	Horizontal at all times	Collapsed to start, horizontal above breakpoints	Collapsed to start, horizontal above breakpoints	Collapsed to start, horizontal above breakpoints
+ Container width	None (auto)	750px	970px	1170px
+ Class prefix	.col-xs-	.col-sm-	.col-md-	.col-lg-
+ Number of columns	12	12	12	12
+ Column width	Auto	~62px	~81px	~97px
+ Gutter width	30px (15px on each side of a column)	30px (15px on each side of a column)	30px (15px on each side of a column)	30px (15px on each side of a column)
+ Nestable	Yes	Yes	Yes	Yes
+ Offsets	Yes	Yes	Yes	Yes
+ Column ordering	Yes	Yes	Yes	Yes
+
+
+                                                                                                                    ~97px
+
+
+
+
+ */
+
+exampleStackedToHoriz=function(){z()
+
+
+    cont = $.container().A(
+
+        $.h1('Hello World!'),
+
+        $.row(
+
+            $.sm('red', 6).ipsumP(1, 2),
+
+            $.sm('blue', 6).ipsumP(4)
+        )
+
+    ).A()
+
+
+
 
 }
+exampleStackedToHorizFluid=function(){z()
 
+    $.containerFluid().A(
 
-H12=function(){
-    z()
+        $.h1('Hello World!'),
 
+        $.row(
+            $.sm('red',6).ipsumP(2,1),
+            $.sm('blue',6).ipsumP(3)
+        )
 
-    rule = "h1 {  font-size: 22px; margin: bottom 10px;  @media (min-width:@screen-tablet) {font-size: 40px;   margin-bottom: 20px;   margin-left: 20px; } }"
+    ).A()
 
-    addStyle(rule)
-
-    $h1('this is a small font').A()
 
 }
-BREAK=function(){z()
+example25Percent=function(){z()
 
 
-    addStyle( "h1 { @media (min-width:400px) {font-size: 10px;} }" )
-    addStyle( "h1 { @media (max-width:400px) {font-size: 20px;} }" )
-  // addStyle( "h1 { @media (min-width:1281px) {font-size: 40px;} }" )
+     $.containerFluid().A(
 
-    $.h1('afsdfdsasdf').A()
+        $.h1('Hello World!'),
+
+        $.row(
+
+             $.sm('r', 3).ipsumP(3),
+             $.sm('b', 9).ipsumP(3)
+
+        )
+
+   ).A()
+
 }
+exampleMedium=function(){z()
+
+    //on xs, u get one column only
+    //on small devices, u get two columns ( 25% / 75% )
+    //but on medium, u get a 50/50 split
+
+
+    $.containerFluid().A(
+        $.h1('Hello World!'),
+
+        $.row(
+            $.div('r').sm(3).md(6).ipsumP(3),
+            $.div('b').sm(9).md(6).ipsumP(4)
+        )
+
+
+    ).A()
+
+
+}
+exampleLarge= function(){z()
+
+    $.containerFluid().A(
+
+        $.h1('Hello World!'),
+
+        $.row(
+            $.div('y').K("col-sm-3 col-md-6 col-lg-4").ipsumP(2,2),
+            $.div('y').K("col-sm-9 col-md-6 col-lg-8").ipsumP(1,1,1,1)
+        )
+
+    ).A()
+
+}
+exampleThreeEqualColumns=function(){z()
+ //The following example shows how to get a three equal-width columns
+ // starting at tablets and scaling to large desktops. On mobile phones, the columns will automatically stack:
+
+     cont = $.container().A()
+     cont.A(
+
+         $.row(
+
+
+             $.div('red').K("col-sm-4").A('.col-sm-4').ipsumP(1),
+
+             $.div('blue').K("col-sm-4").A('.col-sm-4').ipsumP(2,2),
+             $.div('yellow').K("col-sm-4").A('.col-sm-4').ipsumP(3,3,3)
+
+         )
+     )
+
+ }
+exampleThreeUnequalColumns= function(){z()
+    // The following example shows how to get a three various-width columns
+    // starting at tablets and scaling to large desktops:
+
+         cont = $.container().A()
+
+     cont.A(
+         $.row(
+
+             $.div('red').K("col-sm-3").A('.col-sm-3').ipsumP(1),
+
+             $.div('blue').K("col-sm-6").A('.col-sm-6').ipsumP(2,2),
+                 $.div('yellow').K("col-sm-3").A('.col-sm-3').ipsumP(3,3,3)
+
+
+     )
+
+  )
+  }
+exampleTwoUnequalColumns= function(){z()
+  cont = $.container().A()
+  cont.A(
+
+      // The following example shows how to get two various-width columns starting at tablets and scaling to large desktops:
+
+       $.row(
+           $.div('r').K('col-sm-4').A('.col-sm-4').ipsumP(10),
+           $.div('y').K('col-sm-8').A('.col-sm-8').ipsumP(20)
+
+       )
+
+
+  )
+  }
+exampleTwoColumnsWithTwoNestedColumns= function(){z()
+     //The following example shows how to get two columns starting at tablets
+     // and scaling to large desktops, with another two columns (equal widths) within the larger column (at mobile phones, these columns and their nested columns will stack):
+
+     cont = $.container().A()
+
+     cont.A(
+
+
+         $.row(
+
+             $.div('a').K("col-sm-8").A(
+
+                 $.span('.col-sm-8'),
+
+                 $.row(
+                      $.div('x').K("col-sm-6").A('.col-sm-6').ipsumP(5),
+                      $.div('z').K("col-sm-6").A('.col-sm-6').ipsumP(5)
+                 )
+             ),
+
+             $.div('b').K("col-sm-4").A('.col-sm-4').ipsumP(5)
+         )
 
 
 
-$.addStyle=function(){
-    _.each(arguments, function(rule){
 
-        $('<style>'+ rule + '</style>').A()
+  )}
+exampleMixedMobileAndDesktop= function(){z()
+     //The Bootstrap grid system has four classes: xs (phones), sm (tablets),
+     // md (desktops), and lg (larger desktops).
+     // These classes can be combinated to create more dynamic and flexible layouts.
+       //  Tip: Each class scales up, so if you wish to set the same widths
+       // for xs and sm, you only need to specify xs.
+
+
+     cont = $.container().A()
+
+     cont.A(
+         $.row(
+              $.div('r').K("col-xs-12 col-md-8").A('col-xs-12 .col-md-8'),
+             $.div('b').K("col-xs-6 col-md-4").A('col-xs-6 col-md-4')
+         ),
+
+
+       $.row(
+
+       $.div('a').K("col-xs-6 col-md-4").A('.col-xs-6 .col-md-4'),
+       $.div('b').K("col-xs-6 col-md-4").A('.col-xs-6 .col-md-4'),
+       $.div('c').K("col-xs-6 col-md-4").A('.col-xs-6 .col-md-4')
+
+
+
+ ),
+
+
+
+   $.row(
+       $.div('g').K("col-xs-6").A('.col-xs-6'),
+
+     $.div('o').K("col-xs-6").A('.col-xs-6')
+
+
+     )
+
+
+
+  )
+  }
+exampleMixedMobileTabletAndDesktop= function(){z()
+     // Note	Tip: Remember that grid columns should add up to twelve for a row. More than that, columns will stack no matter the viewport.
+
+     cont = $.container().A()
+     cont.A(
+         $.row(
+             $.div('r').K("col-xs-12 col-sm-6 col-lg-8").A($.span( '.col-xs-12 .col-sm-6 .col-lg-8' )),
+             $.div('b').K("col-xs-6 col-lg-4").A($.span('.col-xs-6 .col-lg-4'  ))
+       ),
+         $.row(
+             $.div('n').K("col-xs-6 col-sm-4").A($.span('.col-xs-6 .col-sm-4') ),
+             $.div('g').K("col-xs-6 col-sm-4").A($.span('.col-xs-6 .col-sm-4') ),
+             $.div('o').K("col-xs-6 col-sm-4").A($.span('.col-xs-6 .col-sm-4') )
+
+)
+
+
+  )}
+exampleClearFloats= function(){z()
+  //(with the .clearfix class) at specific breakpoints to prevent strange wrapping with uneven content:
+
+     cont = $.container().A()
+  cont.A(
+      $.row(
+
+          $.div('g').K(' col-xs-6 col-sm-3' ).A(
+              $.span('Column 1'),
+              $.br(),
+              $.span('Resize the browser window to see the effect.')
+         ),
+
+          $.div('u').K("col-xs-6 col-sm-3").A($.span('Column 2')),
+          //$.span('<!-- Add clearfix for only the required viewport -->'),
+          $.div('o').K("clearfix visible-xs"),
+          $.div('y').K("col-xs-6 col-sm-3").A($.span('Column 3')),
+          $.div('b').K("col-xs-6 col-sm-3").A($.span('Column 4'))
+
+        )
+  )
+  }
+exampleOffsettingColumns= function(){z()
+     //Move columns to the right using .col-md-offset-* classes. These classes increase the left margin of a column by * columns:
+
+     cont = $.container().A()
+  cont.A(
+
+
+      $.row(
+
+          $.div('r').K('col-sm-5 col-md-6').A('col-sm-5 col-md-6').ipsumP(4),
+
+          $.div('b').K('col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0').A(
+              'col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0'
+
+          ).ipsumP(4)
+
+  )
+
+  )
+  }
+examplePushAndPull = function(){z()
+     //- Change Column Ordering
+     //Change the order of the grid columns with .col-md-push-* and .col-md-pull-* classes:
+     cont = $.container().A()
+
+     cont.A(
+
+         $.row(
+
+
+             $.div('r').K("col-sm-4 col-sm-push-8").ipsumP(2,2,2),
+             $.div('p').K("col-sm-8 col-sm-pull-4").ipsumP(22)
+
+     )
+
+
+ )}
+
+//
+
+exampleJumbo = function(){  $.boot(
+
+        $.jumbo(
+            'My first Bootstrap website!',
+            $.p('This page will grow as we add more and more components from Bootstrap...')),
+
+        $.paragraphs(
+            'This is another paragraph',
+            'This is a paragraph',
+            'This is another paragraph')
+
+        )}
+
+$.well = function(){
+    var d = $.div().K('well')
+
+    _.each(arguments, function(arg){
+        d.A(arg)
     })
 
-
+    return d
 }
 
+exampleImgResponsive=function(){$.boot(
 
-BREAK2=function(){
+    $.sm(3).A(
 
+        $.well(
 
-   // @media screen and (min-width: 600px) { .sixhundredminwidthclass {  width: 30%;  float: right;  } }
+            $.imgResponsive('chicks')
 
-  //  @media screen and (max-width: 600px) {.sixhundredmaxwidth {  clear: both; font-size: 1.3em; } }
-
-}
-
-BREAK3=function(){z()
-//works
-
-    $.addStyle(
-
-        "@media all and (min-width: 960px) { body {font-size: 80px;}  }",
-        "@media all and (max-width: 959px) and (min-width: 600px) {body{font-size: 40px;}}",
-        "@media all and (max-width: 599px) and (min-width: 320px) {body{font-size: 20px;}}"
+        )
     )
 
-    $.addStyle(
+)
 
-        "@media all and (min-width: 960px) { body {color:blue;}  }",
-        "@media all and (max-width: 959px) and (min-width: 600px) {body{color:red;}}",
-        "@media all and (max-width: 599px) and (min-width: 320px) {body{color:yellow;}}"
-    )
-
-
-    $.span('fasd').A()
-
-    $.h1('fasd').A() //doesnt respond
 }
+exampleResponsive=function(){
+
+    $.boot(
+
+         $.md(2).A(
+
+            $.imgResponsive('me')  ,
+            $.imgResponsive('chicks')  ,
+            $.imgResponsive('me')
+
+        )
+
+
+    ).C('r')
 
 
 
+   }
+exampleImages=function(){$.boot(
 
 
-//elip =function(a){return a+'&hellip;'}
+    $.imgCircle('chicks').C('y'),
+    $.imgRounded('guy').C('y'),
+    $.imgThumbnail('sun').C('y')
 
-//ex = function(){return '&times;'}
 
 
+)}
 
 
 //"<div class="form-group"></div>"
-
 FormGroup=formGroup=fg=function(a){
 
     return _a(  $div().k('form-group'),  G(arguments))
 
 }
 
-
-
-//put items in a qq(div).k(row)
-
-Row = row=function(n){
-
-    var theDiv=$div().k('row')
-
-    _.each(G(arguments), function(arg){ theDiv(arg) })
-
-    return theDiv}
-
-
-$.row=function(n){
-
-    var theDiv= $.div().K('row')
-
-    _.each(arguments, function(arg){ theDiv.A(arg) })
-
-    return theDiv}
-
-
-
-//pass in size, and then args(contents) as a list (or as an array)
-Col = col = function(){var args=G(arguments),
-
-    theDiv=$div().k('m' + args[0]),
-
-    iter = A(args[1])?  args[1] : args.r
-
-    _e(iter, function(v){theDiv(v)})
-
-    return theDiv}
-
-
-
-$.col = function(){var args=G(arguments),
-
-    theDiv= $.div().K('col-md-' + args[0]),
-
-    iter = A(args[1])?  args[1] : args.r
-
-    _.each(iter, function(v){theDiv.A(v)})
-
-    return theDiv}
-
-
-$.colX = function(){var args=G(arguments),
-
-    theDiv= $.div().K('col-xs-' + args[0]),
-
-    iter = A(args[1])?  args[1] : args.r
-
-    _.each(iter, function(v){theDiv.A(v)})
-
-    return theDiv}
-
-
-
-
-row2=function(a,b){
-    return row(col(6,a),col(6,b))
-}
-
-
-
-row3=function(a,b,c){return row(col(4,a),col(4,b),col(4,c))}
-row4=function(a,b,c,d){return row(col(3,a),col(3,b),col(3,c),col(3,d))}
-row84=function(a,b){return row(col(8,a),col(4,b))}
-
-row48=function(a,b){return row(col(4,a), col(8,b))}//
-row39=function(a,b){return row(col(3,a), col(9,b))}//
-
-
-row210=function(a,b){return row(col(2,a),col(10,b))}//
-row111=function(a,b){return row(col(1,a),col(11,b))}//
-
-
-//row48([4],[ 8 ])
-                 //row39([3],[ 9 ])
-
-push4=function(a){return row48([],a)}
-push3=function(a){return row39([],a)}
-push2=function(a){return row210([],a)}
-push1=function(a){return row111([],a)}
-
-
-
-row93=function(a,b){return row(col(9,a),col(3,b))}
-row363=function(a,b,c){
-    return row(col(3,a),col(6,b),col(3,c))}
-
-$row = ROW=function(a,b,c,d){
-
-    var g=G(arguments),
-
-        z=g.z
-
-
-
-    if(z==1){return row(col(12,a))}
-
-    if(z==2){
-        return g.p?row93(a,b)
-        :g.n? row39(a,b)
-        :row2(a,b)
-    }
-
-
-    if(z==3){return g.n?row363(a,b,c):row3(a,b,c)}
-
-    if(z==4){return row4(a,b,c,d)}
-
-}
-
-
-
-
-FT=function(){
+$.footer = FT=function(){
 
     var args = G(arguments),
 
@@ -296,23 +614,6 @@ FT=function(){
 }
 
 
-
-HeaderDiv=HD=function(){
-
-    var args=G(arguments),
-
-        theDiv=$div().k('header')
-
-    _.each(args,function(v){
-        if(S(v)){v=h3(v)}
-        theDiv(v)})
-
-    if(args.p){  theDiv.cen()  }
-
-    return theDiv.id('header').mb(20)
-
-}
-
 $.headerDiv=function(){
 
 
@@ -322,79 +623,238 @@ $.headerDiv=function(){
     return div
 }
 
-
-
-$.Jumbo=function(h1text){
+$.jumbo = $.jumbotron = function( ){
 
    var div = $.div().K('jumbotron').K('text-center').id('jumbo')
-    if(h1text){ div.A( $.h1(h1text)  ) }
-  return div
+
+    _.each(arguments,
+        function(arg){
+
+            if(S(arg)){arg = $.h1(arg)}
+
+            div.A( arg )
+    })
+
+    return div}
+
+$.caption = function(cap){
+    return $.div().K("caption").A(
+        $.h4(cap)
+    )
+
 }
 
 
+// all thumbnails must be within a col
+// can be a class on an anchor
+// or can be on a div (for more control)
 
-Jumbotron=JumbotronDiv=JT=function(){
-    var args=G(arguments),
+$.thumbA = $.thumbnailClick=function(img, func){
 
-        theDiv=$div().k('jumbotron')
+    func = func || function(){
+        alert('you clicked a thumbnail')
+        i=this}
 
-    theDiv( h1(args.f) )
+    var a = $.a('',func).K('thumbnail').A(
+        $.img(img))
 
-    _.each(args.r,
-        function(v){
+return a}
+$.thumbD = $.thumbnailDiv = function(a) {
 
-            if(S(v)){v=h3(v)}
+    var div = $.div().K('thumbnail')
 
-            theDiv(v)
+    _.each(arguments,
+
+        function (arg) {
+
+            div.A(arg
+                //  S(arg)? $.img(arg): arg
+            )
 
         })
 
+return div}
+$.colThumbA=function(clas, img, func){
+    return $.div().K(clas).A(
+        $.thumbA(img, func)
+    )}
+$.thumbnail = function(a){
 
-    if(args.p){theDiv.cen()}
+    var div = $.div().K('thumbnail')
 
-    return theDiv.id('jumbo')
-}
+    _.each(arguments,
 
+        function(arg){
 
-
-Thumbnail=thumbnail = tn=function(a){
-
-    var theDiv=$div().k('thumbnail')
-
-    _.each(arguments, function(arg){
-
-        theDiv(S(arg)? im(arg): arg  )
+       div.A( S(arg)? $.img(arg): arg  )
 
     })
 
 
-    return $div().k('x2 s1')(theDiv)
+    return div
 
 }
+$.thumbnailRow =  function(g){z()
 
-
-
-ThumbnailRow=thumbnailRow= tnr=function(g){z()
-
-    var theRow = row()
+    var theRow = $.row()
 
     _.each(G(arguments),
         function(a){
-            theRow(thumbnail(a))
+            theRow.A($.thumbnail(a))
         })
 
-    return theRow.a()
+    return theRow.A()
 }
-
-
-ThumbnailTimes=thumbnailTimes=tnt=function(num){
+$.thumbnailTimes = function(num){
     var arr=[]
     _.times(num||20,
         function(){
             arr.push('me')})
-    _a(thumbnail,arr)}
+    _a(thumbnail,arr)
+}
 
 
+exampleThumb =function(){z()
+
+    var wrap = function(img){
+
+        if(S(img)){img = $.img(img)}
+
+       return $.div().K("col-xs-4 col-sm-3 col-md-2 col-lg-1").A(
+
+           $.a('').K('thumbnail').A(
+
+               img,
+               'hi'
+           )
+
+       )
+    }
+
+    $.boot(
+
+            wrap('me'),
+            wrap('guy' ),
+            wrap('chicks'),
+            wrap( 'me' ),
+            wrap( 'guy') ,
+            wrap( 'chicks' ),
+            wrap( 'me' ),
+            wrap( 'guy' ),  wrap( 'chicks' ),
+            wrap( 'me' ),   wrap( 'guy' ), wrap( 'chicks' ),
+            wrap( 'me' ),   wrap( 'guy' ), wrap( 'chicks' )
+
+        )
+
+
+
+
+
+}
+
+
+
+exampleThumbContent =function(){z()
+
+    var wrap = function(img){
+
+        return $.div().K(  "col-xs-4 col-sm-3 col-md-2 col-lg-1"  ).A(
+
+            $.a('').K('thumbnail').A( img  )
+
+        )}
+
+    $.container().A(
+
+        $.row(
+
+                $.thumbnail().K("col-sm-6 col-md-2").A(
+                    $.img('me'),
+                    $.caption('Thumbnail label')
+                ),
+
+
+                $.thumbnail().K("col-sm-6 col-md-2").A(
+                    $.img('guy'),
+                    $.caption('Thumbnail label')
+               ),
+
+
+                $.thumbnail().K("col-sm-6 col-md-2").A(
+                    $.img('me'),
+                    $.caption('Thumbnail label')
+
+                )
+
+
+        )
+
+    ).A()
+
+
+}
+
+
+
+exampleThumbnails = function(){z()
+
+    // <div class="row">
+    // <div class="col-xs-6 col-md-3">
+    // <a id="" href="#" class="thumbnail">
+    // <img src="/me.png">
+    // </a>
+    // </div>
+    // </div>
+
+
+    return $.container().A(
+        $.row(
+
+            $.div().K("col-xs-6 col-md-3").A(
+
+                $.a('').K("thumbnail").A(  $.img('me')  )
+
+
+            ) )
+
+    ).A()
+
+
+
+}
+
+exampleThumbnailsCustomContent = function(){z()
+    cont = $.container().C('r')
+
+
+    thumbnail = $.thumbnail().C('g').A(
+
+        $.p('first thing in green thumbnail'),
+        $.img('me'),
+
+        $.div().K("caption").A(
+            $.h3('Thumbnail label'),
+            $.p('...'),
+            $.p().A(
+                $.button('Button').K("btn btn-primary"),
+                $.button('Button').K("btn btn-default")))
+    )
+
+
+
+    cont.A(  $.row(
+        $.div().K("col-sm-6 col-md-4").A(
+
+            $.p('before thumbnail'),
+            thumbnail
+        )
+
+
+
+    ))
+
+
+    return cont.A()}
 
 
 
@@ -411,9 +871,6 @@ Pill=pil=function(o){var g=G(arguments),p=ul();p.k('n np');p.c('y')
 //login pils
 LoginPill=logi=function(){pil({'log in':lI,'log out':lO}).pp()}
 
-
-
-
 Glyph=Glyphicon=glyphicon=gl=function(){var g=G(arguments),str,
     s=_s().k('glyphicon').k('glyphicon-'+oO('gl',g[0]))
     if(O(g[1])){s.a(g[1])}
@@ -422,13 +879,6 @@ Glyph=Glyphicon=glyphicon=gl=function(){var g=G(arguments),str,
     return s}
 
 
-ModalFooter = MFOOT=function(){
-
-    var theDiv=$div().k('modal-footer')
-
-    _.each(G(arguments),function(arg){theDiv(arg)})
-
-    return theDiv}
 
 
 
@@ -436,37 +886,10 @@ $.modalFooter=function(){
     var theDiv= $.div().K('modal-footer')
     _.each( arguments, function(arg){theDiv.A(arg)})
     return theDiv}
-
-
-
-
-
-ModalBody = MBODY= function(){
-
-    var theDiv = $div().k('modal-body')
-
-    _.each(G(arguments),
-        function(arg){theDiv(arg)})
-
-    return theDiv}
-
 $.modalBody =   function(){
     var theDiv = $.div().K('modal-body')
     _.each( arguments, function(arg){theDiv.A(arg)})
     return theDiv}
-
-
-
-ModalHeader = MHEAD= function(){
-
-    var theDiv = $div().k('modal-header')
-
-    _.each(G(arguments),
-        function(arg){theDiv(arg)})
-
-    return theDiv}
-
-
 $.modalHeader =   function(){
 
     var theDiv = $.div().K('modal-header')
@@ -475,17 +898,6 @@ $.modalHeader =   function(){
         function(arg){theDiv.A(arg)})
 
     return theDiv}
-
-
-ModalContent =MCT=function(){
-    var theDiv=$div().k('modal-content')
-
-    _.each(
-        G(arguments),
-        function(arg){theDiv(arg)})
-
-    return theDiv}
-
 $.modalContent = function(){
     var theDiv= $.div().K('modal-content')
 
@@ -494,69 +906,14 @@ $.modalContent = function(){
         function(arg){theDiv.A(arg)})
 
     return theDiv}
-
-
-ModalDialog =MDIALOG=function(){
-    var theDiv=$div().k('modal-dialog')
-    _.each(G(arguments),function(arg){theDiv(arg)});
-    return theDiv}
-
-
-
 $.modalDialog=function(){
     var theDiv= $.div().K('modal-dialog')
     _.each(arguments,function(arg){theDiv.A(arg)});
     return theDiv}
-
-
-ModalForm =MFADE = function(){
-    var theDiv=$div().k('modal form')
-    _.each(G(arguments),function(arg){theDiv(arg)});
-    return theDiv}
-
-
-
-
 $.modalFade  = function(){
     var theDiv= $.div().K('modal fade')
     _.each(arguments,function(arg){theDiv.A(arg)});
     return theDiv}
-
-
-
-Modal = MODAL=function(a,b,contents){
-
-    var footer=ModalFooter(
-
-        bt({t: 'close' }).at({  type:'submit',  'data-dismiss':'modal'  }) )
-
-    if(contents){ footer(contents) }
-
-    return ModalForm(//Fade?
-
-        ModalDialog(
-
-            ModalContent(
-
-                ModalHeader(
-
-                    bt({t: ex}).k('close')
-
-                        .at({'data-dismiss':'modal'}),
-
-                    h4(a).k('modal-title')
-                ),
-
-                ModalBody(b), footer))
-    )}
-
-
-
-
-
-
-
-
 $.modal=function(a,b, contents){
 
     var footer= $.modalFooter(

@@ -59,10 +59,21 @@ b2CircleShape=BXS.b2CircleShape
 //world clearforces
 //static body for ground, dynamic for objs
 
-bV =function(a,b){var g=G(arguments),a=g[0],b=g[1]
+bV =function(a,b){
+
+    var g=G(arguments),
+        a=g[0],
+        b=g[1]
+
     if(g.n){a/=30;b/=30}
+
     return new BXc.Math.b2Vec2(a,b)
 }
+
+
+
+
+
 
 
 AB=function(a,b,c,d){
@@ -388,11 +399,11 @@ aII=function(a){a.aI(100,100)}//for w.e testing
 
 
 
-BodyDef=bDf=function(){return new b2BodyDef}
+BodyDef= bDf=function(){return new b2BodyDef}
 
 //super body wrapper!
 //depends on a body.. it only extends it with mets!
-SuperBoxBody=sBd=function(b){
+SuperBoxBody= sBd=function(b){
 
     b.createFixture=b.cF   =b.f=function(a){
 
@@ -456,8 +467,8 @@ SuperBoxBody=sBd=function(b){
         return b}
 
     b.xy=function(x,y){
-        b.position.x= x? x:r10()
-        b.position.y= y? y:r10()
+        b.position.x= x? x:Math.random()*10
+        b.position.y= y? y:Math.random()*10
 
         return b}
 
@@ -471,8 +482,8 @@ SuperBoxBody=sBd=function(b){
 
     b.XY=function(x,y){//dep
 
-        b.position.x= (x?x:r10())/30
-        b.position.y= (y?y:r10())/30
+        b.position.x= (x?x:Math.random()*10)/30
+        b.position.y= (y?y:Math.random()*10)/30
         return b}
 
     b.fixtureList=b.gFL=function(){return sFx(b.GetFixtureList())}
@@ -521,7 +532,7 @@ SuperBoxBody=sBd=function(b){
         return b}
 
     //get next
-    b.next = b.n= b.gN=function(){ return sBd(b.GetNext())  }
+    b.next = b.n= b.gN=function(){ return SuperBoxBody(b.GetNext())  }
 
 
     b.destroyFixture=b.dF=function(a){
@@ -607,17 +618,20 @@ SuperBoxBody=sBd=function(b){
 
     return b}
 
+SuperBodyDef= sBdD=function(d){
 
+    d=d||BodyDef()
 
-
-SuperBodyDef=sBdD=function(d){
-    d=d||bDf()
     d.act=function(a){
         d.active=a?true:false
         return d}
+
     d.aS=function(a){
+
         d.allowSleep=a?true:false
-        return d}
+        return d
+    }
+
 
     d.rt=function(a){
         if(U(a)){return d.angle}
@@ -634,30 +648,37 @@ SuperBodyDef=sBdD=function(d){
         if(U(a)){return d.angularVelocity}
         d.angularVelocity=a
         return d}
+
     d.awake=function(a){
         d.active=a?true:false
         return d}
+
     d.bull=function(a){
         d.bullet=a?true:false
         return d}
+
     d.fR=function(a){
         d.fixedRotation=a?true:false
-        return d}
-    d.iS=function(a){if(U(a)){return d.insertiaScale}
+        return d
+    }
+
+
+    d.iS=function(a){
+        if(U(a)){return d.insertiaScale}
         d.insertiaScale=a
         return d}
-
-
 
     d.lD=function(a){
         if(U(a)){return d.linearDamping}
         d.linearDamping=a
-        return d}
+        return d
+    }
 
     d.linVel = d.lV=function(a){
         if(U(a)){return d.linearVelocity}
         d.linearVelocity=a
-        return d}
+        return d
+    }
 
 
 
@@ -665,8 +686,8 @@ SuperBodyDef=sBdD=function(d){
     d.p=d.ps= d.xy=function(x,y){
 
         var g=G(arguments),
-            x=N(x)?x:r10()*60,
-            y=N(y)?y:r10()*60
+            x=N(x)?x:Math.random()*10*60,
+            y=N(y)?y:Math.random()*10*60
 
         if(O(x)){
             d.position=x;return d
@@ -684,22 +705,24 @@ SuperBodyDef=sBdD=function(d){
     d.type=d.T=  function(a){
         if(U(a)){return d.type}
         d.type=a
-        return d}
+        return d
+    }
 
 
-    d.userData= d.D=d.uD=function(a){
+    d.userData= d.D = d.uD=function(a){
         d.active=a?true:false
         return d}
     return d}
 
+DynamicBodyDef=dBD=function(x,y){
+    return SuperBodyDef().type(2).xy( N(x)?x:300, N(y)?y:300 )}
 
-DynamicBodyDef=dBD=function(x,y){return SuperBodyDef().type(2).xy( N(x)?x:300, N(y)?y:300 )}
+StaticBodyDef=sBD=function(x,y){
+    return SuperBodyDef().type(0).xy( N(x)?x:300, N(y)?y:300 )}
 
+KinematicBodyDef=kBD=function(x,y){
+    return SuperBodyDef().type(1).xy( N(x)?x:300, N(y)?y:300 )}
 
-StaticBodyDef=sBD=function(x,y){return SuperBodyDef().type(0).xy( N(x)?x:300, N(y)?y:300 )}
-
-
-KinematicBodyDef=kBD=function(x,y){return SuperBodyDef().type(1).xy( N(x)?x:300, N(y)?y:300 )}
 
 
 //super fixture wrapper!
@@ -716,7 +739,7 @@ SuperFixture=sFx=function(f){
 
     f.gB=  f.bd=function(){
 
-        return sBd(f.GetBody())
+        return SuperBoxBody(f.GetBody())
 
     }
 
@@ -726,9 +749,9 @@ SuperFixture=sFx=function(f){
 
 
     f.gSh=function(){
-
-        return sSh(f.GetShape())
+        return SuperShape(f.GetShape())
     }
+
 
 
     f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return f.s(pSh())}
@@ -806,33 +829,47 @@ SuperFixture=sFx=function(f){
     return f
 }
 
-SuperFixtureDef=sFxD=function(f){
-    f.den = f.d=function(a){f.density=a;return f}
-    f.fric=f.f=function(a){f.friction=a;return f}
-    f.rest=f.r=function(a){f.restitution=a;return f}
+SuperFixtureDef =sFxD=function(fixture){
+    var f=fixture
 
 
-    f.gB =   function(){
+    fixture.den =fixture.d=function(density){
+        fixture.density = density;
+        return fixture}
 
-        return SuperBoxBody( f.GetBody() )
+    fixture.fric =f.f=function(a){f.friction=a;return f}
+    fixture.rest =f.r=function(a){f.restitution=a;return f}
+
+
+    fixture.getBody =fixture.gB =function(){
+
+        return SuperBoxBody( fixture.GetBody() )
 
     }
 
 
-    f.sh= f.s=function(a){
-        f.shape=a;
-        return f}
+    fixture.setShape =fixture.sh= fixture.s=function(shape){
+        fixture.shape=shape;
+        return fixture}
 
 
-    f.gSh=function(){
+    fixture.getShape =fixture.gSh=function(){
 
-        return sSh(f.GetShape())
+        return SuperShape(fixture.GetShape())
     }
-    f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return f.s(pSh())}
+
+    fixture.sSAP  =fixture.sP=f.setShapeAsAPoly=function(){
+
+        return fixture.s(PolyShape())
+
+    }
+
+
     f.set=function(x,y){
         f.shape.Set(x,y)
         return f
     }
+
     f.sAB=function(a,b,p,A){
 
         if(!p){f.shape.SetAsBox(a/30,b/30)}
@@ -841,13 +878,13 @@ SuperFixtureDef=sFxD=function(f){
         return f}
 
 
-    f.tP = f.txPt=function( m, y ){
+    fixture.tP = fixture.txPt=function( m, y ){
 
         if( N( y ) ){ m = bV(m,y) }
 
-        return sSh( f.GetShape() ).tPt(
+        return sSh( fixture.GetShape() ).tPt(
 
-            SuperBoxBody( f.GetBody() ).getTransform(),
+            SuperBoxBody( fixture.GetBody() ).getTransform(),
 
             m
 
@@ -895,6 +932,8 @@ SuperFixtureDef=sFxD=function(f){
 }
 
 
+
+
 //makes a new super fixture
 fDf=function(s){
 
@@ -914,9 +953,9 @@ PolyFixture=pFx=function(a,b,c,d,e){//fPS=
 
     var p=function(w,h,P,A){//fP=
 
-        var g=G(arguments), w=g[0]||r1(), h=g[1]||w
+        var g=G(arguments), w=g[0]|| Math.random()+.1, h=g[1]||w
 
-        return fDf().s(  pSh(w,h,P,A) ).d(1).f(.5).r(.8)}
+        return fDf().s(  PolyShape(w,h,P,A) ).d(1).f(.5).r(.8)}
 
 
     return U(c)? p(a||20, N(b)?b:a)
@@ -926,8 +965,11 @@ PolyFixture=pFx=function(a,b,c,d,e){//fPS=
 }
 
 AFixture=aFx=function(){
-    return fDf( _a(aSh,
-        _m(arguments,function(a){return bV(a[0]/30, a[1]/30)})
+    return fDf( _a(AShape,
+
+        _.map(arguments,function(a){
+            return bV(a[0]/30, a[1]/30)
+        })
     ))
 }
 
@@ -935,14 +977,18 @@ AFixture=aFx=function(){
 
 
 //makes a circle fixture
-CircleFixture = cFx =function(a,x,y){//fC=
-    a=a||r1()
+CircleFixture =cFx=function(a,x,y){//fC=
+
+    a=a||Math.random()+.1
+
     x=N(x)?x:0
     y=N(y)?y:x
 
-    dafi=cSh(a)
+    dafi = cSh(a)
 
-    dafi.SetLocalPosition(bV(x/30,y/30))
+    dafi.SetLocalPosition(
+        bV(x/30,y/30)
+    )
 
     return fDf().s(
 

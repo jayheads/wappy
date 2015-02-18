@@ -1,78 +1,60 @@
-module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
+module.exports=function(){
 
+    $a.get('/testBook',function(req, res, n){
 
+        res.json([
 
-
-    $a.g('/ts',function(q,p,n){
-
-        p.j([
-
-            {t:'sss',iD:false},
-            {t:'sfs',iD:true},
-            {t:'ssass',iD:false},
+            {t:'sss', iD:false},
+            {t:'sfs', iD:true},
+            {t:'ssass', iD:false},
         ])
 
     })
 
-
-
-
-    $a.p('/newBook',$w.u,function(q,p,n){$l(bk={name:q.b.n,author:q.I})
+    //book
+    $a.get('/books', $w.user, function(q,p,n){
+        Book.find({author: q.I})
+            .populate('author').execFind(
+            function(z,bs){p.j(bs)})})
+    $a.get('/chapters',$w.user,function(q,p,n){
+        Chapter.find({book:q.q.b},
+            function(z,ch){p.j(ch)})})
+    $a.get('/pages',$w.user,function(q,p,n){
+        Page.find({chapter:q.q.c},
+            function(z,ch){p.j(ch)})})
+    $a.post('/newBook',$w.user,function(q,p,n){$l(bk={name:q.b.n,author:q.I})
         Book.create(bk,
             function(z,b){
                 $l(z)
                 p.j(b)})})
+    $a.post('/delBook',  $w.user,function(req, res, n){
 
+                $l(req.body)
 
+        Book.findByIdAndRemove(req.body.book,
+            function(err, data){
 
-    $a.p('/delBook',
-        $w.u,function(q,p,n){
-
-                $l(q.b)
-
-        Book.findByIdAndRemove(q.b.b,
-            function(z,b){
-
-                p.j(b)
+                res.json(data)
 
         })
 
     })
+    $a.post('/delChapter',  $w.user,  function(req,res,n){
 
+            $l(req.body)
 
-    $a.p('/delChapter',
-        $w.u,function(q,p,n){
+            Chapter.findByIdAndRemove(req.body.content,
+                function(err,data){
 
-            $l(q.b)
-
-            Chapter.findByIdAndRemove(q.b.c,
-                function(z,c){
-
-                    p.j(c)
+                   res.json(data)
 
                 })
 
         })
-
-
-    $a.g('/books',$w.u,function(q,p,n){
-             Book.find({author: q.I})
-                 .populate('author').execFind(
-                 function(z,bs){p.j(bs)})})
-
-    $a.p('/newChapter',$w.u,function(q,p,n){
+    $a.post('/newChapter',$w.user,function(q,p,n){
         $l(ch={title:q.b.t,book:q.b.b})
         Chapter.create(ch,function(z,c){p.j(c)})})
-
-
-
-    $a.g('/chapters',$w.u,function(q,p,n){
-        Chapter.find({book:q.q.b},
-            function(z,ch){p.j(ch)})})
-
-
-
-    $a.p('/newPage',$w.u,function(q,p,n){
+    $a.post('/newPage',$w.user,function(q,p,n){
         $l(pg={
             name:q.b.n, chapter:q.b.c
         })
@@ -82,16 +64,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
         )})
 
 
-
-    $a.g('/pages',$w.u,function(q,p,n){
-        Page.find({chapter:q.q.c},
-            function(z,ch){p.j(ch)})})
-
-    mUrl='mongodb://127.0.0.1:27017/test'
-
-    MC = require('mongodb').MongoClient
-
-    $a.post('/newObj', $w.u, function(q,p,n){
+    //objects
+    $a.post('/newObj', $w.user, function(q,p,n){
 
         var o={
 
@@ -124,11 +98,7 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
          })
 
     })
-
-
-
-    $a.get('/objs',
-        $w.u,function(q,p,n){
+    $a.get('/objects',  $w.user,function(q,p,n){
 
         MC.connect(mUrl,
             function(z,db){if(z)throw z
@@ -145,27 +115,8 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
     })
 
 
-
-
-    $a.p('/messages', function(q,p,n){
-
-        var topic=q.body.topic
-        console.log(topic)
-
-        var message=q.body.message
-        console.log(message)
-
-        $m['Message'].create(
-            {topic:topic, message:message},
-            function(err, message){
-
-                p.j(message)})
-
-    })
-
-
-
-    $a.g('/messages', function(q,p,n){
+    //dirtpage
+    $a.get('/messages', function(q,p,n){
 
         var topic=  q.params['topic']
         console.log(
@@ -184,9 +135,22 @@ module.exports=function(){$a=a;a.p=a.post;a.g= a.get;
             })
 
     })
+    $a.post('/messages', function(q,p,n){
 
+        var topic=q.body.topic
+        console.log(topic)
 
-    $a.g('/topics/:topic', function(q,p,n){
+        var message=q.body.message
+        console.log(message)
+
+        $m['Message'].create(
+            {topic:topic, message:message},
+            function(err, message){
+
+                p.j(message)})
+
+    })
+    $a.get('/topics/:topic', function(q,p,n){
 
         var topic=  q.params['topic']
         console.log(

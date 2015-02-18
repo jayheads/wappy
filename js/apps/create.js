@@ -4,9 +4,6 @@ eachImage = eaI=function(f){
 
     $.getJSON('/img',
         function(i){ _.each(i, f) } )
-
-
-
 }
 
 
@@ -149,37 +146,51 @@ PROPBOX=function(){
 
 
 AVATAR=function(){
+
 z()
     //the challenge here is to make the stage draggable but still usable, by dragging it by a wrapper div
 
     //  s=St(400)
 
-    stage  = dragStage()
+    stage  = dragStage().tick()
 
     //d = qq( stage.ob.canvas )
 
-    d = $div().drg().c('x')
 
     //d2=$div().drg().w(500).h(500).c('o')
 
     //CT(d, stage).o('$$',  sav(stage,'avatar') )
 
-    eaI( function(img){
 
-        d(
-            xc(img.d, 1, function(){
+stage.on('dblclick' ,function(){
+    stage.snap('avatar')
+})
 
-                stage.bm(img.d, TR, '+' )  //.rgc('+')
+    theDiv = $.div('x').drag()
 
-            })
-        )
-    })
+    $.getJSON('/img',
+        function(i){ _.each(i, function(img){
+
+            theDiv.A(
+
+                $.canvas(100,100).A().fit(img.d).click(
+
+                    function(){ stage.bm(img.d, createjs.bindTransform, '+' ) }))
+        })})
+
+
+
 
     //d2( stage )
 
 }
 
-EDIT=function(){
+
+
+
+
+
+EDIT1=function(){
 
     container=$.containerDiv()
     imgHolder = $.div()
@@ -219,127 +230,122 @@ EDIT=function(){
 
 
 
+EDIT=function(){
 
-PAINT1=function(){z()
-    var r='#0FF',
-        size=2,oX=0,oY= 0,shape
+    container=$.containerDiv()
+    imgHolder = $.div()
 
-    //stage = SuperStage(400).a()
+    stage=createjs.stage(800).tick()
 
-   var stage = dragStage()
+  container.A(   imgHolder,  stage.canvas  )
 
-    stage.a(
+    $.getJSON('/img', function(i){
 
-        EaselText('finger paint','b', 30, 100, 10)
+         imgs=i
+        _.each(i,  function(img){
 
-    )
+            console.log(img.d)
+
+           var can = $.canvas('X', 100, 100).A().fit( img.d ) // must be in body in order to use FIT!
+
+            c = can
+
+          can.click(function(){
+
+              stage.bm(  img.d,
+
+                  function(bm){  bm.rCenter().X(400).Y(400);  TR(bm)
+                      }
+              )
+          })
+
+            imgHolder.A( can )
 
 
-    stage.mug(function(m){
+       }) } )
 
-        m.xy(40).sxy(.4)
 
-        stage.a( shape = Hx() )
+//    return stage
 
+
+    container.dblclick(function(){
+        $.post(
+            '/img',
+            {d: stage.canvas.toDataURL()},  //, dats: x.dats
+            function(){window.location=window.location})
     })
+}
 
 
 
-    stage.o({
-
-            D: function(q, e){ size=10 },
-
-            U: function(q, e){ size=2; r=HSL() },
-
-            M: function(q, e){
-
-                oX=e.X; oY=e.Y
-
-                if( oX ){
-
-                    shape.gs( r )
-
-                    shape.gss( size , 'round' )
-
-                    shape.mt( oX, oY )
-
-                    shape.lt( e.X , e.Y )
-                }
-            }
-
-    })
 
 
+
+testStage = function(){
+
+    z()
+
+    stage =createjs.stage(800).tick().A()
+
+   stage.mug(function(){}, stage)
+   // stage.bm('/me.png')
 
 
 }
 
 
 
-stagePainter=function(stage){
 
 
-    stage.a(  shape = Hx()  )
 
-    stage.o({
 
-        D: function (q, e) {
-            size = 10
-        },
+PAINT= function(){
+    _paintColor='blue'
+    _paintSize = 10
+    canvas = $.canvas('r', 400, 400).A().P('a',100,50)
 
-        U: function (q, e) {
-            size = 0;
-        },
+    stage = canvas.stage.tick()
 
-        M: function (q, e) {
+    shape = new createjs.Shape()
 
-            oX = e.X;
+    stage.mug(function(mug){
 
-            oY = e.Y
+        mug.sXY(.4)
+        stage.A(shape)
 
-            if (oX && size) {
+    })
 
-                shape.gs(_paintColor)
+    graphics = shape.graphics
 
-                shape.gss(size, 'round')
+    graphics.beginStroke('black')//.beginFill('yellow') <- cool effect!!
+        .setStrokeStyle(4)//.moveTo(10,10).lineTo(111,111)
 
-                shape.mt(oX, oY)
+    stage.on('stagemousedown', function(e){
+        graphics.beginStroke(_paintColor)
+        stage.on('stagemousemove', function(e){  graphics.lineTo(e.stageX, e.stageY) })
+    })
 
-                shape.lt(e.X, e.Y)
-            }
-        }})
-    colorPicker = $(' <input   type="color">').appendTo($('body'))
+    stage.on('stagemouseup', function(){ stage.removeAllEventListeners('stagemousemove')})
 
-    colorPicker.on('input', function () {
+    div = $.div().K('controls').appendTo($('body'))
+
+    colorPicker = $(' <input   type="color">')
+
+    div.A(colorPicker, $.span(10), $.span(20), $.span(30))
+
+
+    colorPicker.on('input', function () {$l('input ')
         _paintColor = $l(colorPicker.val())
+        graphics.beginStroke(_paintColor)
     })
-}
 
-PAINT=function(){z()
-    var r='#0FF',  size=10,oX=0,oY= 0,shape
+    $('.controls span').click(function(){
 
-    var stage = dragStage()
-
-   // stage.a(  EaselText('finger paint', 'b', 40, 100, 10))
-
-    stage.mug(function(m){
-
-        m.xy(40).sxy(.4)
-
-        stagePainter(stage)
-
+       graphics.setStrokeStyle( parseInt($(this).text()) )
 
     })
 
-
-
-
-
-
-
 }
-
-
 
 
 
@@ -563,7 +569,7 @@ loadImagesDiv()
         $button('left', function(){  bitmap.x( bitmap.x() -10)  }),
         $button('up', function(){    bitmap.y( bitmap.y() -10)  }),
         $button('down', function(){  bitmap.y( bitmap.y() +10)  }),
-        $br(),
+        $.br(),
 
         //fix
         $button('bigger', function(){   bitmap.sxy(1.1, '*') }),
@@ -578,11 +584,11 @@ loadImagesDiv()
 
         $button('shorter', function(){  bitmap.sy( bitmap.sy() *.9)  }),
 
-        $br(),
+        $.br(),
 
         $button('CW',  function(){  bitmap.rt(bitmap.rt() + 10) }),
         $button('CCW', function(){  bitmap.rt(bitmap.rt() -10)  }),
-        $br(),
+        $.br(),
 
         $button('get index', function(){
 
@@ -627,7 +633,7 @@ loadImagesDiv()
 
         }),
 
-        $br(),
+        $.br(),
 
 
         $button('save', function(){
@@ -678,25 +684,25 @@ INDEXX=function(){z()
 
 
 
-FILTERS=function(){
+FILTERS1=function(){
 
-    s=St(1000).a()
+    s=$.canvas(1000).A().stage.tick()
 
-    wMb(
+    s.mug(
 
         function(b){
 
-            b.xy(-100,-50)
+            b.XY(-100,-50)
 
-            b.cc().clMF('a','+').clMF('w','+')
+            b.cc()
 
-            SL(b)
+            b.clMF('a','+')
 
-        },
+            b.clMF('w','+')
 
-        s
+           createjs.bindSlide(b)
 
-    )
+        })
 
 
 
@@ -714,11 +720,45 @@ FILTERS=function(){
 
     wMb(function(b){
         var ag=0,rg=20,sp=0.04;
-        b.xy(500,300).cc();SL(b)
+        b.xy(500,300).cc();
+        SL(b)
+
+        //this has gotta just mean 'on tick'
         tt(function(e){
-            v=sin(ag+=sp)*rg;b.cc('+').fl([blF(v,v,2)]) })},s)}
+            v=sin(ag+=sp)*rg;
+            b.cc('+').fl([blF(v,v,2)])
+        })},s)}
 
 
+FILTERS=function(){
+
+    s=$.canvas(1000).A().stage.tick()
+
+    s.mug(  function(b){
+            bb=b
+
+            b.XY(-100,-50)
+
+             b.cache(0, 0, b.W(), b.H())
+
+             cM = new createjs.ColorMatrix()
+
+            cM.adjustHue(-180)
+            cM.adjustSaturation(100)
+            cM.adjustBrightness(300)
+            cM.adjustContrast(-600)
+
+            b.filters = cM
+
+
+        b.updateCache()
+
+
+
+            createjs.bindSlide(b)
+
+        })
+ }
 
 
 
@@ -779,7 +819,7 @@ TRANSFORM = function(){format()
                     ,s)},s)
 
 
-    }),br(2),
+    }), $.br(2),
 
 
  $button('skew',function(){
@@ -802,7 +842,7 @@ TRANSFORM = function(){format()
          }
 
          ,s)
- }),br(2),
+ }), $.br(2),
 
 
 
@@ -813,7 +853,7 @@ TRANSFORM = function(){format()
         wMb(function(b,s){TR(b); rg1(b); reggy(b)}, s)
 
         wMb(function(b,s){TR(b); b.rgc(); rg1(b);  reggy(b)}, s)}),
-        $br(2))}
+        $.br(2))}
 
 
 SHOWCASE=function(){format()
@@ -831,18 +871,18 @@ SHOWCASE=function(){format()
          url$=v.d}))})
 
 
-    s2(br(2), lb('caption'),
+    s2($.br(2), lb('caption'),
         cap$=tx().w(500))
 
 
   s1(
 
-      br(2),
+      $.br(2),
       lb('category'),
 
 
 
-      cat$=tx().w(200),br(2),
+      cat$=tx().w(200), $.br(2),
 
 
 
@@ -857,11 +897,11 @@ SHOWCASE=function(){format()
           du:url$}
        qP('/pst',o,function(){pop('posted')})
 
-      }),br(2),
+      }), $.br(2),
 
-      bt('make a showcase',function(){}),br(2),
+      bt('make a showcase',function(){}), $.br(2),
 
-      bt('submit to ranky',function(){}),br(2)
+      bt('submit to ranky',function(){}), $.br(2)
 
   )
 

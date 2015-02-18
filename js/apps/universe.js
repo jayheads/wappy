@@ -1,25 +1,16 @@
 guysArray  = [ ]
 
-fetchMugByUserModel2 =fetchMugByMugId= function(user, func){ //
+fetchMugByMugId = fetchMugByUserModel2 =function(user, func){ //
 
-    $.post( '/dud' , {d: user.m}, func)
-
+    $.P( '/getimagebyid' ,  user.m,  func)
 }
-
-
-
 
 fetchMugByUserModel =  function(user, func){ //
 
-   // $.post( '/dud' , {d: user.m}, func)
+   // $.post( '/dudX' , {d: user.m}, func)
 
     $.get('/mug/' + user.m, func)
 }
-
-
-
-
-
 
 fetchMugByUsername =  function(username, func){
 
@@ -32,42 +23,56 @@ fetchMugByUsername =  function(username, func){
 
 
 
-
-
 SpeechBubble =  function( text, x, y ){
 
-    var g=G(arguments),args= g,  c=EaselContainer(), container=c//Ct$()
+    var args=G(arguments)
 
-    if( !$w['uni'] ){alert('the universe is missing!');return}
+        container= new createjs.Container()
 
-    text = g[0] || 'hi!'
+    if( !window['uni'] ){alert('the universe is missing!');return}
+
+    text = args[0] || 'hi!'
 
     //so if you don't pass in coords, it relies on 'you'
-    x = args[1] || you.x()
+    x = args[1] || you.x
+    y = args[2] || you.y
 
-    y = args[2] || you.y()
+    uni.A(container)
 
-    uni.a(container)
+    container.circle(x-150,y-150,100,'white')
+        .circle(x-50, y-50, 30, 'white')
+        .circle(x-20,y-20,10,'white')
+        .text(text, "20px Arial", "blue", x-200, y-200)
 
-    container.a(EaselCircle(x-150,y-150,100,'w'))
-    container.a(EaselCircle(x-50,y-50,30,'w'))
-    container.a(EaselCircle(x-20,y-20,10,'w'))
-    container.a(EaselText(text).x(x-200).y(y-200))  //c=Do(c)
+    setTimeout(function(){container.remove()}, 10000)
 
 
-    setTimeout(function(){container.X()},10000)
-    EaselTween(container,[{ a:0, sxy:.1, x:x-250, y:y-250 }, 20000])
+    tw(
+        container,
+        [{ a:0, sxy:.1, x:x-250, y:y-250 }, 20000]
+    )
+
+
 
     //broadcast out your speech bubble
-    if(g.p){ socket.emit('speechBubble',  { t:text, x:x, y:y, u:_username } )}
-
-    return container}
+    if(args.p){ socket.emit('speechBubble',  { t:text, x:x, y:y, u:_username } )}
 
 
+    return container
+
+}
 
 
 //relies on 'you'.. actually just makes a similar object
-guyLocation=function(){  if( $w['you'] ){   return { u:_username,  x: you.x, y: you.y } }}
+guyLocation=function(){  if( window['you'] ){
+
+    return {
+        u:_username,
+        username:_username,
+        x: you.x,
+        y: you.y }
+
+}}
 
 
 
@@ -79,17 +84,23 @@ addGuy=function(username, bitmap){
     //add guy to guysArray
     guysArray.push({
 
-        u: username, username:username,  b: bitmap,  bitmap: bitmap
+
+        u: username,
+        username:username,
+        b: bitmap,
+        bitmap: bitmap
 
     })
 
     //add guy's bitmap to universe
 
-    bitmap.rCenter().X(600).Y(600).sXY(.4)
+    bitmap.rCenter().XY(600).sXY(.4)
 
-   // bitmap.o('$$', function(bm){   bm.XX(); socket.emit('X', _username) })
+
+    // bitmap.o('$$', function(bm){   bm.XX(); socket.emit('X', _username) })
 
     uni.A( bitmap )
+
 }
 
 
@@ -104,17 +115,20 @@ addGuy=function(username, bitmap){
 //guy object has {user/username, x, y}
 //-- so this finds a guy in the guysArray or returns false if he aint there
 getGuy=function(username){
-
-    var theGuy=false
-
     //get the username
-    username = O(username)? username.u: username
+    username = O(username) ? username.u: username
 
+    //do this as a reduce
 
-    _.each(guysArray,
+    var theGuy = false
 
-        function(guy){
-            if(guy.u == username){theGuy = guy}})
+    _.each(guysArray,  function(guy){
+
+            if(guy.u == username){
+                theGuy = guy
+            }
+
+        })
 
     return theGuy}
 
@@ -130,7 +144,7 @@ updateGuy =  function(user){
 
         var bitmap = getGuy( user.u ).bitmap
 
-        if(bitmap){ bitmap.X( user.x ).Y( user.y )  }
+        if(bitmap){ bitmap.XY( user.x, user.y )  }
 
     }
 
@@ -160,7 +174,7 @@ inviteToUniverse=function(toWho){
 
      $l(_username + ' accepts from ' + toWho)
 
-    socket.emit('bc',  'acceptUniverseInvitation',  {from: _username, toWho: toWho})
+     socket.emit('bc',  'acceptUniverseInvitation',  {from: _username, toWho: toWho})
 
  }
 
@@ -173,11 +187,9 @@ inviteToUniverse=function(toWho){
 
 
 
-startUniverse = function(username){
+startUniverse = function(username){  $l('startUniverse with: '+ username)
 
-    $l('startUniverse with: '+ username)
-
-    if( !$w['uni'] ){
+    if( !window['uni'] ){
 
         $l('no uni  -- calling UNIVERSE()'); UNIVERSE() } else {$l('uni found. no need to call UNIVERSE')}
 
@@ -191,9 +203,11 @@ startUniverse = function(username){
 
             function(userMug){
 
-                Bm( userMug,  function( bitmap ){   addGuy(username, bitmap)
+                Bm( userMug,  function( bitmap ){
 
-                    }  )
+                    addGuy(username, bitmap)
+
+                    })
 
             })
     }
@@ -210,45 +224,76 @@ startUniverse = function(username){
 UNIVERSE=function(){z()
 
 
-    uni = $stage(1000, 800).tick().A().backgroundImage('/beach.jpg')
+    uni = createjs.stage(1000, 800).tick().A().backgroundImage('/beach.jpg')
 
 
     uni.mug(
 
         function(b){
 
-        you = b.rCenter().X(600).Y(600).sXY(.4).drag()
+        you = b.rCenter().XY(600).sXY(.4).drag()
 
 
-        //b.o('$$', function(bm){   bm.XX(); socket.emit('X', _username)})
+        b.on('dblclick', function(bm){
+
+            bm.remove()
+
+            socket.emit('X', _username)
+
+        })
 
         guysArray.push({ u :_username, b :you })
 
         setInterval(updateGuy, 100)
 
-        getUsers(  function(users){
 
-            var theRow = row().a()
 
-            _.each(users,  function(user){
 
-                fetchMugByMugId( user,
 
-                    function(userMug){
+            div = $.div('blue', 1000, 'auto').prependTo( $('body') )
 
-                        theRow( Thumbnail(   $pg(user.u),  $br(), userMug)
-                            .$(  function(){ inviteToUniverse(user.u)   })  )
+            div.A(
+                $.br(3),
+                $.input('...', 'tx').id('textinput'),
+                $.button('send',
 
-                    })   })
+                    function(){
 
-        })
+                        SpeechBubble( $('#textinput').V(), '+')
 
-//bubble txt
-        dv('b', 1000, 'auto').pp()(  $br(3),  $textInput('...', 'tx'),    $button('send', function(){ SpeechBubble(  qi('tx').V(),   '+')  }))
+                    })
+            )
 
 
     })
 
+
+    userHolder = $.div('black').A()
+
+    $.get('/users',  function(users){
+
+
+        var theRow = $.row().A()
+
+        _.each(users,  function(user){
+
+            if(user.mugURL){
+
+                var img = $.img(user.mugURL).WH(100).click(function(){
+                    $l(user.u)
+
+                    inviteToUniverse( user.u )
+
+                    })
+
+               userHolder.A( img ) } else { alert('no mugURL!')}
+
+            // fetchMugByMugId( user,  function(userMug){
+            // theRow.A( $.thumbnail( $.span(user.u), userMug).WH(200).click(  function(){ inviteToUniverse(user.u)   }) )})
+
+        })
+
+    })
 
 
 
@@ -299,12 +344,14 @@ socket.on('acceptUniverseInvitation', function(data){
 
 socket.on('invite', function(invitation){  //dd=invitation
 
+    $l('invite')
+
     inviteFunction = function(userMug){
 
-        var popInvitation = pop(
+          popInvitation = $.pop(
 
 
-            $div().A(
+            $.div().A(
 
                 $.img( userMug ).W( 200 ).H( 200 ),
 
@@ -312,26 +359,35 @@ socket.on('invite', function(invitation){  //dd=invitation
 
                 $.button( 'ya' , function(){
 
-                    popInvitation.m()
+                    popInvitation.modal('hide')
 
-                    startUniverse( invitation.from )  //so u are just adding them in?  // ah the function also supposedly takes into account the app not even being open // i could nix that for now
+                    startUniverse( invitation.from )
+                    //so u are just adding them in?
+                    // ah the function also supposedly takes into account the app not even being open
+                    // i could nix that for now
 
                     acceptUniverseInvitation( invitation.from )
 
                 }),
 
-                $.button( 'na' , function(){ popInvitation.m()  })
+                $.button( 'na' , function(){ popInvitation.modal('hide')  })
 
             )
 
-        )}
+        )
+
+    }
 
 
 
     if( _username == invitation.toWho ){
 
 
-        fetchMugByUsername( invitation.from, inviteFunction )
+        fetchMugByUsername( invitation.from, function(data){
+
+            $l('wooooo')
+
+            inviteFunction(data)} )
 
     }
 

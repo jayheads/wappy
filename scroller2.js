@@ -1,3 +1,5 @@
+//this file seems to be a toolkit output
+
 (function (lib, img, cjs) {
 
 var p; // shortcut to reference prototypes

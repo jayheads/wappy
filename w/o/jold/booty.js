@@ -9,10 +9,12 @@ dgM=function(a){return a.at({dg:'modal'})}
 
 
 ROW=function(a,b,c,d){var g=G(arguments),z=g.z
+
     row=function(n){var g=G(arguments),
         d=dk('row')
         _e(g,function(v){d(v)})
         return d}
+
     col=function(){var g=G(arguments),
         d=dk('m'+g[0]),
         iter=A(g[1])?g[1]:g.r

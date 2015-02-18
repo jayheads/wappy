@@ -1,84 +1,3 @@
-//nav
-$.container=function(){return $.div().K('container')}
-$.iconBar=function(){return $.span().K("icon-bar")}
-$.caret=function(){return $.span().K("caret")}
-$.fn.toggle=function(a){return this.attr("data-toggle", a)}
-$.fn.target=function(a){return this.attr("data-target", a)}
-
-$.liAWap = function(a){   return $.liA(a,   function(){   $w.location='/wap/'+a   }   )   }
-
-$.dropdownToggle = function(a){
-    return $.a( a ).K("dropdown-toggle").toggle("dropdown").A(  $.caret()  )
-
-}
-$.dropdownMenu=function(){
-
-   var menu= $.ul().K("dropdown-menu")
-
-    _.each(arguments,
-        function(arg){
-        menu.A( $.liAWap(arg) )})
-
-    return menu}
-
-$.nav=function(){
-  var nav = $.ul().K("nav navbar-nav")
-    _.each(arguments, function(arg){ nav.A( arg ) })
-    return nav}
-$.navRight=function(){
-    var nav = $.ul().K("nav navbar-nav navbar-right")
-    _.each(arguments, function(arg){ nav.A( arg ) })
-    return nav}
-
-$.navbar=function(){return $.div().K("navbar navbar-default").A($.div().K("container-fluid"))}
-
-$.dropdown=function(a,b){var toggle=$.dropdownToggle(a)
-    var menu= $.dropdownMenu.apply(this, b)
-  return  $.li().K("dropdown").A(toggle, menu)}
-
-
-
-
-$.navbarHeader=function(brand){
-
-   return $.div().K("navbar-header").A(
-
-        $.button().K("navbar-toggle collapsed").toggle('collapse').target(".navbar-collapse").A(
-
-            $.span("Toggle navigation").K("sr-only"),
-
-            $.iconBar(),$.iconBar(),$.iconBar()),
-
-        $.a(brand).K("navbar-brand")
-
-    )
-
-}
-
-$.navbarCollapse=function(){
-  return  navbarCollapse= $.div().K("navbar-collapse collapse")
-
-}
-
-
-
-
-NEWMODAL=function(){
-
-
-}
-
-
-
-
-
-
-
-PHASER=function(){}
-
-
-
-
 
 
 
@@ -89,215 +8,187 @@ PHASER=function(){}
 
 BOOK=function(){
 
-    format()
+    toBook = function(){Y.run('book')}
+
+    $.format()
 
 
-    s1( h1('BOOK').o(ldr('book')) ,
+    s1.A(
+
+        $.h1('BOOK').click(toBook) ,
+
+        bookName = $.input(),
+
+        $.button('new book',function(){
+            $.qP('/newBook',
+                {name: bookName.V()},
+                toBook)}),
+
+        $.hr()
+
+    )
 
 
-    i=tx(),
-        bt('new book',function(){
-            qP('/newBook',{n:i.V()},ldr('book'))}),
-        hr())
+    $.qJ('/books',function(books){
+
+        s1.A($.h3('books:'))
+
+        _.each(books,
+
+
+        function(book){
+            s1.A( $.span().C('x').click(function(){
+                    $.qP('/delBook',{book: book._id},toBook)
+                }),
+
+                $.button(book.name,function(){
+
+
+            s2.A($.h2('CHAPTER: '+book.name),
+                chapterTitleInput=$.input(),
+                $.button('new chapter',
+                    function(){$.qP('/newChapter',{
+
+                        chapterTitle: chapterTitleInput.V(),
+
+                        book:book._id
+                    },function(){
+                        chapterView(book, c)})}), $.hr())
+
+
+                    $.qJ('/chapters',{book:book._id},
 
 
 
-    qJ('/books',function(bs){
-
-        s1(h3('books:'))
-
-        _e(bs,
+                    function(chapters){
 
 
-        function(b){
-            s1( _s()('x').o(function(){  qP('/delBook',{b: b._id},ldr('book'))}),
-
-                bt(b.name,function(){
-
-
-            s2(h2('CHAPTER: '+b.name),
-                ci=tx(),
-                bt('new chapter',
-                    function(){qP('/newChapter',{
-                        t:ci.V(),
-                        b:b._id
-                    },function(){chVw(b,c)})}),hr())
-
-
-                qJ('/chapters',{b:b._id},
-
-
-
-                    function(cs){
-
-
-                    _e(cs,function(c){
-                        s2(bt(c.title,
+                        _.each(chapters,function(chapter){
+                        s2.A($.button(chapter.title,
                             function(){
-                                chVw(b,c)}),  br(2))})})
+                                chapterView(book,chapter)}), $.br(2))})})
 
-        }),br(2))})})
-
-
+        }), $.br(2))})})
 
 
+    chapterView=function(b,c){ s2.E();s1.E();
 
-    chVw=function(b,c){s2.E()
-         s1.E();
-        s1( h1('BOOK').o(ldr('book')) )
+        s1.A($.h1('BOOK').click( toBook) )
 
-        qJ('/chapters',{b:b._id},
+        $.qJ('/chapters',{book:book._id},
 
-            function(cs){
-                s1(h3('chapters:'))
+            function(chapters){
+                s1.A($.h3('chapters:'))
 
-                s2(h3('pages:'))
+                s2.A($.h3('pages:'))
 
-                _e(cs,function(c){
+                _.each(chapters,function(chapter){
 
 
 
-                    s1( _s()('x').o(function(){
+                    s1.A($.span()('x').click(function(){
 
-                        qP('/delChapter',{c: c._id},
-                            function(){chVw(b,c)})
+                            $.qP('/delChapter',{chapter: chapter._id},
+                            function(){chapterView(book, chapter)})
                     }),
-                        bt(c.title, function(){chVw(b,c)}), br(2))})})
+                        $.button(chapter.title, function(){chapterView(book,chapter)}), $.br(2))})})
 
 
-        s2(h1('chapter: '+c.title))
+        s2.A($.h1('chapter: '+chapter.title))
 
-        s2( pi=tx(),
-            bt('new page',
-                function(){qP('/newPage',{
-                    n:pi.V(), c:c._id
-                })}),hr())
+        s2.A( pageNameInput=$.input(),
+            $.button('new page',
+                function(){
+
+                    $.qP('/newPage',{
+
+                        pageName :pageNameInput.V(), chapter:chapter._id
+
+
+                    })}), $.hr())
 
 
 
-        qJ('/pages', {c:c._id},
+        $.qJ('/pages', {chapter: chapter._id},
 
-            function(ps){
-                p=ps
-                _e(ps,function(p){
-                s2(bt(p.name,
+            function(pages){p=pages
+
+                _.each(pages,function(page){
+
+                    s2.A($.button(page.name,
 
                     function(){
-                        pgVw(b,c,p)}),  br(2)  )})})
+                        pageView(book,chapter,page)}), $.br(2)  )})})
 }}
 
 
+pageView = function(book, chapter, page){s1.E();s2.E()
 
+    s1.A($.h1('BOOK').click(ldr('book')) )
 
+    s1.A($.h1('CHAPTER '+ chapter.title).click(
+        function(){chapterView(book,chapter )}
 
+    ))
 
-pgVw=function(b,c,p){s1.E();s2.E()
-    s1( h1('BOOK').o(ldr('book')) )
+    $.qJ('/pages',{chapter: chapter._id},
 
-    s1( h1('CHAPTER '+ c.title).o(
-        function(){chVw(b,c )}
+        function(pages){
+            s1.A($.h3('pages'))
 
-    ) )
+            _.each(pages,function(page){
 
-    qJ('/pages',{c: c._id},
-
-        function(ps){
-            s1(h3('pages'))
-
-            _e(ps,function(p){
-
-                s1(
-                bt(p.name,function(){
-                secVw(c)}), br(2)
+                s1.A(
+                    $.button(page.name,function(){
+                sectionView(chapter)}), $.br(2)
             )})})
 
 
 
-    s2(h1('page: '+p.name))
+    s2.A($.h1('page: '+page.name))
 
-    qJ('/sections',{
-            book:b._id,
-            chapter:c._id,
-            page:p._id},
 
-        function(sc){
-            _e(sc,function(s){
-                s2(bt(s.section,function(){
+    $.qJ('/sections', {
+            book: book._id,
+            chapter: chapter._id,
+            page: page._id},
 
-                secVw(b,c,p)
+        function(sections){
+            _.each(sections,
+                function(section){
 
-                }),  br(2)  )})})
+                    s2.A(
+                        $.button(section.section, function(){sectionView(book,chapter,page)}),
+                        $.br(2)
+                    )})})
 }
 
 
 
 
 
-jde=function(a){return new C$.DOMElement(a)}
 
-O$=function(d,s){
+createjs.element = function(a){return new createjs.DOMElement(a)}
 
+ELEMENTS=function(){z()
 
-    var o=Do(
+    div = $.div('red', 400, 400).P('a').A().A( $.input() )
 
-        jde(d.q[0])
+    s = stage = createjs.stage('yellow', 1000).tick().A()
 
-    )
+    elem  = new createjs.DOMElement( div[0] )
 
-    if(s){o.ap(s)}
-
-    return o}
+    //stage.A(el)
 
 
 
+   // tw(el, [{x:300,y:300},2000])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ELEMENTS=function(){
-
-    d=dv('r',400,400).a()
-    d(tx())
-    s=St(1000).a()
-    de=O$(d,s)
-
-    tw(de, [{x:300,y:300},2000])
-
-    tw([de,'l'],
-        [{r:360, sx:.5, sy:.5},8000],
-        {r:0},
-        [{r:360, sx:1, sy:1},8000]
-    )
-
-
+   // tw([el,'l'],[{r:360, sx:.5, sy:.5},8000],{r:0},[{r:360, sx:1, sy:1},8000])
 
 }
 
 
 
-SITE=function(){}
+
 

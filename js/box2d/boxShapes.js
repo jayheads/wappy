@@ -153,12 +153,12 @@ fix=function(){
 
         yn()?  PolyShape(
 
-                r1() * 30,
-                r1() * 30
+                Math.random()+.1 * 30,
+                Math.random()+.1 * 30
 
         )
 
-            : CircleShape( r1() * 30 )
+            : CircleShape( Math.random()+.1 * 30 )
     )
 
 }

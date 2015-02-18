@@ -1,183 +1,21 @@
+$l('routes.js')
+
 module.exports=function(){
-
-    $a=a;  a.p=a.post;  a.g= a.get;
-
-
-
-    jD=pjd=function(res, str){
-
-        return function(err, data){
-
-            S(str)? res.json(data[str])   : res.json(data)
-        }
-
-    }
-
-
-    find=function(m,o,f){
-
-        if( !F(f) ){ f=pjd(f) }
-
-        models[m].find(o, f)
-    }
-
-    all=function(m,f){
-
-        if(!F(f)){
-
-            f=pjd(f)
-
-        }
-
-
-        models[m].find(f)
-
-    }
-
-    create=function(model,req,res){
-
-        models[model].create(
-
-          {u: req.u,  c: req.b.c},
-
-            function(err, data){res.json(data)}
-
-        )
-
-    }
-    createP=function(a){
-
-        $a.post( '/'+a, $w.u,   function(q,p){    create(a,q,p)  })
-
-    }
-
-    cre=function(model, o,  f){
-
-        if(!F(f)){f=pjd(f)}
-
-
-        models[model].create(o,f)
-
-    }
-
-    //it performs a find on a model, and returs results sorted by 'dt:-1'
-    //date time from most recently stamped
-
-    rec=function(model,criteria,func){ // **** making errors ******
-
-        func= F(func)  ?func  :function(err,data){
-
-            func.j(data) }
-
-
-
-        models[model].find(criteria)
-            .sort({dt:-1})
-            .execFind(func)
-
-    }
-
-
-    rec1=function(a,b,f){  models[a].findOne(b).sort({dt:-1}).execFind(f)}
-
-    f1=function(m,o,f){
-
-        if(!F(f)){f=pjd(f)}
-
-        models[m].findOne(o,f)
-    }
-
-    fById=function(m,o,f){
-
-        $m[m].findById(o,  F(f)? f:  pjd(f)  )}
-
-    ALL=function(route, model){
-
-        $a.get(route,   function(req, res){
-
-
-        models[model].find(function(err, data){return res.json(data)})
-
-        })
-    }
-
-    rmById=function(m,i,f){
-
-        if(O(i)){i= i._id}
-
-        if(!F(f)){f=pjd(f)}
-
-        models[m].findByIdAndRemove(
-
-            i,
-
-            f
-        )
-    }
-
-    remove=function(m,o,f){ models[m].remove(o,f) }
-
-
-
 
 
     $a.get('/', function(req,res){  res.send('this is a test')   })
-
-    $a.get( '/pinball', function(req,res){  res.render('pinball')   })
-
-
-    $a.get('/game/:app/:pam?', function(req, res){  res.render('game', {  app: req.params.app,   pam: req.params.pam    })})
-
-
-    $a.get('text1',
-        function(req,res){
-            res.send('/text')})
-
-
-    $a.get('text2',
-        function(req,res){
-
-        fs = require( "fs" )
-
-        console.log( "Starting" )
-
-       //fs.readFile( "sample.txt",  function(error, data) {   console.log("Contents of file: " + data)   })
-
-        console.log("Carrying on executing")
-
-        res.json( 'hi' )
-
-    })
-
-
-    $l('ok')
-
-
-
-
-
-    ///
-
     $a.get('/wap', function(req,res){ res.render('wap') })
-
-
     $a.get('/wap/:app/:pam?', function(req, res){
 
         res.render('wap', {  app: req.params.app,   pam: req.params.pam    })})
 
 
 
-    $a.get('/ui/:app/:pam?', function(req, res){
-
-        res.render('ui', {  app: req.params.app,   pam: req.params.pam    })})
-
-
-
-
-
+    ////////// for posting/creating a new user
     $a.post('/user', function(req,res,next){
 
-        models.user.create(req.b, function(err,user){ if(err){
+
+        models.user.create(req.body, function(err, user){ if(err){
 
                 $l(err.code==11000?'!!':'!'); $d(err)
                 res.json('error'); next(err)}
@@ -191,56 +29,108 @@ module.exports=function(){
                 req.session.loggedIn = true
 
                 //save session and send back a json obj of username -so a string? huh?
-                req.session.save(function(){ res.json(user.u)})} }) })
-
-
-
-
-    //get all users //sends user list
-    //delete user
-    $a.post('/rmU', function(req, res, next){
-
-
-            //remove( 'user', req.b,  pjd(res) )
-
-        models.user.remove(req.body, function(err,data){res.json(data)})
+                req.session.save(function(){ res.json(user.u)})} })
 
     })
-    //create(post new) user
-    //trims it down so you only get the username, mugId, and userId
 
 
+    /////////////. it gives me back {id, username, mug, status}
 
+    $a.get('/users', function(req, res){
 
-    //need another route but with full data urls
-    $a.get('/users', function(req, res){  models.user.find( function(err, users){  if(users){   res.json( _.map(users, function(user){   return { u: user.u,  m: user.m  }  }))}})})
+        models.user.find( req.body,
 
-    $a.get('/usersFull',   function(req, res){models.user.find(function(err, users){  return res.json( users )}) })
+            function(err, users){
 
+                if(users){
+
+                    res.json( _.map(users, function(user){
+
+                        return {
+
+                            id: user.id,
+                            //u: user.u,
+                            username: user.username,
+                            //m: user.m,
+                            mug: user.mug || 'no mug',
+
+                            status: user.status || 'no status'
+                        }
+
+                    }))
+
+                }
+
+            })
+
+    })
+    $a.get('/user/:username', function(req, res){
+
+        $l('/user/:username')
+
+        models.user.findOne({username: req.params.username},
+
+            function(err, user){
+
+            if(user){
+
+                   res.json({
+
+                        id: user.id,
+
+                        //u: user.u,
+                        username: user.username,
+
+                        //m: user.m,
+                        mug: user.mug || null,
+
+                        status: user.status || 'no status'
+
+                   })
+
+                }
+
+        })
+
+    })
 
     $a.post('/login',  function(req,res,next){
 
+        $l(req.body.username)
+        $l(req.body.password)
 
-        models.user.findOne(  { u : req.body.username , p : req.body.password },
+        models.user.findOne(
+            { username : req.body.username ,
+              password : req.body.password
+            },
 
 
             function(err, user){  if(err){next(err)}
 
-                if(!user){  res.json('guest') }
+                if(!user){
 
-                else {  req.session.username = req.session.u = user.u
+                    $l('FAIL!!')
+                    res.json('guest') }
+
+
+                else {  // $l('logged in: ' + user + ' !')
+
+                    req.session.username = req.session.u = user.username
 
                     req.session.loggedIn = req.session.li = true
 
                     req.session.save(function(){
 
-                        res.json(user.u)//username
+                        $l('---')
+                        $l('session saved')
+                        $l(req.session.username)
+
+                        $l(user.username)
+                        $l('---')
+                        res.json( user.username )
 
                     })}  })    })
-
-
-
-    $a.get('/logOut', $w.u, function(req,res){
+    $a.get('/logOut', $w.user, function(req,res){
 
         $l('logging out')
 
@@ -254,21 +144,89 @@ module.exports=function(){
             res.json('false')
 
         })})
+    $a.get('/loggedIn', $w.user, function(req, res){
+
+        $l('loggedIn?')
+        $l('req.loggedIn: '+req.loggedIn)
+        $l('req.username: '+req.username)
+
+        res.json(req.username)
+
+    })
+
+    /////
+    $a.get('/myMug', $w.user, function(req,res){
+
+        $l('--------testing myMug--------')
+        $l('req.body: ' + req.body)
+        $l('req.username: ' + req.username)
+
+        models.user.findOne({username: req.username}, function(err, data){
+
+            $l('in findOne callback')
+            $l('data: ' + data)
 
 
-    //is logged in?
 
-    $a.get('/loggedIn', $w.u, function(req, res){
+           res.send(data.mug)
 
-        res.json(req.u)
+
+        })
+
+
+
+    })
+    $a.get('/mugByUsername/:username', function(req, res){
+
+
+        $l('req.params.username: ' + req.params.username)
+
+        models.user.findOne(
+
+            {username: req.params.username},
+
+            function(err, user){
+
+               // $l(user)
+               // $l(user.mug)
+
+                res.send(user.mug)
+
+            })})
+    $a.post('/changeMug', $w.user, function(req, res){  // could be a put?
+
+        req.user.mug =  req.body.url
+
+        req.user.save(
+
+            function(err, mug){  res.send(mug)   }  // i'm i using this return data on client?
+
+        )
+
+    })
+
+    ///////
+    //////
+    ////
+
+    //// //// //// //// //// //// //// //// //// ////
+
+    //// //// //// //// //// //// //// ////
+
+
+
+
+    ////delete user  // does this('del') work like post or get (in terms of express)?
+    $a.del('/user', function(req, res, next){
+
+        models.user.remove(req.body, function(err,data){res.json(data)})
 
     })
 
 
 
     //upload pic
-
-    $a.post('/pic', $w.u,  function(req, res, next){  var imgFile, ext
+    $a.post('/pic', $w.user,  function(req, res, next){  var imgFile, ext
 
         if(req.files.png){  req.files.i = req.files.png   }
 
@@ -276,27 +234,27 @@ module.exports=function(){
 
         models.pic.create(
 
-               { user: req.I, name: imgFile.name, size: imgFile.size, modified: imgFile.lastModifiedDate, ext: ext },
+            { user: req.userId, name: imgFile.name, size: imgFile.size, modified: imgFile.lastModifiedDate, ext: ext },
 
-               function(err, pic){ if(err){ $l(err) }
+            function(err, pic){ if(err){ $l(err) }
 
-                   fs.readFile(imgFile.path,  function(err, file){
+                fs.readFile(imgFile.path,  function(err, file){
 
-                       pic.path = path.resolve( imgFile.path, '../../pics/', pic._id.toString() )  + pic.ext
+                    pic.path = path.resolve( imgFile.path, '../../pics/', pic._id.toString() )  + pic.ext
 
-                       fs.writeFile( pic.path,  file,  function(err){
+                    fs.writeFile( pic.path,  file,  function(err){
 
-                               pic.save(  function(err){ if (err){ next(err) }  else { res.redirect('back') } }) }) } )} ) })
+                        pic.save(  function(err){ if (err){ next(err) }  else { res.redirect('back') } }) }) } )
+            })
 
-
-
+    })
 
 
 
     //remove a pic
     $a.del('/pic', function(req,res){
 
-        models.pic.remove(req.b, function(err, data){
+        models.pic.remove(req.body, function(err, data){
             res.json(data)
         })
 
@@ -304,45 +262,34 @@ module.exports=function(){
 
 
 
-
-
     //get all pics(files) (everyone's)
-    $a.get('/pix', function(req, res){  models.pic.find(  function(err, data){  res.json(data)  })  })
+    $a.get('/pics', function(req, res){
+        models.pic.find(  function(err, data){  res.json(data)  })
+    })
 
 
     //change to get pics?
     //find all User's pics
-    $a.get('/mypix', $w.u, function(req, res){
+    $a.get('/myPics', $w.user, function(req, res){
 
-        models.pic.find(   { user: req.userId },
+        models.pic.find({user: req.userId},
             function(err, pics){ res.json(pics)  })
 
     })
 
 
 
-
-
-
-
-
-
-
-
-
-
-
- ///////////////////
+    ///////////////////
     ////
     //
     //upload a dataUrl!!
-    $a.post('/uplI', $w.u, function(req, res, next){
+    $a.post('/uplI', $w.user, function(req, res, next){
 
         //if(req.f.png){req.f.i= q.f.png}
 
         // var i=req.f.i
 
-       models.img.create(  { u: req.userId, d: req.du },  function(err, img){ //$d(img)
+        models.img.create(  { u: req.userId, d: req.du },  function(err, img){ //$d(img)
 
 
 
@@ -371,9 +318,7 @@ module.exports=function(){
 
     //************** this is where we save new cutout-images
 
- 
-
-    $a.post('/img', $w.u,  function(req, res, next){
+    $a.post('/img', $w.user,  function(req, res, next){
 
         models.img.create(
 
@@ -400,78 +345,62 @@ module.exports=function(){
 
         ) })  //new image
 
-
-
     //remove an image (by id) //cutouts?
-   // $a.post('/rmI', function( req, res ){   models.img.remove(  req.body,  function(err, data){res.json(data)} )  })
+    // $a.post('/rmI', function( req, res ){   models.img.remove(  req.body,  function(err, data){res.json(data)} )  })
 
     $a.del('/img', function( req, res ){
 
         models.img.remove(req.body, function(err, data){res.json(data)} )  })
+    //find all User's images?
+    $a.get('/img', $w.user, function(req, res){
 
+        models.img.find( {u: req.username},
 
+            function(err, data){res.json(data)}  )
 
+    })
+    //find all   images on site?
+    $a.get('/allImages', $w.user, function(req, res){
 
-    //find all User's images
-    $a.get('/img', $w.u, function(req, res){
+        models.img.find( { },
 
-        models.img.find( {u: req.username}, function(err, data){res.json(data)}  )
+            function(err, data){res.json(data)}  )
+
+    })
+    //get all images of a sp. user
+    $a.get('/images/:username', $w.user, function(req, res){
+
+        models.img.find({username: req.params.username },
+
+            function(err, data){res.json(data)}  )
 
     })
 
 
-    ////
-    ////
-    ////MUGS
-    //get User's image ID
-    // GET MUG ID
-    //return user THEIR mug ob (if im) or mugID
-    //$a.g('/gMg2',$w.u,function(q,p,n){models.img.findById(q.U.m, function(m){p.j(m)})})
+    $a.get('/myStatus', $w.user, function(req,res){
+        models.user.findOne({username: req.username}, function(err,data){
+            res.send(data.status || 'no status')})})
+    //** get a dataUrl from an img-ob id ++++ physics! //can dep by using oid's??
+    $a.post('/getimagebyid', function(req,res,next){
+        $l('dud')
 
-    $a.get('/gMg',  $w.u,
+        $l('req.body.data')
+        $l(req.body.d)
 
-        function(req, res){
+        models.img.findById(
 
-           if(req.user){
-
-                $l('req.user.m')
-
-               res.json( req.user.m ) }  else {$l('no user')}
-
-        })
-
-
-
-
-    //need to deprecate
-    //get a durl from an img-ob id
-    $a.post('/dud',   function(req,res,next){
-
-           models.img.findById( req.body.d,
-
-               function(err, data){
-
-                   if(O(data)){
-                        res.json(data.d)   }  })  })
-
-    //** get a dataUrl from an img-ob id ++++ physics!
-    //can dep by using oid's??
-
-
-
-    $a.get( '/mug/:mugId' ,   function(req,res,next){
-
-
-        models.img.findById( req.params.mugId,
+            //'54d4506172f7e12a05000012',
+            req.body.data,
 
             function(err, data){
 
-                if( O(data) ){   res.json(data.d)   }   })
+                $l('data: ')
+                console.dir(data)
+
+                res.send(data)
+            })
 
     })
-
-
-
     $a.post('/dats', function(req,res){
         models.img.findById(  req.body.d, function(err, data){
 
@@ -480,126 +409,23 @@ module.exports=function(){
         })
     })
 
-    //get User's ACTUAL IMAGE (data-url) (by id)
 
-    $a.get('/getMug',  $w.u,   function(req,res,next){
+    $a.post('/changeStatus', $w.user, function(req, res){
 
-           models.img.findById(
+        var status = req.body.status
 
-               $l(req.user.m),
+        req.user.status= status
+        req.user.save(
+            function(err, user){res.json(user.status)}
+        )
 
-                function(err, data){
-
-                    if(O(data)){ res.json( data.d )  }})
-
-        })
-
-    //change a user's mug (dataUrl id)
-    //make this an oid?
-
-
-    $a.post('/changeMug', $w.u, function(req,res){
-
-
-        $l(req.body.m)
-
-        req.U.m = req.body.m
-
-        req.U.save(
-
-            function(err, mug){   res.json(mug)   }
-
-
-
-        )})   //function(z,u){   p.j(u.m)  } //update/change which pic/img is their designated mug pic/img
-    //
-
-
-
-
-    //get a sp. user's mug data-Url
-    $a.post('/mug', function(req, res){
-
-        f1('user',   req.b,
-
-                function(err, u){  //$l(u)
-
-                    fById('img',  u.m,  pjd(res, 'd'))
-
-                })})
-
-
-
-                //function(z,d){  p.j(d.d) }//get a user's durl by a username id
-
-////////////////
-    //////
-    ////
-    ///
-
-    $a.get('/things',    function(req,res,next){  res.render('things')   })
-
-    $a.get('/thing',    function(req,res,next){
-
-        console.log('get thing')
-
-        models.thing.find({},
-
-            function(err, things){
-
-                console.log('err: ', err)
-
-                if(things){
-                    console.log('things')
-                    console.log(things)
-                    res.json( things ) }
-
-            })   })
-
-    $a.get('/thingAdd',    function(req,res,next){
-
-        console.log('get thing')
-
-        models.thing.create({name:'helloAgain', age:4}, function(err, things){
-
-            if(things){
-                console.log('things')
-                console.log(things)
-                res.json( things ) }
-
-        })
 
     })
 
-    $a.post('/thing',    function(req,res,next){
 
-        console.log('get thing')
 
-        models.thing.create(req.body, function(err, things){
 
-            if(things){
-                console.log('things')
-                console.log(things)
-                res.json( things ) }
 
-        })  })
+
 
 }
-
-
-
-
-
-
-
-
-//$N=Number
-
-//  gU= agU= function(u,f){ $a.get(u, $w.u ,f)  }
-// pU= apU= function(u,f){  $a.post(u, $w.u ,f) }
-//qU=qu= function(q){  return {u: q.u} }
-//   qqU=function(q){return {u: q.q.u}}
-//   qbu=function(q){return {u: q.b.u}}
-//    qI=function(q){return  {u: q.I}}
-//pjd0=function(res){return function(err, data){res.json(data[0])}}
-//quc=function(q){return {u: q.u, c: q.b.c }}

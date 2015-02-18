@@ -1,8 +1,8 @@
-var S=String, N=Number, O=Object, D=Date, t=true,
-
+var S=String, N=Number, O=Object, D=Date,
 
     oid = mongoose.Schema.Types.ObjectId,
-    OID=function(ref){
+
+    OIDx=function(ref){
 
         var g=G(arguments),
 
@@ -13,91 +13,34 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
         if(g.p){ o.required=true}
 
-        return o},
-    OBD={type:Object, default:{}},
-    ARD={type:[{}], default:[]},
-    DATE={type:Date, default:Date.now},
-    ND={type:Number, default:0},
-    SQ={type:S, required:true},
+        return o}
 
 
 
-    //ash schema?
-
-    ashSM = mongoose.Schema({
-
-        v:String,    //?
-
-        ch:[{}]  //children
-
-    }),
 
 
-    sort = mongoose.Schema({
-
-        name:String,
-        title:String,
-
-        content:{type:Object, default:{}}
-
-    }),
 
 
-    term=mongoose.Schema({
-
-        term:String,
-        meaning:String,
-
-        stamp:{type:Date, default:Date.now}
-
-    }),
-
-    page = mongoose.Schema({
-
-        name: String,
-
-        sections:[{
-
-            header: String,
-
-            content: String
-
-        }]
-
-    }),
-
-    chapter=mongoose.Schema({
-
-        name: String,  //name
-
-        pages:[{   //pages
-
-            header:String,  //header
-
-            v:String
-
-        }]
-
-    })
-
-    //default:{s:[{h:'sec1',v:'myS'}]}
-
- MODELS={
+SCHEMAS = {
 
     user:{
 
-        u: {type:String, required:true},     //username: {type:String, required:true},
+        username: {type:String, required:true},     //username: {type:String, required:true},
 
-        p: String, password: String,
+        password: String,
+        password: String,
 
-        pf: Object, profile: Object,
+        //m: { type: String, default: '/me.png' },
+        //mug: { type: String, default: '/me.png' },  //mugData.. no mugId //mugData.. no mugId
 
-        m: { type: String, default: '/me.png' },   mug: { type: String, default: '/me.png' },  //mugData.. no mugId
-//mugData.. no mugId
-
+        mug: {type: String, default:defaultMug},
+        status: {type: String, default:'nothing much'},
         buds: [String]
 
-    },// array of usernames?
+    },
+
+
+
 
      pic:{
 
@@ -116,78 +59,100 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
      },
 
-
      img:{
 
-         u:String,  username:String,
+         username: String, u: String,
 
          date:Date,
 
-         d:String,  data:String,
+         data:String, d:String,
 
          name:String,
 
-         dats:[Number], physicsData:[Number]
+         dats:[Number],
+
+         physicsData:[Number]
 
      },
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    thing:{   name: String,  age: Number   },
 
 
-     guy:{n:{type:S, required:true}, m:S,  x:N, y:N}, //map:{n:S, guys:O},
 
-    //book:{u:{type:mongoose.Schema.Types.ObjectId,ref:'user',required:t},t:S,c:[chapter]},
+    thing: {   name: String,  age: Number   },
 
+     guy: {n:{type:S, required:true}, m:S,  x:N, y:N}, //map:{n:S, guys:O},
 
-     sort:{ username:{type:S, required:true},   datetime:{type:Date, default:Date.now},
-         title:S, items: {type:[{}], default:[]}},
+     book:{
 
+         userId:{type:mongoose.Schema.Types.ObjectId,
+             ref:'user',required:true},
 
-     status:{datetime:{type:Date, default:Date.now},  username:{type:String, required:true},  content:String},
+         title: String,
 
+         chapters: [ 'chapter' ]  // ???
+      },
 
-     availability: {content:String},
+     sort: {
+         username: {type:String, required:true},
+         datetime: {type:Date, default:Date.now},
+         title:String,
+         items: {type:[{}], default:[]}
+     },
 
+     status:{
+         datetime: {type:Date, default:Date.now},
+         username: {type:String, required:true},
+         text: String},
+
+     availability: {
+         datetime: {type:Date, default:Date.now},
+         username: {type:String, required:true},
+         text: String
+     },
 
      post:{
 
-         datetime:{type:Date, default:Date.now},  username:{type:String, required:true},
-         title:String, content:String, dataUrl:String
+         datetime:{type:Date, default:Date.now},
+         username:{type:String, required:true},
+         title:String,
+         text:String,
+         dataURl:String
      },
 
+     message:{ //msg
+         from: {type:String, required:true},
+         to: {type:String, required:true},
+         datetime: {type:Date, default:Date.now},
 
-     //message
-     msg:{fr:{type:String, required:true}, to:{type:String, required:true}, dt:{type:Date, default:Date.now},  m:S,  c:S},
-     message:{
-         from:{type:String, required:true},
-         to:{type:String, required:true},
-         datetime:{type:Date, default:Date.now},
-         topic:String,
-         content:String
+         title:String,
+         text:String
      },
 
 
      //buddy request
-     buddyRequest:{from:{type:String, required:true},  to:{type:String, required:true}, datetime:{type:Date, default:Date.now}},
-
-
-     //topic
-     topic:{
-
-         topic:String,  //topic
-         items:{type:[{}], default:[]}
+     buddyRequest:{
+         from:{type:String, required:true},
+         to:{type:String, required:true},
+         datetime:{type:Date, default:Date.now}
      },
 
 
-     Topic:{},
+     Topic:{
+
+         topic: String,
+         items: {type:[{}], default:[]}
+     },
+
+
+
 
      Message:{
 
-         topic:String,
+         topicId:Number, //?
 
-         message:String,
+         topicName: String,
+
+         text:String,
 
          score:Number
 
@@ -198,7 +163,7 @@ var S=String, N=Number, O=Object, D=Date, t=true,
 
 
 
-     course:{
+     link: {
          title:String,
          url:String
      }
@@ -206,140 +171,259 @@ var S=String, N=Number, O=Object, D=Date, t=true,
  }
 
 
-cL('models:')
 
-var $m= {}
 
-for(var model in MODELS){
+models = $m = {}
 
-    $m[model] =  mongoose.model(
+var str = ''
 
-        cL(model),
+for(var model in SCHEMAS){
+    str += (' - ' + model )
+    models[model] =  mongoose.model(
 
-        mongoose.Schema( MODELS[model] )
+
+        model,
+
+        mongoose.Schema( SCHEMAS[model] )
     )
 
 
 }
 
+$l('MODELS' + str)
 
 
 
 
 
-bookSchema=mongoose.Schema({
+
+
+
+
+userSchema = new mongoose.Schema({
+
+    u: {type:String, required:true},     //username: {type:String, required:true},
+
+    p: String, password: String,
+
+        pf: Object, profile: Object,
+
+        m: { type: String, default: '/me.png' },
+    mug: { type: String, default: '/me.png' },  //mugData.. no mugId
+
+
+    mugURL:String,
+    buds: [String]
+
+})
+picSchema=new mongoose.Schema({
+
+    user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
+    //user: {type: mongoose.Schema.Types.ObjectId, ref:'user', required:true},
+
+    date: {type:Date, default: Date.now},
+
+    modified: Date,
+
+        size: Number,
+
+        name: String,
+
+        ext: String
+
+}) // image file ?
+imageSchema=new mongoose.Schema({
+
+    username:String,
+
+        date: Date,
+
+        data: String,
+
+        name: String,
+
+        dats: [Number],
+
+    physicsData:[Number]
+
+})
+//
+satusSchema=new mongoose.Schema({
+    datetime: {type:Date, default:Date.now},
+    username: {type:String, required:true},
+    text: String})
+availabilitySchema= new mongoose.Schema({
+    datetime: {type:Date, default:Date.now},
+    username: {type:String, required:true},
+    text: String
+})
+postSchema=new mongoose.Schema({
+
+    datetime:{type:Date, default:Date.now},
+    username:{type:String, required:true},
+    title:String,
+        text:String,
+        dataURl:String
+})
+
+
+buddyRequestSchema=new mongoose.Schema({
+    from:{type:String, required:true},
+    to:{type:String, required:true},
+    datetime:{type:Date, default:Date.now}
+})
+
+
+mailSchema=new mongoose.Schema({
+    from: {type:String, required:true},
+    to: {type:String, required:true},
+    datetime: {type:Date, default:Date.now},
+
+    title:String,
+    text:String
+})
+
+//
+topicSchema=new mongoose.Schema({
+
+    topic: String,
+        items: {type:[{}], default:[]}
+})
+messageSchema=new mongoose.Schema({
+
+    topicId:Number, //?
+
+        topicName: String,
+
+        text:String,
+
+        score:Number
+
+})
+commentSchema=new mongoose.Schema({})
+linkSchema= new mongoose.Schema({
+    title:String,
+        url:String
+})
+//
+ashSchema = new mongoose.Schema({
 
     name: String,
 
-    author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'user'
-    }
+    children:[{}]
 
 })
-chapterSchema=mongoose.Schema({
-    book:{
+sortSchema = new mongoose.Schema({
+
+    name: String,
+    text: String,
+    username: {type:String, required:true},
+    datetime: {type:Date, default:Date.now},
+    items: {type:[{}], default:[]},
+    children: {type:Object, default:{}}
+
+})
+termSchema = new mongoose.Schema({
+
+    term: String,
+
+    definition: String,
+
+    datetime:{type:Date, default:Date.now}
+
+})
+//
+sectionSchema = new mongoose.Schema({
+
+    page:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Page'
+},content:String,heading:String
+})
+pageSchema = new mongoose.Schema({
+    name: String,
+    content: String,
+    sections: [{
+
+        name: String,
+
+        text: String
+
+    }],
+    chapterId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Chapter'
+    },
+
+
+})
+chapterSchema = new mongoose.Schema({
+    bookId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Book'
     },
-    content:S,
-    title:S
+    text:String,
+    name: String, //title?
+    pages: [
+
+        {
+
+            name : String,
+
+            text : String
+
+        } ]
 
 })
-pageSchema=mongoose.Schema({
+bookSchema = new mongoose.Schema({
 
-    chapter:{
+    userId:{type:mongoose.Schema.Types.ObjectId,
+        ref:'user',required:true},
+
+    title: String,
+    author:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Chapter'
-    },  content:S,  name:S
-
-})
-sectionSchema=mongoose.Schema({page:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Page'
-},content:String,heading:String})
-
-
-
-
-Book=mongoose.model('Book', bookSchema)
-Chapter=mongoose.model('Chapter', chapterSchema)
-Page=mongoose.model('Page', pageSchema)
-Section=mongoose.model('Section', sectionSchema)
-
-
-Profile = mongoose.model('Profile',
-    mongoose.Schema({
-
-        username:String,
-    about:String,
-    lookFor:String
-}))
-
-
-
-
-module.exports = $m
-
-
-
-old={ sorty:{type:O,default:{}},
-    term:[term],
-
-    topic:{
-
-        n:{type:String, required:true},
-        vws:{type:Number, default:0},
-        sc:{type:N,default:0},
-
-        ms:{type:[{vu:{type:S,unique:t},
-            vws:{type:N,default:0},sc:{type:N,default:0} ,
-            responses:{
-                type:[
-                    {vu:{
-                        type:S,unique:t},vws:{
-                type:N,default:0},
-
-                sc:{type:N,default:0}}],
-                default:[]}}],default:[]}},
-
-
-    profile:{
-
-        fields:{type:{
-
-            realName:{type:String},
-
-            age:{type:Number},
-
-            sex:{},
-
-            desc:{type:String},
-
-            fun:{type:[String]}
-
-        },
-        default:{rlN:'lulu',age:100,
-            sex:'M',desc:'silly',fun:[]}},
-
-        user:{type:mongoose.Schema.Types.ObjectId,
-            ref:'user',required:true}},
-
-    teachyBook:{
-        user:{type:mongoose.Schema.Types.ObjectId,
-            ref:'user',required:true},
-        title:String,
-        pages:[page]
+        ref:'user'
     },
+    chapters: [ 'chapter' ]  // ???
+})
+//
+guySchema= new mongoose.Schema({
+
+    username:{type:String, required:true},
+    mugDataURL: String,
+    x: Number,
+    y: Number
+
+}) //map:{n:S, guys:O},
 
 
-    pets:[{kind:{type:String, required:true},
-        name:{type:String,default:'none'},
-        age:{type:String,default:'?'}}]
+profileSchema = new mongoose.Schema({
+
+    //userId
+
+    username: String,
+
+    aboutMe: String,
+
+    iEnjoy: String,
+
+    iSeek: String
+
+    })
+
+/////////////////////////////////////////////////////////
+
+User = mongoose.model('User', userSchema)
+
+Book = mongoose.model('Book', bookSchema)
+Chapter = mongoose.model('Chapter', chapterSchema)
+Page = mongoose.model('Page', pageSchema)
+Section = mongoose.model('Section', sectionSchema)
+
+Profile = mongoose.model('Profile', profileSchema )
 
 
+module.exports = models
 
 
-
-
-   }

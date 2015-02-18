@@ -82,7 +82,7 @@ GROUPVSGROUP=function(){z()
 
                         vs=g.gr().eB(1).arc()
                         _t(50,function(){
-                            vs.cr(g.rX(),rnd()*500,'vs',
+                            vs.cr(g.rX(),Math.random()*500,'vs',
                                 g.r.integerInRange(0,36))})
 
                         bs=g.gr().eB(1).arc()
@@ -202,7 +202,7 @@ GROUPVSGROUP1=function(){z()
 
                   vs=g.gr().eB(1).arc()
                  _t(50,function(){
-                     vs.cr(g.rX(),rnd()*500,'vs',
+                     vs.cr(g.rX(),Math.random()*500,'vs',
                          g.r.integerInRange(0,36))})
 
                   bs=g.gr().eB(1).arc()
@@ -259,10 +259,11 @@ MASSVELOCITYTEST=function(){
 
         _t(50,function(){
             aliens.cr(g.rX(),g.rY(),'baddie')
-                .clWB(1).bo(.8,.8).vxy(  10+rnd()*40,10+rnd()*40  )})
+                .clWB(1).bo(.8,.8).vxy(  10+Math.random()*40,10+Math.random()*40  )})
 
         p=g.sp(400,300,'car').arc().A(.5).clWB(1).bo(2).aR(1).im(1)
-        m=g.sp(100,100,'me').w(200).h(200).arc().clWB(1).bo(1)
+
+        m=g.sp(300,100,'me').w(1400).h(200).arc().clWB(1).bo(1)
 
     },
 
@@ -298,7 +299,7 @@ MASSVELOCITYTEST1=function(){ z()
         _t(50,function(){
             aliens.cr(g.rX(),g.rY(),'baddie')
                 .clWB(1)
-                .bo(.8,.8).vxy(10+rnd()*40, 10+rnd()*40)})
+                .bo(.8,.8).vxy(10+Math.random()*40, 10+Math.random()*40)})
 
         p=g.sp(400,300,'car').A(.5).arc()
             .clWB(1)
@@ -388,8 +389,8 @@ MAGGOTS=function(){
             p=sSp(p).w(20).h(200)
 
 
-            .A(.5).sc(.8+rnd()*.3)
-                .dr(rnd()*PI*2).tSp(rnd()-.8).sp((2+rnd()*2)*.2).os(rnd()*100)
+            .A(.5).sc(.8+Math.random()*.3)
+                .dr(Math.random()*PI*2).tSp(Math.random()-.8).sp((2+Math.random()*2)*.2).os(Math.random()*100)
 
 
         }
@@ -456,11 +457,11 @@ MAGGOTS1=function(){z()
             var p=batch.create(g.rX(),g.rY(),'maggot')
 
             p.anchor.set(.5)
-            p.scale.set(.8 + rnd()*.3)
-            p.direction = rnd()*PI*2
-            p.turningSpeed = rnd()-.8
-            p.speed=(2+rnd()*2)*.2
-            p.offset=rnd()*100}}
+            p.scale.set(.8 + Math.random()*.3)
+            p.direction = Math.random()*PI*2
+            p.turningSpeed = Math.random()-.8
+            p.speed=(2+Math.random()*2)*.2
+            p.offset=Math.random()*100}}
 
 
     function update(){
@@ -826,7 +827,7 @@ PIXELPICKSCROLLING=function(){z()
 
            b.events.onInputDown.add(tint,this)}
 
-       function tint() {b.tint=rnd()*0xffffff}
+       function tint() {b.tint=Math.random()*0xffffff}
 
        function update(){
 
@@ -1084,7 +1085,7 @@ RECYCLING=function(){z()
     function create() {
 
         enemies=g.gr()
-        _t(8,function(){enemies.cr(360+rnd()*200, 120+rnd()*200, 'baddie')}) // Since the getFirstExists() which we'll use for recycling // cannot allocate new objects, create them manually here.
+        _t(8,function(){enemies.cr(360+Math.random()*200, 120+Math.random()*200, 'baddie')}) // Since the getFirstExists() which we'll use for recycling // cannot allocate new objects, create them manually here.
 
         g.bt(16,50,'button', function createBaddie(){// Recycle using getFirstExists(false)// Notice that this method will not create new objects if there's no one // available, and it won't change size of this group.
             var enemy = enemies.gFE(0)
