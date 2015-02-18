@@ -1,4 +1,48 @@
- chatRoomsObject={}
+$.dragFrame=function( ob){
+
+    var outerDiv=  $.div('r').pad(10).A().drag()
+
+    innerDiv= $.div('y')
+        .on('mousedown',  function(e){  e.stopPropagation()  })
+
+    outerDiv.A(  innerDiv )
+
+    return innerDiv.A( ob )
+
+}
+
+$.imagesDiv=function(stage) {
+
+    $.getJSON('/img',  function(img){
+
+        theDiv = $.div().A().drag().C('y')
+
+        _.each(img, function(img){
+
+            theDiv.A(
+
+                $.canvas(100, 100).fit(img.d).click(function () {
+
+                    stage.bm(img.d, function (bm) {  bm.sXY(.4).drag() } )
+
+                })
+            )
+
+
+        })})
+
+
+
+
+
+
+
+
+
+
+}
+
+chatRoomsObject={}
 
 
  //makes auto top-spacing (for navbar not to block)

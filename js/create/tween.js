@@ -1,3 +1,8 @@
+cjs.tween     =cjs.Tween
+p = cjs.Tween.prototype
+
+
+
 cjs.ease = function(e){return cjs.Ease[oO('E', e)]} //Ea =
 cjs.tween = function(a, b){ // EaselTween=tw=
 

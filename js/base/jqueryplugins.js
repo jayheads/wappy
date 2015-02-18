@@ -1,7 +1,5 @@
-
 $.fn.col = function(col){
     return this.css('color', oO('c', col))}
-
 $.fn.C = function(col, c2){
     if(c2){return this.C(col).col(c2)}
 
@@ -12,11 +10,6 @@ $.fn.C = function(col, c2){
 
     return this.css('backgroundColor', oO('c', col))
 }
-
-
-
-
-
 $.fn.A=function(stuff){
    if( U(stuff)){$('body').append(this); return this}
     this.append.apply(this, arguments)
@@ -468,9 +461,6 @@ $.sec=function(f){return setTimeout(f,1000)}
 $.fn.trans=function(transform){
     $l('transform')
     return this.css({transform: transform})}
-
-
-
 testCSSRotate=function(){z()
 
     //works
@@ -483,7 +473,6 @@ testCSSRotate=function(){z()
    d.trans('translateY(300px) rotateZ(120deg)')
 
 }
-
 testCSSScal=function(){z()
 
 
@@ -503,6 +492,7 @@ testCSSScal=function(){z()
     $.img('me').A().transform( 'rotate3d(100,100,100,100)' )
 
 }
+
 HTML5={}
 $.CSS = HTML5.CSS = ss=function ss(q,b,c){
 
@@ -612,6 +602,8 @@ $.qs = HTML5.qs = qs=function f(a,b){
     return o
 
 }
+
+
 $.CSSRule = HTML5.CSSRule = CSSRule = setRule = uu=function f( a, b ){
     var sy, cl ,rl
 
@@ -643,17 +635,16 @@ $.CSSRule = HTML5.CSSRule = CSSRule = setRule = uu=function f( a, b ){
     createRule( a, theRule(b) )
 
 }
-
-UU=function(){
+testRule=function(){
     z()
     $.div('b',400,400).A().A( $.span('hifds') )
 
 
-    CSSRule('div', 'color:Orange')
+    $.CSSRule('div', 'color:Orange')
 
 
 }
-UU2=function(){//WORKS
+testStyle=function(){//WORKS
 
     $.div('b',400,400).A().A( $.span('hifds')).id('div')
 
@@ -674,7 +665,6 @@ UU2=function(){//WORKS
 
 
 }
-
 $.addStyle=function(){
     _.each(arguments, function(rule){
 
@@ -683,34 +673,28 @@ $.addStyle=function(){
 
 
 }
+$.CSSReset=function(){
+    $.CSSRule({'*':{m:0,p:0},  //css reset
+        'html,body':{h:'100%', w:'100%'},
+        canvas:{d:'b'}})
+}
 
 
+testPlugin=function(){ z()
 
-JQPLUGS=function(){ z()
+    d = $.div('r' ).WH( 100 ).A().A( 'abc' )
 
-    d = $.div().Z( 100 ).C( 'r' ).A().append( 'abc' )
+    e = $.div().WH( 100 ).col( 'r' ).A().A( 'abc' )
 
-    e = $.div().Z( 100 ).col( 'r' ).A().append( 'abc' )
-
-    f = $.div().Z( 100 ).C( 'r' , 'b' ).A().append( 'abc' )
+    f = $.div('r').WH( 100 ).col( 'b' ).A().A( 'abc' )
 
     g = $.div( 'b' , 500 , 500 ).A() }
 
-IMAGE=function(){
 
-    i = $.img('me')//.A()
 
-}
-EDITRANGE=function(){
 
-    z()
 
-    a=editDiv().C('a')
-    b=editDiv().C('b')
-    c=editDiv().C('c')
-}
-
-FUNNY=function(){z()
+FRIDGEMAGNETS=function(){z()
 
     word = function(text, c1, c2){
 
@@ -737,7 +721,7 @@ FUNNY=function(){z()
 
 }
 
-function testCan(){
+testCan = function(){
     z()
     c= $.canvas('o', 500, 500).A()
 
@@ -946,8 +930,9 @@ VOLUME=function(){
         }
     }}(window.jQuery || window.Zepto || window.$))
 
-// move to jquery
-tree=function(){z();var s=200
+
+
+$.tree=function(){z();var s=200
 
     d=_d().k('container')(
 
@@ -1016,8 +1001,10 @@ tree=function(){z();var s=200
 
 
 }
-notAnimated = notAnim=function(a){return a.filter(':not(:animated)')}
-notAnimated.test=function(){
+
+$.notAnimated = notAnim=function(a){
+    return a.filter(':not(:animated)')}
+testNotAnimated=function(){
 
     var s=1000,m=function(n){return {marginLeft:n}},n=0
     d=dv().id('test').a()(y=cx('x',40).q.k('box'))
@@ -1028,8 +1015,8 @@ notAnimated.test=function(){
         .animate(m(0),s,function(){$('#debug').append('<p>fin..<p>')})})
 }
 //cool demo
-HSP=horizSlidPanels=function(){z()
 
+$.horizontalSlidePanels=function(){z()
 
     // rather than worry about synchronization between each panel
     //we will take last li in ul.k(panels) and position it to top right
@@ -1040,15 +1027,15 @@ HSP=horizSlidPanels=function(){z()
     var s=200
 
 
-    theDiv = $div().k('container')(
+    theDiv = $.div().K('container').A(
 
-        $div().k('panels')(
-            $span('1'),  $span('2'),  $span('3'), $span('4'), $span('5')),
+        $.div().K('panels').A(
+            $.span('1'), $.span('2'), $.span('3'), $.span('4'), $.span('5')),
 
-        $div().k('panels')(
-            $span('A'),  $span('B'),   $span('C'),  $span('D'),  $span('E'))
+        $.div().K('panels').A(
+            $.span('A'), $.span('B'), $.span('C'), $.span('D'), $.span('E'))
 
-    ).a()
+    ).A()
 
     $('span').css({width:'100px',fontSize:'40px'})
 
@@ -1069,40 +1056,22 @@ HSP=horizSlidPanels=function(){z()
 
 }
 
-SMOOTHWITHSTOP=function(){
-    d=dv().id('test').a()(y=cx('x',40).q.k('box'))
+$.hoverBox = function(){z()
 
-    $('#test').hover(function(){$('.box').stop().fadeTo(200,1)},
-        function(){$('.box').stop().fadeTo(200,0)})
+    d=$.div('orange', 500,500).id('test').A().drag()
 
-}
-BIG=function(){z()
+    y=$.can('pink', 400).K('box').hide()
 
+    d.A(y)
 
-
-    d =dv().id('test').a()(
-
-        y = cx('x', 40). q. k('box')
-
-    )
-
-
-
-    d2=dv().id('debug').a()
-
-
-    //x=cx('y',1000,800).a()
-    // x.$$(function(){x.f('me')})
-
-
-
-
-
-
-
-
+    $('#test').hover(function(){
+            $('.box').stop().fadeTo(200,1)
+        },
+        function(){
+            $('.box').stop().fadeTo(200,0)})
 
 }
+
 FLASH=function(){z()
 
 
@@ -1128,23 +1097,54 @@ FLASH=function(){z()
 
 
 }
-JQUI=function(){z()
 
+jQueryUI=function(){z()
 ('<link rel="stylesheet" href="/jquery-ui.min.css">').A()
 ('<script src="/jquery-ui.min.js">').A()
 
 
-    t=$.textInput('date').A().datepicker()
-
-
-    d= $.div('b',400,400).A().A(t).pad(20)
+    input=$.textInput('date').A().datepicker()
+    d= $.div('b',400,400).A().A(input).pad(20).A()
 
 }
-JQANIM=function(){z()
 
-    a=dva().bi('chicks').anf()
+jQueryAnimation=function(){z()
 
-    anim=function(o){o=ob(o)
+
+    setBackgroundImage=q.bi=function(a){//set background image
+        var u=function(a){
+            return 'url("'+ src(a) +'")'}
+        q.s({bi:u(a)})
+        return q}
+
+    bp=q.positionBackgroundImage=function(x,y){
+        var g=G(arguments),x=g[0],y=g[1]
+        x=N(x)?x:0
+        y=N(y)?y:0
+        q.s({bp:x+'px '+y+'px'})
+        return q}
+
+    fr=q.setFrame= function(n,w){
+        if(O(n)){q.bp(n.n,n.w)}
+        else{q.bp(n*w)}
+        return q}
+
+    anf= q.animateFrames=function(n,w){
+        var c=0
+        n=n||10
+        w=w||20
+        I(function(){q.fr(c,w)
+            c= (c+1) % n},1000)}
+
+
+
+
+    a= $.divA()
+        .backgroundImage('chicks')
+        .anf()
+
+    anim=function(o){
+        o=o||{}
 
         return {
             u:o.u||'chicks',
@@ -1154,17 +1154,15 @@ JQANIM=function(){z()
             c:o.c||0,
             l:o.l||false}}
 
-
-
     an=function(q,a){
-
         if(q.han){
-            cI(q.han)}
+            clearInterval(q.han)}
 
-        if(a.u){q.bi(a.u)}
+        if(a.u){
+            q.bi(a.u)}
 
         if(a.n>1){
-            q.han=I(function(){
+            q.han=setInterval(function(){
                     a.c++
                     if(!a.l && a.c>a.n ){
                         cI(q.han);
@@ -1172,7 +1170,7 @@ JQANIM=function(){z()
                     else{a.c%=a.n}
                     q.fr(a)},
                 a.r)}}
-}
+};
 
 
 
@@ -1237,11 +1235,6 @@ JQANIM=function(){z()
     };
 
 })(jQuery)
-
-
-
-
-
 LETTERING=function(){
 
     z()
@@ -1256,7 +1249,6 @@ LETTERING=function(){
 
 
 }
-
 FALLING=function(){z()
     //this goes in css
 
@@ -1305,81 +1297,23 @@ FALLING=function(){z()
     })
 
 }
+//
+
+
 MARGINAUTO=function(){z()
 
-    o = outer = $.div( 'b', 500, 500).A()
-    o.A(  i = inner = $.div( 'r', 100, 100) )
-    i.mar('auto')
-    o.mar('auto')}
-MOBILEHEADERS=function(){
-
-
-
+     outer = $.div( 'b', 500, 500).A()
+    outer.A(  inner = $.div( 'r', 100, 100) )
+    inner.mar('auto')
+    outer.mar('auto')
 }
 
 
 
 
-H1=function(){
-    z()
 
-    rule = "h1 {  font-size: 40px;  margin-bottom: 20px;  margin-left: 20px; }"
+//dH=function(a){qq(a).h($(document).height())}
 
-    $.addStyle(rule)
-    // HTML5.CSSRule(rule)
-    $.h1('this is a big font').A()
-
-}
-H12=function(){
-    z()
-
-
-    rule = "h1 {  font-size: 22px; margin: bottom 10px;  @media (min-width:@screen-tablet) {font-size: 40px;   margin-bottom: 20px;   margin-left: 20px; } }"
-
-    addStyle(rule)
-
-    $h1('this is a small font').A()
-
-}
-BREAK=function(){z()
-
-
-    addStyle( "h1 { @media (min-width:400px) {font-size: 10px;} }" )
-    addStyle( "h1 { @media (max-width:400px) {font-size: 20px;} }" )
-    // addStyle( "h1 { @media (min-width:1281px) {font-size: 40px;} }" )
-
-    $.h1('afsdfdsasdf').A()
-}
-BREAK2=function(){
-
-
-    // @media screen and (min-width: 600px) { .sixhundredminwidthclass {  width: 30%;  float: right;  } }
-
-    //  @media screen and (max-width: 600px) {.sixhundredmaxwidth {  clear: both; font-size: 1.3em; } }
-
-}
-BREAK3=function(){z()
-//works
-
-    $.addStyle(
-
-        "@media all and (min-width: 960px) { body {font-size: 80px;}  }",
-        "@media all and (max-width: 959px) and (min-width: 600px) {body{font-size: 40px;}}",
-        "@media all and (max-width: 599px) and (min-width: 320px) {body{font-size: 20px;}}"
-    )
-
-    $.addStyle(
-
-        "@media all and (min-width: 960px) { body {color:blue;}  }",
-        "@media all and (max-width: 959px) and (min-width: 600px) {body{color:red;}}",
-        "@media all and (max-width: 599px) and (min-width: 320px) {body{color:yellow;}}"
-    )
-
-
-    $.span('fasd').A()
-
-    $.h1('fasd').A() //doesnt respond
-}
 //events={}
 //events.dL=dL=function(a,b,c){document.addEventListener(oE(a),b,c)}
 //events.dR=dR=function(a,b,c){document.removeEventListener(oE(a),b,c)}

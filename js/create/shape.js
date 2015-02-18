@@ -1,3 +1,9 @@
+cjs=createjs
+cjs.graphics     =function(a){return new cjs.Graphics(a)}
+cjs.shape =  function(a){ return new cjs.Shape(a) }
+
+
+
 p = cjs.Shape.prototype
 p.circle= p.circ =function(x,y,radius,fc, sc){
         var gx=this.graphics

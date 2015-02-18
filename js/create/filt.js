@@ -19,7 +19,8 @@ forMaskFilter = trx = function(n){
 
     return a
 }
-
+cjs.blurFilter = function(x,y,c){return new cjs.BlurFilter(x,y,c)}
+//T$ = cjs.Ticker  //dep
 ColorFilter = clF=function(a,b,c,d,e,f,g){return new createjs.ColorFilter(a,b,c,d,e,f,g)}
 
 ColorMatrixFilter = clMF=function(m){return new createjs.ColorMatrixFilter(m)}

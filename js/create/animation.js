@@ -1,3 +1,39 @@
+
+
+
+p = cjs.Sprite.prototype
+
+p = cjs.SpriteSheet.prototype
+
+p.addFlipped=function(a, b, c){
+
+    cjs.SpriteSheetUtils.addFlippedFrames(this,  a||true, b||false, c||false )
+
+    return this}
+
+p = cjs.MovieClip.prototype
+
+
+cjs.sprite = $sprite =function(spriteSheet){
+//EaselSprite= J$=
+
+    if( spriteSheet.images ){
+
+        spriteSheet = new cjs.SpriteSheet(spriteSheet)   }
+
+    return new cjs.Sprite( spriteSheet )
+
+}
+cjs.spriteSheet   =function(a){return new cjs.SpriteSheet(a)} //= SS$
+
+$spriteX = function(dataObjOrSprite){//EaselSpriteSheet = jss=
+    var spriteSheet
+    if( dataObjOrSprite.images ){ // then it is a dataObj
+        spriteSheet = new cjs.SpriteSheet( dataObjOrSprite )}
+    else {//it must be a sprite sheet already
+        spriteSheet = dataObjOrSprite}
+    return new cjs.Sprite(spriteSheet)}
+
 Timeline = EaselTimeline = Tl=function(l){
 
     l=sTW(l)
@@ -95,7 +131,3 @@ TIMELINE=function(){z()
 
 
 }
-
-
-
-
