@@ -1,3 +1,14 @@
+$.gameController=function(){
+
+    return $.div().A(
+
+        $.button('left').id('left'),
+        $.button('right').id('right'),
+        $.button('jump').id('jump')
+
+    )
+}
+
 $.dragFrame=function( ob){
 
     var outerDiv=  $.div('r').pad(10).A().drag()
@@ -92,47 +103,34 @@ testFormat=function(){
 
 }
 
-BasicLayoutX =formatX=function(){
-
-    section1= s1=$span()
-
-    section2 =s2=$span()
-
-    ContainerDiv( row39(s1, s2) )}
-
-ContainerDivX  = CTX = function(){
-
-    var args = G(arguments),
-
-        theDiv = $div().k('container')
-
-    if(args.N){ theDiv( $br(4) ).a() }
-
-    _.each(args,  function(v){ theDiv(v) } )
-
-    return theDiv
-
-}
-
-mugHeaderX =function(){
-
-    return row(
-
-        col(2).k('text-center')(  qim('me').Z(.7),  $h5('hi') ),
-
-        col(3)(
-            $h4('pics'),
-            $h5('place to upload'))
 
 
-    ).a()()
+$.userCard3  =function(){z()
+
+    return $.row(
+
+        $.col(2).K('text-center').A(
+
+            $.img('me').WH(70),
+            $.h5('hi')
+        ),
+
+
+        $.col(3).A(
+
+            $.h4('pics'),
+            $.h5('place to upload'))
+
+
+    ).A()
 
 }
 
-Message =msgX=function(messageText){
 
+$.messageDiv = function(messageText){//Message =
+    return $.div('pink').K('msg').col('black').mar(10).pad(10).bor(0)
+        .fontSize(20).text(messageText||'messageText goes here')}
 
-    return $div().k('msg').c('x','z').font(20).T(messageText||'messageText goes here').M(10).P(10).B(0) }
 
 //pass in container(div?).. can empty it
 //pass in each arg as a 'msg', spacing them out with br's
@@ -162,11 +160,6 @@ addX=function rc( messagesArray, a ){
 
     )}
 }
-//runs a fn on the qq of all obs of certain class
-allX=function(s,func){
-    _.each($('.'+s),
-        function(m){func(qq(m))})
-}
 
 //fetches JSON, and takes the 'n.pop' from list and passes those
 //in as messages?
@@ -188,9 +181,9 @@ getMessages = gMsgs=function rc(u,M){
 // get value from an input el OR two input els
 // if one, creates {c:?}
 // if two, creates {t:?,c:?}
-dataValue=  dV=function rc(title, content){
+dataValueX=  dVX=function self(title, content){
 
-    if( U(content) ){return rc(null, title)}
+    if( U(content) ){return self(null, title)}
 
     var data = {}
 
@@ -244,135 +237,118 @@ textInputSpan  =ip0= function(   buttonText,  url,  ob,  func ){
 //      will be posted to the url
 //      (passing the function)
 
-textAreaInputSpanX =ip1=function(buttonText,url,func){
+$.textAreaDataObj = function(buttonText,url,func){
 
     url=url||'/';
 
     func=func||home
 
-    var theSpan=$span(),
+    var span= $.span(),
+        textArea= $.ta(),
 
-        theTextArea=ta(),
+       button= $.button(buttonText, function(){
+            $.post(url, {content:textArea.val()}, func)
+       })
 
-        theButton=$button(buttonText, function(){
+    return span.A(theTextArea, theButton)
 
-            $.post(url, dV(theTextArea), func)
+}
 
-        })
 
-    return theSpan(theTextArea, theButton)}
-//tx and ta
-textAndTextAreaSpanX =ip2=function(buttonText,url,func){
+
+
+
+
+$.textTextarea = textAndTextAreaSpanX =ip2=function(buttonText,url,func){
 
     url=url||'/'; func=func||home
 
-    var theSpan=$span(),
-        theTextInput=tx(),
-        theTextArea=ta(),
-        theButton=$button(buttonText,function(){
+    var span= $.span(),
+        textInput=$.input(),
+        textarea= $.ta(),
+        button= $.button(buttonText,function(){$.post( url, {
+                title:textInput.val(),
+                content:textarea.val()
+            },
 
-        qP(
-            url,
-            dataValue(theTextInput, theTextArea),
-            func) })
-
-    return theSpan(theTextInput, theTextArea, theButton)}
-inptDep=function(h1Title, buttonText, url, func){
-
-    var g=G(arguments),
-        h1Title=g[0], buttonText=g[1], url=g[2],  func=g[3]
-
-    return dva(4)(
-
-        $h1(h1Title),
+            func)
 
 
-        g.p? textAndTextAreaSpan(buttonText,url,func):
-            g.n? textInputSpan(buttonText,url,func):
-                textAreaInputSpan(buttonText,url,func),
-        $hr()
-    )}
+        })
 
- iptX=function(h1Title, buttonText, url, ob, func){
-
-    var g=G(arguments),
-        h1Title=g[0],
-        buttonText=g[1],
-        url=g[2],
-        ob=g[3],
-        func=g[4]
-
-    if(F(ob)){ func=ob; ob={} }
-
-    return dv(4).auto()(
-
-        h1( h1Title),
-
-        g.p? textAndTextAreaSpan(buttonText, url, func)
-
-            :g.n? textInputSpan(buttonText,url,ob,func)
-
-            :textAreaInputSpan(buttonText,url,func)
-       // ,  $hr()
-
-    )
- }
+    return span.A(textInput, textarea, button)}
 
  inputBox1=function(ob){
     ob=ob||{}
 
-    var func=ob.func,
-        url=ob.url || '/',
-        boxTitle=ob.boxTitle,
-        inputType=ob.inputType,
-        defaults=ob.defaults||{},
-        buttonText = ob.buttonText || 'submit',
-        inputType=ob.inputType||'text'
+    var func= ob.func,
+        url         =   ob.url || '/',
+        boxTitle    =  ob.boxTitle,
+        inputType   =  ob.inputType,
+        defaults    =   ob.defaults||{},
+        buttonText  =   ob.buttonText || 'submit',
+        inputType   =     ob.inputType||'text'
 
-    var theDiv = dv(4).auto()
+    var div = $.div(40).WH('auto')
 
-    if(boxTitle){theDiv(h1(boxTitle))}
+    if(boxTitle){
+        div.A($.h1(boxTitle))}
 
     if(inputType == 'text') {
 
-        var theTextInput=tx()
+        var input=$.input()
 
-        theDiv(theTextInput)
+        div.A(input)
 
-        theDiv(
+        div.A(
 
-            $button(buttonText, function(){
-                $.post(url, _.defaults(dataValue(theTextInput),defaults), func)
+            $.button(buttonText, function(){
+                $.post(url, _.defaults({title: input.val()},defaults), func)
             }))}
 
     if(ob.inputType == 'textArea') {
 
-        var theTextAreaInput = ta()
+        var textarea = $.ta()
 
-        theDiv(
+        theDiv.A(
+
             theTextAreaInput,
-            $button(buttonText, function () {
-                $.post(url, _.defaults(dataValue(theTextAreaInput),defaults), func)})
+            $.button(buttonText, function () {
+                $.post(url,
+                    _.defaults(
+                        {content: textarea.val()},
+
+                        defaults), func)})
         )}
 
     if(ob.inputType == 'textAndTextArea') {
 
-        var theTextInput = tx(),
-            theTextAreaInput = ta()
+        var input = $.input(),
+            textarea = $.ta()
 
-        theDiv(theTextInput, theTextAreaInput)
+        div.A(input, textarea)
 
-        theDiv(
+        div.A(
 
-            $button(buttonText, function () {
+            $.button(buttonText, function () {
+
                 $.post(url,
-                    _.defaults(dataValue(theTextInput,theTextAreaInput), defaults),
+                    _.defaults(
+                        {title: input.val(), content: textarea.val()},
+
+                        defaults),
                     func)}))}
 
 
     //z(); theDiv.a()
 
-    return theDiv}
+    return div}
+
+
+
+
+
+
 joinSelf = function(){
 
     socket.emit( 'joinRoom',  _username )
@@ -389,52 +365,58 @@ sendMessage =iMsg=function( toWho, message ){
 
 }
 
-$.win= $.window=function(  a, c,  id ){
+
+
+$.win = $.window=function(  a, c,  id ){
 
     var size,
         theWindow,
         text,
         moreButton,
         lessButton,
-        closeButton
+        closeButton,
+        w
 
 
     moreButton = $.buttonRight('>', function(){
-        theWindow.WH(400)
+        w.WH(700)
         lessButton.show()
         moreButton.hide()
         })
 
 
     lessButton = $.buttonRight('<', function(){
-        theWindow.WH('auto')
+        w.WH('auto')
         moreButton.show()
         lessButton.hide()
     }).hide()
 
-    closeButton = $.buttonLeft('X',function(){ theWindow.remove() })
-
-    theWindow=$.divA(size||400)
+    closeButton = $.buttonLeft('X',function(){ w.remove() })
 
 
-        theWindow.C('b').opacity(.9).overflow('auto')
+    w = $.divA('blue', size||400).WH('auto')
+        .opacity(.9).overflow('auto').pad(10).borderWidth(4).borderStyle('dashed')
 
-        theWindow.pad(10).borderWidth(4).borderStyle('dashed')
 
-            theWindow.WH('auto').A(  moreButton,  lessButton.hide(), closeButton  ).drag().A()
+    w.A(
+                moreButton,
+                lessButton.hide(),
+                closeButton
+            ).drag().A()
+
 
     if(S(a)){ text= a }
 
     if(N(a)){ size= a }
 
-    if(O(a)){ theWindow.A(a) }
+    if(O(a)){ w.A( a ) }
 
 
     if(text){
 
-        theWindow.A(
+        w.A(
 
-            $.p(text).fontSize(24).K('text-center').C('X').marHor(10).padHor(30),
+            $.p(text).fontSize(24).K('text-center').C('X').marHor(10).padHor(30), //horizontel
             $.hr().col(c||'z').fontSize(10)
 
         )}
@@ -445,70 +427,9 @@ $.win= $.window=function(  a, c,  id ){
     return theWindow
 
 }
-$winX= function(  a, c,  id ){//title/ob?,color,id
-
-    var size,  theWindow,  text,  moreButton,  lessButton, closeButton
-
-    moreButton = $buttonRight('>', function(){
-
-        theWindow.Z(4)
-
-        lessButton.sh()
-
-        moreButton.hd()  })
-
-
-    lessButton= $buttonRight('<',function(){
-
-        theWindow.auto();
-        moreButton.sh();lessButton.hd()}).hd()
-
-    closeButton = $buttonLeft('X',function(){theWindow.X()})
-
-    theWindow=dva(size||4).s({ C:'b', a:.9,  of:'a' })
-
-        .P(10).B(4).bs('-').bc('o').auto()
-
-    (  moreButton,  lessButton.hd(), closeButton  ).drg().a()
-
-    if(S(a)){ text= a }
-
-    if(N(a)){ size= a }
-
-    if(O(a)){ theWindow(a) }
-
-
-    if(text){
-
-        theWindow(
-
-            $pg(text)
-
-                .font(24).cen().c('X')
-
-                .s({
-
-                    'margin-left':10,
-                    'margin-right':10,
-
-                    pr:30,
-                    pl:30
-
-                }),
-
-
-            $hr().c(c||'z').font(10)
-
-        )
-    }
 
 
 
-    if(id){ theWindow.id(id) }
-
-    return theWindow
-
-}
 
 $.pop=function(message, ops){
 
@@ -568,11 +489,14 @@ $.pop=function(message, ops){
 $.dangMessage=function(msg){
 
 
-    var theForm = $.span().delButton()
+    form = $.span().delButton()
 
-        theForm.A(   $.h2(msg).K('alert alert-danger')  )
+        form.A(   $.h2(msg).K('alert alert-danger')  )
 
-    return theForm.prependTo('body')}
+    return form.prependTo('body')
+}
+
+
 $.floatingInput=function(text, func){
 
     var args=G(arguments),
@@ -590,4 +514,150 @@ $.floatingInput=function(text, func){
 
 
     return theForm}
+$.editDiv=function(words){
+
+    ta =input = $.textarea().mar(4)
+
+    span = $.span().C('black')
+
+    spanFunc = function () { span.text( input.val() ) }
+
+    div = $.divA().C('brown', 'yellow').pad(8).A()
+
+    div.zIndex(0)
+
+
+
+    canMove=true
+
+    xButton= $.button('', function(){
+
+        div.remove()
+
+    }).WH(4).C('red')
+
+
+     changeLocation=true
+    inputMove=true
+
+     mouse = 'up'
+
+    appendSensorDiv= $.div('yellow',16, 12).textAlign('center').mar('0 auto').click(function(){
+        $(this).parent().free()
+    })
+
+    div.mousedown(function(){
+        inputMove = false
+
+        mouse='div'
+    })
+
+    div.mouseup(function(){mouse='up'})
+
+    div.mousedown(function(){
+
+        $.editDiv.TOP++
+
+        $(this).zIndex( $.editDiv.TOP  )
+    })
+
+
+    ta.mousedown(function(e){
+        $.editDiv.TOP++
+        $(this).parent().zIndex(  $.editDiv.TOP  )
+        location={top: div.Y(), left: div.X()}
+
+        inputMove = true
+        mouse='input'
+        e.stopPropagation()})
+    ta.mousemove(function(e){
+        if(inputMove){
+            e.stopPropagation()
+            div.XY(location.left, location.top)
+        }
+    })
+
+    if(U(words)) {
+
+        return div.A( xButton, $.br(), span.hide(), input,
+
+            appendSensorDiv
+
+        ).dblclick(function(e){
+                e.stopPropagation()
+
+                span.text( input.val() )
+                xButton.toggle();
+                input.toggle()
+                span.toggle()
+
+            }).drag()
+
+    }
+
+    else {
+
+        input.val(words)
+
+        div.A( xButton, $.br(), span, input.hide() )
+
+        span.text( input.val() )
+
+
+        div.dblclick(function(e){e.stopPropagation()
+
+            span.text( input.val() )
+
+            xButton.toggle();
+            input.toggle(); span.toggle()
+
+        })
+
+
+        return div.A().drag() }
+
+}
+
+$.editDiv.TOP=0
+
+$.editDiv2=function(a){
+
+
+    var div=$.editDiv(a),
+
+        range= $.range()
+
+
+    range.on('mousedown',function(e){
+        e.stopPropagation()
+
+    })
+
+    range.on('input', function(){
+
+
+
+        div.find( $('span')).fontSize( $(this).val()  )
+        div.find( $('textarea')).fontSize( $(this).val()  )
+
+    })
+
+
+    div.prepend( range  )
+
+    return div
+}
+
+
+testEditDiv=function(){z()
+
+    $.editDiv()
+    $.editDiv()
+    $.editDiv()
+    $.editDiv()
+    //$.editDiv2().A()
+
+
+}
+
 

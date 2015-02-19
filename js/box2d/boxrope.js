@@ -74,14 +74,27 @@ public class rope extends Sprite {
         // final body
         bodyDef.position.x=8.5;
         bodyDef.position.y=11;
-        boxDef = new b2PolygonDef();
-        boxDef.SetAsBox(0.5,0.5);
-        boxDef.density=2;
-        boxDef.friction=0.5;
-        boxDef.restitution=0.2;
-        body=m_world.CreateBody(bodyDef);
-        body.CreateShape(boxDef);
-        revolute_joint.Initialize(link, body, new b2Vec2(8.5, 10.5));
-        m_world.CreateJoint(revolute_joint);
-        body.SetMassFromShapes();
-    }
+
+    boxDef = new b2PolygonDef();
+
+    boxDef.SetAsBox(0.5,0.5);
+
+    boxDef.density=2;
+
+    boxDef.friction=0.5;
+
+    boxDef.restitution=0.2;
+
+
+    body=m_world.CreateBody(bodyDef);
+
+    body.CreateShape(boxDef);
+
+    revolute_joint.Initialize(link, body, new b2Vec2(8.5, 10.5));
+
+    m_world.CreateJoint(revolute_joint);
+
+    body.SetMassFromShapes();
+
+
+}

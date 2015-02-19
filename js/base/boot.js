@@ -7,11 +7,27 @@ $.containerFluid =function(){return $.div().K('container-fluid')}
 
 // -rows must be placed within a .container(-fluid) for proper alignment and padding
 
+$.glyph=$.glyphicon=function(glyph, a){
 
+    var s = $.span(a).K("glyphicon glyphicon-" + glyph)
+
+    return s}
 
 // -only columns may be immediate children of rows
 // -Columns create gutters (gaps between column content) via padding.
  //   That padding is offset in rows for the first and last column via negative margin on .rows
+$.imgResponsive=function(s,f){
+    return $.img(s,f).K('img-responsive')
+}
+$.imgCircle=function(s,f){
+    return $.img(s,f).K('img-circle')
+}
+$.imgRounded=function(s,f){
+    return $.img(s,f).K('img-rounded')
+}
+$.imgThumbnail=function(s,f){
+    return $.img(s,f).K('img-thumbnail')
+}
 
 
 $.boot = function(){z()

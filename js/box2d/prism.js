@@ -1,6 +1,8 @@
-PrismaticJointDef = prJt=function(a,b,c,d,e,f){
+b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,f){
 
-    var j=SuperJointDef(new BXJ.b2PrismaticJointDef())
+    var j=SuperJointDef(
+        new b2.Joints.b2PrismaticJointDef()
+    )
 
 
     j.i=function(){
@@ -47,38 +49,25 @@ SuperPrismatic=function(p){
 
     return p}
 
+PRISM=function(){
 
+    b2.makeWorld()
 
+    cart = w.bi(500,200,20,20)
+    ride = w.bii(540,150,180,90)
 
-
-
-PRISM=function(){makeWorld()
-
-    cart=w.bi(500,200,20,20)
-
-    ride=w.bii(540,150,180,90)
-
-    pulleyJoint = PrismaticJointDef(
-
+    pulleyJoint = b2.prismaticJointDef(
         ride,
-
         cart,
+        b2.V( 1, .3 ), //.Normalize()
+        b2.V(  ride.worldCenter().x,  ride.worldCenter().y +5),
+        cart.worldCenter(),
+        5)
 
-        bV( 1, .3 ), //.Normalize()
-
-        bV(  ride.worldCenter().x,  ride.worldCenter().y +5),
-
-        cart.worldCenter(),  5)
-
-        .lT(-12)
-        .uT(12.5)
-        .eL(1)
-
-        .mMF(10)
-        .eM(1)
-        .mS(-100000)
+    pulleyJoint.lT(-12).uT(12.5).eL(1).mMF(10).eM(1).mS(-100000)
 
     j = world.createJoint( pulleyJoint)
+
 }
 
 
@@ -92,9 +81,9 @@ PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ makeWorld()
 
     j = world.Prism( ride, cart,
 
-        bV(  1, .3  ), //.Normalize()
+        b2.V(  1, .3  ), //.Normalize()
 
-        bV(
+        b2.V(
 
             ride.worldCenter().x,
 
@@ -106,9 +95,7 @@ PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ makeWorld()
         5 )
 
     j.maxForce( 10000 ).speed( -100 ).motor( 1 )
-
     setTimeout( function(){ j.motor(0) }, 2000 )
-
     setTimeout( function(){ j.motor(1) }, 5000 )
 
 }
@@ -126,7 +113,7 @@ RandomPrismPair = sPrJ=function(x,y){
 
     var secondBody = w.FixBody( x,y)
 
-    j = world.Prism(  firstBody, secondBody, bV(1,0),  firstBody.worldCenter(),
+    j = world.Prism(  firstBody, secondBody, b2.V(1,0),  firstBody.worldCenter(),
 
             secondBody.worldCenter()  ).limits(-100, 100)  //j.maxForce(1).speed(100).motor(1)
 
@@ -135,14 +122,11 @@ RandomPrismPair = sPrJ=function(x,y){
 }
 
 
-BUMPER=function(){mW()
-
-
+BUMPER=function(){
+    b2.makeWorld()
     circle = w.ba( 600,500,40).uD('ride')
 
     bindr('me', circle)
-
-
 
     world.Prism(
 
@@ -170,9 +154,7 @@ BUMPER=function(){mW()
                     function(b){ if( b.is('ride') ){  b.aI(0,-1000)  }  }
                 )
 
-            }
-
-        })
+            }})
 
 
     w.ba( 200, 200, 100 )

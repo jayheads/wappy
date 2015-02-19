@@ -1,3 +1,4 @@
+r = 19
 $.fn.col = function(col){
     return this.css('color', oO('c', col))}
 $.fn.C = function(col, c2){
@@ -316,6 +317,26 @@ $.fn.centerOnWindow = function(){
 $.fn.xCenter=function(){
 
     return this.P( 'a' ).css({  left: '50%', 'margin-left': '-100px'  })}
+
+$.fn._getPosition=function(){
+    var e = this[0], x = 0, y = 0
+    while (E(e)) { //O(e)&&D(e.tagName)
+        y += e.offsetTop
+        x += e.offsetLeft
+        if (isBodyElement(e)) {
+            e = 0
+        }
+        e = e.offsetParent || e
+    }
+    return { x: x, y: y }
+    function isBodyElement(e){
+
+        return O(e) && uC(e.tagName) == 'BODY'
+
+    }}
+
+
+
 //
 $.G = function self(path, dataOb, func){
 ////
@@ -394,62 +415,6 @@ $.qGE=qGE=function rc(u,d,f){
     if(F(d)){f=d;d={}}
     $.get(u,d,function(ss){
         _.each(ss,function(s){f(s,ss)})})}
-$.selects=function(f){var s=$(oT('sl'))
-    if(f){s.on(oE('/'), f)}
-    return s}
-$.boxes=function(f){var b=$("input[type='checkbox'],input[type='radio']")
-    if(f){b.on(oE('$'),f)}
-    return b}
-$.inputs=function(f){
-    selects(f);
-    boxes(f)
-}
-$.getChecked=function(name){
-    var input = $("input[type='radio'][name="+name+"]:checked")
-    return input.val()}
-$.$$=function(a,b,c){
-
-    $('body').dblclick(a,b,c)
-
-    return $}
-$.$=function(){
-
-    var b=$('html')
-
-    b.click.apply(b, arguments)
-
-    return $}
-
-$.T = T=function(a,b){return setTimeout(_v(a),b)}
-
-//dep
-$.dateTime = $.date =  dateTime=dt=function(a){
-    var d=new Date(a)
-    d.y=d.getFullYear
-    d.d=d.getDate
-    d.D=d.getDay
-    d.M= d.getMinutes
-    d.m= d.getMonth
-    d.date=function(){return d.d()+'/'+ d.m()+'/'+ d.y()}
-    d.time=function(){return d.h()+':'+ d.M()}
-    d.dt=function(){return d.date()+' '+ d.time()}
-    d.ms= d.getMilliseconds
-    d.h= d.getUTCHours
-    d.s= d.getSeconds
-    //d.tm= d.getTime
-    //d.gto= d.getTimezoneOffset
-    d.udt= d.getUTCDate
-    d.gud= d.getUTCDay
-    d.ufy= d.getUTCFullYear
-    d.gh= d.getHours
-    d.gms= d.getUTCMilliseconds
-    d.um= d.getUTCMinutes
-    d.um= d.getUTCMonth
-    d.us= d.getUTCSeconds
-    return d}
-$.dateAndTime =dtt=function(a){
-    var datetime = new Date(a)
-    return datetime.date()+' '+ datetime.time()}
 
 
 
@@ -602,6 +567,31 @@ $.qs = HTML5.qs = qs=function f(a,b){
     return o
 
 }
+
+
+$.mousedown=function(func){
+
+    $('body').on('mousedown', func)
+return this}
+
+$.mouseup=function(func){
+
+    $('body').on('mouseup', func)
+    return this}
+$.mousemove=function(func){
+
+    $('body').on('mousemove', func)
+    return this}
+$.touchstart=function(func){
+
+    $('body').on('touchstart', func)
+    return this}
+
+$.touchend=function(func){
+
+    $('body').on('touchend', func)
+    return this}
+
 
 
 $.CSSRule = HTML5.CSSRule = CSSRule = setRule = uu=function f( a, b ){
@@ -787,6 +777,7 @@ VOLUME=function(){
 
 //mongoError: kill mongod processess!!!!  ps ax | grep mongod
 
+
 (function ($) {
     "use strict";
 // jQuery('form').serializeJSON()
@@ -803,9 +794,7 @@ VOLUME=function(){
             f.deepSet(serializedObject, keys, value, opts);
         });
         return serializedObject;
-    };
-
-
+    }
 
 // Use $.serializeJSON as namespace for the auxiliar functions
 // and to define defaults
@@ -818,6 +807,7 @@ VOLUME=function(){
             parseWithFunction: null, // to use custom parser, use a function like: function (val) => parsed_val
             useIntKeysAsArrayIndex: false // name="foo[2]" value="v" => {foo: [null, null, "v"]}, instead of {foo: ["2": "v"]}
         },
+
 // Merge options with defaults to get {parseNumbers, parseBoolens, parseNulls, useIntKeysAsArrayIndex}
         optsWithDefaults: function(options) {
             var f, parseAll;
@@ -835,7 +825,9 @@ VOLUME=function(){
         optWithDefaults: function(key, options) {
             return (options[key] !== false) && (options[key] || $.serializeJSON.defaultOptions[key]);
         },
+
 // Convert the string to a number, boolean or null, depending on the enable option and the string format.
+
         parseValue: function(str, opts) {
             var value, f;
             f = $.serializeJSON;
@@ -845,8 +837,10 @@ VOLUME=function(){
             return str; // otherwise, keep same string
         },
         isObject: function(obj) { return obj === Object(obj); }, // is this variable an object?
+
         isUndefined: function(obj) { return obj === void 0; }, // safe check for undefined values
         isValidArrayIndex: function(val) { return /^[0-9]+$/.test(String(val)); }, // 1,2,3,4 ... are valid array indexes
+
         isNumeric: function(obj) { return obj - parseFloat(obj) >= 0; }, // taken from jQuery.isNumeric implementation. Not using jQuery.isNumeric to support old jQuery and Zepto versions
 // Split the input name in programatically readable keys
 // "foo" => ['foo']
@@ -932,16 +926,15 @@ VOLUME=function(){
 
 
 
+
 $.tree=function(){z();var s=200
 
-    d=_d().k('container')(
+    d = $.div().K('container')(
 
-        pg().k('tree_controls')(
-
-            lk('expand all').k('expand_all'),
-            lk('collapse all').k('collapse_all')
-
-        )).a()
+        $.p().K('tree_controls')(
+            $.a('expand all').K('expand_all'),
+           $.a('collapse all').K('collapse_all')
+        )).A()
 
 
     quas="<li><span class='tree_slug'>&nbsp;</span> Qua</li><li><span class='tree_slug'>&nbsp;</span> Qua</li><li><span class='tree_slug'>&nbsp;</span> Qua</li><li><span class='tree_slug'>&nbsp;</span> Qua</li>"
@@ -955,46 +948,46 @@ $.tree=function(){z();var s=200
 
 
 
-    q=qq( $(pri) )
-    d(q)
+
+    q =  $(pri)
+
+    //d(q)
 
 
-    if(_z($('ul.tree'))){
+    if(_.size($('ul.tree')) ){
+
         $('p.tree_controls a.expand_all, p.tree_controls a.collapse_all').click(function(){
 
-
-
             if($(this).hasClass('expand_all')){$l('ex_all')
-
-                $(this).parent('p').next('ul').find('a.tree_trigger').addClass('trigger_expanded')
+                $(this).parent('p').next('ul').find('a.tree_trigger').K('trigger_expanded')
                 return false}
 
             else {$l('!ex_all')
 
                 $(this).parent('p').next('ul').find('a.tree_trigger')
+
                     .removeClass('trigger_expanded').end()
+
                     .find('ul').removeClass('tree_expanded')}
+
             this.blur();return false
 
         })
 
 
         $(document).on('click',function(){
-
-            if( $(this).hasClass('tree_trigger') ){
-
+            if( $(this).hasClass('tree_trigger')){
                 if($(this).next('ul').is(':hidden')){
-                    $(this).addClass('trigger_expanded').next('ul').addClass('tree_expanded')}
-
+                    $(this).K('trigger_expanded').next('ul').K('tree_expanded')}
                 else {$(this).removeClass('trigger_expanded').next('ul').removeClass('tree_expanded')}
                 this.blur()
                 return false
             }})
 
 
-        $('ul.tree li:last-child').addClass('last')
+        $('ul.tree li:last-child').K('last')
 
-        $('ul.tree_expanded').prev('a').addClass('trigger_expanded')
+        $('ul.tree_expanded').prev('a').K('trigger_expanded')
 
     }
 
@@ -1002,21 +995,40 @@ $.tree=function(){z();var s=200
 
 }
 
-$.notAnimated = notAnim=function(a){
-    return a.filter(':not(:animated)')}
-testNotAnimated=function(){
 
-    var s=1000,m=function(n){return {marginLeft:n}},n=0
-    d=dv().id('test').a()(y=cx('x',40).q.k('box'))
-    d2=dv().id('debug').a()
-    $('#test').click(function(){notAnim($('.box')).animate(m(-10),s,
-        function(){$('#debug').append('<p>start..'+(n++)+'<p>')})
-        .animate(m(10),s).animate(m(-10),s).animate(m(10),s).animate(m(-10),s).animate(m(-10),s)
-        .animate(m(0),s,function(){$('#debug').append('<p>fin..<p>')})})
+
+
+
+
+$.notAnimated = notAnim=function(a){return a.filter(':not(:animated)')} //selector
+testNotAnimated=function(){z()
+
+    var s=1000,
+        m=function(n){return {marginLeft:n} },
+        n=0
+
+    d = $.div().id('test').A().A( y= $.can('x', 40).K('box'))
+
+    d2 = $.div().id('debug').A()
+
+
+    $('#test').click(function(){
+
+        notAnim( $('.box') ).animate(  {marginLeft:-10},   s,
+
+        function(){
+            $('#debug').A( $.p( 'start..'   +  n++    ) )
+        })
+
+            .animate({marginLeft:10},s)
+            .animate({marginLeft:-10},s)
+            .animate({marginLeft:10},s)
+            .animate({marginLeft:-10},s)
+            .animate({marginLeft:-10},s)
+        .animate({marginLeft:0},s,
+            function(){$('#debug').A( $.p('fin') )})})
 }
-//cool demo
-
-$.horizontalSlidePanels=function(){z()
+$.coolSelector = function(){z()
 
     // rather than worry about synchronization between each panel
     //we will take last li in ul.k(panels) and position it to top right
@@ -1055,12 +1067,11 @@ $.horizontalSlidePanels=function(){z()
     }
 
 }
-
 $.hoverBox = function(){z()
 
-    d=$.div('orange', 500,500).id('test').A().drag()
+    d = $.div('orange', 500,500).id('test').A().drag()
 
-    y=$.can('pink', 400).K('box').hide()
+    y = $.can('pink', 400).K('box').hide()
 
     d.A(y)
 
@@ -1072,21 +1083,23 @@ $.hoverBox = function(){z()
 
 }
 
+
+
 FLASH=function(){z()
 
 
-    timeline = $.div().WH('auto').css('position','absolute').drag()
+    timeline = $.divA().WH('auto').drag()
 
     timeline.A(
-        $.canvas('b',500,500) , $.br()
+        $.canvas('blue', 500, 500),
+        $.br()
     )
 
-    _.times(24,
-
-        function(x){
+    _.times(24, function(x){
 
             timeline.A(
-                $.div('r',100, 100).H((x*100)+100).css({display:'inline-block'})
+
+                $.div('red', 100, 100).css({display:'inline-block'}).H((x*10) +100)
 
             )
 
@@ -1098,30 +1111,37 @@ FLASH=function(){z()
 
 }
 
+
 jQueryUI=function(){z()
+
 ('<link rel="stylesheet" href="/jquery-ui.min.css">').A()
 ('<script src="/jquery-ui.min.js">').A()
 
 
-    input=$.textInput('date').A().datepicker()
-    d= $.div('b',400,400).A().A(input).pad(20).A()
+    input = $.textInput('date').A().datepicker()
+
+    d = $.div('b',400,400).A().A(input).pad(20).A()
 
 }
+
 
 jQueryAnimation=function(){z()
 
 
-    setBackgroundImage=q.bi=function(a){//set background image
-        var u=function(a){
-            return 'url("'+ src(a) +'")'}
-        q.s({bi:u(a)})
+    setBackgroundImage = q.bi = function(url){//set background image
+
+        var toUrl =function(url){
+            return 'url("'+ src(url) +'")'}
+        q.backgroundImage(toUrl(url))
+
         return q}
+
 
     bp=q.positionBackgroundImage=function(x,y){
         var g=G(arguments),x=g[0],y=g[1]
         x=N(x)?x:0
         y=N(y)?y:0
-        q.s({bp:x+'px '+y+'px'})
+        q.css({backgroundPos:x+'px '+y+'px'})
         return q}
 
     fr=q.setFrame= function(n,w){
@@ -1133,7 +1153,8 @@ jQueryAnimation=function(){z()
         var c=0
         n=n||10
         w=w||20
-        I(function(){q.fr(c,w)
+        setInterval(function(){
+            q.setFrame(c,w)
             c= (c+1) % n},1000)}
 
 
@@ -1162,13 +1183,15 @@ jQueryAnimation=function(){z()
             q.bi(a.u)}
 
         if(a.n>1){
+
             q.han=setInterval(function(){
                     a.c++
                     if(!a.l && a.c>a.n ){
-                        cI(q.han);
+                        clearInterval(q.han);
                         q.han=false}
-                    else{a.c%=a.n}
-                    q.fr(a)},
+                    else { a.c %= a.n }
+                    q.setFrame(a) },
+
                 a.r)}}
 };
 
@@ -1235,9 +1258,9 @@ jQueryAnimation=function(){z()
     };
 
 })(jQuery)
-LETTERING=function(){
 
-    z()
+
+LETTERING=function(){z()
 
     span = $.span( 'hello' ).A()
 
@@ -1270,7 +1293,7 @@ FALLING=function(){z()
         })
 
 
-        $header2.addClass('dropped') // Add "dropped" class to header to apply transition
+        $header2.K('dropped') // Add "dropped" class to header to apply transition
 
         setTimeout(function(){ // reset header code
 
@@ -1290,6 +1313,7 @@ FALLING=function(){z()
             // letter appears instantly
 
             $header2.removeClass('dropped') // remove class at the "end" to reset header.
+
             delay = 0
 
         }, 1800) // 1800 is just rough estimate of time transition will finish, not the best way
@@ -1319,13 +1343,11 @@ MARGINAUTO=function(){z()
 //events.dR=dR=function(a,b,c){document.removeEventListener(oE(a),b,c)}
 //co=function co(a,b){return O(a)? ss(a,'C', $r('c',b) ):co($b(),a)}
 
-_o=function(a,b,c){
-    if(A(a)){return _e(a,"$l(E(v).outerHTML)")}
-    return U(a)?
-        qq('op')
-        :E(a)? $l(E(a).outerHTML)
-        :a.open(b,c)
-}
+outerHTML =function(a,b,c){
+    if(A(a)){ return _e(a, "$l(E(v).outerHTML)" ) }
+
+     $l( E(a).outerHTML )
+        }
 
 //offset=os=function(element){if(C(element)){element=C(element)};return $(element||'body').offset()}
 
@@ -1349,3 +1371,73 @@ _o=function(a,b,c){
 
 //cW=function(){return document.body.clientWidth }
 //cH=function(){return document.body.clientHeight }
+
+$.selects=function(func){
+
+    var selects=$('select')
+
+    if(func){ selects.on('change', func) }
+
+    return selects}
+$.boxes=function(func){
+
+    var b = $("input[type='checkbox'],input[type='radio']")
+    if(f) {  b.click( func ) }
+    return b
+
+}
+$.inputs=function(f){
+    $.selects(f);
+    $.boxes(f)
+}
+
+$.getChecked=function(name){
+    var input = $("input[type='radio'][name="+name+"]:checked")
+    return input.val()}
+
+
+$.$$=function(a,b,c){$('body').dblclick(a,b,c); return this}
+
+
+$.$=function(){
+
+    var b=$('html')
+
+    b.click.apply(b, arguments)
+
+    return $}
+
+$.T = T=function(a,b){return setTimeout(_v(a),b)}
+
+
+
+
+//dep
+$.dateTime = $.date =  dateTime=dt=function(a){
+    var d=new Date(a)
+    d.y=d.getFullYear
+    d.d=d.getDate
+    d.D=d.getDay
+    d.M= d.getMinutes
+    d.m= d.getMonth
+    d.date=function(){return d.d()+'/'+ d.m()+'/'+ d.y()}
+    d.time=function(){return d.h()+':'+ d.M()}
+    d.dt=function(){return d.date()+' '+ d.time()}
+    d.ms= d.getMilliseconds
+    d.h= d.getUTCHours
+    d.s= d.getSeconds
+    //d.tm= d.getTime
+    //d.gto= d.getTimezoneOffset
+    d.udt= d.getUTCDate
+    d.gud= d.getUTCDay
+    d.ufy= d.getUTCFullYear
+    d.gh= d.getHours
+    d.gms= d.getUTCMilliseconds
+    d.um= d.getUTCMinutes
+    d.um= d.getUTCMonth
+    d.us= d.getUTCSeconds
+    return d}
+
+$.dateAndTime =dtt=function(a){
+    var datetime = new Date(a)
+    return datetime.date()+' '+ datetime.time()}

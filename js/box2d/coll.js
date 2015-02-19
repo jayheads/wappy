@@ -79,11 +79,9 @@ SuperContact = sCon=function(contact){  var  c=contact
 
 
 
+b2.contactListener= ContactListener=bCL=function(){
 
-
-ContactListener=bCL=function(){
-
-    var l = new BXD.b2ContactListener
+    var l = new b2.Dynamics.b2ContactListener
 
     l.beginContact=l.b  =function(func){
         l.BeginContact=function(c){ func( SuperContact(c) ) }
@@ -129,72 +127,53 @@ ContactListener=bCL=function(){
 
 //makes a contact listener
 //touch ball to 'button.' hit triggers new ball.
-LAVA=function(){makeWorld()
+LAVA=function(){z()
 
-    _hit=0
+
+    b2.makeWorld()
 
     world.bii(400, 500, 40, 20).uD('platform')
-
-    stage.tick(function(){
-
-        if(_hit){
-
-            world.ba(300,40).uD('ball')
-
-            _hit = 0
-
-        }})
-
+    world.ba(300,40).uD('ball')
     world.setContactListener(
-        ContactListener().beginContact(
-            function(contact){
 
-            var d1 = contact.A().gB(),
-                d2 = contact.B().gB()
+        b2.contactListener().beginContact(onContact)
 
-            if(
-                ( d1.is('ball') && d2.is('platform') )
-                ||
+    )
 
-                (
-                    d2.is('ball') && d1.is('platform')
+    _hit=0
+    cjs.tick(function(){
+        if(_hit){
+            world.ba(300,40).uD('ball')
+            _hit = 0}})
 
-                    )
+    function onContact(contact){
+        if( _.either(contact.A().gB(), contact.B().gB(),
+                     'ball', 'platform')){
+            $l('hit!')
+            _hit = 1}}}
 
-                ){  _hit = 1  }
-
-            }))
-
-    world.ba(300, 40).uD('ball')
-
-
-}
 
 
 
 //only breaks at high impulse
 POSTSOLVE=function(){
-    makeWorld()
+
+    b2.makeWorld()
+
     world.ba()
 
-    newB=false
+    newBall =false
 
-    stage.tick(function(){
-        if(newB){world.ba()}; newB=false})
+    cjs.tick(function(){
+        if(newBall){world.ba()};
+        newBall=false})
 
     world.setContactListener(
+        b2.contactListener().postSolve(  onSolve ))
 
-        ContactListener().postSolve(
+    function onSolve(c,i){
+        if(  $l( i.n()[0] ) > 100 ){ newBall = true }}}
 
-            function(c, i){
-
-                if(  $l( i.n()[0] ) > 100 ){ newB = true }
-
-            }
-        )
-
-    )
-}
 
 
 //shows category and mask bits
@@ -204,113 +183,131 @@ PRESOLVE=function(){
     makeWorld()
     world.ba()
 
-    newB=false
+    newBall =false
 
-    stage.tick(
+    cjs.tick(
         function(){
-            if( newB ){  world.ba() }
-            newB = false
+            if( newBall ){  world.ba() }
+            newBall = false
         })
 
 
     world.setContactListener(
 
-        ContactListener().preSolve(
+        b2.contactListener().preSolve(
 
-            function( c, m ){ mm=m
+            function( c, m ){
 
-             if(  m.n()[0]   > 100){ newB = true }
+           //  if(  m.n()[0]   > 100 ){ newBall = true }
     })
 
 
     )}
 
 
+
+
+
 CONTACTS=function(){makeWorld()
 
-    var centerFx = CircleFixture(60).uD('center')
+    var centerFx = b2.circleFixture(60).uD('center')
 
-    t1= world.addBody(dBD(500,300),[
+    t1 = world.addBody(
 
-        centerFx,
+        b2.dynamicBodyDef(500,300), [
 
-        sensor1 = PolyFixture(60,90,0,40,10).sensor( 1 ).uD( 'sensor1' )
+        centerFx, b2.polyFixture(60,90,0,40,10).uD('sensor1').sensor(1)
+
+    ]).angVel(100)
+
+
+    t2= world.addBody(b2.dynamicBodyDef(700,300), [
+        centerFx, b2.circleFixture(100).sensor(1).uD('sensor2')
 
     ]).angVel(100)
 
 
-    t2= world.addBody(dBD(700,300), [
-        centerFx,
-        sensor2 = CircleFixture(100).sensor(1).uD('sensor2')
-
-    ]).angVel(100)
 
      world.setContactListener(
 
-        ContactListener().beginContact(
+        b2.contactListener().beginContact(
 
-            function( c, m ){
+            onBegin
 
-            var a = c.A()
-
-            var b = c.B()
+     ))
 
 
-            $l( 'a '+ a.uD() ); $l( 'b ' + b.uD() )
 
-            if(
-                ( a.is('sensor1')  && b.is('sensor2') )
+function onBegin( c, m ){
 
-                ||
+    var a = c.A()
 
-                ( a.is('sensor2')  && b.is('sensor1') )
+    var b = c.B()
 
-                ){$l('!!!!!!!!')}
 
-           // a.uD('change')
-        })
+    $l( 'a '+ a.uD() ); $l( 'b ' + b.uD() )
 
-     )
+    if(
+        ( a.is('sensor1')  && b.is('sensor2') )
 
+        ||
+
+        ( a.is('sensor2')  && b.is('sensor1') )
+
+        ){$l('!!!!!!!!')}
+
+    // a.uD('change')
+}
 
 }
 
 
 BITS=function(){makeWorld()
 
-    cir = CircleFixture( 80 ).category(0x0002).mask(0x0005),
+    cir = b2.circleFixture( 80 ).category(0x0002).mask(0x0005),
 
-    rec = PolyFixture( 60, 90, 0, 40, 10 ).category(0x0003).mask(0x0003)
+    rec = b2.polyFixture( 60, 90, 0, 40, 10 ).category(0x0003).mask(0x0003)
 
-    world.addBody( dBD(300,300), cir )
+    world.A( b2.dynamicBodyDef(300,300), cir )
 
-    world.addBody( dBD(400,300), cir )
+    world.A( b2.dynamicBodyDef(400,300), cir )
 
-    world.addBody( dBD(300,300), rec )
+    world.A( b2.dynamicBodyDef(300,300), rec )
 
-    world.addBody( dBD(400,300), rec )}
+    world.A( b2.dynamicBodyDef(400,300), rec )}
+
 
 
 
 GROUPINDEX=function(){
 
- makeWorld()
 
-    cir = CircleFixture(80).category(0x0002).mask(0x0005)
+    b2.makeWorld()
 
-    rec = PolyFixture(60,90,0,40,10).category(0x0003).mask(0x0003)
+    cir = b2.circleFixture(80).category(0x0002).mask(0x0005)
 
-    world.addBody( dBD(300,300), cir )
+    rec = b2.polyFixture(60,90,0,40,10).category(0x0003).mask(0x0003)
 
-    world.addBody( dBD(300,300), rec )
+    world.A(
+        b2.dynamicBodyDef(300,300),
+        cir
+    )
 
-    cir = CircleFixture( 80 ).gI( -3 )
+    world.A(
+        b2.dynamicBodyDef(300,300),
+        rec
+    )
 
-    rec = PolyFixture( 60, 90, 0, 40, 10 ).gI( -3 )
 
-    world.addBody( dBD( 400, 300 ), cir )
 
-    world.addBody( dBD( 400, 300 ), rec ) }
+    cir = b2.circleFixture( 80 ).gI( -3 )
+    rec = b2.polyFixture( 60, 90, 0, 40, 10 ).gI( -3 )
+
+    world.A( b2.dynamicBodyDef( 400, 300 ), cir )
+
+    world.A( b2.dynamicBodyDef( 400, 300 ), rec )
+}
+
 
 
 
@@ -391,3 +388,15 @@ SuperManifold = sMf=function(m){//used????
 
 
 
+_.either=function(ob1, ob2, is1, is2){
+
+    return ( ob1.is(is1) && ob2.is(is2) )
+
+        ||
+
+        (
+            ob2.is(is1) && ob1.is(is2)
+
+
+            )
+}

@@ -1,7 +1,7 @@
 BOXCANNON=function(){
 
 
-    mW() // hmm.. want to matchs screen size
+    b2.mW() // hmm.. want to matchs screen size
 
     a= world.baa(300,600, 200)
 
@@ -10,6 +10,8 @@ BOXCANNON=function(){
     world.Rev( a,b  )
 
 }
+
+
 
 
 
@@ -33,7 +35,7 @@ EASELCANNON=function(){z()
 
 EASELBOXCANNON=function(){
 
-    mW() // hmm.. want to matchs screen size
+    b2.mW() // hmm.. want to matchs screen size
 
     world.Rev(
 
@@ -69,7 +71,7 @@ stage.tick(function(){
 
 EASELBOXCANNON1=function(){
 
-    mW({g:0}) // hmm.. want to matchs screen size
+    b2.mW({g:0}) // hmm.. want to matchs screen size
 
     world.Rev(
         dome = world.baa(300,600, 200),
@@ -129,7 +131,7 @@ GRAVITY=function(){
 
 
 GRAVITY0=function(){
-    mW({g:0})
+    b2.mW({g:0})
 
 
     bi1= ba(100,100,100)
@@ -146,88 +148,62 @@ GRAVITY0=function(){
 
 
 
-
-
-
-
-
-
 _directionPressed  = dirPush=function(){
-
     pushRight = 0
     pushLeft = 0
     pushUp = 0
     pushDown = 0
-
-    kD('l',  function(e){
-
-            // ee = e
-
-            pushLeft = 1
-
-        })
-
-    kU('l',function(){pushLeft = 0} )
-    kD('r',function(){pushRight=1})
-    kU('r',function(){pushRight=0})
-    kD('u',function(){pushUp=1})
-    kU('u',function(){pushUp=0})
-    kD('d',function(){pushDown=1})
-    kU('d',function(){pushDown=0})
-
-}
+    $.kD('l',  function(){ pushLeft = 1   })
+    $.kU('l',function(){pushLeft = 0} )
+    $.kD('r',function(){pushRight=1})
+    $.kU('r',function(){pushRight=0})
+    $.kD('u',function(){pushUp=1})
+    $.kU('u',function(){pushUp=0})
+    $.kD('d',function(){pushDown=1})
+    $.kU('d',function(){pushDown=0})}
 
 
-makeTim=function(n){
-    if(U(n)){
-        var b=ba().uD('tim')
-        bindr('guy',b,.3)
-        return b}
+makeTim=function(num){
+    var tim
 
-    _.times(n,function(){
-        var b=ba().uD('tim')
-        bindr('guy',b,.3)})
-}
+    if(U(num)){
+        var tim = ba().uD('tim')
+        bindr('guy', tim,.3)
+        return tim}
+
+    _.times(num, function(){
+
+        var ti= ba().uD('tim')
+        bindr('guy', tim,.3)
+    })
+
+    return world}
+
+
+
 
 
 
 makeMe=function(){
 
-    var bodyDef = DynamicBodyDef(100,100)
-    var fix1 =    PolyFixture(50,100).rest(0).den()
-    var fix2 =    PolyFixture(10,30,0,40).uD('feet').sensor(1)
+    var bodyDef = b2.dynamicDef(100,100)
+    var fix1 =    b2.polyDef(50,100).rest(0).den()
+    var fix2 =    b2.polyDef(10,30,0,40).uD('feet').sensor(1)
 
-    player = p = world.addBody(  bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
-
+    player = p = world.A(  bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
     player._direction = 1
-
     player.direction = player.dr = function(direction){
-
         if(U(direction)){return this._direction}
-
         this._direction = direction
-
         return this}
-
     player.speed = 40
-
     player.moveX =  function(n){
-
         if (n == '-'){  return player.move( - player.speed )}
-
         n = N(n) ? n : player.speed
-
         if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
-
-        return player
-
-    }
-
-
+        return player}
     player.gFL().SetFriction(1)
-
     bindr('me', player)
-
     return player}
 
 
@@ -266,11 +242,11 @@ footListener=function(){
 }
 
 
-moveListener=function(){  stage.tick(function(){
+moveListener=function(){
 
+    stage.tick(function(){
 
     player.rt( 0 )
-
 
     world.eachBody(
 
@@ -322,26 +298,26 @@ moveListener=function(){  stage.tick(function(){
 
 
 
+
+
 bindr = function( im, spr, sxy, rt ){
 
     sxy = sxy||.4
 
     rt = N(rt) ? rt : 6
 
-
     stage.bm(  im,
-
         function(b){bb=b
-
              b.rCenter('+')
-
              if ( A(sxy) ){  b.sX( sxy[0] ).sY( sxy[1] ) }
-
              else { b.sXY( sxy ) }
-
             b.rotation=  rt
 
-          createjs.Ticker.on('tick', function(){   b.XY( spr.x(), spr.y());    b.rotation= rt + spr.rt()   })
+         cjs.tick( function(){
+
+             b.XY( spr.x(), spr.y());    b.rotation= rt + spr.rt()
+
+         })
 
             // spr.killSprite = spr.kS = function(){  b.XX() }
 
@@ -350,18 +326,54 @@ bindr = function( im, spr, sxy, rt ){
 
 
 
+p=cjs.Container.prototype
+p.bindr = function( img, body, sxy, startingRotation ){
+    //img is an image name
+    //rotation is in degerees!
+    sxy = sxy||.4
+    startingRotation = N( startingRotation) ?  startingRotation : 6
+    this.bm(img,
+           function(bm){//b=bm  //bm.rCenter('+')
+
+               if ( A(sxy) ){  bm.sXY( sxy[0] , sxy[1] )} else { bm.sXY(sxy) }
+               bm.rotation =  startingRotation
+               cjs.tick( function(){
+                   bm.XY(body.X(),body.Y())
+                   bm.rotation =  body.rot() +  startingRotation
+               })
+
+               body.killSprite = body.kS = function(){  bm.remove() }})
+
+    return body}
+
+
+
+
+b2.testBinder = function(){z()
+
+    b2.mW()
+
+    b = w.bi(200,200,30,100)
+
+    stage.bindr('me', b)
+    stage.bindr('chicks', w.bi(200,200,200,200))
+    stage.bindr('guy', w.bii())
+}
+
+
+
+
 STAGR=function(){
 
     z()
 
-    canvas = $.canvas('r', 400, 400).A()
+    canvas = $.canvas('red', 400, 400).A()
 
-    stage = new createjs.Stage( canvas[0])
+    stage = new cjs.Stage( canvas[0])
 
     stage.tick()
 
     stage.bm('me', function(me){  m=me    })
-
 }
 
 
@@ -434,6 +446,8 @@ bindShape = function( shape, spr  ){
 
 
 
+
+
 BINDSHAPE=function(){z()
 
 makeWorld()
@@ -455,13 +469,17 @@ makeWorld()
 
 DEMO_IMPULSE =function(){
 
-    makeWorld({ gravity: 0})
+    makeWorld({ gravity: 0 })
 
-    world.addBody(
-        DynamicBodyDef(100,500).rt(2).fR(0) , PolyFixture(30,30))
+    world.A(
 
-    body =world.addBody(
-        DynamicBodyDef(300,500).rt(1).fR(.2) , PolyFixture(30,30) )
+        b2.dynamicDef(100,500).rt(2).fR(0) , b2.polyDef(30,30))
+
+    body =world.A(
+
+        b2.dynamicDef(300,500).rt(1).fR(.2) , b2.polyDef(30,30)
+
+    )
 
     test={
 
@@ -523,7 +541,7 @@ DEMO_SCALE =function(){
 
     function addBody(){
 
-        body = world.addBody( DynamicBodyDef(x,y).linVel(v), fixture=CircleFixture(radius)  ) }
+        body = world.A( b2.dynamicDef(x,y).linVel(v), fixture=CircleFixture(radius)  ) }
 
 
     function destroyAndAddBody(){
@@ -547,34 +565,31 @@ DEMO_SCALE =function(){
 
 PLAYER=function(){
 
-    mW({w:'makeWallsFull',g:0, $$:0})
-
-    player = p = makeMe().aD(10000)
+    b2.mW({walls:'makeWallsFull', g:0 })
 
 
-    makeTim(30)
+     player = p = makeMe().aD(10000)
+
+
+    w.addTim(7)
 
 
     //mouse control
-    m$(
-        function(){
-            var xdif= MX -p.x(),
-                ydif= MY -p.y(),
-                po=p.wP(0,-75)
+    $.click(
+        function(e){   //  po= p.wP(0, -75)
+
+            xdif=    e.pageX   -  p.X()
+            ydif=   e.pageY  -    p.Y()
 
             //thrust ship
-            p.aI(xdif/20, ydif/20)
-
-
-
+             p.aI(xdif/20, ydif/20)
 
             //rotate ship
-            p.rt(
-                    tDeg($M.atan(ydif/xdif))+(xdif >0?90:270) )
+            p.rt( Math.toDegrees(Math.atan(ydif/xdif))+(xdif >0?90:270) )
 
 
             //shoot
-            ba(po.x, po.y , 10).aI(xdif/40,  ydif/40).uD('bul')
+            w.ba(p.X(),  p.Y() , 10).aI(xdif/40,  ydif/40).uD('bul')
 
 
         }
@@ -668,20 +683,20 @@ PLAYER=function(){
 
 PLAYER1=function(){
 
-    mW({
+    b2.mW({
 
-        w:'makeWallsFull',
-        g:0,
-        $$:0,
-        bg:'space.jpg'
+        g: 0//,  bg: 'space.jpg'
 
     })
 
-    p=player = makeMe().angDamp( 10000 )
+    p = player = makeMe().angDamp( 10000 )
 
-    makeTim( 3 )
+    w.addTim( 3 )
 
-    world.onBeginContact(function(contact){   var a= contact.A().gB(), b= contact.B().gB()
+    world.onBeginContact(function(contact){
+
+            var a= contact.A().gB(),
+                b= contact.B().gB()
 
 
         // if either a or b is a bullet.. and neither is the guy
@@ -706,10 +721,8 @@ PLAYER1=function(){
     })
 
 
-
-
     //key function! the safe way (time) to remove objects
-    stage.tick(function(){
+    cjs.tick(function(){
 
         world.eachBody(function(body){
 
@@ -723,23 +736,37 @@ PLAYER1=function(){
 
 
 
-    stage.tick(function(){
-        if(pushLeft){p.rt(p.rt()-2)}
-        if(pushRight){p.rt(p.rt()+2)}
-        if(pushUp){var v= p.GetWorldVector(bV(0,-100))
-            p.aI(v.x/100, v.y/100 )}
+    cjs.tick(function(){
+
+        if(pushLeft){p.rt(p.rt()-8)}
+
+        if(pushRight){p.rt( p.rt()+ 8 )}
+
+        if(pushUp){
+
+
+           v= p.GetWorldVector( bV(0,-100) )
+
+            p.aI(v.x/40, v.y/40 )
+
+        }
+
+
         if(pushDown){var v= p.GetWorldVector(bV(0,-100))
-            p.aI(-v.x/40, -v.y/40 )}})
+            p.aI(-v.x/100, -v.y/100 )
+        }
+
+    })
 
 
 
-    kD('s', function(){
-        var v= p.GetWorldVector(bV(0,-100)),
+    $.kD('s', function(){
+
+        v= p.GetWorldVector(b2.V(0,-100))
+
             po= p.wP(0,-75),
 
-            b=ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul')
-
-        bindr('me',b,.1)
+        w.stage.bindr('me', ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul'), .1)
 
     })
 
@@ -748,29 +775,36 @@ PLAYER1=function(){
     // s.t(function(){s.xy( 250-p.x() , -50-p.y()  )})
 
 }
+
 PLAYER2=function(){
 
-    mW()
+    b2.mW()
+
     bii(800,300,100)
     bii(260,240,40)
     bii(550,250,100)
     bii(1350,550,100)
-    bindr('guy', bii(300,200,100),[.4,1.2])
-    bindr('guy', bii(300,500,60,30),[.4,1.2])
+
+    bindr('guy', bii(300,200,100), [.4,1.2] )
+    bindr('guy', bii(300,500,60,30),  [.4,1.2] )
     bindr('guy', bii(150,400,60,30))
 
     player = p = makeMe().aD( 10000 )
 
     dirPush()
-    footListener()
-    moveListener()
 
+    footListener()
+
+    moveListener()
 
     //s.sx(2).sy(2)
    // s.t(function(){  // s.x( 450-p.x()  )  //  if(s.x() > 0){s.x(0) }  // s.y( -50-p.y()  ) })
 
 }
-PLAYER3=function(){mW()
+
+
+
+PLAYER3=function(){b2.mW()
     warpping=false
     p=makeMe().aD(10000)
     dirPush()
@@ -790,11 +824,13 @@ PLAYER3=function(){mW()
     bii(500,600,30,200)
     bii(600,600,30,200)
 
-    world.addBody(sBD(550,580), pFx(100,20).uD('warp'))
-    world.addBody(dBD(650,580), pFx(100,20).uD('tramp'))}
+    world.A( sBD(550,580), pFx(100,20).uD('warp'))
+
+    world.A(dBD(650,580), pFx(100,20).uD('tramp'))}
+
 PLAYER4=function(){
 
-    mW()
+    b2.mW()
 
     warpping=false
 
@@ -996,7 +1032,7 @@ PINBALL=function(){
 
 
 
-    mW({  w : 'makeWallsPinball'  })
+    b2.mW({  w : 'makeWallsPinball'  })
 
     canvas.W( 430 ).drag()
 
@@ -1081,51 +1117,31 @@ PINBALL=function(){
 
 }
 
-controller=function(){
 
 
 
-    d=$.div().A(
 
-        $.button('left').id('left'),
-        $.button('jump').id('jump'),
-        $.button('right').id('right')
-
-    ).A()
+controller=function(){return $.gameController().A()}
 
 
-}
-
-
-controllerListener=function(){
-
-
-
+$.startControllerListener = controllerListener=function(){
     pushRight = 0
     pushLeft = 0
     pushUp = 0
 
-
     $('#left').on('mousedown mouseover touchenter', function(e){
-
         pushLeft = 1
-
-        e.preventDefault()
-
-    })
-
-
+        e.preventDefault()})
     $('#left').on('mouseup mouseout touchleave', function(){ pushLeft = 0 })
-
     $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })
-
     $('#jump').on('mouseup mouseout touchleave', function(){  pushUp=0 })
-
     $('#right').on('mousedown mouseover touchenter', function(){  pushRight=1})
-
     $('#right').on('mouseup mouseout touchleave', function(){pushRight=0})
-
 }
+
+
+
+
 
 
 PHONEJUMP=function(){z()

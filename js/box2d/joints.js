@@ -1,5 +1,6 @@
-SuperJointDef =sJD=function(joint){var j=joint
+SuperJointDef =sJD=function(joint){
 
+    var j=joint
 
     joint.init = joint.i=function(){
 
@@ -8,9 +9,7 @@ SuperJointDef =sJD=function(joint){var j=joint
         return j}
 
     joint.A=function(bodyA){ joint.bodyA = bodyA; return j }
-
     joint.B=function(bodyB){ joint.bodyB = bodyB; return j }
-
     joint.collide = joint.cC=function(a){ j.collideConnected = a? true : false; return j }
 
     //mouse
@@ -22,35 +21,25 @@ SuperJointDef =sJD=function(joint){var j=joint
 
         return j}
 
-
     //distance
     j.freq=j.f=function(a){j.frequencyHz=a;return j}
-
     j.len=j.l=function(a){
         j.length=a/30
         return j
     }
-
-
     j.dampRat=j.d=function(a){j.dampingRatio=a;return j}
 
 
 
     //revolute
     j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
-
     j.maxTorque=j.mMT=function(a){
         j.maxMotorTorque=a
         return j}
-
     j.lowAng= j.lA = function(a){j.lowerAngle=tRad(a);return j}
-
     j.upAng= j.uA = function(a){j.upperAngle=tRad(a);return j}
-
     j.localA =j.lAA=function(a){ j.localAnchorA = a; return j }
-
     j.localB =j.lAB=function(a){ j.localAnchorB = a; return j }
-
     j.rat = j.r=function(a){j.ratio = a; return j }
 
 
@@ -67,121 +56,17 @@ SuperJointDef =sJD=function(joint){var j=joint
         j.motorSpeed = a; return j}
     j.motor=j.eM=function(a){
         j.enableMotor = a?true:false; return j}
-
     j.maxSpeed =j.mMS=function(a){ j.maxMotorSpeed=a; return j }
 
 
-
     //LIMITS
-
     j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
-
     j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
-
-
     j.limits=j.eL=function(a){ j.enableLimit=a?true:false;return j}
-
     j.init=j.i=function(){
         j.Initialize.apply(j,G(arguments))
         return j}
-
     return j}
-
-
-
-SuperJoint = sJt=function(j){
-
-
-    //shared
-    j.init= j.i  = j.i1=function(){
-
-
-       j.Initialize.apply(j,  G(arguments))
-
-        return j}
-
-
-    j.collide = j.cC=function(a){
-        j.collideConnected=a?true:false; return j
-    }
-
-    //pops
-    j.target = j.sT    = function(a,b){
-        if(!O(a)){a=bV(a,b)}
-        j.SetTarget(a)
-
-        return j}
-
-    j.freq =j.f  =function(a){j.frequencyHz=a;return j}
-
-    j.len = j.l  =function(a){
-        j.length=a/30
-        return j}
-
-
-    j.len2 =function(len){
-
-        if( U(len) ){ return j.GetLength() * 30 }
-
-        j.SetLength( len/30 )
-
-        return j
-
-    }
-
-
-    j.dampRat =j.d  =function(a){j.dampingRatio=a;return j}
-
-
-    //motor
-    j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
-        j.maxMotorSpeed=a
-        return j}
-
-    //motor rev
-
-
-
-    j.mt=j.motor =j.enableMotor = j.eM = function(a){
-        j.EnableMotor( a ? true : false )
-        return j}
-
-    j.speed = j.motorSpeed=j.mS=function(speed){
-        if(U(speed)){return this.GetMotorSpeed()}
-        this.SetMotorSpeed(speed)
-        return this}
-
-    j.torque = function(torq){
-        if(U(torq)){
-            return this.GetMotorTorque()}
-        this.SetMaxMotorTorque(torq)
-        return this}
-
-    j.maxTorque = j.mMT=  j.mT=function(a,b,c){
-        j.SetMaxMotorTorque(a,b,c); return j}
-
-    j.maxForce = j.mMF=  j.mF=function(a,b,c){
-        j.SetMaxMotorForce(a,b,c); return j}
-
-
-    j.lm= j.limits =j.setLimits = j.sL = function(a,b){
-
-        a = N( a ) ? a : 20
-
-        b = N( b ) ? b : 180
-
-        j.SetLimits( tRad(a), tRad(b) )
-
-        return j}
-
-
-    j.enableLimits= j.enableLimit = j.eL=function(a){
-        j.EnableLimit( a?true:false)
-        return j}
-
-
-    return j}
-
 
 
 
@@ -189,13 +74,14 @@ SuperJoint = sJt=function(j){
 
 Joints={}
 
-Stuff=Complex={}
+Stuff =  {}
+
 
 //DISTANCE JOINTS
 //makes a distance joint def
-Joints.distance = DistanceJoint = dJt =function(o){
+b2.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(o){
 
-    var j=SuperJoint( new BXJ.b2DistanceJointDef() )
+    var j= SuperJointDef( new b2.Joints.b2DistanceJointDef() )
 
     //this initialize function for distance, not revolute
     j.init = j.i=function(a,b,c,d){
@@ -229,28 +115,32 @@ Joints.distance = DistanceJoint = dJt =function(o){
 
     return j}
 
-Joints.rod = Rod = rod =function(a, b){ return DistanceJoint().init(a,b) }
 
-Joints.spring = Spring = spring =function(a,b){
+Joints.rod = Rod = rod =function(a, b){
+    return b2.distanceDef().init(a,b) }
 
-    return DistanceJoint().init( a, b ).len(1).freq(3).dampRat(.1)
+
+b2.sprint = Joints.spring = Spring = spring =function(a,b){
+
+    return b2.distanceDef().init( a, b ).len(1).freq(3).dampRat(.1)
 
 }
 
-RandomDistanceJoint = sDJ=function(x, y){
+RandomDistanceJoint = function(x, y){//sDJ=
 
     world.createJoint(
 
-        spring(
+        b2.spring(
 
-        world.add( DynamicBodyDef(x,y), fix() ),
 
-        world.add( DynamicBodyDef(x,y), fix() )
+            world.A( b2.dynamicBodyDef(x,y), fix() ),
+            world.A( b2.dynamicBodyDef(x,y), fix() )
 
     ))
 }
 
-RandomDistanceJoint.$$=function(){ x.$$(sDJ) }
+RandomDistanceJoint.$$=function(){ $.dblclick( RandomDistanceJoint ) }
+
 
 Stuff.Bridge = Stuff.bridge = bridge=function(x,y){
 
@@ -321,13 +211,23 @@ CHANGEDISTJOINT=function(){
 
 }
 
-BRIDGE=function(){makeWorld()
+BRIDGE=function(){b2.makeWorld()
     bridge(100,200)
     bridge(500,200)}
-DEMO_DIST=function(){makeWorld()
 
 
-    w.cJ( DistanceJoint().i(ba(),ba()).l(100).f(1).d(.01) )
+
+
+DEMO_DIST=function(){
+
+    w = b2.makeWorld()
+
+
+    w.cJ(
+
+        DistanceJoint().i(ba(),ba()).l(100).f(1).d(.01)
+    )
+
     w.cJ( DistanceJoint().i(ba(),ba()).l(100).f(1).d(2) )
 
 
@@ -516,6 +416,8 @@ SuperPulleyJoint = sPJ= function(x,y){
 
 }
 SuperPulleyJoint.$$=function(){x.$$(sPJ)}
+
+
 PULLEY=function(){
     makeWorld()
 
@@ -550,15 +452,17 @@ PULLEY=function(){
 }
 
 
+
+
+
 //MOUSE JOINTS
-MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
+b2.mouseDef = MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
 
     var j=new b2MouseJointDef()
 
     j.sT=function(a,b){//=j.tS=    j.tg=j.tgS=j.ts=
         j.target.Set(a,b)
         return j}
-
 
     j.cC=   j.clC= j.clCn=  j.cc=function(a){
         j.collideConnected= a ? true:false

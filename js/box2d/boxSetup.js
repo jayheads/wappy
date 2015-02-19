@@ -1,13 +1,107 @@
 
+
+b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
+    if(!O(ops)){ops={}}
+
+     options = ops
+
+
+    ops.gravityY = ops.g
+    ops.gravityY = N( ops.gravityY )? ops.gravityY : 40
+    ops.walls = ops.w
+
+    var width = ops.W||1200, height= ops.H||600
+
+    world = w = b2.world(
+        b2.V(0, ops.gravityY)
+    )
+
+
+    w.stage  =  s = stage = cjs.stage('black',width,height).A()    //cjs.Ticker.removeAllEventListeners()
+    w.stage.autoClear=false
+    w.canvas = w.stage.canvas;
+    canvas = $(w.canvas).id('canvas')
+    w.context = w.canvas.getContext('2d')
+    if(ops.backgroundImage){stage.bm(ops.backgroundImage)}
+    var canvasPosition = $(w.canvas)._getPosition()
+    w.x = canvasPosition.x
+    w.y = canvasPosition.y
+
+
+
+    $.gameController().A(); $.startControllerListener()
+
+    _mouseJoint = _mouseIsDown = 0
+    setInterval( function(){handleMouseJoints(); handleDebug()}, 1000/60 )
+    $.mousedown(function(e){// *** need to change to pagex(so can scroll page?).. but i think it messes up for mobile
+        var x = w.x, y = w.y
+        _mouseIsDown = true
+        recordMouseCoords(e)
+        $.mousemove(recordMouseCoords)
+        function recordMouseCoords(e){mX=(e.clientX-x)/30; mY=(e.clientY-y)/30}}).mouseup( function(){   _mouseIsDown = false})
+        .touchstart(function(e){
+
+            _mouseIsDown = true
+            recordMouseCoords(e)
+            $.touchmove(recordMouseCoords)
+            function recordMouseCoords(e){
+                var touch = e.originalEvent.touches[0]
+                mX = (touch.clientX- w.x)/30
+                mY = (touch.clientY- w.y)/30}}).touchend( function(){   _mouseIsDown = false})
+
+
+
+
+
+    w.dD(
+        b2.debugDraw(  w.context,30 ).fillAlpha(.6).flags(shB||jB).lineThickness( 3000 )
+
+    )
+
+
+    w.bD = bD = b2.staticDef()
+    w.fD = fD = b2.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2.polyDef() )
+    w.makeWalls(ops.walls )
+    return world       //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
+
+    function handleDebug(){
+        w.Step(1/60, 10, 10)
+        w.DrawDebugData()
+        w.ClearForces()
+        if(F(ops.cb)){ops.cb()}
+        w.stage.update()}
+    function handleMouseJoints(){
+
+        if(_mouseIsDown){
+            _mouseJoint=_mouseJoint||b2.mouseJoint(w.getBodyAtPoint(mX,mY))
+            if(_mouseJoint){_mouseJoint.SetTarget( b2.V(mX, mY) )}}
+
+        else if(_mouseJoint ){_mouseJoint.destroy(); _mouseJoint=null}
+
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 BASICWORLD=function(){
 
 z()
 
 
-    world = w =    World(  bV(0, 40) )
+    world = w =    b2.world(  b2.V(0, 40) )
 
     canvas = c = $.canvas('X', 500, 500).id('canvas').A()[0]
-
 
     stage = s = new createjs.Stage(canvas)
 
@@ -18,8 +112,6 @@ z()
 
 
     debugDraw.dS( 30 )
-
-
 
     debugDraw.SetFillAlpha( .6 )
         //debugDraw.SetLineThickness( 3000 )
@@ -99,17 +191,6 @@ CATAPULT=function(){
 }
 
 
-
-
-//prevent iphone/ipad default scrolling
-
-$(function(){
-
-    $('body').on('touchmove', function(e){ e.preventDefault() })
-
-
-})
-
 handleJointsAlt = 0
 
 
@@ -159,92 +240,13 @@ mW2 = function(){z()
 
 
 
-makeWorld = mW = function(options){var o=options
-
-    if(!O(options)){options={}}
-
-    options.gravityY = options.g
-
-    //if( options.z !=0 ){ z() }
-
-
-
-    _mouseJoint = 0
-
-    _mouseIsDown = 0
-   
-
-    options.gravityY = N( options.gravityY )? options.gravityY : 40
-
-    world = w =    World(  bV(0, options.gravityY) )
-
-    makeStage(
-
-            options.W || 1200 ,
-            options.H|| 600 ,
-
-        options  )
-
-    canvasPosition = _getPosition(  $('#canvas')[0]  )
-
-    setInterval( function(){//start the ticker
-
-                if( handleJointsAlt == true ){ handleJoints2() }  else { handleJoints() }
-
-
-                world.Step(1/60, 10, 10)
-                world.DrawDebugData()
-                world.ClearForces()
-                if( F(options.cb) ){ options.cb() }
-                s.update()
-        },
-
-                1000/60 )
-
-    checkMouseDown()
-
-    setupDebugDraw()
-
-    setFixtures()
-
-    if( D ( options.w ) ){
-
-
-        if( S( options.w ) ){   $w[ options.w ]() }
-
-        if( F( options.w ) ){     options.w() }
-
-
-    }
-
-
-    else {  makeWalls() }
-
-  controller()
-
-
-    if( ! options.$$ == 0 ){  makeShapeOnDblClk() }
-
-    return world}
 
 
 
 
-makeStage=function(X, Y, options){
 
-    canvas = $.canvas('z', X, Y ).A().id( 'canvas' )
 
-    s = stage = new createjs.Stage( canvas[0] )
 
-    stage.autoClear = false
-
-    createjs.Ticker.removeAllEventListeners()
-
-    if(options.backgroundImage){
-        stage.bm(options.backgroundImage)
-    }
-
-}
 
 
 
@@ -314,126 +316,65 @@ $.fn.getPosition = $.fn.getTotalOffset = function(){
      //why not s.autoClear(0)?
 _getPosition = gEP = function( e ){
 
-//=getElementPosition//osP=offsetParent
-    var x=0,  y= 0
+return $(e)._getPosition()
 
-    while( E(e) ){ //O(e)&&D(e.tagName)
-
-        y += e.offsetTop
-
-        x += e.offsetLeft
-
-        if( isBodyElement(e)  ){ e = 0 }
-
-        e = e.offsetParent || e
-    }
-
-    return { x:x, y:y }
-
-
-    function isBodyElement(e){
-
-        return O(e) && uC(e.tagName) == 'BODY'
-
-    }//isBodyElement
-
-
-
-}//just gets the TOTAL offset of ANY element
+}
 
 
 
 
 
+b2.mouseJoint = mouseJoint = function(body){
+    if(!body){return false}
+//create mouse joint from a body
+    var mouseDef=b2.mouseDef(  w.gB(),  body.awake(1)  )
+    mouseDef.target.Set(mX, mY)
+    mouseDef.maxForce=( 300 * body.mass() )
+    mouseDef.collideConnected = true
+    return w.createJoint(mouseDef)}
 
 
-
-mouseJoint =function(b){
-
-    var m = MouseJointDef(  w.gB(),  b.aw(1)  )
-
-    m.target.Set( mX, mY )
-
-    m.maxForce=( 300 * b.m() )
-
-    m.collideConnected = true
-
-    return w.cJ(m)
-
-}//create mouse joint with a body
 
 
 
 
   getBodyAtMouse=  function( mX, mY ){
 
-      var _selectedBody
-
-      var queryFunc= function(fxt){
-
-
-          if( !SuperFixture(fxt).gT( sB ) &&  fxt.testPoint( mX , mY )){       // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
-
-              _selectedBody = fxt.gB()
-
-              return false
-          }
-
-          return true}
-
-
-
-      w.QueryAABB( queryFunc, AB( mX-.001, mY-.001, mX+.001, mY+.001 ) )
-
-    if( O( _selectedBody ) ){  return SuperBoxBody(_selectedBody)  }
-
-  }
+  return w.getBodyAtPoint(mX, mY)}
 
 
 
 
 
+
+b2.Joints.b2Joint.prototype.destroy=function(){
+    this.GetBodyA().GetWorld().DestroyJoint(this)
+}
 
 
 
 
 handleJoints=function(){
 
-    //if there is no current joint
-        // but the mouse is down.. then this is a potential selection..
+    //if mouse is dont.. make a new mouse joint, if there is none
 
-    if( _mouseIsDown && ! _mouseJoint ){
+    if(_mouseIsDown) {
+        $l('mouseIsDown')
 
-        //if there is a body at the mouse location..
-        //then make a joint from that body ( stored at _mouseJoint )
-
-        var body = getBodyAtMouse( mX, mY )
-
-
-        if(body){ _mouseJoint = mouseJoint( body)//.aw(1) )
+        if (_mouseJoint ) { mj =_mouseJoint
+          //  _mouseJoint.SetTarget(b2.V(mX, mY))
         }
+
+       else { _mouseJoint = _mouseJoint || b2.mouseJoint(w.getBodyAtPoint(mX, mY)) }
+
 
     }
 
-    //if there IS a joint
-        //if mouse is down, then set the mouseJoint's 'target' to the mouse location (wherever it is!)
+    else { $l('mouseIsDown')
 
-    if( _mouseJoint ){
+        if( _mouseJoint ){
 
-        if( _mouseIsDown ){ _mouseJoint.SetTarget( bV(mX, mY) )  }
-
-        //but if mouse was lifted up, then release any potential joint
-
-        else{
-
-            w.DestroyJoint(_mouseJoint)
-
-            _mouseJoint=null
-
-        }
-
-
-    }
+        _mouseJoint.destroy(); _mouseJoint = null}}
 }
 
 
@@ -446,54 +387,6 @@ handleJoints=function(){
 checkMouseDown =function(){
 
 
-    $('body').on('mousedown', function(event){
-
-            _mouseIsDown = true
-
-
-            MX = event.clientX - canvasPosition.x
-            MY = event.clientY - canvasPosition.y
-            mX = MX / 30
-            mY = MY / 30
-
-            $('body').on('mousemove',  function(event){
-
-                MX = event.clientX - canvasPosition.x
-                MY = event.clientY - canvasPosition.y
-
-                mX = MX / 30
-                mY = MY / 30
-            })
-
-    })
-
-
-    $('body').on('touchstart', function(event){
-
-        _mouseIsDown = true
-
-
-        MX =  event.originalEvent.touches[0].clientX - canvasPosition.x
-        MY =  event.originalEvent.touches[0].clientY
-        mX = MX / 30
-        mY = MY / 30
-
-        $('body').on('touchmove',  function(event){
-
-            MX = event.originalEvent.touches[0].clientX - canvasPosition.x
-            MY = event.originalEvent.touches[0].clientY - canvasPosition.y
-
-            mX = MX / 30
-            mY = MY / 30
-        })
-
-
-
-
-    })
-
-    $('body').on('mouseup', function(){   _mouseIsDown = false})
-    $('body').on('touchend', function(){   _mouseIsDown = false})
 
 
 }
@@ -502,31 +395,14 @@ checkMouseDown =function(){
 
 
 
-
-
-
-
-
-setupDebugDraw =function(){
+b2.setupDebugDraw =setupDebugDraw =function(){
 
     debugDraw = DebugDraw()
-
-
-    debugDraw.SetSprite(
-
-        $('#canvas')[0].getContext("2d")
-
-    )
-
+    debugDraw.SetSprite( w.context )
     debugDraw.dS( 30 )
-
-
     debugDraw.SetFillAlpha( .6 )
     //debugDraw.SetLineThickness( 3000 )
-
     debugDraw.SetFlags(  shB||jB   )
-
-
     w.dD(  debugDraw )
 
 }
@@ -539,30 +415,31 @@ setupDebugDraw =function(){
 
 setFixtures =function(){
 
-    // dep?
+    bD = b2.staticDef()
 
-    bD = StaticBodyDef()
-
-    fD = SuperFixtureDef( new b2FixtureDef ).d( 1 ).f( .5 ).r( .8 )
-
-    fD.shape = PolyShape()
+    fD = b2.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2.polyDef() )
 
 }
+
+
+
 
 
 
 
 makeWalls =function(){
 
-    bii(10,300, 40, 600).uD('leftWall')
+    w.bii(10,300, 40, 600).uD('leftWall')
 
-    bii(990,300, 40, 600).uD('rightWall')
+    w.bii(990,300, 40, 600).uD('rightWall')
 
-    bii(300, 0, 2400, 40).uD('ceiling')
+    w.bii(300, 0, 2400, 40).uD('ceiling')
 
-    bii(300, 590, 2400, 40).uD('floor')
+    w.bii(300, 590, 2400, 40).uD('floor')
 
 }
+
+
 
 
 
@@ -593,7 +470,7 @@ handleJoints2=function(){// so far unchanged.. need to think
 
         bb = b
 
-        if(b){   _mouseJoint = mouseJoint(b.aw(1))   }
+        if(b){   _mouseJoint = mouseJoint(b.awake(1))   }
 
         else { bb.aI( 10000, 10000 ) }
 

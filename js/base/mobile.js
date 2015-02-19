@@ -1,4 +1,13 @@
 
+//prevent iphone/ipad default scrolling
+
+$(function(){
+
+    $('body').on('touchmove', function(e){ e.preventDefault() })
+
+
+})
+
 MOBILECENTER=function(){
     z()
     $('body').C('u')

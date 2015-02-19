@@ -259,11 +259,7 @@ $.formFalse=function(a,b){
 
 
     return  form}
-$.glyph=$.glyphicon=function(glyph, a){
 
-    var s = $.span(a).K("glyphicon glyphicon-" + glyph)
-
-    return s}
 $.textarea = $.ta=  function(rows,cols,Cl,cl){
 
     var g=G(arguments),
@@ -317,6 +313,7 @@ $.h6=function(){
     var h=$( '<h6>' )
     h.A.apply(h,G(arguments))
     return h}
+
 $.input = function(typ, val, Color, color){
     var args=G(arguments),
         input = $('<input>').type(typ||'text').val(val).C('C', Color||'red', color||'blue')
@@ -334,7 +331,11 @@ $.textInput = function(widthOrPlaceHolderValue, id){
     if( g.N ){ input.K( 'form-control' ) }
 
     return input }
+
+
+
 $.range =  function(){return $.input().type('range')}
+
 $.radiobox = $.rb =  function(name, val, label){
     var args=G(arguments),
         checked,
@@ -422,6 +423,7 @@ $.checkbox2 = function self(name,val,id, makeDivWithLabel){
 
 
 }
+
 $.radioboxGroup =  function(n,v){
     var g=G(arguments),n=g[0],v=g[1],s= $.span()
     if(g.p){
@@ -436,12 +438,17 @@ $.radioboxGroup =  function(n,v){
 
     return s.id(n)
 }
+
 $.checkboxGroup = CheckBoxGroup=cbg=function(n,v){var g=G(arguments),n=g[0],v=g[1],s=sp()
     if(g.p){_e(v,function(v){s(cb(n,v,'+'))})}
     else{_e(v,function(v){s(cb(n,v))})}
     return s.id(n)
 }
+
+
+
 $.password=function(){return $('<input type="password">')}
+
 $.br=function(a){
 
     if (U(a) ){ return $('<br>') }
@@ -610,129 +617,10 @@ testForm=function(){z()
     ).A()
 
 }
-$.editDiv=function(words){
-
-    var input = $('<textarea>').css('margin', 4)
-
-    var span = $.span().C('z')
-
-    var spanFunc = function () { span.text(input.val()) }
-
-    var d = $.divA().C('n', 'y').css('padding', 8).A()
-
-    d.zIndex(0)
-
-    var location
-
-    var canMove=true
-    xButton= $.button('', function(){d.remove()}).W(4).H(4).C('r')
-
-
-    var changeLocation=true
-    var inputMove=true
-
-    var mouse = 'up'
-
-    var appendSensorDiv= $.div('y',16, 12).textAlign('center').mar('0 auto').click(function(){
-        $(this).parent().free()
-    })
-
-    d.mousedown(function(){
-
-
-        inputMove = false
-
-        mouse='div'
-    })
-    d.mouseup(function(){mouse='up'})
-    d.mousedown(function(){
-
-        $.editDiv.top ++
-
-        $(this).zIndex(  $.editDiv.top  )
-
-    })
-    input.mousedown(function(e){
-        $.editDiv.top ++
-        $(this).parent().zIndex(  $.editDiv.top  )
-        location={top: d.top(), left: d.left()}
-        inputMove = true
-        mouse='input'
-        e.stopPropagation()})
-    input.mousemove(function(e){
-
-        if(inputMove){
-
-            e.stopPropagation()
-
-            d.top( location.top).left(location.left)
-        }
-    })
 
 
 
-    if(U(words)) {
 
-        return d.A( xButton, $br().q, span.hide(), input,
-
-            appendSensorDiv
-
-        ).dblclick(function(e){
-                e.stopPropagation()
-
-                spanFunc()
-                xButton.toggle();
-                input.toggle()
-                span.toggle()
-
-
-            }).drag()
-
-    }
-
-    else {
-
-        input.val(words)
-
-        d.A( xButton, $br().q,span, input.hide() )
-
-        spanFunc()
-
-        d.dblclick(function(e){
-            e.stopPropagation()
-            spanFunc(); xButton.toggle(); input.toggle(); span.toggle() })
-
-
-        return d.drag() }
-
-}
-$.editDiv.top=0
-$.editDiv2=function(a){
-
-
-    var div=$.editDiv(a),
-        range=$('<input type="range">')
-
-
-    range.on('mousedown',function(e){
-        e.stopPropagation()
-
-    })
-
-    range.on('input', function(){
-
-
-
-        div.find( $('span')).fontSize( $(this).val()  )
-        div.find( $('textarea')).fontSize( $(this).val()  )
-
-    })
-
-
-    div.prepend( range  )
-
-    return div
-}
 $.ul =  function(pam){
 
     if(U(pam)){return $('<ul>')}
@@ -748,6 +636,7 @@ $.ul =  function(pam){
     if(g.n){e.k('ddm')}//dropdown menu
     if(g.p){e.k('n nbn')}//navbar nav
     return e}
+
 $.row=function(n){
 
     var div= $.div().addClass('row')
@@ -756,6 +645,7 @@ $.row=function(n){
 
     return div
 }
+
 $.formGroupDiv=function(){return $.div().K('form-group').fontSize(20)}
 $.submitInput=function(val){
 
@@ -771,7 +661,7 @@ $.textInput=function(name){
     if(name){  el.attr({name: name, id:name})  }
 
     return el}
-$.passwordInput=function(name){
+$.password =$.passwordInput=function(name){
 
     var el = $('<input>').attr('type', 'password')
 
@@ -790,6 +680,10 @@ $.col = function(){  var args = G(arguments),
     _.each( iter, function(v){ div.A(v) } )
 
     return div }
+
+
+
+
 $.canvas= $.can = function(col, width, height){
 
     var el
@@ -817,6 +711,7 @@ $c = function(col, width, height){
     return $.canvas(col, width, height).A().drag().opacity(.8)
 
 }
+
 $.ipsum=function(len){   len = len || 1
 
     var str = ''
@@ -827,6 +722,9 @@ $.ipsum=function(len){   len = len || 1
 
     return str}
 $.ipsumP=function(len){return $.p().A($.ipsum(len) )}
+
+
+
 $.img2 = function(img, func){
 
     i = $.img().src(img)
@@ -856,18 +754,8 @@ $.img=function(source, func){
 
     return img
 }
-$.imgResponsive=function(s,f){
-    return $.img(s,f).K('img-responsive')
-}
-$.imgCircle=function(s,f){
-    return $.img(s,f).K('img-circle')
-}
-$.imgRounded=function(s,f){
-    return $.img(s,f).K('img-rounded')
-}
-$.imgThumbnail=function(s,f){
-    return $.img(s,f).K('img-thumbnail')
-}
+
+
 $.hr2 =  function(c,h,w){
 
     var e = qq('hr')
@@ -880,6 +768,8 @@ $.hr2 =  function(c,h,w){
 
     if(w){ e.w(w) };return e
 }
+
+
 $.span2 = function(){
 
     var args=G(arguments),
@@ -896,8 +786,11 @@ $.span2 = function(){
     if(str){ theSpan.text(str) }
 
     return theSpan}
+
 $.thead=function(){return _a( qq($('<thead>')),arguments)}
 $.tbody=function(){return _a( qq($('<tbody>')),arguments)}
+
+
 $.strong=function(){
 
 
@@ -931,12 +824,16 @@ $.aOld =function(textAndId, hrefOrFunc){
          :(args.m)? li(theEl).k('active') :(args.p)? li(theEl)
 
          :theEl}
+
 $.header=function(name,val){
     return $.input().type('header')
         .name(name).val(val)
 
 }
 $.footer=function(){return $('<footer>')}
+
+
+
 $.ol=function(o,b){var g=G(arguments),
     ol=$('<ol>')
     _.each(g, function(v){ol.A(v)})

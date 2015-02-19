@@ -3,7 +3,7 @@
 //base class for shapes
 SuperShape  =   sSh   =function(shape){
 
-    shape.testPoint =shape.tP    =shape.tPt=shape.tp=function(a,b){
+    shape.testPoint = shape.tP    =shape.tPt=shape.tp= function(a,b){
 
         return this.TestPoint(a,b)
 
@@ -12,14 +12,16 @@ SuperShape  =   sSh   =function(shape){
     return shape}
 
 
+
+
 //poly shape maker
 //handles both box and set as box!
 //x,y -> box
 //x,y,P,A -> oriented box
 //x,y,p1,p2,A ->oriented box
-PolyShape = pSh   =function( x, y, P, A, A2 ){
+b2.polyShape = b2.polygonShape = PolyShape = pSh   =function( x, y, P, A, A2 ){
 
-    var p = SuperShape( new b2PolygonShape )
+    var p = SuperShape( new b2.PolygonShape )
 
     p.setAsBox = p.sAB = function( a, b, P, A, A2 ){//p.z=p.sab=
 
@@ -55,141 +57,102 @@ PolyShape = pSh   =function( x, y, P, A, A2 ){
 
     return p}
 
+
 //circleShape maker
 // radius -> circle shape
-CircleShape=cSh   =function(a){
+b2.circleShape = CircleShape=cSh   =function(a){
 
     var s = SuperShape( new b2CircleShape(a/30) )
 
     return s
 
 }
-AShape=aSh=function(){   return PolyShape().sAA(arguments) }
-
-
-
-
-//add to world
-Triangle  =tri= function( x, y ){
-
-    x = N(x)? x : 400
-
-    y = N(y)? y : 400
-
-    world.addBody(
-
-        DynamicBodyDef( x, y ),
-
-        AFixture( [ -100, 0 ], [ 0, -100 ], [ 100, 0 ] )
-
-    )
-
-
+b2.AShape =  AShape=aSh=function(){
+    return b2.polygonShape().sAA(arguments)
 }
-Triangle2 =tri2=function(x,y){
-    x=N(x)?x:400
-    y=N(y)?y:400
 
-    world.addBody(
 
-        DynamicBodyDef(x,y),
-
-        AFixture([-200,0],[0,-200],[200,0])
-
-    )
-
-}
-Triangle3 =tri3=function(x,y){
-
-    x=N(x)?x:400
-
-    y=N(y)?y:400
-
-    world.addBody(
-
-        DynamicBodyDef(x,y),
-
-        AFixture(
+b2.triangleFixt = function(){return  b2.AFixture([-100,0], [0,-100 ], [100,0] )}
+b2.triangleFixt2 =function(){return b2.AFixture([-200,0],[0,-200],[200,0])}
+b2.triangleFixt3 =function(){
+    return b2.AFixture(
 
             [-100,0],
             [0,-50],
             [400,0]
         )
 
-    )
 
 }
-Polygon  =thi=function(x,y){
+
+b2.testTriangles= function( x, y ){b2.makeWorld()
+    x = N(x)? x : 400; y = N(y)? y : 400
+
+    _.times(2, function(){
+        world.A(b2.dynamicDef(x,y),b2.triangleFixt())
+        world.A(b2.dynamicDef(x,y),b2.triangleFixt2())
+        world.A(b2.dynamicDef(x,y),b2.triangleFixt3())
+    })
+
+}
+
+b2.somePolyFixt=function(){
+    return b2.AFixture([-100,0],[0,-100],[100,0],[60,50])}
+
+b2.testSomePolyFixt = function(x,y){b2.makeWorld()
     x=N(x)?x:400
     y=N(y)?y:400
 
-    world.addBody(
-
-        DynamicBodyDef(x,y),
-
-        AFixture([-100,0],[0,-100],[100,0],[60,50])
-    )}
-tenBalls=function(){_.times(10, function(i){ba(100 + (i*80), 200)})}
-hundBalls =function(){
-    _.times(100, function(i){
-        ba( 100  +(i*8),  50, 10) })
+    world.A(b2.dynamicDef(x,y),
+        b2.somePolyFixt()
+    )
 }
-addShapes  =addTenShapes=mBodies=function(n){
-
-    _.times(
-            n||10,
-
-        function(){
-
-        world.addBody( DynamicBodyDef().xy(), fix() )
-})}
 
 
 
+b2.randomCircleFixture = function(){
+   return b2.circleShape(  Math.random()*50+ 8 )}
+b2.randomPolygonFixture = function(){
 
-fix=function(){
 
-    return fD.s(
+    var fixt, width, height
 
-        yn()?  PolyShape(
 
-                Math.random()+.1 * 30,
-                Math.random()+.1 * 30
+    width = Math.random() * 100 + 14
 
-        )
+    height =Math.random() * 100 + 14 //12000/width
 
-            : CircleShape( Math.random()+.1 * 30 )
+    fixt= b2.polygonShape(
+            width, height
+
+    )
+
+
+
+return fixt}
+b2.randomFixture = fix=function(){
+
+    return fD.setShape(
+
+        _.random(1)?  b2.randomPolygonFixture()
+
+
+            : b2.randomCircleFixture()
     )
 
 }
 
 
-
-
-
-
-
-ba   =function(x,y,r){
-
+ ////
+//dep (on world)
+ba =function(x,y,r){
     x = x || 100
-
     y = N(y) ? y : x
-
     r = r || 20
-
-    return world.addBody(
-
-        DynamicBodyDef( x, y ),
-
-        CircleFixture( r )
-
-    )
-
-}
-
+    return world.A(
+        b2.dynamicDef( x, y ),
+        b2.circleFixture( r ))}
 //dynamic circle
-
-
 baa  =function(x,y,r){//=ba2
     x=x||100
     y=N(y)?y:x
@@ -217,65 +180,54 @@ bii  =function(x,y,W,H){//brk2=brick=
     return w.a(StaticBodyDef(x,y),   PolyFixture(W, H).r(0) )
 
 }//static rect
+////
+////
 
 
 
-
-
-
-
-
-
-str1=function(){
-
-    return world.a(DynamicBodyDef(300,200), [
-
-        PolyFixture(50,10),
-        PolyFixture(60,30,0,0,40),
-        PolyFixture(120,30,0,0,29),
-        PolyFixture(60,10,0,50,60),
-        PolyFixture(84,10,15,80,-120)
+b2.compoundShape = function(){return world.A(b2.dynamicDef(300,200), [
+        b2.polyDef(50,10),
+        b2.polyDef(60,30,0,0,40),
+        b2.polyDef(120,30,0,0,29),
+        b2.polyDef(60,10,0,50,60),
+        b2.polyDef(84,10,15,80,-120)
 
     ])}
+b2.compoundShape2 =  function(){
+
+   var body = w.A(
+
+       b2.dynamicDef(300,200),  [
+
+            b2.polyDef(50,10),
+
+            b2.polyDef(20,20),
+
+            b2.polyDef(20,10, 0,0, 10),
+
+            b2.polyDef(40,10, 50,0,  45),
+
+            b2.polyDef(84,10, 15,80, -120),
+
+            b2.polyDef(60,10, 0,50, 60 )
 
 
-str2=function(){
+        ]      )
 
-    return world.a(
-
-        DynamicBodyDef(300,200),  [
-
-            PolyFixture(50,10),
-
-            PolyFixture(20,20),
-
-            PolyFixture(20,10, 0,0, 10),
-
-            PolyFixture(40,10, 50,0,  45),
-
-            PolyFixture(84,10, 15,80, -120),
-
-            PolyFixture(60,10, 0,50, 60 )
+return body}
 
 
-        ]      )}
 
+b2.compoundStar=function(){return world.A(
 
-strStar=function(){return world.a(
-
-    DynamicBodyDef(300,200),
-
+   b2.dynamicDef(300,200),
     [
-        PolyFixture(10,10),
-
-        CircleFixture(20),
-
-        PolyFixture(4,80,300, 300,   135),
-        PolyFixture(4,80,0,0,45),
-
-        PolyFixture(4,80,100,0, 90),
-        PolyFixture(4,80,0,0,180)
-    ]
+        b2.polyDef(10,10),
+        b2.circDef(20),
+        b2.polyDef(4,80,300, 300,   135),
+        b2.polyDef(4,80,0,0,45),
+        b2.polyDef(4,80,100,0, 90),
+        b2.polyDef(4,80,0,0,180)]
 
 )}
 
@@ -283,44 +235,44 @@ strStar=function(){return world.a(
 
 
 
-platform=function(){
-    bii(300,300,200,20)
-    bii(300,300,20,80)}
+b2.platform = platform=function(){
+    w.bii(300,300,200,20)
+    w.bii(300,300,20,80)}
 
 
-fricky=function(){return w.a(DynamicBodyDef(300,200),
+b2.fricky=function(){return w.a(DynamicBodyDef(300,200),
     [
-        PolyFixture(10,10),
-        PolyFixture(20,40,0,0, 90).f(0).r(0),
+        b2.polyDef(10,10),
+        b2.polyDef(20,40,0,0, 90).f(0).r(0),
 
-        PolyFixture(20,40,0,0,180).f(0).r(0)])}
-
-
-
-
-bouncy=function(){return w.a(DynamicBodyDef(300,200),[PolyFixture(10,10),
-        PolyFixture(20,40,0,0, 90).r(.9).f(1),
-        PolyFixture(20,40,0,0,180).r(.9).f(1)])}
-
-massy=function(){return w.a(DynamicBodyDef(300,200),
-    [PolyFixture(10,10),
-        PolyFixture(20,40,0,0, 90).d(2).f(1),
-        PolyFixture(20,40,0,0,180).d(2).f(1)])}
+        b2.polyDef(20,40,0,0,180).f(0).r(0)])}
 
 
 
-fluffy=function(){
+
+b2.bouncy=function(){return w.a(DynamicBodyDef(300,200),[b2.polyDef(10,10),
+        b2.polyDef(20,40,0,0, 90).r(.9).f(1),
+        b2.polyDef(20,40,0,0,180).r(.9).f(1)])}
+
+b2.massy=function(){return w.a(DynamicBodyDef(300,200),
+    [b2.polyDef(10,10),
+        b2.polyDef(20,40,0,0, 90).d(2).f(1),
+        b2.polyDef(20,40,0,0,180).d(2).f(1)])}
+
+
+
+b2.fluffy=function(){
     return world.addBody(
 
         DynamicBodyDef(300,200),[
 
 
 
-            PolyFixture(10,10),
+            b2.polyDef(10,10),
 
-            PolyFixture(20,40,0,0,90).d(.1).f(1),
+            b2.polyDef(20,40,0,0,90).d(.1).f(1),
 
-            PolyFixture(20,40,0,0,180).d(.1).f(1)]
+            b2.polyDef(20,40,0,0,180).d(.1).f(1)]
 
 
     )}
@@ -334,28 +286,28 @@ fluffy=function(){
 
 cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
     return w.a(DynamicBodyDef(x,y),[
-        PolyFixture(10,10).d(5),
-        PolyFixture(50,20,0,40,0),
-        PolyFixture(100,20,-80,-40,260),
-        PolyFixture(100,20,80,-40,-80)])}
+        b2.polyDef(10,10).d(5),
+        b2.polyDef(50,20,0,40,0),
+        b2.polyDef(100,20,-80,-40,260),
+        b2.polyDef(100,20,80,-40,-80)])}
 cup2=function(x,y){
     x=N(x)?x:100//300
     y=N(y)?y:x//800
 
     return w.a(
         DynamicBodyDef(x,y), [
-            PolyFixture(10,10).d(5),
-            PolyFixture(50,20,0,40,0),
-            PolyFixture(100,20,-80,-40,260),
-            PolyFixture(100,20,80,-40,-80),
+            b2.polyDef(10,10).d(5),
+            b2.polyDef(50,20,0,40,0),
+            b2.polyDef(100,20,-80,-40,260),
+            b2.polyDef(100,20,80,-40,-80),
             cFx(100)])}
 cup3=function(x,y){
     x=N(x)?x:100;y=N(y)?y:x
     return w.a(DynamicBodyDef(x,y),
-        [PolyFixture(10,10).d(5),
-            PolyFixture(50,20,0,40,0),
-            PolyFixture(100,20,-80,-40,260),
-            PolyFixture(100,20,80,-40,-80),
+        [b2.polyDef(10,10).d(5),
+            b2.polyDef(50,20,0,40,0),
+            b2.polyDef(100,20,-80,-40,260),
+            b2.polyDef(100,20,80,-40,-80),
             CircleFixture(34,-80,-130),
             CircleFixture(34,80,-130)])}
 
@@ -432,17 +384,16 @@ MAKEWORLD=function(){return makeWorld()}
 
 
 
-BOX2D=function(a){
+BOX2D=function(a){b2.mW()
 
-    makeWorld()
+    b2.compoundShape()
 
+    b2.platform()
 
-    str1()
+    w.addTenBalls()
 
-    platform()
-
-    addTenShapes()
-
+    makeMe()
+    makeMe()
     makeMe()
 
 }
@@ -457,35 +408,47 @@ BOX2D=function(a){
 
 
 
-RORC=function(){mW()
-    bouncy()
-    bouncy()
-    bouncy()
-    fricky()
-    fricky()
-    fricky()}
+b2.testBounceFrict=function(){
+    b2.mW()
+
+    b2.bouncy()
+    b2.bouncy()
+    b2.bouncy()
+    b2.fricky()
+    b2.fricky()
+    b2.fricky()
+}
+
+
 CUPS=function(){
-    makeWorld()
+    b2.makeWorld()
+
     cup(280,50)
     cup2(400,50)
     cup3(700,50)
-    fluffy()
-    ba()
-    ba()
-    ba()
 
-    bii(150,220,50)
+    b2.fluffy()
+
+
+    w.ba()
+    w.ba()
+    w.ba()
+    w.bii(150,220,50)
 }
-STAIRS=function(){mW()
 
-    bii(500,500,600,100)
 
-    bii(500,400,500,100)
-    bii(500,300,500,100)
 
-    bii(500,350,450,100)
-    bii(320,400,50,600)
-    ba()
+STAIRS=function(){
+    b2.makeWorld()
+
+   w.bii(500,500,600,100)
+
+    w.bii(500,400,500,100)
+    w.bii(500,300,500,100)
+
+    w.bii(500,350,450,100)
+    w.bii(320,400,50,600)
+    w.ba()
 
 
 }
