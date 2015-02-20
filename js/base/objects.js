@@ -1,6 +1,7 @@
 
 Y = window['Y'] || {}
 Yano = {}
+STATE=function(){}
 
 // i dont know why createjs is defined here!!!!
 

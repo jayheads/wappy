@@ -27,7 +27,7 @@ Wappy.Nav = Wappy.nav = WappyNav=function(){z()
             'users', 'status' , 'messages','posts','chatrooms',
             'ranky',  'profile', 'profiles','dirt','knocks', 'book','site','sorty','elements' ,'api' ,'object'   ]),
                 $.dropdown('box2d',[     'box2d', 'wheel','heads', 'cups','pinball',
-            'revdemo','player','player1','player2', 'player3'  ])),
+            'revdemo','player','thruster','player2', 'player3'  ])),
             $.navRight(
                 $.liA('logged: '+ _username),
                 $.liA('logout', Y.logOut)))

@@ -1,34 +1,35 @@
+  b2.either = function(ob1,ob2, is1,is2){
+    return (ob1.is(is1) && ob2.is(is2))||
+        (ob1.is(is2) && ob2.is(is1))}
+
+b2.L = b2.listener=b2.contactListener= function(){
+    var l = new b2.Dynamics.b2ContactListener
+    return l}
+
+
+///////
 l = b2.Dynamics.b2ContactListener.prototype
 l.begin = l.beginContact= l.b =function(func){
     this.BeginContact = func
-    return this
-
-}
+    return this}
 l.end = l.endContact= l.e =function(func){
     this.EndContact=func; return this}
 l.pre = l.preSolve = l.p  =function(func){
     this.PreSolve = func; return this}
 l.post = l.postSolve=l.P=function(func){
     this.PostSolve=func; return this}
-b2.either = function(ob1,ob2, is1,is2){
-    return (ob1.is(is1) && ob2.is(is2))||
-        (ob1.is(is2) && ob2.is(is1))}
-b2.L = b2.listener=b2.contactListener= function(){
-    var l = new b2.Dynamics.b2ContactListener
-    return l}
 
+
+///////
 
 
 c = b2.Dynamics.Contacts.b2Contact.prototype
+
+
+
 c.filtering =c.fFF=function(){this.FlagForFiltering(); return contact}// Flag this contact for filtering.// Filtering will occur the next time step.
 c.A=function(){return this.GetFixtureA()  }
 c.B=function(){return this.GetFixtureB()  }
-
-c.a=function(){ return this.A().gB()   }
-
-c.b=function(){ return this.B().gB()   }
-
-
 c.manifold =c.gM=function(){return this.GetManifold()}
 c.localPlaneNormal =c.lPN=function(){return this.gM().m_localPlaneNormal}
 c.localPoint =c.lP=function(){return this.gM().m_localPoint}
@@ -45,54 +46,21 @@ c.setSensor  =c.sS=function(a){this.SetSensor(a?true:false);return contact}// Ch
 c.touching = c.iT=function(){return this.IsTouching()}//Is this contact touching.
 
 
+  c.includes =c.involves= c.eitherIs=c.userData = c.uD=function( u){
+    return this.A().uD() == u  || this.B().uD() ==u}
 
-
-
-
-
-c.isBetween = c.touching =c.pair=function(p1, p2){
+  c.isBetween = c.touching =c.pair=function(p1, p2){
       var c1= this.A().gB().uD(),
+
           c2= this.B().gB().uD()
-      return (c1==p1 && c2==p2)||(c2==p1 && c1==p2)}
-
-c.includes =c.involves= c.eitherIs=c.userData = c.uD=function( u){
-    return this.A().gB().uD() == u  || this.B().gB().uD() ==u}
-c.excludes=function(u){return !this.includes(u)}
-
-c.destroyIf=function(kind){
-    this.a().setDestroyIf(kind);
-    this.b().setDestroyIf(kind)
-
-}
 
 
+      return (c1==p1 && c2==p2)||(c2==p1 && c1==p2)
+
+  }
 
 
-c.destroyOtherIf=function(kind){
-
-    var a=this.a(), b=this.b()
-
-    if(a.is(kind)){
-        b.setDestroy()}
-
-    else if(b.is(kind)){
-        a.setDestroy()}
-
-}
-
-
-
-b2.neither = function(body1, body2){
-    return{is: function(data){return !body1.is(data)&&!body2.is(data)}}
-}
-
-
-b2.either = function(body1, body2){
-    return {is: function(data){return body1.is(data) || body2.is(data)}}}
-
-
-
-ISBETWEEN=function(){z()
+  ISBETWEEN=function(){z()
 
       w= b2.mW()
 
@@ -113,36 +81,82 @@ ISBETWEEN=function(){z()
 
   // SuperContact = sCon=function(contact){  var  c=contact ;return contact}
 
-//begin
-LAVACOLLIDE=  function(){z()
-    w=b2.mW()
-    w.platform(400,500,40,20)
-    w.ball(440, 40 )
 
 
-    w.collide('ball', 'platform', function(){w.box(300,40)})
-    w.collide('box', 'platform', function(){w.ball(300, 40 )})
-
-    // w.collide('box', 'platform')
-    //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
-}
-COLLIDEANY=  function(){z()
-    w=b2.mW()
-    w.platform(400,500,40,20)
-    w.ball(440,200)
-    w.collideAny('ball',
-        function(cx){c=cx
-            collX=cx.B().gB().X()
-            collY=cx.B().gB().Y()
-            w.stage.dot(collX, collY)})
 
 
-    // w.collide('box', 'platform')
-    //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
-}
 
 
-//post
+  //makes a contact listener
+//touch ball to 'button.' hit triggers new ball.
+
+  LAVA5=function(){z()
+
+      w=b2.mW()
+
+      w.platform(400,500,40,20)
+      w.ball(300,40)
+
+
+      cjs.tick(function(){
+
+        if(b2.flagged('hit')){w.ball(300,40,10)}
+
+      })
+
+
+
+      w.begin(function(contact){
+          if(contact.isBetween('ball','platform')){
+              b2.flag('hit')}
+      })
+
+
+      // if two kinds make contact, do something when safe
+
+
+
+    }
+  LAVA4=function(){z()
+
+
+      w=b2.mW()
+
+      w.platform(400,500,40,20)
+      w.ball(300,40)
+
+      cjs.on('hit', function(){
+              w.ball(300,40,10)
+          })
+
+
+      w.begin(function(contact){
+          if(contact.isBetween('ball','platform')){
+             cjs.emit('hit')}
+      })
+
+
+      // if two kinds make contact, do something when safe
+
+
+
+  }
+  LAVA3=function(){z()
+      w=b2.mW()
+      w.platform(400,500,40,20)
+      w.ball(300,40)
+      cjs.on('hit', function(){ w.ball(300,40,10) })
+      w.bindCollide('ball','platform','hit')}
+
+
+
+
+
+
+
+
+
+
 POSTSOLVE=function(){//only breaks at high impulse
 
     w=b2.mW()
@@ -182,13 +196,9 @@ POSTSOLVE=function(){//only breaks at high impulse
 
 
 
-
-
-
-
-
 //shows category and mask bits
 //the big circles dont collide??
+
 PRESOLVE =function(){
 
     b2.mW()

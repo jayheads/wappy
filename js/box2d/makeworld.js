@@ -1,20 +1,25 @@
 
 
 b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
-    if(!O(ops)){ops={}}
-
-     options = ops
-
-
-    ops.gravityY = ops.g
-    ops.gravityY = N( ops.gravityY )? ops.gravityY : 40
-    ops.walls = ops.w
+    if(!O(ops)){ops={}}; options = ops
 
     var width = ops.W||1200, height= ops.H||600
 
-    world = w = b2.world(
-        b2.V(0, ops.gravityY)
-    )
+
+
+    if(N(ops.grav)){ops.grav=[0, ops.grav]}
+    if(A(ops.grav)){
+        world = w = b2.world(b2.V( ops.grav[0], ops.grav[1] ))
+    }
+   else {
+        ops.gravityY = ops.g
+        ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40
+
+        world = w = b2.world(b2.V(0, ops.gravityY))
+
+    }
+
+
 
 
     w.stage  =  s = stage = cjs.stage('black',width,height).A()    //cjs.Ticker.removeAllEventListeners()
@@ -26,8 +31,6 @@ b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
     var canvasPosition = $(w.canvas)._getPosition()
     w.x = canvasPosition.x
     w.y = canvasPosition.y
-
-
 
     $.gameController().A(); $.startControllerListener()
 
@@ -51,25 +54,38 @@ b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
 
 
 
+    if(ops.clear !==false) {
+
+        if (ops.debug == false) {
+
+            w.debug(
+                b2.debugDraw(w.context, 30)//.flags(shB || jB).alpha(.6).line(3000)
+            )
+        }
+
+        else {
+            w.debug(
+                b2.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000)
+            )
+        }
+
+    }
 
 
-    w.dD(
-        b2.debugDraw(  w.context,30 ).fillAlpha(.6).flags(shB||jB).lineThickness( 3000 )
-
-    )
-
-
-    w.bD = bD = b2.staticDef()
+    w.bD  = b2.staticDef()//= bD
     w.fD = fD = b2.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2.polyDef() )
     w.makeWalls(ops.walls )
+
+
     return world       //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
 
     function handleDebug(){
-        w.Step(1/60, 10, 10)
-        w.DrawDebugData()
-        w.ClearForces()
+        w.step(1/60, 10, 10).draw().clearForces()
         if(F(ops.cb)){ops.cb()}
-        w.stage.update()}
+        w.stage.update()
+    }
+
+
     function handleMouseJoints(){
 
         if(_mouseIsDown){
@@ -84,6 +100,9 @@ b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
 
 
 }
+
+
+
 
 
 
@@ -198,7 +217,7 @@ mW2 = function(){z()
       canvas = $.canvas('z', 1200, 600 ).A().id( 'canvas' )[0]
       context = canvas.getContext("2d")
       stage=new createjs.Stage( canvas )
-      stage.autoClear = false
+     // stage.autoClear = false
 
       world=World(  bV(0, 40) )
 

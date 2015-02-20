@@ -2,6 +2,16 @@
 //DISPLAY OBJECT /////////////////////////////////////////////////////////////////////
 p=cjs.DisplayObject.prototype
 
+p.$=p.click=function(func){
+
+    return this.on('click', func)
+}
+
+p.$$=p.dblclick=function(func){
+
+    return this.on('dblclick', func)
+}
+
 p.remove=function(){
     this.parent.removeChild(this)
     return this}
@@ -186,25 +196,26 @@ p.warpY=function(low,high,cush){var that = this,
 
 p.tween = function(){
 
-    args = G(arguments)
+   var args = G(arguments), tween
 
     args.unshift(this)
 
-    cjs.tween.apply(null, args)
+    __tween = tween = cjs.tween.apply(null, args)
 
 
-}
+return tween}
 
 p.tweenLoop = function(){
 
-    args = G(arguments)
+   var args = G(arguments),tween
 
     args.unshift([this, 'l'])
 
-    cjs.tween.apply(null, args)
+    tween = __tween = cjs.tween.apply(null, args)
+
+return tween}
 
 
-}
 
 p.spin = function(){this.tweenLoop([{r:360}, 4000]); return this}
 

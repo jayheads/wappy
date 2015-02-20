@@ -126,6 +126,62 @@ BREAK3=function(){z()
 
     $.h1('fasd').A() //doesnt respond
 }
+
+
+
+
+
+touchDrg=function(element){
+
+    var q= $b( qq(element).q ).css({ position: 'absolute' }).on('touchstart',
+
+        function(e){ $l('touchstart')
+
+            var offset = $(this).offset(),
+                deltaX = e.originalEvent.touches[0].pageX- offset.left,
+                deltaY = e.originalEvent.touches[0].pageY - offset.top
+
+
+            $l(deltaX + ' : ' + deltaY)
+
+            $('html').on( 'touchmove' , function( e ){ $l('touchmove')
+
+                q.css({ left: e.originalEvent.touches[0].pageX - deltaX , top: e.originalEvent.touches[0].pageY - deltaY }) })
+                .on( 'touchend' , function(){ $l('touchstop'); $(this).off() })
+
+        })
+
+    return qq(element)
+
+}
+TOUCHSTART=function(){
+
+    z()
+
+    div = $.div('red', 100,200).A()
+
+    touchDrg( div )
+}
+EASELTOUCH=function(){z()
+
+    stage = cjs.stage(500).tick().A()
+
+    //this lets it work on apple !!
+    createjs.Touch.enable( stage  )
+
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+    stage.bm('me', SL)
+
+    $.div('red',10000,10).A()
+
+}
+
+
+
+
 MOBILEHEADERS=function(){
 
 

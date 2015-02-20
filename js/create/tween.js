@@ -1,5 +1,23 @@
-cjs.tween     =cjs.Tween
+cjs.tween= cjs.Tween
+
+
 p = cjs.Tween.prototype
+
+p.toggle=function(){
+
+var isPaused = this._paused
+
+    if(isPaused){
+        this.setPaused(false)
+    }
+
+    else{
+        this.setPaused(true)
+    }
+
+    return this
+
+}
 
 
 

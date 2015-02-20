@@ -1,207 +1,185 @@
-SuperFixture=sFx=function(f){
 
-    f.den=f.d=function(a){f.density=a;return f}
-    f.fric = f.f=function(a){f.friction=a;return f}
-    f.rest= f.r=function(a){
-        f.restitution=a;
-        return f}
+//SuperFixture=sFx=function(f){return f}
+
+f=b2.Dynamics.b2Fixture.prototype
+
+f.den=f.d=function(a){this.density=a;return this}
+
+f.fric = f.f=function(a){this.friction=a;return this}
+
+f.rest= f.r=function(a){
+    this.restitution=a;
+    return this}
+
+f.gB=  f.bd=function(){
+
+    return  this.GetBody()
+
+}
+
+f.sh= f.s=function(a){
+    this.shape=a;
+    return this}
 
 
+f.gSh=function(){
+    return  this.GetShape()
+}
 
-    f.gB=  f.bd=function(){
+f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return this.s(pSh())}
 
-        return  f.GetBody()
+f.set=function(x,y){
+    this.shape.Set(x,y)
+    return this
+}
 
+f.sAB=function(a,b,p,A){
+
+    if(!p){this.shape.SetAsBox(a/30,b/30)}
+
+    else{ this.shape.SetAsOrientedBox(a/30,b/30,p,A)}
+    return this}
+
+f.testPoint= f.tP=function( m, y ){
+
+    if( N(y) ){ m = b2.V(m, y) }
+
+    return    this.GetShape().testPoint(
+
+        this.GetBody().GetTransform(),
+
+        m
+
+    )
+}
+f.getType = f.gT=function(someType){
+
+    var thisType =  this.GetBody() .GetType()
+
+    return  D(someType)?  (thisType == someType) : thisType
+
+}
+
+f.gI=function(a){
+    if(U(a)){return this.filter.groupIndex}
+    this.filter.groupIndex=a; return this}
+
+f.category = f.cB=function(a){
+    if(U(a)){return this.filter.categoryBits}
+    this.filter.categoryBits=a; return this}
+
+f.mask = f.mB=function(a){
+    if(U(a)){return this.filter.maskBits}
+    this.filter.maskBits=a; return this}
+
+f.gI=function(a){
+    if(U(a)){return this.filter.groupIndex}
+    this.filter.groupIndex=a; return this}
+
+f.sensor = f.iS= function(a){
+    if(U(a)){
+        return this.isSensor
     }
 
-    f.sh= f.s=function(a){
-        f.shape=a;
-        return f}
+    this.isSensor =a? true: false
+
+    return this}
+
+f.userData=f.uD=function(a){
+    if(U(a)){return this.GetUserData() }
+    this.SetUserData(a);return this}
 
 
-    f.gSh=function(){
-        return SuperShape(f.GetShape())
-    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//SuperFixtureDef =sFxD=function(f){return f}
+f=b2.Dynamics.b2FixtureDef.prototype
+
+f.den =f.d=function(density){
+    this.density = density;
+    return this}
 
 
+f.fric =f.f=function(a){this.friction=a;return this}
+f.rest =f.r=function(a){this.restitution=a;return this}
+f.getBody =f.gB =function(){
 
-    f.sSAP  =f.sP=f.setShapeAsAPoly=function(){return f.s(pSh())}
-    f.set=function(x,y){
-        f.shape.Set(x,y)
-        return f
-    }
-    f.sAB=function(a,b,p,A){
+    return  this.GetBody()
 
-        if(!p){f.shape.SetAsBox(a/30,b/30)}
-
-        else{ f.shape.SetAsOrientedBox(a/30,b/30,p,A)}
-        return f}
-
-
-    f.testPoint= f.tP=function( m, y ){
-
-        if( N(y) ){ m = bV(m, y) }
-
-        return  SuperShape( f.GetShape() ).tPt(
-
-            f.GetBody().GetTransform(),
-
-            m
-
-        )
-    }
-
-
-
-
-    f.getType = f.gT=function(someType){
-
-        var thisType =  this.GetBody() .GetType()
-
-        return  D(someType)?  (thisType == someType) : thisType
-
-    }
-
-
-
-
-
-    f.gI=function(a){
-        if(U(a)){return f.filter.groupIndex}
-        f.filter.groupIndex=a; return f}
-
-    f.category = f.cB=function(a){
-        if(U(a)){return f.filter.categoryBits}
-        f.filter.categoryBits=a; return f}
-
-    f.mask = f.mB=function(a){
-        if(U(a)){return f.filter.maskBits}
-        f.filter.maskBits=a; return f}
-
-
-    f.gI=function(a){
-        if(U(a)){return f.filter.groupIndex}
-        f.filter.groupIndex=a; return f}
-
-
-    f.sensor = f.iS= function(a){
-        if(U(a)){
-            return f.isSensor
-        }
-
-        f.isSensor =a? true: false
-
-        return f}
-
-
-
-
-    f.userData=f.uD=function(a){
-        if(U(a)){return f.GetUserData() }
-        f.SetUserData(a);return f}
-    return f
 }
 
 
-SuperFixtureDef =sFxD=function(fixture){
-    var f=fixture
+f.setShape =f.sh= f.s=function(shape){
+    this.shape=shape;
+    return this}
 
 
-    fixture.den =fixture.d=function(density){
-        fixture.density = density;
-        return fixture}
+f.getShape =f.gSh=function(){
 
-    fixture.fric =f.f=function(a){f.friction=a;return f}
-    fixture.rest =f.r=function(a){f.restitution=a;return f}
-
-
-    fixture.getBody =fixture.gB =function(){
-
-        return  fixture.GetBody()
-
-    }
-
-
-    fixture.setShape =fixture.sh= fixture.s=function(shape){
-        fixture.shape=shape;
-        return fixture}
-
-
-    fixture.getShape =fixture.gSh=function(){
-
-        return SuperShape(fixture.GetShape())
-    }
-
-    fixture.sSAP  =fixture.sP=f.setShapeAsAPoly=function(){
-
-        return fixture.s(PolyShape())
-
-    }
-
-
-    f.set=function(x,y){
-        f.shape.Set(x,y)
-        return f
-    }
-
-    f.sAB=function(a,b,p,A){
-
-        if(!p){f.shape.SetAsBox(a/30,b/30)}
-
-        else{ f.shape.SetAsOrientedBox(a/30,b/30,p,A)}
-        return f}
-
-
-    fixture.tP = fixture.txPt=function( m, y ){
-
-        if( N( y ) ){ m = bV(m,y) }
-
-        return sSh( fixture.GetShape() ).tPt(
-
-            fixture.GetBody( ).getTransform(),
-
-            m
-
-        )}
-
-
-
-
-    f.getType=f.gT=function(a){
-
-        var t= f.GetBody() .T()
-
-        if( D(a) ){return t==a}
-
-        return t}
-
-
-
-
-
-    f.gI=function(a){
-        if(U(a)){return f.filter.groupIndex}
-        f.filter.groupIndex=a; return f}
-
-    f.category=f.cB=function(a){
-        if(U(a)){return f.filter.categoryBits}
-        f.filter.categoryBits=a; return f}
-    f.mask=f.mB=function(a){
-        if(U(a)){return f.filter.maskBits}
-        f.filter.maskBits=a; return f}
-
-    f.gI=function(a){
-        if(U(a)){return f.filter.groupIndex}
-        f.filter.groupIndex=a; return f}
-
-    f.sensor= f.iS=function(a){
-        if(U(a)){return f.isSensor}
-        f.isSensor =a?true:false
-        return f}
-
-    f.uD=function(a){
-        if(U(a)){return f.userData }
-        f.userData=a;return f}
-    return f
+    return  this.GetShape()
 }
+
+f.sSAP  =f.sP=f.setShapeAsAPoly=function(){
+
+    return this.s(PolyShape())
+
+}
+
+
+f.set=function(x,y){
+    this.shape.Set(x,y)
+    return this
+}
+
+f.sAB=function(a,b,p,A){
+
+    if(!p){this.shape.SetAsBox(a/30,b/30)}
+
+    else{ this.shape.SetAsOrientedBox(a/30,b/30,p,A)}
+    return this}
+
+
+f.tP = f.txPt=function( m, y ){
+
+    if( N( y ) ){ m = bV(m,y) }
+
+    return sSh( this.GetShape() ).testPoint(
+
+        this.GetBody( ).getTransform(),
+
+        m
+
+    )}
+
+
+
+
+f.getType=f.gT=function(a){
+
+    var t= this.GetBody() .T()
+
+    if( D(a) ){return t==a}
+
+    return this}
+
+f.gI=function(a){
+    if(U(a)){return this.filter.groupIndex}
+    this.filter.groupIndex=a; return this}
+f.category=f.cB=function(a){
+    if(U(a)){return this.filter.categoryBits}
+    this.filter.categoryBits=a; return this}
+f.mask=f.mB=function(a){
+    if(U(a)){return this.filter.maskBits}
+    this.filter.maskBits=a; return this}
+f.gI=function(a){
+    if(U(a)){return this.filter.groupIndex}
+    this.filter.groupIndex=a; return this}
+f.sensor= f.iS=function(a){
+    if(U(a)){return this.isSensor}
+    this.isSensor =a?true:false
+    return this}
+f.uD=function(a){
+    if(U(a)){return f.userData }
+    this.userData=a;return this}
+
 

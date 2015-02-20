@@ -1,3 +1,6 @@
+
+
+
 BOXCANNON=function(){
 
 
@@ -148,22 +151,16 @@ GRAVITY0=function(){
 
 
 
-_directionPressed  = dirPush=function(){
-    pushRight = 0
-    pushLeft = 0
-    pushUp = 0
-    pushDown = 0
-    $.kD('l',  function(){ pushLeft = 1   })
-    $.kU('l',function(){pushLeft = 0} )
-    $.kD('r',function(){pushRight=1})
-    $.kU('r',function(){pushRight=0})
-    $.kD('u',function(){pushUp=1})
-    $.kU('u',function(){pushUp=0})
-    $.kD('d',function(){pushDown=1})
-    $.kU('d',function(){pushDown=0})}
 
 
-makeTim=function(num){
+
+
+
+
+
+
+
+makeTimX=function(num){
     var tim
 
     if(U(num)){
@@ -184,123 +181,10 @@ makeTim=function(num){
 
 
 
-makeMe=function(){
-
-    var bodyDef = b2.dynamicDef(100,100)
-    var fix1 =    b2.polyDef(50,100).rest(0).den()
-    var fix2 =    b2.polyDef(10,30,0,40).uD('feet').sensor(1)
-
-    player = p = world.A(  bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
-    player._direction = 1
-    player.direction = player.dr = function(direction){
-        if(U(direction)){return this._direction}
-        this._direction = direction
-        return this}
-    player.speed = 40
-    player.moveX =  function(n){
-        if (n == '-'){  return player.move( - player.speed )}
-        n = N(n) ? n : player.speed
-        if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
-        return player}
-    player.gFL().SetFriction(1)
-    bindr('me', player)
-    return player}
 
 
 
-
-
-footListener=function(){
-
-    feetTouch = 0  // if make this local, graphics dissapear!?
-
-
-    var contactListener = ContactListener()
-
-
-    contactListener.beginContact(function (contact) {
-        var a = contact.A(),
-            b = contact.B()
-
-        if (a.userData() == 'feet' || b.userData() == 'feet') {  feetTouch = 1  }
-
-    })
-
-
-
-    contactListener.endContact(function(contact){
-        var a = contact.A(),
-            b = contact.B()
-
-            if (a.userData() == 'feet' || b.userData() == 'feet') {  feetTouch = 0   }
-
-    })
-
-
-
-    world.setContactListener( contactListener  )
-}
-
-
-moveListener=function(){
-
-    stage.tick(function(){
-
-    player.rt( 0 )
-
-    world.eachBody(
-
-        function(body){ if(body.is('destroy')){world.destroyBody(body)}    })
-
-
-    if (feetTouch) {  if (pushUp) {
-
-                if (pushRight) {  player.aI(0, -10)   }
-                else if (pushLeft) {  player.aI(0, -10)  }
-
-                else {  player.aI(0, -10)   }
-
-            }  else {
-
-                if (pushLeft) {
-                    player.direction( 0 )
-                    player.aI( -5, 0 )  }
-
-
-                if (pushRight) {
-                    player.direction(1)
-                    player.aI(5, 0)  }
-            }  }
-
-
-    else {
-            if(pushLeft){
-                player.direction(0)
-                player.aI(-1,0)
-            }
-
-            if(pushRight){
-                player.direction(1)
-                player.aI(1, 0)
-            }
-        }
-
-
-
-
-
-
-    }) }
-
-
-
-
-
-
-
-
-
-bindr = function( im, spr, sxy, rt ){
+bindrX = function( im, spr, sxy, rt ){
 
     sxy = sxy||.4
 
@@ -561,327 +445,28 @@ DEMO_SCALE =function(){
 
 }
 
+makeMeX=function(){
+
+    var bodyDef = b2.dynamicDef(100,100)
+    var fix1 =    b2.polyDef(50,100).rest(0).den()
+    var fix2 =    b2.polyDef(10,30,0,40).uD('feet').sensor(1)
+    var player = world.A(bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
+    player._direction = 1
+    player.dir = player.direction = player.dr = function(direction){
+        if(U(direction)){return this._direction}
+        this._direction = direction
+        return this}
+    player.speed = 40
+    player.moveX =  function(n){
+        if (n == '-'){  return player.move( - player.speed )}
+        n = N(n) ? n : player.speed
+        if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
+        return player}
+    player.fixtList().SetFriction(1)
+    player.bindSprite('me')
+
+    return player}
 
-
-PLAYER=function(){
-
-    b2.mW({walls:'makeWallsFull', g:0 })
-
-
-     player = p = makeMe().aD(10000)
-
-
-    w.addTim(7)
-
-
-    //mouse control
-    $.click(
-        function(e){   //  po= p.wP(0, -75)
-
-            xdif=    e.pageX   -  p.X()
-            ydif=   e.pageY  -    p.Y()
-
-            //thrust ship
-             p.aI(xdif/20, ydif/20)
-
-            //rotate ship
-            p.rt( Math.toDegrees(Math.atan(ydif/xdif))+(xdif >0?90:270) )
-
-
-            //shoot
-            w.ba(p.X(),  p.Y() , 10).aI(xdif/40,  ydif/40).uD('bul')
-
-
-        }
-
-    )
-
-
-
-
-
-
-    //destroy bullets and guys
-    w.oB(
-
-        function(c){
-
-            var a= c.A(),b=c.B()
-
-            //if either obj is a bullet an neither is tim ('guy')
-
-            if(
-
-                (
-                    a.gB().uD()=='bul' || b.gB().uD()=='bul'  )
-
-
-                &&!
-
-
-                (
-                    a.gB().uD()=='guy'||
-
-                    b.gB().uD()=='guy'
-                    )
-
-
-
-                )
-
-
-            {
-
-
-                //if it is a bullet
-                //destroy it
-                //if the other is tim, destory tim, too
-
-                if(a.gB().uD()=='bul'){
-
-                    a.gB().uD('destroy')
-
-                    if(b.gB().uD()=='tim'){
-
-                        b.gB().uD('destroy')
-
-                    }
-                }
-
-
-                //if it is not a bullet
-                //destrory it
-                //if the other is tim, destory tim, too
-
-                else {
-                    b.gB().uD('destroy')
-                    if(a.gB().uD()=='tim'){
-
-                        a.gB().uD('destroy')
-
-                    }
-                }}
-
-        })
-
-
-
-
-
-    s.t(
-        //actully do the destroying
-        function(){
-
-            w.e(function(b){if(b.uD()=='destroy'){
-
-                w.dB(b)
-
-            }})})
-
-}
-
-
-PLAYER1=function(){
-
-    b2.mW({
-
-        g: 0//,  bg: 'space.jpg'
-
-    })
-
-    p = player = makeMe().angDamp( 10000 )
-
-    w.addTim( 3 )
-
-    world.onBeginContact(function(contact){
-
-            var a= contact.A().gB(),
-                b= contact.B().gB()
-
-
-        // if either a or b is a bullet.. and neither is the guy
-        // if a bullet hits a non-guy...
-        if(   ( a.is('bul') ||  b.is('bul') )   && !a.is('guy')    &&  !b.is('guy')  )
-
-
-        // destroy the bullet, and if it hit tim, destroy tim too
-        { if( a.is('bul') ){
-
-            a.uD( 'destroy' )
-
-            if( b.is( 'tim' ) ){ b.uD( 'destroy' )  }
-
-        }else { b.uD('destroy')
-
-            if( a.is('tim') ){ a.uD('destroy') }
-
-        }}
-
-
-    })
-
-
-    //key function! the safe way (time) to remove objects
-    cjs.tick(function(){
-
-        world.eachBody(function(body){
-
-            if(body.is('destroy')){
-
-                body.killSprite()
-
-                world.destroyBody( body )  }})  })
-
-    dirPush()
-
-
-
-    cjs.tick(function(){
-
-        if(pushLeft){p.rt(p.rt()-8)}
-
-        if(pushRight){p.rt( p.rt()+ 8 )}
-
-        if(pushUp){
-
-
-           v= p.GetWorldVector( bV(0,-100) )
-
-            p.aI(v.x/40, v.y/40 )
-
-        }
-
-
-        if(pushDown){var v= p.GetWorldVector(bV(0,-100))
-            p.aI(-v.x/100, -v.y/100 )
-        }
-
-    })
-
-
-
-    $.kD('s', function(){
-
-        v= p.GetWorldVector(b2.V(0,-100))
-
-            po= p.wP(0,-75),
-
-        w.stage.bindr('me', ba(po.x,po.y,10).aI(v.x/40, v.y/40 ).uD('bul'), .1)
-
-    })
-
-
-    // s.sx(2).sy(2)
-    // s.t(function(){s.xy( 250-p.x() , -50-p.y()  )})
-
-}
-
-PLAYER2=function(){
-
-    b2.mW()
-
-    bii(800,300,100)
-    bii(260,240,40)
-    bii(550,250,100)
-    bii(1350,550,100)
-
-    bindr('guy', bii(300,200,100), [.4,1.2] )
-    bindr('guy', bii(300,500,60,30),  [.4,1.2] )
-    bindr('guy', bii(150,400,60,30))
-
-    player = p = makeMe().aD( 10000 )
-
-    dirPush()
-
-    footListener()
-
-    moveListener()
-
-    //s.sx(2).sy(2)
-   // s.t(function(){  // s.x( 450-p.x()  )  //  if(s.x() > 0){s.x(0) }  // s.y( -50-p.y()  ) })
-
-}
-
-
-
-PLAYER3=function(){b2.mW()
-    warpping=false
-    p=makeMe().aD(10000)
-    dirPush()
-    warpp =function(){ p.sY(100);p.sX(200) }
-    s.t(function(){if(warpping){warpp(); warpping=false}})
-    w.sCL(bCL()
-        .b(function(c){
-        var a=c.A(),b=c.B()
-        if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=1}
-        if(c.pair('feet','tramp')){p.aI(0,-150)}
-        if(c.pair('feet','warp')){warpping=true}})
-        .e(function(c){var a=c.A(),b=c.B();
-        if(a.uD()=='feet'||b.uD()=='feet'){feetTouch=0}}))
-
-    moveListener()
-    makeTim(15)
-    bii(500,600,30,200)
-    bii(600,600,30,200)
-
-    world.A( sBD(550,580), pFx(100,20).uD('warp'))
-
-    world.A(dBD(650,580), pFx(100,20).uD('tramp'))}
-
-PLAYER4=function(){
-
-    b2.mW()
-
-    warpping=false
-
-   player = p = makeMe().angDamp( 10000 )
-
-    dirPush()
-
-
-    warpp =function(){ player.sY(100); player.sX(200) } //setY, setX
-
-
-    stage.tick(
-        function(){
-
-            if(warpping){ warpp(); warpping = false }
-
-        })
-
-
-    world.setContactListener(
-
-        ContactListener()
-
-        .beginContact( function( contact ){
-
-                var a = contact.A(), b = contact.B()
-
-                if( a.uD()=='feet' || b.uD() == 'feet' ){ feetTouch = 1 }
-
-                if( contact.pair( 'feet', 'tramp' )){ p.aI( 0, -150 ) }
-
-                if( contact.pair( 'feet', 'warp' )){ warpping = true }
-
-        })
-
-        .endContact( function( contact ){ var a = contact.A(),  b = contact.B()
-
-                if( a.uD() == 'feet' || b.uD() == 'feet' ){ feetTouch = 0 }
-
-            })
-
-    )
-
-
-
-    moveListener()
-
-
-    makeCar()
-
-}
 MEMORY=function(){z()
 
     grid=[
@@ -1028,96 +613,6 @@ SLING=function(){
     }
 
 }
-PINBALL=function(){
-
-
-
-    b2.mW({  w : 'makeWallsPinball'  })
-
-    canvas.W( 430 ).drag()
-
-    baa(215,520,30)
-
-    bii(215,100,100,10)
-
-    ball= world.ba(215,90)
-
-    bindr('sun', ball, .24)
-
-    var leftJoint = baa(100,430)
-
-    var leftFlip = bi(100,430, 100,25)
-
-    var rightJoint = baa(330,430)
-
-    var rightFlip = bi(330,430, 100,25)
-
-
-    j1= w.CreateJoint(
-
-        RevoluteJointDef(  leftJoint , leftFlip ,  0,0,  40,0  ).lm(150,250)
-
-    )
-
-
-
-
-    j2= w.CreateJoint(
-
-        RevoluteJointDef(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lm(-70,30)
-
-    )
-
-
-    bii(420,400,20,2000)
-
-
-
-    $('body').on('keyup',  function(){
-
-        leftFlip.aI(100, 0);   rightFlip.aI(-100,0)
-
-    })
-
-
-
-    $('body').on('keydown',  function(){ ba(Math.random()*300+40  ,140,20)} )
-
-
-
-
-    $('body').mousedown(function(){
-
-        var b= ba(Math.random()*300+40,140,20)
-
-        if(Math.random() > .9) {
-
-             bindr('me', b,.24)  }
-
-        leftFlip.aI(120, 0);
-        rightFlip.aI(-120,0)
-
-    })
-
-
-
-    setInterval(function(){   ball.rt( ball.rt() + 10) }, 100)
-
-
-    $.pop(
-        $.div(  'y').A(
-            $.h1('welcome to gamey pinball'),
-            $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
-            $.h4('goal: knockdown the fireball'),
-            $.h5('click the game to start')  )
-
-    )//.A().click(function(){ $(this).remove() })
-
-
-
-}
-
-
 
 
 

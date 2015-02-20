@@ -271,50 +271,64 @@ drag = drg=function(element){
     return qq(element)
 
 }
-touchDrg=function(element){
 
-    var q= $b( qq(element).q ).css({ position: 'absolute' }).on('touchstart',
+cjs.Keys = function(){}
+cjs.watchKeys=function(){
+    cjs.Keys.l = cjs.Keys.left = false
+    cjs.Keys.r = cjs.Keys.right = false
+    cjs.Keys.r = cjs.Keys.right = false
+    cjs.Keys.d = cjs.Keys.down = false
+    $.kD('l',function(){if($.test){$l('left pressed')}
+        cjs.Keys.l = cjs.Keys.left = true
+        cjs.Keys.dir = 'left'})
+    $.kU('l',function(){if($.test){$l('left lifted')}
+        cjs.Keys.l = cjs.Keys.left = false
+    })
+    $.kD('r',function(){if($.test){$l('right pressed')}
+        cjs.Keys.r = cjs.Keys.right = true
+        cjs.Keys.dir = 'right'})
+    $.kU('r',function(){if($.test){$l('right lifted')}
+        cjs.Keys.r = cjs.Keys.right = false
+    })
+    $.kD('u',function(){if($.test){$l('up pressed')}
+        cjs.Keys.u = cjs.Keys.up = true
+    })
+    $.kU('u',function(){if($.test){$l('up lifted')}
+        cjs.Keys.u = cjs.Keys.up = false
+    })
+    $.kD('d',function(){if($.test){$l('down pressed')}
+        cjs.Keys.d = cjs.Keys.down = true
+    })
+    $.kU('d',function(){if($.test){$l('down lifted')}
+        cjs.Keys.d = cjs.Keys.down = false
+    })}
 
-        function(e){ $l('touchstart')
 
-            var offset = $(this).offset(),
-                deltaX = e.originalEvent.touches[0].pageX- offset.left,
-                deltaY = e.originalEvent.touches[0].pageY - offset.top
+TESTWATCHKEYS=function(){z()
+    $.test=true
+    cjs.watchKeys()}
 
 
-            $l(deltaX + ' : ' + deltaY)
 
-            $('html').on( 'touchmove' , function( e ){ $l('touchmove')
 
-                q.css({ left: e.originalEvent.touches[0].pageX - deltaX , top: e.originalEvent.touches[0].pageY - deltaY }) })
-                .on( 'touchend' , function(){ $l('touchstop'); $(this).off() })
 
-        })
+TESTKEYBOARD=function(){z()
 
-    return qq(element)
+    cjs.watchKeys()
+
+    b2.mW({debug:true})
+
+    w.footListener()
+
+
+    //  p = w.addMe().controlMe('standard')
+
+    b=w.ba()
+
+    b.bindSprite('guy')
+
+    b.controlMe('basic')
 
 }
-TOUCHSTART=function(){
 
-    z()
 
-    div = $.div('red', 100,200).A()
-
-    touchDrg( div )
-}
-EASELTOUCH=function(){z()
-
-    stage = cjs.stage(500).tick().A()
-
-    //this lets it work on apple !!
-    createjs.Touch.enable( stage  )
-
-    stage.bm('me', SL)
-    stage.bm('me', SL)
-    stage.bm('me', SL)
-    stage.bm('me', SL)
-    stage.bm('me', SL)
-
-    $.div('red',10000,10).A()
-
-}
