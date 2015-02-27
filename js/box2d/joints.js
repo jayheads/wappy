@@ -1,73 +1,72 @@
-j=b2.Joints.b2Joint
+j=b2.Joints.b2Joint.prototype
 
+j=   b2.Joints.b2JointDef.prototype
 
-///
-j=joint=b2.Joints.b2JointDef
+j.bA=j.A=function(a){this.bodyA=a; return this}
+j.bB=j.B=function(b){this.bodyB=b; return this}
+j.bAB=function(a,b){return this.bA(a).bB(b)}
 
 j.init = function(){//joint.i=
     this.Initialize.apply(this,arguments)
     return this}
 
-joint.A=function(bodyA){ this.bodyA = bodyA; return j }
-joint.B=function(bodyB){ this.bodyB = bodyB; return j }
 
-joint.collide = joint.cC=function(a){
-
+j.collide = j.cC = function(a){
     j.collideConnected = a? true : false; return j
-
 }
-
 
 
 //mouse
 j.target = j.sT  =function(a,b){
-
-    if( !O(a) ){ a = bV(a,b) }
-
-    j.SetTarget(a)
-
-    return j}
+    if( !O(a) ){ a = b2.V(a,b) }
+    this.SetTarget(a)
+    return this}
 
 //distance
-j.freq=j.f=function(a){j.frequencyHz=a;return j}
-j.len=j.l=function(a){
-    j.length=a/30
-    return j
-}
-j.dampRat=j.d=function(a){j.dampingRatio=a;return j}
+j.freq=j.f=function(a){this.frequencyHz=a;return this}
+
+j.len=function(len){
+    if(U(len)){return this.length*30}
+    this.length=len/30
+    return this}
+
+
+j.dampRat= j.d= function(a){j.dampingRatio=a;return this}
 
 //revolute
-j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
+j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return this}
 j.maxTorque=j.mMT=function(a){
-    j.maxMotorTorque=a
-    return j}
-j.lowAng= j.lA = function(a){j.lowerAngle=tRad(a);return j}
-j.upAng= j.uA = function(a){j.upperAngle=tRad(a);return j}
-j.localA =j.lAA=function(a){ j.localAnchorA = a; return j }
-j.localB =j.lAB=function(a){ j.localAnchorB = a; return j }
-j.rat = j.r=function(a){j.ratio = a; return j }
-
-j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
+    this.maxMotorTorque=a
+    return this}
+j.lowAng= j.lA = function(a){this.lowerAngle=tRad(a); return this}
+j.upAng= j.uA = function(a){this.upperAngle=tRad(a); return this}
+j.localA =j.lAA=function(a){ this.localAnchorA = a; return this}
+j.localB =j.lAB=function(a){ this.localAnchorB = a; return this}
+j.rat = j.r=function(a){this.ratio = a; return this}
+j.axis = j.lXA=function(a){ this.localAxisA=a; return this}
 
 //slider
 j.maxForce= j.mMF=function(a){
-    j.maxMotorForce = a;return j
+    this.maxMotorForce = a; return this
 }
 
 //slider and revolute
 j.speed=j.mS=function(a){
-    j.motorSpeed = a; return j}
+    this.motorSpeed = a; return this}
 j.motor=j.eM=function(a){
-    j.enableMotor = a?true:false; return j}
-j.maxSpeed =j.mMS=function(a){ j.maxMotorSpeed=a; return j }
+    this.enableMotor = a?true:false; return this}
+j.maxSpeed =j.mMS=function(a){ this.maxMotorSpeed=a; return this }
 
 //LIMITS
-j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
-j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
-j.limits=j.eL=function(a){ j.enableLimit=a?true:false;return j}
+j.lowTrans=j.lT=function(a){ this.lowerTranslation=a;return this}
+j.upTrans=j.uT=function(a){ this.upperTranslation=a;return this}
+j.limits=j.eL=function(a){ this.enableLimit=a?true:false;return this}
+
 j.init=j.i=function(){
-    j.Initialize.apply(j,G(arguments))
-    return j}
+    this.Initialize.apply(this,G(arguments))
+    return this}
+
+
 
 SuperJointDef =sJD=function(joint){
 
@@ -128,15 +127,39 @@ SuperJointDef =sJD=function(joint){
     //LIMITS
     j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
     j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
-    j.limits=j.eL=function(a){ j.enableLimit=a?true:false;return j}
-    j.init=j.i=function(){
-        j.Initialize.apply(j,G(arguments))
-        return j}
-    return j}
+    j.limits=j.eL=function(a){
+        j.enableLimit=a?true:false;return j}
 
+
+    j.init=j.i=function(){
+        j.Initialize.apply(j, G(arguments))
+        return j}
+    return j
+}
 
 Joints={}
 Stuff={}
+
+JOINTPROTO= function(){b2.mW()
+
+    a =  w.ba(150,150)
+    b = w.bi(180, 150)
+
+    jd = new b2.Joints.b2DistanceJointDef()
+
+    jd.bAB(a,b).len(200) //jd.bodyA=a; jd.bodyB=b
+
+
+    f=function(){
+        j= w.CreateJoint(jd)
+    }
+
+
+ f()
+}
+
+
+
 
 
 //DISTANCE JOINTS
@@ -176,6 +199,8 @@ b2.distDef =b2.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(
     }
 
     return j}
+
+
 
 
 b2.rod = Joints.rod = Rod = rod =function(a, b){
@@ -280,18 +305,15 @@ DEMO_DIST=function(){
     w = b2.mW()
 
 
-    w.cJ(
+   j= w.cJ(
 
         b2.distDef().i(ba(), ba()).l(100).f(1).d(.01)
 
     )
 
-    w.cJ( b2.distDef().i(ba(),ba()).l(100).f(1).d(2) )
-    w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(.1) )
-    w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(2) )
-
-
-
+   // w.cJ( b2.distDef().i(ba(),ba()).l(100).f(1).d(2) )
+   // w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(.1) )
+   // w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(2) )
 
     //  w.cJ( b2.distDef().i(ba(),ba()).l(4).f(3).d(.1) )
     //  w.cJ( b2.distDef().i(ba(),ba()).l(8).f(3).d(.1) )
@@ -299,10 +321,7 @@ DEMO_DIST=function(){
     //  w.cJ( b2.distDef().i(ba(),ba()).l(32).f(1).d(.1) )
     //  w.cJ( b2.distDef().i(ba(),ba()).l(200).f(1).d(.8) )
 
-
     cup2()
-
-
 
 }
 

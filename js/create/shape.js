@@ -1,6 +1,10 @@
 cjs=createjs
 cjs.graphics     =function(a){return new cjs.Graphics(a)}
-cjs.shape =  function(a){ return new cjs.Shape(a) }
+
+cjs.shape =  function(a){
+    if((O(a))&&a.graphics){a= a.graphics}
+    return new cjs.Shape(a) }
+
 
 
 
@@ -18,6 +22,8 @@ p.rectangle= p.rect =function(x,y,w,h,fc, sc){
     gx.dr(x,y,w,h)
     return this};
 p.clear=function(){this.graphics.clear();return this}
+p.same=function(){return cjs.shape(this)}
+
 EaselGraphicX =   function( stage ){
 
     var g, graphic
@@ -266,24 +272,6 @@ cjs.ball=function(z,fc,sc){
     })}
     return b}
 
-cjs.text =  function(words, color, font, x, y){//var g=G(arguments); if(g.N){text.bl( 'alphabetic' )}   //if(g.p){ TR(text) }
-    x=N(x)? x: 100
-    y=N(y)? y: x
-    font=font|| '20px Arial'
-    font=N(font)? font + 'px Arial' : font
-    color=color||'z'
-
-    var text= Do(  new createjs.Text(  words,  font,  oC(color) ) ).xy(x, y)
-    text.baseline = text.bl = function(b){
-
-        if( U(b) ){ return text.ob.textBaseline }
-
-        text.ob.textBaseline = b
-
-        return text
-    }
-
-    return text}
 cjs.circle2=function(r,z,x,y){
 
     graphics = new cjs.Graphics()
@@ -482,3 +470,174 @@ EaselShapeX =  function(graphic, funcOrStage){
     shape.ss = function(a,b,c,d){  shape.g.ss( a, b, c, d ); return shape}
 
     return shape}
+
+
+
+
+
+
+
+
+////
+GRAPHICSTEST=function(){
+
+
+
+       stage = cjs.stage(800,500).A()
+
+
+    canvas=stage.canvas
+
+
+        // grab canvas width and height for later calculations:
+        w = canvas.width
+        h = canvas.height
+
+
+   img=$.img('me', layout)[0]
+
+
+    function layout() {
+        var arr = [createStar, createHex, createLineTo, createRadialGradientFill,
+            createEllipse, createRectGradientFill, createBitmapFill, createRoundRect]
+
+        var padding = 5
+        var _width = 155
+        var _height = 155
+        var cols = 4
+        var space = 0
+
+
+        var border = createBorder();
+
+        _.times(arr.length, function(i){
+
+            var tile = arr[i]()
+
+            tile.x=    42 + (_width+padding)*(i%cols)
+
+            tile.y=    42 + (i/cols|0)*(_height+padding)
+
+            stage.A(tile)
+        })
+
+        stage.A(border)
+        stage.update()
+    }
+
+    function createBorder(){
+
+        var s=cjs.shape()
+
+        s.graphics.beginBitmapStroke(img).setStrokeStyle(32).dr(20, 20, 920, 360)
+
+        return cjs.container().A(s)
+    }
+    function createBitmapFill(){
+        var container = createTile();
+        var s = cjs.shape().XY(12,10)
+
+        var mtx = new createjs.Matrix2D().rotate(1)
+        s.graphics.beginBitmapFill(img, null, mtx).setStrokeStyle(8)
+            .beginRadialGradientStroke(["#FFF", "#000"], [0, 1], 0, 0, 0, 0, 30, 130).dr(0, 0, 130, 130)
+
+        return cjs.container().A(s)
+    }
+    function createRectGradientFill(){
+
+        var s = cjs.shape().XY(12,10)
+
+        s.graphics.beginLinearGradientFill(["#FFF", "#000"], [0, 1], 0, 0, 0, 130).dr(0, 0, 130, 130)
+
+        return createTile().A(s)}
+    function createEllipse(){
+
+        var s = cjs.shape().XY(40,10)
+
+        s.graphics.f(createjs.Graphics.getRGB(0, 0x66, 0x99, 0.5))
+            .setStrokeStyle(4).beginLinearGradientStroke(["#F00", "#000"], [0, 1], 0, 0, 70, 140)
+            .drawEllipse(0,0,70,140,8)
+        return createTile().A(s)
+    }
+    function createRadialGradientFill(){
+
+        var s = cjs.shape().XY(80)
+        s.graphics.ss(8).beginStroke("#f0f")
+            .beginRadialGradientFill(["#FFF", "#0FF"], [0, 1], 0, 0, 0, 0, 0, 40).dc(0, 0, 40)
+        return createTile().A(s)}
+    function createLineTo(){
+
+        var s = cjs.shape()
+
+        s.graphics.setStrokeStyle(16,"round","round").beginStroke("#f90")
+            .moveTo(20, 10).lineTo(90, 90).lineTo(90,140)
+
+        return createTile().A(s)}
+    function createHex(){
+
+        var s =  cjs.shape().XY(80,40)
+
+        s.graphics.beginFill("pink")
+            .drawPolyStar(0, 0, 40, 6)
+            .drawPolyStar(0, 75, 40, 6)
+            .drawPolyStar(45, 45, 20, 6)
+
+        return createTile().A(s)}
+    function createStar(){
+        var s = cjs.shape().XY(80,85)
+        s.graphics.setStrokeStyle(1).beginStroke(cjs.Graphics.getRGB(255, 255, 0))
+            .beginFill("yellow").endStroke().drawPolyStar(0, 0, 80, 5, 0.9, -90)
+        return createTile().A(s)
+    }
+    function createRoundRect(){
+        var s = cjs.shape().XY(12)
+        s.graphics.setStrokeStyle(6).beginStroke("red").beginFill("green").drawRoundRect(0, 0, 130, 130, 30);
+        return createTile().A(s)
+    }
+    function createTile(){
+
+        var bg = cjs.shape()
+
+        bg.graphics.beginFill('#CCCCCC').dr(0, 0, 155, 155).endFill()
+
+        bg.alpha = 0.25
+
+        return cjs.container().A(bg)
+    }
+}
+
+
+
+
+
+MOVIECLIP=function(){
+
+
+    stage =  cjs.stage(800).A()
+
+
+    createjs.Ticker.addEventListener("tick", stage);
+
+    mc = new cjs.MovieClip(null, 0, true, {start:0, middle:40})
+
+    stage.A(mc)
+
+                        // Create the States. Each state is just a circle shape.
+
+    var state1 = cjs.shape(new createjs.Graphics().f("blue").dc(100, 200, 50))
+    var state2 = cjs.shape(new createjs.Graphics().f("red").dc(100, 200, 50))
+
+                        // Create a tween for each shape, animating from one side to the other.
+
+    mc.timeline.addTween(cjs.Tween.get(state1).to({x: 0}).to({x: 760}, 40).to({x: 0}, 40))
+    mc.timeline.addTween(cjs.Tween.get(state2).to({x:760}).to({x:0},40).to({x:760},40))
+
+   // Play the animation starting from the middle. See the MovieClip constructor above
+   // where the labels are specified.
+
+    mc.gotoAndPlay("middle")
+
+
+        }
+
+

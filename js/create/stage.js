@@ -76,6 +76,8 @@ p.tick = function(){
     cjs.Ticker.addEventListener('tick', this)
     return this
 }
+
+
 p.A=function(arg){var that=this
 
     if(U(arg)){
@@ -88,6 +90,9 @@ p.A=function(arg){var that=this
     })
 
     return this}
+
+
+
 p.bData=function(data){
 
     var bm = cjs.bm( $.img().src($.parseJSON(data)) )
@@ -126,11 +131,40 @@ p.backgroundColor=function(c){
 
 
 
+   cjs.stg = cjs.stage =  function(a,b,c){var stage
 
-cjs.stage =  function(a,b,c){
-    if(O(a)){ return new cjs.Stage(a) }
-    return new cjs.Stage( $.canvas(a, b, c)[0]).tick()}
-cjs.stg=function(){z();return cjs.stage(800,300).A()}
+    cjs.watchKeys()
+
+    //get by canvas ID
+    if(A(a)){
+
+        stage=new cjs.Stage(a[0])}
+
+
+
+   //if you pass it a canvas OR a $canvas object
+   else if(O(a)){stage=new cjs.Stage($(a)[0])}
+
+
+    //create a new canvas
+    else {stage = new cjs.Stage($.canvas(a,b,c)[0])}
+
+    stage.can=stage.c=$(stage.canvas)
+
+return stage.tick()}
+
+
+
+
+
+
+STG2=function(){z();return cjs.stage(800,300).A()}
+
+
+
+
+
+
 mockStage = function(){z()
     return s = stage = cjs.stage(800,500).tick().A()}
 STG = function(){
@@ -156,19 +190,103 @@ p.H=function(a){if(U(a)){return this.canvas.height}
     this.canvas.height=a
     return this}
 
-p.dot=function(x, y){var dot, tween
+
+
+p.dot=function(color, x, y){var dot, tween
+
+    if(!S(color)){y=x; x=color; color= 'yellow'}
+
+    if(O(x)){y= x.y;x= x.x  }
+
     x=N(x)?x:this.W()/2
     y=N(y)?y:this.H()/2
 
-     dot = __dot = cjs.circle()
+     dot = __dot = cjs.circle(6, oO('c', color))//.opacity(.4)
 
      this.A(dot.XY(x,y).drag()  )
 
     tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
 
     dot.$$(function(){tween.toggle()})
+    dot.N('dot')
 
     return this}
+
+
+
+p.squareDot=function(color, x, y){var squareDot, tween
+
+    if(!S(color)){y=x; x=color; color='orange'}
+
+    if(O(x)){y= x.y;x= x.x  }
+    x= N(x)? x:300
+
+    y= N(y)? y:300
+
+    __squareDot = squareDot = cjs.rectangle(20, 20, oO('c', color))//.opacity(.4)
+
+    this.A(squareDot.XY(x, y)//.drag()
+
+    )
+
+    //tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
+
+   // dot.$$(function(){tween.toggle()})
+
+    return this}
+
+p.chalk=function(){
+    var height = 50,
+        that=this
+
+    _.each(arguments, function(arg){
+
+        var text = cjs.chalk(arg).Y(height)
+        height+=40
+        that.A(text)
+
+    })
+
+
+}
+
+p.eMO=function(data){
+    this.enableMouseOver(data)
+return this}
+
+
+p.next=function(next){
+    if(U(next)){return this.nextStage}
+    this.nextStage=next
+    return this
+
+}
+
+cjs.chalk=function(text, color){
+    color = oO('c', color||'white')
+    return new cjs.Text(text, "26px Arial", "white").XY(50,50)}
+
+
+
+CHALK=function(){
+
+    w= b2.mW()
+
+    s= w.s
+
+    s.bm('me')
+
+
+    text = cjs.chalk('some information ....')
+
+    text2=cjs.chalk('some more').XY(50, 90)
+
+
+    s.A(text, text2)
+
+
+
+}
 
 
 $mugTest=function(){
@@ -177,3 +295,24 @@ $mugTest=function(){
     s.mug( function(mug){ m=mug  })}
 
 
+
+NEWSTG=function(){z()
+
+    //three ways to make a new stage
+
+    s = cjs.stg('r',100 ).A().bm('me')
+    s.can.drag()
+
+
+    c= $.canvas('b',100).A().drag().XY(400)
+    s1=cjs.stg(c)
+    s1.A().bm('me')
+
+
+    c2= $.canvas('b',100).A().id('someId').drag().XY(300,100)
+
+    s2=  cjs.stg(['someId'])
+    s2.tick().bm('me')
+
+
+}

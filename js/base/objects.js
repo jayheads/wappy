@@ -5,7 +5,7 @@ STATE=function(){}
 
 // i dont know why createjs is defined here!!!!
 
-createjs =  createjs||{},function(){"use strict";var a=function(a,b,c,d){this.initialize(a,b,c,d)},
+cjs = createjs =  createjs||{},function(){"use strict";var a=function(a,b,c,d){this.initialize(a,b,c,d)},
         b=a.prototype=new createjs.Container;a.INDEPENDENT="independent",
         a.SINGLE_FRAME="single",a.SYNCHED="synched",b.mode,b.startPosition=0,
         b.loop=!0,b.currentFrame=0,b.timeline=null,b.paused=!1,
@@ -42,7 +42,7 @@ createjs =  createjs||{},function(){"use strict";var a=function(a,b,c,d){this.in
         b instanceof a&&(b._synchOffset=c,b.mode==a.INDEPENDENT&&b.autoReset&&!this._managed[b.id]&&b._reset()),
         this._managed[b.id]=2)},b.Container__getBounds=b._getBounds,b._getBounds=function(a,b){
         var c=this.DisplayObject_getBounds();return c||(this._updateTimeline(),this.frameBounds&&(c=this._rectangle.copy(this.frameBounds[this.currentFrame]))),c?this._transformBounds(c,a,b):this.Container__getBounds(a,b)},createjs.MovieClip=a;var c=function(){throw"MovieClipPlugin cannot be instantiated."};c.priority=100,c.install=function(){createjs.Tween.installPlugin(c,["startPosition"])},c.init=function(a,b,c){return c},c.step=function(){},c.tween=function(b,c,d,e,f,g){return b.target instanceof a?1==g?f[c]:e[c]:d},c.install()}();
-
+b2d = Box2D
 
 
 BINDINGS={

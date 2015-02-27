@@ -1649,201 +1649,44 @@ $.imageSizeFuncCan = function(image, size, func){//xc=
 
 
 
-bad=function(x,n,n1){
-
-    if(N(n1)){var a=[]
-        _t(n1,function(){a.push(bad(x,n))})
-        return a}
-
-    if(N(n)){return bad(x).du(n)}
-    var b={
-        x:_r(1200), y:_r(600), r:15,
-        dx: _r(10)-5, dy: _r(10)-5}
-
-    b.draw=function(){
-        //x.cir(b.x,b.y,b.r, 'rgba(124,252,0,0.5)' ,'z')
-        x.cir(b.x,b.y, b.r,'g','z')
-
-        x.cir(b.x,b.y, 15,'o','z')
-
-        return b}
-
-
-    b.update=function(){
-
-        b.r *= 1.005
-
-        b.x = wrp(0,1200,20)(b.x+b.dx)
-
-        b.y = wrp(0,600,20)(b.y+b.dy)
-
-        return b}
-
-
-    b.drawUpdate = b.du=function(n,n2){
-        if(N(n)){
-            return setInterval(function(){  b.du() },  n)
-        }
-
-        return b.draw().update()
-    }
-
-    return b}
-coin=function(x,n,n1){
-
-    if(N(n1)){
-        var a=[];
-        _.times(n1,function(){
-            a.push(coin(x,n))});
-        return a
-    }
-
-    if(N(n)){return coin(x).du(n)}
-
-    var c={
-        x:_r(0,1200),
-        y:_r(0,600),
-        r:10,
-        dx:_r(0,10)-5,
-        dy:_r(0,10)-5}
-
-    c.draw=function(){
-        x.cir(c.x,c.y,c.r,'b','y')
-        return c}
-
-    c.update=function(){
-        c.x=wrp(0,1200,20)(c.x+c.dx)
-        c.y=wrp(0,600,20)(c.y+c.dy)
-        return c}
-
-    c.drawUpdate=function(n,n2){
-        if(N(n)){return setInterval(function(){c.drawUpdate()}, n)}
-        return c.draw().update()}
-
-    return c}
-//bluecircle game function //never used
-coinHits=function(){
-
-    _.each(CoinsArray,
-
-        function(coin, coinId){
-
-            //??? hitTest?
-            if( xyc( coin.x, coin.y, game )){
-
-                delete CoinsArray[coinId]
-
-                game.coinScore += 1
-            }
-        })
-
-
-
-
-    _.each(
-        As,function(a,A){
-
-            if (
-                xyc(g.x,g.y,a)){
-                g.h-=1}
-
-            _.each(Bs,function(b,B){
-
-                if (xyc(b.x,b.y,a)){
-                    delete Bs[B]
-
-                    delete As[A]
-
-                    As.push(bad())}})
-
-        })
-
-}
-startGame=function(st){
-
-    z('w')
-    st=st||St('b',500).a().t()
-
-    game=true
-
-    Cs=[]
-    As=[]
-    Bs=[]
-    g=Guy()
-    Bm('guy',function(guy){st.a(guy=a);xy(guy,200)})
-    _t(10,function(){Cs.push(coin())})
-    _t(15,function(){As.push(bad())})}
-updateGame=function(){if(game){
-    g.dx += cap(-5,5)( (e.x()-g.x)/300 )
-    g.dy += cap(-5,5)( (e.y()-g.y)/300 )
-    bul(g.x,g.y,g.dx,g.dy)}
-else{
-    alert('game over!')
-    if((e.x>450)&&(e.y>290)
-        &&(e.x<450 + textWidth)
-        &&(e.y<290 + textHeight)){reload()}}
-    x=xx().w(800).h(600).$(function(X,Y){
-        g.dx+=cap(-5,5)((X-g.x)/300)
-        g.dy+=cap(-5,5)((Y-g.y)/300)
-        bul(g.x,g.y,g.dx,g.dy)})
-    b=bad(x).d()
-    c=coin(x).d()
-    g=guy(x)
-    I(function(){x.X(); b.u().d();g.u().d()}, 30)
-    ball={x:1, y:0, vx:0, vy:0}
-    _e($d(cat(Bs,Cs,As)),function(a){a.d()
-        a.u()})
-}
-updateScreen=function(){
-    updateBall()
-    x.X();x('b')('m',0,500)('l', 300,600)('s')
-    drawBall()}
-updateBall= function(){
-    sXY(guy,.001,'-')
-    XY(guy,0.5,'+')
-    XY(ball,ball.vx,ball.vy,'+')
-    ball.vy+=.04}
-drawBall =function d(px,py){
-
-    px = px||ball
-
-    if(O(px)){ return d(px.x, px.y) }
-
-    x('b')
-
-    x.cir(px,py,2);
-
-    x('f')
-}
-
 FULLCAN=function(){z()
-    $h().s({h:'100%',of:'h'})()
-    $b().s({m:0, g:0,h:'100%'})()
 
-    var s='Click or tap the screen to start the game',
-        fo='bold 16px Arial',
-        x=cx('x',
-            W(), H())
+    $('html').css({
+        height:'100%'//, of:'h'
+    })
+
+    $('body').css({
+        margin:0,
+        //g:0,
+        height:'100%'
+    })
+
+    var s ='Click or tap the screen to start the game',
+
+        fo ='bold 16px Arial',
+
+        x = $.canvas('pink',W(), H()).A()
+
+   // x.fs( x.lg().a(0,'y').a(1,'z') ).fr().fs('y').fo(fo).ftc(s, 30)
 
 
-    x.fs(x.lg().a(0,'y').a(1,'z')).fr().fs('y').fo(fo).ftc(s, 30).a()
+    $.img('me',function(image){
+
+           var origW= image.W()
+
+        image.W( Math.round( (50 * cW()) / 100 ) )
+        image.H( Math.round( (image.W() * image.H() )/ origW) )
 
 
-
-    im('me',function(i){var i=qq(i),origW=i.w() ,ig
-
-        i.w($M.round((50*cW())/100))
-        i.h($M.round((i.w()*i.h())/ origW) )
-
-        ig={i:i, x:x.w()/2-i.w()/2,
-            y:x.h()/2-i.h()/2 }
-
-        x.d(ig.i, ig.x, ig.y)
+        x.draw(
+            image,
+                x.W()/2- image.W()/2,
+                x.H()/2- image.H()/2
+        )
 
 
 
     })
-
 
 
 }

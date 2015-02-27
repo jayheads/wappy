@@ -31,6 +31,7 @@ $.fn.minH=function(a){return this.css('min-height',a)}
 $.fn.maxW=function(a){return this.css('max-width',a)}
 $.fn.maxH=function(a){return this.css('max-height',a)}
 $.fn.Z=function(w,h){return this.W(w).H(h||w)}
+
 $.fn.Y=$.fn.top=function(top){
 if(N(top)){return this.css('top', top)}
     var top = this.css('top')
@@ -58,8 +59,31 @@ $.fn.backgroundPosition=function(bg){
     this.css('backgroundPosition', bg)
     return this
 }
-$.fn.right=function(right){return right?this.css('right', right):this.css('right')}
-$.fn.bottom=function(bottom){return bottom?this.css('bottom', bottom):this.css('bottom')}
+
+
+$.fn.right=function(right){
+    if(U(right)){
+        return this.css('right')
+    }
+
+    this.css('right', right)
+    return this
+}
+
+
+$.fn.bottom=function(bottom){
+    if(U(bottom)){
+        return this.css('bottom')
+    }
+
+    this.css('bottom', bottom)
+    return this
+}
+
+
+
+
+
 $.fn.P = function(pos,left,top){
     if( U(pos) ){ return this.css('position') }
     this.css('position', oO('p',pos))
@@ -1441,3 +1465,9 @@ $.dateTime = $.date =  dateTime=dt=function(a){
 $.dateAndTime =dtt=function(a){
     var datetime = new Date(a)
     return datetime.date()+' '+ datetime.time()}
+
+
+
+$.space=function(func){
+    return $.kD('space', func)
+}

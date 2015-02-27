@@ -1,3 +1,19 @@
+
+b2d.body = b2d.bodyDef = BodyDef = bDf =function(x, y){
+
+    var bodyDef = new b2BodyDef()
+    x=N(x)?x:300
+    y=N(y)?y:300
+    bodyDef.xy(x,y)
+
+    return bodyDef}
+b2d.dyn = b2d.dynamic = b2d.dynamicDef = b2d.dynamicBodyDef = dBD=function(x,y){return b2d.bodyDef(x,y).T(2)}
+b2d.stat = b2d.staticDef = b2d.staticBodyDef =StaticBodyDef=sBD=function(x,y){return b2d.bodyDef(x,y).T(0)}
+b2d.kin = b2d.kinematic = KinematicBodyDef = kBD=function(x,y){return b2d.bodyDef(x,y).T(1)}
+
+
+
+
 d=b2.Dynamics.b2BodyDef.prototype //SuperBodyDef= sBdD=function(a){return a|| b2.bodyDef() }
 d.XY = d.p=d.ps=d.xy=function(x,y){
     var args=G(arguments)
@@ -70,7 +86,17 @@ p.fixt= p.createFixture = p.cF =  function(fixtData){
     fixtData = fixtData|| b2.randomFixture()
     return this.CreateFixture(fixtData)
 }
-p.mass =  function(m){if(U(m)){return this.GetMass()}}
+p.mass =  function(m){if(U(m)){
+
+    return (this.GetMass()*900)/100
+
+
+}}
+
+
+
+
+
 p.wCent=  p.wC=  p.worldCenter= p.gWC= function(){
     return this.GetWorldCenter()}
 p.awake= function(){
@@ -164,17 +190,16 @@ p.fixtData =p.fixtListUserData =p.uDF=function(userData){
     return this}//user data first fixture?
 //apply impulse. pass impulse as two nums, or obj
 //and pass in location, defaults to body center
-p.imp = p.I =p.impulse = p.applyImpulse = p.aI  = function self(impulse , point, point2){
 
+p.imp = p.I =p.impulse = p.applyImpulse = p.aI  = function self(impulse, point, point2){
     if(N(point)){
-        impulse = b2.V(impulse , point)
+        impulse = b2d.V(impulse, point)
         point = point2}
-
-    if(U(point)){point = this.wCent()}
-
+    if(U(point)){point = this.GetWorldCenter()}
     this.ApplyImpulse(impulse, point)
 
     return this}
+
 
 
 p.hop=function(){
@@ -194,11 +219,62 @@ p.applyForce = p.aF  = function(v,c,c2){
     this.ApplyForce(v, c)
 
     return this}
-p.click=function(func){
 
+
+
+
+p.click=function(func){var body = this
+
+
+    body.GetWorld().stage.on('stagemouseup',
+
+
+        function(ev){
+
+
+
+            w.queryPoint(
+
+                function(fixt){
+
+                    if(fixt.gB()==body){
+
+                        _.bind(func,body)(fixt)
+                    }
+                },
+
+
+
+
+                ev.rawX, ev.rawY  )
+
+
+
+    })
+
+
+  //
+
+}
+
+
+
+
+
+
+
+p.shoot= function(){var vec, bullet
+
+    bullet = this.GetWorld().bullet( abovePlayerGlobally(this) ).bindSprite('me', 0.15)
+
+    vec = this.GetWorldVector(b2.V(0, -100))
+    bullet.impulse(vec.x/20, vec.y/20 )
 
 
 }
+
+
+
 
 p.bindSprite=function( img,   scale,  startingRotation ){
 
@@ -221,12 +297,35 @@ p.bindSprite=function( img,   scale,  startingRotation ){
             bm.rotation=body.rot()+startingRotation}
 
 
-
     },'-')
 
+    return body}
 
+
+p.bindSprite2=function(obj, startingRotation, x,y ){
+
+    var body=this,
+        stage=body.GetWorld().stage
+
+    stage.A(obj)
+
+    startingRotation = N( startingRotation) ?  startingRotation : 0
+
+        body.sprite = obj
+        updateSprite()
+        cjs.tick(updateSprite)
+
+        function updateSprite(){
+            if(!body.sprite){return}
+            body.sprite.XY(body.X()+(x||0),body.Y()+(y||0))
+
+            body.sprite.rotation=body.rot()+startingRotation}
 
     return body}
+
+p.stat = function(){this.type(0);return this}
+p.kin = function(){return this.type(1)}
+p.dyn = function(){return this.type(2)}
 
 
 p.world=function(){return this.GetWorld()}
@@ -281,6 +380,60 @@ p.controlMe= function(control){
 
 
 
+
+
+
+
+p.when=function(){
+
+    var body =this,
+        w=body.GetWorld()//, listener=b2d.listener()
+
+    return {contacts:function(kind, func){
+        w.onBegin(function(cx){
+            if(cx.with(kind)){func()}
+            w.startListening()
+        })
+
+        return {after:function(func){
+            w.onEnd(function(cx){if(cx.with(kind)){func()}})
+            w.startListening()
+        }}}}
+
+}
+
+
+
+
+
+p.trig = p.fixtListener =p.listener=  function(kind, func){var body=this
+
+    body.when()
+        .contacts(kind, function(){body.trig[kind]=true})
+        .after(function(){body.trig[kind]=false})
+
+
+    if(F(func)){
+
+        cjs.tick(
+            function(){
+                if(body.trig[kind]){
+                    _.bind(func, body)(  body.trig[kind] )
+                }
+            }
+
+
+
+        )
+    }
+
+    return this}
+
+
+
+//p.feetListener =function(){return this.listener('feet')}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -303,7 +456,118 @@ TESTBINDBM=function(){z()
 
 
 
+FORCES=function(){
 
 
+  w = b2d.mW({
+      grav:0
+  })
+
+
+    b = w.box(400, 400, 200, 200).bindSprite('me')
+
+
+  f=function(){
+
+        b.I(0,-400, b.GetWorldPoint( b2d.V(100/30, -100/30) ))
+    }
+
+    f2=function(){
+
+        cjs.tick(f)
+    }
+
+    w.player('thrust')
+}
+
+
+
+
+LINVEL3=function(){
+
+
+    w = b2d.mW({
+        //grav:0
+    })
+
+
+    b = w.box(400, 400, 200, 200).bindSprite('me')
+
+
+    f=function(){
+
+        b.SetLinearVelocity(b2d.V(-1,-1))
+
+    }
+
+    f2=function(){
+
+        cjs.tick(f)
+    }
+
+  //  w.player('thrust')
+}
+
+
+
+LINVEL=function(){
+
+    w = b2d.mW({
+        g:0
+    })
+
+
+    _.times(10, function(){
+
+        w.ball()
+
+    })
+
+
+   f=function(){
+
+       w.each(function(body){
+
+               body.SetLinearVelocity(b2d.V(0, 20))
+
+           })
+
+   }
+
+
+
+    setInterval( f, 1000 )
+
+
+    //cjs.tick(function(){})
+
+
+}
+
+
+
+
+
+
+
+
+p.footListenerGreatButIGuessAlreadyDeppedKeepForAWhile=function(){
+    var body = this
+
+
+    var listener = b2d.listener()
+        .begin(function(cx){var bod
+            if(fixt = cx.with('feet')){
+                fixt.gB().trig.onGround = true}
+        })
+
+        .end(function(cx){
+            if(cx.with('feet')){
+                body.trig.onGround=false }
+        })
+
+    this.GetWorld().listen(listener)
+
+    return this}
 
 

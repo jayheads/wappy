@@ -100,7 +100,7 @@ cjs.stopListening=function(){
     cjs.Ticker.removeAllEventListeners()}
 
 
-cjs.bm = cjs.bitmap =function(img){ return new cjs.Bitmap(img).rCenter() }
+
 cjs.DOMElement=function(){return cjs.DOMElement}
 
 
@@ -111,17 +111,6 @@ p.init=function(){
     this.initialize.apply(this, arguments)
     return this}
 
-
-
-
-
-//TEXT //////////////////////////////////////////////////////////////////////////////
-p = cjs.Text.prototype
-p.lW=function(w){this.lineWidth=w;return this}
-p.lH=function(h){this.lineHeight=h;return this}
-p.lWH=function(w,h){if(U(h)){h=w};return this.lW(w).lH(h)}
-p.tA=function(textAlign){this.textAlign=textAlign;return this}
-p.tB=function(textBaseline){this.textBaseline=textBaseline;return this}
 
 
 
@@ -320,27 +309,27 @@ cjs.bindReverseSlide = LS=function(b,b2){var g=G(arguments),
     b2=b2||b
 
     return b.on(d, function(e){
-        var bx=b2.x+rX(e), by=b2.y+rY(e)
+        var bx=b2.x+ e.rawX, by=b2.y+ e.rawY
 
         b.on(pm, function(e){
 
-            if(g.P){b2.x=bx-rX(e)}
-            if(g.N){b2.y=by-rY(e)}
+            if(g.P){b2.x=bx- e.rawX}
+            if(g.N){b2.y=by- e.rawY}
 
         })})}
+
+
+
+
+
 cjs.bindRotate = RT=function(b, b2){
 
 
     //b = what the control is
     //b2 what it should control (default = itself!)
-
+    //if(g.p){  //b.rgc( '+' )   }
 
     var g=G(arguments),  b =   g[0]  ,  b2 =  g[1]   || b
-
-
-    if(g.p){
-        //b.rgc( '+' )
-    }
 
     return b.on(  'mousedown',
 
@@ -357,6 +346,14 @@ cjs.bindRotate = RT=function(b, b2){
             })})
 
 }
+
+
+
+
+
+
+
+
 cjs.bindRotate2 = RTT=function(b, b2){
 
 
@@ -408,8 +405,8 @@ cjs.bindScale = SC=function(b,b2){
                 }
 
                 else if(g.p){
-                    cXY(b2,sx+((rX(e)-X)/50),sy-((rY(e)-Y)/50))
-                    cXY(b2,sy-((rY(e)-Y)/50)),sx+((rX(e)-X)/50)}
+                    cXY(b2,sx+((e.rawX-X)/50),sy-((e.rawY-Y)/50))
+                    cXY(b2,sy-((e.rawY-Y)/50)),sx+((e.rawX-X)/50)}
 
                 else{ b2.sXY(sx-((e.rawX-X)/50),sy-((e.rawY-Y)/50))}})}
 
@@ -418,11 +415,18 @@ cjs.bindSkew = SK=function(b){var g=G(arguments),b= g[0] ,b2= g[1] ,d=oE('d'),pm
 
     return b.on(d,
         function(e){
-            var X=rX(e),Y=rY(e)
+            var X= e.rawX,Y= e.rawY
             b.on(pm,function(e){
-                kXY(b2,(rY(e)-Y)*.5,
-                        rX(e)-X*.5)})
+
+
+               b2.kXY(
+                       (e.rawY-Y)*.5,  (e.rawX-X)*.5
+               )
+
+            })
         })}
+
+
 cjs.bindTransform = TR=function TR(b,b2,m){
 
     var g=G(arguments),

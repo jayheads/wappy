@@ -11,6 +11,21 @@ p.$$=p.dblclick=function(func){
 
     return this.on('dblclick', func)
 }
+p.kX=function(skewX){
+    if(U(skewX)){return this.skewX}
+    this.skewX=skewX;return this
+}
+
+p.kY=function(skewY){
+    if(U(skewY)){return this.skewY}
+    this.skewY=skewY;return this
+}
+p.kXY=function(x,y){
+
+    y=N(y)?y:x
+
+    return this.kX(x).kY(y)}
+
 
 p.remove=function(){
     this.parent.removeChild(this)
@@ -94,7 +109,42 @@ p.bounds=function(a,b,c,d) {
     return this
 
 }
-p.transform=function(){
+
+
+
+
+p.opacity=function(alpha){
+        if(U(alpha)){return this.alpha}
+        this.alpha=alpha;return this}
+
+
+
+
+setter=function(pop){
+    return function(pop){
+        if(U(pop)){return this[pop]}
+        this[pop]=pop; return this}}
+
+
+
+
+
+
+
+
+
+
+p.transform=function(pam){
+
+    if( O(pam) && F(pam.getTransform) ){
+
+        pam = pam.getTransform()
+    }
+
+    if(A(pam)){
+        this.setTransform.apply(this, pam)
+return this
+    }
 
     this.setTransform.apply(
 
@@ -102,23 +152,41 @@ p.transform=function(){
 
     return this
 }
+
+
 p.sX=function(scaleX){
     this.scaleX=scaleX;return this}
 p.sY=function(scaleY){
     this.scaleY=scaleY;return this}
 p.sXY=function(x,y){if(U(y)){y=x};  return this.sX(x).sY(y)}
-p.rX=function(regX){var g=G(arguments)
-    if(g.p){this.X( this.x + (regX - this.regX)  )}
+
+
+
+p.rX=function(regX){
+
+
+    var g=G(arguments), regX=g[0]
+
+    if(U(regX)){return this.regX}
+
+    //if(g.p){this.rX( this.regX + regX  )}
+
     this.regX=regX;
     return this}
-p.rY=function(regY){var g=G(arguments)
 
-    if(g.p){this.Y( this.y + (regY - this.regY)  )}
 
+p.rY=function(regY){var g=G(arguments),regY=g[0]
+
+    //if(g.p){this.Y( this.y + (regY - this.regY)  )}
+    if(U(regY)){return this.regY}
     this.regY=regY;return this
 }
 
-p.rXY=function(x,y){return this.rX(x).rY(y)}
+
+p.rXY=function(x,y){y=N(y)?y:x
+    return this.rX(x).rY(y)}
+
+
 
 p.rZero=function(a){
     var g=G(arguments),
@@ -552,3 +620,108 @@ p.toFront = function(){
     return this
 }
 
+
+p.bindBody=function(body){
+var that=this
+
+    cjs.tick(function(){
+
+        body.X(that.X( ) )
+         body.Y(that.Y() )
+
+        body.rT( that.rT() )
+    })
+
+return this}
+p.getTransform=function(){
+
+    return [
+        this.x,this.y,this.scaleX,this.scaleY,
+        this.rotation,this.skewX,this.skewY,
+        this.regX,this.regY
+
+    ]
+}
+
+p.a2=function(toWhat){
+
+    toWhat.A( this )
+
+return this}
+
+
+
+
+
+
+
+
+
+
+MATRIXX=function(){z()
+
+    s = cjs.stage( 900, 900  ).A()
+
+
+    s.bm('me', function(bm){
+
+        b=bm.sX(4)
+        TR(b)
+
+        //m= b.getMatrix()
+
+       // t = b.getTransform()
+
+        s.bm('guy', function(guy){
+
+            g = guy
+
+           //
+
+
+            cjs.tick(function(){
+                g.transform(b)
+            })
+        })
+
+
+    })
+
+
+
+
+}
+
+SETTRANSFORM=function(){
+
+    s = cjs.stage(800).A()
+    s.bm('me',function(me){
+        b=me
+
+
+        b.setTransform(0,0,2,.5,0,40,4,2,3)
+
+        //x,y,a
+
+        m = b.getMatrix()
+
+        function tf(a,b,c,d,e,f,g,h,i){
+            return this.x=a||0,
+                this.y=b||0,
+                this.scaleX=null==c?1:c,
+                this.scaleY=null==d?1:d,
+                this.rotation=e||0,
+                this.skewX=f||0,
+                this.skewY=g||0,
+                this.regX =h||0,
+                this.regY =i||0,
+                this}
+
+
+
+
+    })
+
+
+
+}

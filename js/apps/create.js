@@ -77,8 +77,6 @@ EDIT1=function(){
 
 
 
-
-
 PROPBOX=function(){
 
     var imagesDiv=$div()
@@ -140,11 +138,6 @@ PROPBOX=function(){
 
 
 
-
-
-
-
-
 AVATAR=function(){
 
 z()
@@ -187,9 +180,6 @@ stage.on('dblclick' ,function(){
 
 
 
-
-
-
 EDIT1=function(){
 
     container=$.containerDiv()
@@ -229,13 +219,14 @@ EDIT1=function(){
     return stage}
 
 
-
 EDIT=function(){
+
+    stage=cjs.stage(800).A()
 
     container=$.containerDiv()
     imgHolder = $.div()
 
-    stage=createjs.stage(800).tick()
+
 
   container.A(   imgHolder,  stage.canvas  )
 
@@ -277,7 +268,11 @@ EDIT=function(){
 }
 
 
+EDIT9=function(){
 
+    z()
+    stage=cjs.stage(800).A()
+}
 
 
 

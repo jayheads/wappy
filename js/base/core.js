@@ -230,12 +230,15 @@ vkl=function(a){
 
 
 
-V=function(a){
+oO.V = values=function(a){
 
     if(_.isString(a)){ a=oO(a) }
 
     return _.values(a)
 }
+
+
+
 W=function(a){var g=G(arguments)
     var oW=function(a){if(_.isObject(a=a||$(window))){
         return Q(a).outerWidth()}}
@@ -245,6 +248,7 @@ W=function(a){var g=G(arguments)
 
 Utils.chompRight = chompRight=function(a,b){return s$(a).chompRight(b).s }
 Utils.ensureRight = ensureRight=function(a,b){return s$(a).ensureRight(b).s}
+
 
 Range=function(a,b){
 
@@ -705,30 +709,16 @@ Math.toRadians = Math.toRads =tRad=rad=function(degs){
     if(O(degs)){degs= degs.rotation}
     return  degs * Math.PI/180
 }
-Math.V = $V=function self(a,b,c,d){//returns coords needed for centering
 
-    var g=G(arguments),o,
-        a=g[0]
 
-    if(N(d)){
-        return self( (a-c)/2, (b-d)/2
-        )  }
 
-    if(A(a)){return self.apply(null, a)}
 
-    if(O(a)){
 
-        return self(
-            F(a.x)? a.x(): a.x,
-            F(a.y)? a.y(): a.y
-        )}
 
-    a=a||0
-    b=b||a||0
 
-    return {x:a,y:b}
 
-}
+
+
 Math.average =  function self(a){
     var g=G(arguments),
         z= _.size(g),  n=0;

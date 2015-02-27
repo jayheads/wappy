@@ -1,18 +1,35 @@
+
+
+
+
+
+
+
+
+
 MULTIBALL=function(){z()
 
-    game =  Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render })
+    game =  Game(800, 600, Phaser.AUTO, 'phaser-example',
+        { preload: preload,
+            create: create,
+            update: update,
+            render: render
+        })
+
+
 
     function preload() {
 
-        g=$G(game).bc('#2d2d2d').ARC(1400)
+        g = $G(game).bc('#2d2d2d').ARC(1400)
 
         g.l.i('atari', '/assets/sprites/atari130xe.png')
 
         g.l.ss('bs','/assets/sprites/balls.png',17,17)
+
         g.tx(16,16,'Left/Right to move',
             {font:'18px Arial',fill:'#ffffff'})
 
-        cu=g.K()}
+        cu = g.K()}
 
 
 
@@ -58,6 +75,9 @@ MULTIBALL=function(){z()
     function render(){}}
 
 
+
+
+
 GROUPVSGROUP=function(){z()
 
     bTime=0
@@ -70,6 +90,7 @@ GROUPVSGROUP=function(){z()
 
 
     pG(
+
       function preload(){
           g.l.i('phaser', '/assets/sprites/phaser-dude.png')
           g.l.i('bullet', '/assets/misc/bullet0.png')
@@ -78,19 +99,24 @@ GROUPVSGROUP=function(){z()
 
         function create(){
 
-                        s=g.sp(400,520,'me').arc().w(80).h(80)
+                        s = g.sp(400,520,'me').arc().w(80).h(80)
 
-                        vs=g.gr().eB(1).arc()
-                        _t(50,function(){
+                        vs = g.gr().eB(1).arc()
+
+            _t(50,function(){
                             vs.cr(g.rX(),Math.random()*500,'vs',
-                                g.r.integerInRange(0,36))})
+                                g.r.integerInRange(0,36))
+                        })
 
                         bs=g.gr().eB(1).arc()
                         _t(5,function(){
-                            bs.cr(0,0,'bullet').ex(0).cWB(1)
-                                .oOOB(function(b){b.kill()})})
 
-                        cu=g.K() },
+                            bs.cr(0, 0, 'bullet').ex(0).cWB(1)
+                                .oOOB(function(b){b.kill()})
+                        })
+
+                        cu=g.K()
+        },
 
 
         function update(){
@@ -107,6 +133,9 @@ GROUPVSGROUP=function(){z()
 
 
 }
+
+
+
 
 
 
@@ -576,12 +605,14 @@ BRINGCHILDTOP=function(){
                    g.l.i('mushroom', '/assets/sprites/mushroom2.png')}
 
                function create(){
-                   _t(20,
+
+                   _.times(20,
 
                        function(){
 
                        g.sp(
-                           g.rX(),g.rY(),
+                           g.rX(),
+                           g.rY(),
                            g.rnd.pick(g.imageKeys())
                        )
                            .iE().drg()
@@ -590,6 +621,8 @@ BRINGCHILDTOP=function(){
 
                 function render(){g.db.inputInfo(32,32)}
            }
+
+
 TWEENRELATIVE=function(){z()
 
         game= Game(800,600,Phaser.CANVAS,'phaser-example', {
@@ -785,79 +818,8 @@ CANNONBALLS=function(){
     }
 
 }
-PIXELPICKSCROLLING=function(){z()
-
-       game =  Game(800, 600, Phaser.CANVAS, 'phaser-example',
-           {preload: preload, create: create,  update: update,
-               render: render });
-
-       function preload() {
-           camSpeed=4
-           g=$G(game).ARC().bn(0,0, 4000, 2000)
-
-           g.l.ss('mummy', '/assets/sprites/metalslug_mummy37x45.png', 37, 45, 18)
-           g.l.i('stars', '/assets/misc/starfield.jpg')}
 
 
-
-
-
-       function create() {
-
-
-
-           //  Scrolling background
-           s = g.tSp(0, 0, 4000, 600, 'stars')
-            b=g.sp(0, 300, 'mummy').arc()
-
-
-           b.scale.set(10)
-           b.smoothed = false
-           b.an.a('walk')
-           b.play('walk', 5, true)
-
-
-           b.vxy(50, 0)
-
-           //  Listen for input events on this sprite
-           b.inputEnabled = true
-
-           //  Check the pixel data of the sprite
-           b.input.pixelPerfectClick=true
-
-           b.events.onInputDown.add(tint,this)}
-
-       function tint() {b.tint=Math.random()*0xffffff}
-
-       function update(){
-
-           if (g.iD(Left)){
-               g.cm.x-=camSpeed
-               if(!g.cm.atLimit.x){
-                   s.tilePosition.x += camSpeed}}
-
-           if (g.iD(Right)){
-               g.cm.x += camSpeed;
-               if (!g.cm.atLimit.x){s.tilePosition.x -= camSpeed}}
-
-           if(g.iD(Up)){
-               g.cm.y -= camSpeed;
-               if(!g.cm.atLimit.y){s.tilePosition.y += camSpeed}}
-
-            if(g.iD(Down)){g.cm.y += camSpeed;
-
-               if (!g.cm.atLimit.y){
-                   s.tilePosition.y -= camSpeed
-               }
-            }
-
-       }
-
-
-
-
-       function render(){g.db.spriteInputInfo(b, 32, 32)}
-}
 INPUTPRIORITY=function(){pG(
 
             function(){

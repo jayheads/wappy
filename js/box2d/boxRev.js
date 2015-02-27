@@ -36,9 +36,9 @@ RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
 
     if( O(c) ){  joint.init( a, b, c )}
 
-    else if(N(e)){   joint.A(a).B(b).lAA( bV(c/30,d/30)).lAB( bV(e/30,f/30)) }
+    else if(N(e)){   joint.A(a).B(b).lAA( V(c/30,d/30)).lAB( V(e/30,f/30)) }
 
-    else if(N(c)){    joint.init(a,b, bV(c/30,d/30)) }
+    else if(N(c)){    joint.init(a,b, V(c/30,d/30)) }
 
     //SuperJointDef( joint )
 
@@ -66,9 +66,6 @@ revJoint2=function(){return world.Revolute(
 revJoint3=function(){return world.Revolute(
     world.bi( 400, 30, 30, 50 ),  world.bi( 400, 30, 30, 50 ) ).motor(10)}
 
-
-
-
 revJoint4=function(){
 
     return world.Revolute(
@@ -80,9 +77,6 @@ revJoint4=function(){
         ).motor(10)
 
     }
-
-
-
 
 
 
@@ -138,6 +132,7 @@ Stuff.RandomRev = refFix=function(x,y){
     )
 
 }
+
 Stuff.Car = makeCar=function(){
 
     var car = world.bi(240,350,90,30)
@@ -242,22 +237,25 @@ CHANGELIMITS=function(){makeWorld()
 
 CHANGEMOTOR=function(){makeWorld()
 
-    j=world.Rev(
-
-            world.baa(400,280),
-
-            world.bi(500,280,200,40)
-)
+    j = w.Rev(
+            w.baa(400,280),
+            w.bi(500,280,200,40))
 
     j.speed(4).torque(1000000).motor(1)
 
-    setTimeout(function(){  j.speed(-4)  }, 2000)
+    setInterval(function(){  j.speed( -j.speed()  )  }, 4000)
+
+
+    w.player('thrustGrav')
 }
+
+
+
 
 CAR=function(){makeWorld()
 
     //world.make.Car
-    makeCar()
+   c= makeCar().bindSprite('me')
 
     //world.make.Spinner
     Stuff.Spinner(500,400)
@@ -267,14 +265,16 @@ CAR=function(){makeWorld()
         //.maxMotorSpeed( 100 )  ?
         .motorSpeed( 40 )}
 
-DEMO_GEAR=function(){makeWorld()
-    world.Gear(
-        world.Rev( world.baa(100,220,40), world.bi(100,220,100,20) ),
-        world.Rev( world.baa(250,220), world.bi(250,220,100,20) ),
-        .5
-    )}
+DEMO_GEAR=function(){
+    makeWorld()
 
-CARS=function(){}
+    world.Gear(
+        w.Rev( w.baa(100,220,40), w.bi(100,220,100,20) ),
+        w.Rev( w.baa(250,220), w.bi(250,220,100,20) ),
+        .5
+    )
+}
+
 
 REVPRISMGEAR=function(){
 

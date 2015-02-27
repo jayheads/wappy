@@ -825,11 +825,23 @@ $.aOld =function(textAndId, hrefOrFunc){
 
          :theEl}
 
-$.header=function(name,val){
+
+$.headerHuhhhh=function(name,val){
     return $.input().type('header')
         .name(name).val(val)
 
 }
+
+$.header=function(){
+
+
+    var header = $('<header>')
+
+
+return header}
+
+
+
 $.footer=function(){return $('<footer>')}
 
 

@@ -1,30 +1,32 @@
 
 
-b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
+b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){var options
     if(!O(ops)){ops={}}; options = ops
 
-    var width = ops.W||1200, height= ops.H||600
+    var width = ops.W||1200,
+        height= ops.H||600
 
 
 
     if(N(ops.grav)){ops.grav=[0, ops.grav]}
     if(A(ops.grav)){
-        world = w = b2.world(b2.V( ops.grav[0], ops.grav[1] ))
+        world = w = b2d.world(b2d.V( ops.grav[0], ops.grav[1] ))
     }
    else {
         ops.gravityY = ops.g
         ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40
 
-        world = w = b2.world(b2.V(0, ops.gravityY))
+        world = w = b2d.world(b2d.V(0, ops.gravityY))
 
     }
 
 
 
 
-    w.stage  =  s = stage = cjs.stage('black',width,height).A()    //cjs.Ticker.removeAllEventListeners()
+    w.stage  = w.s =   cjs.stage('black',width,height).A()    //cjs.Ticker.removeAllEventListeners()
     w.stage.autoClear=false
-    w.canvas = w.stage.canvas;
+     w.canvas = w.stage.canvas;
+    w.c =w.can = $(w.canvas)
     canvas = $(w.canvas).id('canvas')
     w.context = w.canvas.getContext('2d')
     if(ops.backgroundImage){stage.bm(ops.backgroundImage)}
@@ -59,23 +61,24 @@ b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
         if (ops.debug == false) {
 
             w.debug(
-                b2.debugDraw(w.context, 30)//.flags(shB || jB).alpha(.6).line(3000)
+                b2d.debugDraw(w.context, 30)//.flags(shB || jB).alpha(.6).line(3000)
             )
         }
 
         else {
             w.debug(
-                b2.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000)
+                b2d.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000)
             )
         }
 
     }
 
 
-    w.bD  = b2.staticDef()//= bD
-    w.fD = fD = b2.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2.polyDef() )
+    w.bD  = b2d.staticDef()//= bD
+    w.fD = fD = b2d.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2d.polyDef() )
     w.makeWalls(ops.walls )
 
+    //w.startListening()
 
     return world       //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
 
@@ -89,8 +92,8 @@ b2.mW = b2.makeWorld = makeWorld = mW = function(ops){var options
     function handleMouseJoints(){
 
         if(_mouseIsDown){
-            _mouseJoint=_mouseJoint||b2.mouseJoint(w.getBodyAtPoint(mX,mY))
-            if(_mouseJoint){_mouseJoint.SetTarget( b2.V(mX, mY) )}}
+            _mouseJoint=_mouseJoint||b2d.mouseJoint(w.getBodyAtPoint(mX,mY))
+            if(_mouseJoint){_mouseJoint.SetTarget( b2d.V(mX, mY) )}}
 
         else if(_mouseJoint ){_mouseJoint.destroy(); _mouseJoint=null}
 
@@ -118,9 +121,13 @@ BASICWORLD=function(){
 z()
 
 
-    world = w =    b2.world(  b2.V(0, 40) )
+    world = w =    b2d.world(  b2d.V(0, 40) )
 
-    canvas = c = $.canvas('X', 500, 500).id('canvas').A()[0]
+    world.can = $.canvas('X', 500, 500).id('canvas').A()
+
+    canvas = c = world.can[0]
+
+
 
     stage = s = new createjs.Stage(canvas)
 
@@ -137,8 +144,6 @@ z()
 
 
     debugDraw.SetFlags(  shB||jB   )
-
-
 
     w.dD(  debugDraw )
 
@@ -213,10 +218,13 @@ CATAPULT=function(){
 handleJointsAlt = 0
 
 
-mW2 = function(){z()
+b2d.fullWorld = function(){z()
       canvas = $.canvas('z', 1200, 600 ).A().id( 'canvas' )[0]
+
+
       context = canvas.getContext("2d")
-      stage=new createjs.Stage( canvas )
+      stage = new createjs.Stage( canvas )
+
      // stage.autoClear = false
 
       world=World(  bV(0, 40) )
@@ -343,10 +351,10 @@ return $(e)._getPosition()
 
 
 
-b2.mouseJoint = mouseJoint = function(body){
+b2d.mouseJoint = mouseJoint = function(body){
     if(!body){return false}
 //create mouse joint from a body
-    var mouseDef=b2.mouseDef(  w.gB(),  body.awake(1)  )
+    var mouseDef=b2d.mouseDef(  w.gB(),  body.awake(1)  )
     mouseDef.target.Set(mX, mY)
     mouseDef.maxForce=( 300 * body.mass() )
     mouseDef.collideConnected = true
@@ -366,7 +374,7 @@ b2.mouseJoint = mouseJoint = function(body){
 
 
 
-b2.Joints.b2Joint.prototype.destroy=function(){
+b2d.Joints.b2Joint.prototype.destroy=function(){
     this.GetBodyA().GetWorld().DestroyJoint(this)
 }
 
@@ -381,10 +389,10 @@ handleJoints=function(){
         $l('mouseIsDown')
 
         if (_mouseJoint ) { mj =_mouseJoint
-          //  _mouseJoint.SetTarget(b2.V(mX, mY))
+          //  _mouseJoint.SetTarget(b2d.V(mX, mY))
         }
 
-       else { _mouseJoint = _mouseJoint || b2.mouseJoint(w.getBodyAtPoint(mX, mY)) }
+       else { _mouseJoint = _mouseJoint || b2d.mouseJoint(w.getBodyAtPoint(mX, mY)) }
 
 
     }
@@ -414,7 +422,7 @@ checkMouseDown =function(){
 
 
 
-b2.setupDebugDraw =setupDebugDraw =function(){
+b2d.setupDebugDraw =setupDebugDraw =function(){
 
     debugDraw = DebugDraw()
     debugDraw.SetSprite( w.context )
@@ -434,9 +442,9 @@ b2.setupDebugDraw =setupDebugDraw =function(){
 
 setFixtures =function(){
 
-    bD = b2.staticDef()
+    bD = b2d.staticDef()
 
-    fD = b2.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2.polyDef() )
+    fD = b2d.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2d.polyDef() )
 
 }
 

@@ -1,3 +1,32 @@
+Math.lineCenter=function(x1,y1,x2,y2) {
+
+    if (A(x1)) {
+
+        if(N(x1[3])){return center(  x1[0],x1[2],x1[2],x1[3]    )}
+        return center(x1[0],x1[1],y1[0],y1[1])}
+
+    if(O(x1)){return center(x1.x, x1.y, y1.x,y1.y)}
+
+    return center(x1,y1,x2,y2)
+
+    function center(x1,y1,x2,y2){var x,y
+
+        if(x1 > x2){upperX = x1; lowerX = x2}
+        else {upperX= x2; lowerX=x1}
+
+        if(y1 > y2){upperY = y1; lowerY = y2}
+        else {upperY= y2; lowerY=y1}
+
+        x= lowerX + (upperX-lowerX)/2
+        y = lowerY + (upperY-lowerY)/2
+
+        return {x:x, y:y}
+    }
+}
+
+
+
+
 Math.pointInCircle=function(x,y,circle){
     var withinX, withinY
     withinX = x < circle.x + circle.radius && x > circle.x -circle.radius

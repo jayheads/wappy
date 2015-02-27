@@ -129,10 +129,14 @@ EASING=function(){
     eas(3900,'qnO');eas(4100,'qnI'); eas(4300,'qnIO')
     eas(4500,'sO');eas(4700,'sI');eas(4900,'sIO')
     eas(5100,'qdO');eas(5300,'qdI'); eas(5500,'qdIO')}
+
+meSprite=function(){
+    return $sprite(   SS ).XY(10).drag()
+}
+
 SPRITE=function(sprite){
 
     sprite = $sprite( sprite || SS ).XY(10).drag()
-
 
     stage = createjs.stage('orange', 400 ).tick().A().drag()//.op(.7),
     stage.A( sprite )
@@ -144,7 +148,6 @@ SPRITE=function(sprite){
             spin:function(){ sprite.gotoAndPlay('spin') },
             stop:function(){ sprite.stop() },
             play:function(){ sprite.play() } }
-
 
 
     $.div('yellow',460, 89).css({
@@ -168,13 +171,28 @@ SPRITE=function(sprite){
 
     s = sprite
     return  controls}
+
+
+
+SPRITE2=function( ){
+
+    stage = createjs.stage('orange', 400 ).tick().A().drag()//.op(.7),
+
+    stage.A(   sprite = $sprite(   SS ).XY(10).drag() )
+
+}
+
+
+
 PACK = function(){
 
-    stage = createjs.stage(800).tick().A()
+    stage = cjs.stage(800).A()
 
     //stage.op(.7)
 
     sprite = $sprite(Pack).XY( 200, 260 ).sXY(1.2).drag()
+
+
     stage.A(sprite)
 
          //.rgc()
@@ -184,6 +202,8 @@ PACK = function(){
 
 
 }
+
+
 
 
 

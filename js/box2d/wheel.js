@@ -18,6 +18,8 @@ BOXCANNON=function(){
 
 
 
+
+
 EASELCANNON=function(){z()
 
 
@@ -556,6 +558,8 @@ MEMORY=function(){z()
 
 
 }
+
+
 SLING=function(){
 
     startpoint={}
@@ -616,7 +620,11 @@ SLING=function(){
 
 
 
-controller=function(){return $.gameController().A()}
+controller=function(){
+    return $.gameController().A()
+}
+
+
 
 
 $.startControllerListener = controllerListener=function(){
@@ -627,11 +635,21 @@ $.startControllerListener = controllerListener=function(){
     $('#left').on('mousedown mouseover touchenter', function(e){
         pushLeft = 1
         e.preventDefault()})
-    $('#left').on('mouseup mouseout touchleave', function(){ pushLeft = 0 })
+    $('#left').on('mouseup mouseout touchleave', function(){
+        pushLeft = 0 })
     $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })
     $('#jump').on('mouseup mouseout touchleave', function(){  pushUp=0 })
-    $('#right').on('mousedown mouseover touchenter', function(){  pushRight=1})
+
+    $('#right').on('mousedown mouseover touchenter', function(){
+
+       cjs.Keys.right=true
+
+
+    })
+
+
     $('#right').on('mouseup mouseout touchleave', function(){pushRight=0})
+
 }
 
 
@@ -641,7 +659,10 @@ $.startControllerListener = controllerListener=function(){
 
 PHONEJUMP=function(){z()
 
-    makeWorld({  W:300, H:400, w:function(){
+    makeWorld({
+
+        W:300, H:400,
+        walls:function(){
 
 
             bii(10,300, 40, 600).uD('leftWall')
@@ -652,7 +673,9 @@ PHONEJUMP=function(){z()
 
             bii(300, 400, 800, 40).uD('floor')
 
-        }    })
+        }
+
+    })
 
     world.bii(200,400, 80,20)
 
@@ -662,24 +685,13 @@ PHONEJUMP=function(){z()
    // bindr('guy', bii(300,500,60,30),[.4,1.2])
   //  bindr('guy', bii(150,400,60,30))
 
-    player = p = makeMe().aD( 10000 )
+    player = p = w.addMe().aD( 10000 )
 
-    dirPush()
-    footListener()
-    moveListener()
+
 
     controllerListener()
 
 }
-
-
-
-
-
-
-
-
-
 
 
 controlX=function(p){

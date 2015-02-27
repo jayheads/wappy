@@ -273,11 +273,13 @@ drag = drg=function(element){
 }
 
 cjs.Keys = function(){}
+
 cjs.watchKeys=function(){
     cjs.Keys.l = cjs.Keys.left = false
     cjs.Keys.r = cjs.Keys.right = false
     cjs.Keys.r = cjs.Keys.right = false
     cjs.Keys.d = cjs.Keys.down = false
+
     $.kD('l',function(){if($.test){$l('left pressed')}
         cjs.Keys.l = cjs.Keys.left = true
         cjs.Keys.dir = 'left'})

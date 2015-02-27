@@ -1,3 +1,14 @@
+GUNNER=function(){z()
+
+
+    s = cjs.stg(1000).A()
+
+    g = cjs.gunner().a2(s).drag().XY(400,200)
+
+
+}
+
+
 MovieClip = EaselMovieClip = Mc=function(m){var t=this,
 
     m = sCt( sDo(m) )

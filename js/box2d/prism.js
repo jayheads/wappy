@@ -1,7 +1,9 @@
 b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,f){
 
     var j=SuperJointDef(
+
         new b2.Joints.b2PrismaticJointDef()
+
     )
 
 
@@ -12,16 +14,20 @@ b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,
         return j}
 
     j.mt=function(a,b,c){
+
         j.mS(a)
         j.mMF(N(b)?b:100)
         if(c!='-'){j.eM(1)}
-        return j}
+        return j
+
+    }
 
     j.lm=function(a,b,c){
         j.lT(a).uT(b)
 
         if(c!='-'){j.eL(1)}
         return j}
+
 
     if(D(a)){j.A(a)}
 
@@ -37,6 +43,8 @@ b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,
 
     return j
 }
+
+
 
 SuperPrismatic=function(p){
 
@@ -123,10 +131,11 @@ RandomPrismPair = sPrJ=function(x,y){
 
 
 BUMPER=function(){
-    b2.makeWorld()
+  world = w=   b2.makeWorld()
     circle = w.ba( 600,500,40).uD('ride')
 
-    bindr('me', circle)
+    circle.bindSprite('me')
+
 
     world.Prism(
 
@@ -137,7 +146,10 @@ BUMPER=function(){
         ).limits(-30, 60).speed(-100).motor(1).maxForce(1000)
 
 
-    world.Prism(     w.ba( 400,500,40 ).uD('ride'),  w.bii(400,500,40,40).uDF('cart')
+    world.Prism(
+        w.ba( 400,500,40 ).uD('ride'),
+
+        w.bii(400,500,40,40).uDF('cart')
 
     ).limits(-30, 60).speed(-100).maxForce(1000).motor(1)
 
