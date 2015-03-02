@@ -1,375 +1,719 @@
-j=b2.Joints.b2Joint.prototype
 
-j=   b2.Joints.b2JointDef.prototype
+DENROT=function(){
+//by default, bodies have density = 0
+//bodies cannot rotate by force, if their density is 0
+//so by default, bodies wont rotate!!!! but still some mass
+//can even change its density to 0, to suddenly freeze it...
+    //something weird.. if it was already rotating it keeps rotating, and i think its rotation is affected by forces of others..
+    //however others don't rot in response (assuming they also have den-0).  then once it stops rotating, switches back to frozen again?? hmmm.. maybe the rotation is affected only by friction/damping.. and the forces only change its x/y?  test it...
 
-j.bA=j.A=function(a){this.bodyA=a; return this}
-j.bB=j.B=function(b){this.bodyB=b; return this}
-j.bAB=function(a,b){return this.bA(a).bB(b)}
+    w=b2d.mW({grav:0})
 
-j.init = function(){//joint.i=
+    r= w.rect(300,300,400,20,'yellow').rest(.5)
+    r2= w.rect(300,300,400,10,'white')
+    r3= w.rect(300,300,400,10,'white')
+
+    r4= w.rect(300,300,400,10,'white')
+
+    r5= w.rect(300,300,400,10,'white')
+
+
+    flipStage()
+    setInterval(function(){
+
+
+      flipDen(r); flipDen(r2);flipDen(r3);flipStage()
+
+    }, 6000)
+
+
+
+
+}
+
+flipDen=function(r){
+    var d = r.den()
+    if(d==0){r.den(1)} else {r.den(0)}}
+
+flipStage=function(){
+   if(w.s.X()==0  && w.s.Y()==0){w.s.XY(10000,10000)}
+    else {w.s.XY(0,0)}}
+
+
+
+
+b2d.colorBalls=function(){
+
+    r = w.circ(300, 300, 12, 'red').rest(1).den(1).fric(.1)
+    b = w.circ(400, 300, 12, 'blue').rest(1).den(1).fric(.1)
+    y = w.circ(500, 300, 12, 'yellow').rest(1).den(1).fric(.1)
+    g = w.circ(600, 300, 12, 'green').rest(1).den(1).fric(.1)
+    p = w.circ(700, 300, 12, 'pink').rest(1).den(1).fric(.1)
+    o = w.circ(800, 300, 12, 'orange').rest(1).den(1).fric(.1)
+
+}
+
+
+j = jd=b2d.Joints.b2JointDef.prototype
+
+jd.A=function(a){this.bodyA=a; return this}
+jd.B=function(b){this.bodyB=b; return this}
+j.AB=function(a,b){return this.A(a).B(b)}
+
+jd.init = function(){//joint.i=
     this.Initialize.apply(this,arguments)
     return this}
 
 
-j.collide = j.cC = function(a){
-    j.collideConnected = a? true : false; return j
-}
+jd.coll = jd.collide = jd.cC = function(a){
+    this.collideConnected = a; return this}
 
 
 //mouse
-j.target = j.sT  =function(a,b){
-    if( !O(a) ){ a = b2.V(a,b) }
+jd.target = j.sT  =function(a,b){
+    if( !O(a) ){ a = b2d.V(a,b) }
     this.SetTarget(a)
     return this}
 
 //distance
-j.freq=j.f=function(a){this.frequencyHz=a;return this}
+jd.freq=  function(a){
+    if(U(a)){return this.frequencyHz}
+    this.frequencyHz=a;return this
+}
 
-j.len=function(len){
+jd.len=function(len){
     if(U(len)){return this.length*30}
     this.length=len/30
     return this}
 
 
-j.dampRat= j.d= function(a){j.dampingRatio=a;return this}
+
+jd.damp = function(a){if(U(a)){return this.dampingRatio}
+    this.dampingRatio=a;return this}
 
 //revolute
-j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return this}
-j.maxTorque=j.mMT=function(a){
+jd.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return this}
+jd.maxTorque=j.mMT=function(a){
     this.maxMotorTorque=a
     return this}
-j.lowAng= j.lA = function(a){this.lowerAngle=tRad(a); return this}
-j.upAng= j.uA = function(a){this.upperAngle=tRad(a); return this}
-j.localA =j.lAA=function(a){ this.localAnchorA = a; return this}
-j.localB =j.lAB=function(a){ this.localAnchorB = a; return this}
-j.rat = j.r=function(a){this.ratio = a; return this}
-j.axis = j.lXA=function(a){ this.localAxisA=a; return this}
+jd.lowAng= j.lA = function(a){this.lowerAngle=tRad(a); return this}
+jd.upAng= j.uA = function(a){this.upperAngle=tRad(a); return this}
+jd.localA =j.lAA=function(a){ this.localAnchorA = a; return this}
+jd.localB =j.lAB=function(a){ this.localAnchorB = a; return this}
+jd.rat = j.r=function(a){this.ratio = a; return this}
+jd.axis = j.lXA=function(a){ this.localAxisA=a; return this}
 
 //slider
-j.maxForce= j.mMF=function(a){
+jd.maxForce= j.mMF=function(a){
     this.maxMotorForce = a; return this
 }
 
 //slider and revolute
-j.speed=j.mS=function(a){
+jd.speed=j.mS=function(a){
     this.motorSpeed = a; return this}
-j.motor=j.eM=function(a){
+jd.motor=j.eM=function(a){
     this.enableMotor = a?true:false; return this}
-j.maxSpeed =j.mMS=function(a){ this.maxMotorSpeed=a; return this }
+jd.maxSpeed =j.mMS=function(a){ this.maxMotorSpeed=a; return this }
 
 //LIMITS
-j.lowTrans=j.lT=function(a){ this.lowerTranslation=a;return this}
-j.upTrans=j.uT=function(a){ this.upperTranslation=a;return this}
-j.limits=j.eL=function(a){ this.enableLimit=a?true:false;return this}
-
-j.init=j.i=function(){
-    this.Initialize.apply(this,G(arguments))
-    return this}
+jd.lowTrans=j.lT=function(a){ this.lowerTranslation=a;return this}
+jd.upTrans=j.uT=function(a){ this.upperTranslation=a;return this}
+jd.limits=j.eL=function(a){ this.enableLimit=a?true:false;return this}
+Joints={}
+Stuff={}
 
 
 
-SuperJointDef =sJD=function(joint){
 
-    var j=joint
 
-    joint.init = joint.i=function(){
+j=   b2d.Joints.b2Joint.prototype
+j.init =  function(){
 
         joint.Initialize.apply(joint, G(arguments))
 
         return j}
+j.init=j.i=function(){
+    j.Initialize.apply(j, G(arguments))
+    return j}
 
-    joint.A=function(bodyA){ joint.bodyA = bodyA; return j }
-    joint.B=function(bodyB){ joint.bodyB = bodyB; return j }
-    joint.collide = joint.cC=function(a){ j.collideConnected = a? true : false; return j }
 
-    //mouse
-    j.target = j.sT  =function(a,b){
+j.A=function(a){
+    if(U(a)){ return this.GetBodyA() }
+    else {alert ('j.A cannot set')}}
+j.B=function(a){
+    if(U(a)){ return this.GetBodyB() }
+    else {alert ('j.B cannot set')}}
+j.a=function(a){
+    if(U(a)){ return this.GetAnchorA().mult() }
+    else {alert ('j.A cannot set')}}
+j.b=function(a){
+    if(U(a)){ return this.GetAnchorB().mult() }
+    else {alert ('j.B cannot set')}}
+j.freq= function(a){if(U(a)){return this.GetFrequency()}
+    this.SetFrequency(a)
+    return this}
+j.len= function(a){
+    if(U(a)){return this.GetLength()*30}
+    this.SetLength(a/30)
+    return this}
+j.damp= function(a){if(U(a)){return this.GetDampingRatio()}
+    this.SetDampingRatio(a)
+    return this}
 
-        if( !O(a) ){ a = bV(a,b) }
+// can change collideConnected dynamically?  if not i could replace the joint with a new one dynaically!!!!!
+// is it smart enough to know all its properties??? // it should be
 
-        j.SetTarget(a)
 
-        return j}
 
-    //distance
-    j.freq=j.f=function(a){j.frequencyHz=a;return j}
-    j.len=j.l=function(a){
-        j.length=a/30
-        return j
-    }
-    j.dampRat=j.d=function(a){j.dampingRatio=a;return j}
+j.target = j.sT  =function(a,b){
+
+    if( !O(a) ){ a = bV(a,b) }
+
+    j.SetTarget(a)
+
+    return j}
+j.target = j.sT    = function(a,b){
+    if(!O(a)){a=V(a,b)}
+    j.SetTarget(a)
+
+    return j}
+
+//motor
+j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
+    j.maxMotorSpeed=a
+    return j}
+
+//motor rev
+j.mt=j.motor =j.enableMotor = j.eM = function(a){
+    j.EnableMotor( a ? true : false )
+    return j}
+j.speed = j.motorSpeed=j.mS=function(speed){
+    if(U(speed)){return this.GetMotorSpeed()}
+    this.SetMotorSpeed(speed)
+    return this}
+j.torque = function(torq){
+    if(U(torq)){
+        return this.GetMotorTorque()}
+    this.SetMaxMotorTorque(torq)
+    return this}
+
+j.maxTorque = j.mMT=  j.mT=function(a,b,c){
+    j.SetMaxMotorTorque(a,b,c); return j}
+j.maxForce = j.mMF=  j.mF=function(a,b,c){
+    j.SetMaxMotorForce(a,b,c); return j}
+
+
+j.lm= j.limits =j.setLimits = j.sL = function(a,b){
+
+    a = N( a ) ? a : 20
+
+    b = N( b ) ? b : 180
+
+    j.SetLimits( tRad(a), tRad(b) )
+
+    return j}
+j.enableLimits= j.enableLimit = j.eL=function(a){
+    j.EnableLimit( a?true:false)
+    return j}
+j.W=function(){
+   return this.GetBodyA().GetWorld()
+}
+
+
 
     //revolute
-    j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
-    j.maxTorque=j.mMT=function(a){
+
+j.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return j}
+
+j.maxTorque=j.mMT=function(a){
         j.maxMotorTorque=a
         return j}
-    j.lowAng= j.lA = function(a){j.lowerAngle=tRad(a);return j}
-    j.upAng= j.uA = function(a){j.upperAngle=tRad(a);return j}
-    j.localA =j.lAA=function(a){ j.localAnchorA = a; return j }
-    j.localB =j.lAB=function(a){ j.localAnchorB = a; return j }
-    j.rat = j.r=function(a){j.ratio = a; return j }
 
-    j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
+j.lowAng= j.lA = function(a){j.lowerAngle=tRad(a);return j}
+
+j.upAng= j.uA = function(a){j.upperAngle=tRad(a);return j}
+
+j.localA =j.lAA=function(a){ j.localAnchorA = a; return j }
+
+j.localB =j.lAB=function(a){ j.localAnchorB = a; return j }
+
+j.rat = j.r=function(a){j.ratio = a; return j }
+
+
+j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
 
     //slider
-    j.maxForce= j.mMF=function(a){
+
+j.maxForce= j.mMF=function(a){
         j.maxMotorForce = a;return j
     }
 
     //slider and revolute
-    j.speed=j.mS=function(a){
+
+j.speed=j.mS=function(a){
         j.motorSpeed = a; return j}
-    j.motor=j.eM=function(a){
+
+j.motor=j.eM=function(a){
         j.enableMotor = a?true:false; return j}
-    j.maxSpeed =j.mMS=function(a){ j.maxMotorSpeed=a; return j }
+
+j.maxSpeed =j.mMS=function(a){ j.maxMotorSpeed=a; return j }
 
     //LIMITS
-    j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
-    j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
-    j.limits=j.eL=function(a){
+
+j.lowTrans=j.lT=function(a){ j.lowerTranslation=a;return j}
+
+j.upTrans=j.uT=function(a){ j.upperTranslation=a;return j}
+
+j.limits=j.eL=function(a){
         j.enableLimit=a?true:false;return j}
 
 
-    j.init=j.i=function(){
-        j.Initialize.apply(j, G(arguments))
-        return j}
-    return j
-}
 
-Joints={}
-Stuff={}
+j.wind=function(){var that=this, wound=false
 
-JOINTPROTO= function(){b2.mW()
+    cjs.tick(function(){
 
-    a =  w.ba(150,150)
-    b = w.bi(180, 150)
+        if(wound==false){  that.len( that.len() * 0.99 ) }
+        else {  that.len( that.len() * 1.01 ) }
 
-    jd = new b2.Joints.b2DistanceJointDef()
+        that.W().s.pen('len: '+ that.len())
 
-    jd.bAB(a,b).len(200) //jd.bodyA=a; jd.bodyB=b
+        if (that.len()<5){wound=true}
+        if (that.len()>200){wound=false}
 
 
-    f=function(){
-        j= w.CreateJoint(jd)
-    }
-
-
- f()
+    })
 }
 
 
 
 
 
-//DISTANCE JOINTS
-//makes a distance joint def
-b2.distDef =b2.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(o){
 
-    var j= SuperJointDef( new b2.Joints.b2DistanceJointDef() )
+
+JOINTPROTO = function(){b2d.mW()
+
+    jd = new b2d.Joints.b2DistanceJointDef()
+
+    b = w.brick(180,150)
+    a = w.ball(150,150)
+
+    j= w.J(  jd.AB(a,b).len(200)    )
+
+}
+b2d.dJ = b2d.distJ = b2d.distDef =b2d.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(o){
+
+    var jd = new b2d.Joints.b2DistanceJointDef()
 
     //this initialize function for distance, not revolute
-    j.init = j.i=function(a,b,c,d){
 
-        if( U(c) ){ c = a.worldCenter()}
+    jd.init = function(b1, b2, b1V, b2V){
 
-        if( U(d) ){ d = b.worldCenter()}
+        if( U(b1V) ){ b1V = b1.worldCenter()}
+        if( U(b2V) ){ b2V = b2.worldCenter()}
+        this.Initialize(b1, b2, b1V, b2V)
+        return this}
 
-        j.Initialize(a,b,c,d)
+    if( O(o) ){ // ever used?
+        if(o.init){ j.init.apply(j, o.init)  }
+        if(N(o.len) ){ j.len( o.len ) } else { j.len(1) }
+        if(N(o.freq) ){ j.freq( o.freq ) } else { j.freq(3) }
+        if(N(o.damp) ){  j.dampRat( o.damp) } else { j.dampRat( .1 ) }
+        if((o.coll) ){ j.collide( true ) }  else { j.collide( false ) }
 
-        return j}
+        return w.J( jd )
+    }
+// dont ever set a dJ().len(0)
+    return jd }
+DISTPOINTS=function(){b2d.mW()
 
-    //set length, freq, damp to a default
-    //j.l(1).f(3).d(.1)
+    x = w.rectStat(500, 300, 200, 200)
+    b = w.circ(300, 400, 20, 'red')
+    j = w.dist(x, b, V(100,100) ).len(50)
 
-    if( O(o) ){
+    cjs.tick(function(){w.s.dot([j.a(),j.b()])})
+    setInterval( function(){ b.I(-10000,0) }, 2000)
 
-        if(o.i){ j.init.apply(j, o.i)  }
+    w.dist(x,  w.circ(300, 400, 20, 'blue'),  V(-100,100))
+        .len(50)
 
-        if(N(o.l) ){ j.len( o.l ) } else { j.len(1) }
+    w.dist(x,  w.circ(600, 300, 20, 'green'), V(100,-100))
+        .len(50)
 
-        if(N(o.f) ){ j.freq( o.f ) } else { j.freq(3) }
+    o= w.distColl(x,  w.circ(300, 400, 20, 'orange'),  V(-100,-100))
+        .len(50)
 
-        if(N(o.d ) ){  j.dampRat( o.d ) } else { j.dampRat( .1 ) }
+}
+DISTPOINTSMORE=function(){b2d.mW()
 
-        if((o.c) ){ j.collide( 1 ) }  else { j.collide( 0 ) }
+    // ok, so the 'points' are relative to the WORLD
 
-        return w.joint( j )
+    x = w.brick(  550,200,  400,100)
+    b2d.colorBalls()
+
+
+   // here there are no default lengths, they are set to actual distance apart at time of joint creation!!!
+
+
+    j0 =  w.dist(b, r)     //  previously:  j0 =  w.J(   b2d.dJ().init(b,r)   )
+
+
+
+    f = function(){
+
+        w.s.flash()
+        j1 = w.dist(x, o)
+
+        xc = x.worldCenter()
+
+        gc = g.worldCenter()
+
+        j = w.dist(x, g, xc, gc)
+
+
+      cjs.tick(function(){  w.s.dot( j.a()  ); w.s.dot( j.b()  ) })
 
     }
 
-    return j}
+
+    // i want to be able to specify how much to offset the anchor point, relative from its own center!!!!
 
 
 
 
-b2.rod = Joints.rod = Rod = rod =function(a, b){
-    return b2.distanceDef().init(a,b) }
-b2.spring = Joints.spring = Spring = spring =function(a,b){
+    setTimeout(f, 200)
 
-    return b2.distanceDef().init( a, b ).len(1).freq(3).dampRat(.1)
 
 }
 
-RandomDistanceJoint = function(x, y){//sDJ=
-    w.joint(
-        b2.spring(
-            world.A( b2.dynamicBodyDef(x,y), fix() ),
-            world.A( b2.dynamicBodyDef(x,y), fix() )))}
+WINDUP=function(){var wound=false
+    b2d.level()
 
 
-RandomDistanceJoint.$$=function(){ $.dblclick( RandomDistanceJoint ) }
+    j = w.distColl(
+        w.bump(450,40,40),
+        w.box(400,200,20,60), 200
+    )
+
+    k = w.dist(
+        w.bump(450,40,40),
+        w.box(400,200,20,60), 200
+    )
+
+    w.stat(0, 40,  b2d.poly(400,100).sensor(true).K('sensor') ) //can get triggered many many times?
+
+    w.begin(function(cx){
+        if(cx.with('sensor')){
+            j.wind();k.wind()
+
+        }})
 
 
-Stuff.Bridge = Stuff.bridge = bridge=function(x,y){
 
-    x = N( x ) ? x : 400
-    y = N( y ) ? y : 300
 
-    var  b1 = baa(x, y),
 
-        b2 = bi(), b3 = bi(),
-        b4 = bi(), b5 = bi(),
-        b6 = bi(), b7 = bi(),
-        b8 = bi(), b9 = bi(),
+    // game:: density:  if u want to fit in here.. u will have to lower yourself a bit to our level.. you see, compared to you, we a really quite dense. Not dense as in stupid, but as in, we have a high mass to volume ratio.  In otherwords, we can't jump!  It's a grave grave situation.  Don't get me wrong, not grave as in bad, but grave, as in, it relates to gravity.  Additionally, it's quite bad.
+}
 
-        b10 = baa(x+300, y)
 
-    w.cJ(
-        b2.distDef().init(b1, b2).len(10).freq(5).d(.01)  )
 
-    w.cJ(
-        b2.distDef().i(b2, b3).l(10).f(5).d(2))
+RODS=function(){
 
-    w.cJ(
-        b2.distDef().i(b3, b4 ).l(10).f(5).d(.1))
 
-    w.cJ(
-        b2.distDef().i(b4, b5 ).l(10).f(5).d(2))
+    // here i bind bodies with fixtures that are alredy out of line
 
-    w.cJ(    b2.distDef().i(b5, b6 ).l(10).f(5).d(2))
+    b2d.level()
 
-    w.cJ(   b2.distDef().i(b6, b7 ).l(10).f(5).d(2) )
+  b2d.rod(
+      w.ball(300,100,20),
+      w.dyn(300,150, b2d.poly(20, 20, 15, 15, 45) ),
+      1)
 
-    w.cJ(
-        b2.distDef().i( b7, b8 ).l(10).f(5).d(2))
 
-    w.cJ(
-        b2.distDef().i( b8, b9 ).l(10).f(5).d(2))
+    b2d.rod(
+        w.ball(350,100,20),
+        w.dyn(350,150, b2d.poly(20, 20, -15, -15, 300) ),
+        1)
 
-    w.cJ(
-        b2.distDef().i( b9, b10 ).l(10).f(5).d(2))
+
+    b2d.rod(
+        w.ball(380,100,20),
+        w.dyn(380,150,
+            b2d.poly(20, 20, -15, -15, 225) ),
+        1)
+
+
+
+    b2d.rod(
+        w.ball(400,100,20),
+        w.dyn(400,150, b2d.poly(20, 20, 15, 15, 225) ),
+        1)
+
+
+    b2d.rod(
+        w.ball(100,100,20),
+        w.box(110,120,20,20), 30
+    )
+
+    b2d.rod(w.bump(200,200,20),
+        w.box(200,200,20,20), 2
+    )
+}
+
+
+ONLYGRAVITYONMARIO=function(){}
+SPRINGS=function(){
+    b2d.levelScrollX()
+    right.kill()
+
+   //freq is SPEED of oscillation
+    //damp is STRENGTH of oscillation
+
+
+
+    // so bodies cant rotate if they dont have density???
+
+   j = w.spring(
+       w.circStat(200, 100, 10).sens(),
+
+       w.rect(200,250,250,10).K('rect')
+   )
+
+
+        .freq(3).damp(.1)
+
+    w.spring(w.circStat(500, 100, 10).sens(),
+        w.rect(500,250,250,10).K('rect'))
+        .freq(3).damp( 1)
+
+    w.spring(w.circStat(800, 50, 10).sens(),w.rect(800,200,250,10).K('rect'))
+        .freq(2).damp(50)
+
+    w.spring(w.circStat(1200, 125, 10).sens(), w.rect(1200, 275,250,10).K('rect'))
+        .freq(10).damp(.5)
+
+
+
+
+    w.begin(function(cx){
+
+        f = cx.with('rect')
+
+        if( f ) {
+
+
+            b = f.body()
+
+            j = b.joint()
+
+            w.s.pen($l('freq: '+ j.freq() + ', dampening: '+ j.damp()))
+        }
+    })
+}
+
+
+SPRINGS3=function(){b2d.levelScroll()
+
+    softPlat=function(x,y) {
+
+        x=N(x)?x:300
+        y=N(y)?y:60
+
+        j = w.spring(
+            w.bump(x,y, 4 ).sens(true),
+            w.rect(x,y, 100, 30).den(1).fixedRot(true).rest(0)
+        ).damp(1)
+    }
+
+
+    softPlat(300,100)
+    softPlat(500,80)
+    softPlat(700,40)
+    softPlat(900,120)
 
 }
 
-CHANGEDISTJOINT=function(){
+
+
+
+SPRINGINSPACE=function(){b2d.mW({grav:0})
+   var spring=function(bx,by){ var x, b,j
+
+        bx = N(bx)?bx: 480
+        by = N(by)?by: 300
+
+        j = w.dist(
+            x = w.brick(500, 300, 40,200),
+
+            b = w.bump(bx,by))
+
+        w.s.dot(500,300)
+        w.s.dot(bx, by)
+        w.s.dot('red',
+                500 - ((500-bx)/2),
+                300 - ((300-by)/2))
+
+        $.dblclick(function(){ b.dyn() })
+        return j}
+    //try with and without grav
+
+    ball = w.ball(200,200,50) // notice it bounces off wall, but NOT off x (neither have rest by default)
+    rect = w.brick(200,250,250,10)
+
+
+    j = spring(480, 300)
+
+
+
+
+    j.freq(2).damp(1)//.len(20)
+
+    // ok so freq is how much strngth u need to pull it??
+    // as freq gets low.. u can pull it farther away
+    // its the strength of the spring
+
+
+}
+BOUNCESPRING=function(){
+    b2d.levelScrollX()
+
+//default freq is 0.  but thats like freq 10000000
+//freq is tightness.  the default (0) is all the way tight.
+//if u want to start to loosen it.  change from 0 to a very high number!
+//try 50.. then u will see that it budges just a little.
+    //ok.. now keep going down..
+    // eventually it is too loose to fight against gravity
+    // hahaha then its just flat and usesless
+    // ok all this assumed a default damp of 0.
+    // now set the freq to a good oscillation (3 or 4)
+    // then play with the damp
+    // damp is like a tightner on your looseness
+    // it makes you less stretchy?
+    // just leave damp at 0 for now, and play with freq
+
+    w.tramp(200,0, 6)// not bouncy
+    w.tramp(500, 1.2,6)// too bouncy
+    w.tramp(800,.75, 6)// mid bouncy, mid freq
+    w.tramp(1100,.75, 2)//low freq
+    w.tramp(1400,.75, 12)//high freq
+
+    p.XY(285,0)
+
+   setInterval(function(){p.I(0,-150)}, 1000)//game:: he autojumps.  u jump to give him a double jump!
+   setTimeout(function(){w.s.flash(); w.addHundBalls()},30000)
+}
+SPRINGS2=function(){
 
     z()
 
-    b2.mW()
+    b2d.mW()
 
 
-   j1 = w.joint(
+   j1 = w.J(
 
-       j0= b2.distDef().init( ba(), bi() ).len(200).freq(5).dampRat(.1)
+       jd = b2d.distDef().init(
 
-    )
+           w.circ(30,200, 20, 'red'), w.box()
 
-
-    setInterval( function(){ j1.len2( j1.len2()-1) }   ,100 )
-
-
-    j2 = w.joint(
-
-          Spring( ba(), bi() ).len(20).freq(5).dampRat(.1).collide(0)
-
-    )//.collideConnected=false
-
-    j3 = w.joint(
-
-        b2.spring( ba(), bi() ).len(20).freq(5).dampRat(.1).collide(1)
-
-    )//.collideConnected=true
-
-}
-
-BRIDGE=function(){b2.makeWorld()
-    b2.bridge(100,200)
-    b2.bridge(500,200)}
-
-
-
-
-DEMO_DIST=function(){
-
-    w = b2.mW()
-
-
-   j= w.cJ(
-
-        b2.distDef().i(ba(), ba()).l(100).f(1).d(.01)
+       ).len(200).freq(5).damp(.1)
 
     )
 
-   // w.cJ( b2.distDef().i(ba(),ba()).l(100).f(1).d(2) )
-   // w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(.1) )
-   // w.cJ( b2.distDef().i(bi(),bi()).l(100).f(5).d(2) )
 
-    //  w.cJ( b2.distDef().i(ba(),ba()).l(4).f(3).d(.1) )
-    //  w.cJ( b2.distDef().i(ba(),ba()).l(8).f(3).d(.1) )
-    //  w.cJ( b2.distDef().i(ba(),ba()).l(16).f(3).d(.1) )
-    //  w.cJ( b2.distDef().i(ba(),ba()).l(32).f(1).d(.1) )
-    //  w.cJ( b2.distDef().i(ba(),ba()).l(200).f(1).d(.8) )
+    cjs.tick( function(){
+        if (j1.len()>1){
+            j1.len( j1.len()-1)
+        }
+    })
 
-    cup2()
+
+    j2 = w.J(
+
+          b2d.spring(
+
+              w.circ(100,300,30,'white'), w.box()
+
+          ).len(20).freq(5).damp(.1).coll(false)
+
+    )
+
+    j3 = w.J(
+
+        b2d.spring(
+            w.circ(130,250,30,'blue'),
+            w.brick()
+        ).len(120).freq(5).damp(0).coll(true)
+
+    )
+
+}
+BRIDGE=function(){
+    b2d.levelScrollX();
+    p.XY(-100,0)
+    w.bridge(100, 10)
+    setTimeout(function(){w.s.flash();p.XY(500,0)},10000)}
+DEMO_COLLIDE=function(){b2d.mW()
+
+
+    w.dist(w.ball(200,200,50), w.ball(300,200,40))
+        .len(50).freq(3).damp(.1)
+    w.dist(w.box(200,200,50), w.box(300,200,40))
+        .len( 50 ).freq( 3 ).damp(.1)
+    w.distColl( w.ball(200,200,50), w.ball(300,200,60))
+        .len(50).freq(3).damp(.1)
+    j = w.distColl(w.rect(200,200,50,50),w.rect(300,200,60))
+        .len(50).freq(3).damp(.1)
 
 }
 
 
-DEMO_COLLIDE=function(){mW()
-
-    w.joint(
-        b2.distDef().init(  ba( 200, 200, 50 ), ba( 300, 200, 40 ) )
-            .len( 50 ) .freq( 3 ) .dampRat( .1 ))
-    w.joint(b2.distDef().init(
-        ba(200,200,50), ba(300,200,60))
-        .len(50).freq(3).dampRat(.1).collide(1))
-    w.joint(
-        b2.distDef().init(
-            bi(200,200,50), bi(300,200,40))
-            .len( 50 ).freq( 3 ).dampRat( .1 ))
-    w.joint(b2.distDef().init(
-        bi(200,200,50), bi(300,200,60))
-        .len(50).freq(3).dampRat(.1).collide(1))
-
-}
-
-RAGD = function(){
 
 
-    b2.mW()
 
-    //world.Spring =
-    w.joint(
-        b2.spring( body1 = w.ba(100,100,30), w.ba(100,200,40)))
+
+
+
+
+
+
+
+//
+//
+//
+RAGD = function(){b2d.mW()
+
+    // world.Spring =
+    w.J(
+
+        b2d.spring(
+            body1 = w.ball(100,100,30),
+            w.ball(100,200,40)
+        )
+    )
+
 
 
     //world.Rod =
-    w.joint(
-        b2.rod( body2 = w.bi(100, 400, 30), w.bi(100, 500, 40)   ))
+    w.J(
+
+        b2d.rod(
+            body2 = w.box(100, 400, 30),
+            w.box(100, 500, 40)   )
+    )
 
     player = w.addMe()
-    w.joint(b2.spring(body1, player))
-    w.joint(b2.spring( body2, player))
+
+    w.J(
+
+        b2d.spring(
+            body1, player)
+    )
 
 
-
+    w.J(
+        b2d.spring( body2, player))
 
 }
-
-
-
-
 PulleyJoint =pJt =function(){
 
     bPJD =BXJ.b2PulleyJointDef
@@ -395,8 +739,8 @@ SuperPulleyJoint = sPJ= function(x,y){
     x=N(x)?x:100
     y=N(y)?y:x
 
-    b11 = w.A( bx1 = b2.dynamicDef(x,y), fix() )
-    b22 = w.A( bx2 = b2.dynamicDef(x,y), fix() )
+    b11 = w.A( bx1 = b2d.dynamicDef(x,y), fix() )
+    b22 = w.A( bx2 = b2d.dynamicDef(x,y), fix() )
 
 
     var pulley = PulleyJoint()
@@ -407,9 +751,9 @@ SuperPulleyJoint = sPJ= function(x,y){
 
         b22,
 
-        b2.V(15,1),
+        b2d.V(15,1),
 
-        b2.V(15,2),
+        b2d.V(15,2),
 
         b11.worldCenter(),
 
@@ -423,41 +767,32 @@ SuperPulleyJoint = sPJ= function(x,y){
         .maxLenA(10)
         .maxLenB(5)
 
-    w.joint(pulley)
+    w.J(pulley)
 
 }
-
-
 //SuperPulleyJoint.$$=function(){x.$$(sPJ)}
-
-
-PULLEY=function(){b2.mW()
+PULLEY=function(){b2d.mW()
 
     body1= bi(300,300,200,10)
     body2= bi(500,300,200,10)
 
     var pulley = PulleyJoint().init(
         body1,  body2,
-        b2.V(20, 1), b2.V(25, 2),
+        b2d.V(20, 1), b2d.V(25, 2),
         body1.worldCenter(),
         body2.worldCenter(),
 
         1 ).lenA( 8 ).lenB( 4 ).maxLenA( 10 ).maxLenB( 5 )
 
-   w.joint( pulley )
+   w.J( pulley )
 
     //makeMe()
     //makeTim(10)
     //makeCar()
 
 }
-
-
-
-
-
 //MOUSE JOINTS
-b2.mouseDef = MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
+b2d.mouseDef = MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
 
     var j=new b2MouseJointDef()
 

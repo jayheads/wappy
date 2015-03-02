@@ -1,13 +1,15 @@
 
 b2d.fixt = b2d.fixtDef=function(){return new b2d.Dynamics.b2FixtureDef()}
 
-b2d.poly = b2d.polyDef = b2d.polyFixt =  pFx=function(wd,ht,xy,ang,ang2){
+b2d.poly = b2d.polyDef = b2d.polyFixt =  pFx=function(wd, ht,xy,ang,ang2){
 
-    var fixt = b2d.fixt().den(1).f(.5).rest(.8)
+    var fixt = b2d.fixt()//.den(1).f(.5).rest(.8)
     if(b2d.isShape(wd)){
         fixt.shape=wd}
+
     else {fixt.shape =  b2d.polyShape(wd, ht, xy, ang, ang2)}
     return fixt}
+
 TESTPOLYF=function(){z()
 
     w=b2d.mW()
@@ -43,7 +45,7 @@ b2d.circ = b2d.circDef = b2d.circFixt =  cFx=function(radius, x, y){//fC=
 
     circle.SetLocalPosition( V(x/30, y/30)  )
 
-    return b2d.fixtDef().setShape(circle).d(1).f(.5).r(.8)
+    return b2d.fixtDef().setShape(circle)//.d(1).f(.5).r(.8)
 
 }
 
@@ -75,16 +77,20 @@ fd.K=fd.uD=function(data){
     if(U(data)){return this.userData }
     this.userData=data;return this}
 
-fd.index=f.gI=function(a){
+fd.group = fd.index=f.gI=function(a){
     if(U(a)){return this.filter.groupIndex}
     this.filter.groupIndex=a; return this}
 
-fd.category=f.cB=function(a){
+fd.cat= fd.category=f.cB=function(a){
     if(U(a)){return this.filter.categoryBits}
     this.filter.categoryBits=a; return this}
 fd.mask=f.mB=function(a){
     if(U(a)){return this.filter.maskBits}
     this.filter.maskBits=a; return this}
+
+fd.bits=function(cat, mask){
+    return this.cat(cat).mask(mask)
+}
 
 
 /*
@@ -144,6 +150,14 @@ f.with=function(what){var body
 
     // if has sibling fixture that matches, return IT!
 }
+
+
+f.remove = function(){
+
+    this.GetBody().destroyFixt(this)
+
+ }
+
 
 FIXTURES=function(){z()
 
@@ -303,5 +317,103 @@ f.sensor= f.iS=function(isSensor){
     if(U(isSensor)){return this.m_isSensor}
     this.m_isSensor =isSensor?true:false
     return this}
+
+
+
+JUMPERS=function(){
+
+
+
+    w=b2d.mW({grav:100})
+
+
+    a=  w.dyn(100,200, b2d.poly(150,100 )).den(.5)
+
+
+
+
+    c=  w.dyn(500,400, b2d.poly(50,100 )).den(.5)
+
+    b=    w.dyn(100,10, b2d.poly(30,60 )).den(.5).rest(2)
+
+
+
+    _.each([a,b,c], function(b){
+
+        b.click(function(){
+
+            this.I(0, -50)})
+    })
+
+
+
+}
+
+
+MASS=function(){w = b2d.mW(
+    {
+        grav:0
+    }
+)
+
+
+
+
+    r = w.circ(  200, 200,  50, 'red'  )
+    r.ResetMassData()
+
+
+    b = w.circ(  200, 200,  50, 'blue'  )
+    b.GetFixtureList().SetDensity(1)
+
+
+    y = w.circ(  200, 200,  50, 'yellow'  )
+    y.GetFixtureList().SetDensity(1)
+    y.ResetMassData()
+
+
+
+    p = w.circ(  200, 200,  50, 'pink'  )
+    p.GetFixtureList().SetDensity(10000)
+    p.ResetMassData()
+
+
+
+
+}
+FIXTLIST=function(){//works
+
+    w = b2d.mW()
+
+
+    b=w.dyn(100,100,[
+
+        [40], [100,200,100], [50,200], [200,200,300,400]
+
+    ])
+
+
+    f = b.GetFixtureList()
+
+    w.startKilling()
+
+    b.each(
+
+        function(f){ //bind to this.. when u have time
+
+            //f.SetSensor(true) //works
+
+            // f.remove()
+
+            // f.K('destroy')
+
+            $l('shape type: ' + f.GetShape().m_type)
+
+        }
+    )
+
+
+}
+
 
 

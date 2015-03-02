@@ -2,34 +2,39 @@ BOXSPRITE=function(){
 
     b2.mW({debug:false})
 
-    meBall=function(){
-        b = b2.ball(400,400,40)
-        spr = meSprite().rCenter().sXY(.4)
-        spr.regX=230
-        spr.regY=260
-        b.bindSprite2(spr,6)}
+
+ meBall=function() {
+     spr = meSprite().rCenter().sXY(.4).rXY(230, 260)
+     b = b2.ball(400, 400, 40).bindSprite2(spr, 6)
+ }
     meBall()
+
+
 
 
     w.box().bindSprite('guy')
 
     w.begin(function(cx){
 
-        if(cx.isBetween('ball','box')){
+        if(cx.with('ball', 'box')){
 
-            spr.gotoAndPlay('explode')
+            spr.p('explode')
+
             setTimeout(function(){
-                b.kill();meBall()
+                b.kill();
+                meBall()
 
-            },600)
+            }, 1000)
         }
 
     })
 }
+
+
 BOXPACK=function(){
 
-    w=b2.mW({
-         debug:false
+    w=b2d.mW({
+         //debug:false
     })
 
     w.platform(500,300,200,200)
@@ -56,29 +61,31 @@ BOXPACK=function(){
 
     w.begin(function(cx){
 
-       if( cx.involves('platform') ){
+       if( cx.with('platform') ){
            change()
        }
 
     })
 }
+
 PACKE4=function(){
 
-    w=b2.mW({
-        debug:false,
+    w=b2d.mW({
+        //debug:false,
         grav:0
     })
 
 
-
-
-    p=w.player('thrust')
+    p = w.player('thrust')
 
     var spr =  $sprite(Pack).rCenter().sXY(.4)//.XY( 200, 260 ).sXY(1.2).drag()
 
-    spr.gotoAndPlay('e4')
+    spr.p('e4')
 
-    b=w.bumper(Math.random()*1000, Math.random()*500,45).bindSprite2(spr)
+    b= w.bumper(
+            Math.random()*1000,
+            Math.random()*500,45
+    ).bindSprite2(spr)
 
 
 
@@ -87,8 +94,8 @@ PACKE4=function(){
 
     w.begin(function(cx){
 
-       if( cx.involves('bumper')){
-           p.I(100,100)
+       if( cx.with('bumper')){
+           p.I(1000, 1000)
        }
 
     })
@@ -96,12 +103,15 @@ PACKE4=function(){
 
 
 }
+
+
+
 EASELBO=function(){
 
 
-    w = b2.mW({
+    w = b2d.mW({
 
-        debug:false
+        //debug:false
     })
 
 
@@ -109,7 +119,7 @@ EASELBO=function(){
 
 
 
-    r = cjs.rectangle(   100, 100).XY(300,300).drag()
+    r = cjs.rect(   100, 100).XY(300,300).drag()
 
 
     b.bindSprite2(r)
@@ -121,11 +131,11 @@ EASELBO=function(){
 EASELBO2=function(){
 
 
-    w = b2.mW({
-
-        debug:false,
-        //grav:0
+    w = b2d.mW({
+        grav:3
+        //,debug:false
     })
+
     p=w.player('standard')
 
     cjs.tick(function(){
@@ -134,11 +144,10 @@ EASELBO2=function(){
     })
 
     b = w.brick(300, 300, 300, 100)
-    r = cjs.rectangle(   300, 100).XY(300,300).drag()
+    r = cjs.rect(   300, 100).XY(300,300).drag()
     w.s.A(r)
     cjs.tick(function(){b.X(r.X()); b.Y(r.Y())})
    r.tweenLoop([{x:500},1000  ], [{x:300},1000  ] )
-
 
     bb = w.brick(500, 500, 300, 100)
     rr = cjs.rectangle(300, 100).XY(500, 500).drag()
@@ -146,16 +155,11 @@ EASELBO2=function(){
     cjs.tick(function(){bb.X(rr.X()); bb.Y(rr.Y())})
 
 }
+
 CHANGE=function(){
 
 
-
-
-    easel=function(){}
-
-
-
-    w = b2.mW()
+    w = b2d.mW()
 
 
     b = w.ball().bindSprite('guy').kin()
@@ -166,6 +170,7 @@ CHANGE=function(){
 
 
 }
+
 PHYSICSCIRCLE=function(){
 
 

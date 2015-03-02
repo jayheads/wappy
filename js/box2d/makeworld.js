@@ -1,12 +1,15 @@
 
 
-b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){var options
+b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
+
+    var options
     if(!O(ops)){ops={}}; options = ops
 
     var width = ops.W||1200,
         height= ops.H||600
 
 
+    if(ops.z!=false){z()}
 
     if(N(ops.grav)){ops.grav=[0, ops.grav]}
     if(A(ops.grav)){
@@ -34,7 +37,8 @@ b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){var options
     w.x = canvasPosition.x
     w.y = canvasPosition.y
 
-    $.gameController().A(); $.startControllerListener()
+    $.gameController().A()
+    $.joystick()
 
     _mouseJoint = _mouseIsDown = 0
     setInterval( function(){handleMouseJoints(); handleDebug()}, 1000/60 )
@@ -76,6 +80,7 @@ b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){var options
 
     w.bD  = b2d.staticDef()//= bD
     w.fD = fD = b2d.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2d.polyDef() )
+
     w.makeWalls(ops.walls )
 
     //w.startListening()

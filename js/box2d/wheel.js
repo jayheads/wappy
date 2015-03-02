@@ -1,151 +1,71 @@
-
-
-
+//joints
 BOXCANNON=function(){
 
 
-    b2.mW() // hmm.. want to matchs screen size
+    w=b2d.mW() // hmm.. want to matchs screen size
 
-    a= world.baa(300,600, 200)
+    a= w.bumper(300,600, 200)
 
-    b= world.bi(300,400, 100,100)
+    b= w.box(300,400, 100,100)
 
-    world.Rev( a,b  )
+    w.Rev( a, b  )
 
 }
-
-
-
-
-
-
-
 EASELCANNON=function(){z()
 
-
-    stage = createjs.stage(600,600).tick().A()
-
-
-    circle  =  createjs.shape().circle(200, 'r','b').rXY(100).XY(400,700)
-
-    rect =  createjs.shape().rect( 100, 100, 'b', 'r' ).XY(300, 600).rXY(50, 250)
-
-    stage.A(circle)
-    stage.A(rect)
+    cjs.stage(600,600).A().A(
+        cjs.circ(200, 'red','brown').rXY(100).XY(400,700),
+        cjs.rect( 100, 100, 'blue', 'orange' ).XY(300, 600).rXY(50, 250))
 
     RTT(rect)
-
 }
+EASELBOXCANNON=function(){z();w=b2d.mW() // hmm.. want to matchs screen size
 
-
-EASELBOXCANNON=function(){
-
-    b2.mW() // hmm.. want to matchs screen size
-
-    world.Rev(
-
-        dome = world.baa(300,600, 200),
-
-        cannon = world.bi(300,400, 100,100)
-
-     )
+    w.Rev(
+        dome = w.baa(300,600, 200),
+        cannon = w.bi(300,400, 100,100))
 
 
 
-    //stage = SuperStage( 600, 600 ).A()
+    w.stage.A(
 
-    circle = Shape().circle( 200, 'r', 'b' ).rxy(100).xy(400,700)
+    cjs.circ( 200, 'red', 'blue' ).rXY(100).XY(400,700),
 
-    rect = Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
+    rect=cjs.rect( 100, 100, 'blue', 'red' ).XY(300,600).rXY(50,250)
 
-    stage.A( circle )
+    )
 
-    stage.A( rect )
-stage.tick(function(){
+cjs.tick(function(){
 
     if(rect.rt()>60){rect.rt(60)  }
     if(rect.rt()<-60){rect.rt(-60)  }
 
 
-    cannon.aF(   bV( 0, -420 ),    cannon.worldCenter()    )
+    cannon.aF( V( 0, -420 ),    cannon.worldCenter()    )
 
 })
     RTT( rect )
 
 }
 
-EASELBOXCANNON1=function(){
 
-    b2.mW({g:0}) // hmm.. want to matchs screen size
-
-    world.Rev(
-        dome = world.baa(300,600, 200),
-        cannon = world.bi(300,400, 100,100))
-
-
-
-
-    //stage = SuperStage( 600, 600 ).A()
-
-    circle = Shape().circle( 200, 'r', 'b' ).rxy(100).xy(400,700)
-
-    rect = Shape().rectangle( 100, 100, 'b', 'r' ).x(300).y(600).rx(50).ry(250)
-
-    ball = ba()
-
-    stage.A( circle )
-
-    stage.A( rect )
-    stage.tick(function(){
-
-        if(rect.rt()>60){rect.rt(60)  }
-        if(rect.rt()<-60){rect.rt(-60)  }
-
-
-       ball.aF(   bV( 0, 100 )  )
-
-        cannon.rt(  rect.rt()   )
-
-    })
-
-
-    RTT( rect )
-
-
-
-
-}
 
 GRAVITY=function(){
 
-    makeWorld()
+    //force not working?
 
-
-   bi1= ba(100,100,100)
-   bi2= ba(100,100,100)
-
-
-    stage.tick(function(){
-
-        bi2.aF( 0,-20000 )
-
+    w=b2d.mW({
+        grav:0
     })
-}
 
 
+   bi1= w.ball(100,100,100)
+   bi2= w.ball(100,100,100)
 
 
-GRAVITY0=function(){
-    b2.mW({g:0})
+   cjs.tick(function(){
 
-
-    bi1= ba(100,100,100)
-    bi2= ba(100,100,100)
-
-
-    stage.tick(function(){
-
-        bi2.aF( 0, 2000 )
+        bi2.aF( 0, -200000 )
 
     })
 }
@@ -162,53 +82,12 @@ GRAVITY0=function(){
 
 
 
-makeTimX=function(num){
-    var tim
-
-    if(U(num)){
-        var tim = ba().uD('tim')
-        bindr('guy', tim,.3)
-        return tim}
-
-    _.times(num, function(){
-
-        var ti= ba().uD('tim')
-        bindr('guy', tim,.3)
-    })
-
-    return world}
 
 
 
 
 
 
-
-
-
-bindrX = function( im, spr, sxy, rt ){
-
-    sxy = sxy||.4
-
-    rt = N(rt) ? rt : 6
-
-    stage.bm(  im,
-        function(b){bb=b
-             b.rCenter('+')
-             if ( A(sxy) ){  b.sX( sxy[0] ).sY( sxy[1] ) }
-             else { b.sXY( sxy ) }
-            b.rotation=  rt
-
-         cjs.tick( function(){
-
-             b.XY( spr.x(), spr.y());    b.rotation= rt + spr.rt()
-
-         })
-
-            // spr.killSprite = spr.kS = function(){  b.XX() }
-
-        })
-}
 
 
 
@@ -235,80 +114,12 @@ p.bindr = function( img, body, sxy, startingRotation ){
 
 
 
-b2.testBinder = function(){z()
+TESTBINDER = function(){b2d.mW()
 
-    b2.mW()
-
-    b = w.bi(200,200,30,100)
-
-    stage.bindr('me', b)
-    stage.bindr('chicks', w.bi(200,200,200,200))
-    stage.bindr('guy', w.bii())
-}
-
-
-
-
-STAGR=function(){
-
-    z()
-
-    canvas = $.canvas('red', 400, 400).A()
-
-    stage = new cjs.Stage( canvas[0])
-
-    stage.tick()
-
-    stage.bm('me', function(me){  m=me    })
-}
-
-
-
-// fix .X(), .Y()
-
-
-BINDR=function(){
-
-    z()
-
-     makeStage()
-
-   //w= makeWorld()
-
-  //  b= w.ba()
-
-    s.tick()
-
-
-   s.bm('me', function(me){
-
-        m=me
-
-    })
-
-
-
-}
-
-
-
-BINDD=function(){
-
-
-    z()
-
-    c = $.canvas( 'y',  500,  500 ).A()
-    s = new createjs.Stage( c[0]  )
-    s.bm('me', function(){
-        s.update()
-    })
-
-
-
-
-
-
-
+    b = w.box(200,200,30,100)
+    w.s.bindr('me', b)
+    w.s.bindr('chicks', w.box(200,200,200,200))
+    w.s.bindr('guy', w.brick())
 }
 
 
@@ -317,32 +128,29 @@ BINDD=function(){
 
 
 
-bindShape = function( shape, spr  ){
-
-    stage.A( shape )
-
-    stage.tick(
-
-        function(){   shape.XY(  spr.x(), spr.y()    )    }
-
-    )
-
-}
 
 
 
 
 
 
-BINDSHAPE=function(){z()
 
-makeWorld()
 
-    bindShape( Shape().circle(20, 'x','b'), ba() )
 
-    bindShape( Shape().circle(20, 'p','b'), ba() )
+BINDSHAPE=function(){
 
-    bindShape( Shape().circle(20, 'u','b'), ba() )
+
+    // why doesnt the ball (the body) bind the shape ITSELF QQQ!!!!!  it should of course - fix it
+
+    b2d.mW()
+
+    w.bindShape(  cjs.circ(20, 'red','blue'),   w.ball()   )
+
+    w.bindShape( cjs.circ(20, 'pink','blue'), w.ball(100,100,20)  )
+
+    w.bindShape( cjs.circ(20, 'purple','blue'), w.ball() )
+
+    w.debug()
 
 }
 
@@ -355,17 +163,11 @@ makeWorld()
 
 DEMO_IMPULSE =function(){
 
-    makeWorld({ gravity: 0 })
+    b2d.mW({ grav: 0 })
 
-    world.A(
+    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
 
-        b2.dynamicDef(100,500).rt(2).fR(0) , b2.polyDef(30,30))
-
-    body =world.A(
-
-        b2.dynamicDef(300,500).rt(1).fR(.2) , b2.polyDef(30,30)
-
-    )
+    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
 
     test={
 
@@ -374,13 +176,13 @@ DEMO_IMPULSE =function(){
 
             body.ApplyImpulse(
 
-                bV(10, -30), body.worldCenter()
+                V(10, -30), body.worldCenter()
 
             )},
 
 
 
-        velocity: function(){body.SetLinearVelocity( bV( 10, -60 ) )},
+        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
 
 
 
@@ -390,7 +192,7 @@ DEMO_IMPULSE =function(){
 
                 function(){
 
-                    body.ApplyForce(   bV( 0, -3 ),    body.worldCenter()    )
+                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
 
                 }, 100)
 
@@ -406,28 +208,27 @@ DEMO_IMPULSE =function(){
 }
 
 
-DEMO_SCALE =function(){
 
-    makeWorld()
+DEMO_SCALE =function(){b2d.mW()
 
-    world.baa(400,300,40)
+    var  radius=10, x=400, y=440, v={x:0, y:0}
 
-    world.baa(290,350,40)
+    //mouse joints messed up
 
-    world.baa(280,220,40)
-
-    var body, radius=10, x=400, y=440, v={x:0,y:0}
+   w.bumper(400,300,40)
+     w.bumper(290,350,40)
+    w.bumper(280,220,40)
 
 
     addBody()
 
-    stage.tick( destroyAndAddBody )
+    cjs.tick( destroyAndAddBody )
 
-    stage.bm( 'me' )
+
 
     function addBody(){
 
-        body = world.A( b2.dynamicDef(x,y).linVel(v), fixture=CircleFixture(radius)  ) }
+        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
 
 
     function destroyAndAddBody(){
@@ -436,9 +237,9 @@ DEMO_SCALE =function(){
 
         radius += .1
 
-        x = body.x()
+        x = body.X()
 
-        y = body.y()
+        y = body.Y()
 
         v = body.lV()
 
@@ -447,27 +248,6 @@ DEMO_SCALE =function(){
 
 }
 
-makeMeX=function(){
-
-    var bodyDef = b2.dynamicDef(100,100)
-    var fix1 =    b2.polyDef(50,100).rest(0).den()
-    var fix2 =    b2.polyDef(10,30,0,40).uD('feet').sensor(1)
-    var player = world.A(bodyDef ,   [ fix1 , fix2 ]   ).uD( 'guy' )
-    player._direction = 1
-    player.dir = player.direction = player.dr = function(direction){
-        if(U(direction)){return this._direction}
-        this._direction = direction
-        return this}
-    player.speed = 40
-    player.moveX =  function(n){
-        if (n == '-'){  return player.move( - player.speed )}
-        n = N(n) ? n : player.speed
-        if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
-        return player}
-    player.fixtList().SetFriction(1)
-    player.bindSprite('me')
-
-    return player}
 
 MEMORY=function(){z()
 
@@ -484,8 +264,9 @@ MEMORY=function(){z()
 
     wGuy=function(){
         var x=0,y=0
-        _e(grid,  function(row,i){
-            _e(row,function(cell,j){if(cell=='guy'){ x=j, y=i}})})
+        _.each(grid,  function(row,i){
+            _.each(row,function(cell,j){
+                if(cell=='guy'){ x=j, y=i}})})
 
 
         return {x:x,y:y}}
@@ -518,42 +299,45 @@ MEMORY=function(){z()
 
 
 
-    s=St(1000,1000).a()
+    s = cjs.stg(1000,1000).A()
 
     s.a(ct=Ct())
 
-    _e(grid, function(row,i){
-        _e(row, function(cell,j){
+    _.each(grid, function(row,i){
+        _.each(row, function(cell,j){
             ct.a(rct().xy(j*100+100,i*100+100))
             if(cell=='me'){
                 ct.b('me',
-                    function(b){  b.xy(j*100+100,  i*100+100 ).sxy(.1)})}})})
+                    function(b){  b.XY(j*100+100,  i*100+100 ).sXY(.1)})}})})
 
 
 
 
-    playerGrid=function(){  _e(grid, function(row,i){
+    playerGrid=function(){_.each(grid, function(row,i){
 
-        _e(row, function(cell,j){
+        _.each(row, function(cell,j){
 
-            ct.a(rct().xy(j*100+100,i*100+100))
+            ct.A( rct().XY(j*100+100, i*100+100))
 
-            if(cell=='guy'||cell=='chicks'){  ct.b(cell, function(b){ b.xy(  j*100+100,  i*100+100 ).sxy(.1)})}
+            if(cell=='guy'||cell=='chicks'){  ct.b(cell, function(b){ b.xy(  j*100+100,  i*100+100 ).sXY(.1)})}
 
         })})}
 
 
-    T( function(){ ct.XX()
 
-        s.a(ct=Ct())
+    T( function(){
+
+        ct.remove()
+
+        s.A( ct = cjs.cont())
         playerGrid()},  3000)
 
 
 
 
-    kD('d',dGuy)
+    $.kD('d',dGuy)
 
-    kD('r',rGuy)
+    $.kD('r',rGuy)
 
 
 
@@ -565,7 +349,7 @@ SLING=function(){
     startpoint={}
 
 
-    slingshot=Shape.new()
+    slingshot = Shape.new()
 
     addChild(self.slingshot)
 
@@ -627,71 +411,60 @@ controller=function(){
 
 
 
-$.startControllerListener = controllerListener=function(){
-    pushRight = 0
-    pushLeft = 0
-    pushUp = 0
+$.joystick  =function(){
+
+
 
     $('#left').on('mousedown mouseover touchenter', function(e){
-        pushLeft = 1
-        e.preventDefault()})
+        cjs.Keys.left = true
+        e.preventDefault()
+    })
+
     $('#left').on('mouseup mouseout touchleave', function(){
-        pushLeft = 0 })
-    $('#jump').on('mousedown mouseover touchenter', function(){  pushUp=1  })
-    $('#jump').on('mouseup mouseout touchleave', function(){  pushUp=0 })
+        cjs.Keys.left = false})
+
+    $('#jump').on('mousedown mouseover touchenter', function(){  cjs.Keys.up = true   })
+
+    $('#jump').on('mouseup mouseout touchleave', function(){  cjs.Keys.up = false  })
 
     $('#right').on('mousedown mouseover touchenter', function(){
 
-       cjs.Keys.right=true
+       cjs.Keys.right = true
 
 
     })
 
 
-    $('#right').on('mouseup mouseout touchleave', function(){pushRight=0})
+    $('#right').on('mouseup mouseout touchleave', function(){cjs.Keys.right = false })
 
 }
 
 
-
-
-
-
-PHONEJUMP=function(){z()
-
-    makeWorld({
-
-        W:300, H:400,
+PHONEJUMP=function(){b2d.mW({W:300, H:400,
         walls:function(){
+            w.brick(10,300, 40, 600).K('leftWall')
+            w.brick(450,300, 40, 600).K('rightWall')
+            w.brick(300, 0, 2400, 40).K('ceiling')
+            w.brick(300, 400, 800, 40).K('floor')}})
+
+    w.brick(200,400, 80,20)
+    w.brick(300,200,80,20)
 
 
-            bii(10,300, 40, 600).uD('leftWall')
+     p = w.addMe()//.angDen( 10000 )
 
-            bii(450,300, 40, 600).uD('rightWall')
 
-            bii(300, 0, 2400, 40).uD('ceiling')
+    $.joystick()
 
-            bii(300, 400, 800, 40).uD('floor')
+    cjs.tick(function(){
 
-        }
-
+        if(cjs.Keys.up){p.I(0,-100)}
+        if(cjs.Keys.left){p.I(-20, 0)}
+        if(cjs.Keys.right){p.I(20, 0)}
     })
 
-    world.bii(200,400, 80,20)
-
-    world.bii(300,200,80,20)
-
-
-   // bindr('guy', bii(300,500,60,30),[.4,1.2])
-  //  bindr('guy', bii(150,400,60,30))
-
-    player = p = w.addMe().aD( 10000 )
-
-
-
-    controllerListener()
-
 }
+
 
 
 controlX=function(p){

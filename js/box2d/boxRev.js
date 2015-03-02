@@ -5,7 +5,7 @@ RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
     //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
 
 
-    var j= SuperJointDef( new BXJ.b2RevoluteJointDef() )
+    var j=   new BXJ.b2RevoluteJointDef()
 
     var joint = j
 
@@ -45,20 +45,36 @@ RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
     return joint}
 
 
+
 revJoint=function(){
-    return world.Revolute(world.ba(), world.bi())}
 
+    return world.Revolute(w.ball(), w.box())
+}
 
+TESTREV=function(){
+    b2d.mW()
+
+   j= revJoint()
+    //revJoint2()
+
+    //revJoint3()
+
+    //revJoint4()
+
+}
 
 revJoint1=function(){return world.Revolute(
-        world.baa(400, 200),
-        world.bi(400, 200, 200) ).motor(1).speed(2000)  //speed
+        world.circ(400, 200).stat(),
+        world.rect(400, 200, 100) ).motor(1).speed(2000)  //speed
 }
 
 
-revJoint2=function(){return world.Revolute(
-    world.bi( 400, 50, 50 ),
-    world.bi( 400, 50, 50 ) ).motor(10)
+revJoint2=function(){
+
+    return w.Revolute(
+        w.rect( 120, 50, 50 ),
+        w.rect( 100, 50, 50 )
+    ).motor(10)
 
 }
 
@@ -281,5 +297,141 @@ REVPRISMGEAR=function(){
 
 }
 
+LEASH=function(){ b2d.level()
+    link = function(x,y){
+        var l= w.rect(x,y, 5, 10,'y').den(1).rest(.5)
+        l.l= function(num){num=N(num)?num:1
+            var lk
+            _.times(num, function(){
+                lk =  link(l.X(), l.Y()+15)
+                w.Rev(l, lk)
+                l = lk })
+        return l}
+    return l}
+    base = link(300, 20).stat()
+    l =  base.l(10)
+    w.Rev(l,p)}
+
+TRAPEZE=function(){ b2d.level()
+
+    link = function(x,y){
+        var l= w.rect(x,y, 5, 10,'y').den(4).rest(2)
+        l.l= function(num){num=N(num)?num:1
+            var lk
+            _.times(num, function(){
+                lk =  link(l.X(), l.Y()+20)
+              r=  w.Rev(l, lk)
+
+                r.collideConnected=true
+                l = lk })
+            return l}
+        return l}
+    base = link(300, 20).stat()
+    l =  base.l(10)
+    w.Rev(l, p.XY(l.X(), l.Y()))
+
+    link = function(x,y){
+        var l= w.rect(x,y, 5, 10,'y').den(4).rest(2)
+        l.l= function(num){num=N(num)?num:1
+            var lk
+            _.times(num, function(){
+                lk =  link(l.X(), l.Y()+20)
+               r= w.Rev(l, lk)
+                r.collideConnected=true
+                l = lk })
+            return l}
+        return l}
+    base = link(100, 20).stat()
+    l =  base.l(10)
+    w.Rev(l, p.XY(l.X(), l.Y()))
+
+}
 
 
+WINDOWBLINDS=function(){ b2d.level()
+
+    link = function(x,y){
+        var l= w.rect(x,y, 50, 10).den(4).rest(2)
+        l.l= function(num){num=N(num)?num:1
+            var lk
+            _.times(num, function(){
+                lk =  link(l.X(), l.Y()+24)
+                r=  w.Rev(l, lk)
+
+                r.collideConnected=false
+                l = lk })
+            return l}
+        return l}
+    base = link(300, 20).stat()
+    l =  base.l(10)
+   // w.Rev(l, p.XY(l.X(), l.Y()))
+
+    link = function(x,y){
+        var l= w.rect(x,y, 50, 10 ).den(4).rest(2)
+        l.l= function(num){num=N(num)?num:1
+            var lk
+            _.times(num, function(){
+                lk =  link(l.X(), l.Y()+24)
+                r= w.Rev(l, lk)
+                r.collideConnected=true
+                l = lk })
+            return l}
+        return l}
+    base = link(100, 20).stat()
+    l =  base.l(10)
+
+    //w.Rev(l, p.XY(l.X(), l.Y()))
+
+
+}
+
+
+w.link = function self(x,y){var that=this, l
+
+    l= w.rect(x,y, 4, 20).den(4).rest(2)
+
+    l.l= function(num){num=N(num)?num:1
+        var lk
+
+        _.times(num, function(){
+            lk =  self(l.X(), l.Y()+15)
+            that.Rev(l, lk)
+            l = lk })
+
+        return l.K('leaf')}
+
+    return l}
+
+
+
+
+
+VINE=function(){ b2d.level()
+    p.SetFixedRotation(true)
+    w.vine(100,10,15)
+    w.vine(200,10,12)
+    w.vine(500,10)}
+
+
+VINETRAP=function() {
+    b2d.level()
+
+    p.X(60)
+
+    trap=function(x) {
+        w.vine(x, 10, 12)
+        w.vine(x+10, 10, 4)
+        w.vine(x+20, 10, 6)
+        w.vine(x+30, 10, 8)
+        w.vine(x+40, 10, 10)
+        w.vine(x+50, 10, 12)
+        w.vine(x+60, 10, 10)
+        w.vine(x+70, 10, 8)
+        w.vine(x+80, 10, 6)
+        w.vine(x+90, 10, 4)
+    }
+
+    trap(200)
+    //trap(300)
+
+}

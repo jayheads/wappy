@@ -241,9 +241,7 @@ EDGESHAPE=function(){z()
 
 
 //***** works!!!!!
-ASEDGE=function(){z()
-
-    b2d.mW()
+ASEDGE=function(){ b2d.mW()
 
     w.edge(100,500,1000,0)
     w.edge(50,50,100,500)

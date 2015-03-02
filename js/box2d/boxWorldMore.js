@@ -37,105 +37,71 @@ w.rayCast=function(func,v1,v2){
 
 //joints
 
-w.joint =p.createJoint=p.j=p.cJ=function(a){
-
-    var SuperJoint = sJt=function(j){
-
-
-        //shared
-        j.init= j.i  = j.i1=function(){
-
-
-            j.Initialize.apply(j,  G(arguments))
-
-            return j}
-
-        j.collide = j.cC=function(a){
-            j.collideConnected=a?true:false; return j
-        }
-
-        //pops
-        j.target = j.sT    = function(a,b){
-            if(!O(a)){a=bV(a,b)}
-            j.SetTarget(a)
-
-            return j}
-
-        j.freq =j.f  =function(a){j.frequencyHz=a;return j}
-
-        j.len = j.l  =function(a){
-            j.length=a/30
-            return j}
-
-        j.len2 =function(len){
-
-            if( U(len) ){ return j.GetLength() * 30 }
-
-            j.SetLength( len/30 )
-
-            return j
-
-        }
-
-        j.dampRat =j.d  =function(a){j.dampingRatio=a;return j}
-
-
-        //motor
-        j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
-            j.maxMotorSpeed=a
-            return j}
-
-        //motor rev
-
-
-
-        j.mt=j.motor =j.enableMotor = j.eM = function(a){
-            j.EnableMotor( a ? true : false )
-            return j}
-
-        j.speed = j.motorSpeed=j.mS=function(speed){
-            if(U(speed)){return this.GetMotorSpeed()}
-            this.SetMotorSpeed(speed)
-            return this}
-
-        j.torque = function(torq){
-            if(U(torq)){
-                return this.GetMotorTorque()}
-            this.SetMaxMotorTorque(torq)
-            return this}
-
-        j.maxTorque = j.mMT=  j.mT=function(a,b,c){
-            j.SetMaxMotorTorque(a,b,c); return j}
-
-        j.maxForce = j.mMF=  j.mF=function(a,b,c){
-            j.SetMaxMotorForce(a,b,c); return j}
-
-
-        j.lm= j.limits =j.setLimits = j.sL = function(a,b){
-
-            a = N( a ) ? a : 20
-
-            b = N( b ) ? b : 180
-
-            j.SetLimits( tRad(a), tRad(b) )
-
-            return j}
-
-
-        j.enableLimits= j.enableLimit = j.eL=function(a){
-            j.EnableLimit( a?true:false)
-            return j}
-
-
-        return j}
-
+w.J=w.joint = p.createJoint=p.j=p.cJ=function(a){
 
     var j=this.CreateJoint(a)
 
-    return SuperJoint(j)
+    return  j
 
 }
+
 w.destroyJoint=p.dJ=p.dj=function(a){ this.DestroyJoint(a); return this}
+
+
+
+
+w.dist=function(a, b, b1OffV, b2OffV){
+//location pams are optional, and be default to their center ponts
+// note: if you passe them in, pass them as relative(local to body) coords
+//BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
+//there is also distColl for 'collideConnected=true' joints
+    var b1V = a.worldCenter().mult(),
+        b2V = b.worldCenter().mult(),
+        jd = b2d.dJ(), j
+    if(O(b1OffV)){b1V =  b1V.add(b1OffV)  }
+    if(O(b2OffV)){b2V = b2V.add(b2OffV)}
+    jd.init(a, b,  b1V.div(), b2V.div() )
+    j = w.J(jd)
+    return j}
+w.distColl=function(a, b, b1OffV, b2OffV){
+
+    var b1V = a.worldCenter().mult(),
+
+        b2V = b.worldCenter().mult(),
+
+        jd = b2d.dJ(), j
+
+
+    if (O(b1OffV)){b1V =  b1V.add(b1OffV)  }
+
+    if (O(b2OffV)){b2V = b2V.add(b2OffV)}
+
+    jd.init(a, b,  b1V.div(), b2V.div()).coll(true)
+
+    j = w.J(jd)
+
+    return j}
+w.rod = function(a,b,len){
+    a = a || this.ball(150,150)
+    b = b || this.brick(180,150)
+    len = N(len)? len :200
+    return this.distColl(a,b).len(len)}
+
+
+w.spring=function(a,b){
+    return this.dist(a,b).len(1).freq(2)//.damp(.1)
+}
+
+
+
+
+
+
+
+
+
+
+
 w.Revolute = function(a,b, c,d, e,f){var g=G(arguments)
 
     //pass in body1, body2, world-bV = body1-center
@@ -184,14 +150,14 @@ w.Revolute = function(a,b, c,d, e,f){var g=G(arguments)
 
     this.createJoint( joint )
     return joint}
-p.Rev=function(a,b,c,d){
+w.Rev=function(a,b,c,d){
 
     return this.createJoint(
 
         RevoluteJointDef( a, b, c, d)
 
     )}
-p.Prism=function(a,b,c,d,e,f,g,h){
+w.Prism=function(a,b,c,d,e,f,g,h){
 
     var joint= world.createJoint(
 
@@ -200,7 +166,7 @@ p.Prism=function(a,b,c,d,e,f,g,h){
     )
 
     return SuperPrismatic(joint)}
-p.Gear=function(a,b,c){
+w.Gear=function(a,b,c){
 
     return world.createJoint( Gear(a,b,c) )
     function Gear(bA, bB, ratio){
@@ -241,7 +207,9 @@ w.on=function(onWhat, func){
     cjs.tick(function(){
         var val = that.flagged(onWhat)
         if(val){ func(val) }
-    })}
+    })
+
+return this}
 
 
 //
@@ -252,7 +220,8 @@ w.listen = p.setContactListener = p.sCL = p.SetContactListener
 
 w.startListening = function(){var that=this
 
-    this.listener = b2d.listener()
+    this.listener = this.listener || b2d.listener()
+
     this.beginHandlers = this.beginHandlers ||[]
     this.preHandlers = this.preHandlers ||[]
     this.postHandlers = this.postHandlers ||[]
@@ -263,12 +232,22 @@ w.startListening = function(){var that=this
             function(func){func(cx)})
     }
 
-    this.listener.PreContact = function(cx){
+    this.listener.PreSolve = function(cx){
         _.each(that.preHandlers,
             function(func){func(cx)})}
-    this.listener.PostContact = function(cx){
+
+    this.listener.PostSolve = function(cx, pam2){
+
         _.each(that.postHandlers,
-            function(func){func(cx)})}
+
+            function(func){
+
+                func(cx, pam2) //second arg???????
+
+            })
+    }
+
+
     this.listener.EndContact = function(cx){
         _.each(that.endHandlers,
             function(func){func(cx)})}
@@ -276,45 +255,56 @@ w.startListening = function(){var that=this
     this.listen(this.listener)
 }
 
+
 //ADDS one or more handlers to beginHandlers array
-w.onBegin=function(){var that = this
+w.begin = w.onBegin=function(){var that = this
     _.each(arguments, function(func){
         that.beginHandlers.push(func)
     })
 }
-w.onPre=function(){var that = this
+w.pre = w.onPre=function(){var that = this
     _.each(arguments, function(func){
         that.preHandlers.push(func)
     })}
-w.onPost=function(){var that = this
+w.post = w.onPost=function(){var that = this
     _.each(arguments, function(func){
         that.postHandlers.push(func)
     })
 }
-w.onEnd=function(){var that = this
+
+w.end = w.onEnd=function(){var that = this
     _.each(arguments, function(func){
         that.endHandlers.push(func)
     })}
 
 
-w.collide=function(k1,k2,flag){
 
-    var that=this, name=k1+k2
+w.when = w.coll = w.collide=function(k1,k2,flag){
 
-    this.onBegin(function(cx){
-        if(cx.isBetween(k1,k2)){
+    var that=this,
+        name=k1+k2
+
+    if(F(k2)){
+        return this.collideAny(k1,k2)}
+
+    this.begin(function(cx){
+        if(cx.with(k1,k2)){
             that.flag(name, cx)}
     })
 
     cjs.tick(function(){
-        var cx=that.flagged(name)
-        if(cx){flag(cx)}})
+        var cx = that.flagged(name)
+        if(cx){ flag(cx) }
+    })
 }
-w.collideAny=function(kind, flag){
+
+
+w.collideAny=function(kind, flag){//can combine this with above
     var that=this
-    this.onBegin(function(cx){
-        if(cx.includes(kind)){that.flag(kind,cx)}})
-    cjs.tick(function(){var cx=that.flagged(kind)
+    this.begin(function(cx){
+        if(cx.with(kind)){that.flag(kind,cx)}})
+    cjs.tick(function(){
+        var cx=that.flagged(kind)
         if(cx){flag(cx)}})
 }
 
@@ -323,23 +313,23 @@ w.collideAny=function(kind, flag){
 
 
 
-
+//should deprecate!!!!!
 /// shortcuts.. but each one will completely override the listener
 // only for simple use cases (one type of listener, specified once)
-w.begin=w.onBeginContact = w.oB=function(func){//=w.contactBegin
+w.beginX=w.onBeginContact = w.oB=function(func){//=w.contactBegin
     this.listen(b2d.listener().begin(func))
     return this}
-w.end=w.onEndContact = w.oE =function(func){
+w.endX=w.onEndContact = w.oE =function(func){
 
     this.listen( b2d.listener().end( func )  )
 
     return this}
-w.pre=function(func){
+w.preX=function(func){
 
     this.listen( b2d.listener().pre( func )  )
 
     return this}
-w.post=function(func){
+w.postX=function(func){
 
     this.listen( b2d.listener().post( func )  )
 
@@ -350,3 +340,67 @@ w.post=function(func){
 
 w.setContactFilter = w.sCF = w.SetContactFilter
 
+//sensor
+
+
+w.while1= w.whileSensor = function(kind, func){
+
+    var push=false
+
+    this.begin(function(cx){
+
+        if(cx.with(kind)){
+            push=true
+        }
+    })
+
+    this.end(function(cx){
+
+        if(cx.with(kind)){
+            push=false
+        }
+    })
+
+
+    cjs.tick(function(){
+        if(push){
+            func()
+        }
+    })
+
+
+return this}
+
+w.while = w.while2 =function(kind, kind2, func){
+
+
+
+    var push=false
+
+    if(F(kind2)){
+        return this.while1(kind, kind2)
+    }
+
+    this.begin(function(cx){
+
+        if(cx.with(kind, kind2)){
+            push=true
+        }
+    })
+
+    this.end(function(cx){
+
+        if(cx.with(kind, kind2)){
+            push=false
+        }
+    })
+
+
+    cjs.tick(function(){
+        if(push){
+            func()
+        }
+    })
+
+
+    return this}

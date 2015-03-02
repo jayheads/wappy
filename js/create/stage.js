@@ -192,7 +192,23 @@ p.H=function(a){if(U(a)){return this.canvas.height}
 
 
 
-p.dot=function(color, x, y){var dot, tween
+p.dot=function(color, x, y){
+    var that = this,
+        dot, tween
+
+    if(A(color)){
+
+        _.each(color, function(args){
+
+
+            if(A(args)){that.dot.apply(that, args)}
+           else{that.dot(args)}
+
+        })
+
+    return }
+
+
 
     if(!S(color)){y=x; x=color; color= 'yellow'}
 
@@ -237,18 +253,42 @@ p.squareDot=function(color, x, y){var squareDot, tween
 
 p.chalk=function(){
     var height = 50,
-        that=this
+        that=this,
+        text
 
     _.each(arguments, function(arg){
 
-        var text = cjs.chalk(arg).Y(height)
+        text = cjs.chalk(arg).Y(height).X(50 - that.X())
         height+=40
         that.A(text)
 
     })
 
 
-}
+return text}
+
+
+
+p.pen = function self(arg){
+
+    var that=this
+
+
+    if(O(self.text)){
+        self.text.remove()
+    }
+
+        self.text = cjs.chalk(arg).Y(50).X(50 - that.X())
+
+        that.A(self.text)
+
+
+    return self.text}
+
+
+
+
+
 
 p.eMO=function(data){
     this.enableMouseOver(data)

@@ -12,6 +12,8 @@ l.pre = l.preSolve = l.p  =function(func){
     this.PreSolve = func; return this}
 l.post = l.postSolve=l.P=function(func){
     this.PostSolve=func; return this}
+
+
 b2d.either = function(ob1,ob2, is1,is2){
     return (ob1.is(is1) && ob2.is(is2))||
         (ob1.is(is2) && ob2.is(is1))}
@@ -19,18 +21,26 @@ b2d.L = b2d.listener=b2d.contactListener= function(){
     var l = new b2d.Dynamics.b2ContactListener
     return l}
 
+/////////////////////////////////////////////
+
+cx =c = b2d.Dynamics.Contacts.b2Contact.prototype
+cx.filtering =c.fFF=function(){this.FlagForFiltering(); return contact}// Flag this contact for filtering.// Filtering will occur the next time step.
+cx.A=function(){return this.GetFixtureA()  }
+cx.B=function(){return this.GetFixtureB()  }
+
+cx.a=function(){ return this.A().gB()   }
+
+cx.b=function(){ return this.B().gB()   }
+
+cx.destroy = cx.destroyBoth = function(){
+
+    this.a().setDestroy()
+    this.b().setDestroy()
+return this}
 
 
-c = b2d.Dynamics.Contacts.b2Contact.prototype
-c.filtering =c.fFF=function(){this.FlagForFiltering(); return contact}// Flag this contact for filtering.// Filtering will occur the next time step.
-c.A=function(){return this.GetFixtureA()  }
-c.B=function(){return this.GetFixtureB()  }
 
-c.a=function(){ return this.A().gB()   }
-
-c.b=function(){ return this.B().gB()   }
-
-
+// ??? do i use any of below???
 c.manifold =c.gM=function(){return this.GetManifold()}
 c.localPlaneNormal =c.lPN=function(){return this.gM().m_localPlaneNormal}
 c.localPoint =c.lP=function(){return this.gM().m_localPoint}
@@ -47,11 +57,14 @@ c.enabled = c.sE=function(a){
 
 c.sensor = c.iS=function(){return this.IsSensor()}//Is this contact a sensor?
 c.setSensor  =c.sS=function(a){this.SetSensor(a?true:false);return contact}// Change this to be a sensor or-non-sensor this.
-c.touching = c.iT=function(){return this.IsTouching()}//Is this contact touching.
+
+c.touching = c.iT=function(){
+    return this.IsTouching()
+}//Is this contact touching.
 
 
 
-c.between = c.isBetween = c.touching =c.pair=function(p1, p2){
+c.between = c.isBetween =  function(p1, p2){
       var a= this.A(), b= this.B()
 
 
@@ -122,45 +135,46 @@ return m}
 
 
 
-ISBETWEEN=function(){z()
-
-      w= b2d.mW()
-
-      bl = w.ba().uD('bl')
-
-      br = w.bi().uD('br')
 
 
-      w.begin(function(contact){
+WITH=function(){w= b2d.mW()
 
-          c=contact
-          if(contact.isBetween('bl','br')){alert('hit')}
+        w.ball()
+
+       w.brick(500)
+
+
+
+      w.begin(function(cx){
+
+          if(cx.with('ball','brick')){alert('hit')}
       })
 
 
   }
 
+KLASS=function(){w= b2d.mW()
+    //b= w.ball().K([1,2,3])
 
-  // SuperContact = sCon=function(contact){  var  c=contact ;return contact}
-
-//begin
-LAVACOLLIDE=  function(){z()
-    w=b2d.mW()
-    w.platform(400,500,40,20)
-    w.ball(440, 40 )
-
-
-    w.collide('ball', 'platform', function(){w.box(300,40)})
-    w.collide('box', 'platform', function(){w.ball(300, 40 )})
-
-    // w.collide('box', 'platform')
-    //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
 }
-COLLIDEANY=  function(){z()
+
+
+
+
+
+COLLIDE=  function(){z()
+
     w=b2d.mW()
     w.platform(400,500,40,20)
-    w.ball(440,200)
-    w.collideAny('ball',
+    w.ball(440,100,50).K('dot')
+    w.ball(440,200,20)
+
+    w.coll('ball', 'platform', function(){w.box(300,20)})
+
+    w.coll('box', 'platform', function(){w.ball(300, 20 )})
+
+
+    w.coll('dot',
         function(cx){c=cx
             collX=cx.B().gB().X()
             collY=cx.B().gB().Y()
@@ -170,23 +184,40 @@ COLLIDEANY=  function(){z()
     // w.collide('box', 'platform')
     //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
 }
+BEGIN=function(){
+    w=b2d.mW()
+    w.ball()
 
+    w.on('new',
+        function(){w.ball(300,100,2)})
 
+    w.begin(
+        function(){w.flag('new')})
+
+}
 //post
 POSTSOLVE=function(){//only breaks at high impulse
 
     w=b2d.mW()
 
-    b = w.ba()
+    b = w.ball()
 
     cjs.tick(function(){
-        if(STATE.newBall){w.ba()}
-        STATE.newBall=false
+
+        if(w.flagged('newBall')){
+            w.ball()
+        }
+
+
     })
 
 
-    w.post(function(contact, contactImpulse){ d = contactImpulse
+    w.post(
 
+        function(contact, contactImpulse){ //second arg??
+
+
+            d = contactImpulse
 
         n = normalImpulses = contactImpulse.normalImpulses
         nX =  Math.floor(normalImpulses[0])
@@ -200,25 +231,67 @@ POSTSOLVE=function(){//only breaks at high impulse
          $l('normal: '+ tX + ', '+ tY + ' tangent: ' + nX + ', '+ nY  )
 
 
-        if(nX > 100){ STATE.newBall = true }
+        if(nX > 200){w.flag('newBall') }
 
-    })
+    }
+
+    )
 
 
   //we can get the 'normal vector' of the contact btwn fixtures
+
+}
+CONTACTS=function(){makeWorld()
+
+    var centerFx = b2d.circ(80).K('center')
+
+    w.A(b2d.dynamic(500,300),[
+            centerFx,
+            b2d.poly(60,90,0,40,10).sensor(true).K('sensor1')
+        ]).angVel(100)
+
+    w.A(b2d.dynamic(700,300),[
+        centerFx,
+        b2d.circ(100).sensor(true).K('sensor2')
+    ]).angVel(100)
+
+
+    w.coll('sensor1','sensor2',
+        function(){
+            w.ball()
+        })  //w.begin(function(cx){if(cx.with('sensor1','sensor2')){w.flag('new')}}) //w.on('new', function(){w.ball()})
+
+}
+BITS=function(){b2d.mW()
+
+    var cir = b2d.circ(80).bits(2,5), //collides with 4,1
+
+        rec = b2d.poly(60,90).bits(4,7)  // collides with 4,2,1
+
+
+    w.dyn(300,300, cir)
+    w.dyn(400,30,  cir)
+    w.dyn(300,300, rec)
+    w.dyn(400,300, rec)
+
+}
+GROUP=function(){b2d.mW()
+
+
+    w.dyn(300,300, b2d.circ(80).bits(2, 5))  // colls 4,1
+
+    w.dyn(300,300, b2d.poly(60,90,0,40,10).bits(8, 3)) //colls 2,1
+
+
+    w.dyn(400,300 ,  b2d.circ(80).cat(2).group(-3)) //cat 1
+
+    w.dyn(400,300 ,  b2d.poly( 60, 90, 0, 40, 10 ).group( -3 )) //cat 1
 
 }
 
 
 
 
-
-
-
-
-
-//shows category and mask bits
-//the big circles dont collide??
 PRESOLVE =function(){
 
     b2d.mW()
@@ -235,65 +308,6 @@ PRESOLVE =function(){
     //second pam is really info about previous collision manfest?  may be usesless?!!!!
 
 }
-
-
-
-CONTACTS=function(){makeWorld()
-
-    var centerFx = b2d.circDef(60).uD('center')
-
-    t1 = w.A(
-        b2d.dynamicDef(500,300), [
-        centerFx,  b2d.polyDef(60,90,0,40,10).uD('sensor1').sensor(true)
-    ]).angVel(100)
-
-
-    t2= w.A(b2d.dynamicDef(700,300), [
-        centerFx, b2d.circDef(100).sensor(true).uD('sensor2')
-    ]).angVel(100)
-
-
-     w.listen(b2d.listener().begin(onBegin))
-
-
-    function onBegin( c, m ){
-
-    var a = c.A(), b = c.B()
-
-
-    $l( 'a '+ a.uD() ); $l( 'b ' + b.uD() )
-
-    if(
-        ( a.is('sensor1')  && b.is('sensor2') )
-
-        ||
-
-        ( a.is('sensor2')  && b.is('sensor1') )
-
-        ){$l('!!!!!!!!')}
-
-      a.uD('change')
-}
-
-}
-BITS=function(){b2d.mW()
-    cir = b2d.circDef(80).category(0x0002).mask(0x0005),
-    rec = b2d.polyDef( 60, 90, 0, 40, 10 ).category(0x0003).mask(0x0003)
-    w.A( b2d.dynamicDef(300,300), cir )
-    w.A( b2d.dynamicDef(400,300), cir )
-    w.A( b2d.dynamicDef(300,300), rec )
-    w.A( b2d.dynamicDef(400,300), rec )}
-GROUPINDEX=function(){b2d.mW()
-    cir = b2d.circDef(80).category(0x0002).mask(0x0005)
-    rec = b2d.polyDef(60,90,0,40,10).category(0x0003).mask(0x0003)
-    world.A(b2d.dynamicDef(300,300), cir)
-    world.A(b2d.dynamicDef(300,300), rec)
-    cir = b2d.circDef( 80 ).gI( -3 )
-    rec = b2d.polyDef( 60, 90, 0, 40, 10 ).gI( -3 )
-    world.A( b2d.dynamicDef( 400, 300 ), cir)
-    world.A( b2d.dynamicDef( 400, 300 ), rec)}
-
-
 //do any of these get used? i think filterData does
 b2d.manager = b2d.contactManager = b2d.cM=function(){//used?
     var m= new BXD.b2ContactManager

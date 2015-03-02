@@ -118,7 +118,9 @@ b2.controls.getup=function(p){
 
 }
 
+
 b2.controls.jumper=function(p){
+    p.rot(0)
     if(cjs.Keys.left){p.impulse(-4,0)}
     if(cjs.Keys.right){p.impulse(4,0)}
     if(cjs.Keys.up){p.impulse(-0,-22)}

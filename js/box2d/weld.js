@@ -8,19 +8,19 @@ SuperWeldJoint=sWJ=function( x , y ){
 
     y = N(y) ? y : x
 
-    var b11 = world.addBody( DynamicBodyDef( x , y ), fix() )
+    var b11 = world.addBody( b2d.dynamic( x , y ), b2d.fixt() )
 
-    var b22 = world.addBody( DynamicBodyDef( x , y ), fix() )
+    var b22 = world.addBody( b2d.dynamic( x , y ), b2d.fixt() )
 
-    var joint = wJt( b11, b22, bV( -.5 , -.5 ), bV(.5,.5), 9)
+    var joint = wJt( b11, b22, bV( -.5 , -.5 ), V(.5,.5), 9)
 
-    world.createJoint( joint )
+    w.createJoint( joint )
 
 }
 
 WeldJoint= wJt =function(a,b,c,d,e){
 
-    var j = sJt( new b2.Joints.b2WeldJointDef())
+    var j =  new b2.Joints.b2WeldJointDef()
 
     j.i=function(){
         var g=G(arguments)
@@ -36,32 +36,32 @@ WeldJoint= wJt =function(a,b,c,d,e){
     return j}
 
 
-b2.weldJoint = b2.weld = Welding = weld=function(a,b,c,d,e,f,g){
+b2d.weldJoint = b2.weld = Welding = weld=function(a,b,c,d,e,f,g){
     c=c||0;d=d||0; e=e||0; f=f||0
 
-    return WeldJoint(a,b, b2.V(c/30,d/30), b2.V(e/30 , f/30), g||10)
+    return WeldJoint(a,b, V(c/30,d/30), V(e/30 , f/30), g||10)
 
 }
 
 
 
-WELD=function(){makeWorld()
+WELD=function(){b2d.mW()
 
-    world.createJoint(
+    w.createJoint(
 
-        weld(
+        b2.weld(
 
-            baa(100,100),
+            w.bumper(100,100),
 
-            ba(100,100),0,0
+            w.ball(100,100),0,0
         )
     )
 
-    world.j(weld(baa(200,100),ba(200,100),0,10))
-    world.j(weld(baa(300,100),ba(300,100),0,-10))
+    w.j(b2.weld(w.bumper(200,100), w.ball(200,100),0,10))
+    w.j(b2.weld(w.bumper(300,100), w.ball(300,100),0,-10))
 
     w.j(
-        weld(baa(400,100),ba(400,100),10,10)
+        b2.weld(w.bumper(400,100), w.ball(400,100),10,10)
     )
 
     w.j(weld(baa(500,100),ba(500,100),10,-10))

@@ -99,6 +99,28 @@ p.mass =  function(m){if(U(m)){
 
 p.wCent=  p.wC=  p.worldCenter= p.gWC= function(){
     return this.GetWorldCenter()}
+
+p.cent=function(){
+
+    var c = this.GetWorldCenter()
+
+return V(c.x*30, c.y*30)}
+
+p.W=function(){return this.GetWorld()}
+
+p.joint = function(){ return this.GetJointList().joint }
+
+p.dot=function(){
+
+    this.W().s.dot(this.cent())
+
+}
+
+p.sens=function(){
+    this.list().sensor(true)
+return this}
+
+
 p.awake= function(){
     var g=G(arguments)
     this.SetAwake(g.n? false:true)
@@ -177,11 +199,57 @@ p.transform = p.tf=  function(tf){
     if(U(tf)){  return this.GetTransform() }
     this.SetTransform(tf)
     return this}
-p.next = p.n = p.gN =function(){ return  b.GetNext()   }
+p.next = p.n = p.gN =function(){ return  this.GetNext()   }
 p.destroyFixt= p.destroyFixture=p.dF=function(fixt){
     this.DestroyFixture(fixt)
     return this}
-p.is=function(userData){return this.uD() == userData} //dep
+
+
+
+
+p.is=function(kind){
+    //this is an OR statement.  at least one must be true
+var that=this, is = false
+
+        _.each(arguments, function(kind){
+
+            if( that.K() == kind ){
+                is=true
+            }
+        })
+
+        return is}
+
+
+
+
+
+
+p.not= p.notAny = function(kind){ //this is an AND: ALL MUST BE FALSE
+
+    var that = this,
+        not = true
+
+        _.each(kind, function(kind){
+           if( that.is(kind) ){
+               not = false
+           }
+        })
+
+        return not}
+
+
+
+
+
+
+
+
+
+
+
+
+
 p.fixtData =p.fixtListUserData =p.uDF=function(userData){
     var fixtList= this.fixtureList()
     if(U(userData)){
@@ -192,13 +260,22 @@ p.fixtData =p.fixtListUserData =p.uDF=function(userData){
 //and pass in location, defaults to body center
 
 p.imp = p.I =p.impulse = p.applyImpulse = p.aI  = function self(impulse, point, point2){
+
+
+
     if(N(point)){
-        impulse = b2d.V(impulse, point)
+        impulse = V(impulse, point)
         point = point2}
-    if(U(point)){point = this.GetWorldCenter()}
+
+    if(U(point)){
+        point = this.GetWorldCenter()}
+
+
     this.ApplyImpulse(impulse, point)
 
     return this}
+
+
 
 
 
@@ -257,8 +334,21 @@ p.click=function(func){var body = this
 
 }
 
+isBody=function(b){
+  if(O(b)){
+      return b.constructor.name=='b2Body'
+  }
+}
+
+p.towards=function self(x,y,speedRat){
+
+    //if(isBody(x)){return self(x.X(), x.Y(), y)}
 
 
+    speedRat = speedRat || 100
+    this.linVel( (x- this.X())/speedRat, (y- this.Y())/speedRat)
+    //more realistic to accelerate, via forces?
+return this}
 
 
 
@@ -273,7 +363,21 @@ p.shoot= function(){var vec, bullet
 
 }
 
+p.worldVec=function(vec, y){
 
+    if(N(vec)){
+        vec = V(vec,y)
+    }
+
+    return this.GetWorldVector(vec)
+}
+
+p.horizCenter=function(){
+
+    var s = this.world().s
+
+    return this.X(s.W()/2    )
+return this}
 
 
 p.bindSprite=function( img,   scale,  startingRotation ){
@@ -390,13 +494,14 @@ p.when=function(){
         w=body.GetWorld()//, listener=b2d.listener()
 
     return {contacts:function(kind, func){
-        w.onBegin(function(cx){
+        w.begin(function(cx){
             if(cx.with(kind)){func()}
             w.startListening()
         })
 
         return {after:function(func){
-            w.onEnd(function(cx){if(cx.with(kind)){func()}})
+            w.end(function(cx){
+                if(cx.with(kind)){func()}})
             w.startListening()
         }}}}
 
@@ -405,12 +510,48 @@ p.when=function(){
 
 
 
+p.relPos=function(){
+
+    return this.X() + this.world().s.X()
+}
+
+
+p.byImp=function(imp){
+    if(cjs.Keys.right){this.I(imp,0)}
+    else if(cjs.Keys.left){this.I(-imp,0)}
+    return this}
+
+
+p.byVel=function(vel){
+    if (cjs.Keys.right) { p.linVel(vel, 0)}
+    else  if (cjs.Keys.left) { p.linVel(-vel, 0)}
+
+return this}
+p.jumping=function(y, x){
+    if(cjs.Keys.up) {
+        if (cjs.Keys.right) {
+            this.linVel(x, -(y - x))
+        }
+        else if (cjs.Keys.left) {
+            this.linVel(-x, -(y - x))
+        }
+        else {
+            this.linVel(0, -y)
+        }
+    }
+return this}
 
 p.trig = p.fixtListener =p.listener=  function(kind, func){var body=this
 
     body.when()
-        .contacts(kind, function(){body.trig[kind]=true})
-        .after(function(){body.trig[kind]=false})
+        .contacts(kind, function(){
+            body.trig[kind]=true
+        })
+
+        .after(function(){
+            body.trig[kind]=false
+        })
+
 
 
     if(F(func)){
@@ -428,6 +569,127 @@ p.trig = p.fixtListener =p.listener=  function(kind, func){var body=this
     }
 
     return this}
+
+
+p.den=function(den){
+
+    if(U(den)){return this.list().GetDensity()}
+
+    this.each(function(f){
+        f.SetDensity(den)
+    })
+
+    this.ResetMassData()
+    return this}
+
+
+
+
+p.fric=function(fric){
+
+
+    if(U(fric)){return this.list().GetFriction()}
+
+    this.each(function(f){
+        f.SetFriction(fric)
+    })
+     return this
+}
+
+p.rest=function(rest){
+
+
+    if(U(rest)){return this.list().GetRestitution()}
+
+    this.each(function(f){
+        f.SetRestitution(rest)
+    })
+     return this
+
+}
+
+
+
+p.diff= p.dif = function(x, y){
+
+    var ob = {
+
+        x: x - this.X(),
+
+        y: y - this.Y()
+
+    }
+
+    return ob}
+
+
+
+
+
+p.cam = function(x, y){
+
+        var v = this.diff(x,y)
+
+        w.s.XY(v.x, v.y)
+
+return this}
+
+p.camX = function(x, y){
+
+    var v = this.diff(x,y)
+
+    w.s.X(v.x)
+
+    return this}
+
+
+p.followX=function(x,y){var that=this
+    cjs.tick(function(){
+        if(O(that.sprite)){
+            that.camX(x,y)
+        }})
+
+return this}
+
+
+
+p.follow=function(x,y){var that=this
+    cjs.tick(function(){
+        if(O(that.sprite)){
+            that.cam(x,y)
+        }})
+
+    return this}
+
+
+p.list=function(){
+    return this.GetFixtureList()
+}
+
+
+p.each = p.eachFixt = function(func){
+
+   var fl = this.GetFixtureList()
+
+
+   var withList = function self(list, func){
+
+        func(list)
+
+        list = list.GetNext()
+
+        if(list){return self(list, func)}}
+
+    withList(fl, func)
+
+
+}
+
+
+
+
+
+
 
 
 

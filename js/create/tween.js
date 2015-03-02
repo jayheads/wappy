@@ -8,8 +8,7 @@ p.toggle=function(){
 var isPaused = this._paused
 
     if(isPaused){
-        this.setPaused(false)
-    }
+        this.setPaused(false)}
 
     else{
         this.setPaused(true)

@@ -145,15 +145,20 @@ w.eachBody= w.each= function( func, userData ){//=w.e=w.eB
     //can also pass a uD to restrict cb to
     //run only on bodies with that uD
 
-    var bodies = this.GetBodyList()
+    var bodies = this.GetBodyList(), kind
+
+    if(S(func)){kind=func; func=userData} else {kind = userData}
 
     _.times(this.GetBodyCount() - 1,
         function(){
-            if( !userData ){ func(bodies) }
-            else { if( bodies.GetUserData() == userData ){ func(bodies) } }
+            if( !kind || bodies.is(kind) ){ func(bodies) }
             bodies =   bodies.GetNext()})
 
     return this}
+
+
+
+
 //events
 w.eachClick = w.bodyClick=function(func){
     this.each(function(body){
@@ -189,10 +194,14 @@ w.ball= w.ba  =function self(x,y,r){var ball
     x = x || 100
     y = N(y) ? y : x
     r = r || 30
-    ball = this.dynamic(x,y, b2d.circDef(r))    
+    ball = this.dynamic(x,y,
+        b2d.circDef(r))
     ball.K('ball')
 return ball}
-w.bumper= w.baa =function(x,y,r){
+
+
+
+w.bump = w.bumper= w.baa =function(x,y,r){
     x = x || 100
     y = N(y) ? y : x
     r = r || 20
@@ -202,7 +211,7 @@ w.box = w.bi =function(x,y,W,H){//=brk=brick=
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 50; H = N(H) ? H : W
 
-    return this.A(   b2d.dynamicDef(x,y),    b2d.polyDef(W, H).r(0)).K('box')
+    return this.A(   b2d.dynamicDef(x,y),    b2d.polyDef(W, H) ).K('box')
 
 }
 w.brick = w.bii =function(x,y,W,H){//=brk=brick=
@@ -215,24 +224,152 @@ w.brick = w.bii =function(x,y,W,H){//=brk=brick=
 }
 
 
-w.addCirc=function(){var x, y,radius,color
+  w.addCirc=function(x,y,radius, color){
+      //specific to talkjs
 
 
-    x=parseInt(Math.random() *2200-1000)
+    x=N(x)?x: parseInt(Math.random() *2200-1000)
 
-    y=parseInt(Math.random() *1600-1000)
+    y=N(y)?y: parseInt(Math.random() *1600-1000)
 
-    radius = _.random(14)+8
+    radius = N(radius)? radius: _.random(14)+8
 
-    color = oO('c', $r())
+    color = oO('c', color||$r())
 
     this.ball(x, y, radius).bindSprite2(
+        cjs.circ(   radius,  color ).XY(  x,y)).linDamp(2)
+
+}
+
+
+
+
+w.circ =  function(x,y,radius, color){
+
+    var wd = this.s.W(),
+        ht=this.s.H()
+
+
+    x= N(x) ? x: parseInt(Math.random() * (wd-100) )+60
+
+    y= N(y)? y: 50
+
+    radius = N(radius)? radius: _.random(14)+8
+
+    color = oO('c', color||$r())
+
+    return this.ball(x, y, radius).bindSprite2(
+        cjs.circ(   radius,  color ).XY(  x,y)).linDamp(2)
+
+}
+//lin damp 2????
+w.circStat =  function(x,y,radius, color){
+
+    var wd = this.s.W(),
+        ht=this.s.H()
+
+
+    x= N(x) ? x: parseInt(Math.random() * (wd-100) )+60
+
+    y= N(y)? y: 50
+
+    radius = N(radius)? radius: _.random(14)+8
+
+    color = oO('c', color||$r())
+
+    return this.bump(x, y, radius).bindSprite2(
         cjs.circ(   radius,  color ).XY(  x,y)
+    ).linDamp(2)
+
+}
+
+
+
+
+w.rect =  function(x,y, wd, ht, color){
+
+    x= N(x) ?x: 200
+
+    y= N(y)? y: 50
+
+    wd = N(wd)? wd: 50
+
+    ht = N(ht)? ht: wd
+
+    color = oO('c', color||$r())
+
+    return this.box(x, y, wd,ht).bindSprite2(
+        cjs.rect(   wd,ht,  color ).XY(  x,y)).linDamp(2)
+
+}
+
+
+w.rectStat =  function(x,y, wd,ht, color){
+
+    x= N(x) ?x: 200
+
+    y= N(y)? y: 50
+
+    wd = N(wd)? wd: 50
+
+    ht = N(ht)? ht: wd
+
+    color = oO('c', color||$r())
+
+    return this.brick(x, y, wd,ht).bindSprite2(
+        cjs.rect(   wd,ht,  color ).XY(  x,y)
 
     ).linDamp(2)
 
 }
 
+w.left=function(num){num=N(num)?num:4
+    this.each(function(body){
+        body.X(body.X()-num)
+    })
+}
+
+
+w.horiz=function(num){
+
+    num=N(num)?num:4
+
+
+    this.each(function (body) {
+
+        body.X(body.X() - num)
+    })
+
+
+}
+
+w.vert=function(num){
+
+    num=N(num)?num:4
+
+    this.each(function (body) {
+
+        body.Y(body.Y() - num)
+    })
+
+
+}
+
+
+
+
+
+w.bindShape = function( shape, spr   ){
+
+    this.stage.A( shape )
+
+    cjs.tick(
+
+        function(){   shape.XY(  spr.X(), spr.Y()    )    }
+
+    )
+
+}
 
 
 
@@ -250,12 +387,16 @@ w.makeWalls=function(walls){
     }
 
     else {
-        this.bii(height, width / 2, width, 40).uD('floor')
-        this.bii(width / 2, 0, width, 40).uD('ceiling')
-        this.bii(0, height / 2, 40, height).uD('rightWall')
-        this.bii(width, height / 2, 40, height).uD('leftWall')
+
+        this.wall(height, width / 2, width, 40).K('floor')
+        this.wall(0, height / 2, 40, height).K('rightWall')
+
+        this.wall(width / 2, 0, width, 40).K('ceiling')
+        this.wall(width, height / 2, 40, height).K('leftWall')
     }
 }
+
+
 w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
 
     x = N(x) ? x : 60;
@@ -300,7 +441,7 @@ w.addTenBalls=function(num){
 
 w.addHundBalls=function(num){num=num||100;var that=this
     _.times(num, function(i){
-        that.ball( 100  +(i*8),  50, 10) })
+        that.circ( 100  +(i*8),  50, 10) })
     return this}
 
 

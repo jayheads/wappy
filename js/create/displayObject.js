@@ -284,6 +284,14 @@ p.tweenLoop = function(){
 return tween}
 
 
+p.flash = function(){var that=this
+
+
+       this.opacity(0)
+        setTimeout(function(){
+            that.opacity(1)}, 300)
+
+return this}
 
 p.spin = function(){this.tweenLoop([{r:360}, 4000]); return this}
 

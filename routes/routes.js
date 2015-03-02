@@ -2,6 +2,13 @@ $l('routes.js')
 
 module.exports=function(){
 
+    $a.get('/play/:app/:pam?', function(req, res){
+
+        res.render('play', {  app: req.params.app,   pam: req.params.pam    })
+
+    })
+
+
 
     $a.get('/', function(req,res){  res.send('this is a test')   })
     $a.get('/wap', function(req,res){ res.render('wap') })

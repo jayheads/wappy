@@ -8,6 +8,38 @@ V=b2d.V=function(a,b){
 
     if(g.n){a/=30;b/=30}
     return new b2d.Common.Math.b2Vec2(a,b)}
+
+v = b2d.Common.Math.b2Vec2.prototype
+
+v.mult=function(num){num=N(num)?num:30
+    var v = _.clone(this)
+    v.Multiply(num)
+    return v}
+
+v.div=function(num){num=N(num)?num:30
+    return this.mult(1/num)}
+
+
+
+v.add=function(x, y){
+
+    if(O(x)){y= x.y; x= x.x}
+
+    x=N(x)?x:1
+    y=N(y)?y:x
+
+    var v = V(this.x+x, this.y+y   )
+    return v}
+
+
+v.sub=function(x,y){
+    if(O(x)){y= x.y; x= x.x}
+    x=N(x)?x:1; y=N(y)?y:x
+    var v = V(this.x-x, this.y-y   )
+    return v}
+
+
+
 Math.V = $V = function self(a,b,c,d){//returns coords needed for centering
 
     var g=G(arguments),o,

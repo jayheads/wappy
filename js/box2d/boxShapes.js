@@ -155,7 +155,7 @@ b2d.bumper=function(x,y,radius){
 
 b2d.brick=function(x,y,w,h){
 
-    return b2d.bii(x,y,radius).K('brick')
+    return b2d.bii(x,y,w,h).K('brick')
 }
 
 b2d.box=function(x,y,w,h){
