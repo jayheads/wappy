@@ -295,7 +295,7 @@ return this}
 
 p.spin = function(){this.tweenLoop([{r:360}, 4000]); return this}
 
-p.getSetRotation = p.rT = p.rt = function(rotation){
+p.rot = p.getSetRotation = p.rT = p.rt = function(rotation){
     var args=G(arguments);
     rotation = args[0]
 
@@ -319,6 +319,13 @@ p.underMouse = function( ){
     }
 
 }
+
+p.dot=function(){
+    this.getStage().dot(
+        this.X(), this.Y()
+    )
+return this}
+
 
 
 

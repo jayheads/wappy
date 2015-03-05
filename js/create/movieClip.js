@@ -169,3 +169,36 @@ MovieClip2 = Mc= function(m){
 
 
 
+
+MOVIECLIP=function(){
+
+
+    stage =  cjs.stage(800).A()
+
+
+    createjs.Ticker.addEventListener("tick", stage);
+
+    mc = new cjs.MovieClip(null, 0, true, {start:0, middle:40})
+
+    stage.A(mc)
+
+    // Create the States. Each state is just a circle shape.
+
+    var state1 = cjs.shape(new createjs.Graphics().f("blue").dc(100, 200, 50))
+    var state2 = cjs.shape(new createjs.Graphics().f("red").dc(100, 200, 50))
+
+    // Create a tween for each shape, animating from one side to the other.
+
+    mc.timeline.addTween(cjs.Tween.get(state1).to({x: 0}).to({x: 760}, 40).to({x: 0}, 40))
+    mc.timeline.addTween(cjs.Tween.get(state2).to({x:760}).to({x:0},40).to({x:760},40))
+
+    // Play the animation starting from the middle. See the MovieClip constructor above
+    // where the labels are specified.
+
+    mc.gotoAndPlay("middle")
+
+
+}
+
+
+

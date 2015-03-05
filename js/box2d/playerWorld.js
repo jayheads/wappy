@@ -79,12 +79,6 @@ w.addMe=function(scale){//var bodyDef,head,foot,p
 
     return p}
 
-
-
-
-
-
-
 w.startKilling=function(){var that=this
 
     cjs.tick(function(){
@@ -129,55 +123,7 @@ w.player=function(scale, onEachTick, enemy){
     return pl}
 
 
-
-
-
-w.meX=function(onEachTick,enemy){
-
-
-    this.footListener()
-
-    this.startKilling()
-
-    var   func
-
-    var bodyDef = b2d.dynamicDef(100,100)
-    var fix1 =    b2d.polyDef(35,60).rest(0).den()
-    var fix2 =    b2d.polyDef(10,30,0,40).uD('feet').sensor(1)
-
-    me = p = player = this.A(bodyDef ,   [fix1 ,
-        // fix2
-    ]   ).K('player')
-
-    p._direction = 1
-    p.dir = p.direction = p.dr = function(direction){
-        if(U(direction)){return this._direction}
-        this._direction = direction
-        return this}
-    p.speed = 40
-    p.moveX =  function(n){
-        if (n == '-'){  return player.move( - player.speed )}
-        n = N(n) ? n : player.speed
-        if ( player.direction() ) {  player.aI(3,0) }  else {  player.aI(-3,0) }
-        return player}
-    p.fixtList().SetFriction(1)
-
-    p.bindSprite('me', .25)
-
-    if(S(onEachTick)){onEachTick=b2d.controls[onEachTick]}
-
-    if(F(onEachTick)){
-
-        cjs.tick(function(){onEachTick(player, enemy) })}
-
-    return player}
-
-
-
-
-
-
-p.platform  =function(x,y,W,H){//=brk=brick=
+p.platform2  =function(x,y,W,H){//=brk=brick=
 
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
@@ -268,10 +214,21 @@ w.rubber=function(x, y, len){
     return rub}
 
 
-w.ramp=function(x,y,wd,h,rot){
-    return this.stat(x, y,  b2d.poly(wd, h) ).rT(rot)
-        .bindSprite2( cjs.rect(wd, h,'yellow')).fric(1)
-}
+w.ramp=function(x, y, wd, h, rot){
+
+    x = x || 300
+    y = y || 300
+    wd = wd ||100
+    h = h || 100
+    rot = rot|| 10//Math.toRadians(45)
+
+    var ramp =  this.stat(x, y,  b2d.poly(wd, h) ).rot(rot)
+        ramp.bindSprite2( cjs.rect(wd, h,'yellow')).fric(1)
+return ramp}
+
+
+
+
 
 w.ramps=function() {
 
@@ -295,10 +252,33 @@ w.goomba=function(x,y){
 }
 
 
-w.bobom=function(){var that=this
-    bobom = this.A( b2d.dynamic(), [ [20], ['bobomWick',30,5,10,0].sensor() ])
-    bobom.trig('bobomWick', function(){that.destroy()})
-    return bobom.rest(1).den(1)}
+w.bobom=function(){
+
+    var that=this,
+        bobom = this.dyn( 100, 100),
+        body = bobom.circ(20),
+
+        sensor =   bobom.poly(25, 5, 30, 0,'-')
+
+
+            body.den(1)//.rest(1)
+
+    sensor.coll('player',function(){
+
+
+       this.B().setDestroy()
+
+    })
+
+
+
+    return bobom
+
+}
+
+
+
+
 
 
 
@@ -312,7 +292,7 @@ w.link = function self(x,y){
 
         _.times(num, function(){
             lk =  self(l.X(), l.Y()+15)
-            that.Rev(l, lk)
+            that.rev(l, lk)
             l = lk })
 
         return l.K('leaf')}
@@ -323,13 +303,13 @@ w.link = function self(x,y){
 w.vine = function(x,y,len){len=len||10
 
     var that = this,
-        base = w.link(x,y).stat(),
+        base = this.link(x,y).stat(),
         l =  base.l(len)
 
 
     this.begin(function(cx){
         if(cx.with('player', 'leaf')){
-            var j =  that.Rev(l, p.XY(l.X(), l.Y()))
+            var j =  that.rev(l, p.XY(l.X(), l.Y()))
 
             $.kD('down', function(){
                 that.DestroyJoint(j)
@@ -337,7 +317,14 @@ w.vine = function(x,y,len){len=len||10
         }})}
 
 
+BADDIES=function(){
+    w=b2d.W()
 
+    w.goomba()
+
+    w.bobom(200,200)
+
+}
 
 
 w.tramp=function(xloc, rest,freq,damp){
@@ -393,4 +380,214 @@ w.bridge=function(x,y){var that=this
 
 
 }
+
+
+
+
+
+w.elev= w.elevator =function(x){
+
+    var elev={}
+
+    elev.plat  = this.rect(x, 100, 100,10).den(1).K('elev')
+        .coll(function(){elev.flip()})
+        .collWithKind('player', function(p){p.linVel(0)})
+
+    elev.base = this.brickSensor(x, 150, 1, 100 ).den(1).fric(100)
+
+    elev.j =  this.prism(elev.plat, elev.base, V(0,1) )
+
+    elev.speed = 2
+    elev.j.mot(elev.speed)
+    elev.flip =  _.throttle( function(){
+        this.j.mot(this.speed*=-1)}, 200, {trailing:false})
+
+    return elev}
+
+
+
+
+
+
+
+
+w.greenGuy = function(x,y){
+    x=N(x)?x:100; y=N(y)?y:100
+
+    var that=this, size=20, b= that.dyn(x,y).K('greenGuy'),
+
+          centFix = b.rect(20,20).K('center').rest(2),
+
+        f = b.rectSensor(size, size)
+
+
+
+    setInterval(function(){
+        f.kill(); size += 4; f= b.rectSensor(size, size)}, 500)
+
+    that.begin(function(cx){var fix
+
+        fix = cx.with('center', 'bullet')
+
+        if(fix){
+
+            if(cx.A() == centFix){
+                size=20
+            }
+
+            if(cx.B() == centFix){
+                size=20
+            }
+
+
+        }
+
+    })
+
+    __greenGuy = b
+    return b}
+
+
+
+
+w.car =function(){
+
+    var car = w.rect(150, 150,90,30, 'black')
+
+    j1 = w.Rev(
+        w.circ( 200, 150, 30 ,'red').fric(0).den(1),
+        car
+    )
+
+        j1.speed(120)
+    j1.EnableMotor(true)
+    j1.SetMaxMotorTorque(1000000)
+
+   j2 = w.Rev(  w.circ( 100, 150,30, 'blue').fric(0).den(1),  car   )//.speed(-500).torque(40).motor(true)
+
+    j2.speed(150)
+    //j2.EnableMotor(true)
+    j2.SetMaxMotorTorque(1000000)
+
+    return car}
+
+w.roller =function(){
+
+    var car = w.rect(250, 150,90,30, 'black')
+
+    j1 = w.Rev(
+        w.circ( 300, 150, 30 ,'red' ),
+        car
+    )
+
+    j1.speed(6)
+    j1.EnableMotor(true)
+    j1.SetMaxMotorTorque(1000000)
+
+
+
+
+
+    j2 = w.Rev(  w.circ( 200, 150,30,'red'),  car   ).speed(-500).torque(40).motor(true)
+
+    return car}
+
+ROLLERS=function(){b2d.levelScrollX()
+
+
+   // _.times(3, function(){w.roller()})
+
+
+setInterval(  function(){
+        w.roller()
+
+    }, 1000)
+
+
+    p.X(1750)
+
+}
+
+
+RACE=function(){b2d.levelScrollX()
+
+
+  car = w.car()
+
+    w.dist(p, car).len(0)
+
+
+    floor.fric(.1)
+
+}
+
+
+
+w.rightFlipper=function(x, y){
+    var rightJoint = w.circStat(x, y,20,'red'),
+        rightFlip = w.rect(x, y, 100,25, 'blue')
+    var flipper = __rightFlipper =  w.rev(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lim(-70, 30)
+
+    flipper.flip=function(){rightFlip.I(-120,0)}
+
+    return flipper
+
+
+
+}
+w.leftFlipper=function(x, y){
+    var  leftFlip = w.rect(x,y, 100,25, 'blue'),
+        leftJoint = w.circStat(x,y,20,'red')
+
+
+
+    var flipper = __leftFlipper =  w.rev(  leftJoint ,  leftFlip ,  0, 0, 40, 0  ).lim(150, 250)
+
+    flipper.flip=function(){leftFlip.I(120,0)}
+
+    return flipper}
+w.flippers=function(x,y,x2,y2){
+    if(U(y2)){y2 = y  }
+    if(U(x2)){ x2 = x + 230 }
+
+    var  lf = w.leftFlipper(x, y),
+        rf =  w.rightFlipper(x2, y2)
+
+    var flip = function flip(){lf.flip(); rf.flip(); return flip}
+
+    flip.left = lf
+    flip.right = rf
+
+    return flip}
+
+
+
+//GRID !!!!
+
+
+
+
+
+
+
+w.grid = w.drawGrid = function(grid, x,y,len,spacing){
+    var that=this, body
+
+
+     var gridDrawer=function(x,y,len, spacing){
+         body = that.dyn(x, y)
+        len = N(len)?len: 30; spacing = N(spacing)?spacing: 20
+        return function(x, y){
+            body.rect(len, len, x * spacing, y * spacing)
+                .den(1).fric(0.5).rest(.2)
+            return body}},
+
+         drawWall=gridDrawer(x, y, len, spacing)
+
+    _.times(grid.length, function (row) {
+        _.times(grid[0].length, function (col) {
+            if (grid[col][row]){
+                drawWall(row, col)}})})
+
+return body.K('grid')}
 

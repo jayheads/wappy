@@ -1,17 +1,107 @@
-b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,f){
-
-    var j=SuperJointDef(
-
-        new b2.Joints.b2PrismaticJointDef()
-
-    )
+/*
+localAxisA - the axis (line) of movement (relative to bodyA)
+referenceAngle - the angle to be enforced between the bodies
 
 
-    j.i=function(){
+localAnchorA - a point in body A to keep on the axis line
+localAnchorB - a point in body B to keep on the axis line
 
-        j.Initialize.apply(j, G(arguments))
 
-        return j}
+enableLimit - whether the joint limits will be active
+lowerTranslation - position of the lower limit
+upperTranslation - position of the upper limit
+
+enableMotor - whether the joint motor will be active
+motorSpeed - the target speed of the joint motor
+maxMotorForce - the maximum allowable force the motor can use
+*/
+
+pj = b2d.Joints.b2PrismaticJoint.prototype
+//pj.limits = function(low, up){this.SetLimits(low/30, up/30); this.enableLimit(true); return this }
+pd = b2d.Joints.b2PrismaticJointDef.prototype
+//pd.i=function(){this.Initialize.apply(this, G(arguments));return this}
+
+NEWPRISM=function(){
+
+    w=b2d.mW({grav:5})
+
+    x = w.brick(400,300,40,40).den(1).fric(1)
+
+    b = w.box(500, 200,200,40).den(1).K('box')
+
+   jd = new b2d.Joints.b2PrismaticJointDef()
+
+
+    jd.collideConnected=true
+    //jd.motorSpeed=100
+    //jd.maxMotorForce=1000
+    jd.bodyA = x
+    jd.bodyB = b
+    jd.referenceAngle=.5
+   // jd.localAxisA= V(1,1)
+    //jd.upperTranslation=20
+
+
+    j = w.prism([x,-30,2], b, V(1,-2), 45)
+    //j =  w.J(jd)
+    //j.EnableMotor(true)
+
+    p=w.player('thrust').den(1).fric(1)
+
+    var speed=10
+
+    j.mot(speed)
+
+    w.begin(function(cx){
+
+        if(cx.with('box')){speed *= -1}
+
+        j.mot(speed)
+    })
+
+}
+MARIOELEVATOR =function(){b2d.levelScrollX()
+
+
+    w.elev(200)
+    w.elev(400)
+    w.elev(600)
+
+
+    w.elev(750)
+    w.elev(900)
+    w.elev(1000)
+
+   w.elev(1100)
+   w.elev(1200)
+    w.elev(1300)
+    w.elev(1400)
+    w.elev(1500)
+    w.elev(1600)
+    w.elev(1700)
+    w.elev(1800)
+    w.elev(1900)
+    w.elev(2000)
+
+    //these fall into the abyss when there is no floor (or ceiling)
+    w.elev(2100)
+    w.elev(2200)
+    w.elev(2300)
+    w.elev(2400)
+    w.elev(2500)
+    w.elev(2600)
+    w.elev(2700)
+    w.elev(2800)
+    w.elev(2900)
+    w.elev(2000)
+
+
+}
+
+b2d.prism = b2d.prismDef= function(a,b,c,d,e,f){//b2d.prismaticJointDef = PrismaticJointDef = prJt=
+
+    var j=    new b2d.Joints.b2PrismaticJointDef()
+
 
     j.mt=function(a,b,c){
 
@@ -22,6 +112,7 @@ b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,
 
     }
 
+
     j.lm=function(a,b,c){
         j.lT(a).uT(b)
 
@@ -29,85 +120,63 @@ b2.prismDef= b2.prismaticJointDef = PrismaticJointDef = prJt=function(a,b,c,d,e,
         return j}
 
 
-    if(D(a)){j.A(a)}
+    if( D(a) ){ j.A(a)}
 
-    if(D(b)){j.B(b)}
+    if( D(b) ){ j.B(b)}
 
-    j.lXA(D(c)?c: bV(0,1))
+    j.lXA(D(c)?c: V(0,1))
 
-    j.lAA(D(d)?d: a.c())
+     j.lAA(D(d)?d: a.worldCenter())
 
-    j.lAB(D(e)?e: b.c())
+    j.lAB(D(e)?e: b.worldCenter())
 
     if(D(f)){j.rA(f)}
 
     return j
 }
+PRISM=function(){b2d.mW()
 
+    cart = w.box(500,200,20,20)
+    ride = w.brick(540,150,180,90)
 
-
-SuperPrismatic=function(p){
-
-    p.limits = function(low, up){
-        this.SetLimits(low/30, up/30)
-        this.enableLimit(true)
-        return this }
-
-    //p.maxForce=function(){}
-
-    return p}
-
-PRISM=function(){
-
-    b2.makeWorld()
-
-    cart = w.bi(500,200,20,20)
-    ride = w.bii(540,150,180,90)
-
-    pulleyJoint = b2.prismaticJointDef(
+   jd = b2d.prism(
         ride,
         cart,
-        b2.V( 1, .3 ), //.Normalize()
-        b2.V(  ride.worldCenter().x,  ride.worldCenter().y +5),
+         V( 1, .3 ), //.Normalize()
+         V(  ride.worldCenter().x,  ride.worldCenter().y +5),
         cart.worldCenter(),
         5)
 
-    pulleyJoint.lT(-12).uT(12.5).eL(1).mMF(10).eM(1).mS(-100000)
 
-    j = world.createJoint( pulleyJoint)
+   jd.mS(-100000).lT(-12).uT(12.5).eL(true).eM(true).mMF(10)//works
+
+
+    j = w.J( jd)
 
 }
 
+PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ b2d.mW()
 
 
+    cart = world.box(500,200,20,20)
 
-PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ makeWorld()
+    ride = world.brick(540,150,180,90)
 
-    cart = world.bi(500,200,20,20)
-
-    ride = world.bii(540,150,180,90)
-
-    j = world.Prism( ride, cart,
-
-        b2.V(  1, .3  ), //.Normalize()
-
-        b2.V(
-
-            ride.worldCenter().x,
-
-                ride.worldCenter().y + 5
-        ),
-
+    j = w.Prism(
+        ride,
+        cart,
+        V(  1, .3  ), //.Normalize()
+        V(  ride.worldCenter().x,  ride.worldCenter().y + 5  ),
         cart.worldCenter(),
+        5
+    )
 
-        5 )
 
     j.maxForce( 10000 ).speed( -100 ).motor( 1 )
-    setTimeout( function(){ j.motor(0) }, 2000 )
-    setTimeout( function(){ j.motor(1) }, 5000 )
+    setTimeout( function(){ j.motor(false) }, 2000 )
+    setTimeout( function(){ j.motor(true) }, 5000 )
 
 }
-
 
 
 //makes random shaped prismatic joint
@@ -129,49 +198,101 @@ RandomPrismPair = sPrJ=function(x,y){
 
 }
 
+BUMPER=function(){w=b2d.mW()
 
-BUMPER=function(){
-  world = w=   b2.makeWorld()
-    circle = w.ba( 600,500,40).uD('ride')
-
-    circle.bindSprite('me')
+    var circle = w.ball( 600,500,40).K('ride').bindSprite('me')
 
 
-    world.Prism(
+   j1= w.prism(
 
-        w.ba( 200,500, 40).uD('ride'),
+        w.brick( 200,500, 40).K('ride'),
 
-        w.bii( 200,500,40,40).uDF('cart')
+        w.brick( 200,500,40,40).K('cart')
 
-        ).limits(-30, 60).speed(-100).motor(1).maxForce(1000)
-
-
-    world.Prism(
-        w.ba( 400,500,40 ).uD('ride'),
-
-        w.bii(400,500,40,40).uDF('cart')
-
-    ).limits(-30, 60).speed(-100).maxForce(1000).motor(1)
+        )//.limits(-30, 60).speed(-100).motor(1).maxForce(1000)
 
 
-    world.Prism( circle,  w.bii(    600,500,40, 40).uDF('cart')
+   j2 = w.prism(
+
+        w.ball( 400,500,40 ).K('ride'),
+
+        w.brick(400,500,40,40).K('cart')
+
+
+    )//.limits(-30, 60).speed(-100).maxForce(1000).motor(1)
+
+
+    w.prism( circle,  w.brick(600,500,40, 40).K('cart')
 
     ).limits(-30, 60).speed(-100).motor(1).maxForce(1000)
 
-    world.onBeginContact(   function(contact){
+    w.begin(   function(contact){
 
-            if( contact.involves('cart') ){
+            if( contact.with('cart') ){
 
-                world.eachBody(
-                    function(b){ if( b.is('ride') ){  b.aI(0,-1000)  }  }
+                w.each(
+                    function(b){
+                        if( b.is('ride') ){  b.I(0, -1000)  }  }
                 )
 
             }})
 
 
-    w.ba( 200, 200, 100 )
+    w.ball( 200, 200, 100 )
 
 
 
 }
 
+
+
+PRISMLIMITS=function(){
+
+    w=b2d.mW({grav:5})
+
+    x = w.brick(400,300,40,40).den(1).fric(1)
+
+    b = w.box(500, 200,200,40).den(1).K('box')
+
+    jd = new b2d.Joints.b2PrismaticJointDef()
+    //jd.collideConnected=true
+    jd.bodyA = x
+    jd.bodyB = b
+    jd.referenceAngle=.5
+
+    // jd.localAxisA= V(1,1)
+   // jd.upperTranslation=-200
+  //  jd.lowerTranslation=200
+   // j = w.prism([x,-30,2], b, V(1,-2), 45)
+    j =  w.J(jd)
+   //  j.EnableLimit(true)
+
+    p=w.player('thrust').den(1).fric(1)
+    p.den(0)
+    var speed=10
+
+   // j.mot(speed)
+
+
+    j.U=function(u){if(U(u)){return this.GetUpperLimit()*30}
+        this.SetLimits(this.L(),u/30)
+        return this}
+
+    j.L=function(l){if(U(l)){return this.GetLowerLimit()*30}
+            this.SetLimits(l/30, this.U())
+            return this}
+
+
+    j.UL=function(u,l){return this.U(u).L(l)}
+    j.LU=function(l,u){return this.L(l).U(u)}
+
+    j.LU(-100, 300)
+
+    //j.SetLimits(-50,10)
+
+    j.EnableLimit(true)
+
+
+
+
+}

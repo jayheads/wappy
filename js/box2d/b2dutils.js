@@ -87,6 +87,7 @@ b2d.isShape=function(h){
     if(O(h)){
 
         typ = h.constructor.name
-        return typ == "b2PolygonShape"
+        return (typ == "b2PolygonShape") || (typ == "b2CircleShape") || (typ == "b2AShape")
+
     }
 }

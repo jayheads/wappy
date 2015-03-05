@@ -84,12 +84,23 @@ $.fn.bottom=function(bottom){
 
 
 
-$.fn.P = function(pos,left,top){
+$.fn.P = function(pos,x,y){
     if( U(pos) ){ return this.css('position') }
     this.css('position', oO('p',pos))
-    if(left){this.left(left)}
-    if(top){this.top(top)}
+
+    if(N(x)){this.X(x)}
+    if(y){this.Y(y)}
     return this}
+
+
+
+$.fn.abs=function(x,y){
+    this.P('a', x,y)
+return this}
+
+
+
+
 $.fn.id=function(id){ if(U(id)){ return this.attr('id')}; this.attr('id', id);return this     }
 $.fn.name=function(name){ if(U(name)){ return this.attr('name')}; this.attr('name', name);return this     }
 $.fn.drag = function(){

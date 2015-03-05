@@ -206,6 +206,8 @@ w.bump = w.bumper= w.baa =function(x,y,r){
     y = N(y) ? y : x
     r = r || 20
     return this.A(b2d.staticDef(x,y),b2d.circDef(r)).K('bumper')}
+
+
 w.box = w.bi =function(x,y,W,H){//=brk=brick=
 
     x = N(x) ? x : 60; y = N(y) ? y : x
@@ -214,12 +216,22 @@ w.box = w.bi =function(x,y,W,H){//=brk=brick=
     return this.A(   b2d.dynamicDef(x,y),    b2d.polyDef(W, H) ).K('box')
 
 }
+
 w.brick = w.bii =function(x,y,W,H){//=brk=brick=
 
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
 
     return this.A(   b2d.staticDef(x,y),    b2d.polyDef(W, H).r(0)).K('brick')
+
+}
+
+w.brickSensor =function(x,y,W,H){//=brk=brick=
+
+    x = N(x) ? x : 60; y = N(y) ? y : x
+    W = N(W) ? W : 30; H = N(H) ? H : W
+
+    return this.A(   b2d.staticDef(x,y),    b2d.polyDef(W, H).r(0).sensor(true)  ).K('brickSensor')
 
 }
 
@@ -262,6 +274,8 @@ w.circ =  function(x,y,radius, color){
         cjs.circ(   radius,  color ).XY(  x,y)).linDamp(2)
 
 }
+
+
 //lin damp 2????
 w.circStat =  function(x,y,radius, color){
 
@@ -328,6 +342,37 @@ w.left=function(num){num=N(num)?num:4
         body.X(body.X()-num)
     })
 }
+
+
+
+w.rectSensor =  function(x,y, wd,ht, color){
+
+    x= N(x) ?x: 200
+
+    y= N(y)? y: 50
+
+    wd = N(wd)? wd: 50
+
+    ht = N(ht)? ht: wd
+
+    color = oO('c', color||$r())
+
+    return this.brickSensor(x, y, wd,ht).bindSprite2(
+        cjs.rect(   wd,ht,  color ).XY(  x,y).opacity(.5)
+
+    ).linDamp(2)
+
+}
+
+
+
+w.left=function(num){num=N(num)?num:4
+    this.each(function(body){
+        body.X(body.X()-num)
+    })
+}
+
+
 
 
 w.horiz=function(num){

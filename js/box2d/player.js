@@ -59,6 +59,8 @@ THRUSTER = function(){z()
 
     w.addTim(3)
 
+    setInterval( function(){ w.bobom() }, 3000)
+
     w.begin(function(cx){
 
         var a= cx.a(),  b= cx.b()
@@ -186,9 +188,54 @@ AUTOFLAGCHECKER=function(){
 
 
 
+GREENGUY=function(){
+
+    b2d.mW({grav: 0})
+
+    w.greenGuy(100,100)
+
+    w.greenGuy(200,200)
+
+    w.greenGuy(300,300)
+
+    w.circ(100,100,30).K('bullet')
+
+    w.debug()
+}
 
 
 
+eh = function(){   v = poly.verts()
+
+    wd = v[1].x - v[0].x
+
+    ht = v[2].y - v[0].y
+    //sq.XY(300, 100)
+    cy =   b.Y() + v[0].y + (ht/2)
+    cx =   b.X() + v[0].x + (wd/2)
+
+    w.s.dot('white', cx,cy)
+
+    //bubble = w.rectSensor(200, 200, len,len, 'green')
+
+
+    //middle = w.circStat(200, 200, 8, 'orange')
+
+    func =function(){
+
+        bubble.kill()
+        len+= 2
+        bubble = w.rectSensor(200, 200, len,len, 'green')
+
+        middle.kill()
+        middle = w.circStat(200, 200, 8, 'orange')
+
+
+    }
+
+
+
+}
 
 
 

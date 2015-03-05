@@ -1,6 +1,6 @@
 
 
-b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
+b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
     var options
     if(!O(ops)){ops={}}; options = ops
@@ -26,7 +26,9 @@ b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
 
 
-    w.stage  = w.s =   cjs.stage('black',width,height).A()    //cjs.Ticker.removeAllEventListeners()
+    w.stage  = w.s =   cjs.stageHUD('black', width,height).A()    //cjs.Ticker.removeAllEventListeners()
+    w.stage.HUD.A()
+
     w.stage.autoClear=false
      w.canvas = w.stage.canvas;
     w.c =w.can = $(w.canvas)
@@ -37,11 +39,15 @@ b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
     w.x = canvasPosition.x
     w.y = canvasPosition.y
 
-    $.gameController().A()
+    // $.gameController().A();
     $.joystick()
 
     _mouseJoint = _mouseIsDown = 0
-    setInterval( function(){handleMouseJoints(); handleDebug()}, 1000/60 )
+
+    setInterval( function(){
+        handleMouseJoints(); handleDebug()
+    }, 1000/60 )
+
     $.mousedown(function(e){// *** need to change to pagex(so can scroll page?).. but i think it messes up for mobile
         var x = w.x, y = w.y
         _mouseIsDown = true
@@ -85,7 +91,7 @@ b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
     //w.startListening()
 
-    return world       //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
+    return w      //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
 
     function handleDebug(){
         w.step(1/60, 10, 10).draw().clearForces()
@@ -248,8 +254,11 @@ b2d.fullWorld = function(){z()
               //that's why i don't need the stage to autoclear
               world.DrawDebugData()
           stage.update()
+          stage.HUD.update()
 
       }, 1000/60)
+
+
       world.bii(400,400, 600, 40)
       b=world.ba()
       stage.bm('me', function(bitmap){

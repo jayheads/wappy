@@ -82,33 +82,30 @@ s.bm('chicks', function(chicks){
 
 }
 
+b2d.level=function(){var width=600, height=300, gravity=400
 
-
-
-b2d.level=function(){
-
-    var width=600,
-        height=300,
-        gravity=400
-
-
-
-
-    w = b2d.mW({
+    w = b2d.W({
 
         W:width,
         H:height,
         grav:gravity,
-        walls:0 //walls:b2d.miniWalls
-
+        walls:0
+       // walls:b2d.miniWalls
 
     })
 
-    floor = w.rect(height, width / 2, width*5, 40, 'orange').stat().K('floor').fric(.2).rest(.2)
-    right = w.rect(0, height / 2, 40, height, 'pink').stat().K('rightWall').fric(.5).rest(.5)
+    w.left =  left = w.rect(0, height / 2, 40, height, 'pink').stat().K('leftWall').fric(.5).rest(.5)
+    w.right = right = w.rect(width, height / 2, 40, height).K('rightWall')
 
-    p = w.player(2.5)
 
+    w.floor =  floor = w.rect(height, width / 2, width*5, 40, 'orange').stat().K('floor').fric(.2).rest(.2)
+    w.ceiling =  ceiling = w.rect(height, 0, width*5, 40, 'orange').stat().K('ceiling').fric(.2).rest(.2)
+
+
+
+
+    p = w.player(2.5).fric(.8)
+    p.fixedRot(true)
     p.trig('feet', function(){})
 
 
@@ -143,13 +140,19 @@ b2d.level=function(){
     p.Y(200).horizCenter().den(1).fric(.2).rest(.2)
 
 }
+
+
 b2d.levelScrollX=function(){
     b2d.level()
-    right.kill()
+
     w.s.XY(300, 150).rXY(300, 150)
     p.followX(600, 400)
     w.debug()
+    right.kill()
+
 }
+
+
 b2d.levelScroll=function(){
     b2d.level()
     w.s.XY(300, 150).rXY(300, 150)
@@ -158,6 +161,37 @@ b2d.levelScroll=function(){
 }
 b2d.levelScrollScale=function(){}
 
+
+b2d.levelWarp=function(){
+
+    var width=600,
+        height=300,
+        gravity=0
+
+    //gotta make guy heavier
+    //thrust is good with grav 10 !!!!
+    // , walls:b2d.miniWalls
+
+    w = b2d.mW({
+        W:width,
+        H:height,
+        grav:gravity,
+        walls:0
+    })
+
+
+    p= w.player(2.5, 'thrust').Y(200).horizCenter()
+
+    p.angDamp( 10000 )
+
+
+
+    w.debug()
+
+
+
+
+}
 
 b2d.levelSpace=function(){
 
@@ -261,9 +295,107 @@ MARIOORBIT=function(){
 
     w.spring(p, northStar).freq(.2).damp(4)}
 
+ SPACEZOOM=function(){
 
 
-MARIOSPACEZOOM=function(){
+    var width=600,
+        height=300,
+        gravity=0
+
+    //gotta make guy heavier
+    //thrust is good with grav 10 !!!!
+    // , walls:b2d.miniWalls
+
+    w = b2d.mW({
+        W:width,
+        H:height,
+        grav:gravity,
+        walls:0
+    })
+    earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).K('earth') //stat?  why dont i collide?
+
+     northStar.bindSprite('earth',.13)
+
+     setTimeout(function(){
+
+      earth.sprite.tweenLoop([{r: 360}, 10000])
+
+      earth.sprite.tweenLoop([{kx:16}, 3000],[{kx:0}, 3000])
+
+         w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      )
+       //  w.s.tweenLoop([{r: 360}, 10000])
+
+
+
+         p.collWithKind('star', function(){
+
+             p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100] )
+
+         })
+
+         earth.collWithKind('star', function(){
+
+             w.s.flash()
+         })
+
+
+     }, 300)
+
+    p= w.player(2.5, 'thrust').Y(200).horizCenter()
+
+    p.angDamp(8 )
+
+    p.SetLinearDamping(.8)
+
+    w.debug()
+
+    w.s.rXY(300,150)
+
+    _.times(80, function(){var x,y
+
+        x= (Math.random() * 2000) - 750
+
+        y = (Math.random() * 1600) - 600
+
+        w.circ(x, y, 4, 'white').den(0).rest(2).K('star')
+
+    })
+
+
+
+
+
+
+
+
+
+
+    w.distColl(p, northStar).freq(.15).damp(0).len(50)
+
+
+
+    scaleFunc = function(){var dx,dy,dst
+        dx =    northStar.X()-p.X()
+        dy =     northStar.Y()-p.Y()
+        dst = Math.sqrt( (dx * dx) + (dy * dy) )
+        //$l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
+        dst =  300 /dst
+        return dst>2?2:  dst <.3? .3: dst}
+
+    keepGuyCentered(scaleFunc)
+    //instead of distance by diagnal distance, try just adding x and y distances
+
+
+
+
+cjs.tick(function(){
+    w.s.alpha =scaleFunc()*2
+    earth.sprite.alpha =scaleFunc()
+})
+
+}
+
+ SUNZOOM=function(){
 
 
     var width=600,
@@ -282,51 +414,69 @@ MARIOSPACEZOOM=function(){
     })
 
 
+
     p= w.player(2.5, 'thrust').Y(200).horizCenter()
 
-    p.angDamp( 10000 )
+    p.angDamp(8 )
 
+    p.SetLinearDamping(.8)
 
     w.debug()
 
     w.s.rXY(300,150)
+    w.s.XY(300,150)
 
-    _.times(30, function(){var x,y
+
+    _.times(10, function(){var x,y
 
         x= (Math.random() * 1000) - 500
 
         y = (Math.random() * 800) - 400
 
-        w.circ(x, y, 2,'white').den(0).rest(2)
+        w.circ(x, y, 4, 'white').den(0).rest(2)
 
     })
 
-    var northStar= w.circStat(200,200,10,'pink')
-    w.spring(p, northStar).freq(.25).damp(2)
 
-    keepGuyCentered(function(){var dx,dy,dst
+    var northStar= w.circStat(300,150,10,'pink').den(1).rest(.5) //stat?  why dont i collide?
+    northStar.bindSprite('sun',.2)
 
-         dx =    northStar.X()-p.X()
-         dy =     northStar.Y()-p.Y()
+    setTimeout(function(){ northStar.sprite.tweenLoop([{r: 360}, 10000]) }, 300)
 
+
+    w.distColl(p, northStar).freq(.2).damp(0).len(150)
+
+
+    w.distColl(   w.greenGuy(400,100), northStar).freq(.1).damp(0).len(150)
+
+    w.distColl(   w.greenGuy(400,200), northStar).freq(.1).damp(0).len(150)
+
+    w.distColl(   w.greenGuy(200,100), northStar).freq(.1).damp(0).len(150)
+
+    w.distColl(  w.greenGuy(200,200), northStar).freq(.1).damp(0).len(150)
+
+
+
+    scaleFunc = function(){var dx,dy,dst
+        dx =    northStar.X()-p.X()
+        dy =     northStar.Y()-p.Y()
         dst = Math.sqrt( (dx * dx) + (dy * dy) )
-        $l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
-        return 300/dst
+      //  $l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
+        dst =  150 /dst
+        return dst>2?2:    dst}
 
 
-        //instead of distance by diagnal distance, try just adding x and y distances
 
+    cjs.tick(function(){
+        w.s.sXY(scaleFunc())
     })
+   // keepGuyCentered(scaleFunc)
 
 
-
+    p.K('bullet')
 
 
 }
-
-
-
-
 
 
 
@@ -361,6 +511,7 @@ SCROLLINGLEVEL=function(){
     w.ice(1300, 280, 1000)
     w.clouds().clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
 }
+
 SLIDE=function(){
     b2d.levelScroll()
     w.clouds().clouds(-500,-200)//.clouds(1000,-200)
@@ -890,4 +1041,102 @@ MARIOBIG=function(){
 
 }
 
+coin = function(x,y){
 
+    x=N(x)?x:Math.random()* 600
+
+    y = N(y)?y:Math.random()* 300
+
+    var coin = w.circ(x, y, 6, 'yellow').K('coin').rest(0).den(0)
+    warp(coin)
+__coin = coin
+    coin.linDamp(0)
+
+    coin.I(
+            (Math.random()*20)-10,
+            (Math.random()*20)-10
+    )
+
+return coin}
+
+COINWARP=function(){
+
+    b2d.levelWarp()
+
+    p.linDamp(1)
+
+    _.times(2, function() {
+        warp(w.greenGuy(Math.random()*600))//.I((Math.random()*20)-10,(Math.random()*20)-10)
+    })
+
+    p.K('bullet')
+
+setInterval(coin, 1000)
+
+   warp(p)
+
+score=0
+    badScore=0
+
+    w.begin(function(cx){
+
+        if(cx.with('coin')){
+
+
+            if(cx.a().K( )=='coin'){
+                cx.a().setDestroy()
+
+                if(cx.b().K()=='bullet'){score++}
+                if(cx.b().K()=='greenGuy'){badScore++}
+            }
+
+            if(cx.b().K( )=='coin'){
+
+                if(cx.a().K()=='bullet'){score++}
+                if(cx.a().K()=='greenGuy'){badScore++}
+                cx.b().setDestroy()}
+
+        }
+
+    })
+
+
+
+    w.startKilling()
+
+
+    setInterval(function(){
+
+      w.s.pen( score + ' / '+ badScore)
+    }, 3000)
+}
+
+
+warp = function(p) {
+    cjs.tick(function () {
+        if (p.Y() < 0) {
+            p.Y(300)
+        }
+        if (p.Y() > 300) {
+            p.Y(0)
+        }
+        if (p.X() < 0) {
+            p.X(600)
+        }
+        if (p.X() > 600) {
+            p.X(0)
+        }
+    })
+
+    return p}
+
+
+JUMPRUN=function(){b2d.levelScrollX()
+
+    p.linDamp(0).rest(.7)
+
+    w.circ(50,50,30).rest(.7).den(1).fric(.5).I(100,100)
+    floor.rest(.5)
+    w.SetGravity(V(0,10))
+
+}

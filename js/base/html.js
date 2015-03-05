@@ -684,26 +684,37 @@ $.col = function(){  var args = G(arguments),
 
 
 
-$.canvas= $.can = function(col, width, height){
+$.canvas= $.can = function(col, width, height, x,y){
 
     var el
 
     if( U ( col ) ){ return superCanvas( $( '<canvas>' ) ).C( 'blue' )   }
-    if( N(col) ){ return  $.canvas( 'x', col, width   )}
+
+    if( N(col) ){ return  $.canvas( 'x', col, width,x,y   )}
+
     if( S(col) ){
 
         el = $( '<canvas>' )
 
         el.css( 'backgroundColor', oO( 'c' , col ) )
 
-        if( _.isNumber( width ) ){
+        if( N( width ) ){
             el.attr('width', width )
             el.attr('height', height || width)
+        }
+
+        if(N(x)){
+            el.abs(x,y)
         }
 
         return superCanvas(el)}
 
     return el}
+
+
+
+
+
 $c = function(col, width, height){
 
     if(!S(col)){  return $c('yellow', col, width   )}

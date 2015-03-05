@@ -78,16 +78,20 @@ p.tick = function(){
 }
 
 
-p.A=function(arg){var that=this
+p.A=function(arg,y){var that=this
 
     if(U(arg)){
 
-        $('body').append(this.canvas);return this
+        $('body').append(this.canvas)
     }
 
-    _.each(arguments, function(arg){
+    else if(N(arg)){
+        $('body').append(this.canvas).abs(arg,y)
+    }
+
+   else { _.each(arguments, function(arg){
         that.addChild(arg)
-    })
+    })}
 
     return this}
 
@@ -129,31 +133,80 @@ p.backgroundColor=function(c){
     $( this.canvas ).C(c)
     return this}
 
+p.shape = function(){
+
+  var h =  cjs.shape.apply(cjs, arguments)
+
+    this.A(h)
+
+return h}
+
+p.poly =function(){
+    var h = this.shape()
+
+    h.poly.apply(h, arguments)
+
+return h}
 
 
-   cjs.stg = cjs.stage =  function(a,b,c){var stage
+
+
+
+cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
 
     cjs.watchKeys()
 
-    //get by canvas ID
-    if(A(a)){
-
-        stage=new cjs.Stage(a[0])}
-
-
+    //get by canvas ID.. eh, a sloppy hack?? it ok
+    if(A(a)){  stage = new cjs.Stage(a[0]) }
 
    //if you pass it a canvas OR a $canvas object
-   else if(O(a)){stage=new cjs.Stage($(a)[0])}
+   else if(O(a)){stage = new cjs.Stage($(a)[0])}
 
 
     //create a new canvas
-    else {stage = new cjs.Stage($.canvas(a,b,c)[0])}
+    else {stage = new cjs.Stage(
 
-    stage.can=stage.c=$(stage.canvas)
+        $.canvas(a,b,c,d,e) [0]
+    )}
 
-return stage.tick()}
+    stage.can = stage.c = $(stage.canvas)
+
+return stage.tick()
+
+}
 
 
+cjs.S= function(){z()
+
+    s = cjs.stg(800, 500).A()
+
+return s}
+
+
+
+
+ cjs.stageHUD = cjs.stageHUD = cjs.HUD=function(a,b,c){var stage, can1, can2
+     cjs.watchKeys()
+     can1 = $.canvas(a,b,c)
+     can2 = $.canvas('X', Number(can1.W()), Number(can1.H())).P('a').XY(0, 0).opacity(.8)
+     stage=new cjs.Stage(can1[0]).tick()
+     stage.c=can1
+     stage.HUD = new cjs.Stage(can2[0]).tick()
+     return stage}
+
+
+
+HUD=function(){z()
+
+
+    s = cjs.HUD('r', 500, 500).A()
+
+    s.bm('guy')
+
+    s.HUD.A().bm('me',function(b){  TR(b)  })
+
+
+}
 
 
 
@@ -171,8 +224,8 @@ STG = function(){
     z();s = cjs.stage(1000,500).A()
     s.bm('me',
         function(bb){b=bb.drag() })}
-p = cjs.Stage.prototype
-p.snap = function(f){
+s=p = cjs.Stage.prototype
+s.snap = function(f){
 
     $.post('/img', {
 
@@ -183,12 +236,17 @@ p.snap = function(f){
     sec(f)
 
     return this}
-p.W=function(a){if(U(a)){return this.canvas.width}
+s.W=function(a){if(U(a)){return this.canvas.width}
     this.canvas.width = a
     return this}
-p.H=function(a){if(U(a)){return this.canvas.height}
+s.H=function(a){if(U(a)){return this.canvas.height}
     this.canvas.height=a
     return this}
+
+s.abs=function(x,y){
+    this.can.abs(x,y)
+return this}
+
 
 
 

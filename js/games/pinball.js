@@ -1,90 +1,91 @@
+FLIP=function(){b2d.W()
+    f1 = w.flippers(100,430)
+    f2 =  w.flippers(100,230)
+    f3=  w.flippers(300,130)
+    flip = function(){f1();f2();f3()}}
+PINBALL=function(){b2d.W({  walls : 'makeWallsPinball'  }) //canvas.drag()
 
-PINBALL=function(){
+    ballBumper = w.circStat(215,520,30,'red').den(10).rest(3).fric(0)
+    topShelf = w.rectStat(215,100,100,10,'blue')
+    rightWallForSomeReason = w.rectStat(420,400,20,2000, 'white')
 
+    sunBall = w.ball(215, 90, 20).bindSprite('sun', .24)
+    setInterval(function(){   sunBall.rot( sunBall.rot() + 10) }, 100)
+    flip = w.flippers(100,430)
+    $('body').on('keydown mousedown', tap)
 
+    function tap(){
+        var ball = w.circ(Math.random()*300+40,160, 20, 'green').den(.1).rest(.6).fric(2)
+        if(oneInTenChance()){ball.bindSprite('me', .24)}
+        flip()}
 
-    b2.mW({  walls : 'makeWallsPinball'  })
-
-    canvas.drag()
-
-    baa(215,520,30)
-
-    bii(215,100,100,10)
-
-    ball= world.ba(215,90)
-
-
-    ball.bindSprite('sun', .24)
-
-    var leftJoint = w.baa(100,430)
-
-    var leftFlip = w.bi(100,430, 100,25)
-
-    var rightJoint = w.baa(330,430)
-
-    var rightFlip = w.bi(330,430, 100,25)
+    function oneInTenChance(){return Math.random()>.9}}
+BALLS=function(){
 
 
-    j1= w.CreateJoint(
-
-        RevoluteJointDef(  leftJoint , leftFlip ,  0,0,  40,0  ).lm(150,250)
-
-    )
+    b2d.W({grav: 100, walls:0})
 
 
+    ramp=function(x,y,wd,h,rot){
 
+        return w.ramp(x,y,wd,h,rot).den(1).fric(0).rest(0)
+    }
 
-    j2= w.CreateJoint(
+    ramp(250, 700, 500, 200, -40)
+    ramp(250, 640, 500, 200, -20)
+    ramp(270, 620, 500, 200, -10)
+    ramp(200, 600, 500, 200, 11)
+    ramp(-70, 350, 500, 200, 85)
+    ramp(-70, 375, 500, 200, 75)
+    ramp(-70, 400, 500, 200, 65)
+    ramp(-70, 425, 500, 200, 55)
+    ramp(-70, 450, 500, 200, 45)
+    ramp(-70, 475, 500, 200, 35)
+    ramp(-70, 500, 500, 200, 25)
+    ramp(-70, 525, 500, 200, 17)
 
-        RevoluteJointDef(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lm(-70,30)
-
-    )
-
-
-    bii(420,400,20,2000)
-
-
-
-    $('body').on('keyup',  function(){
-
-        leftFlip.aI(100, 0);   rightFlip.aI(-100,0)
-
-    })
+    force = 0
 
 
 
-    $('body').on('keydown',  function(){ ba(Math.random()*300+40  ,140,20)} )
+    launchBall = function(){
+        force = N(force)? force: 3;
+        b = w.ball(20, 300, 12).den(1).fric(0).rest(0).I(0, force) // why was it 'heavier' when i changed it to circ???
+            b.bindSprite('me',.2)
+        force = 0}
 
 
 
+    $.kD('d', function(){
 
-    $('body').mousedown(function(){
-
-        var b= ba(Math.random()*300+40,140,20)
-
-        if(Math.random() > .9){b.bindSprite('me', .24)}
-
-        leftFlip.aI(120, 0);
-        rightFlip.aI(-120,0)
+        if(force == 0){force = 10}
 
     })
 
+    setInterval(function(){
+        if(force!=0){force *= 1.2}}, 100)
+
+    $.kU('d', launchBall )
 
 
-    setInterval(function(){   ball.rt( ball.rt() + 10) }, 100)
+    cjs.tick(function(){$l('force :' + force)})
 
 
-    $.pop(
-        $.div(  'y').A(
-            $.h1('welcome to gamey pinball'),
-            $.h4('just tap (anywhere) and two things will happen:  (1) new ball (2) flippers flip '),
-            $.h4('goal: knockdown the fireball'),
-            $.h5('click the game to start')  )
+    w.rectStat(900,550, 120,15, 'white').fric(0).K('ledge')
 
-    )//.A().click(function(){ $(this).remove() })
+    w.debug()
+
+    w.begin(function(cx){
+        if(cx.with('ledge')){
 
 
 
+        if(cx.a().is('ledge')){  cx.b().linVel(0)  }
+
+            else {cx.a().linVel(0)}
+        }
+    })
 }
+
 
 

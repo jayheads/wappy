@@ -157,15 +157,61 @@ w.Rev=function(a,b,c,d){
         RevoluteJointDef( a, b, c, d)
 
     )}
-w.Prism=function(a,b,c,d,e,f,g,h){
+  w.Prism=function(a,b,c,d,e,f,g,h){
+    var joint= this.J(b2d.prism( a, b, c, d,e,f,g,h))
+    return  joint }
 
-    var joint= world.createJoint(
+w.rev = function(body1, body2, c,d, e,f){var g=G(arguments)
 
-        PrismaticJointDef( a, b, c, d,e,f,g,h)
+    //pass in body1, body2, world-bV = body1-center
+    //can also pass body1, body2, world-x, world-y
+    //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
 
-    )
+    var joint =   new BXJ.b2RevoluteJointDef()
 
-    return SuperPrismatic(joint)}
+    __jd = joint
+
+
+    if( U(c) ){ c = body1.worldCenter() }
+    if( O(c) ){
+        joint.init( body1, body2, c )}
+    else if(N(e)){
+        joint.A(body1).B(body2).lAA( V(c/30,d/30)).lAB( V(e/30,f/30)) }
+    else if(N(c)){
+        joint.init(body1, body2, V(c/30,d/30)) }
+
+    //SuperJointDef( joint )
+     __joint = joint = this.J(joint)
+
+
+    return joint}
+
+
+
+
+w.prism = function(a,b,x,y, rot){
+    var jd = new b2d.Joints.b2PrismaticJointDef(),j
+
+    if(A(a)){jd.bodyA = a[0]
+        if(O(a[1])){jd.localAnchorA = a[1]}
+        else if(N(a[1])){jd.localAnchorA = V(a[1]/30, (a[2]||0)/30)}}
+    else {jd.bodyA=a}
+
+    if(A(b)){jd.bodyB = b[0]
+        if(O(b[1])){jd.localAnchorB = b[1]}
+        else if(N(a[1])){jd.localAnchorB = V(b[1]/30, (b[2]||0)/30)}}
+    else {jd.bodyB=b}
+
+    if(N(x)){jd.localAxisA.Set(x,y||0);jd.localAxisA.Normalize()
+        if(rot){jd.referenceAngle= Math.toRadians(rot)}}
+
+    if(O(x)){jd.localAxisA.Set(x.x||0, x.y||0);jd.localAxisA.Normalize()
+        if(y){jd.referenceAngle= Math.toRadians(y)}}
+
+    __joint = j = this.J(jd)
+
+    return  j}
+
 w.Gear=function(a,b,c){
 
     return world.createJoint( Gear(a,b,c) )
@@ -288,7 +334,7 @@ w.when = w.coll = w.collide=function(k1,k2,flag){
         return this.collideAny(k1,k2)}
 
     this.begin(function(cx){
-        if(cx.with(k1,k2)){
+        if(cx.with(k1, k2)){
             that.flag(name, cx)}
     })
 

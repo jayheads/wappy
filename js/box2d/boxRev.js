@@ -1,4 +1,51 @@
-RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
+jd = joint = b2d.Joints.b2RevoluteJointDef.prototype
+//just a shortcut to call initialze.  have i ever even done that?  laaaame waaah waaaaah
+jd.init =joint.i=function(){
+    this.Initialize.apply(this,  G(arguments) )
+    return this}
+
+//convenience functions
+jd.mot = jd.motor =  function(speed, torque, enable){
+    this.speed(speed)
+    this.maxTorque( N(torque)? torque : 100)
+    if( enable != '-' ){
+        this.enableMotor=true }
+    return this }
+
+jd.limits = joint.lm = function( lowAng, upAng, enable ){
+    this.lowAng( lowAng ).upAng( upAng )
+    if( enable != '-' ){
+        this.enableLimit = true}
+    return this }
+
+
+j = b2d.Joints.b2RevoluteJoint.prototype
+
+j.lim = j.limits =  function(a, b){var g=G(arguments);
+
+    a=g[0], b=g[1]
+
+    if(a===true){this.EnableLimit(true); return}
+
+    this.SetLimits(Math.toRadians(a), Math.toRadians(b))
+    if(g.N){this.EnableLimit(true)}
+
+    return this}
+
+
+
+j.mot = j.motor =   function(speed, torque, enable){
+    this.SetMotorSpeed(speed)
+    this.SetMaxMotorTorque( N(torque)? torque : 100000)
+    if( enable != '-' ){
+        this.EnableMotor(true) }
+    return this }
+
+
+
+
+
+RevoluteJointDefX = revX = function(a,b, c,d, e,f){var g=G(arguments)
 
     //pass in body1, body2, world-bV = body1-center
     //can also pass body1, body2, world-x, world-y
@@ -46,59 +93,79 @@ RevoluteJointDef = rev = function(a,b, c,d, e,f){var g=G(arguments)
 
 
 
-revJoint=function(){
 
-    return world.Revolute(w.ball(), w.box())
-}
-
-TESTREV=function(){
-    b2d.mW()
-
-   j= revJoint()
-    //revJoint2()
-
-    //revJoint3()
-
-    //revJoint4()
-
-}
-
-revJoint1=function(){return world.Revolute(
-        world.circ(400, 200).stat(),
-        world.rect(400, 200, 100) ).motor(1).speed(2000)  //speed
-}
+REVJOINT=function(){b2d.W()
 
 
-revJoint2=function(){
+    revJoint=function(){
 
-    return w.Revolute(
-        w.rect( 120, 50, 50 ),
-        w.rect( 100, 50, 50 )
-    ).motor(10)
+        return w.rev(w.ball(), w.box())
+    }
+    revJoint()
 
-}
+    box = w.box(150,150)
+    w.rev(w.bump(200,200), box)
+    w.rev(box, w.ball(130,130))
 
 
-revJoint3=function(){return world.Revolute(
-    world.bi( 400, 30, 30, 50 ),  world.bi( 400, 30, 30, 50 ) ).motor(10)}
+   j=w.rev(
+        w.bump(400, 200, 100).den(1),
 
-revJoint4=function(){
+        w.box(400, 200, 100).den(1)
+    )
 
-    return world.Revolute(
+        //j.motor(true).speed(2000)
 
-        world.bi( 400,30,10,80 ),
+        j.EnableMotor(true)
+        j.SetMaxMotorTorque(10000000)
+        j.SetMotorSpeed(-2)
 
-        world.bi( 400,30,20,160 )
+
+
+
+
+        w.rev(
+            w.rect( 120, 50, 50,50, 'yellow' ),
+            w.rect( 100, 50, 50,50,'black' )
+        ).motor(2)
+
+
+
+     w.rev(
+        w.rect( 400, 30, 30, 50 ),
+        w.rect( 400, 30, 30, 50 ) ).motor(3)
+
+  fido =w.rev(
+
+            w.rect( 400,30,10,80, 'purple' ),
+
+           w.box( 400,30,20,160 )
 
         ).motor(10)
 
-    }
+
+    w.rev(
+
+        w.circ( 400,30,50, 'purple' ),
+
+        w.rect( 400,30,20,160 ,'orange')
+
+    ).motor(7)
+
+
+
+
+
+}
+
 
 
 
 
 Stuff={}
-Stuff.Spinner = spinner=function(x,y,s,t){
+
+
+w.spinner=spinner=function(x,y,s,t){
 
     x = N(x)? x : 500
 
@@ -108,16 +175,15 @@ Stuff.Spinner = spinner=function(x,y,s,t){
 
     t = N(t)? t : 100
 
-    dial= world.bi(x,y,200,40)//w.a(dBD(x,y), pFx(200,40))
+    dial= w.box(x,y,200,40)//w.a(dBD(x,y), pFx(200,40))
 
-    rock= world.bii(x,y,10,10)//w.a(sBD(x,y), pFx(10,10))
+    rock= w.brick(x,y,10,10)//w.a(sBD(x,y), pFx(10,10))
 
-    return world.createJoint(
+    return w.rev( dial, rock ).mot(s, t) // rJt({  i:[rock, dial, dial.c()],  eM:1,  mS:-10,  mMT:100  })
+}
 
-        RevoluteJointDef( dial, rock ).motor(s, t) // rJt({  i:[rock, dial, dial.c()],  eM:1,  mS:-10,  mMT:100  })
 
-    )}
-Stuff.Seesaw = seesaw=function(){
+w.seesaw= seesaw=function(){
 
     anc = world.bi(400,300,60,60)
 
@@ -132,38 +198,21 @@ Stuff.Seesaw = seesaw=function(){
         ).collide(0)
     )}
 
-//makes random rev pair
-Stuff.RandomRev = refFix=function(x,y){
-    x=N(x)?x:100
-    y=N(y)?y:x
 
-    b11 = world.addBody(  bx1=DynamicBodyDef(x,y), fix() )
 
-    b22 = world.addBody(  bx2= DynamicBodyDef(x ,y ) ,fix() )
 
-    world.createJoint(
 
-        RevoluteJointDef( b11,b22,  b11.worldCenter(), b22.worldCenter() )  //.l(10).f(3).d(.1)//.cC(1)
+makeCar=function(){
 
-    )
+    var car = w.rect(240,350,90,30)
 
-}
+    w.rev(    w.circ( 300, 400, 30  ),  car  ).mot(4)
 
-Stuff.Car = makeCar=function(){
-
-    var car = world.bi(240,350,90,30)
-
-    world.Rev(
-        world.ba( 300, 400, 30  ),
-        car
-    ).speed(-500).torque(40).motor(1)
-
-    world.Rev(
-        world.ba( 200, 400,30),
-        car
-    ).speed(-500).torque(40).motor(1)
+    w.rev(  w.circ( 200, 400,30),  car    ).mot(4)
 
     return car}
+
+
 
 ROULETTE=function(){
 
@@ -266,27 +315,48 @@ CHANGEMOTOR=function(){makeWorld()
 }
 
 
+car= function(x,y, wheel1, wheel2){
+
+    wheel1=wheel1||2
+    wheel2=wheel2||wheel1
+
+    var car = w.box(x,y,90,30).bindSprite('me')
+
+    w.rev(
+        w.circ( x-40,  y+50, 30),  car    ).mot(wheel1)
+    w.rev(
+        w.circ( x +60, y+50, 30  ),  car  ).mot(wheel2)
+
+return __car = car
+
+}
 
 
-CAR=function(){makeWorld()
 
-    //world.make.Car
-   c= makeCar().bindSprite('me')
+CARS=function(){b2d.W()
 
-    //world.make.Spinner
-    Stuff.Spinner(500,400)
-        .enableLimits( 1 )
-        .setLimits( 20, 240 )
-        .enableMotor( 1 )
-        //.maxMotorSpeed( 100 )  ?
-        .motorSpeed( 40 )}
+
+    car(100,350,-2,2)
+    car(440,350,2,-2)
+
+
+    setTimeout(function(){
+        car(440,350,4)
+
+        car(540,350,2)
+
+    },5000)
+}
+
+
+
 
 DEMO_GEAR=function(){
     makeWorld()
 
     world.Gear(
-        w.Rev( w.baa(100,220,40), w.bi(100,220,100,20) ),
-        w.Rev( w.baa(250,220), w.bi(250,220,100,20) ),
+        w.rev( w.baa(100,220,40), w.bi(100,220,100,20) ),
+        w.rev( w.baa(250,220), w.bi(250,220,100,20) ),
         .5
     )
 }
@@ -320,33 +390,43 @@ TRAPEZE=function(){ b2d.level()
             var lk
             _.times(num, function(){
                 lk =  link(l.X(), l.Y()+20)
-              r=  w.Rev(l, lk)
-
+                r= w.rev(l, lk)
                 r.collideConnected=true
                 l = lk })
             return l}
         return l}
+
+
     base = link(300, 20).stat()
     l =  base.l(10)
-    w.Rev(l, p.XY(l.X(), l.Y()))
+    w.rev(l, p.XY(l.X(), l.Y()))
+
+
+    base = link(100, 20).stat()
+    l =  base.l(10)
+    w.rev(l, p.XY(l.X(), l.Y()))
+
+}
+
+
+FIREFLY=function(){ b2d.level()
+
 
     link = function(x,y){
         var l= w.rect(x,y, 5, 10,'y').den(4).rest(2)
         l.l= function(num){num=N(num)?num:1
-            var lk
-            _.times(num, function(){
-                lk =  link(l.X(), l.Y()+20)
-               r= w.Rev(l, lk)
-                r.collideConnected=true
-                l = lk })
+
+
+            _.times(num, function(){l =   link(l.X(), l.Y()+20)   })
+
+
             return l}
         return l}
     base = link(100, 20).stat()
     l =  base.l(10)
-    w.Rev(l, p.XY(l.X(), l.Y()))
+    w.rev(l, p.XY(l.X(), l.Y()))
 
 }
-
 
 WINDOWBLINDS=function(){ b2d.level()
 

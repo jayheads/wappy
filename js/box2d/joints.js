@@ -184,23 +184,32 @@ j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
     return j}
 
 //motor rev
+
 j.mt=j.motor =j.enableMotor = j.eM = function(a){
     j.EnableMotor( a ? true : false )
     return j}
+
 j.speed = j.motorSpeed=j.mS=function(speed){
     if(U(speed)){return this.GetMotorSpeed()}
     this.SetMotorSpeed(speed)
     return this}
+
+
 j.torque = function(torq){
-    if(U(torq)){
-        return this.GetMotorTorque()}
+    if(U(torq)){return this.GetMotorTorque()}
     this.SetMaxMotorTorque(torq)
     return this}
 
-j.maxTorque = j.mMT=  j.mT=function(a,b,c){
-    j.SetMaxMotorTorque(a,b,c); return j}
-j.maxForce = j.mMF=  j.mF=function(a,b,c){
-    j.SetMaxMotorForce(a,b,c); return j}
+j.maxTorq =j.maxTorque = j.mMT=  j.mT=function(a,b,c){
+    this.SetMaxMotorTorque(a,b,c);
+    return this}
+
+
+
+j.maxForce =j.mMF=j.mF=function(a,b,c){
+    this.SetMaxMotorForce(a,b,c); return this}
+
+
 
 
 j.lm= j.limits =j.setLimits = j.sL = function(a,b){
@@ -212,14 +221,15 @@ j.lm= j.limits =j.setLimits = j.sL = function(a,b){
     j.SetLimits( tRad(a), tRad(b) )
 
     return j}
+
 j.enableLimits= j.enableLimit = j.eL=function(a){
-    j.EnableLimit( a?true:false)
-    return j}
+    this.EnableLimit( a?true:false)
+    return this}
+
+
 j.W=function(){
    return this.GetBodyA().GetWorld()
 }
-
-
 
     //revolute
 
@@ -242,17 +252,23 @@ j.rat = j.r=function(a){j.ratio = a; return j }
 
 j.axis = j.lXA=function(a){ j.localAxisA=a; return j }
 
-    //slider
+j.enabMot=function(a){this.EnableMotor(a); return this}
 
-j.maxForce= j.mMF=function(a){
-        j.maxMotorForce = a;return j
-    }
+
+j.mot=function(speed, maxForce){if(speed=='-'){this.EnableMotor(false); return this}
+    speed=N(speed)?speed:100
+    maxForce = N(maxForce)?maxForce:10000000
+    this.enabMot(true).maxForce(maxForce).speed(speed)}
+
+//slider
+
+//j.maxForce= j.mMF=function(a){j.maxMotorForce = a;return j}
 
     //slider and revolute
 
-j.speed=j.mS=function(a){
-        j.motorSpeed = a; return j}
-
+j.speed=function(speed){//j.mS
+    this.SetMotorSpeed(speed)
+    return this}
 j.motor=j.eM=function(a){
         j.enableMotor = a?true:false; return j}
 

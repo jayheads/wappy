@@ -2,7 +2,9 @@ Array.prototype.sensor=function(kind){
     this.isSensor=kind||true
     return this}
 
-BOBOM=function(){b2d.level(); _.times(30, function(){ w.bobom() })}
+
+
+
 
 VORTEXOK=function(){
 

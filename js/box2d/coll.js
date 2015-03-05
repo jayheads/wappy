@@ -184,6 +184,8 @@ COLLIDE=  function(){z()
     // w.collide('box', 'platform')
     //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
 }
+
+
 BEGIN=function(){
     w=b2d.mW()
     w.ball()
@@ -262,9 +264,11 @@ CONTACTS=function(){makeWorld()
         })  //w.begin(function(cx){if(cx.with('sensor1','sensor2')){w.flag('new')}}) //w.on('new', function(){w.ball()})
 
 }
+
+
 BITS=function(){b2d.mW()
 
-    var cir = b2d.circ(80).bits(2,5), //collides with 4,1
+    var cir = b2d.circ(80).bits(2, 5), //collides with 4,1
 
         rec = b2d.poly(60,90).bits(4,7)  // collides with 4,2,1
 
@@ -275,6 +279,9 @@ BITS=function(){b2d.mW()
     w.dyn(400,300, rec)
 
 }
+
+
+
 GROUP=function(){b2d.mW()
 
 
@@ -321,22 +328,19 @@ b2d.filter = b2d.f= function(){//used?
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
+
+
 b2d.filterData = b2d.fD=function(d){//used?
 
     var d = new BXD.b2FilterData
-
-
     d.gI=function(a){
 
         if(U(a)){return d.groupIndex}
 
         d.groupIndex=a; return d}
-
-
     d.category=d.cB=function(a){
         if(U(a)){return d.categoryBits}
         d.categoryBits=a; return d}
-
     d.mask=d.mB=function(a){
 
         if(U(a)){  return d.maskBits}
@@ -344,8 +348,6 @@ b2d.filterData = b2d.fD=function(d){//used?
         d.maskBits=a; return d
 
     }
-
-
     return d}
 
 
