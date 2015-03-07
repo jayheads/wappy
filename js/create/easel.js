@@ -90,7 +90,8 @@ timeStamp2 = function(s, j, pxPerSec){
 
             j.y((j.ts/1000) * pxPerSec,'-')  }}
     return s.t(fn)}
-cjs.tick =function(func){cjs.Ticker.on('tick', func)}
+cjs.tick =function(func){func();
+    cjs.Ticker.on('tick', func)}
 
 cjs.tick2 = function(func){
     cjs.Ticker.addEventListener('tick', func)
@@ -113,7 +114,14 @@ p.init=function(){
 
 
 
-
+cjs.shad = cjs.shadow = function(color, x,y, blur){
+    if(color=='-'){return new cjs.Shadow(null,0,0,0)}
+    color=S(color)?color:'a'
+    blur= N(blur)?blur:10
+    x=N(x)?x:0
+    y=N(y)?y:0
+    var shad =new cjs.Shadow( oO('c', color), x,y,blur)
+return shad}
 
 
 testGrow=function(){z()
@@ -528,32 +536,79 @@ cjs.HSL=function(a,b,c){
 
 
 //LOADQUEUE
-cjs.loadQueue= cjs.lq=  function(){return new cjs.LoadQueue(true)}
-p=cjs.LoadQueue.prototype
-p.fileload=function(func){
+cjs.loadQueue= cjs.lq=  function(mf, func){
+
+   var q= new cjs.LoadQueue(true)
+
+    if(A(mf)){     q.loadManifest(  cjs.mf.apply(null, mf)  ) }
+
+    if(F(func)){
+
+        q.complete(    function(){ func(function(img){return q.getResult(img)  })  }  )
+
+    }
+
+
+    return q
+}
+
+
+q=cjs.LoadQueue.prototype
+
+q.fileload=function(func){
     this.addEventListener("fileload", func)
     return this}
-p.complete=function(func){this.addEventListener("complete", func)
+
+q.complete=function(func){this.addEventListener("complete", func)
     return this}
-p.manifest=function(manifest){
+
+q.manifest=function(manifest){
     this.loadManifest(  manifest  )
     return this}
+
+
+q.mf=function(){
+    this.loadManifest(  cjs.mf.apply(null, arguments)  )
+return this
+
+}
+
+
+q.bm=function(img){
+
+      img =  this.getResult(img)
+
+
+     return cjs.bitmap(img)
+}
+
+
+
+
 
 
 cjs.handleFileLoad=function(e){
     if (e.item.type=="image"){
         images[e.item.id]=e.result}
 }
-cjs.manifest = cjs.mf =  function(a){var g=G(arguments),mf=[]
+
+cjs.mf = cjs.manifest =  function(a){
+    var g=G(arguments),
+        mf=[]
+
     _.each(g, function(v){
+
         mf.push({
 
-            src: Graphics.toSource(v),
+            src: cjs.src(v),
             id: v
 
-        })})
+        })
+    })
 
     return mf}
+
+
 cjs.makeManifest =cjs.makeMan =  function(a){
     return  cjs.manifest.apply(null, _.map(a.images, function(i){
             return Graphics.fromSource(i)
@@ -562,11 +617,113 @@ cjs.makeManifest =cjs.makeMan =  function(a){
 }
 
 
+Q = function(imgs, func){
+
+    var q = cjs.lq()
+    mf=[]
+    _.each(imgs, function(v){
+
+        mf.push({
+
+            src: cjs.src(v),
+            id: v
+
+        })
+    })
+    q.manifest(mf)
+    q.complete(function(){  func(q) })
+
+}
+
+
+
+
+MANIFEST=function(){s = cjs.S()
+
+
+    Q(['me', 'guy'], function(q){
+
+
+
+        s.A( me= q.bm('me') )
+
+        s.A( guy = q.bm('guy') )
+
+
+        guy.drag()
+
+    })
 
 
 
 
 
+}
 
+
+WHYQ = function(){
+
+
+
+
+    cjs.Keys.l = cjs.Keys.left = false
+    cjs.Keys.r = cjs.Keys.right = false
+    cjs.Keys.u = cjs.Keys.up = false
+    cjs.Keys.d = cjs.Keys.down = false
+
+
+
+    $.kU('l',function(){
+         if($.test){$l('left lifted')}
+        cjs.Keys.l = cjs.Keys.left = false
+    })
+
+    $.kD('l',function(){
+        if($.test){$l('left pressed')}
+        cjs.Keys.l = cjs.Keys.left = true
+        cjs.Keys.dir = 'left'})
+
+
+
+
+
+   $.kD('l',function(){
+     if($.test){$l('left pressed')}
+     cjs.Keys.l = cjs.Keys.left = true
+     cjs.Keys.dir = 'left'})
+
+
+
+     $.kD('r',function(){if($.test){$l('right pressed')}
+       cjs.Keys.r = cjs.Keys.right = true
+       cjs.Keys.dir = 'right'})
+
+   $.kU('r',function(){if($.test){$l('right lifted')}
+       cjs.Keys.r = cjs.Keys.right = false
+   })
+
+
+
+   $.kD('u',function(){if($.test){$l('up pressed')}
+       cjs.Keys.u = cjs.Keys.up = true
+   })
+   $.kU('u',function(){if($.test){$l('up lifted')}
+       cjs.Keys.u = cjs.Keys.up = false
+   })
+
+   $.kD('d',function(){if($.test){$l('down pressed')}
+       cjs.Keys.d = cjs.Keys.down = true})
+
+   $.kU('d',function(){if($.test){$l('down lifted')}
+       cjs.Keys.d = cjs.Keys.down = false
+   })
+
+
+}
+
+KEYUP = function(){
+
+    $.kU('l',function(){})
+}
 
 

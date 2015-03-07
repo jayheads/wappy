@@ -2,35 +2,34 @@
 
 b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
-    var options
-    if(!O(ops)){ops={}}; options = ops
+    //make a world with a stage.. well with three stages!!!!
 
-    var width = ops.W||1200,
-        height= ops.H||600
-
-
+    var width,height,gravX,gravY
+    if(!O(ops)){ops={}}
     if(ops.z!=false){z()}
-
-    if(N(ops.grav)){ops.grav=[0, ops.grav]}
-    if(A(ops.grav)){
-        world = w = b2d.world(b2d.V( ops.grav[0], ops.grav[1] ))
-    }
-   else {
-        ops.gravityY = ops.g
-        ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40
-
-        world = w = b2d.world(b2d.V(0, ops.gravityY))
-
-    }
+    width = ops.W||1200; height= ops.H||600
+    if( U(ops.grav) && D(ops.g) ){ops.grav = ops.g}
+    gravX=0; gravY=40
+    if(N(ops.grav)){ gravY = ops.grav }
+    else if(A(ops.grav)){gravX = ops.grav[0]; gravY = ops.grav[1]} //else {ops.gravityY = ops.g;ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40;world = w = b2d.world(b2d.V(0, ops.gravityY))}
 
 
+    w = b2d.world(V(gravX, gravY))
+    cjs.watchKeys()
 
+    w.stage  = w.s =  cjs.tripleStage('black',
+        width,
+        height)
 
-    w.stage  = w.s =   cjs.stageHUD('black', width,height).A()    //cjs.Ticker.removeAllEventListeners()
+    w.stage.back.A()
+    w.stage.A()
     w.stage.HUD.A()
 
+      //cjs.Ticker.removeAllEventListeners()
+
+
     w.stage.autoClear=false
-     w.canvas = w.stage.canvas;
+    w.canvas = w.stage.canvas;
     w.c =w.can = $(w.canvas)
     canvas = $(w.canvas).id('canvas')
     w.context = w.canvas.getContext('2d')

@@ -5,7 +5,9 @@ Graphics.fromSource = crs=function(a){
 //it strips '/me.png' -> 'me'
 //why would i need this?
     return a.split('/').pop().split('.png')[0] }
-Graphics.toSource = src=function f(e){
+
+
+cjs.src = Graphics.toSource = src=function f(e){
 
     var _src=function(a){ a = $.extension(a)
 
@@ -26,9 +28,10 @@ Graphics.toSource = src=function f(e){
 
         :  S(e) ?  _src(e)
 
-            : 0
+            : 0}
 
-}
+
+
 Graphics.isDataURL=function(d){
     if(U(d)){return false}
     return s$(d).contains('data:')

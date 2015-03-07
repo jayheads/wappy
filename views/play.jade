@@ -18,32 +18,29 @@ html(lang="en")
 
         +css('themes')
 
-
-
         //deps
-        +S([ "us","jq","bs","cjs", "string",    'bx','b2dbasics','b2dutils'  ])
+        +S(["us","jq","bs","cjs","string","bx"])
 
 
-
-        +S(['objects',   'spriteSheets','core', 'jqueryplugins', 'html', 'boot','ui' ,'can','sys',  'images'])
-
-
-        +S(['easel', 'displayObject',  'shape', 'text', 'mobile','animation','sprites', 'bitmap', 'toolkit', 'stage', 'event' ])
+        //html/base
+        +S([ 'spriteSheets', 'objects',  'core', 'mobile'  ])
+        +S([ 'jqueryplugins',  'event', 'html', 'boot','ui' ,'sys',  'images',   'can'  ])
 
 
-        +S(['filt',  'draw',  'api', ])
+        //easel
+        +S([ 'easel', 'displayObject', 'stage',  'shape', 'text'])
+        +S([ 'bitmap','sprites', 'tween', 'animation', 'toolkit' ])
+        +S([ 'filt', 'draw', 'animate', 'solve','playgame','iso' ])
 
-        +S(['pics','animate','imagine','work','tween','tw0',  'display' ])
 
-        +S([ 'solve','playgame','iso',  'boxWorld','boxWorldMore','walls'])
-
-        +S(['makeworld', 'b2dSensors','playerWorld',   'boxRev','weld','prism','coll','gamey','pong','easelbox','joints','wheel'])
-
-        +S([ 'emitter', 'ragdoll',  'tilemapping','launcher','fullgames'])
-
-        +S(['controls','orbs',  'play', 'shooter','boxBody','talkjs','mario','squares','edges','boxgame','boxDebug','boxFixt'])
-
-        +S(['boxShapes','player','pinball','boxsprite','examples'])
+        //box2d
+        +S([ 'b2dbasics','b2dutils' ])
+        +S([ 'boxWorld','boxWorldMore','walls'])
+        +S([ 'makeworld', 'b2dSensors','playerWorld','boxRev','weld'])
+        +S([ 'prism','coll','gamey' ,'joints','wheel'])
+        +S([ 'controls',  'play', 'shooter','boxBody','talkjs'])
+        +S([ 'mario','squares','edges','boxgame','boxDebug','boxFixt'])
+        +S([ 'boxShapes','player','pinball','boxsprite','examples'])
 
         body
 

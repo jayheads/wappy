@@ -1,4 +1,4 @@
-gx = cjs.Graphics.prototype
+gx=cjs.Graphics.prototype
 gx.poly=function(verts, f, s,width){var that = this
 
 
@@ -21,21 +21,28 @@ gx.poly=function(verts, f, s,width){var that = this
 
 
     return this}
+
+
 gx.fs=function(f,s,width){
-    this.f(oO('c', f||'white'))
-    this.s(oO('c', s||'pink'))
+
+    this.f(O(f)?f: oO('c', f||'black'))
+
+    this.s(O(s)?s: oO('c', s||null))
+
     this.ss(N(width)?width:2)
-    return this}
+
+    return this
+}
 
 
-h = p = cjs.Shape.prototype
-h.circ= p.circle= function(x,y,radius,fc, sc){
+h =  cjs.Shape.prototype
+h.circ= h.circle= function(x,y,radius,fc, sc){
     var gx=this.graphics
     if(fc){gx.f(fc)}
     if(sc){gx.s(fc)}
     gx.dc(x,y,radius)
     return this}
-h.rect=  p.rectangle=function(x,y,w,h,fc,sc){
+h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
     var gx=this.graphics
     if(fc){gx.f(fc)}
     if(sc){gx.s(fc)}
@@ -62,13 +69,102 @@ return this}
 h.clear=function(){this.graphics.clear();return this}
 h.same=function(){return cjs.shape(this)}
 
+h.f=function(fill){
+    if(S(fill)){fill = oO('c', fill)}
+    this.graphics.f(fill)
+    return this}
+h.s=function(fill){
+    if(S(fill)){fill = oO('c', fill)}
+    this.graphics.s(fill)
+    return this}
+h.dc=function(){
+    this.graphics.dc.apply(
+        this.graphics, arguments)
+    return this}
+h.c=function(rad){
+    return this.dc(0,0,rad)
+}
+h.dr=function(){
+    this.graphics.dr.apply(
+        this.graphics, arguments)
+    return this}
+
 h.fs=function(){
-    this.graphics.fs.apply(this.graphics, arguments)
+    this.graphics.fs.apply(
+        this.graphics, arguments)
+
 return this}
 
+h.ef=function(){
+    this.graphics.endFill.apply(
+        this.graphics, arguments)
+
+    return this}
+
+
+h.rG= h.radGrad=function(cols, ratios,
+                         x1, y1, r1, x2, y2, r2){
+
+    var args = _.toArray(arguments),circs,len
+
+    cols= _.map(cols,
+        function(col){
+            return oO('c',col)
+        })
 
 
 
+    circs = _.rest([1,2,3,4,5], 2)
+    len = circs.len  //use switch!
+
+    x1=0; y1=0; r1=0; x2=0; y2=0; r2=50
+
+    if(len==1){r2 = circs[0]}
+
+    else if(len==2){r1 = circs[0]; r2 = circs[1]}
+
+    else if(len==3){
+        x1 = x2 = circs[0]
+       y1 = y1 = circs[1]
+        r2 = circs[2]
+    }
+
+    else if(len==4){
+        x1 = x2 = circs[0]
+        y1 = y1 = circs[1]
+        r1 = circs[2]
+        r2 = circs[3]
+    }
+
+    else if(len==5){
+        x1=circs[0]; y1=circs[1]; x2 = circs[2]; y2 = circs[3]
+        r2 = circs[4]
+    }
+
+    else if(len==6){
+        x1 = circs[0]; y1 = circs[1]; x2 = circs[2]; y2 = circs[3]
+        r1 = circs[4]; r2 = circs[5]
+    }
+
+    this.graphics.beginRadialGradientFill( cols, ratios, x1, y1, r1, x2,y2,r2)
+
+    return this}
+
+
+
+
+
+
+
+h.lG= h.linGrad=function(){
+
+    var args = _.toArray(arguments)
+
+    args[0]= _.map(args[0], function(col){ return oO('c',col) })
+
+    this.graphics.beginLinearGradientFill.apply(
+        this.graphics, args)
+    return this}
 
 
 cjs.isShape=function(h){
@@ -77,34 +173,18 @@ cjs.isShape=function(h){
 
 cjs.graphics= function(a){return new cjs.Graphics(a)}
 
-cjs.shape=  function(x,y,f,s,width){
-
-    if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
-
-   var h = new cjs.Shape()
-
-    if(N(x)){h.X(x)}
-    if(N(y)){h.Y(y)}
-
-    h.fs(f,s,width)
-
-return h}
-
-
-
-
-
-
-cjs.circ = cjs.circle = function self(radius, fc, sc){
-
-    if(!N(radius)){return self(8,radius, fc)}
-    fc=fc||'blue'
-    sc=sc||'white'
-    var shape = new createjs.Shape()
-    shape.graphics.f(fc).s(sc||'z').ss(radius/8).dc(0, 0, radius)
-    return shape
-
+cjs.isCont=function(cont){
+    if(O(cont)){
+        if(cont.addContainer){return true}
+        else {return false }
+    }
 }
+
+
+
+//cjs.circ =cjs.circle= function self(radius, fc, sc ,ss){if(!N(radius)){return self(8, radius, fc)}; fc= fc||'black'; sc= sc||null; ss = N(ss)?ss: radius/8;return cjs.shp().f(fc).s(sc).ss(ss).dc(0,0,radius)}
+
+
 cjs.diamond = function self(width, height, fc,sc){
 
     fc=fc||'green'
@@ -163,10 +243,6 @@ cjs.rect= function self(width, height, fc, sc){
     return h}
 
 
-
-
-
-
 //canon
 cjs.ball=function(z,fc,sc){
 
@@ -190,7 +266,6 @@ cjs.ball=function(z,fc,sc){
         if(b.F){b.y(10,'+')}
     })}
     return b}
-
 cjs.circle2=function(r,z,x,y){
 
     graphics = new cjs.Graphics()
@@ -309,32 +384,86 @@ cjs.ballBox=function(bl,bx,buff){ buff=buff||100
 
 
 
+ct = cjs.Container.prototype
 
-USINGLAYERSINEASEL=function(){z()
+cjs.shape= cjs.shp= function(x,y,f,s,width,opt){
+    if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
+    var h = new cjs.Shape()
+    if(N(x)){h.X(x)}
+    if(N(y)){h.Y(y)}
 
-    s = cjs.stage(1000,300).A()
+    h.fs(f,s,width)
 
-    s.bm('me', 3, function(bm){b=bm
-
-        drawCar()
-
-        cjs.tick(function(){
-            b.XY(  (g.x * 2.2)-140 , g.y * .2  )
-        })
-
-    })
-
-    bt = $.button('s.sXY(2)', function(){
-
-        s.sXY(2)}).A()
+    if(opt=='drag'){h.drag()}
+    // use a switch statement here!  i love it!
+    return h}
 
 
 
-    function drawCar() {s.bm('guy', 0.5, function (bm) {g = bm.drag()})
 
-    }
 
+
+
+ct.shape = function(){
+    return cjs.shape.apply(cjs, arguments).a2(this)
 }
+
+
+
+
+ct.cir=function(x,y,r,f,s,width,opt){
+    return this.shape(x,y,f,s,width,opt).dc(0,0, r)}
+
+
+
+ct.poly =function(){ // ?
+    var h = this.shape()
+    h.poly.apply(h, arguments)
+    return h}
+
+ct.art = function(x,y,f,s){var g=G(arguments)
+    if(U(x)){alert('must at LEAST define x'); return}
+    if(!N(x)){alert('x not a number! but must be, lah'); return}
+    y= N(g[1])?g[1]:x
+    f= S(g[2])?oO('c',g[2]):null
+    s= S(g[2])?oO('c',g[3]):f
+    var shp = cjs.shp(x, y, f, s)
+    this.A(shp)
+    if(g.p){shp.drag()}
+    return shp}
+
+
+
+
+
+cjs.cirX=function(stg,x,y,r,f,s,width,opt){
+    var shp=cjs.shape(stg,x,y,f,s,width,opt) // ss = N(ss)?ss: radius/8
+    shp.dc(0,0,r)
+    return shp}
+
+
+
+
+
+
+
+
+
+
+USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
+
+    me  = q.bm('me').a2(s).sXY(3)
+    guy = q.bm('guy').a2(s).sXY(.5).drag()
+
+    $.button('s.sXY(2)', function () {s.sXY(2)}).A()
+
+
+    cjs.tick(function(){
+        me.X( guy.x * 2.2 - 140)
+        me.Y( guy.y * .2 )})
+
+})}
+
 
 
 
@@ -565,33 +694,126 @@ GRAPHICSTEST=function(){
 
 
 
-RADIALGRAD=function(){z()
+RADIALGRADRECT=function(){s=cjs.S()
 
-    cjs.stage(500,400).A().A( shape = cjs.shape().XY(20)  )
 
-    shape.graphics.beginRadialGradientFill(
-        ["#F00","#00F"], [0, 1], 100, 100, 0, 100, 100, 50)
-        .dr(0, 0, 100, 100)
+
+
+
+    x1=100
+    y1=150
+    r1=20
+    x2=100
+    y2=150
+    r2=100
+
+
+    h=cjs.shape(10, 10).a2(s).drag()
+
+
+       change= function(){
+
+      //  h.remove()
+
+       // h=cjs.shape(10, 10).a2(s).drag()
+
+        h.graphics.beginRadialGradientFill(  ["red", 'blue', "yellow"],  [0, .5, 1],
+
+            x1,
+            y1,
+            r1,
+            x2,
+            y2,
+            r2
+
+
+        )
+
+
+        .dr(0,0,400,400)
         .endFill()
+            // x--
+
+        r1++
+      r2++
+}
+
+    setInterval(change, 1000)
+
+    change()
+ }
+
+
+RADIALGRADCIRC=function(){s=cjs.S()
 
 
 
+
+
+    x1=0
+    y1=0
+    r1=10
+    x2=0
+    y2=0
+    r2=100
+
+
+    h=cjs.shape(10, 10).a2(s).drag()
+
+
+    change= function(){
+
+        //  h.remove()
+
+        // h=cjs.shape(10, 10).a2(s).drag()
+
+        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
+
+            x1,
+            y1,
+            r1,
+            x2,
+            y2,
+            r2
+
+
+        )
+
+
+            .dc(0, 0,100)
+            .endFill()
+        // x--
+
+       // r1++
+       // r2++
+    }
+
+    setInterval(change, 1000)
+
+    change()
+
+    n = nip()
+    //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
 }
 
 
-RADIALGRADFILL=function(){
-    z()
 
-    cjs.stage(500,400).A().A(h =cjs.shape())
+nip=function(){
+    x1=0
+    y1=0
+    r1=10
+    x2=0
+    y2=0
+    r2=100
 
+   var h= cjs.shape(10, 10).a2(s).drag().opacity(.8)
+        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
+            x1,   y1,   r1,     x2,    y2,    r2   )
+            .dc(0, 0,100)
+            .endFill()
 
-    h.graphics.beginRadialGradientFill(
-        ["#F00","#00F"], [0, 1], 100, 100, 0, 100, 100, 50
-    ).dc(100, 100, 50)
+ return h}
 
-
-
-}
 
 
 
@@ -603,57 +825,48 @@ EASELCONVEX=function(){s=cjs.S()
     s.poly(
       [[-40,40],[-40,-40],[40,-40], [40,30]],
       'blue', 'white').XY(200,200)}
-
-
-
-CONVEXWORKS=function(){w=b2d.W().debug()
-
-
-
-    b = w.dyn(300, 300)
-
-    pd = b2d.Arr(  [0,0],[0,-200],[100,0]  )
-
-    h= w.s.poly(  [[0,0],[0,-200],[100,0]], 'red','red'  )
-
-    b.fixt( pd )
-
-
-
-
-
-    pd2 = b2d.A([0,30],[-300,-20],[100,0])
-    h2= w.s.poly([[0,30],[-300,-20],[100,0]], 'red','red')
-    b.fixt( pd2 )
-
-
-    b.bindSprite2(h)
-    b.bindSprite2(h2)
-
-    _.times(50, function(){
-        w.circ(200, 30, 5)
-    })
-
-}
-
-
 CONVEX=function(){
     w=b2d.W({grav:0}).debug()
 
 
     b = w.dyn(300, 300)
 
-    f =b.convex( [[0,0],[0,-200],[100,0]]  )
-    b.convex( [[0,30],[-300,-20],[100,0]] )
-    b.convex( [[0,0],[0,-20],[10,0]],
+    f =b.convex('green', [[0,0],[0,-200],[100,0]]  )
+    b.convex('blue', [[0,30],[-300,-20],[100,0]] )
+    b.convex('pink', [[0,0],[0,-20],[10,0]],
         [[0,30],[-30,-20],[10,0]] )
 
 
 
     b2 = w.dyn(300, 300)
+    b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
+    b2.convex([[0,30],[-30,-20],[10,0]] )
 
-    b2.convex( [[0,0],[0,-20],[10,0]],
-              [[0,30],[-30,-20],[10,0]] )
+    b3 = w.dyn(300, 300)
+    b3.convex( 'green',[
+        [-150,0],[-120,-20],[-80, -50],[0,-30]
+
+    ] )
+
+    b3.convex('red',
+        [ [-30,-30], [-20,10], [-10,60]
+        ] )
+
+    b3.convex('orange',
+        [ [-30, -30], [-20,-50], [ 10, -20]
+        ] )
+
+
+
+    w.verts( 300, 500,
+        [
+            ['pink', [-20,-20],[0,-30],[10,10]],
+            ['brown',[0,0],[30,-50],[50,-10]]
+        ]
+
+    )
+
+
 
 
    dot = function(){
@@ -676,3 +889,101 @@ CONVEX=function(){
     })
 
 }
+VERTS=function(){w=b2d.W().debug()
+
+    thingy = [['pink',[-20,-20],[0,-30],[10,10]],
+    ['brown',[0,0],[30,-50],[50,-10]]]
+
+    _.times(100, function(){
+
+        w.verts(Math.random()*600, Math.random()*300+200, thingy)
+    })
+
+
+}
+
+PITFALL=function(){
+
+     b2d.levelScrollX()
+
+
+    turtle = [
+        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
+
+        ,  ['yellow',[10,-10],[20,-30],[50,-15], [45,-5]]
+
+        , ['yellow',
+
+            [-50,10],[-50,-10],[-40,-10],[-40,10]
+        ]
+
+        , ['yellow',
+
+            [-10,10],[-10,-10],[0,-10],[0,10]
+        ]
+    ]
+
+
+
+    turtle2 = [
+        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
+
+        ,  ['yellow',[-60, -30], [-50,-60], [-20,-45], [-15,-35] ]
+
+
+
+        , ['yellow',
+
+            [-50,10],[-50,-10],[-40,-10],[-40,10]
+        ]
+
+        , ['yellow',
+
+            [-10,10],[-10,-10],[0,-10],[0,10]
+        ]
+    ]
+
+
+
+
+   t= w.vertsKin(400, 280, turtle).fixedRot(true)
+   t2= w.vertsKin(700, 280, turtle2).fixedRot(true)
+
+
+    setInterval(function(){
+        t2.linVel(5,0)
+        setTimeout(function(){  t2.linVel(-5,0) },1000)
+    }, 2000)
+
+}
+
+LINGRADBG=function(){w=b2d.W()
+
+   s = w.s
+
+
+   h =  s.shape()
+
+
+
+}
+
+THREECANS=function(){
+
+
+    c1 = $.can('a', 800, 400)
+
+    c2 = $.can('X', 800, 400)
+
+    c3 = $.can('X', 800, 400)
+
+
+
+
+}
+
+
+
+
+
+

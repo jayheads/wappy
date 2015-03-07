@@ -183,67 +183,47 @@ PIXELPICKSCROLLING=function(){z()
 }
 
 
-MUMMYFLIP=function(){z()
-
-   // s = cjs.stage('green', 1000).A()
-
-      //spriteUrl = "/assets/sprites/metalslug_mummy37x45.png"
-
-    w = b2.mW()
-
-    sp = cjs.sprite( Mummy ).drag()
-
-    w.s.A( sp )
-
-    sp.sXY( 2 ).XY( 200 )
-
-    sp.gotoAndPlay('walk')
+MUMMYFLIP=function(){ w = b2d.W() //spriteUrl = "/assets/sprites/metalslug_mummy37x45.png"
 
 
-    sp.rXY( 20, 22 )
 
-    b = b2.box( 100, 100, 50, 88).uD('mummy')
 
-    b.bindSprite2(sp)
 
-    direction='right'
+    b = b2d.box(100,100,50,88  ).K('mummy').bindSprite2(
+
+        cjs.sprite( Mummy ).a2(w.s).drag()
+            .rXY( 20, 22 ).sXY( 2 ).XY( 200 ).p('walk')
+ )
 
     cjs.tick(function(){
-
         b.rT(0)
-
-        if(direction=='right'){b.I(4, -2)}
-         if(direction=='left'){b.I(-4, -2)}
-
-    })
-
-  tr=  w.A( b2.dynamicDef(), b2.triangleFixt    )
-
-    $.kD('u', function(){b.I(0,-80)})
-
-    $.kD('l', function(){
-        sp.sX(-2)
-        direction='left'
-
-      //  b.I(-6, -2)
-
-    })
-
-    $.kD('r', function(){
-        sp.sX(2)
-        direction='right'
-       // b.I(6, -2)
+        if(b.direction=='right'){b.I(4, -2)}
+        if(b.direction=='left'){b.I(-4, -2)}    // direction='neither' // <-- demumify (doesnt keep walking
     })
 
 
-    move =function(){
+    //sprite always assumed to start facing right (and flipping it horizontqlly is the left) - so i must draw facing right
 
-        w.eachBody(function(body){
-            if(body.uD()!='mummy'){body.X( body.X()+10  )   } })
 
-    }
+    $.kD({
+
+        u: function(){b.I(0, -80)},
+
+        l: function(){ b.sprite.sX(-2);
+            b.direction='left'},
+
+        r: function(){ b.sprite.sX(2);
+            b.direction='right'}
+
+    })
+
+
+
+
 
 }
+
+
 
 MUMMYSCROLL=function(){z()
 
@@ -315,6 +295,7 @@ MUMMYSCROLL=function(){z()
 }
 
 
+//OLD
 THRUSTSCROLL = function(){z()
 
     // s = cjs.stage('green', 1000).A()
@@ -373,9 +354,7 @@ THRUSTSCROLL = function(){z()
 
     }
 }
-
-
-butGuy=function() {
+moveEachBodyButGuy=function() {
 
     $.kD('l', function () {
         w.eachBody(function (body) {
@@ -410,11 +389,39 @@ butGuy=function() {
     })
 
 }
+BUTME=function(){
+
+    w = b2d.W({
+
+
+        grav:0,   walls:[]
+
+
+    })
 
 
 
+    //p = w.player('thrust').XY(500,100)
 
-BUTME=function(){z()
+    w.brick(100,300,200,30).rT(30)
+    w.brick(400,200,400,100).rT(30)
+
+    g= w.box(400,300, 30, 30).bindSprite('guy').K('guy')
+
+    moveEachBodyButGuy()
+
+    cjs.tick(function(){
+        // w.each(function(b){ b.rT(  b.rT() + 10) })
+
+
+        g.XY(400,300)
+
+    })
+
+
+
+}
+BUTMEBETTER=function(){z()
 
 
 
@@ -431,46 +438,12 @@ BUTME=function(){z()
 
     g= w.box(400,300, 30, 30).bindSprite('guy').K('guy')
 
-   butGuy()
+    moveEachBodyButGuy()
 
 }
 
 
-BUTME2=function(){
 
-    w = b2.mW({
-
-
-        grav:0,
-
-
-        walls:[]
-
-
-    })
-
-
-
-    //p = w.player('thrust').XY(500,100)
-
-    w.brick(100,300,200,30).rT(30)
-    w.brick(400,200,400,100).rT(30)
-
-    g= w.box(400,300, 30, 30).bindSprite('guy').K('guy')
-
-    butGuy()
-
-    cjs.tick(function(){
-       // w.each(function(b){ b.rT(  b.rT() + 10) })
-
-
-        g.XY(400,300)
-
-    })
-
-
-
-}
 
 
 

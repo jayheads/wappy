@@ -25,8 +25,9 @@ O=function(a,b){
 
     }}
 
-//isAndGet qq !
-Q=function Q(a){
+
+//isAndGet qq ! depppppp
+Qx=function Q(a){
 
     if(!_.isObject(a)){return}
 
@@ -67,6 +68,17 @@ U = function u(a,b){
 //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
+I=function(func, int){
+
+    func()
+
+    return setInterval(func, int)
+
+}
+
+
+
+
 
 
 G=function(a){
@@ -101,11 +113,11 @@ $l=function(a){var g=G(arguments)
 _.each(g,function(a){
 
     console.log(
-        Q(a)?_o(Q(a))
-            :_.isFunction(a)? a.toString()
-            :O(a)?J(a)
+         _.isFunction(a)? a.toString()
+            :O(a)? J(a)
             :a
     )
+
 })
 
 return a}

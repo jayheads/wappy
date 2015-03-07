@@ -15,7 +15,16 @@ abovePlayerGlobally=function(p){
     )
 }
 
+
+
 SHOOTER=function(){
+
+  var  abovePlayerGlobally=function(p){
+
+        return p.worldPoint(
+            0, -100
+        )
+    }
 
     //just responds to mouse clicks.. yes but how?
 
@@ -38,7 +47,10 @@ SHOOTER=function(){
             adjustment = x > 0 ? 90 : 270
         p.rot(rotation + adjustment)
         //bullet
-        w.bullet(abovePlayerGlobally(p)).impulse(x/40,y/40)
+
+
+
+        w.bullet( abovePlayerGlobally(p) ).impulse(x/40,y/40)
             .bindSprite('sun',.2)})
     //to do:  maybe u only get 10 bullets ever.. so u must chase them :) (only way to kill badguys)
 }

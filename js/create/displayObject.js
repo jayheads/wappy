@@ -658,16 +658,23 @@ p.getTransform=function(){
     ]
 }
 
-p.a2=function(toWhat){
+p.a2=function(toWhat,x,y){
 
     toWhat.A( this )
 
+    if(N(x)){this.X(x)}
+    if(N(y)){this.Y(y)}
 return this}
 
 
 
 
+ p.shad = function(color, x,y,blur){
 
+    var shadow = cjs.shad(color, x,y,blur)
+    this.shadow = shadow
+
+return this}
 
 
 

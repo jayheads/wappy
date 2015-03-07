@@ -21,7 +21,17 @@ $.fn.toD =$.fn.moveDown=function(num){num=num||20
     if(this.top()=='auto'){this.top(0)}
     this.top( this.top()  + num  )
     return this}
-$.keyDown = $.kD = kD = function(key, func){
+
+
+$.keyDown = $.kD = kD = function self(key, funk){
+
+    if(O(key)){
+
+        _.each(key, function(val, arrKey){ self(arrKey,val)  })
+
+    return}
+
+
 
     keyObj={
         up:38,u:38,
@@ -31,18 +41,19 @@ $.keyDown = $.kD = kD = function(key, func){
         right:39, r:39,
         space:32,s:32,
         enter:13, e:13}
-
-
-    $l('key: ' + key)
 
     if(keyObj[key]){key = keyObj[key]}
 
     $('body').on('keydown', function(e){
 
-        if (e.which == key) { func(e) }
+        if (e.which == key) { funk(e) }
     })
+
 }
-$.keyUp = $.kU = kU = function(key, func){
+
+
+
+$.keyUp = $.kU = kU = function(key, funk){
 
     keyObj={
         up:38,u:38,
@@ -54,15 +65,16 @@ $.keyUp = $.kU = kU = function(key, func){
         enter:13, e:13}
 
 
-    $l('key: ' + key)
 
     if(keyObj[key]){key = keyObj[key]}
 
     $('body').on('keyup', function(e){
 
-        if (e.which == key) { func(e) }
+        if (e.which == key) { funk(e) }
     })
 }
+
+
 
 $.fn.keyControls = function(num){
     var args=G(arguments), that=this
@@ -275,14 +287,27 @@ drag = drg=function(element){
 cjs.Keys = function(){}
 
 cjs.watchKeys=function(){
+
+
     cjs.Keys.l = cjs.Keys.left = false
+
     cjs.Keys.r = cjs.Keys.right = false
-    cjs.Keys.r = cjs.Keys.right = false
+
+    cjs.Keys.u = cjs.Keys.up = false
+
     cjs.Keys.d = cjs.Keys.down = false
 
-    $.kD('l',function(){if($.test){$l('left pressed')}
+
+
+
+
+    $.kD('l',function(){
+        if($.test){$l('left pressed')}
         cjs.Keys.l = cjs.Keys.left = true
         cjs.Keys.dir = 'left'})
+
+
+
     $.kU('l',function(){if($.test){$l('left lifted')}
         cjs.Keys.l = cjs.Keys.left = false
     })
@@ -301,7 +326,10 @@ cjs.watchKeys=function(){
     $.kD('d',function(){if($.test){$l('down pressed')}
         cjs.Keys.d = cjs.Keys.down = true
     })
-    $.kU('d',function(){if($.test){$l('down lifted')}
+
+
+    $.kU('d',function(){
+        if($.test){$l('down lifted')}
         cjs.Keys.d = cjs.Keys.down = false
     })}
 

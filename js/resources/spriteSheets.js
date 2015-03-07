@@ -1,3 +1,4 @@
+cjs=createjs
 MeSprite = SS={
 
     "framerate":24,
@@ -57,8 +58,6 @@ MeSprite = SS={
 
 
 }
-
-
 Pack={
     "framerate":24,
     "images":[
@@ -288,9 +287,6 @@ Pack={
         "p4": {"frames": [91, 92, 93, 94, 95], "speed": 1}
 
     }}
-
-
-
 Smoke={
 
 
@@ -334,8 +330,6 @@ Smoke={
 
 
 }
-
-
 Mummy={
 
 

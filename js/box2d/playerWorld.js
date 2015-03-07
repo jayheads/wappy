@@ -591,3 +591,43 @@ w.grid = w.drawGrid = function(grid, x,y,len,spacing){
 
 return body.K('grid')}
 
+
+
+w.badGuy=function(x,y){var that=this,
+
+    b=w.ball(x,y,60)
+        .bindSprite2(this.s.shape(x,y) )
+
+    b.draw=function(frame){
+        this.sprite
+            .rG(['r','g'], [frame[0],frame[1]], 60)
+            .dc(0,0, 60)}
+
+    b.health=100
+
+    b.coll(function(){b.health--})
+    b.K('badGuy')
+
+    funcId = I(update, 300)
+
+    function update(){
+
+        b.draw(frameByHealth(b ) )
+
+
+
+        if(b.health<=0){
+            clearInterval(funcId)
+            b.kill()} //$l('dead')
+
+        function frameByHealth(b){
+
+            if(b.health<0){b.health=0}
+            if(b.health>100){b.health=100}
+            if(b.health<50){ return [ 1-((b.health/50)),1 ] }
+            else {return [0, 1-((b.health-50)/50)  ]}
+
+        }}
+
+
+    return b}

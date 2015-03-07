@@ -2,22 +2,22 @@
 
 //CONTAINER ////////////////////////////////////////////////////////////////
 cjs.container = cjs.ct  =function(a){return new cjs.Container(a)}
-p=cjs.Container.prototype
-p.circle = function(x,y,rad,color){
+ct = cjs.Container.prototype
+ct.circle = function(x,y,rad,color){
 
     this.A(
         cjs.circle(x,y,rad,color)
     )
 
     return this}
-p.text = function(text, font, color, x, y){
+ct.text = function(text, font, color, x, y){
 
     var text =  new cjs.Text(text, font, color).XY(x, y)
 
     this.A(text)
 
     return this}
-p.addContainer = p.ct =function(func){
+ct.addContainer = ct.ct =function(func){
     var g=G(arguments),
         f=g[0],
 
@@ -29,8 +29,7 @@ p.addContainer = p.ct =function(func){
 
     if(g.p){cjs.bindSlide(container)}
     return this}
-
-p.bm= function self(img, scale, func){
+ct.bm= function self(img, scale, func){
 
     var args = G(arguments), img=args[0], scale=args[1], func=args[2]
 
@@ -55,8 +54,7 @@ p.bm= function self(img, scale, func){
     })
 
     return this}
-
-p.bmRegCenterX = p.bm0X= function(img, func){
+ct.bmRegCenterX = ct.bm0X= function(img, func){
 
     var that =this
 
@@ -72,13 +70,11 @@ p.bmRegCenterX = p.bm0X= function(img, func){
     })
 
     return this}
-p.tick = function(){
+ct.tick = function(){
     cjs.Ticker.addEventListener('tick', this)
     return this
 }
-
-
-p.A=function(arg,y){var that=this
+ct.A=function(arg,y){var that=this
 
     if(U(arg)){
 
@@ -94,10 +90,7 @@ p.A=function(arg,y){var that=this
     })}
 
     return this}
-
-
-
-p.bData=function(data){
+ct.bData=function(data){
 
     var bm = cjs.bm( $.img().src($.parseJSON(data)) )
     this.A(
@@ -107,7 +100,7 @@ p.bData=function(data){
 
     return bm}
 // **** works!!!!
-p.mug=function(scale, func){
+ct.mug=function(scale, func){
     var that = this
 
 
@@ -116,7 +109,7 @@ p.mug=function(scale, func){
     })
 
     return this}
-p.backgroundImage=function(image){
+ct.backgroundImage=function(image){
     var that =this
 
     this.bm(image, function(b){
@@ -128,25 +121,10 @@ p.backgroundImage=function(image){
     return this
 
 }
-p.backgroundColor=function(c){
+ct.backgroundColor=function(c){
 
     $( this.canvas ).C(c)
     return this}
-
-p.shape = function(){
-
-  var h =  cjs.shape.apply(cjs, arguments)
-
-    this.A(h)
-
-return h}
-
-p.poly =function(){
-    var h = this.shape()
-
-    h.poly.apply(h, arguments)
-
-return h}
 
 
 
@@ -166,7 +144,7 @@ cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
     //create a new canvas
     else {stage = new cjs.Stage(
 
-        $.canvas(a,b,c,d,e) [0]
+        $.canvas(a, b,c,d,e) [0]
     )}
 
     stage.can = stage.c = $(stage.canvas)
@@ -176,9 +154,10 @@ return stage.tick()
 }
 
 
-cjs.S= function(){z()
+cjs.S= function(col){z()
 
-    s = cjs.stg(800, 500).A()
+    col=col||'pink'
+    s = cjs.stg(col, 800, 500).A()
 
 return s}
 
@@ -186,13 +165,51 @@ return s}
 
 
  cjs.stageHUD = cjs.stageHUD = cjs.HUD=function(a,b,c){var stage, can1, can2
-     cjs.watchKeys()
+
      can1 = $.canvas(a,b,c)
      can2 = $.canvas('X', Number(can1.W()), Number(can1.H())).P('a').XY(0, 0).opacity(.8)
      stage=new cjs.Stage(can1[0]).tick()
      stage.c=can1
      stage.HUD = new cjs.Stage(can2[0]).tick()
      return stage}
+
+
+cjs.tripleStage =  function(color, w, h){
+
+    var stage, can0, can1, can2
+
+    can0 = $.can(color, w, h).P('a').XY(0, 0)
+
+
+
+
+    can1 = $.can('X', w, h).P('a').XY(0, 0)
+
+    can2 = $.can('X', w, h ).P('a').XY(0, 0)//.opacity(.8)
+
+    stage = new cjs.Stage(can1[0]).tick()
+    stage.c = can1
+
+
+    stage.back = new cjs.Stage( can0[0] ).tick()
+
+    stage.back.linGrad=function(col1,col2){
+        col1=oO('c', col1||'b');col2=oO('c', col2||'r')
+        var h =this.H(), w=this.W()
+        this.shape.linGrad([col1,col2],[0,1],0,0,0,h).dr(0,0,w,h)}
+
+
+
+
+    stage.back.shape = stage.back.shape(0,0,'w')
+
+    stage.HUD = new cjs.Stage( can2[0] ).tick()
+
+    return stage}
+
+
+
+
 
 
 
@@ -251,8 +268,7 @@ return this}
 
 
 p.dot=function(color, x, y){
-    var that = this,
-        dot, tween
+    var that = this,   dot, tween
 
     if(A(color)){
 
@@ -266,8 +282,6 @@ p.dot=function(color, x, y){
 
     return }
 
-
-
     if(!S(color)){y=x; x=color; color= 'yellow'}
 
     if(O(x)){y= x.y;x= x.x  }
@@ -275,14 +289,14 @@ p.dot=function(color, x, y){
     x=N(x)?x:this.W()/2
     y=N(y)?y:this.H()/2
 
-     dot = __dot = cjs.circle(6, oO('c', color))//.opacity(.4)
+     dot = __dot = this.cir(x,y, 6, oO('c', color)).drag()//.opacity(.4)
 
-     this.A(dot.XY(x,y).drag()  )
+   tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
 
-    tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
 
-    dot.$$(function(){tween.toggle()})
-    dot.N('dot')
+     dot.$$(function(){tween.toggle()})
+
+     dot.N('dot')
 
     return this}
 

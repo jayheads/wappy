@@ -1,5 +1,8 @@
 $(function(){z()
-    window[_app.toUpperCase()](_pam)})
+
+    window[ _app.toUpperCase() ]( _pam )
+
+})
 
 
 

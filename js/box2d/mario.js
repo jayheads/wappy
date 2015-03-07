@@ -1112,7 +1112,10 @@ score=0
 }
 
 
-warp = function(p) {
+
+
+
+  warp = function(p) {
     cjs.tick(function () {
         if (p.Y() < 0) {
             p.Y(300)
@@ -1129,6 +1132,10 @@ warp = function(p) {
     })
 
     return p}
+
+
+
+
 
 
 JUMPRUN=function(){b2d.levelScrollX()

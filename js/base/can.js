@@ -1,10 +1,19 @@
-canvasPlayground=function(){z()
-    m= $.canvas(800).A().fit('me')
-    g= $.canvas('b',600).A().fit('guy')}
+ $.C = function(){z()
+     return c=$.can('yellow', 900, 500 ).A()
+     }
+
+CANVIIFIT=function(){
+
+    z()
+
+    m= $.can(800).A().fit('me')
+
+    g= $.can('b',600).A().fit('guy')
+
+}
 
 
 superCanvasGradient =function(el){
-
     var addColorStop = function rc( gradient, stop, color ){
 
         // pass only a gradient -> function with gradient curried
@@ -40,7 +49,6 @@ superCanvasGradient =function(el){
         }
 
         return gradient}
-
     el.linearGradient = el.lG = el.createLinearGradient = function(a,b,c,d){
 
         a=a||0
@@ -62,7 +70,7 @@ superCanvasGradient =function(el){
         grd.stop(0,"black").stop(1,"white")
         this.fillStyle(grd)
 
-        this.fillRect();
+        this.fillRect()
     }
     el.linGradDiagnal = function(grd){
 
@@ -114,9 +122,12 @@ superCanvasGradient =function(el){
             b -= 2
 
            grd = that.rG( 200, 200, a, 290, 270, b)
-           grd.addColorStop(.1,'Yellow')
+
+            grd.addColorStop(.1,'Yellow')
+
             grd.addColorStop(.3,'Red')
-           grd.addColorStop(1, 'Violet')
+
+            grd.addColorStop(1, 'Violet')
 
           //  gradient = x.grad( [200, 200, a, 290, 270, b],  { y: .1, r: .3,  V:1 } )
 
@@ -129,11 +140,6 @@ superCanvasGradient =function(el){
         setInterval(func, 100)
 
     }
-
-
-    //
-    //
-
     el.pattern = el.createPattern = function(im, pat){
         //im = im || $.img('me')[0]
         var pattern  = this.context.createPattern( im,  pat || 'repeat' )
@@ -148,12 +154,10 @@ superCanvasGradient =function(el){
 
 
 
-    }
+    }}
 
 
-
-}
-testGrad=function(){z()
+TESTGRADWORKS=function(){z()
 
     c = $.canvas('y', 500).A()
 
@@ -163,20 +167,73 @@ testGrad=function(){z()
     g.addColorStop(.6, 'red')
 
     g.addColorStop( .8,'green')
-//
-    c.fillColor('blue')
 
-    c.context.fillStyle = (g)
 
-    c.fillRect()}
-testGrad2=function(){z()
-    x= $.canvas(600).A()
+    c.context.fillStyle = g
 
-    gg= x.lg(50,50,50,100).a(.5,'b').a(.8,'y')
+    c.fillRect()
 
-    x.fill(gg)
-    x.fr(10,30,500,900)
 }
+
+
+
+CanvasGradient.prototype.stop=function(num, col){
+var that=this
+
+   if(N(num)){ this.addColorStop(num, oO('c', col))}
+
+    if(A(num)){
+        _.each(arguments, function(arg){
+            that.stop(arg[0],arg[1])
+        })
+    }
+
+return this}
+x=CanvasRenderingContext2D.prototype
+x.linGrad=function(a,b,c,d){
+return this.createLinearGradient(a,b,c,d)
+
+ }
+x.radGrad=function(a,b,c,d,e,f){
+    return this.createRadialGradient(a,b,c,d,e,f)
+
+}
+x.f =function(fs){
+
+    this.fillStyle = fs
+return this}
+LINRAD=function(){z()
+
+    d= $.canvas('y', 500)
+
+    c = $.canvas('y', 500).A()
+
+    c.context.f(
+
+          c.context.linGrad(50, 0, 500, 100).stop([.2,'o'],[.6, 'r'],[ .8,'g'])
+
+    )
+
+    c.fr()
+
+}
+RADGRAD=function(){z()
+
+    d= $.canvas('y', 500)
+
+    c = $.canvas('y', 500).A()
+
+    c.context.f(
+
+        c.context.radGrad(50, 50, 50, 50,50,200).stop([.2,'o'],[.6, 'r'],[ .8,'g'])
+
+    )
+
+    c.fr()
+
+}
+
+
 
 
 
@@ -237,9 +294,6 @@ superCanvasPixels=function(el){
 
 
     }
-
-
-
     el.pixelsInvert=function(){
 
         var imgData = this.gD(),
@@ -257,7 +311,6 @@ superCanvasPixels=function(el){
 
 
     }
-
     el.pixelsGrayscale=function(){
 
         var imgData = this.gD(),
@@ -275,9 +328,6 @@ superCanvasPixels=function(el){
 
 
     }
-
-
-
     el.pixelsFade=function( ){
 
 
@@ -288,7 +338,65 @@ superCanvasPixels=function(el){
 
         this.pD(imgData)
 
-    return el}}
+    return el}
+
+
+}
+
+
+PIXELS=function(){z()
+    c=$.can('yellow',900,500).A()
+    c.draw('me', 100,100)
+    setTimeout(function(){
+    c.pD( c.gD(100,100,500,500), 120,120)
+    c.f("red").fr(10,10,50,50)
+      imgData=c.gD(10,10,50,50)
+        c.pD(imgData,10,70)
+
+}, 200)}
+
+
+
+
+CANVASQLOADER=function(){$.C(); cjs.lq(['me'],function(q){me=q('me')
+
+    c.drawImage(me,100,100)
+
+    c.pD( c.gD(100,100,500,500), 120, 120 )
+
+    c.f("red").fr(10,10,50,50)
+
+       imgData = c.gD(10, 10, 50, 50)
+
+    c.pD(imgData,10,70)
+
+})}
+
+
+
+PIXELTEST=function(){c=$.C(); cjs.lq(['me'],function(q){me=q('me')
+
+     c.drawImage(me,100,100)
+
+
+      d = c.gD(100,100,500,500)
+
+     // c.pD(d , 120, 120 )
+
+    zeros=0
+    nums=0
+
+    _.each(d.data, function(d){
+        if(d==0){zeros++} else {nums++}
+    })
+
+    $l('zeros: '+ zeros + ' - nums: '+ nums )
+
+ })}
+
+
+
+
 pixelTest=function(){canvasPlayground()
 
  get = function(){
@@ -335,6 +443,8 @@ putget=function(){
     }
 
 }
+
+
 
 
 
@@ -545,8 +655,12 @@ superCanvasDraw=function(el){
             )
         }
 
-        return this.draw(x, x1, y1, x2, y2,
-            0,0, this.W(), this.H())}
+      this.context.drawImage(x, x1, y1, x2, y2, 0,0, this.W(), this.H())
+return this
+}
+
+
+
     el.crop2=function rc(x1,y1,x2,y2){
         if(A(x1)){return rc( x1[0],x1[1], x1[2]-x1[0], x1[3]-x1[1])}
 
@@ -557,6 +671,8 @@ superCanvasDraw=function(el){
         )
 
     }
+
+
 
 
 
@@ -991,16 +1107,16 @@ superCanvasEvents=function(el){
     el.$=function(func){
         el.click(function(e){
 
-            func(  e.pageX - offset(this).left,
-                    e.pageY - offset(this).top)
+            func(  e.pageX - $(this).offset().left,
+                    e.pageY - $(this).offset().top)
 
         })}
     el.$$=function(func){
 
         el.dblclick(function(e){
 
-            func(  e.pageX - offset(this).left,
-                    e.pageY - offset(this).top)
+            func(  e.pageX - $(this).offset().left,
+                    e.pageY - $(this).offset().top)
 
         })}
 
@@ -1009,8 +1125,8 @@ superCanvasEvents=function(el){
         el.mouseover(function(e){
 
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1019,8 +1135,8 @@ superCanvasEvents=function(el){
         el.mouseout(function(e){
 
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1028,8 +1144,8 @@ superCanvasEvents=function(el){
 
         el.mouseenter(function(e){
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1037,8 +1153,8 @@ superCanvasEvents=function(el){
 
         el.mouseleave(function(e){
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1046,8 +1162,8 @@ superCanvasEvents=function(el){
 
         el.mouseup(function(e){
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1055,17 +1171,19 @@ superCanvasEvents=function(el){
 
         el.mousemove(function(e){
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX -$(this).offset().left,
+                    e.pageY - $(this).offset().top)
         })
     }
+
+
 
     el.down = el.MD=function(func){
 
         el.mousedown(function(e){
 
-            func(e.pageX-offset(this).left,
-                    e.pageY-offset(this).top)
+            func(e.pageX-$(this).offset().left,
+                    e.pageY-$(this).offset().top)
         })
     }
 
@@ -1569,28 +1687,24 @@ RUB=function(){ z()
     guidewires = false
     dragging = false
     mousedown = {}
-
     loc = {}
-
     rr = null
-
     data = null
 
     can.MD(function(x, y){
 
         data = can.gD()
-
         dragging = true
-
         mousedown = { x:x, y:y }
 
     })
 
 
     can.MM(function(X,Y){
+
         var m={x:X, y:Y},
 
-            d=mousedown
+            d = mousedown
 
         if(dragging){
 
@@ -1605,30 +1719,42 @@ RUB=function(){ z()
 
 
     })
+
+
+
     can.MU(function(X,Y){
 
         dragging = false
 
         var d = mousedown, x1, x2, y1, y2
-
         if(X > d.x){ x1 = d.x; x2 = X } else {x1=X; x2=d.x}
-
         if(Y > d.y){ y1 = d.y; y2 = Y } else {y1=Y; y2=d.y}
+        rr=[x1, y1, x2, y2]
 
-        rr=[x1,y1, x2, y2]
+       can.pD(data)
 
-        can.pD(data)
+       can.crop2(rr)
 
-        can.crop(rr)
+    //    data=can.gD()
 
-        data=can.gD()})
+    })
+
+}
+
+
+
+CROP=function(){c=$.C()
+
+
+    c.fit('me')
+
 
 }
 
 
 
 
-toColor = tCl=function(n1,n2,n3,n4){
+cjs.toColor =toColor = tCl=function(n1,n2,n3,n4){
 
     return n2? "rgba("+n1+","+n2+","+""+n3+","+(n4||1)+")"
         :
@@ -1644,6 +1770,7 @@ $.imageSizeFuncCan = function(image, size, func){//xc=
     if(func){  x.click(func) }
 
     return x}
+
 
 
 
@@ -1690,3 +1817,300 @@ FULLCAN=function(){z()
 
 
 }
+
+
+ HULL=function(){z()
+
+     c = $.canvas('y',800,400).id('canvas').A()
+
+
+
+
+     window.onload = init
+
+     function init() {
+
+         var canvas = c[0],        // main canvas element
+             fps = 10,                                        // drawing frames per second
+             convex = new Convex(),                            // convex hull
+             dots = []                                     // dots, which are not in the convex hull
+
+
+         // adjust canvas proportions
+        // canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
+
+         // assign canvas context
+         ctx = canvas.getContext("2d");
+
+
+         setInterval(function(){
+
+             // get a blank canvas //// clear
+             ctx.clearRect(0, 0, ctx,canvas.width, ctx.canvas.height)
+
+
+             // draw convex dots
+             convex.draw()
+
+             // draw dots
+             dots.map(function(dot) {   dot.draw()   })
+         }, 1000 / fps)
+
+
+
+         // clicked on canvas
+         c.click( function(evt){
+             var x = evt.clientX - canvas.getBoundingClientRect().left,
+                 y = evt.clientY - canvas.getBoundingClientRect().top
+
+             // clear convex
+             convex.dots=[]
+
+             // add dot
+             dots.push(new Dot(new V(x, y)))
+         })
+
+
+
+
+         $.button('draw convex', function() {
+             // move dots to canvas
+             dots.map(function(dot){convex.addDot(dot)})
+
+             // clear dots
+             dots = []
+         }).A()
+
+
+
+
+
+
+     }
+
+     var Dot=function(pos){this.pos=pos}
+
+     Dot.prototype = {
+         draw: function() {
+             ctx.beginPath();
+             ctx.arc(this.pos.x, this.pos.y, 2, 0, Math.PI * 2);
+             ctx.fill();
+             ctx.closePath();
+         }
+     }
+
+
+     Convex = function(){ this.dots = [] } // a convex hull
+
+     Convex.prototype = {
+         draw: function() {
+             var _this = this,           refDots;
+
+             // loop through dots
+             this.dots.map(function(el) {
+                 var dotAfter;
+
+                 // draw dot
+                 el.draw();
+
+                 refDots = _this.copyDots(_this.dots); // copy dots
+
+                 // remove el from reference dots
+                 for (var i=0; i<refDots.length; i++) {
+                     if (refDots[i] != el) continue;
+                     refDots.splice(i, 1);
+                 }
+
+                 // get dot after this dot
+                 dotAfter = _this.getDotAfter(_this.dots, el);
+
+                 // draw direct line
+
+                 ctx.moveTo(el.pos.x, el.pos.y);
+                 ctx.lineTo(dotAfter.pos.x, dotAfter.pos.y);
+                 ctx.stroke();
+
+
+             })
+         },
+         addDot: function(dot) {
+             // the dot cannot be added, because it wouldn't be a convex anymore
+             if (this.isDotInsideConvex(this.dots, dot)) return;
+
+             // add dot intentionally
+             this.dots.push(dot);
+
+             // less than four dots are always a convex
+             if (this.dots.length < 4) return;
+
+             // remove dots, which are not in the convex (anymore)
+             this.composeConvexHull();
+         },
+         composeConvexHull: function() {
+             var refDots,        // all dots, except the one we are testing
+                 dot,            // the dot, supposed to be in the new convex
+                 newDots = [];    // dots, which are definitely part of the convex
+
+             // loop dots
+             for (var i=0; i<this.dots.length; i++) {
+
+                 // reset dots reference
+                 refDots = this.copyDots(this.dots);
+
+                 // assig dot to the current index
+                 dot = refDots[i];
+
+                 // remove dot from refDots
+                 for (var h=0; h<refDots.length; h++) {
+                     if (h != i) continue;
+                     refDots.splice(h, 1);
+                     break;
+                 }
+
+                 // the dot is not inside of the convex, therefore add it
+                 if (!this.isDotInsideConvex(refDots, dot)) {
+                     newDots.push(dot);
+                 }
+             }
+
+             // assign new convex
+             this.dots = newDots;
+         },
+         /*
+          copy dots object
+          this is done due to call by reference
+          */
+         copyDots: function(ref) {
+             var dots = [];
+             ref.map(function(dot) {
+                 dots.push(new Dot(new V(dot.pos.x, dot.pos.y)));
+             });
+             return dots;
+         },
+         isDotInsideConvex: function(convexDots, dot) {
+             var dotBefore, dotAfter, sign;
+
+             // at least three dots required for a convex
+             if (convexDots.length < 3) return false;
+
+             // the dot is definitely not inside the convex hull
+             if (this.dotOutsideConvexRect(convexDots, dot)) return false;
+
+             // assign dot before to the closest dot by the angle, which is negative
+             dotBefore = this.getDotBefore(convexDots, dot);
+
+             // assign dot after to the closest dot by the angle, which is positive
+             dotAfter = this.getDotAfter(convexDots, dot);
+
+             // dot on the inside of the line from dotBefore to dotAfter
+             return dot.pos.getSide(dotBefore.pos, dotAfter.pos) == 1;
+         },
+         /*
+          is the dot outside of the convex rectangle?
+          */
+         dotOutsideConvexRect: function(convexDots, dot) {
+             var outside = [ true, true, true, true ];
+             for (var i=0; i<convexDots.length; i++) {
+                 if (convexDots[i].pos.x < dot.pos.x)
+                     outside[0] = false;
+                 if (convexDots[i].pos.x > dot.pos.x)
+                     outside[1] = false;
+                 if (convexDots[i].pos.y < dot.pos.y)
+                     outside[2] = false;
+                 if (convexDots[i].pos.y > dot.pos.y)
+                     outside[3] = false;
+             }
+
+             return outside[0] || outside[1] || outside[2] || outside[3];
+         },
+         /*
+          get middle position as vector from the bounding dots
+          */
+         getCenter: function(dots) {
+             var rect = { xMin: dots[0].pos.x, xMax: dots[0].pos.x, yMin: dots[0].pos.y, yMax: dots[0].pos.y };
+             dots.map(function(dot) {
+                 if (dot.pos.x < rect.xMin) rect.xMin = dot.pos.x;
+                 if (dot.pos.x > rect.xMax) rect.xMax = dot.pos.x;
+                 if (dot.pos.y < rect.yMin) rect.yMin = dot.pos.y;
+                 if (dot.pos.y > rect.yMax) rect.yMax = dot.pos.y;
+             });
+
+             return new V((rect.xMin + rect.xMax) / 2, (rect.yMin + rect.yMax) / 2);
+         },
+         /*
+          get the closest dot before dot from dots
+          */
+         getDotBefore: function(dots, dot) {
+             var center, bgRad = -Math.PI * 2, dotBefore;
+
+             center = this.getCenter(dots);
+             dotRad = center.angleTo(dot.pos);
+
+             dots.map(function(needleDot) {
+                 var needleRad = center.angleTo(needleDot.pos),
+                     refRad = needleRad - dotRad;
+
+                 if (refRad > 0) refRad = -(Math.PI * 2 - refRad);
+
+                 if (refRad <= bgRad) return;
+
+                 bgRad = refRad;
+                 dotBefore = needleDot;
+             });
+
+             return dotBefore;
+         },
+         /*
+          get the closest dot after dot from dots
+          */
+
+         getDotAfter: function(dots, dot) {
+             var center, smRad = Math.PI * 2, dotAfter
+
+             center = this.getCenter(dots)
+             dotRad = center.angleTo(dot.pos)
+
+             dots.map(function(needleDot) {
+                 var needleRad = center.angleTo(needleDot.pos),
+                     refRad = needleRad - dotRad;
+
+                 if (refRad > 0) refRad = -(Math.PI * 2 - refRad)
+
+                 if (refRad >= smRad) return
+
+                 smRad = refRad
+                 dotAfter = needleDot
+             })
+
+             return dotAfter
+         }
+     }
+
+     var V = function(x, y) {
+         this.x = x
+         this.y = y
+     }
+
+     V.prototype = {
+         subtract: function(v) {
+             return new V(this.x - v.x, this.y - v.y);
+         },
+         /*
+          this = center, v = destination
+          */
+         angleTo: function(v) {
+             var ref = this.subtract(v)
+             return Math.atan2(ref.y, ref.x) + Math.PI
+         },
+
+
+         /*
+          0 = on line, 1 = inside, -1 = outside
+          */
+         getSide: function(v1,v2){
+             return Math.sign((v2.x - v1.x) * (this.y - v1.y) - (v2.y - v1.y) * (this.x - v1.x))
+         }
+     }
+
+
+ }

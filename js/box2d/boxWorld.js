@@ -66,6 +66,39 @@ w.dyn=w.dynamic=function(x, y, fixtDef){var body
     return body}
 
 
+w.bul= function(x, y ){var def,   body
+    def=b2d.dynamicDef(x,y)
+    def.bullet= true
+    body = this.createBody(def)
+    return body}
+
+w.polyBul=function(x,y, wd, ht, col){
+    var bul = this.bul(x,y)
+    bul.poly(wd,ht)
+
+    if(col){
+    bul.bindSprite2(
+
+            cjs.rect(wd,ht, oO('c',col)).XY(x,y).a2(this.s)
+        )
+    }
+
+
+
+
+
+
+    return bul}
+
+
+
+w.kin= function(x, y, fixtDef){var body
+    if( O(x) ){fixtDef=y; y=x.y; x=x.x}
+    x = N(x)?x: 500
+    y = N(y)?y: 250
+    body = this.A(b2d.kin(x,y), fixtDef)
+    return body}
+
 w.stat=function(x, y, fixtDef){var body
     if( O(x) ){fixtDef=y; y=x.y; x=x.x}
     x = N(x)?x: 500
@@ -256,26 +289,41 @@ w.brickSensor =function(x,y,W,H){//=brk=brick=
 
 
 
-w.circ =  function(x,y,radius, color){
+w.circ =  function(x,y, radius, color){
 
-    var wd = this.s.W(),
-        ht=this.s.H()
-
-
+    // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
+    var wd = this.s.W(),  ht=this.s.H()
     x= N(x) ? x: parseInt(Math.random() * (wd-100) )+60
-
     y= N(y)? y: 50
-
     radius = N(radius)? radius: _.random(14)+8
 
-    color = oO('c', color||$r())
 
-    return this.ball(x, y, radius).bindSprite2(
-        cjs.circ(   radius,  color ).XY(  x,y)).linDamp(2)
+
+    return this.ball(x, y, radius).linDamp(2)
+        .bindSprite2(
+
+        this.s.cir(x, y, radius, color)
+    )
+
+
+
+
 
 }
 
 
+
+
+
+
+
+w.gradBall=function(x,y,r, col1, col2, stop1, stop2){
+    stop1= N(stop1)?stop1:0
+    stop2= N(stop2)?stop2:1
+    col1=oO('c',col1); col2=oO('c',col2)
+    return this.ball(x,y,r).bindSprite2(
+        this.s.shape(x,y).rG([col1, col2],[stop1, stop2],
+            0,0,0,0,0,r).dc(0,0,r))}
 //lin damp 2????
 w.circStat =  function(x,y,radius, color){
 
@@ -303,19 +351,22 @@ w.circStat =  function(x,y,radius, color){
 w.rect =  function(x,y, wd, ht, color){
 
     x= N(x) ?x: 200
-
     y= N(y)? y: 50
-
     wd = N(wd)? wd: 50
-
     ht = N(ht)? ht: wd
-
     color = oO('c', color||$r())
 
-    return this.box(x, y, wd,ht).bindSprite2(
-        cjs.rect(   wd,ht,  color ).XY(  x,y)).linDamp(2)
+    return this.box(x,y,wd,ht).bindSprite2(
+        h = cjs.rect(wd,ht,color).XY(x,y).a2(w.s)
+
+    ).linDamp(2)
 
 }
+
+
+
+
+
 
 
 w.rectStat =  function(x,y, wd,ht, color){
@@ -495,8 +546,27 @@ w.addHundBalls=function(num){num=num||100;var that=this
 
 
 
+w.verts= function(x, y, arrs){
 
+    var bod = this.dyn(x,y)
 
+    _.each(arrs, function(arr){
+
+        bod.convex( arr[0],  _.rest(arr)  )
+    })
+
+return bod}
+
+w.vertsKin= function(x, y, arrs){
+
+    var bod = this.kin(x,y)
+
+    _.each(arrs, function(arr){
+
+        bod.convex( arr[0],  _.rest(arr)  )
+    })
+
+    return bod}
 
 //w.FixBody=function(x,y){return this.addBody(  dBD(x,y),fix())}
 
