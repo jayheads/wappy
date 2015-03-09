@@ -29,18 +29,26 @@ ct.addContainer = ct.ct =function(func){
 
     if(g.p){cjs.bindSlide(container)}
     return this}
+
 ct.bm= function self(img, scale, func){
 
-    var args = G(arguments), img=args[0], scale=args[1], func=args[2]
+    var that =this, args = G(arguments),
+        img=args[0], scale=args[1], func=args[2], bm
 
-    var that =this
 
-    if(!N(scale)){
-        func = scale
-        scale = 1}
+    if(!N(scale)){func = scale; scale = 1}
 
-    $.img(img, function(image){
+    if(O(img)){
 
+
+      bm = this.A( cjs.bitmap(img) )
+
+        return bm
+    }
+
+
+
+    $.img(img,   function(image){
         var bm = new cjs.Bitmap( image[0] )
         bm.rCenter()
         bm.sXY(scale)
@@ -50,10 +58,25 @@ ct.bm= function self(img, scale, func){
 
         that.addChild( bm );
         if(func){func( bm )}
-
     })
 
+
+
+
     return this}
+
+
+ct.mc=function(){
+
+  var mc =  cjs.mc.apply(null, arguments)
+
+   this.A(mc)
+
+return mc}
+
+
+
+
 ct.bmRegCenterX = ct.bm0X= function(img, func){
 
     var that =this
@@ -227,7 +250,6 @@ HUD=function(){z()
 
 
 
-
 STG2=function(){z();return cjs.stage(800,300).A()}
 
 
@@ -311,7 +333,7 @@ p.squareDot=function(color, x, y){var squareDot, tween
 
     y= N(y)? y:300
 
-    __squareDot = squareDot = cjs.rectangle(20, 20, oO('c', color))//.opacity(.4)
+    __squareDot = squareDot = cjs.rect(20, 20, oO('c', color))//.opacity(.4)
 
     this.A(squareDot.XY(x, y)//.drag()
 

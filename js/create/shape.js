@@ -182,7 +182,15 @@ cjs.isCont=function(cont){
 
 
 
-//cjs.circ =cjs.circle= function self(radius, fc, sc ,ss){if(!N(radius)){return self(8, radius, fc)}; fc= fc||'black'; sc= sc||null; ss = N(ss)?ss: radius/8;return cjs.shp().f(fc).s(sc).ss(ss).dc(0,0,radius)}
+ cjs.circ = cjs.circle = function(radius, fc ){
+
+     if(!N(radius)){return cjs.circ(8, radius)}
+
+     fc =  oO('c', fc|| 'z')
+
+     return cjs.shape().f(fc).dc(0,0,radius)
+ }
+
 
 
 cjs.diamond = function self(width, height, fc,sc){
@@ -420,6 +428,7 @@ ct.poly =function(){ // ?
     var h = this.shape()
     h.poly.apply(h, arguments)
     return h}
+
 
 ct.art = function(x,y,f,s){var g=G(arguments)
     if(U(x)){alert('must at LEAST define x'); return}
@@ -956,6 +965,10 @@ PITFALL=function(){
     }, 2000)
 
 }
+
+
+
+
 
 LINGRADBG=function(){w=b2d.W()
 

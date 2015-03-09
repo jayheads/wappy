@@ -235,6 +235,18 @@ f.radius = function(){
 
         return radius*30}
 
+f.cancel=function(){
+
+    this.body().cancel()
+return this}
+
+f.switchTo=function(co){
+    this.body().switchTo(co)
+    return this}
+
+
+
+
 T=function(){b2d.W()
 
 
@@ -643,3 +655,272 @@ FIXTURES=function(){z()
     w.brick(500,200,40,40)
 
 }
+
+
+GRAVITY=function(){  w=b2d.W({g:0})
+
+    b = w.ball(100,100,100).constF(5000, -200000 )
+
+}
+
+DEMO_IMPULSE =function(){
+
+    b2d.mW({ grav: 0 })
+
+    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
+
+    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
+
+    test={
+
+
+        impulse: function(){
+
+            body.ApplyImpulse(
+
+                V(10, -30), body.worldCenter()
+
+            )},
+
+
+
+        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
+
+
+
+        force: function(){
+
+            setInterval(
+
+                function(){
+
+                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
+
+                }, 100)
+
+        }
+
+
+
+    }
+
+
+
+
+}
+
+DEMO_SCALE =function(){b2d.mW()
+
+    var  radius=10, x=400, y=440, v={x:0, y:0}
+
+    //mouse joints messed up
+
+    w.bumper(400,300,40)
+    w.bumper(290,350,40)
+    w.bumper(280,220,40)
+
+
+    addBody()
+
+    cjs.tick( destroyAndAddBody )
+
+
+
+    function addBody(){
+
+        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
+
+
+    function destroyAndAddBody(){
+
+        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
+
+        radius += .1
+
+        x = body.X()
+
+        y = body.Y()
+
+        v = body.lV()
+
+        addBody() }
+
+
+}
+
+MEMORY=function(){  s = cjs.S().A(ct= cjs.ct())
+
+
+
+    grid=[
+
+        ['guy','me',0,0],
+        [0,'me',0,0],
+        [0,0,0,0],
+        [0,'me','chicks','me']
+
+    ]
+
+
+    wGuy=function(){
+        var x=0,y=0
+        _.each(grid,  function(row,i){
+            _.each(row,function(cell,j){
+                if(cell=='guy'){ x=j, y=i}})})
+        return {x:x,y:y}}
+
+
+    dGuy=function(){
+
+        var p=wGuy()
+
+        grid[p.y][p.x]=0
+        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
+        else if( grid[p.y+1][p.x]==0){
+            grid[p.y+1][p.x]='guy'
+            playerGrid()
+
+        } else {alert('lose!')}}
+
+
+
+    rGuy=function(){
+        var p=wGuy()
+        grid[p.y][p.x]=0
+        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
+        else if( grid[p.y][p.x+1]==0) {
+            grid[p.y][p.x+1]= 'guy'
+            playerGrid()} else {alert('lose!')}}
+
+
+
+
+    _.each(grid, function(row,i){
+        _.each(row, function(cell,j){
+            ct.A(
+                cjs.rect(30,40).XY(j*100+100,i*100+100))
+            if(cell=='me'){
+                ct.bm('me',
+                    function(b){
+                        b.XY(j*100+100,  i*100+100
+                        ).sXY(.1)})}})})
+
+
+
+
+    playerGrid=function(){
+        _.each(grid, function(row,i){
+
+            _.each(row, function(cell,j){
+
+                ct.A( cjs.rect(30,40).XY(j*100+100, i*100+100))
+
+                if(cell=='guy'||cell=='chicks'){
+                    ct.b(cell, function(b){
+                        b.xy(  j*100+100,  i*100+100 ).sXY(.1)})}
+
+            })})}
+
+
+
+    setTimeout( function(){
+        ct.remove()
+        s.A( ct = cjs.ct())
+        playerGrid()},  3000)
+
+
+
+    $.kD('d', dGuy)
+
+    $.kD('r', rGuy)
+
+
+
+}
+
+SLING=function(){s=cjs.S()
+
+    startpoint={}
+
+    slingshot = cjs.shape().a2(s)
+
+    onMouseDown=function(event){
+
+        if(ball.hitTestPoint(event.x, event.y)){
+            mouseJoint = w.J(
+
+                b2d.createMouseJointDef(
+                    w.ground, //?
+
+                    ball.body,
+                    event.x, event.y, 100000
+                )
+            )
+
+            startpoint.x = event.x
+            startpoint.y = event.y
+
+        }
+    }
+
+
+    onMouseMove=function(event){
+        if(mouseJoint !=null){
+            mouseJoint.setTarget(event.x, event.y)
+            slingshot.clear()
+            slingshot.setLineStyle(5, 0xff0000, 1)
+            slingshot.beginPath()
+            slingshot.mt(self.startpoint.x, self.startpoint.y)
+            slingshot.lt(event.x, event.y)
+            slingshot.ep()
+        }
+    }
+
+
+    onMouseUp=function(event){
+
+
+
+        if (mouseJoint != null){
+            w.dJ( mouseJoint)
+
+            mouseJoint = null
+
+            slingshot.clear()
+
+            strength = 1
+
+            xVect = ( startpoint.x-event.x)*strength
+            yVect = ( startpoint.y-event.y)*strength
+
+            ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
+
+        }
+    }
+
+}
+
+PHONEJUMP=function(){b2d.mW({W:300, H:400,
+    walls:function(){
+        w.brick(10,300, 40, 600).K('leftWall')
+        w.brick(450,300, 40, 600).K('rightWall')
+        w.brick(300, 0, 2400, 40).K('ceiling')
+        w.brick(300, 400, 800, 40).K('floor')}})
+
+    w.brick(200,400, 80,20)
+    w.brick(300,200,80,20)
+
+    p = w.addMe()
+
+    $.joystick()
+
+    cjs.tick(function(){
+
+        if(cjs.Keys.up){     p.I(0,-100)}
+        if(cjs.Keys.left){   p.I(-20, 0)}
+        if(cjs.Keys.right){  p.I(20, 0)}
+
+    })
+
+}
+

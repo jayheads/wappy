@@ -37,8 +37,18 @@ c.pointCount = c.pC=function(){return this.gM().m_pointCount}
 c.points =c.p=function(){return this.gM().m_points}
 c.type =c.t=function(){return this.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
 c.next =c.gN=function(){return this.GetNext()}//Get the next contact in the world's contact list.
-c.worldManifold =c.gWM=function(){return this.GetWorldManifold()}
-c.continuous =c.iC=function(){return this.IsContinuous()}//Does this contact generate TOI events for continuous simulation
+
+
+
+  c.worldManifold =  function(){
+
+      return this.GetWorldManifold()
+
+  }
+
+
+
+  c.continuous =c.iC=function(){return this.IsContinuous()}//Does this contact generate TOI events for continuous simulation
 c.iE=function(){return this.IsEnabled()}//Has this contact been disabled?
 c.enabled = c.sE=function(a){this.SetEnabled(a?true:false);return contact} // Enable/disable this this.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
 c.sensor = c.iS=function(){return this.IsSensor()}//Is this contact a sensor?

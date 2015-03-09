@@ -1,3 +1,81 @@
+
+PIXELPICKSCROLLING=function(){z()
+
+    game =  Game(800, 600, Phaser.CANVAS, 'phaser-example',
+        {preload: preload, create: create,  update: update,
+            render: render });
+
+    function preload() {
+        camSpeed=4
+
+        g = $G(game).ARC().bn(0,0, 4000, 2000)
+
+        g.l.ss('mummy', '/assets/sprites/metalslug_mummy37x45.png', 37, 45, 18)
+
+        g.l.i('stars', '/assets/misc/starfield.jpg')}
+
+
+
+
+
+    function create() {
+
+
+
+        //  Scrolling background
+        s = g.tSp(0, 0, 4000, 600, 'stars')
+        b=g.sp(0, 300, 'mummy').arc()
+
+
+        b.scale.set(10)
+        b.smoothed = false
+        b.an.a('walk')
+        b.play('walk', 5, true)
+
+
+        b.vxy(50, 0)
+
+        //  Listen for input events on this sprite
+        b.inputEnabled = true
+
+        //  Check the pixel data of the sprite
+        b.input.pixelPerfectClick=true
+
+        b.events.onInputDown.add(tint,this)}
+
+    function tint() {b.tint=Math.random()*0xffffff}
+
+    function update(){
+
+        if (g.iD(Left)){
+            g.cm.x-=camSpeed
+            if(!g.cm.atLimit.x){
+                s.tilePosition.x += camSpeed}}
+
+        if (g.iD(Right)){
+            g.cm.x += camSpeed;
+            if (!g.cm.atLimit.x){s.tilePosition.x -= camSpeed}}
+
+        if(g.iD(Up)){
+            g.cm.y -= camSpeed;
+            if(!g.cm.atLimit.y){s.tilePosition.y += camSpeed}}
+
+        if(g.iD(Down)){g.cm.y += camSpeed;
+
+            if (!g.cm.atLimit.y){
+                s.tilePosition.y -= camSpeed
+            }
+        }
+
+    }
+
+
+
+
+    function render(){g.db.spriteInputInfo(b, 32, 32)}
+}
+
+
 INVADERS=function(){
 
     bulletTime = 0

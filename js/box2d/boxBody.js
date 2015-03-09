@@ -21,14 +21,26 @@ d.XY = d.p=d.ps=d.xy=function(x,y){
     //if(O(x)){this.position=x;return this}
     this.position.Set(x/30,y/30)
     return this}
-d.X =  function(x){
+
+d.X=  function(x){
+
     var pos = this.XY()
     if(U(x)){return pos.x}
-    return this.XY(x, pos.y)}
-d.Y =  function(y){
+
+
+    return this.XY(x, pos.y)
+}
+
+
+
+
+d.Y=  function(y){
     var pos = this.XY()
     if(U(y)){return pos.y}
     return this.XY(pos.x,y)}
+
+
+
 d.T=d.kind =   function(type){
     if(U(type)){return this.type}
     this.type=type
@@ -46,6 +58,8 @@ d.linDamp = d.lD=function(damp){
 d.angDamp =d.aD=function(damp){
     if(U(damp)){return this.angularDamping}
     this.angularDamping=damp; return this}
+
+
 d.rot = d.ang =  function(ang){
     //The world angle of the body in radians.
 //should fix
@@ -53,6 +67,8 @@ d.rot = d.ang =  function(ang){
 
     if(U(ang)){return d.angle}
     this.angle=ang; return this}
+
+
 d.fixedRot = d.fR=function(isFixed){
     if(U(isFixed)){return this.fixedRotation}
     this.fixedRotation=isFixed; return this}
@@ -79,72 +95,45 @@ d.data=function(){}
 
 
 
-
-
-
-
-
-
-
 b2d.isBody = isBody=function(b){if(O(b)){return b.constructor.name=='b2Body'}}
 
 
 b=p=b2.Dynamics.b2Body.prototype
-b.mass =  function(m){if(U(m)){
 
-    return (this.GetMass()*900)/100
-
-
-}}
-b.wCent=  p.wC=  p.worldCenter= p.gWC= function(){
-    return this.GetWorldCenter()}
-b.cent=function(){
-
-    var c = this.GetWorldCenter()
-
-return V(c.x*30, c.y*30)}
-p.W=p.world=function(){return this.GetWorld()}
-b.joint = function(){ return this.GetJointList().joint }
-
-b.dot=function(){
-
-    this.W().s.dot( this.cent() )}
-
-b.polyBul = function(){
-    var vec=this.GetWorldVector( V(0,-100)), point=this.worldPoint(0, -50)
-    bullet = this.W().polyBul(point.x, point.y, 4, 4,'w').K('polyBul')
-        .den(1).linDamp(0).linVel(vec.x/5,vec.y/5)
-
-    w.end(function(cx){cx.destroyIf('polyBul')})
-    return bullet}
+b.mass =function(m){if(U(m)){return (this.GetMass()*900)/100}}
+b.wor = b.W =b.world=function(){return this.GetWorld()}
 
 
-
-b.sens=function(){this.list().sensor(true); return this}
-b.awake= function(){
-    var g=G(arguments)
-    this.SetAwake(g.n? false:true)
-    return this}
-b.wPoint= p.worldPoint = p.wP   =function(x,y){
-    var pt = this.GetWorldPoint( b2.V(x/30,y/30) )
-    return b2.V(pt.x*30, pt.y*30)}
-b.XY= p.xy = function(x,y){
-
+b.XY=function(x,y){var newPos
     if(x==='*'){x =Math.random()*10 }
     if(y==='*'){y =Math.random()*10 }
-    if(U(x)){var pos = this.GetPosition()
-        return {x:parseInt(pos.x*30), y:parseInt(pos.y*30)}}
+    if(U(x)){
+        var pos = this.GetPosition()
+        return pos.mult()} //used to parseInt.. necessary?
     y=N(y)?y:x
-    this.SetPosition({ x:x/30, y:y/30 })
+    newPos= V( x/30, y/30 )
+    this.SetPosition(newPos)
     return this}
-b.X =  function(x){
-    var pos = this.XY()
-    if(U(x)){return pos.x}
-    return this.XY(x, pos.y)}
-b.Y =  function(y){
-    var pos = this.XY()
-    if(U(y)){return pos.y}
-    return this.XY(pos.x,y)}
+
+
+
+
+
+b.X=function(x){var g=G(arguments),pos=this.XY()
+    if(U(x=g[0])){return pos.x}
+    this.XY($.update(pos.x,x,g),pos.y)
+    return this}
+b.Y=function(y){var g=G(arguments),pos=this.XY()
+    if(U(y=g[0])){return pos.y}
+    this.XY(pos.x, $.update(pos.y,y,g))
+    return this}
+
+
+
+
+
+
+
 b.angVel=   p.aV= function(vel){
     if(U(vel)){return this.GetAngularVelocity() }
     this.SetAngularVelocity(vel)
@@ -166,10 +155,32 @@ b.linDamp=  p.lD= function(damp){
     if(U(damp)){return this.GetLinearDamping()}
     this.SetLinearDamping(damp)
     return this}
-b.rot = p.rT = p.rt= p.rotation = p.angle = p.ang = function(angle){
-    if(U(angle)){return Math.toDegrees(this.GetAngle())}
-    this.SetAngle(Math.toRadians(angle))
+
+
+
+
+b.rot =function(angle){   //= p.rT=p.rt=p.rotation=p.angle=p.ang
+
+    var g=G(arguments),
+        ang=g[0],
+        newAng,
+        currAng=Math.toDegrees(this.GetAngle())
+
+    if(U(ang)){return currAng}
+
+    if(g.p){newAng = currAng+ang}
+    else if(g.n){newAng =currAng - ang}
+    else if(g.m){  newAng =currAng * ang}
+    else if(g.d){ newAng =currAng / ang}
+    else {newAng = ang}
+
+    this.SetAngle( Math.toRadians(newAng) )
     return this}
+
+
+
+
+
 b.K = p.addClass = p.kind = p.kind = p.data = p.userData = p.uD= function(data){
     if(U(data)){return this.GetUserData()}
     this.SetUserData(data)
@@ -177,78 +188,209 @@ b.K = p.addClass = p.kind = p.kind = p.data = p.userData = p.uD= function(data){
 b.fixedRot= p.sFR= p.fR=function(bool){
     this.SetFixedRotation(bool? true: false)
     return this}
-b.type =p.T= p.ty= p.t= function(a){
-    if(U(a)){return this.GetType()}
-    this.SetType(a)
-    return this}
-b.transform = p.tf=  function(tf){
-    if(U(tf)){  return this.GetTransform() }
-    this.SetTransform(tf)
-    return this}
-b.next = p.n = p.gN =function(){ return  this.GetNext()   }
-b.destroyFixt= p.destroyFixture=p.dF=function(fixt){
-    this.DestroyFixture(fixt)
-    return this}
+p.I =p.impulse = p.applyImpulse = p.aI  = function self(impulse, point, point2){
+
+
+    if(U(impulse)){
+        impulse =  this.worldVec().div(40)
+    }
+
+    if(N(point)){
+        impulse = V(impulse, point)
+        point = point2}
+
+    if(U(point)){  point = this.GetWorldCenter()}
+
+
+    this.ApplyImpulse(impulse, point)
+
+    return this}//apply impulse. pass impulse as two nums, or obj //and pass in location, defaults to body center
+
+
+
+b.velWor=function(x,y){
+    var v = V(x, y).div()
+        return this.GetLinearVelocityFromWorldPoint(v)}
+
+
+
+
+
+b.F = b.applyForce = p.aF  = function(v,c,c2){
+    if(N(c)){return this.F(  V(v,c), c2  )}
+    if( U(c) ){ c = this.worldCenter() }
+    this.ApplyForce(v, c)
+    return this}    //apply force. pass impulse as two nums, or obj //and pass in location, defaults to body center
+
 b.is=function(kind){
     //this is an OR statement.  at least one must be true
-var that=this, is = false
+    var that=this, is = false
 
-        _.each(arguments, function(kind){
+    _.each(arguments, function(kind){
 
-            if( that.K() == kind ){
-                is=true
-            }
-        })
+        if( that.K() == kind ){
+            is=true
+        }
+    })
 
-        return is}
+    return is}
 b.not= p.notAny = function(kind){ //this is an AND: ALL MUST BE FALSE
 
     var that = this,
         not = true
 
-        _.each(kind, function(kind){
-           if( that.is(kind) ){
-               not = false
-           }
-        })
+    _.each(kind, function(kind){
+        if( that.is(kind) ){
+            not = false
+        }
+    })
 
-        return not}
+    return not}
+
+b.type =p.T= p.ty= p.t= function(a){
+    if(U(a)){return this.GetType()}
+    this.SetType(a)
+    return this}
+
+//huh??? oh can get/set type of body
+b.stat = function(){this.type(0);return this}
+b.kin = function(){return this.type(1)}
+b.dyn = function(){return this.type(2)}
+
+
+
+
+b.den=function(den){
+
+    if(U(den)){return this.list().GetDensity()}
+
+    this.each(function(f){
+        f.SetDensity(den)
+    })
+
+    this.ResetMassData()
+    return this}
+b.fric=function(fric){
+
+
+    if(U(fric)){return this.list().GetFriction()}
+
+    this.each(function(f){
+        f.SetFriction(fric)
+    })
+    return this
+}
+b.rest=function(rest){
+
+
+    if(U(rest)){return this.list().GetRestitution()}
+
+    this.each(function(f){
+        f.SetRestitution(rest)
+    })
+    return this
+
+}
+
+
+///////////
+
+b.wCent=  p.wC=  p.worldCenter= p.gWC= function(){
+    return this.GetWorldCenter()}
+b.cent=function(){
+
+    var c = this.GetWorldCenter()
+
+return V(c.x*30, c.y*30)}
+b.joint = function(){ return this.GetJointList().joint }
+
+b.dot=function(color){color= oO('c', color||'y')
+
+    this.stg().dot(color,  this.cent() ) //  this.X(), this.Y()
+
+
+}
+
+
+
+
+
+
+
+
+
+
+b.polyBul = function(){
+    var vec=this.GetWorldVector( V(0,-100)), point=this.worldPoint(0, -50)
+    bullet = this.W().polyBul(point.x, point.y, 4, 4,'w').K('polyBul')
+        .den(1).linDamp(0).linVel(vec.x/5,vec.y/5)
+
+    w.end(function(cx){cx.destroyIf('polyBul')})
+    return bullet}
+
+
+b.sens=function(){this.list().sensor(true); return this}
+
+b.awake= function(){
+    var g=G(arguments)
+    this.SetAwake(g.n? false:true)
+    return this}
+
+b.wPoint= p.worldPoint = p.wP   =function(x,y){
+
+    var pt = this.GetWorldPoint( V(x,y).div() )
+    return V(pt.x, pt.y).mult()
+
+}
+
+
+
+
+b.transform = p.tf=  function(tf){
+    if(U(tf)){  return this.GetTransform() }
+    this.SetTransform(tf)
+    return this}
+b.next = p.n = p.gN =function(){ return  this.GetNext()   }
+
+b.destroyFixt= p.destroyFixture=p.dF=function(fixt){
+    this.DestroyFixture(fixt)
+    return this}
+
 b.fixtData =p.fixtListUserData =p.uDF=function(userData){
     var fixtList= this.fixtureList()
     if(U(userData)){
         return fixtList.GetUserData()}
     fixtList.SetUserData(userData)
     return this}//user data first fixture?
-b.imp = p.I =p.impulse = p.applyImpulse = p.aI  = function self(impulse, point, point2){
 
 
 
-    if(N(point)){
-        impulse = V(impulse, point)
-        point = point2}
 
-    if(U(point)){
-        point = this.GetWorldCenter()}
+b.thrustify=function(){
+    var p=this
+    //takes a spritebox!
+    //uses cjs.watchKeys()
+        this.angDamp(.5)
+    cjs.Keys({
+        l :function(){p.rot(8,'-')},
+        r :function(){p.rot(8,'+')},
+
+        d :function(){p.I().p('thrust')},
+        u :function(){p.p('shoot')}})
+
+return this}
 
 
-    this.ApplyImpulse(impulse, point)
+b.thrustControl = function(){var body=this
 
-    return this}//apply impulse. pass impulse as two nums, or obj //and pass in location, defaults to body center
-b.hop=function(){
-    return this.aI(0,-30)}
-b.applyForce = p.aF  = function(v,c,c2){
+    cjs.tick(function(){b2d.controls.thrust(body)})
+return body}
 
-    if(N(c)){return this.aF(
 
-        b2.bV(v, c), c2
 
-    )}
 
-    if( U(c) ){ c = this.worldCenter() }
+//b.hop=function(){return this.I(0,-30)}
 
-    this.ApplyForce(v, c)
-
-    return this}//apply force. pass impulse as two nums, or obj //and pass in location, defaults to body center
 b.click=function(func){var body = this
 
 
@@ -282,39 +424,62 @@ b.click=function(func){var body = this
   //
 
 }
-b.dot=function(){
-    this.W().s.dot(this.X(), this.Y())
-return this}
-b.coll = function(func){var that=this
-
-    w.begin(function(cx){
-        if(cx.a() ==  that){ func(cx.a()) }
-        if(cx.b() ==  that){ func(cx.b()) }})
-return this}
-b.collWithKind = function(kind, func) {var that = this
-
-    this.W().begin(function (cx) {
-
-        if (cx.a() == that && cx.b().is(kind)) {
-            func(  cx.b())
-        }
 
 
-        if (cx.b() == that && cx.a().is(kind)) {
-            func(  cx.a())
-        }
 
-    })
-return this}
+
+
+b.coll = b.collWithKind = function(func, func2){
+    //merged these 2, but the the fixt 'coll' met is more complete/flexible
+    var that=this
+
+    if(S(func) && F(func2)){
+
+       this.wor().begin(function (cx) {
+
+            if (cx.a() == that && cx.b().is(func)) {
+                func2(  cx.b())
+            }
+
+
+            if (cx.b() == that && cx.a().is(func)) {
+                func2(  cx.a())
+            }
+
+        })
+
+
+    }
+
+    else {
+
+        w.begin(function (cx) {
+            if (cx.a() == that) {
+                func(cx.a())
+            }
+            if (cx.b() == that) {
+                func(cx.b())
+            }
+        })
+    }
+
+    return this}
+
+
+
+
+
 b.towards=function self(x,y,speedRat){
 
     //if(isBody(x)){return self(x.X(), x.Y(), y)}
-
 
     speedRat = speedRat || 100
     this.linVel( (x- this.X())/speedRat, (y- this.Y())/speedRat)
     //more realistic to accelerate, via forces?
 return this}
+
+
+
 b.shoot= function(){var vec, bullet
 
     bullet = this.GetWorld().bullet( abovePlayerGlobally(this) ).bindSprite('me', 0.15)
@@ -324,14 +489,19 @@ b.shoot= function(){var vec, bullet
 
 
 }
+
+
 b.worldVec=function(vec, y){
 
-    if(N(vec)){
-        vec = V(vec,y)
-    }
+    if( N(vec) && N(y) ){ vec = V(vec,y) }
+
+    if(U(vec)){vec = V(0,-100)}
 
     return this.GetWorldVector(vec)
 }
+
+
+
 b.horizCenter=function(){
 
     var s = this.world().s
@@ -363,7 +533,7 @@ b.bindSprite=function( img,   scale,  startingRotation ){
 
     return body}
 
-b.stg=function(){ return this.GetWorld().stage }
+b.stg=function(){ return this.wor().stage }
 
 
 b.bindSprite2=function(obj, startingRotation, x, y ){
@@ -389,6 +559,8 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
     body.sprites.push(obj)
     body.sprite = obj
 
+    body.sprite.a2(stage)
+
 
             //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
 
@@ -400,7 +572,8 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
                          body.X() + (x||0),
                          body.Y() + (y||0)
                  )
-                 sprite.rotation=body.rot()+startingRotation
+
+                 sprite.rotation=body.rot() + startingRotation
             })
 
 
@@ -411,50 +584,40 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
 
 
 
-
-
-
-
-b.convex = function( col, arr, arr2){ /// color?
-
-    var arrDef, shape, fixt, that=this
-
-   if(!S(col)){
-       arr2=arr; arr=col; col='yellow'}
-
-
-   // if(arr2){  _.each(arguments, function(arg){   that.convex(arg)  });return this  }
-
-
-        arrDef = b2d.Arr.apply(null,arr)
-    fixt =this.fixt( arrDef )
-    shape = w.s.poly(arr, col, col)
-    this.bindSprite2(shape)
-    return fixt
-
-
-
-
-return this
-
-}
-b.stat = function(){this.type(0);return this}
-b.kin = function(){return this.type(1)}
-b.dyn = function(){return this.type(2)}
 b.kill=function(){
-    if(this.sprite){
-        this.sprite.remove()
-    }
+
+    if(this.sprite){this.sprite.remove()}
+
+
     this.sprite=null
-    this.destroy()}
-b.destroy=function(){
-    $l('destroy!')
-    this.world().DestroyBody(this)}
-b.setDestroy=function(){return this.uD('destroy')}
-b.setDestroyIf=function(data){
-    if(this.is(data)){this.setDestroy()}
+    this.SetActive(false)
+    this.destroy()
+
 }
-b.warpToTopLeft=function(){ this.XY(200, 100);  return this } //setY, setX
+
+
+
+b.count=function(){
+    return this.m_fixtureCount
+}
+
+
+b.destroy=function(){
+
+    this.wor().DestroyBody(this)
+}
+
+b.setDestroy=function(){return this.K('destroy')}
+
+b.setDestroyIf=function(data){
+
+    if(this.is(data)){this.setDestroy()}
+
+}
+
+
+//b.warpToTopLeft=function(){ return this.XY(200, 100)}
+
 b.bindKeyboard = function(cont){ //p.moveListener=
     var that=this
 
@@ -471,21 +634,22 @@ b.bindKeyboard = function(cont){ //p.moveListener=
 b.controlMe= function(control){
     var that =this
     cjs.tick(function(){
-        b2.controls[control||'standard'](that)
+        b2d.controls[control||'standard'](that)
     })
 
     return this}
+
+
 b.when=function(){
 
     var body =this,
-        w=body.GetWorld()//, listener=b2d.listener()
+        w=body.wor()//, listener=b2d.listener()
 
     return {contacts:function(kind, func){
         w.begin(function(cx){
             if(cx.with(kind)){func()}
             w.startListening()
         })
-
         return {after:function(func){
             w.end(function(cx){
                 if(cx.with(kind)){func()}})
@@ -493,10 +657,11 @@ b.when=function(){
         }}}}
 
 }
-b.relPos=function(){
 
-    return this.X() + this.world().s.X()
-}
+
+
+b.relPos=function(){return this.X() + this.stg().X()}
+
 b.byImp=function(imp){
     if(cjs.Keys.right){this.I(imp,0)}
     else if(cjs.Keys.left){this.I(-imp,0)}
@@ -506,6 +671,8 @@ b.byVel=function(vel){
     else  if (cjs.Keys.left) { p.linVel(-vel, 0)}
 
 return this}
+
+
 b.jumping=function(y, x){
     if(cjs.Keys.up) {
         if (cjs.Keys.right) {
@@ -519,7 +686,9 @@ b.jumping=function(y, x){
         }
     }
 return this}
-b.trig = p.fixtListener =p.listener=  function(kind, func){var body=this
+
+
+b.trig = p.fixtListener = p.listener=  function(kind, func){var body=this
 
     body.when()
         .contacts(kind, function(){
@@ -547,62 +716,41 @@ b.trig = p.fixtListener =p.listener=  function(kind, func){var body=this
     }
 
     return this}
-b.den=function(den){
-
-    if(U(den)){return this.list().GetDensity()}
-
-    this.each(function(f){
-        f.SetDensity(den)
-    })
-
-    this.ResetMassData()
-    return this}
-b.fric=function(fric){
 
 
-    if(U(fric)){return this.list().GetFriction()}
+ b.diff= b.dif = function(x, y){
 
-    this.each(function(f){
-        f.SetFriction(fric)
-    })
-     return this
-}
-b.rest=function(rest){
+     var ob = {    x: x - this.X(),   y: y - this.Y()  };
+
+     return ob}
 
 
-    if(U(rest)){return this.list().GetRestitution()}
-
-    this.each(function(f){
-        f.SetRestitution(rest)
-    })
-     return this
-
-}
-b.diff= p.dif = function(x, y){
-
-    var ob = {
-
-        x: x - this.X(),
-
-        y: y - this.Y()
-
-    }
-
-    return ob}
 b.cam = function(x, y){
 
-        var v = this.diff(x,y)
 
-        w.s.XY(v.x, v.y)
+        this.stg().XY( this.diff(x,y)    )
 
 return this}
+
+
+
+
+
+b.constF=function(a,b){var body=this
+
+    cjs.tick(function(){  body.F(a,b )  })
+
+return this}
+
 b.camX = function(x, y){
 
     var v = this.diff(x,y)
 
-    w.s.X(v.x)
+    this.stg().X( v.x )
 
     return this}
+
+
 b.followX=function(x,y){var that=this
     cjs.tick(function(){
         if(O(that.sprite)){
@@ -610,6 +758,7 @@ b.followX=function(x,y){var that=this
         }})
 
 return this}
+
 b.follow=function(x,y){var that=this
     cjs.tick(function(){
         if(O(that.sprite)){
@@ -617,24 +766,14 @@ b.follow=function(x,y){var that=this
         }})
 
     return this}
-b.list=p.fixtList = p.fixtureList=p.gFL=function(){return this.GetFixtureList()}
-b.each = p.eachFixt = function(func){
-
-   var fl = this.GetFixtureList()
 
 
-   var withList = function self(list, func){
-
-        func(list)
-
-        list = list.GetNext()
-
-        if(list){return self(list, func)}}
-
-    withList(fl, func)
 
 
-}
+
+
+
+
 b.fixt= p.createFixture = p.cF =  function(fixtData){
 
 
@@ -642,6 +781,8 @@ b.fixt= p.createFixture = p.cF =  function(fixtData){
     //fixtData = fixtData|| b2.randomFixture()
     return this.CreateFixture(fixtData)
 }
+
+
 b.rect = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
 var that=this
 
@@ -700,12 +841,68 @@ b.poly = function(){
     var fix =  this.fixt(  b2d.poly.apply(null, arguments)   )
 
 return fix}
+
+
 b.circ = function(){
 
     var fix =  this.fixt(  b2d.circ.apply(null, arguments)   )
 
     return fix}
-//b.feetListener =function(){return this.listener('feet')}
+
+b.convex = function( col, arr, arr2){ /// color?
+
+    var arrDef, shape, fixt, that=this
+
+    if(!S(col)){
+        arr2=arr; arr=col; col='yellow'}
+
+
+    // if(arr2){  _.each(arguments, function(arg){   that.convex(arg)  });return this  }
+
+
+    arrDef = b2d.Arr.apply(null,arr)
+    fixt =this.fixt( arrDef )
+    shape = w.s.poly(arr, col, col)
+    this.bindSprite2(shape)
+    return fixt
+
+    return this
+
+}
+
+
+
+
+b.list=p.fixtList = p.fixtureList=p.gFL=function(){return this.GetFixtureList()}
+b.each = p.eachFixt = function(func){
+
+    var fl = this.GetFixtureList()
+
+
+    var withList = function self(list, func){
+
+        func(list)
+
+        list = list.GetNext()
+
+        if(list){return self(list, func)}}
+
+    withList(fl, func)
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 b.footListenerGreatButIGuessAlreadyDeppedKeepForAWhile=function(){
     var body = this
 
@@ -723,7 +920,7 @@ b.footListenerGreatButIGuessAlreadyDeppedKeepForAWhile=function(){
 
     this.GetWorld().listen(listener)
 
-    return this}
+    return this}//b.feetListener =function(){return this.listener('feet')}
 
 
 
@@ -745,12 +942,228 @@ b.warp = function(p) {var p=this
 
     return this}
 
+b.mario=function(){
+    var p=this, that=this
+
+    this.canJump = true
+
+
+    cjs.tick(function(){
+
+        that.rot(0)
+
+        that.onGround=true
+
+        // if on ground
+        if(that.onGround){// if jumping
+
+            if(cjs.Keys.up){
+                if(that.canJump==true){
+                    that.p('jump').I(0, -44); that.canJump=false }}
+
+
+            else { // if not jumping
+                if(cjs.Keys.left){that.I(-20, 0)} // p.dir(0)
+                if(cjs.Keys.right){  that.I(20, 0) }} //p.dir(1)
+
+        }
+
+        // if in air !!!
+        else {
+            if (cjs.Keys.left){
+                that.dir(0);that.I(-1,0)}
+            if (cjs.Keys.right){
+                that.dir(1);that.I(1,0)}}
+    })
+
+
+    that.GetWorld().begin(function(){
+        that.canJump=true
+        that.p('walk')
+    })
+
+
+    return this}
+
+
+b.arrowMove=function(){var body=this
+
+    $.kD({
+        l: function(){body.dir('left').move()},
+        r:function(){body.dir('right').move()},
+        u :function(){
+            if(body.dir()=='left'){body.I(5,-12)}
+            else if(body.dir()=='right'){body.I(-5,-12)}}
+
+    })
+
+    return this}
+
+
+//easel ss
+
+b.p=function(a,b,c,d){
+    if(O(this.sprite)){this.sprite.p(a,b,c,d)}
+    return this}
+b.s=function(a,b,c,d){
+    if(O(this.sprite)){this.sprite.s(a,b,c,d)}
+    return this}
+
+
+b.centerScale=function(scale){var body=this
+
+  body.stg().sXY(scale)
+        .X(300-((body.X()-300) * scale))
+        .Y(150-((body.Y()-150)) * scale)
+
+return this}
+
+b.marioJumping= function(){
+
+    var p=this
+
+
+    p.trig('feet')
+    cjs.tick(function(){
+        p.rot(0)
+
+        if(p.trig.feet && cjs.Keys.up){
+            if(cjs.Keys.right){p.linVel(20, -60) }
+            else if(cjs.Keys.left){p.linVel(-20, -60) }
+            else {p.linVel(0, -80)}
+        }
+
+        else{   if (cjs.Keys.right) {p.I(10, -5)}   else if (cjs.Keys.left) {p.I(-10, -5)}      }  // if (cjs.Keys.right) {p.linVel(40, -10)}  // else if (cjs.Keys.left) {p.linVel(-40, 10)}
+
+        if (cjs.Keys.down){
+            p.trig.feet='true'
+            p.I(0, 20)}
+
+    })
+
+return this}
+
+b.marioWarping=function(){var p=this
+
+
+        cjs.tick(function () {
+            if (p.Y() < 0) {
+                p.Y(300)
+            }
+            if (p.Y() > 300) {
+                p.Y(0)
+            }
+            if (p.X() < 0) {
+                p.X(600)
+            }
+            if (p.X() > 600) {
+                p.X(0)
+            }
+        })
+
+        return this}
+b.addClass = function(clas){
+    this.classes = this.classes || []
+    if(S(clas)){
+        this.classes.push(clas)    }
+}
+b.hasClass=function(clas){
+    var hasClass
+
+    this.classes = this.classes || []
+
+    if(S(clas)){
+
+        hasClass = _.contains( this.classes, clas)
+    }
+
+
+    return hasClass}
+b.removeClass=function(clas){
+    this.classes=this.classes||[]
+    if(S(clas)){this.classes[clas]=null}
+    return this}
+b.co = function(co){
+
+    if(U(co)){
+        return this.GetControllerList()
+    }
+
+    this.wor().co(this)  // :)
+return this}
+
+b.cx=function(){
+  return this.GetContactList()
+}
+
+b.isDyn = function(){
+   return this.GetType() == b2d.Dynamics.b2Body.b2_dynamicBody
+}
+b.isKin = function(){
+    return this.GetType() == b2d.Dynamics.b2Body.b2_kinematicBody
+}
+b.isStat = function(){
+    return this.GetType() == b2d.Dynamics.b2Body.b2_staticBody
+}
+
+b.bc = b.broadcast = function (func) {
+    var origEdge, edge, nextEdge
+
+    if(func=='kill'){func = function(b){b.kill()}}
+
+    origEdge = this.co()
+    if(!origEdge){return this}
+
+    edge = origEdge.nextBody
+    while (edge) {
+
+
+
+        nextEdge = edge.nextBody
+
+
+        func(edge.body)
+        edge = nextEdge
+    }
+
+    edge = origEdge.prevBody
+    while (edge) {
+        nextEdge = edge.prevBody
+        func(edge.body)
+        edge = nextEdge
+    }
+    return this}
+
+
+
+b.cancel=function(cntr){if(O(cntr)){cntr.remove(this)}
+
+    else if(O(this.co())){
+
+        this.co().controller.remove(this)
+    }
+
+    }
+
+b.switchTo=function(co){
+    this.cancel()
+    co.body(this)
+return this}
 
 
 
 
-
-
+b.col2 = b.eachCx = b.withFixtsCollidingWithMe= function(func){ //brilliant
+    //uses the OTHER way to check contacts !!!!!!
+    var b = this, next, fixt, isMe, cx
+    cx = this.cx()
+    if(!cx){ $l('no contacts'); return false }
+    cx=cx.contact
+    while(cx){
+        next = cx.GetNext()
+        isMe = cx.a()==b  //find the fixture whose body is not me
+        func( (isMe? cx.B(): cx.A()), cx )   //and call func on IT (along with the actual cx)
+        cx=next}}
 
 
 

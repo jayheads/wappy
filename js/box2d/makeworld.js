@@ -11,7 +11,7 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
     if( U(ops.grav) && D(ops.g) ){ops.grav = ops.g}
     gravX=0; gravY=40
     if(N(ops.grav)){ gravY = ops.grav }
-    else if(A(ops.grav)){gravX = ops.grav[0]; gravY = ops.grav[1]} //else {ops.gravityY = ops.g;ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40;world = w = b2d.world(b2d.V(0, ops.gravityY))}
+    else if(A(ops.grav)){gravX = ops.grav[0]; gravY = ops.grav[1]} //else {ops.gravityY = ops.g;ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40;world = w = b2d.world(V(0, ops.gravityY))}
 
 
     w = b2d.world(V(gravX, gravY))
@@ -103,7 +103,7 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
         if(_mouseIsDown){
             _mouseJoint=_mouseJoint||b2d.mouseJoint(w.getBodyAtPoint(mX,mY))
-            if(_mouseJoint){_mouseJoint.SetTarget( b2d.V(mX, mY) )}}
+            if(_mouseJoint){_mouseJoint.SetTarget( V(mX, mY) )}}
 
         else if(_mouseJoint ){_mouseJoint.destroy(); _mouseJoint=null}
 
@@ -131,7 +131,7 @@ BASICWORLD=function(){
 z()
 
 
-    world = w =    b2d.world(  b2d.V(0, 40) )
+    world = w =    b2d.world(  V(0, 40) )
 
     world.can = $.canvas('X', 500, 500).id('canvas').A()
 
@@ -402,7 +402,7 @@ handleJoints=function(){
         $l('mouseIsDown')
 
         if (_mouseJoint ) { mj =_mouseJoint
-          //  _mouseJoint.SetTarget(b2d.V(mX, mY))
+          //  _mouseJoint.SetTarget(V(mX, mY))
         }
 
        else { _mouseJoint = _mouseJoint || b2d.mouseJoint(w.getBodyAtPoint(mX, mY)) }

@@ -23,15 +23,15 @@ $.fn.toD =$.fn.moveDown=function(num){num=num||20
     return this}
 
 
-$.keyDown = $.kD = kD = function self(key, funk){
+$.key = $.keyDown = $.kD = kD = function self(key, funk){
 
     if(O(key)){
-
-        _.each(key, function(val, arrKey){ self(arrKey,val)  })
+        _.each(key, function(func, arrKey){
+           if( s$(arrKey).isUpper() ){   $.kU(arrKey.toLowerCase(), func)  }
+           else { self(arrKey,func) }
+        })
 
     return}
-
-
 
     keyObj={
         up:38,u:38,
@@ -45,11 +45,12 @@ $.keyDown = $.kD = kD = function self(key, funk){
     if(keyObj[key]){key = keyObj[key]}
 
     $('body').on('keydown', function(e){
-
         if (e.which == key) { funk(e) }
-    })
+    })}
 
-}
+
+
+
 
 
 
@@ -284,17 +285,37 @@ drag = drg=function(element){
 
 }
 
-cjs.Keys = function(){}
+cjs.Keys = function(o){
+
+    if(O(o)){
+
+        if(F(o.u)){
+            cjs.tick(function(){if(cjs.Keys.u){ o.u(cjs.Keys.u) } })}
+
+        if(F(o.d)){
+            cjs.tick(function(){
+                if(cjs.Keys.d){ o.d(cjs.Keys.d) } })}
+
+        if(F(o.l)){
+            cjs.tick(function(){
+                if(cjs.Keys.l){
+                    o.l(cjs.Keys.l)
+                } })}
+
+        if(F(o.r)){
+            cjs.tick(function(){if(cjs.Keys.r){
+                o.r(cjs.Keys.r)
+            } })}
+
+    }
+}
+
+
 
 cjs.watchKeys=function(){
-
-
     cjs.Keys.l = cjs.Keys.left = false
-
     cjs.Keys.r = cjs.Keys.right = false
-
     cjs.Keys.u = cjs.Keys.up = false
-
     cjs.Keys.d = cjs.Keys.down = false
 
 
@@ -333,6 +354,15 @@ cjs.watchKeys=function(){
         cjs.Keys.d = cjs.Keys.down = false
     })}
 
+
+
+$.joystick  =function(){
+    $('#left').on('mousedown mouseover touchenter', function(e){cjs.Keys.left = true ;e.preventDefault()})
+    $('#left').on('mouseup mouseout touchleave', function(){cjs.Keys.left = false})
+    $('#jump').on('mousedown mouseover touchenter', function(){  cjs.Keys.up = true   })
+    $('#jump').on('mouseup mouseout touchleave', function(){  cjs.Keys.up = false  })
+    $('#right').on('mousedown mouseover touchenter', function(){ cjs.Keys.right = true})
+    $('#right').on('mouseup mouseout touchleave', function(){cjs.Keys.right = false })}
 
 TESTWATCHKEYS=function(){z()
     $.test=true

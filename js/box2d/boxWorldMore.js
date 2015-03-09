@@ -303,25 +303,31 @@ w.startListening = function(){var that=this
 
 
 //ADDS one or more handlers to beginHandlers array
-w.begin = w.onBegin=function(){var that = this
+
+w.beg = w.begin = w.onBegin=function(){var that = this
     _.each(arguments, function(func){
         that.beginHandlers.push(func)
     })
-}
+return this}
+
+
+
 w.pre = w.onPre=function(){var that = this
     _.each(arguments, function(func){
         that.preHandlers.push(func)
-    })}
+    })
+return this}
 w.post = w.onPost=function(){var that = this
     _.each(arguments, function(func){
         that.postHandlers.push(func)
     })
-}
+return this}
 
 w.end = w.onEnd=function(){var that = this
     _.each(arguments, function(func){
         that.endHandlers.push(func)
-    })}
+    })
+return this}
 
 
 
@@ -450,3 +456,30 @@ w.while = w.while2 =function(kind, kind2, func){
 
 
     return this}
+
+
+
+
+
+w.spriteBox=function(data, x, y, scale){ //for 400 x 400 flash squares !!!
+
+
+    x=N(x)?x:300;  y=N(y)?y:x //weird defaults - not intuitive
+
+
+    var sprite =  cjs.sprite(data).rXY(200).sXY(.5).a2(this.s)
+
+
+
+    if(N(scale)){sprite.sXY(scale)}
+
+    return this.box(x,y,100,100).bindSprite2(
+
+        sprite
+    )
+
+
+
+}
+
+

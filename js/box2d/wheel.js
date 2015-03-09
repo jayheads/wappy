@@ -1,486 +1,247 @@
-//joints
-BOXCANNON=function(){
+SHIPSPRITE=function(){
 
-
-    w=b2d.mW() // hmm.. want to matchs screen size
-
-    a= w.bumper(300,600, 200)
-
-    b= w.box(300,400, 100,100)
-
-    w.Rev( a, b  )
-
-}
-EASELCANNON=function(){z()
-
-    cjs.stage(600,600).A().A(
-        cjs.circ(200, 'red','brown').rXY(100).XY(400,700),
-        cjs.rect( 100, 100, 'blue', 'orange' ).XY(300, 600).rXY(50, 250))
-
-    RTT(rect)
-}
-EASELBOXCANNON=function(){z();w=b2d.mW() // hmm.. want to matchs screen size
-
-    w.Rev(
-        dome = w.baa(300,600, 200),
-        cannon = w.bi(300,400, 100,100))
-
-
-
-    w.stage.A(
-
-    cjs.circ( 200, 'red', 'blue' ).rXY(100).XY(400,700),
-
-    rect=cjs.rect( 100, 100, 'blue', 'red' ).XY(300,600).rXY(50,250)
-
-    )
-
-cjs.tick(function(){
-
-    if(rect.rt()>60){rect.rt(60)  }
-    if(rect.rt()<-60){rect.rt(-60)  }
-
-
-    cannon.aF( V( 0, -420 ),    cannon.worldCenter()    )
-
-})
-    RTT( rect )
-
+//look, no vars!
+    b2d.W({g:3})
+        .chalk('spritebox example')
+        .spriteBox({
+            "framerate":24,
+            "images":["thrusty.png"],
+            "frames":[
+                [0, 0, 512, 512, 0, -53, -36],
+                [512, 0, 512, 512, 0, -53, -36],
+                [1024, 0, 512, 512, 0, -53, -36],
+                [0, 512, 512, 512, 0, -53, -36],
+                [512, 512, 512, 512, 0, -53, -36],
+                [1024, 512, 512, 512, 0, -53, -36],
+                [0, 1024, 512, 512, 0, -53, -36],
+                [512, 1024, 512, 512, 0, -53, -36],
+                [1024, 1024, 512, 512, 0, -53, -36],
+                [0, 1536, 512, 512, 0, -53, -36],
+                [512, 1536, 512, 512, 0, -53, -36]],
+            "animations":{
+                "die": {"speed": 1, "frames": [8, 9, 10], next:false},
+                "shoot": {"speed": 1, "frames": [1,2,3,4,0], next:false},
+                "thrust": {"speed": 1, "frames": [5, 6, 7,0], next:false}}
+        }).thrustify()
 }
 
+SPACEZOOM=function(){
 
 
-GRAVITY=function(){
+    var width=600,
+        height=300,
+        gravity=0
 
-    //force not working?
+    //gotta make guy heavier
+    //thrust is good with grav 10 !!!!
+    // , walls:b2d.miniWalls
 
-    w=b2d.mW({
-        grav:0
+    w = b2d.mW({
+        W:width,
+        H:height,
+        grav:gravity,
+        walls:0
     })
+    earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).K('earth') //stat?  why dont i collide?
 
+    northStar.bindSprite('earth',.13)
 
-   bi1= w.ball(100,100,100)
-   bi2= w.ball(100,100,100)
+    setTimeout(function(){
 
+        earth.sprite.tweenLoop([{r: 360}, 10000])
 
-   cjs.tick(function(){
+        earth.sprite.tweenLoop([{kx:16}, 3000],[{kx:0}, 3000])
 
-        bi2.aF( 0, -200000 )
-
-    })
-}
-
-
-
+        w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      )
+        //  w.s.tweenLoop([{r: 360}, 10000])
 
 
 
+        p.collWithKind('star', function(){
+
+            p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100] )
+
+        })
+
+        earth.collWithKind('star', function(){
+
+            w.s.flash()
+        })
 
 
+    }, 300)
 
+    p= w.player(2.5, 'thrust')
+        .Y(200).horizCenter()
 
+    p.angDamp(8 )
 
-
-
-
-
-
-
-
-
-
-
-
-p=cjs.Container.prototype
-p.bindr = function( img, body, sxy, startingRotation ){
-    //img is an image name
-    //rotation is in degerees!
-    sxy = sxy||.4
-    startingRotation = N( startingRotation) ?  startingRotation : 6
-    this.bm(img,
-           function(bm){//b=bm  //bm.rCenter('+')
-
-               if ( A(sxy) ){  bm.sXY( sxy[0] , sxy[1] )} else { bm.sXY(sxy) }
-               bm.rotation =  startingRotation
-               cjs.tick( function(){
-                   bm.XY(body.X(),body.Y())
-                   bm.rotation =  body.rot() +  startingRotation
-               })
-
-               body.killSprite = body.kS = function(){  bm.remove() }})
-
-    return body}
-
-
-
-
-TESTBINDER = function(){b2d.mW()
-
-    b = w.box(200,200,30,100)
-    w.s.bindr('me', b)
-    w.s.bindr('chicks', w.box(200,200,200,200))
-    w.s.bindr('guy', w.brick())
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-BINDSHAPE=function(){
-
-
-    // why doesnt the ball (the body) bind the shape ITSELF QQQ!!!!!  it should of course - fix it
-
-    b2d.mW()
-
-    w.bindShape(  cjs.circ(20, 'red','blue'),   w.ball()   )
-
-    w.bindShape( cjs.circ(20, 'pink','blue'), w.ball(100,100,20)  )
-
-    w.bindShape( cjs.circ(20, 'purple','blue'), w.ball() )
+    p.SetLinearDamping(.8)
 
     w.debug()
 
-}
+    w.s.rXY(300,150)
 
+    _.times(80, function(){var x,y
 
+        x= (Math.random() * 2000) - 750
 
+        y = (Math.random() * 1600) - 600
 
-
-
-
-
-DEMO_IMPULSE =function(){
-
-    b2d.mW({ grav: 0 })
-
-    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
-
-    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
-
-    test={
-
-
-        impulse: function(){
-
-            body.ApplyImpulse(
-
-                V(10, -30), body.worldCenter()
-
-            )},
-
-
-
-        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
-
-
-
-        force: function(){
-
-            setInterval(
-
-                function(){
-
-                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
-
-                }, 100)
-
-        }
-
-
-
-    }
-
-
-
-
-}
-
-
-
-DEMO_SCALE =function(){b2d.mW()
-
-    var  radius=10, x=400, y=440, v={x:0, y:0}
-
-    //mouse joints messed up
-
-   w.bumper(400,300,40)
-     w.bumper(290,350,40)
-    w.bumper(280,220,40)
-
-
-    addBody()
-
-    cjs.tick( destroyAndAddBody )
-
-
-
-    function addBody(){
-
-        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
-
-
-    function destroyAndAddBody(){
-
-        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
-
-        radius += .1
-
-        x = body.X()
-
-        y = body.Y()
-
-        v = body.lV()
-
-        addBody() }
-
-
-}
-
-
-MEMORY=function(){z()
-
-    grid=[
-
-        ['guy','me',0,0],
-        [0,'me',0,0],
-        [0,0,0,0],
-        [0,'me','chicks','me']
-
-    ]
-
-
-
-    wGuy=function(){
-        var x=0,y=0
-        _.each(grid,  function(row,i){
-            _.each(row,function(cell,j){
-                if(cell=='guy'){ x=j, y=i}})})
-
-
-        return {x:x,y:y}}
-
-
-    dGuy=function(){
-
-        var p=wGuy()
-
-        grid[p.y][p.x]=0
-
-        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
-        else if( grid[p.y+1][p.x]==0){
-            grid[p.y+1][p.x]='guy'
-            playerGrid()
-
-        } else {alert('lose!')}}
-
-
-
-    rGuy=function(){
-        var p=wGuy()
-        grid[p.y][p.x]=0
-
-        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
-        else if( grid[p.y][p.x+1]==0) {
-            grid[p.y][p.x+1]= 'guy'
-            playerGrid()} else {alert('lose!')}}
-
-
-
-
-    s = cjs.stg(1000,1000).A()
-
-    s.a(ct=Ct())
-
-    _.each(grid, function(row,i){
-        _.each(row, function(cell,j){
-            ct.a(rct().xy(j*100+100,i*100+100))
-            if(cell=='me'){
-                ct.b('me',
-                    function(b){  b.XY(j*100+100,  i*100+100 ).sXY(.1)})}})})
-
-
-
-
-    playerGrid=function(){_.each(grid, function(row,i){
-
-        _.each(row, function(cell,j){
-
-            ct.A( rct().XY(j*100+100, i*100+100))
-
-            if(cell=='guy'||cell=='chicks'){  ct.b(cell, function(b){ b.xy(  j*100+100,  i*100+100 ).sXY(.1)})}
-
-        })})}
-
-
-
-    T( function(){
-
-        ct.remove()
-
-        s.A( ct = cjs.cont())
-        playerGrid()},  3000)
-
-
-
-
-    $.kD('d',dGuy)
-
-    $.kD('r',rGuy)
-
-
-
-}
-
-
-SLING=function(){
-
-    startpoint={}
-
-
-    slingshot = Shape.new()
-
-    addChild(self.slingshot)
-
-
-    onMouseDown=function(event){
-
-        if(ball.hitTestPoint(event.x, event.y)){
-            mouseJoint = w.j( b2.createMouseJointDef(self.ground, self.ball.body, event.x, event.y, 100000) )
-
-            startpoint.x = event.x
-            startpoint.y = event.y
-
-        }
-    }
-
-
-    onMouseMove=function(event){
-        if(mouseJoint !=null){
-
-            mouseJoint.setTarget(event.x, event.y)
-            slingshot.clear()
-            self.slingshot.setLineStyle(5, 0xff0000, 1)
-            self.slingshot.beginPath()
-            self.slingshot.moveTo(self.startpoint.x, self.startpoint.y)
-            self.slingshot.lineTo(event.x, event.y)
-            self.slingshot.endPath()}
-    }
-
-
-    onMouseUp=function(event){
-
-
-
-        if (mouseJoint != null){
-            w.dJ( mouseJoint)
-
-            mouseJoint = null
-
-            slingshot.clear()
-
-            strength = 1
-
-            xVect = ( startpoint.x-event.x)*strength
-            yVect = ( startpoint.y-event.y)*strength
-
-            ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
-
-        }
-    }
-
-}
-
-
-
-controller=function(){
-    return $.gameController().A()
-}
-
-
-
-
-$.joystick  =function(){
-
-
-
-    $('#left').on('mousedown mouseover touchenter', function(e){
-        cjs.Keys.left = true
-        e.preventDefault()
-    })
-
-    $('#left').on('mouseup mouseout touchleave', function(){
-        cjs.Keys.left = false})
-
-    $('#jump').on('mousedown mouseover touchenter', function(){  cjs.Keys.up = true   })
-
-    $('#jump').on('mouseup mouseout touchleave', function(){  cjs.Keys.up = false  })
-
-    $('#right').on('mousedown mouseover touchenter', function(){
-
-       cjs.Keys.right = true
-
+        w.circ(x, y, 4, 'white').den(0).rest(2).K('star')
 
     })
 
 
-    $('#right').on('mouseup mouseout touchleave', function(){cjs.Keys.right = false })
+
+
+
+
+
+
+
+
+    w.distColl(p, northStar).freq(.15).damp(0).len(50)
+
+
+
+    scaleFunc = function(){var dx,dy,dst
+        dx =    northStar.X()-p.X()
+        dy =     northStar.Y()-p.Y()
+        dst = Math.sqrt( (dx * dx) + (dy * dy) )
+        //$l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
+        dst =  300 /dst
+        return dst>2?2:  dst <.3? .3: dst}
+
+    keepGuyCentered(scaleFunc)
+    //instead of distance by diagnal distance, try just adding x and y distances
+
+
+
+
+    cjs.tick(function(){
+        w.s.alpha =scaleFunc()*2
+        earth.sprite.alpha =scaleFunc()
+    })
 
 }
 
 
-PHONEJUMP=function(){b2d.mW({W:300, H:400,
-        walls:function(){
-            w.brick(10,300, 40, 600).K('leftWall')
-            w.brick(450,300, 40, 600).K('rightWall')
-            w.brick(300, 0, 2400, 40).K('ceiling')
-            w.brick(300, 400, 800, 40).K('floor')}})
 
-    w.brick(200,400, 80,20)
-    w.brick(300,200,80,20)
+COINWARP=function(){
+
+    b2d.levelWarp()
+
+    p.linDamp(1)
+
+    _.times(2, function() {
+
+        w.greenGuy(Math.random()*600).marioWarping()//.I((Math.random()*20)-10,(Math.random()*20)-10)
+
+    })
+
+    p.K('bullet')
+
+    setInterval(coin, 300)
+
+    p.marioWarping()
+
+    score=0
+    badScore=0
+
+    w.begin(function(cx){
+
+        if(cx.with('coin')){
 
 
-     p = w.addMe()//.angDen( 10000 )
+            if(cx.a().K( )=='coin'){
+                cx.a().setDestroy()
+
+                if(cx.b().K()=='bullet'){score++}
+                if(cx.b().K()=='greenGuy'){badScore++}
+            }
+
+            if(cx.b().K( )=='coin'){
+                if(cx.a().K()=='bullet'){score++}
+                if(cx.a().K()=='greenGuy'){badScore++}
+                cx.b().setDestroy()}
+
+        }
+
+    })
 
 
-    $.joystick()
+
+    w.startKilling()
+
+
+    setInterval(function(){
+
+        w.s.pen( score + ' / '+ badScore)
+    }, 3000)
+}
+
+
+FLOCKING=function(){
+
+    //these just thrust and dont
+    //otherwise apply forces to neighbors.  but what if
+    //they 'SUCKED' instead of 'thrusted' ?
+    //is that the same as having a gravitational inwards force?
+
+    var w=b2d.W({g:0})
+
+
+    //  y = $ys(300, 200, 3).angDamp(0).linDamp(1)
+
+
+    var n = 0
+    _.times(40, function(){window['y'+ n++]= w.yShip().chug()})
+
+    y = w.yShip('o').thrustControl()
+
+    _.times(40, function(){window['y'+ n++]= w.yShip().chug()})
+
+
+    I(function(){
+
+        if(y.going()){ w.s.c.C('p') } else { w.s.c.C('z') }
+
+
+    },100)
+
+    w.debug()}
+
+
+GRAVITYRANGE=function(){w=b2d.W({g:10})
+
+    w.ball(100,100,50)
+    w.ball(100,200,40)
+
+    w.ball(100,100,50)
+    w.ball(100,200,40)
+    w.ball(100,100,50)
+    w.ball(100,200,40)
+    w.ball(100,100,50)
+    w.ball(100,200,40)
+    w.ball(100,100,50)
+    w.ball(100,200,40)
+
+    range = w.prism(
+        w.brick(600,300,220, 20),
+        w.box(600, 300,20, 250).linDamp(10)
+    ).lm(-100,100)
+
+    w.show(function(){return 'Welcome to Gravity Range: Current gravity is ' + range.val()  })
+
+
+    y= w.yShip().thrustControl().angDamp(1).shootOnSpace()
 
     cjs.tick(function(){
 
-        if(cjs.Keys.up){p.I(0,-100)}
-        if(cjs.Keys.left){p.I(-20, 0)}
-        if(cjs.Keys.right){p.I(20, 0)}
-    })
+        w.grav( range.val() )
+        y.linDamp(10)
 
+    })
 }
-
-
-
-controlX=function(p){
-    var player = p
-
-    kD('l',function(){
-        player.direction(0); player.move()})
-
-    kD('r',function(){
-        player.direction(1); player.move()
-    })
-
-    kD('u',function(){
-        if(player.direction()==1){player.aI(5,-12)}
-        if(player.direction()==0){player.aI(-5,-12)}})
-
-
-    return player}
 

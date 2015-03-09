@@ -8,18 +8,28 @@ b2.controls=function(){}
 
 b2.controls.thrust=function(p){var vec
 
-    if(cjs.Keys.left){p.rot(p.rot()-8)}
-    if(cjs.Keys.right){p.rot( p.rot()+ 8 )}
+
+    p.fixedRot(true)
+
+
+    if(cjs.Keys.left){p.rot( 15, '-')}
+
+    if(cjs.Keys.right){p.rot( 15, '+')}
+
 
     if(cjs.Keys.up){
-        vec = p.GetWorldVector( b2.V(0,-100) )
+        vec = p.GetWorldVector( V(0,-100) )
         p.impulse(vec.x/40, vec.y/40 )}
 
+
     if(cjs.Keys.down){
-        var vec= p.GetWorldVector(b2.V(0,-100))
+        var vec= p.GetWorldVector(V(0,-100))
         p.impulse(-vec.x/100, -vec.y/100 )}
 
 }
+
+
+
 
 
 
@@ -36,7 +46,7 @@ b2.controls.thrustGrav=function(p){var vec
         p.rot( p.rot()+ 8 )}
 
     if(cjs.Keys.up){
-        vec = p.GetWorldVector( b2.V(0,-100) )
+        vec = p.GetWorldVector( V(0,-100) )
 
         p.impulse(vec.x/20, vec.y/20 )
 
@@ -44,7 +54,7 @@ b2.controls.thrustGrav=function(p){var vec
     }
 
     if(cjs.Keys.down){
-        var vec= p.GetWorldVector(b2.V(0,-100))
+        var vec= p.GetWorldVector(V(0,-100))
         p.impulse(-vec.x/100, -vec.y/100 )}}
 
 

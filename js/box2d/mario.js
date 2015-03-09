@@ -1,145 +1,68 @@
 SCALINGLEVEL=function(){
-    b2d.level(); w.debug()
-    w.ice(800,280, 10000); w.rubber(50,100,300); w.rubber(-400,100,300)
-    w.rect(1200,30, 600,4).stat(); w.clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
+    b2d.level(); w.right.kill(); w.left.kill()
+
+    w.debug()
+
+    w.ice(800,280, 10000);
+    w.rubber(50,100,300); w.rubber(-400,100,300)
+    w.rect(1200,30, 600,4).stat();
+    w.clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
 
     w.s.XY(300, 150).rXY(300,150)
 
-    p.dif=function(){
-        return {x:  600 - this.X(),
-                y:  400 - this.Y()}
+
+    p.calcScale=function(){
+       return 1-((this.X()-300)/300)*.1
     }
 
 
+    cjs.tick(function(){
 
-    getScale=function( ){
+        p.centerScale(p.calcScale())
 
-        var x = p.X()
-        var scale = 1
-
-        x = x - 300
-
-        return scale -  (x/300) * .1
-    }
+    })
 
 
 
-    keepGuyCentered(getScale)
 
-
-    s2 = cjs.stage(500,500).A()//
-
-    s2.dot(300,250)
-    s2.c.drag().XY(0).C('X')//.opacity(.5)
 
 
 }
 
 
-keepGuyCentered=function(getScaleFunc){//used in SCALING LEVEL
-    //*******
-
-    cjs.tick(function(){ if(O(p.sprite)){
-        var x = p.X(),
-            y = p.Y(), dif,
-
-            scale = getScaleFunc()
-        w.s.sXY(scale)
-        w.s.X(300 - ((x - 300) * scale)  )
-        w.s.Y(150 - ((y - 150)  ) * scale )}})
-
-}
 
 
+b2d.marioWorld=function(){
 
-ZOOM= function(){z()
+    var width=600,
+        height=300,
+        gravity=400
 
-    s = cjs.stage(500,500).A()//
-    cjs.tick(function(){$l('scale: '+ s.scaleX + ' - - - centerXY: ?')})
-
-  //  s.bm('chicks', function(chicks){chicks.XY(0,0);  s.bm('me', function(bm){b = bm.XY(250)})  })
-
-   // s.sXY(.1).tweenLoop(  [{sxy:5}, 3000],    [{sxy:.1}, 3000]  )
-    s.XY(300, 150).rXY(300,150)
-
-s.bm('chicks', function(chicks){
-
-    c = chicks.XY(300,250).sXY(.3)
-})
-
-
-    s2 = cjs.stage(500,500).A()//
-
-
-    s2.dot(300,250)
-    s2.c.drag().XY(0).C('X')//.opacity(.5)
-
-
-
-    s.chalk(' --------- - - - - ---- - - - - - - - - -- - -  ----> stage coords: 300, 150 ',
-     ' --------- - - - - ---- - - - - - - -  ---->   and stage regX/Y is the same',
-    '- - - - --- - - - --- - - - --- keep pc centered at 300,250 as you scale')
-
-}
-
-b2d.level=function(){var width=600, height=300, gravity=400
-
-    w = b2d.W({
-
+   return  b2d.W({
         W:width,
         H:height,
         grav:gravity,
-        walls:0
-       // walls:b2d.miniWalls
+        walls:0  // walls:b2d.miniWalls
 
     })
-
-    w.left =  left = w.rect(0, height / 2, 40, height, 'pink').stat().K('leftWall').fric(.5).rest(.5)
-    w.right = right = w.rect(width, height / 2, 40, height).K('rightWall')
+}
 
 
-    w.floor =  floor = w.rect(height, width / 2, width*5, 40, 'orange').stat().K('floor').fric(.2).rest(.2)
-    w.ceiling =  ceiling = w.rect(height, 0, width*5, 40, 'orange').stat().K('ceiling').fric(.2).rest(.2)
+b2d.level=function(){
 
 
+    w = b2d.marioWorld().marioWalls()
 
+    return p = w.player(2.5).fric(.8).fixedRot(true).marioJumping()
+        .Y(200).horizCenter().den(1).fric(.2).rest(.2)
 
-    p = w.player(2.5).fric(.8)
-    p.fixedRot(true)
-    p.trig('feet', function(){})
-
-
-    cjs.tick(function(){p.rot(0)
-
-
-        if(p.trig.feet && cjs.Keys.up){
-            if(cjs.Keys.right){p.linVel(20, -60) }
-            else if(cjs.Keys.left){p.linVel(-20, -60) }
-            else {p.linVel(0, -80)}
-        }
-
-        else{
-
-               // if (cjs.Keys.right) {p.linVel(40, -10)}
-               // else if (cjs.Keys.left) {p.linVel(-40, 10)}
-
-
-            if (cjs.Keys.right) {p.I(10, -5)}
-            else if (cjs.Keys.left) {p.I(-10, -5)}
-        }
-
-        if (cjs.Keys.down){
-            p.trig.feet='true'
-            p.I(0, 20)}
-
-    })
-
-    //p.angDamp(100)
-
-
-    p.Y(200).horizCenter().den(1).fric(.2).rest(.2)
 
 }
+
+
+
+
+
 
 
 b2d.levelScrollX=function(){
@@ -153,15 +76,26 @@ b2d.levelScrollX=function(){
 }
 
 
+
+b2d.levelScrollY=function(){
+    b2d.level()
+
+    w.s.XY(300, 150).rXY(300, 150)
+    p.followY(600, 400)
+    w.debug()
+    right.kill()
+
+}
+
 b2d.levelScroll=function(){
     b2d.level()
     w.s.XY(300, 150).rXY(300, 150)
     p.follow(600, 400)
     w.debug()
 }
+
+
 b2d.levelScrollScale=function(){}
-
-
 b2d.levelWarp=function(){
 
     var width=600,
@@ -192,7 +126,6 @@ b2d.levelWarp=function(){
 
 
 }
-
 b2d.levelSpace=function(){
 
     var width=600,
@@ -234,7 +167,6 @@ b2d.levelSpace=function(){
 }
 
 
-
 b2d.levelJet=function(){
 
     var width=600,
@@ -264,10 +196,6 @@ b2d.levelJet=function(){
 
 
 }
-
-
-
-
 b2d.levelAutoScroll=function(num){
     num=num||4
     b2d.level()
@@ -288,6 +216,8 @@ b2d.levelAutoScroll=function(num){
 }
 
 
+
+
 MARIOORBIT=function(){
     b2d.levelSpace()
 
@@ -295,107 +225,7 @@ MARIOORBIT=function(){
 
     w.spring(p, northStar).freq(.2).damp(4)}
 
- SPACEZOOM=function(){
-
-
-    var width=600,
-        height=300,
-        gravity=0
-
-    //gotta make guy heavier
-    //thrust is good with grav 10 !!!!
-    // , walls:b2d.miniWalls
-
-    w = b2d.mW({
-        W:width,
-        H:height,
-        grav:gravity,
-        walls:0
-    })
-    earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).K('earth') //stat?  why dont i collide?
-
-     northStar.bindSprite('earth',.13)
-
-     setTimeout(function(){
-
-      earth.sprite.tweenLoop([{r: 360}, 10000])
-
-      earth.sprite.tweenLoop([{kx:16}, 3000],[{kx:0}, 3000])
-
-         w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      )
-       //  w.s.tweenLoop([{r: 360}, 10000])
-
-
-
-         p.collWithKind('star', function(){
-
-             p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100] )
-
-         })
-
-         earth.collWithKind('star', function(){
-
-             w.s.flash()
-         })
-
-
-     }, 300)
-
-    p= w.player(2.5, 'thrust').Y(200).horizCenter()
-
-    p.angDamp(8 )
-
-    p.SetLinearDamping(.8)
-
-    w.debug()
-
-    w.s.rXY(300,150)
-
-    _.times(80, function(){var x,y
-
-        x= (Math.random() * 2000) - 750
-
-        y = (Math.random() * 1600) - 600
-
-        w.circ(x, y, 4, 'white').den(0).rest(2).K('star')
-
-    })
-
-
-
-
-
-
-
-
-
-
-    w.distColl(p, northStar).freq(.15).damp(0).len(50)
-
-
-
-    scaleFunc = function(){var dx,dy,dst
-        dx =    northStar.X()-p.X()
-        dy =     northStar.Y()-p.Y()
-        dst = Math.sqrt( (dx * dx) + (dy * dy) )
-        //$l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
-        dst =  300 /dst
-        return dst>2?2:  dst <.3? .3: dst}
-
-    keepGuyCentered(scaleFunc)
-    //instead of distance by diagnal distance, try just adding x and y distances
-
-
-
-
-cjs.tick(function(){
-    w.s.alpha =scaleFunc()*2
-    earth.sprite.alpha =scaleFunc()
-})
-
-}
-
- SUNZOOM=function(){
+SUNZOOM=function(){
 
 
     var width=600,
@@ -469,8 +299,15 @@ cjs.tick(function(){
 
     cjs.tick(function(){
         w.s.sXY(scaleFunc())
+
+        p.centerScale(scaleFunc())
+
+
     })
+
+
    // keepGuyCentered(scaleFunc)
+
 
 
     p.K('bullet')
@@ -481,6 +318,21 @@ cjs.tick(function(){
 
 
 
+
+//removed but brought back for spacezoom
+keepGuyCentered=function(getScaleFunc){//used in SCALING LEVEL
+    //*******
+
+    cjs.tick(function(){ if(O(p.sprite)){
+        var x = p.X(),
+            y = p.Y(), dif,
+
+            scale = getScaleFunc()
+        w.s.sXY(scale)
+        w.s.X(300 - ((x - 300) * scale)  )
+        w.s.Y(150 - ((y - 150)  ) * scale )}})
+
+}
 
 
 
@@ -736,7 +588,7 @@ BADDIE=function(){
 
     b = w.ball(300,100,12)
 
-    g = b.bindSprite('guy',.2)
+    g = b.bindSprite('guy',.2).angDamp(.8)
 
     cjs.tick(function(){
         g.rot(0)
@@ -772,7 +624,7 @@ DENSITY=function(){z()
 
 
 
-MARIOSHOOT=function(){
+MARIOCANNON=function(){
 
 
 
@@ -1053,69 +905,15 @@ __coin = coin
     coin.linDamp(0)
 
     coin.I(
-            (Math.random()*20)-10,
-            (Math.random()*20)-10
+            (Math.random()* 15)-5,
+            (Math.random()* 15)-5
     )
 
 return coin}
 
-COINWARP=function(){
-
-    b2d.levelWarp()
-
-    p.linDamp(1)
-
-    _.times(2, function() {
-        warp(w.greenGuy(Math.random()*600))//.I((Math.random()*20)-10,(Math.random()*20)-10)
-    })
-
-    p.K('bullet')
-
-setInterval(coin, 1000)
-
-   warp(p)
-
-score=0
-    badScore=0
-
-    w.begin(function(cx){
-
-        if(cx.with('coin')){
-
-
-            if(cx.a().K( )=='coin'){
-                cx.a().setDestroy()
-
-                if(cx.b().K()=='bullet'){score++}
-                if(cx.b().K()=='greenGuy'){badScore++}
-            }
-
-            if(cx.b().K( )=='coin'){
-
-                if(cx.a().K()=='bullet'){score++}
-                if(cx.a().K()=='greenGuy'){badScore++}
-                cx.b().setDestroy()}
-
-        }
-
-    })
-
-
-
-    w.startKilling()
-
-
-    setInterval(function(){
-
-      w.s.pen( score + ' / '+ badScore)
-    }, 3000)
-}
-
-
-
-
 
   warp = function(p) {
+
     cjs.tick(function () {
         if (p.Y() < 0) {
             p.Y(300)
@@ -1134,10 +932,6 @@ score=0
     return p}
 
 
-
-
-
-
 JUMPRUN=function(){b2d.levelScrollX()
 
     p.linDamp(0).rest(.7)
@@ -1145,5 +939,17 @@ JUMPRUN=function(){b2d.levelScrollX()
     w.circ(50,50,30).rest(.7).den(1).fric(.5).I(100,100)
     floor.rest(.5)
     w.SetGravity(V(0,10))
+
+}
+
+
+
+
+HOOK=function(){
+
+
+
+
+
 
 }

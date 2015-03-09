@@ -68,7 +68,7 @@ U = function u(a,b){
 //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-I=function(func, int){
+I=function(func, int){int = N(int)?int:1000
 
     func()
 
@@ -109,7 +109,20 @@ G=function(a){
     })
 }
 //
-$l=function(a){var g=G(arguments)
+$l=function(a){var g=G(arguments),v
+
+    if(O(a) && N(a.x) && N(a.y) ){
+
+
+         v=a.toFixed()
+
+
+        $l(v.x + ' , ' + v.y)
+
+        return a}
+
+
+
 _.each(g,function(a){
 
     console.log(
@@ -121,6 +134,19 @@ _.each(g,function(a){
 })
 
 return a}
+
+
+
+
+_.slash =_.ensureSlash=function(str){
+    var hasSlash = str[0] == '/'
+    return hasSlash? str: '/'+str}
+
+String.prototype.ensureSlash=function(){
+    var hasSlash = this[0] = '/'
+    return hasSlash? this: '/'+this}
+
+
 //
 Utils = {}
 Utils.isNested = isArrayWhoseFirstObjIsAlsoAnArray = AA=function(a){return A(a) && A(a[0])}
@@ -240,6 +266,13 @@ gT = withGetTest = function(url){
     $.get('/'+url, function(aa){a=aa})
 }
 
+$.update=function(curr, update, g){var res
+    if(g.p){res = curr + update}
+    else if(g.n){res = curr - update}
+    else if(g.m){res = curr * update}
+    else if(g.d){res = curr / update}
+    else res = update
+    return res}
 
 
 //////////////////////////////////////////////////////////////////////

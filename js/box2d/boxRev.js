@@ -515,3 +515,55 @@ VINETRAP=function() {
     //trap(300)
 
 }
+
+
+
+BOXCANNON=function(){w=b2d.W() // hmm.. want to matchs screen size
+
+    a= w.bumper(300,600, 200)
+
+    b= w.box(300,400, 100,100)
+
+    w.rev( a, b  )
+
+}
+
+
+EASELCANNON=function(){s=cjs.S().A(
+
+    cjs.circ(200, 'red','brown').rXY(100).XY(400,700),
+    rect= cjs.rect( 100, 100, 'blue', 'orange' ).XY(300, 600).rXY(50, 250)
+)
+
+    RTT(rect)
+}
+
+EASELBOXCANNON=function(){w=b2d.W()
+
+    w.rev(
+        dome = w.baa(300,600, 200),
+        cannon = w.bi(300,400, 100,100))
+
+    w.s.A(
+
+
+        cjs.circ( 200, 'red', 'blue' ).rXY(100).XY(400,700),
+
+        rect = cjs.rect( 100, 100, 'blue', 'red' ).XY(300,600).rXY(50,250)
+
+    )
+
+    RTT( rect )
+
+    cjs.tick(function(){
+
+        if(rect.rot()> 60){rect.rot(60)  }
+        if(rect.rot()< -60){rect.rot(-60)  }
+
+        cannon.aF( V(0,-420),    cannon.worldCenter()    )
+
+    })
+
+
+
+}

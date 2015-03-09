@@ -16,10 +16,29 @@ motorSpeed - the target speed of the joint motor
 maxMotorForce - the maximum allowable force the motor can use
 */
 
-pj = b2d.Joints.b2PrismaticJoint.prototype
+pJ = b2d.Joints.b2PrismaticJoint.prototype
 //pj.limits = function(low, up){this.SetLimits(low/30, up/30); this.enableLimit(true); return this }
+pJ.lm =  function(lowerLimit, upperLimit){var g=G(arguments),l=g[0],u=g[1]
+    this.SetLimits( l/30, (u+1) /30  )
+    if(g.N){ this.EnableLimit(true)   }
+    return this}
+
+pJ.val = function(val){
+    if(U(val)){
+        return parseInt(this.GetJointTranslation()*30)
+    }
+
+}
+
+
+
+
 pd = b2d.Joints.b2PrismaticJointDef.prototype
 //pd.i=function(){this.Initialize.apply(this, G(arguments));return this}
+
+
+
+
 
 NEWPRISM=function(){
 
@@ -60,6 +79,10 @@ NEWPRISM=function(){
     })
 
 }
+
+
+
+
 MARIOELEVATOR =function(){b2d.levelScrollX()
 
 
@@ -98,7 +121,11 @@ MARIOELEVATOR =function(){b2d.levelScrollX()
 
 }
 
-b2d.prism = b2d.prismDef= function(a,b,c,d,e,f){//b2d.prismaticJointDef = PrismaticJointDef = prJt=
+
+
+
+
+b2d.prism = b2d.prismDef= function(b1, b2, lXA, lAA, lAB, rA){//b2d.prismaticJointDef = PrismaticJointDef = prJt=
 
     var j=    new b2d.Joints.b2PrismaticJointDef()
 
@@ -112,40 +139,56 @@ b2d.prism = b2d.prismDef= function(a,b,c,d,e,f){//b2d.prismaticJointDef = Prisma
 
     }
 
-
-    j.lm=function(a,b,c){
-        j.lT(a).uT(b)
-
-        if(c!='-'){j.eL(1)}
+    j.lm=function(lT,uT, enableLimit){
+        j.lT(lT).uT(uT)
+        if(enableLimit!='-'){ j.eL(true) }
         return j}
 
 
-    if( D(a) ){ j.A(a)}
+    if( D(b1) ){ j.A(b1)}
+    if( D(b2) ){ j.B(b2)}
 
-    if( D(b) ){ j.B(b)}
+    //local direction A ? the angle of the actual slider joint
+    j.lXA(D(lXA)?lXA: V(0,1))
 
-    j.lXA(D(c)?c: V(0,1))
 
-     j.lAA(D(d)?d: a.worldCenter())
+    //local axis A
+    j.lAA( D(d)? lAA : b1.worldCenter())
+    //local axis B
+    j.lAB( D(e)? lAB : b2.worldCenter())
 
-    j.lAB(D(e)?e: b.worldCenter())
 
-    if(D(f)){j.rA(f)}
+    // something with rotation
+    if( D(rA) ){  j.rA(rA)   }
 
     return j
 }
-PRISM=function(){b2d.mW()
+
+
+
+
+
+
+PRISM=function(){b2d.W()
+
 
     cart = w.box(500,200,20,20)
     ride = w.brick(540,150,180,90)
 
+    rC = ride.worldCenter()
+    cC = cart.worldCenter()
+
    jd = b2d.prism(
         ride,
         cart,
-         V( 1, .3 ), //.Normalize()
-         V(  ride.worldCenter().x,  ride.worldCenter().y +5),
-        cart.worldCenter(),
-        5)
+
+         V(1,.3), //.Normalize()
+
+         V(rC().x, rC.y+5),
+
+        cC,
+
+        5  )
 
 
    jd.mS(-100000).lT(-12).uT(12.5).eL(true).eM(true).mMF(10)//works
@@ -155,7 +198,16 @@ PRISM=function(){b2d.mW()
 
 }
 
-PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){ b2d.mW()
+
+
+
+
+
+
+
+
+
+PRISM2 =CHANGEPRISMLIMANDMOTOR=function(){world= b2d.W()
 
 
     cart = world.box(500,200,20,20)
@@ -296,3 +348,19 @@ PRISMLIMITS=function(){
 
 
 }
+
+
+
+
+
+
+
+
+
+function JointGetJointTranslation(){
+
+    var axis = this.m_bodyA.GetWorldVector(this.m_localXAxis1),
+        p1 = this.m_bodyA.GetWorldPoint(this.m_localAnchor1),
+        p2 = this.m_bodyB .GetWorldPoint(this.m_localAnchor2)
+    return axis.x*(p2.x-p1.x)  +  axis.y*(p2.y-p1.y) }//box2d source
+

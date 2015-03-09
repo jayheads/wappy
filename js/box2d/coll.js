@@ -39,6 +39,26 @@ cx.destroy = cx.destroyBoth = function(){
 return this}
 
 
+cx.bindCo = function(what){var cx=this,fixt
+
+    //if any fixt collides with a certain kind
+    //switch to the controller with that name
+
+    _.each(arguments,
+        function(what){
+
+        if(fixt = cx.with(what)){
+            fixt.switchTo(window[what])
+        }
+
+    })
+
+
+}
+
+
+
+
 
 // ??? do i use any of below???
 c.manifold =c.gM=function(){return this.GetManifold()}
@@ -48,19 +68,57 @@ c.pointCount = c.pC=function(){return this.gM().m_pointCount}
 c.points =c.p=function(){return this.gM().m_points}
 c.type =c.t=function(){return this.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
 c.next =c.gN=function(){return this.GetNext()}//Get the next contact in the world's contact list.
-c.worldManifold =c.gWM=function(){return this.GetWorldManifold()}
+
+
+
+
+c.wM = c.worMan=c.worldManifold=function(){
+    var m=b2d.worldManifold()
+    this.GetWorldManifold(m)
+    return m
+}
+
+c.norm = function(){var norm
+
+    norm = this.worMan().m_normal.toFixed(2)
+
+return norm}
+
+c.V = function(){
+   return this.worMan().m_points[0].mult()
+}
+
+//gets the linVel at time of collision!
+c.vA=function(){
+   return this.a().GetLinearVelocityFromWorldPoint( this.V() )
+
+}
+
+c.vB=function(){
+
+    return this.b().GetLinearVelocityFromWorldPoint( this.V() )
+
+}
+
+
+
+
+
+
 c.continuous =c.iC=function(){return this.IsContinuous()}//Does this contact generate TOI events for continuous simulation
 c.iE=function(){return this.IsEnabled()}//Has this contact been disabled?
 c.enabled = c.sE=function(a){
     this.SetEnabled(a?true:false);return this
 } // Enable/disable this this.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
-
 c.sensor = c.iS=function(){return this.IsSensor()}//Is this contact a sensor?
 c.setSensor  =c.sS=function(a){this.SetSensor(a?true:false);return contact}// Change this to be a sensor or-non-sensor this.
 
 c.touching = c.iT=function(){
     return this.IsTouching()
 }//Is this contact touching.
+
+
+
 
 
 
@@ -73,13 +131,10 @@ c.between = c.isBetween =  function(p1, p2){
     if (b.of(p1) && a.of(p2)) {return [b,a]}
 
 }
-
-
 //c.eitherIs= c.eitherBodyIs = function( u){return this.a().K() == u  || this.b().K() ==u}
 c.includes = c.eitherOf=  function( u){
-    if( this.A().of(u)  ){return this.A() }
-
-    if( this.B().of(u) ){return this.B() }
+    if(this.A().of(u)){ return this.B()}
+    if(this.B().of(u)){ return this.A()}
 }
 
 
@@ -90,9 +145,9 @@ c.with=function(a,b){
 }
 ///**!!!!!
 
-
-
 c.excludes=function(u){return !this.includes(u)}
+
+
 c.destroyIf=function(kind){
     this.a().setDestroyIf(kind);
     this.b().setDestroyIf(kind)
@@ -109,6 +164,7 @@ c.destroyOtherIf=function(kind){
         a.setDestroy()}
 
 }
+
 b2d.neither = function(body1, body2){
     return{is: function(data){return !body1.is(data)&&!body2.is(data)}}
 }
@@ -125,15 +181,9 @@ c.center=function(){
 }
 c.point=function(){
 
-   return this.worldManifold().m_points[0].$()
+   return this.worldManifold().m_points[0].mult()
 
 }
-c.worldManifold=function(){
-var m =b2d.worldManifold()
-    c.GetWorldManifold(m)
-return m}
-
-
 
 
 
@@ -145,26 +195,24 @@ WITH=function(){w= b2d.mW()
 
 
 
-      w.begin(function(cx){
-
+      w.beg(function(cx){
           if(cx.with('ball','brick')){alert('hit')}
       })
 
 
+
   }
 
-KLASS=function(){w= b2d.mW()
-    //b= w.ball().K([1,2,3])
-
-}
 
 
 
 
 
-COLLIDE=  function(){z()
 
-    w=b2d.mW()
+
+COLLIDE=  function(){w=b2d.W()
+
+
     w.platform(400,500,40,20)
     w.ball(440,100,50).K('dot')
     w.ball(440,200,20)
@@ -175,10 +223,17 @@ COLLIDE=  function(){z()
 
 
     w.coll('dot',
-        function(cx){c=cx
-            collX=cx.B().gB().X()
-            collY=cx.B().gB().Y()
-            w.stage.dot(collX, collY)})
+
+        function(cx){
+
+            collX = cx.b().X()
+
+            collY = cx.b().Y()
+
+            w.stage.dot(collX, collY)
+
+        })
+
 
 
     // w.collide('box', 'platform')
@@ -186,17 +241,26 @@ COLLIDE=  function(){z()
 }
 
 
-BEGIN=function(){
-    w=b2d.mW()
+BEGIN=function(){w=b2d.W()
+
     w.ball()
 
     w.on('new',
-        function(){w.ball(300,100,2)})
+        function(){
+            w.ball(300,100,2)})
 
-    w.begin(
-        function(){w.flag('new')})
+    w.beg(function(){
+
+        w.flag('new')
+
+    })
 
 }
+
+
+
+
+
 //post
 POSTSOLVE=function(){//only breaks at high impulse
 
@@ -610,7 +674,7 @@ POINTY2=function(){z()
 
         if(lastTime!=time){lastTime=time;$l(change++)
 
-            if(con.involves('brick')){//w.flag('moveBrick')
+            if(con.with('brick')){//w.flag('moveBrick')
 
             c    = con
             m    = c.GetManifold()
@@ -637,10 +701,8 @@ POINTY2=function(){z()
     function getWorldPoint(fixt){ }
 
 }
-POINTY=function(){z()
 
-
-    w = b2d.mW()
+POINTY=function(){b2d.W()
 
     ball = w.box(300,300, 60,160)
 
@@ -667,7 +729,7 @@ POINTY=function(){z()
 
         if(lastTime!=time){lastTime=time;$l(change++)
 
-            if(con.involves('brick')){//w.flag('moveBrick')
+            if(con.with('brick')){//w.flag('moveBrick')
 
                 c    = con
                 m    = c.GetManifold()
@@ -695,6 +757,7 @@ POINTY=function(){z()
     function getWorldPoint(fixt){ }
 
 }
+
 COLLCENTER2=function(){z()
     w = b2d.mW()
     ball = w.box(300,300, 60,160)
@@ -706,14 +769,14 @@ COLLCENTER2=function(){z()
     change = 0
     w.begin(function(con){
         if(lastTime!=time){lastTime=time;$l(change++)
-            if(con.involves('bumper')){
-                c = con, a=con.A(),  b= con.B()
+            if(con.with('bumper')){
+                a=con.A()
+                b= con.B()
                 w.s.dot(b.center())
                 w.s.squareDot( a.center() )
                 w.s.dot('b',con.center())}}})}
 
-COLLCENTER=function(){z()
-    w = b2d.mW()
+COLLCENTER=function(){w = b2d.W()
 
     ball = w.ball(300,300, 200)
 
@@ -723,13 +786,18 @@ COLLCENTER=function(){z()
     setInterval(function(){time++}, 1000)
     lastTime=-1
     change = 0
+
     w.begin(function(con){
-        if(lastTime!=time){lastTime=time;$l(change++)
-            if(con.involves('bumper')){
-                c = con, a=con.A(),  b= con.B()
+        if(lastTime!=time){lastTime=time;
+            $l(change++)
+
+            if(con.with('bumper')){
+
+                    a=con.A();  b= con.B()
                 w.s.dot(b.center())
                 w.s.squareDot( a.center() )
-                w.s.dot('b',con.center())}}})
+                w.s.dot('b',con.center())
+            }}})
 
 
 
@@ -763,7 +831,7 @@ MANIF=function(){
         c=con
         m= c.worldManifold()
         n   = m.m_normal
-        p    = m.m_points[0].$()
+        p    = m.m_points[0].mult()
 
 
 
@@ -781,47 +849,308 @@ MANIF=function(){
     w.s.chalk('so finding the actual contact point aint hard after all..')
 }
 
-NORMAL=function(){
 
-    w=mW({grav:0})
 
-    a1 = w.ball(150,150)
 
-    a2 = w.ball(300,300)
-    a3 = w.ball(500,300).bindSprite('guy')
 
-    w.begin(function(con){
+NORMAL=function(){w=b2d.W({g:0}).beg(begFunc)
+    .chalk(
+    'm:  worlManifold',
+    'n:  m.m_normal',
+    'p:  m.m_points[0].mult()'
+)
 
-        c=con
-        m= c.worldManifold()
-        n   = m.m_normal
-        p    = m.m_points[0].$()
 
-        //$l(n.x + ' - ' + n.y)
 
-        if(c.isBetween('ball', 'ball')){
+    w.bump(300, 300,60).K('ball')
 
-            w.s.dot('green', c.point())
-            a3.I(n.x*10, n.y*10  )
-            a2.I(-n.x*20, -n.y*10  )
-            a1.I(-n.x*200, -n.y*100  )}
+    a1 = w.bump(50, 545).K('ball')
+    a2 = w.bump(1150,50).K('ball')
 
-        coords = m.m_points[0]
+    tim = w.ball(500,300).bindSprite('guy').K('tim')
 
-        Math.abs(coords.x*=30)
-        Math.abs(coords.y*=30)
+    me = w.ball(700,300).bindSprite('me').K('me')
 
-      v=  c.a().GetLinearVelocityFromWorldPoint(coords)
 
-        w.s.dot(v)
+    function begFunc(cx){if(cx.with('tim', 'ball')){c = cx
 
+        w.dot('green', cx.point())
+
+        worMan  = cx.worMan()
+
+        norm  = cx.norm()
+
+        collV = cx.V()
+
+        w.dot('w', collV)
+
+
+
+        //a3.I(n.x*10, n.y*10  )
+        //a2.I(-n.x*20, -n.y*10  )
+        //a1.I(-n.x*200, -n.y*100)
+
+        Math.abs(collV.x *= 30)
+        Math.abs(collV.y *= 30)
+
+
+
+        //this gets th actual velocity of body A
+        //at moment of collision !!!!!!!
+
+
+        v = cx.vA()
+
+
+        $l(v)
+       // w.dot(  v )
+
+        me.linVel(v.x, v.y)  // HOLY SHIT!!! me absorbs enervy of tim's collision !!!!!!
+
+    }}
+
+
+
+
+
+
+}
+
+
+
+WORVEL=function(){b2d.W({g:0})
+
+
+
+    b = w.ball(100, 100)
+    b2 = w.ball(400, 400)
+
+   // w.dot(200,200)
+
+
+   cjs.tick(function(){
+
+v =b.velWor(b2.X(), b2.Y())
+       b2.linVel(
+           v.div(4)
+
+       )
+
+
+     //  w.pen(v.x + '      ' + v.y)
+
+
+       $l(b.linVel())
+   })
+
+
+}
+
+
+
+
+VEL=function(){
+
+    b2d.W()
+
+    b= w.ball(100,100)
+
+
+
+    cjs.tick(function(){
+
+        v = b.linVel()
+        vw = b.velWor()
+        vl = b.GetLinearVelocityFromLocalPoint()
+
+        $l('vel: ' + v.x)
+        $l('velW: ' + vw.x)
+        $l('velL: ' + vl.x)
+    })
+
+}
+
+
+
+
+
+
+YELLOWSHIP2=function(){
+
+        var w=b2d.W({g:4})
+
+
+
+     var   y = $ys(300, 400, 3).rot(90)
+
+
+     var   y1 = $ys(600, 400,3).rot(90)
+
+    var    onInt=function(){
+            y.I(0, -.7).rot(4, '+')
+            y1.linVel(0, -3).rot(4,'+')
+        }
+      //  setInterval(onInt,500)
+
+      var  onTime=function(){
+
+            y.I(0,-4)
+            y1.I(4,0)
+            //  .I(0.-4)
+
+        }
+
+       setTimeout(onTime, 500)
+
+
+
+    }
+
+YELLOWSHIPWATCH=function(){
+
+//ok this is crazy cool.. but something is wrong.  something is not getting reset, because force gets bigger each time
+    I(YELLOWSHIP, 1000)
+}
+
+
+
+
+
+
+TOURNEY=function(){var n = 0, x=50, Y=50
+
+   w=b2d.W({g:0})
+    .startKilling()//.debug()
+    .beg(function(cx){
+
+        if(cx.with('guyBul','bad')){
+
+            cx.a().K('destroy')
+            cx.b().K('destroy')
+        }
+
+
+
+        if(cx.with('badBul','guy')){
+
+
+
+             cx.a().K('destroy')
+             cx.b().K('destroy')
+
+        }})
+
+
+
+    y = w.yShip('blue', 100, 200, 6).angDamp(1).linDamp(1)
+        .rest(0).fric(1).K('guy')
+        .shootOnSpace('guyBul')
+        .thrustControl()
+
+
+    _.times(6, function(){
+
+        window['y'+ n++] =  w.yShip(x+=50, Y+=50,3).chug(5)
+            .K('bad').shootOnInt(1000, 'badBul').rot(45)
 
     })
 
-    w.s.chalk('')
+
+
 }
 
-b2d.Common.Math.b2Vec2.prototype.$=function(){
+SPACEBALL=function(){
 
-    return {x:this.x*30, y:this.y*30}
+    w=b2d.W({g:0})
+        .startKilling()//.debug()
+        .beg(function(cx){
+
+            if(cx.with('guyBul','bad')){
+
+                cx.a().K('destroy')
+                cx.b().K('destroy')
+            }})
+
+
+
+
+
+    y = w.yShip('blue', 100, 200, 6).angDamp(1).linDamp(1)
+        .rest(0).fric(1).K('guy')
+        .shootOnInt(200)
+        .thrustControl()
+
+      //    b=  w.ball(200,200, 80).den(1)
+
+    b=  w.rect(200,200, 150, 150).den(1)
+
+
+}
+
+
+WAR=function(){var n = 0, x=50, Y=50
+
+    w=b2d.W({g:0})
+        .startKilling()//.debug()
+        .beg(function(cx){
+
+            if(cx.with('bul','bad')){
+
+                cx.a().K('destroy')
+                cx.b().K('destroy')
+            }})
+
+
+    _.times(100, function(){
+
+        window['y'+ n++] =  w.yShip(x+=1, Y+=1, 3).chug(5)
+            .K('bad').shootOnInt(300, 'bul').rot(45)
+
+    })
+
+
+
+}
+
+
+
+YELLOWSHIPWTF=function(){
+
+    var w=b2d.W({g:3})
+
+
+
+    y = $ys(300, 400, 3)
+
+
+    y.dir=function(){
+
+        var v = this.GetWorldVector( V(Math.toRadians(0),  Math.toRadians(90)) )
+
+        v.x = Math.toDegrees( v.x )
+        v.y = Math.toDegrees( v.y )
+
+        return v}
+
+
+
+
+
+    I(function(){
+
+        var v = y.dir()
+
+
+        $l( v )
+
+        y.I(0, v.y/100)
+
+        y.rot(1, '+')
+
+
+
+
+    }, 100)
+
+
 }

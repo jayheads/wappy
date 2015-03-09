@@ -661,3 +661,8 @@ testEditDiv=function(){z()
 }
 
 
+
+$.img100=function(){
+    return $.img('me')
+        .XY(300,200).C('y').opacity(.9).WH(100)}
+
