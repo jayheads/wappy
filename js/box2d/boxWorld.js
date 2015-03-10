@@ -431,11 +431,11 @@ w.makeWalls=function(walls){
 
     else {
 
-        this.wall(height, width / 2, width, 40).K('floor')
-        this.wall(0, height / 2, 40, height).K('rightWall')
+      this.floor=  this.rect(height, width / 2, width, 40,'o').stat().K('floor')
+       this.right= this.rect(0, height / 2, 40, height,'o').stat().K('rightWall')
 
-        this.wall(width / 2, 0, width, 40).K('ceiling')
-        this.wall(width, height / 2, 40, height).K('leftWall')
+       this.roof= this.ceiling = this.rect(width / 2, 0, width, 40,'o').stat().K('ceiling')
+      this.left=  this.rect(width, height / 2, 40, height,'o').stat().K('leftWall')
     }
 }
 w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
@@ -587,8 +587,7 @@ w.addHundBalls=function(num){num=num||100;var that=this
         that.circ( 100  +(i*8),  50, 10) })
     return this}
 
-w.grav=function(x, y){var v, currGrav = this.GetGravity()
-
+w.G=function(x, y){var v, currGrav = this.GetGravity()
 
     if(U(x)){return  currGrav}
 
@@ -800,7 +799,7 @@ tCo = b2d.Dynamics.Controllers.b2TensorDampingController.prototype
 tCo.axis = function(axis){
    this.SetAxisAligned(axis)
     return this}
- 
+
 //grav
 gCo = b2d.Dynamics.Controllers.b2GravityController.prototype
 
@@ -1218,16 +1217,30 @@ TENSORNEVERSETTLE=function(){w=b2d.W({g:0}).pen('welcome to tensor (damping) con
 
     co = w.tensor()
 
-
-
-
+    w.debug()
+    y=w.ship()
 
     _.times(30, function(){
 
-        co.body(w.ball(400,300).lV(10,20))
+        co.body(
+
+            w.circ(400,300, 20, 'w').lV(10,20).linDamp(0)
+
+        )
     })
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 COEDGE=function(){w=b2d.W().debug()

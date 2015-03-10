@@ -245,3 +245,180 @@ GRAVITYRANGE=function(){w=b2d.W({g:10})
     })
 }
 
+TENSORSTAB2=function(){w=b2d.W({g:0}).debug();
+
+    co=w.tensor();
+
+  //  _.times(100, function(){co.body(w.circ(400,300, 15, 'w').lV(10,20).linDamp(0))})
+
+
+
+    y=w.ship()
+rot = 45
+    bg = w.yShip('blue', 500,300).stat()
+
+
+    bg.rotToVec=function(vec){
+
+        var wVec = bg.worldVec(vec),
+            rot =  vec.x/vec.y
+
+        rot =   360 - (Math.abs(rot) * 10)
+        $l(rot)
+
+        this.rot( rot   )
+
+    return this}
+
+    bg.rotTowardsShip=function(){
+
+      var yX=y.X(), yY= y.Y(),
+          bgX= bg.X(), bgY=bg.Y(),
+          dX = bgX-yX,
+          dY = bgY=yY,
+          vec = V(dX,dY)
+        this.rotToVec( vec )
+
+    }
+
+
+
+
+cjs.tick(function(){
+
+    bg.rotTowardsShip()
+
+})
+
+
+}
+
+
+
+Math.lineDistance= function( point1, point2 ){
+    var xs = 0;
+    var ys = 0;
+
+    xs = point2.x - point1.x;
+    xs = xs * xs;
+
+    ys = point2.y - point1.y;
+    ys = ys * ys;
+
+    return Math.sqrt( xs + ys );
+}
+
+TENSORSTAB=function(){w=b2d.W({g:0}).debug();
+
+    co=w.tensor();      _.times(100, function(){co.body(w.circ(400,300, 15, 'w').lV(10,20).linDamp(0))})
+
+    w.rect(200, 200,50,260  ).stat(); w.rect(140,200,140,50  ).stat()
+
+
+    w.rect(640,200,200, 50 ,'o' )
+
+    w.circ(500, 200,80, 'm')
+
+    y=w.ship().K('ship').linDamp(5)
+
+    bg = w.yShip('blue',500,300).den(3).linDamp(2).K('bg').angDamp(.2)
+
+    bg.rotTowards=function(y){
+        var yX=y.X(),
+            yY= y.Y(),
+            bgX= this.X()
+            ,bgY=this.Y(),
+            dX = yX-bgX ,dY = yY-bgY,
+            ang = -Math.toDegrees(Math.atan(dX/dY))
+        if(y.Y()>this.Y()){ang+=180}
+
+        this.rot(   ang + ((Math.random()*40)-20)     )}
+
+
+    I(function(){bg.angVel(0)
+      bg.rotTowards(y);
+
+
+    },500)
+
+    cjs.tick(function(){
+        bg.I()
+    })
+hits=0
+
+    w.beg(function(cx){
+
+        if(cx.with('ship', 'bg')){
+
+                impX = cx.worldManifold().m_points[0].x * 30
+                impY = cx.worldManifold().m_points[0].y * 30
+
+
+            if(
+                Math.lineDistance( V(impX,impY), V(y.X(),y.Y()))
+              > Math.lineDistance( V(impX,impY), V(bg.X(),bg.Y())
+
+            )){
+
+                setTimeout(function(){
+
+                    hits++
+                    w.C('g')
+                    bg.XY(300,300)
+                    y.XY(700,400)
+
+                }, 100)
+            } else {
+
+               // y.setDestroy()
+
+               setTimeout(function(){
+                   w.C('p')
+                   bg.XY(700,400)
+                   y.XY(100) }, 100)
+            }
+
+
+        }
+
+
+
+    }).startKilling()
+
+    w.show(function(){return 'hits: '+ hits})
+}
+
+
+
+STABTRAP=function(){w=b2d.W({g:0}).debug();
+
+    co=w.tensor();
+
+    //  _.times(100, function(){co.body(w.circ(400,300, 15, 'w').lV(10,20).linDamp(0))})
+
+
+
+    y=w.ship()
+    rot = 45
+    bg = w.yShip('blue', 500,300).stat().shootOnInt(200)
+
+    bg.rotTowardsShip=function(){
+        var yX=y.X(), yY= y.Y(),
+            bgX= bg.X(),bgY=bg.Y(),
+            dX = yX-bgX ,dY = yY-bgY,
+            ang = -Math.toDegrees(Math.atan(dX/dY))
+        if(y.Y()>this.Y()){ang+=180}
+        this.rot(ang)}
+
+
+
+
+    cjs.tick(function(){
+
+        bg.rotTowardsShip()
+
+    })
+
+
+}
+

@@ -73,10 +73,11 @@ c.next =c.gN=function(){return this.GetNext()}//Get the next contact in the worl
 
 
 c.wM = c.worMan=c.worldManifold=function(){
-    var m=b2d.worldManifold()
+    var m = b2d.worldManifold()
     this.GetWorldManifold(m)
     return m
 }
+
 
 c.norm = function(){var norm
 
@@ -347,20 +348,42 @@ BITS=function(){b2d.mW()
 
 
 GROUP=function(){b2d.mW()
-
-
     w.dyn(300,300, b2d.circ(80).bits(2, 5))  // colls 4,1
-
     w.dyn(300,300, b2d.poly(60,90,0,40,10).bits(8, 3)) //colls 2,1
-
-
     w.dyn(400,300 ,  b2d.circ(80).cat(2).group(-3)) //cat 1
-
     w.dyn(400,300 ,  b2d.poly( 60, 90, 0, 40, 10 ).group( -3 )) //cat 1
-
 }
 
 
+
+DYNAMICFILTER=function(){w=b2d.W().debug()
+
+    //Changing the collision filter at run-time
+        //You can change each of the categoryBits, maskBits, groupIndex
+        // by setting a new b2Filter in the fixture.
+        // Quite often you only want to change one of these,
+        // so it's handy to be able to get the existing filter first,
+        // change the field you want, and put it back.
+        // If you already have a reference to the fixture you want to change, this is pretty easy:
+
+    //get the existing filter
+
+   b= w.circ(300,300, 200,'b').rest(4).I(100,0)
+
+    fixt = b.list()
+
+    setTimeout(function(){
+        filter = fixt.GetFilterData()
+        filter.categoryBits = 0
+        // filter.maskBits = ...;
+        // filter.groupIndex = ...;
+        fixt.SetFilterData(filter)  //and set it back
+        w.dot(100,100)
+    }, 2000)
+
+
+
+}
 
 
 PRESOLVE =function(){
@@ -810,7 +833,8 @@ w.s.chalk('here you can clearly see that the center of the two fixtures',
 
 
 b2d.worldManifold = function(){
-    return new b2d.Collision.b2WorldManifold()}
+    return new b2d.Collision.b2WorldManifold()
+}
 
 
 MANIF=function(){
@@ -1151,6 +1175,64 @@ YELLOWSHIPWTF=function(){
 
 
     }, 100)
+
+
+}
+
+BIONIC=function(){w=b2d.W()
+    isHooked=false; distanceJoint=false
+
+    w.rect(320,480,640,20,'g').stat()
+    _.times(12, function(i){
+
+                w.rect(Math.random()*600+20,
+                        Math.random()*300,
+                        Math.random()*30+15,
+                        Math.random()*30+15
+
+                ).stat()
+
+                })
+    hero= w.rect(320,460,20,20,'b')
+
+
+
+   superCanvas( $(w.s.HUD.canvas) )
+       .MD(function(x,y){
+
+        $l('down ' + x + ', ' + y)
+
+        if (distanceJoint) {w.DestroyJoint(distanceJoint)}
+
+        // checking the body under the mouse
+        w.QueryPoint(function(fixture){
+            var touchedBody=fixture.body()
+            if (touchedBody.isStat()){
+                distanceJoint    = w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x/30,y/30)) //collideConnected=true
+                isHooked=true
+            }
+            return false
+        }, V(x/30,y/30))
+    })
+
+
+
+
+    superCanvas( $(w.s.HUD.canvas) )
+        .MU(function releaseHook(){
+            if(distanceJoint){
+                w.DestroyJoint(distanceJoint)
+            }})   // if I release the mouse, I destroy the distance joint
+
+
+    cjs.tick(function(){
+        // as long as the hook is active, I shorten a bit joint distance
+        if (isHooked) {
+        // BODY MUST BE AWAKE!!!!!!
+        hero.SetAwake(true)
+        distanceJoint.SetLength(distanceJoint.GetLength() * 0.97);
+    }
+})
 
 
 }

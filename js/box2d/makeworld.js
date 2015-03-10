@@ -61,7 +61,9 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
             function recordMouseCoords(e){
                 var touch = e.originalEvent.touches[0]
                 mX = (touch.clientX- w.x)/30
-                mY = (touch.clientY- w.y)/30}}).touchend( function(){   _mouseIsDown = false})
+                mY = (touch.clientY- w.y)/30}
+
+        }).touchend( function(){   _mouseIsDown = false})
 
 
 
