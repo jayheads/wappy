@@ -1179,60 +1179,10 @@ YELLOWSHIPWTF=function(){
 
 }
 
-BIONIC=function(){w=b2d.W()
-    isHooked=false; distanceJoint=false
-
-    w.rect(320,480,640,20,'g').stat()
-    _.times(12, function(i){
-
-                w.rect(Math.random()*600+20,
-                        Math.random()*300,
-                        Math.random()*30+15,
-                        Math.random()*30+15
-
-                ).stat()
-
-                })
-    hero= w.rect(320,460,20,20,'b')
-
-
-
-   superCanvas( $(w.s.HUD.canvas) )
-       .MD(function(x,y){
-
-        $l('down ' + x + ', ' + y)
-
-        if (distanceJoint) {w.DestroyJoint(distanceJoint)}
-
-        // checking the body under the mouse
-        w.QueryPoint(function(fixture){
-            var touchedBody=fixture.body()
-            if (touchedBody.isStat()){
-                distanceJoint    = w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x/30,y/30)) //collideConnected=true
-                isHooked=true
-            }
-            return false
-        }, V(x/30,y/30))
-    })
 
 
 
 
-    superCanvas( $(w.s.HUD.canvas) )
-        .MU(function releaseHook(){
-            if(distanceJoint){
-                w.DestroyJoint(distanceJoint)
-            }})   // if I release the mouse, I destroy the distance joint
 
 
-    cjs.tick(function(){
-        // as long as the hook is active, I shorten a bit joint distance
-        if (isHooked) {
-        // BODY MUST BE AWAKE!!!!!!
-        hero.SetAwake(true)
-        distanceJoint.SetLength(distanceJoint.GetLength() * 0.97);
-    }
-})
 
-
-}

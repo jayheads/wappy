@@ -27,7 +27,6 @@ d.X=  function(x){
     var pos = this.XY()
     if(U(x)){return pos.x}
 
-
     return this.XY(x, pos.y)
 }
 
@@ -1165,8 +1164,192 @@ b.col2 = b.eachCx = b.withFixtsCollidingWithMe= function(func){ //brilliant
         func( (isMe? cx.B(): cx.A()), cx )   //and call func on IT (along with the actual cx)
         cx=next}}
 
+//joints
+
+b.rev = function(nextBody){var body=this
+
+      this.wor().rev( body, nextBody  )
+
+    return nextBody
+}
 
 
+
+b.dist = function(nextBody){
+    var body=this
+
+    this.wor().dist( body, nextBody  )
+
+    return nextBody
+}
+
+
+
+
+b.destroyAllJoints = function(){
+    var b=this, toDestroy=[],
+          je=b.GetJointList()
+    while(je){
+        toDestroy.push(je.joint)
+        je=je.next}
+    _.each(toDestroy, function(j){w.DestroyJoint(j)})
+    return this}
+
+
+//player body stuff.. weapons, etc
+
+b.web=function(shouldKill){var p=this, w=this.wor(),
+
+    y=this.Y()-100,  x=this.X(), piece,web
+
+    this.webs = this.webs||[]
+    this.webs.push(web = Web(this, shouldKill))
+
+    piece = web.addPiece(p, web.Piece(x,y))   //add first piece to player
+
+    T(9, function(i){ piece = piece.add( web.Piece(x, y - i) ) })  //add rest to each other
+
+    piece.add(web.ball = w.circ(x, y - 100, 10, 'd').K('webBall').den(1).rest(0).fric(100))
+
+
+    function Web(p, shouldKill){
+
+
+
+        var web={
+        player:p,
+        connected:false,
+        pieces:[],
+        addPiece: function(toWhat, newPiece){
+            w.tightDist(toWhat, newPiece)
+            this.pieces.push(newPiece)
+            return newPiece},
+        Piece: function(x, y){var web=this,
+              piece = w.ropePiece(x, y).K('webPiece')
+
+            piece.add = function(newPiece){
+                return web.addPiece(this, newPiece)
+            }
+
+            return piece},
+        delPieces:function(){
+            _.each(this.pieces, function(piece){
+                piece.kill()
+
+            })
+
+            this.pieces=[]},
+        die:function(){var that=this
+            this.delPieces()
+           this.player.webs = _.reject(this.player.webs, function(web){return that === web})},
+        attach:function(toWhat){
+            this.connected=true
+              w.tightDist(toWhat, this.ball)
+        return this}}
+
+        if(shouldKill){
+
+            shouldKill=N(shouldKill)?shouldKill:1000
+
+            setTimeout(function(){
+                if(!web.connected){web.die()}
+            }, shouldKill)
+        }
+
+
+    return web}
+
+    return web}
+
+//when a web is created it gets web.connected=false
+//when it hits certain things and forms a joint, then connected->true
+//then it just dies
+
+//pressing DOWN should release the most recent of the connectedWebs
+//non connected Webs can be shot off!
+
+
+
+
+WEB=function(){w=b2d.W()
+
+
+p = w.ship().XY(500,300)
+
+
+}
+
+
+DESTROYJOINT= function(){w=b2d.W().startKilling(); w.floor.rest(0)
+    y = w.ship().XY(400,170).rot(265).stat()
+    w.beg(function(cx){var fixt; if(fixt=cx.with('bul')){if(fixt.body()!=y){
+        fixt.body().setDestroy()}}})
+
+
+    base = w.rect(255,50, 60,15,'r').stat()
+    w.rev(base, body = link(255,60 )  ); prev= body
+    w.rev(prev, body=link(255,90)  ); prev=body
+    w.rev(prev, body=link(255,120)  ); prev=body
+
+
+
+
+
+
+
+    bef =  body = link( 255, 150,'b' )
+
+     w.rev(prev, body); prev=body
+
+    red = body = link( 255, 180,'r' )
+   j1= w.rev(prev, body); prev=body
+
+    aft = body = link( 255, 210 ,'a')
+   j2= w.rev(prev, body); prev=body
+
+
+
+    je = aft.GetJointList()
+
+
+
+
+
+
+
+    w.rev(prev, body=link(255,240)  ); prev=body
+    w.rev(prev, body=link(255,270)  ); prev=body
+    w.rev(prev, body=link(255,300)  ); prev=body
+    w.rev(prev, body=link(255,330)  ); prev=body
+    ball = w.circ(255, 330, 20, 'd').den(1).rest(0); w.rev(prev, ball)
+
+
+    function link(x,y,color){color=color||'w'
+
+        return  w.rect(x,y, 10, 15, color).den(1).fric(0).rest(0)
+    }
+}
+
+
+/*
+
+
+
+ A joint edge:
+ -connects bodies and joints together in a joint graph
+ (each body is a node and each joint is an edge)
+
+ -belongs to a doubly linked list maintained in each attached body
+ (Each joint has two joint nodes, one for each attached body)
+
+
+ //these are all obj refs, not functions
+
+ .joint
+ .other(other body)
+ .prev(b2JointEdge):the previous joint edge in the body's joint list
+ .next(b2JointEdge):the next joint edge in the body's joint list
+ */
 
 
 

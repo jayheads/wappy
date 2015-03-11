@@ -15,9 +15,16 @@ ob.H=function(a){
 
 }
 ob.WH=function(w,h){return this.W(w).H(h||w)}
+
+
+
 ob.X=function(x,duration){//can add easing :)
+
+
     var g=G(arguments)
+
     if(U(x)){return this.x}
+
     if(g.p){
         x = this.x+x }
     else if(g.n){$l('n')
@@ -34,6 +41,13 @@ ob.X=function(x,duration){//can add easing :)
 
     else{this.x=x}
     return this}
+
+
+
+
+
+
+
 ob.Y=function(y,duration){//make same same x
     var g=G(arguments)
     if(U(y)){return this.y}
@@ -53,6 +67,24 @@ ob.Y=function(y,duration){//make same same x
 
     else{this.y=y}
     return this}
+
+ob.tickX=function(func){var ob=this
+
+    cjs.tick(function(){ob.X(
+        func()
+    )})
+
+    return this}
+
+ob.tickY=function(func){var ob=this
+
+        cjs.tick(function(){ob.Y(
+                func()
+        )})
+
+return this}
+
+
 ob.XY=function(x,y){
     if(U(x)){return {x:this.x, y:this.y}}
 

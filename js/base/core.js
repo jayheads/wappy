@@ -825,3 +825,22 @@ Math.distance = dst =function self(a,b){
 
 
 }
+
+
+ T = function(times,func){var timeout
+
+     if(N(times)){return _.times(times, function(i){func(i+1)})}
+
+     if(F(times)){
+         timeout=N(func)?func:100
+         func=times}
+
+    return setTimeout(func,timeout)
+
+ }
+
+
+
+
+
+

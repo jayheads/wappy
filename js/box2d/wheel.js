@@ -1,3 +1,84 @@
+WEBMAN = function(){w=b2d.W();   w.roof.kill();   w.right.kill();   w.left.kill()
+
+    block(400, 100)
+    block(800, 0)
+    block(1100, -50)
+    block(1300, -200)
+    function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
+    w.goal(1800, 0)
+
+    p = w.webMe(300,300).den(.14).fric(1)
+    p.canWeb=true
+
+    $.key({
+        right:function(){
+            if(cjs.Keys.down){
+                p.didShoot = true
+                if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
+            else {
+                if (p.isConnected()){p.F(100,0)}
+                else {p.I(8, 0)}}},
+        left:function(){
+            if(cjs.Keys.down){
+                p.didShoot = true
+                if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
+            if(p.isConnected()){p.F(-250,-50)}else {p.I(-8,0)}},
+        up: function(){
+            var web, ball, num, firstWeb=_.first(p.webs), iX, iY
+            if(p.canWeb) {
+                if (p.isConnected()  && !p.webs[1]){
+                    web = p.web(3000)
+                    ball = web.ball.XY(p.X(), p.Y() - 100)
+                    num = Math.abs(p.linVel().x * 2) // p.vX | vY | vR
+                    iX = cjs.Keys.right ? num : cjs.Keys.left ? -num : 0
+                    iY = -30
+                    ball.I(iX, iY)}
+                else { if( !p.webs || !p.webs[0] ){
+
+
+
+                    web = p.web(3000)
+                    ball = web.ball.XY(p.X(), p.Y() - 100)
+
+                    if (cjs.Keys.left) {
+                        ball.I(-30, -40)
+                    }
+                    else if (cjs.Keys.right) {
+                        ball.I(30, -40)
+                    }
+                    else {
+                        ball.I(0, -70)
+                    }
+                }}}
+            p.canWeb = false},
+        RIGHT:function(){
+            if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
+            if(cjs.Keys.down){p.shootRight()}},
+        LEFT:function(){
+            if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
+            if(cjs.Keys.down){p.shootLeft()}},
+        UP: function(){
+            var connected = _.reject(p.webs, function(web){return !web.connected})
+            if( A(connected) && connected[0] && connected[1]   ){  _.first(connected).die()  }
+            p.canWeb = true
+            p.shotForce=0},
+        DOWN:function(){
+            if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
+            p.didShoot=false}})
+
+    w.beg(function(cx){var fixt, web
+        if((fixt = cx.with('webBall','randomRect'))){
+            //p.canWeb=true
+            var ball= fixt[0].body(), rect = fixt[1].body(),
+            web = _.findWhere(p.webs, {ball: ball})
+            if(!web.connected){web.attach(rect)}}}).debug()
+
+    w.s.tickX(function(){return 600- p.X()})
+    w.s.tickY(function(){return 510- p.Y()})}
+
+
+
+
 SHIPSPRITE=function(){
 
 //look, no vars!

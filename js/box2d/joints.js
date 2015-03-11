@@ -152,10 +152,52 @@ j.b=function(a){
 j.freq= function(a){if(U(a)){return this.GetFrequency()}
     this.SetFrequency(a)
     return this}
-j.len= function(a){
-    if(U(a)){return this.GetLength()*30}
-    this.SetLength(a/30)
+
+
+
+
+j.len= function(a){var g=G(arguments),
+
+    len = this.GetLength() * 30
+
+    if(U(a=g[0])){return len}
+
+
+
+    this.SetLength(
+            $.update(len, a, g) / 30
+    )
+
+
     return this}
+
+j.shrink=function(){
+
+    this.len(0.97,'*')
+
+    return this}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 j.damp= function(a){if(U(a)){return this.GetDampingRatio()}
     this.SetDampingRatio(a)
     return this}

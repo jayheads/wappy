@@ -847,6 +847,116 @@ w.ship = function(x, y){
 }
 
 
+
+cjs.stopWatch=function(){
+
+
+    var watch = function self(reset){
+
+
+
+        var res = new Date().getTime()  - self.time
+
+        if(reset == '/'){self.reset()}
+
+        return  res
+
+
+    }
+
+
+
+    watch.reset=function(){this.time = new Date().getTime()}
+    watch.reset()
+
+   return watch
+
+}
+
+
+
+w.webMe=function(x,y){
+
+
+    sw = cjs.stopWatch()
+
+
+  var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixedRot(true).K('player')
+
+
+    p.isConnected=function(){var res, that=this
+        if( !A( this.webs )){ return false }
+        res = _.findWhere( that.webs, {connected:true} )
+        return true && res && true}
+
+
+    p.bulRight=function(x,y){
+       var bul = this.wor().circ(this.X()+80, this.Y()-20, 6, 'w')
+        if(N(y)){bul.I(x,y)}
+    return this}
+    p.bulLeft=function(x,y){
+
+        var bul = this.wor().circ(this.X()-80, this.Y()-20, 6, 'w')
+
+        if(N(y)){bul.I(x,y)}
+
+        return this}
+
+
+    p.getTime = function(){
+       var time =  this.shotClock()
+        this.shotClock.reset()
+
+   return time}
+
+
+
+    p.getForce = function(){
+
+       var time = p.getTime(),
+
+            force =  (time > 2500) ? 2000 : (time > 500)? time - 500: 0
+
+        force = force  / 30
+
+        if( force > 66){force = 66}
+    return force}
+
+
+    p.shootRight=function(){
+        var  force = this.getForce(),
+            iX= 100-(force*1.5),
+            iY= -force
+        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
+        this.bulRight(iX,iY)}
+
+    p.shootLeft=function(){
+        var  force = this.getForce(),
+            iX= -100 + (force*1.5),
+            iY= -force
+
+        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
+        this.bulLeft(iX, iY)
+
+    }
+
+
+
+
+
+    return p}
+
+
+
+
+w.goal=function(x,y){
+
+    w.rect(x-20, y-15,  10, 40,  'y').stat()
+    w.rect(x, y,  40,10,  'y').stat()
+    w.rect(x+20,y-15,  10, 40,  'y').stat()
+
+}
+
 w.sensorBucket=function(x,y,kind){
     var w=this,sens
 

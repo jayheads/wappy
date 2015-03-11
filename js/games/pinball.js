@@ -20,6 +20,9 @@ PINBALL=function(){b2d.W({  walls : 'makeWallsPinball'  }) //canvas.drag()
         flip()}
 
     function oneInTenChance(){return Math.random()>.9}}
+
+
+
 BALLS=function(){
 
 
@@ -46,29 +49,26 @@ BALLS=function(){
 
     force = 0
 
-
-
-    launchBall = function(){
-        force = N(force)? force: 3;
-        b = w.ball(20, 300, 12).den(1).fric(0).rest(0).I(0, force) // why was it 'heavier' when i changed it to circ???
-            b.bindSprite('me',.2)
-        force = 0}
-
-
-
-    $.kD('d', function(){
-
-        if(force == 0){force = 10}
-
+    $.kD({
+        down: function(){ if(force == 0){force = 10} },
+        DOWN : function(){
+            b = w.ball(20, 300, 12).den(1).fric(0).rest(0).bindSprite('me', .2)
+            b.I(0, force)                   // why was it 'heavier' when i changed it to circ???
+            force=0}
     })
 
+
+
+
     setInterval(function(){
-        if(force!=0){force *= 1.2}}, 100)
+        if( force != 0 ){  force *= 1.2   }
+    }, 100  )
 
-    $.kU('d', launchBall )
 
 
-    cjs.tick(function(){$l('force :' + force)})
+
+
+
 
 
     w.rectStat(900,550, 120,15, 'white').fric(0).K('ledge')
@@ -86,6 +86,8 @@ BALLS=function(){
         }
     })
 }
+
+
 
 
 

@@ -486,6 +486,8 @@ w.link = function self(x,y){var that=this, l
 
 
 
+
+
 VINE=function(){ b2d.level()
     p.SetFixedRotation(true)
     w.vine(100,10,15)
@@ -567,3 +569,434 @@ EASELBOXCANNON=function(){w=b2d.W()
 
 
 }
+
+
+BIONIC=function(){
+
+    w=b2d.W().randRects()
+
+    isHooked=false
+    distJ=false
+
+
+    hero= w.rect(320,460,20,20,'b')
+
+    $can = superCanvas($(w.s.HUD.canvas))
+
+    $can.MD(function(x,y){w.QueryPoint(function(fixture){
+
+        var touchedBody = fixture.body()
+        if(touchedBody.isStat()){
+            distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
+            isHooked = true}
+        return false
+
+    },  V(x,y).div())
+
+    }) //if(distJ){w.DestroyJoint(distJ)}
+
+    $can.MU(function(){
+        if(distJ){w.DestroyJoint(distJ)}
+    })   // if I release the mouse, I destroy the distance joint
+
+
+    cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
+
+        if(isHooked){
+
+            hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
+            distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
+        }
+    })
+
+
+}
+ROPEY=function(){w=b2d.W().debug()
+
+    w.roof.kill()
+
+
+
+    body = w.rect(255,50, 60,15,'g').stat()
+    link = body
+    for ( var i = 1; i <= 10; i++ ){func(i)}
+    function func(i){
+        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(2)
+        w.rev(link, body)//, V(255,i*30-15))
+        link = body}
+    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
+    w.rev(link, body)
+
+
+
+
+}
+CUPS2=function(){w=b2d.W()
+
+
+
+    body = w.rect(255,50, 60,15,'g').stat()
+    link = body
+
+    for ( var i = 1; i <= 10; i++ ){
+
+
+        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(0)
+        w.rev(link, body)
+        link = body
+
+    }
+
+
+
+
+    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
+    w.rev(link, body)
+
+
+    w.randRects()
+    isHooked=false
+    distJ=false
+
+
+    hero= w.rect(320,460,20,20,'b')
+
+    $can = superCanvas($(w.s.HUD.canvas))
+
+    $can.MD(function(x,y){w.QueryPoint(function(fixture){
+
+        var touchedBody = fixture.body()
+        if(touchedBody.isStat()){
+            distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
+            isHooked = true}
+        return false
+
+    },  V(x,y).div())
+
+    }) //if(distJ){w.DestroyJoint(distJ)}
+
+    $can.MU(function(){
+        if(distJ){w.DestroyJoint(distJ)}
+    })   // if I release the mouse, I destroy the distance joint
+
+
+    cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
+
+        if(isHooked){
+
+            hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
+            distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
+        }
+    })
+
+    _.times(8, function(){m=w.addMe().den(0).XY(700,400)})
+    _.times(4, function(){m=w.addMe().den(0).XY(700,300)})
+    _.times(1, function(){m=w.addMe().den(0).XY(700,200)})
+
+    y = w.ship()
+    w.debug()
+    f=null
+
+    w.beg(function(cx){var fixt
+
+        if(fixt = cx.with('bul')){f=fixt
+
+            b = fixt.body()
+
+         if(b != y){b.setDestroy()  }
+
+        }
+
+    }).startKilling()
+
+}
+
+BODYREVWORKS= function(){w=b2d.W().startKilling(); w.floor.rest(0)
+
+    prev = top = w.rect(255,50, 60,15,'g').stat()
+
+
+    _.times(10, function(i){
+        var next = link( 255, (i+1)*30 )
+        prev = prev.rev(next)
+
+    })
+
+
+
+
+    //body.rev(body2) returns body2 !!!!!
+
+
+
+    function link(x,y){
+        return  w.rect(x,y, 3, 15, 'w').den(1).fric(0).rest(0)
+    }
+
+
+
+    w.rev(prev,
+        w.circ(255, 330, 20, 'd').den(1).rest(0)
+    )
+
+
+
+
+    //ship
+    y = w.ship().XY(400,170).rot(265).stat()
+    w.beg(function(cx){var fixt
+        if(fixt=cx.with('bul')){if(fixt.body()!=y){
+            fixt.body().setDestroy()
+        }}})
+
+}
+
+
+shrink = function(){_.each(ropeJoints, function(j){j.shrink()})}
+cjs.waitFor=function(time){time=N(time)?time:1000
+    cjs.wait = true
+    setTimeout(function(){cjs.wait = false}, time)}
+
+$.inASec=function(func){
+
+    return setTimeout(func, 1000)
+}
+
+
+
+
+
+
+
+
+WEBO1=function(){w=b2d.W().randRects()
+
+    p = w.rect(400,500, 40,40,'o').rest(0).den(.1).fric(100).fixedRot(true).K('player')
+
+    p.hanging = false
+
+    p.makeWeb=function(){var piece
+        var p=this, y=this.Y()-1, x=this.X()
+        w=this.wor()
+
+        p.ropePieces = []
+
+        piece = w.ropePiece(x,y)
+
+        w.tightDist(p, piece )
+        p.ropePieces.push(piece)
+
+        T(9, function(i){var newPiece
+            newPiece = w.ropePiece(x, y-i)
+            w.tightDist(piece, newPiece)
+            p.ropePieces.push(newPiece)
+            piece = newPiece})
+
+        p.web = w.circ(x, y-10, 10, 'd').K('web')
+            .den(1).rest(0).fric(100)
+
+        w.tightDist(piece, p.web )
+
+
+return p}
+
+
+
+
+
+
+
+    p.destroyWeb =function(){var p=this
+
+        p.web.kill()
+        _.each(p.ropePieces, function(piece){
+            piece.kill()
+        })
+
+    }
+
+
+    $.key({
+
+        left:function(){p.I(-100,0)},
+
+        right:function(){p.I(100,0)},
+
+        down:function(){
+
+            if(p.hanging){
+                p.destroyWeb()
+                p.hanging = false
+            }
+        },
+
+
+
+        up: function(){
+                if(!p.hanging){
+                    p.makeWeb()
+                    p.web.I(0, -100)
+                }
+
+                else {p.I(0,-100)}}})
+
+
+
+
+
+    w.beg(function(cx){var fixt
+
+
+        if((fixt=cx.with('web','randomRect'))  && !p.hanging){
+                p.hanging=w.tightDist(fixt[1].body(), p.web )}
+
+
+
+
+        if(cx.with( 'web', 'floor')){
+
+
+             p.destroyWeb();p.hanging=false
+        }
+    })
+
+
+
+
+}
+
+
+
+
+WEBOBEARD=function(){w=b2d.W().randRects()
+
+
+    p = w.addMe(4).XY(300,300).rest(0).den(.1).fric(100).fixedRot(true).K('player')
+
+    p.isConnected=function(){var res, that=this
+
+        if( !A( this.webs )){ return false }
+
+        res = _.findWhere( that.webs, {connected:true} )
+
+    return true && res && true}
+
+
+
+
+
+    $.key({
+
+        left:function(){
+            if( p.isConnected() ){ p.I(-2,0)}
+
+        else { p.I(-20,0) }
+
+        },
+
+        right:function(){
+            if( p.isConnected() ){ p.I(2,0)}
+
+            else { p.I(20,0) }
+
+        },
+
+        down:function(){var connectedWebs
+
+
+           if( p.isConnected() ){
+
+               connectedWebs   =  _.where(p.webs, {connected:true})
+
+               _.last(connectedWebs).die()
+
+           }
+
+
+        },
+
+        up: function(){
+
+            if(!p.isConnected()){ p.web().ball.I(0, -100)   }
+
+
+
+           else {p.I(0,-10)}
+
+        }})
+
+
+
+    p.web().ball.I(0, -100)
+    w.floor.kill()
+
+    w.beg(function(cx){var fixt, web
+        if((fixt = cx.with('webBall','randomRect'))){var ball= fixt[0].body(), rect = fixt[1].body(),
+            web = _.findWhere(p.webs, {ball: ball})
+            if(!web.connected){web.attach(rect)}}
+
+
+        if(cx.with( 'web', 'floor')){
+
+        }
+    })
+
+
+    w.show(function(){
+        return 'is p connected?... ' + p.isConnected()
+    })
+
+
+}
+
+
+
+WEBO=function(){w=b2d.W()
+
+    w.roof.kill()
+    w.right.kill()
+    w.left.kill()
+
+    _.times(40, function(i){
+        w.rect(Math.random()*1100+20, Math.random()* 1000 - 950,
+                Math.random()*30+15, Math.random()*30+15
+        ).stat().K('randomRect')})
+
+
+    p = w.addMe(4).XY(300,300).rest(0).den(.1).fric(100).fixedRot(true).K('player')
+    p.isConnected=function(){var res, that=this
+        if( !A( this.webs )){ return false }
+        res = _.findWhere( that.webs, {connected:true} )
+        return true && res && true}
+
+
+    p.killWebs=function(){
+
+
+    }
+
+
+    $.key({
+        left:function(){   if( p.isConnected() ){ p.F(-100,0) }  else { p.I(-20,0) }   },
+        right:function(){  if( p.isConnected() ){ p.F(100,0)}  else { p.I(20,0) } },
+        down:function(){var connectedWebs; if( p.webs[0] ){    _.last(p.webs).die()  }  },
+        up: function(){if(!p.isConnected()){ p.web().ball.I(0, -100)   } else {p.I(0,-10)}}
+    })
+
+    w.beg(function(cx){var fixt, web
+        if((fixt = cx.with('webBall','randomRect'))){var ball= fixt[0].body(), rect = fixt[1].body(),
+            web = _.findWhere(p.webs, {ball: ball})
+            if(!web.connected){web.attach(rect)}}})
+
+    //p.web().ball.I(0, -100)
+
+cjs.tick(function(){
+
+    w.s.Y(510- p.Y()  )
+})
+
+
+w.debug()}
+
+
+

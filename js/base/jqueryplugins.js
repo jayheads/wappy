@@ -1442,7 +1442,7 @@ $.$=function(){
 
     return $}
 
-$.T = T=function(a,b){return setTimeout(_v(a),b)}
+$.T = function(a,b){return setTimeout(_v(a),b)}
 
 
 

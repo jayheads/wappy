@@ -208,7 +208,8 @@ slowFadeAway=function self(opacity){   z()
     if(opacity < 1){
         setTimeout(function(){
             self(opacity)}, 30)
-    }}
+    }
+}
 drawHalf=function(c,i){c.dI(i, -i.width/2, -i.h/2)}
 
 
@@ -367,7 +368,6 @@ $.joystick  =function(){
 TESTWATCHKEYS=function(){z()
     $.test=true
     cjs.watchKeys()}
-
 
 
 

@@ -50,7 +50,7 @@ w.destroyJoint=p.dJ=p.dj=function(a){ this.DestroyJoint(a); return this}
 
 
 
-w.dist=function(a, b, b1OffV, b2OffV){
+w.dist=function(a, b, b1OffV, b2OffV, len, freq, damp){
 //location pams are optional, and be default to their center ponts
 // note: if you passe them in, pass them as relative(local to body) coords
 //BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
@@ -58,11 +58,34 @@ w.dist=function(a, b, b1OffV, b2OffV){
     var b1V = a.worldCenter().mult(),
         b2V = b.worldCenter().mult(),
         jd = b2d.dJ(), j
+
     if(O(b1OffV)){b1V =  b1V.add(b1OffV)  }
     if(O(b2OffV)){b2V = b2V.add(b2OffV)}
+
     jd.init(a, b,  b1V.div(), b2V.div() )
     j = w.J(jd)
+
+    if(N(b1OffV)){damp=len; freq=b2OffV; len=b1OffV}
+
+
+    if(N(len)){j.len(len)}
+
+    if(N(freq)){j.freq(freq)}
+
+    if(N(damp)){j.damp(damp)}
+
+
+
     return j}
+
+w.tightDist=function(piece, newPiece){
+    return this.dist(piece, newPiece,1,1000,1000)
+
+}
+
+
+
+
 w.distColl=function(a, b, b1OffV, b2OffV){
 
     var b1V = a.worldCenter().mult(),

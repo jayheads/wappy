@@ -566,8 +566,30 @@ w.up=w.vert= function(num){
     num=N(num)?num:4
     this.each(function(b){b.Y(num,'-')})}
 
+//link for distance ropes
+
+w.ropePiece = w.distLink=function(x, y){var link
+
+  link = w.rect(x, y,3,5,'w').angDamp(10).rest(0)
+
+    return link}
+
 
 //add random bodies
+
+w.randRects  = function(){var that=this
+
+    _.times(30, function(i){that.rect(
+            Math.random()*1100+20,
+            Math.random()*150+40,
+            Math.random()*30+15,
+            Math.random()*30+15
+    ).stat().K('randomRect')})
+return this}
+
+
+
+
 w.addRandomBody = w.randomFixture=function(){
     var body= this.dynamic(Math.random() * 1000, 100,
         b2d.randomFixture())
