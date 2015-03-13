@@ -354,21 +354,25 @@ $.fn.xCenter=function(){
     return this.P( 'a' ).css({  left: '50%', 'margin-left': '-100px'  })}
 
 $.fn._getPosition=function(){
-    var e = this[0], x = 0, y = 0
-    while (E(e)) { //O(e)&&D(e.tagName)
+
+
+
+    var e = this[0],
+        x = 0,
+        y = 0
+
+    while (_.isElement(e)) {
         y += e.offsetTop
         x += e.offsetLeft
-        if (isBodyElement(e)) {
-            e = 0
-        }
-        e = e.offsetParent || e
+        if (isBodyElement(e)){e=0}
+        e=e.offsetParent||e
     }
     return { x: x, y: y }
-    function isBodyElement(e){
 
-        return O(e) && uC(e.tagName) == 'BODY'
+    function isBodyElement(e){return O(e)&& e.tagName.toUpperCase() == 'BODY'}
 
-    }}
+
+}
 
 
 
@@ -1445,7 +1449,51 @@ $.$=function(){
 $.T = function(a,b){return setTimeout(_v(a),b)}
 
 
+$.fn.pressmove=function(func){
+    var mouse_pressed
+    this.mousedown(function(){mouse_pressed=true})
+    this.mouseup(function(){mouse_pressed=false})
 
+
+
+    this.mousemove(function(e){
+
+
+        if(mouse_pressed){
+
+            func(e)
+
+        }
+
+    })
+
+
+
+
+
+
+    return this}
+
+$.fn.ctx=function(){
+    return this[0].getContext('2d')
+}
+$.fn.mousePoint=function(e, scale){
+    scale=N(scale)?scale:1
+    return V(e.pageX/scale,e.pageY/scale )}
+
+
+$.isCan=function(can){
+    if(O(can)){
+        return  $(can)[0].constructor.name=="HTMLCanvasElement"
+    }
+
+}
+
+$.fn.wor =$.fn.world=  function(){var can=this
+    var w = b2d.wor.apply(null,arguments).bug(can, 30, '*')
+    w.can = can
+    w.ctx = can.ctx()
+    return w}
 
 //dep
 $.dateTime = $.date =  dateTime=dt=function(a){

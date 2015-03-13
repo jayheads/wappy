@@ -70,16 +70,160 @@ fd.klass =function(klass){this.klasses = this.klasses || []
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 f = b2d.Dynamics.b2Fixture.prototype
+f.classCount=function(){
+    if(!A(this.classes)){return 0}
+    return this.classes.length
+
+}
+f.addClass = function(clas){if(U(clas)){alert('need to provide a class!'); return false}
+    this.classes = this.classes || []
+    var that=this,func
+
+    if(F(clas)){
+        func=_.bind(clas, that)
+        this.addClass( func( that.getClasses()) )
+        return this}
+
+    _.each(arguments,  function(clas){if( S(clas) ){clas=clas.trim()
+
+        _.each(clas.split(' '),
+            function(clas){clas=clas.trim()
+
+                if(clas!='' && !that.hasClass(clas)){
+
+                    that.classes.push(clas)
+                }
+            })
+
+
+    }})
+    return this}
+f.getClasses= f.getClass=function(){this.classes= this.classes||[]
+
+    return this.classes.join(' ')
+
+}
+
+f.toggleClass=function(clas){
+    if(U(clas)||clas==''){return false}
+
+    if(this.hasClass(clas)){
+        this.removeClass(clas)
+    } else {this.addClass(clas)}
+
+    return this}
+f.removeClass=function(clas){var ix
+    this.classes = this.classes||[]
+    if( S(clas) ){
+
+        if(this.hasClass(clas)){
+
+            ix = this.classes.indexOf(clas)
+
+            this.classes[ix] = null
+
+            this.classes = _.compact( this.classes )
+
+
+        }
+
+
+
+    }
+    return this}
+
+
+
+
+f.hasClass=f.hasClasses=function(clas){
+    if( U(clas) ){   return false}
+
+    var body = this, hasClass
+
+    this.classes = this.classes || []
+
+    _.each(arguments, function(clas){
+
+        if( S(clas) && clas ){clas = clas.trim()
+
+            if( _.contains( body.classes, clas)){hasClass = true}
+
+        }
+
+    })
+
+    return hasClass
+
+
+
+}
+f.hasAllClasses=function(clas){if(U(clas)||clas==''){return false}
+
+    var body=this,anyYes=null, anyNo=null
+
+    _.each(arguments, function(clas){
+
+
+        if(body.hasClass(clas)){anyYes=true}
+
+        else if(!body.hasClass(clas)){anyNo=true}
+
+
+
+    })
+
+    return (anyYes && !anyNo)
+
+
+}
+
+
+f.ofClass=function(){var body= this.body()
+    return this.hasClass.apply(this, arguments) ||
+       body.hasClass.apply(body, arguments)}
+
+f.be=function(kindOrFixt){
+    if(S(kindOrFixt)){return this.hasClass(kindOrFixt)}
+    if(b2d.isFixt(kindOrFixt)){return this == kindOrFixt}
+    return false}
+f.beOf=function(kindOrFixt){
+    if(S(kindOrFixt)){return this.ofClass(kindOrFixt)}
+    if(b2d.isFixt(kindOrFixt)){return this == kindOrFixt}
+    if(b2d.isBody(kindOrFixt)){return this.body() == kindOrFixt}
+    return false}
+f.beAmong=function(){}
+f.beNear=function(){}
+
+
+
+f.dyn=function(){var body = this.body()
+    body.dyn.apply(body, arguments)
+    return this}
+f.kin=function(){var body = this.body()
+    body.kin.apply(body, arguments)
+    return this}
+f.stat=function(){var body = this.body()
+    body.stat.apply(body, arguments)
+    return this}
 
 f.B=  f.body=f.gB=f.getBody=function(){return this.GetBody()}
 f.K= f.uD=function(data){
         if(U(data)){
             return this.GetUserData() }
         this.SetUserData(data);return this}
+
 f.is= function(kindOrFixt){
-    if(S(kindOrFixt)){return this.K() == kindOrFixt}
-    if(b2d.isFixt(kindOrFixt)){return this == kindOrFixt}
-    return false}
+
+    if(S(kindOrFixt)){
+        return this.K() == kindOrFixt
+    }
+
+    if(b2d.isFixt(kindOrFixt)){
+        return this == kindOrFixt}
+
+    return false
+}
+
 f.of= function(what){
     return  this.is(what) || (this.B().K()==what)
     return false}
@@ -87,9 +231,8 @@ f.near= function(what){var body = this.GetBody()
         //return (this.K()==what) || (body.K()==what)
         // if has sibling fixture that matches, return IT!
     return false}
-f.klass= function(klass){this.klasses = this.klasses || []
-    this.klasses.push(klass)
-return this}
+
+
 
 f.remove = function(){this.B().destroyFixt(this)} //can combine with kill?
 f.kill= function(){if(this.sprite  ){this.sprite.remove()}
@@ -214,10 +357,32 @@ f.index= function(a){
     if(U(a)){return this.GetFilterData().groupIndex}
     this.SetFilterData() // this.filter.groupIndex=a;  ????
     return this}
+
+f.isStat=function(){
+
+    return this.B().isStat()
+}
+f.isDyn=function(){
+
+    return this.B().isDyn()
+}
+f.isKin=function(){
+
+    return this.B().isKin()
+}
+
+
+
+
 f.testPoint= f.tP=function( point, y ){var success
     if(N(point)){point = V(point, y)}
-    success =  this.H().testPoint(this.B().GetTransform(), point)
+    success =  this.H().testPoint(
+        this.B().transform(),
+        point)
+
     return __success = success}
+
+
 
 
 f.verts= function(){
@@ -593,16 +758,13 @@ b2d.fixtParse=function(arr){
 
 
 
-
 FIXTURES=function(){z()
-
-
 
     guyInBed= [[30],[20, 30,30],[100,30]]
 
     dick = [[50, 300, 0,-100],[50, 100, 150],[50, -100, 150]] //[b2d.poly(50, 300, 0,-100), b2d.circ(50, 100, 150), b2d.circ(50, -100, 150)]
 
-    w=b2d.mW({
+    w=b2d.W({
         //walls:false
     })
 

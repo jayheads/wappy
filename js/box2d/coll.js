@@ -24,34 +24,213 @@ b2d.L = b2d.listener=b2d.contactListener= function(){
 /////////////////////////////////////////////
 
 cx =c = b2d.Dynamics.Contacts.b2Contact.prototype
-cx.filtering =c.fFF=function(){this.FlagForFiltering(); return contact}// Flag this contact for filtering.// Filtering will occur the next time step.
-cx.A=function(){return this.GetFixtureA()  }
-cx.B=function(){return this.GetFixtureB()  }
-
-cx.a=function(){ return this.A().gB()   }
-
-cx.b=function(){ return this.B().gB()   }
-
-cx.destroy = cx.destroyBoth = function(){
-
-    this.a().setDestroy()
-    this.b().setDestroy()
-return this}
+cx.A=function(){return this.GetFixtureA()}
+cx.B=function(){return this.GetFixtureB()}
+cx.a=function(){return this.A().body()}
+cx.b=function(){return this.B().body()}
 
 
-cx.bindCo = function(what){var cx=this,fixt
+cx.got=function(a,b,c,d){var cx=this
+    cx.has = function(hasWhat, func){
+        var cx = this,  fA=this.A(), fB=this.B(), res
 
-    //if any fixt collides with a certain kind
-    //switch to the controller with that name
+        if(F(func)){func=_.bind(func, cx)
+            if(fA.beOf(hasWhat)){res= func(fA,fB) || cx}
+            else if (fB.beOf(hasWhat)){res=func(fB,fA) || cx}
+            return D(res)?res:cx}
 
-    _.each(arguments,
-        function(what){
+        if(fA.beOf(hasWhat)){return [fA,fB]}
+        else if (fB.beOf(hasWhat)){return [fB,fA]}
+        return false
+    }
+    cx.hasBoth= function(what, whatElse, func){var cx=this,
+        fA= this.A(),  fB= this.B(), res
 
-        if(fixt = cx.with(what)){
-            fixt.switchTo(window[what])
-        }
+        if(F(func)){func=_.bind(func, cx)
+            if(fA.beOf(what)&&fB.beOf(whatElse)){res=func(fA,fB)}
+            else if(fB.beOf(what)&&fA.beOf(whatElse)){res=func(fB, fA)}
+            return D(res)?res:cx}
+
+        if(fA.beOf(what) && fB.beOf(whatElse)){
+            return [fA,fB]}
+        else if(fB.beOf(what) && fA.beOf(whatElse)){
+            return [fB,fA]}
+
+        return false
+    }
+
+    if(U(b) || F(b) ){return this.has.apply(this, arguments)}
+    return this.hasBoth.apply(this, arguments)
+}
+
+
+
+TAG1=function(){w=b2d.W({g:0}) .fadeTitle('i like how the ball bounces')  //w.show(function(){ return y.getClasses() + ' (' + y.classCount() + ')'})
+
+    w.debug()
+
+    y = w.ship(100,100).addClass('ship')
+
+    _.times(10,function(){
+        w.circ(600,300,40,'b').rest(.8).linDamp(.1).addClass('ball')
+    })
+
+   //   w.circ(200,200,40,'g').rest(.8).linDamp(.1).addClass('ball')
+
+
+    w.beg(function(cx){//trackClasses(cx)
+
+        cx.got('ball', function(ball, other){var vel
+
+            if(other.beOf('ship')){
+
+                w.each(function(b){
+
+                    if(b.isStat() &&  b.be('ball') ){
+
+
+                        b.dyn(true)
+                        b.C('b')
+
+                    }
+
+                })
+
+
+
+            }
+
+            else if(other.beOf('bul')){$l('v')
+                v  =  ball.body().linVel()
+
+                ball.stat()
+                ball.body().C('p')
+            }
+
+        })
 
     })
+
+
+    function trackClasses(cx){
+
+        fA = cx.A()
+        fB= cx.B()
+        bA= cx.a()
+        bB = cx.b()
+
+        w.s.each(function(o){
+            if(cjs.isText(o)){o.remove()}
+        })
+
+
+        w.chalk(
+
+                'fA: ' + (fA.getClass() || 'none')  ,
+                'fB: ' + (fB.getClass()|| 'none')   ,
+                'bA: ' + (bA.getClass() || 'none')  ,
+                'bB: ' + (bB.getClass()|| 'none'))
+
+    }
+
+    w.show(function(){var v = b.linVel()
+
+        return v.x.toFixed(2) + ' ' + v.y.toFixed(2)
+
+    })
+}
+
+
+
+TAG=function(){w=b2d.W({g:0}) .fadeTitle('i like how the ball bounces')  //w.show(function(){ return y.getClasses() + ' (' + y.classCount() + ')'})
+
+    w.debug()
+
+    y = w.ship(100,100).addClass('ship')
+
+    _.times(10,function(){
+        w.circ(600,300,40,'b').rest(.8).linDamp(.1).addClass('ball')
+    })
+
+    //   w.circ(200,200,40,'g').rest(.8).linDamp(.1).addClass('ball')
+
+
+    w.got('ball', function(ball, other){var vel
+
+        if(other.beOf('ship')){
+
+            w.each(function(b){
+                    if(b.isStat() &&  b.be('ball') ){b.dyn(true)
+                        b.C('b')}}
+                )}
+
+
+        else if(other.beOf('bul')){ball.stat()
+                ball.body().C('p')}})
+
+}
+
+
+
+
+
+
+
+
+
+//c.eitherIs= c.eitherBodyIs = function( u){return this.a().K() == u  || this.b().K() ==u}
+cx.includes = c.eitherOf=  function( u){
+
+    if(this.A().of(u)){ return this.B() }
+    if(this.B().of(u)){ return this.A() }
+}
+cx.excludes=function(u){return !this.includes(u)}
+
+
+cx.between = c.isBetween =  function(p1, p2){
+      var a= this.A(), b= this.B()
+
+    if(a.of(p1) && b.of(p2)){return [a,b]}
+    if(b.of(p1) && a.of(p2)){return [b,a]}
+
+}
+
+
+
+
+
+cx.with=function(a,b){
+
+    if(!b){return this.includes(a)}
+    return this.between(a,b)
+}
+
+
+
+
+
+
+cx.destroy = cx.destroyBoth = function(){
+    this.a().setDestroy()
+    this.b().setDestroy()
+    return this}
+cx.destroyIf=function(kind){
+    this.a().setDestroyIf(kind);
+    this.b().setDestroyIf(kind)}
+cx.destroyOtherIf=function(kind){
+    var a=this.a(), b=this.b()
+    if(a.is(kind)){b.setDestroy()}
+    else if(b.is(kind)){a.setDestroy()}}
+cx.bCo =cx.bindCo = cx.bindController = function(what){var cx=this,fixt
+    //if any fixt collides with a certain kind
+    //switch to the controller with that name
+    _.each(arguments,
+        function(what){
+            if(fixt = cx.with(what)){
+                fixt.switchTo(window[what])
+            }
+
+        })
 
 
 }
@@ -60,42 +239,58 @@ cx.bindCo = function(what){var cx=this,fixt
 
 
 
+
+
+cx.continuous =c.iC=function(){return this.IsContinuous()}//Does this contact generate TOI events for continuous simulation
+cx.iE=function(){return this.IsEnabled()}//Has this contact been disabled?
+cx.enabled = c.sE=function(a){
+    this.SetEnabled(a?true:false);return this
+} // Enable/disable this this.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
+cx.sensor = c.iS=function(){return this.IsSensor()}//Is this contact a sensor?
+cx.setSensor  =c.sS=function(a){this.SetSensor(a?true:false);return contact}// Change this to be a sensor or-non-sensor this.
+
+cx.touching = c.iT=function(){
+    return this.IsTouching()
+}//Is this contact touching.
+
+
+
 // ??? do i use any of below???
-c.manifold =c.gM=function(){return this.GetManifold()}
-c.localPlaneNormal =c.lPN=function(){return this.gM().m_localPlaneNormal}
-c.localPoint =c.lP=function(){return this.gM().m_localPoint}
-c.pointCount = c.pC=function(){return this.gM().m_pointCount}
-c.points =c.p=function(){return this.gM().m_points}
-c.type =c.t=function(){return this.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
-c.next =c.gN=function(){return this.GetNext()}//Get the next contact in the world's contact list.
+cx.manifold =c.gM=function(){return this.GetManifold()}
+cx.localPlaneNormal =c.lPN=function(){return this.gM().m_localPlaneNormal}
+cx.localPoint =c.lP=function(){return this.gM().m_localPoint}
+cx.pointCount = c.pC=function(){return this.gM().m_pointCount}
+cx.points =c.p=function(){return this.gM().m_points}
+cx.type =c.t=function(){return this.gM().m_type}//Get the contact manifold.//  Do not modify the manifold unless you understand// the internals of Box2D
+cx.next =c.gN=function(){return this.GetNext()}//Get the next contact in the world's contact list.
 
 
 
 
-c.wM = c.worMan=c.worldManifold=function(){
+cx.wM = c.worMan=c.worldManifold=function(){
     var m = b2d.worldManifold()
     this.GetWorldManifold(m)
     return m
 }
 
 
-c.norm = function(){var norm
+cx.norm = function(){var norm
 
     norm = this.worMan().m_normal.toFixed(2)
 
-return norm}
+    return norm}
 
-c.V = function(){
-   return this.worMan().m_points[0].mult()
+cx.V = function(){
+    return this.worMan().m_points[0].mult()
 }
 
 //gets the linVel at time of collision!
-c.vA=function(){
-   return this.a().GetLinearVelocityFromWorldPoint( this.V() )
+cx.vA=function(){
+    return this.a().GetLinearVelocityFromWorldPoint( this.V() )
 
 }
 
-c.vB=function(){
+cx.vB=function(){
 
     return this.b().GetLinearVelocityFromWorldPoint( this.V() )
 
@@ -105,66 +300,11 @@ c.vB=function(){
 
 
 
+cx.filtering =c.fFF=function(){//whats the point?
+    this.FlagForFiltering();
+    return contact}// Flag this contact for filtering.
+// Filtering will occur the next time step.
 
-c.continuous =c.iC=function(){return this.IsContinuous()}//Does this contact generate TOI events for continuous simulation
-c.iE=function(){return this.IsEnabled()}//Has this contact been disabled?
-c.enabled = c.sE=function(a){
-    this.SetEnabled(a?true:false);return this
-} // Enable/disable this this.//   This can be used inside the pre-solve contact listener. // The contact is only disabled for the current time step// (or sub-step in continuous collision).
-c.sensor = c.iS=function(){return this.IsSensor()}//Is this contact a sensor?
-c.setSensor  =c.sS=function(a){this.SetSensor(a?true:false);return contact}// Change this to be a sensor or-non-sensor this.
-
-c.touching = c.iT=function(){
-    return this.IsTouching()
-}//Is this contact touching.
-
-
-
-
-
-
-c.between = c.isBetween =  function(p1, p2){
-      var a= this.A(), b= this.B()
-
-
-    if (a.of(p1) && b.of(p2)) {return [a,b]}
-
-    if (b.of(p1) && a.of(p2)) {return [b,a]}
-
-}
-//c.eitherIs= c.eitherBodyIs = function( u){return this.a().K() == u  || this.b().K() ==u}
-c.includes = c.eitherOf=  function( u){
-    if(this.A().of(u)){ return this.B()}
-    if(this.B().of(u)){ return this.A()}
-}
-
-
-// ******!!!!!!
-c.with=function(a,b){
-    if(!b){return this.includes(a)}
-    return this.between(a,b)
-}
-///**!!!!!
-
-c.excludes=function(u){return !this.includes(u)}
-
-
-c.destroyIf=function(kind){
-    this.a().setDestroyIf(kind);
-    this.b().setDestroyIf(kind)
-
-}
-c.destroyOtherIf=function(kind){
-
-    var a=this.a(), b=this.b()
-
-    if(a.is(kind)){
-        b.setDestroy()}
-
-    else if(b.is(kind)){
-        a.setDestroy()}
-
-}
 
 b2d.neither = function(body1, body2){
     return{is: function(data){return !body1.is(data)&&!body2.is(data)}}

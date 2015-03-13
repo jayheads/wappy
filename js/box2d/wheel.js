@@ -1,16 +1,29 @@
-WEBMAN = function(){w=b2d.W();   w.roof.kill();   w.right.kill();   w.left.kill()
+WEBMAN = function(){
+
+
+     w = b2d.W({ g:40 })
+
+   // w = wor({g:40})
+
+
+    w.roof.kill();   w.right.kill();   w.left.kill()
 
     block(400, 100)
     block(800, 0)
     block(1100, -50)
     block(1300, -200)
+
     function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
+
     w.goal(1800, 0)
 
-    p = w.webMe(300,300).den(.14).fric(1)
+    p = w.webMe(394,530).den(.14).fric(1)
     p.canWeb=true
 
-    $.key({
+    $.key(
+
+        {
+
         right:function(){
             if(cjs.Keys.down){
                 p.didShoot = true
@@ -32,7 +45,8 @@ WEBMAN = function(){w=b2d.W();   w.roof.kill();   w.right.kill();   w.left.kill(
                     num = Math.abs(p.linVel().x * 2) // p.vX | vY | vR
                     iX = cjs.Keys.right ? num : cjs.Keys.left ? -num : 0
                     iY = -30
-                    ball.I(iX, iY)}
+                    ball.I(iX, iY)
+                }
                 else { if( !p.webs || !p.webs[0] ){
 
 
@@ -64,7 +78,14 @@ WEBMAN = function(){w=b2d.W();   w.roof.kill();   w.right.kill();   w.left.kill(
             p.shotForce=0},
         DOWN:function(){
             if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
-            p.didShoot=false}})
+            p.didShoot=false}
+
+    }
+
+    )
+
+ 
+
 
     w.beg(function(cx){var fixt, web
         if((fixt = cx.with('webBall','randomRect'))){
@@ -75,37 +96,6 @@ WEBMAN = function(){w=b2d.W();   w.roof.kill();   w.right.kill();   w.left.kill(
 
     w.s.tickX(function(){return 600- p.X()})
     w.s.tickY(function(){return 510- p.Y()})}
-
-
-
-
-SHIPSPRITE=function(){
-
-//look, no vars!
-    b2d.W({g:3})
-        .chalk('spritebox example')
-        .spriteBox({
-            "framerate":24,
-            "images":["thrusty.png"],
-            "frames":[
-                [0, 0, 512, 512, 0, -53, -36],
-                [512, 0, 512, 512, 0, -53, -36],
-                [1024, 0, 512, 512, 0, -53, -36],
-                [0, 512, 512, 512, 0, -53, -36],
-                [512, 512, 512, 512, 0, -53, -36],
-                [1024, 512, 512, 512, 0, -53, -36],
-                [0, 1024, 512, 512, 0, -53, -36],
-                [512, 1024, 512, 512, 0, -53, -36],
-                [1024, 1024, 512, 512, 0, -53, -36],
-                [0, 1536, 512, 512, 0, -53, -36],
-                [512, 1536, 512, 512, 0, -53, -36]],
-            "animations":{
-                "die": {"speed": 1, "frames": [8, 9, 10], next:false},
-                "shoot": {"speed": 1, "frames": [1,2,3,4,0], next:false},
-                "thrust": {"speed": 1, "frames": [5, 6, 7,0], next:false}}
-        }).thrustify()
-}
-
 SPACEZOOM=function(){
 
 
@@ -206,9 +196,6 @@ SPACEZOOM=function(){
     })
 
 }
-
-
-
 COINWARP=function(){
 
     b2d.levelWarp()
@@ -263,137 +250,191 @@ COINWARP=function(){
 }
 
 
-FLOCKING=function(){
+KILLEVERYTHING=function(){w=wor()
 
-    //these just thrust and dont
-    //otherwise apply forces to neighbors.  but what if
-    //they 'SUCKED' instead of 'thrusted' ?
-    //is that the same as having a gravitational inwards force?
+    w.s.XY(120,50).sXY(.8)
 
-    var w=b2d.W({g:0})
+    body = w.rect(255,50, 60,15,'g').stat()
+    link = body
 
-
-    //  y = $ys(300, 200, 3).angDamp(0).linDamp(1)
+    for ( var i = 1; i <= 10; i++ ){
 
 
-    var n = 0
-    _.times(40, function(){window['y'+ n++]= w.yShip().chug()})
-
-    y = w.yShip('o').thrustControl()
-
-    _.times(40, function(){window['y'+ n++]= w.yShip().chug()})
-
-
-    I(function(){
-
-        if(y.going()){ w.s.c.C('p') } else { w.s.c.C('z') }
-
-
-    },100)
-
-    w.debug()}
-
-
-GRAVITYRANGE=function(){w=b2d.W({g:10})
-
-    w.ball(100,100,50)
-    w.ball(100,200,40)
-
-    w.ball(100,100,50)
-    w.ball(100,200,40)
-    w.ball(100,100,50)
-    w.ball(100,200,40)
-    w.ball(100,100,50)
-    w.ball(100,200,40)
-    w.ball(100,100,50)
-    w.ball(100,200,40)
-
-    range = w.prism(
-        w.brick(600,300,220, 20),
-        w.box(600, 300,20, 250).linDamp(10)
-    ).lm(-100,100)
-
-    w.show(function(){return 'Welcome to Gravity Range: Current gravity is ' + range.val()  })
-
-
-    y= w.yShip().thrustControl().angDamp(1).shootOnSpace()
-
-    cjs.tick(function(){
-
-        w.grav( range.val() )
-        y.linDamp(10)
-
-    })
-}
-
-TENSORSTAB2=function(){w=b2d.W({g:0}).debug();
-
-    co=w.tensor();
-
-  //  _.times(100, function(){co.body(w.circ(400,300, 15, 'w').lV(10,20).linDamp(0))})
-
-
-
-    y=w.ship()
-rot = 45
-    bg = w.yShip('blue', 500,300).stat()
-
-
-    bg.rotToVec=function(vec){
-
-        var wVec = bg.worldVec(vec),
-            rot =  vec.x/vec.y
-
-        rot =   360 - (Math.abs(rot) * 10)
-        $l(rot)
-
-        this.rot( rot   )
-
-    return this}
-
-    bg.rotTowardsShip=function(){
-
-      var yX=y.X(), yY= y.Y(),
-          bgX= bg.X(), bgY=bg.Y(),
-          dX = bgX-yX,
-          dY = bgY=yY,
-          vec = V(dX,dY)
-        this.rotToVec( vec )
+        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(0)
+        w.rev(link, body)
+        link = body
 
     }
 
 
 
 
-cjs.tick(function(){
+    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
+    w.rev(link, body)
 
-    bg.rotTowardsShip()
+
+    w.randRects()
+    isHooked=false
+    distJ=false
+
+
+    hero= w.rect(320,460,20,20,'b')
+
+    $can = superCanvas($(w.s.HUD.canvas))
+
+    $can.MD(function(x,y){w.QueryPoint(function(fixture){
+
+        var touchedBody = fixture.body()
+        if(touchedBody.isStat()){
+            distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
+            isHooked = true}
+        return false
+
+    },  V(x,y).div())
+
+    }) //if(distJ){w.DestroyJoint(distJ)}
+
+    $can.MU(function(){
+        if(distJ){w.DestroyJoint(distJ)}
+    })   // if I release the mouse, I destroy the distance joint
+
+
+    cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
+
+        if(isHooked){
+
+            hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
+            distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
+        }
+    })
+
+    _.times(8, function(){m=w.addMe().den(0).XY(700,400)})
+    _.times(4, function(){m=w.addMe().den(0).XY(700,300)})
+    _.times(1, function(){m=w.addMe().den(0).XY(700,200)})
+
+    y = w.ship()
+    w.debug()
+    f=null
+
+    w.beg(function(cx){var fixt
+
+        if(fixt = cx.with('bul')){f=fixt
+
+            b = fixt.body()
+
+            if(b != y){b.setDestroy()  }
+
+        }
+
+    }).startKilling()
+
+    cjs.tick(function(){
+        w.each(function(b){
+            if(b.Y()> 800){b.kill()}
+        })
+    })
+
+    w.show(function(){return w.GetBodyCount()
+    })
+}
+
+
+
+CHEMICALS = function self(){
+    w=b2d.W({
+    walls: 0
+}).debug()
+
+    w.s.sXY(.8).XY(125,50)
+
+_.times(2, function() {
+
+    w.randRects({y:0,z:3})
+    w.randRects({y:100,z:3})
+    w.randRects({y:200,z:3})
+    w.randRects({y:300,z:3})
+    w.randRects({y:400,z:3})
 
 })
 
 
+
+    w.Q(function(f, b){  b.kill(); return true  },
+        550, 250,
+
+        650, 350
+    )
+
+
+
+    y = w.ship().XY(600,300).K('ship')
+
+
+
+    w.Q(function(f, b){  b.kill(); return true}, 350,  50,    450, 150)
+    _.times(80, function(){  w.circ(400, 80,8,'r').K('circ')  })
+
+
+    w.Q(function(f, b){  b.kill(); return true}, 850,  50, 950, 150)
+    _.times(80, function(){   w.rect(900, 100, 14,14,'b').K('rect')  })
+
+
+gameOver=false
+
+
+    w.beg(function(cx){var fixt,body
+
+
+
+            if(fixt = cx.with('bul')){
+                body = fixt.body()
+                if(body != y){body.setDestroy()}
+            }
+
+            if(cx.with('ship','circ') || cx.with('ship', 'rect') ) {lose() }
+
+
+
+        if(cx.with('circ','rect')){
+
+            w.pen('you win')
+            y.stat()
+            w.each(function(b){  if(b!=y){b.kill()} })
+
+            setTimeout(self, 1000)
+
+        }
+
+
+
+    })
+
+
+
+    w.startKilling()
+    function lose() {
+        w.pen('you lose')
+        y.stat()
+        w.each(function (b) {
+            if (b != y) {
+                b.kill()
+            }
+        })
+        setTimeout(self, 1000)
+    }
+
+
 }
-
-
-
-Math.lineDistance= function( point1, point2 ){
-    var xs = 0;
-    var ys = 0;
-
-    xs = point2.x - point1.x;
-    xs = xs * xs;
-
-    ys = point2.y - point1.y;
-    ys = ys * ys;
-
-    return Math.sqrt( xs + ys );
-}
-
 TENSORSTAB=function(){w=b2d.W({g:0}).debug();
 
-    co=w.tensor();      _.times(100, function(){co.body(w.circ(400,300, 15, 'w').lV(10,20).linDamp(0))})
+    co = w.tensor()
 
-    w.rect(200, 200,50,260  ).stat(); w.rect(140,200,140,50  ).stat()
+    _.times(100, function(){
+        co.body(w.circ(400,300, 10, 'b').lV(10,20).linDamp(0))
+    })
+
+    w.rect(200, 200,50,260  ).stat()
+    w.rect(140,200,140,50  ).stat()
 
 
     w.rect(640,200,200, 50 ,'o' )
@@ -417,7 +458,7 @@ TENSORSTAB=function(){w=b2d.W({g:0}).debug();
 
 
     I(function(){bg.angVel(0)
-      bg.rotTowards(y);
+        bg.rotTowards(y);
 
 
     },500)
@@ -425,19 +466,19 @@ TENSORSTAB=function(){w=b2d.W({g:0}).debug();
     cjs.tick(function(){
         bg.I()
     })
-hits=0
+    hits=0
 
     w.beg(function(cx){
 
         if(cx.with('ship', 'bg')){
 
-                impX = cx.worldManifold().m_points[0].x * 30
-                impY = cx.worldManifold().m_points[0].y * 30
+            impX = cx.worldManifold().m_points[0].x * 30
+            impY = cx.worldManifold().m_points[0].y * 30
 
 
             if(
                 Math.lineDistance( V(impX,impY), V(y.X(),y.Y()))
-              > Math.lineDistance( V(impX,impY), V(bg.X(),bg.Y())
+                > Math.lineDistance( V(impX,impY), V(bg.X(),bg.Y())
 
             )){
 
@@ -451,12 +492,12 @@ hits=0
                 }, 100)
             } else {
 
-               // y.setDestroy()
+                // y.setDestroy()
 
-               setTimeout(function(){
-                   w.C('p')
-                   bg.XY(700,400)
-                   y.XY(100) }, 100)
+                setTimeout(function(){
+                    w.C('p')
+                    bg.XY(700,400)
+                    y.XY(100) }, 100)
             }
 
 
@@ -467,11 +508,201 @@ hits=0
     }).startKilling()
 
     w.show(function(){return 'hits: '+ hits})
+
+    //setTimeout(function(){  alert('time is up') }, 60000)
+}
+
+
+YELLOWGAME=function(){
+
+   KILLEVERYTHING()
+
+    setTimeout(CHEMICALS, 10000)
+
+    setTimeout(TENSORSTAB, 20000)
+
+
+
 }
 
 
 
-STABTRAP=function(){w=b2d.W({g:0}).debug();
+MARIOMAZE=function(){
+    b2d.levelSpace()
+
+    //ceiling.kill(); //right.kill()
+
+    grid= w.grid([
+        [1,0,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,0,1],
+        [1,0,0,0,1,0,0,0,1],
+        [1,0,1,0,1,0,1,1,1],
+        [1,0,1,0,1,0,0,0,1],
+        [1,0,1,1,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1]
+
+
+    ],  100, -100, 14, 40)
+    score=100
+
+    cjs.tick(function(){
+        grid.angVel(.2)
+        w.s.HUD.pen(score)
+    })
+
+
+    w.begin(function(cx){
+
+        if(cx.with('player', 'grid')){ score--
+
+
+        }})
+
+    // grid.angDamp(1)
+
+    p.XY(220, 70)
+}
+
+//
+
+MARIOBIG=function(){
+
+
+
+
+
+    w = b2.mW({
+        grav:500,
+        walls:0
+
+    })
+
+
+    w.platform  =function(x,y,W,H){//=brk=brick=
+
+        x = N(x) ? x : 60; y = N(y) ? y : x
+        W = N(W) ? W : 30; H = N(H) ? H : W
+
+
+        pd = b2.polyDef(W, H).r(0)
+
+        pd.restitution = .3
+
+        return this.A(
+
+            b2.staticDef(x,y),pd
+
+
+        ).K('platform')
+
+    }
+
+
+
+    w.platform(800,500,600,100)
+
+    w.platform(300, 530,100,100)
+
+
+    w.platform(1400,300,600,100)
+
+    w.platform(1800,500,1000,100)
+
+    w.platform(1900,200,600,100)
+
+
+
+
+    w.footListener()
+    w.startKilling()
+
+
+    p = w.addMe().XY(300,-300)
+
+
+
+    p.angDamp( 10000 )
+
+
+    cjs.tick(function(){
+        p.rot(0)
+
+        w.left(4)
+
+        if(p.Y() > 2000){ p.XY(300,-300) } //comeback
+
+        if(b2d.onGround){
+            if(cjs.Keys.up){p.jumping(180,30)} else {p.byVel(40)}}
+        else { p.byImp(10) }
+    })
+
+
+
+
+    w.box(800,100).bindSprite('guy')
+
+}
+
+BILLIARDS=function(){
+
+    b2d.W({
+
+        g:0,
+        walls: function(){}
+    })
+
+
+    w.rectStat(10,300,40,920) //left
+
+    w.rectStat(1100, 280, 40, 400)//right
+
+    w.rectStat(250, 0, 800, 40)//top
+    w.rectStat(730, 0, 800, 40)//top
+    w.rectStat(250, 590, 800, 40)//b
+    w.rectStat(730, 590, 800, 40)//b
+
+    w.addMe()
+
+    w.addTim(15)
+
+}
+
+
+GRAVITYRANGE=function(){w=b2d.W({g:10})
+
+    w.circ(100,100,50, 'a')
+    w.circ(100,200,40, 'c')
+
+    w.circ(100,100,50, 'd')
+    w.circ(100,200,40, 'e')
+    w.circ(100,100,50, 'f')
+    w.circ(100,200,40, 'h')
+    w.circ(100,100,50, 'i')
+    w.circ(100,200,40, 'j')
+    w.circ(100,100,50, 'k')
+    w.circ(100,200,40, 'l').den(.1)
+
+    range = w.prism(
+        w.rect(600,300,220, 20, 'q').stat(),
+        w.rect(600, 300,20, 250, 's').linDamp(10)
+    ).lm(-100,100)
+
+    w.show(function(){return 'Welcome to Gravity Range: Current gravity is ' + range.val()  })
+
+
+    y= w.yShip().thrustControl().angDamp(1).shootOnSpace()
+
+    cjs.tick(function(){
+
+        w.G( range.val() )
+        y.linDamp(10)
+
+    })
+}
+
+STABTRAP=function(){w=wor({g:0}).debug()
 
     co=w.tensor();
 
@@ -503,3 +734,62 @@ STABTRAP=function(){w=b2d.W({g:0}).debug();
 
 }
 
+
+
+SHIPSPRITE=function(){
+
+//look, no vars!
+    b2d.W({g:3})
+        .chalk('spritebox example')
+        .spriteBox({
+            "framerate":24,
+            "images":["thrusty.png"],
+            "frames":[
+                [0, 0, 512, 512, 0, -53, -36],
+                [512, 0, 512, 512, 0, -53, -36],
+                [1024, 0, 512, 512, 0, -53, -36],
+                [0, 512, 512, 512, 0, -53, -36],
+                [512, 512, 512, 512, 0, -53, -36],
+                [1024, 512, 512, 512, 0, -53, -36],
+                [0, 1024, 512, 512, 0, -53, -36],
+                [512, 1024, 512, 512, 0, -53, -36],
+                [1024, 1024, 512, 512, 0, -53, -36],
+                [0, 1536, 512, 512, 0, -53, -36],
+                [512, 1536, 512, 512, 0, -53, -36]],
+            "animations":{
+                "die": {"speed": 1, "frames": [8, 9, 10], next:false},
+                "shoot": {"speed": 1, "frames": [1,2,3,4,0], next:false},
+                "thrust": {"speed": 1, "frames": [5, 6, 7,0], next:false}}
+        }).thrustify()
+}
+
+
+FLOCKING=function(){
+
+    //these just thrust and dont
+    //otherwise apply forces to neighbors.  but what if
+    //they 'SUCKED' instead of 'thrusted' ?
+    //is that the same as having a gravitational inwards force?
+
+    var w=b2d.W({g:0})
+
+
+    //  y = $ys(300, 200, 3).angDamp(0).linDamp(1)
+
+
+    var n = 0
+    _.times(40, function(){window['y'+ n++]= w.yShip('o').chug()})
+
+    y = w.yShip('y').thrustControl()
+
+    _.times(40, function(){window['y'+ n++]= w.yShip('o').chug()})
+
+
+    I(function(){
+
+        if(y.going()){ w.s.c.C('p') } else { w.s.c.C('z') }
+
+
+    },100)
+
+    w.debug()}

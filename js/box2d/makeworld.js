@@ -1,4 +1,14 @@
-
+wor = function(ob){ob = ob||{}
+    var color, grav, wd, ht, mouseJoints, walls
+    color = oO('c', ob.C||'z')
+    grav = N(ob.g)?ob.g:10
+    wd = N(ob.W)?ob.W:1200
+    ht = N(ob.H)?ob.H:600
+    walls = D(ob.w)?ob.w:D(ob.walls)?ob.walls: true
+    mouseJoints = D(ob.mJ)? ob.mJ: true
+    w = b2d.stgWorld(color, grav, wd, ht, mouseJoints)
+    if(walls){w.makeWalls()}
+    return w}
 
 b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
@@ -65,8 +75,6 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
         }).touchend( function(){   _mouseIsDown = false})
 
-
-
     if(ops.clear !==false) {
 
         if (ops.debug == false) {
@@ -99,15 +107,22 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
         if(F(ops.cb)){ops.cb()}
         w.stage.update()
     }
-
-
     function handleMouseJoints(){
 
-        if(_mouseIsDown){
-            _mouseJoint=_mouseJoint||b2d.mouseJoint(w.getBodyAtPoint(mX,mY))
-            if(_mouseJoint){_mouseJoint.SetTarget( V(mX, mY) )}}
 
-        else if(_mouseJoint ){_mouseJoint.destroy(); _mouseJoint=null}
+        if(_mouseIsDown){
+
+         mj =    _mouseJoint = _mouseJoint || b2d.mouseJoint( w.getBodyAtPoint(mX, mY) )
+
+            if(_mouseJoint){_mouseJoint.SetTarget( V(mX, mY) )}
+
+
+        }
+
+
+        else if(_mouseJoint ){_mouseJoint.destroy();
+
+            _mouseJoint=null}
 
     }
 
@@ -117,6 +132,22 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 }
 
 
+$W =  function(grav,wd,ht){z()
+   var w = b2d.stgWorld('black', grav, wd, ht)
+    w.makeWalls()
+return w
+}
+
+
+
+TESTWW=function(){
+
+    w = $W()
+
+    b= w.ball(100,100,100).addClass('ball')
+    b2= w.circ(100,100,100,'o').addClass('ball')
+
+}
 
 
 
@@ -124,8 +155,236 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
 
 
+MOUSE=function(){w=b2d.W()
+
+b = w.circ(400,400,100,'b')
+    w.show(function(){return _mouseIsDown })
 
 
+b2d.mJ=function(body, tX,tY){
+    if(O(tX)){tY=tX.y;tX=tX.x}
+    var md = new b2d.Joints.b2MouseJointDef
+    md.bodyA = w.GetGroundBody()
+    md.bodyB = body
+    md.target = V(tX, tY)
+    md.collideConnected = true
+    md.maxForce = 1000 * body.GetMass()
+    md.dampingRatio = 0
+
+return md}
+
+
+   j = w.J( b2d.mJ(b, 500, 0 ) )
+
+    b.SetAwake(true)
+
+}
+
+
+
+MOUSEYSTILLWORKING2=function(){z()
+
+    b2d.pollute()
+
+      var canvas_height
+    mouse_pressed = false
+      mouseJ = false
+      scale = 30
+
+
+    canvas = $.can('y', 1200, 600).id('canvas').A()
+
+
+    ctx = canvas[0].getContext('2d')  // ctx = canvas.ctx()
+
+    //get internal dimensions of the canvas
+
+    canvas_width = parseInt(canvas.attr('width'))     // canvas.W()
+
+    canvas_height = parseInt(canvas.attr('height'))   // canvas.H()
+
+    canvas_height_m = canvas_height / scale
+
+   w = world = new b2World(V(0, -10)  , true)
+    box(  200, 120, 60,60, { user_data  : {border_color : '#555' }})
+    box(  550, 120, 60,60, { user_data  : {fill_color : 'blue' ,  border_color  : 'black' }})
+   b= ball( 250 ,100, 100 , { user_data  : {fill_color: 'green' ,  border_color  : 'black' }})
+
+
+    var debugDraw = new b2DebugDraw()
+    debugDraw.SetSprite(  ctx )
+    debugDraw.SetDrawScale(scale)
+    debugDraw.SetFillAlpha(0.5)
+    debugDraw.SetLineThickness(1 )
+    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
+    w.SetDebugDraw(debugDraw)
+
+
+    ground = box(  350, 60, 880 , 30,{   user_data  : {fill_color : 'red' , border_color  : 'black' }}).stat()
+
+
+        //If mouse is moving over the thing
+        $(canvas).mousemove(function(e){var v,p
+
+            v = V(e.pageX/scale, e.pageY/scale)
+
+              p =  V(v.x, canvas_height_m - v.y)
+
+
+            mouse_x = p.x
+            mouse_y = p.y
+
+            if(mouse_pressed && !mouseJ){
+
+                w.bodyAt(p, function(body){
+
+                    mouseJ = w.mouseJ(body, p)
+
+                })
+
+
+
+            }
+
+
+
+            if( mouseJ ){   mouseJ.SetTarget(p)
+            }
+
+        })
+
+        $(canvas).mousedown(function(){mouse_pressed = true })
+
+        /*
+         When mouse button is release, mark pressed as false and delete the mouse joint if it exists
+         */
+
+
+
+        $(canvas).mouseup(function(){mouse_pressed = false
+            if(mouseJ){w.j(mouseJ); mouseJ=false}})
+
+        //start stepping
+       step()
+
+
+
+
+    /*
+     Draw a world
+     this method is called in a loop to redraw the world
+     */
+    function draw_world(world, context){
+        //convert the canvas coordinate directions to cartesian coordinate direction by translating and scaling
+        ctx.save();
+        ctx.translate(0 , canvas_height);
+        ctx.scale(1 , -1);
+        world.DrawDebugData();
+        ctx.restore();
+
+        ctx.font = 'bold 18px arial';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fff';
+        ctx.fillText('Box2d MouseJoint example in Javascript', canvas_width/2, 20);
+        ctx.font = 'bold 14px arial';
+        ctx.fillText('Click on any object and drag it', canvas_width/2, 40);
+    }
+
+
+
+
+    function ball(x, y, radius, options){return  w.ball(x,y,radius).den(options.density||1).fric(.5).rest(0.5)
+        .linDamp(0).angDamp(0).K(options.user_data)}
+
+
+    function box(x,y,width, height, options){
+        options = $.extend(true, {
+            density: 1.0 ,
+            friction: 1.0 ,
+            restitution: 0.5
+        }, options)
+
+        return  w.box(x,y,width,height).den(options.density).fric(options.friction).rest(options.restitution)
+            .linDamp(0).angDamp(0).K(options.user_data)
+
+    }
+
+    /*
+     This method will draw the world again and again
+     called by settimeout , self looped
+     */
+    function step(){
+        var fps = 60;
+        var timeStep = 1/(fps * 0.8)
+
+        //move the box2d world ahead
+        w.Step(timeStep , 8 , 3)
+        w.ClearForces();
+
+        //redraw the world
+        draw_world(w, ctx)
+
+        //call this function again after 1/60 seconds or 16.7ms
+        setTimeout(step , 1000 / fps)
+    }
+
+//Convert coordinates in canvas to box2d world
+
+
+
+}
+
+
+
+MOUSEYSTILLWORKING=function(){z()
+
+    w =  b2d.canWorld( 'y', 1200, 600, 10)
+    w.box(  200, 120, 60,60).DFR(1,1,.5).damp(0,0)
+    w.box(  550, 120, 60,60).DFR(1,1,.5).damp(0,0)
+    w.brick(  350, 560, 880 , 30 ).DFR(1,1,.5).damp(0,0)
+    b=w.ball(250 ,100, 100).DFR(1,.5,.5).damp(0,0)
+
+}
+
+
+MOUSEY=function(){z(); b2d.pollute()
+
+    w = b2d.canWorld('y', 1200, 600, 10)
+
+
+    w.boxesStat([350,560,880,30])
+        .boxes([200,120,60,60],[550,120,60,60])
+
+    w.ball(250,100,100).DFR(1,.5,.5).damp(0,0)
+
+}
+
+
+
+
+
+
+STACKTHREE= MOUSEGAME=function(){z()
+
+    w = wor({mJ:'ball', w:0})
+
+
+    w.boxesStat([350, 260, 880, 30])
+    w.box(310,120,60,60)
+    w.box(320,120,60,60)
+    w.box(340,120,60,60)
+    w.box(350,120,60,60)
+    w.box(370,120,60,60)
+    w.box(380,120,60,60)
+    w.box(550,120,60,60)
+    w.box(570,120,60,60)
+    w.box(580,120,60,60)
+    b = w.ball(400, 50, 30).DFR(1,.5,.5).damp(0,0).addClass('ball')
+
+    w.brick( 1000,400,200,200)
+    w.brick( 1200,200,200,200)
+
+}
 
 
 BASICWORLD=function(){

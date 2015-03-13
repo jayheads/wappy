@@ -4,9 +4,13 @@ b2d.Mat22 = b2d.Math.b2Mat22
 b2d.Mat33 = b2d.Math.b2Mat33
 
 
-b2d.world =b2d.W = function(a,b){
+b2d.wor = b2d.world =   function(a, b){
 
-    var w = new b2d.World(a, D(b)?b:false)
+    if(U(a)){a=10}
+
+    if(N(a)){a =  V(0, a) }
+
+    var w = new b2d.World(a,   D(b)?b: true)
 
    // w.flags={}
 
@@ -18,8 +22,6 @@ b2d.world =b2d.W = function(a,b){
     w.startListening()
 
     return w}
-
-
 
 
 
@@ -78,16 +80,65 @@ w.queryPoint=function(func,x,y){
     )
 
     return this}
-w.getBodyCount = w.bC = w.gBC=function(){  return this.GetBodyCount()  }
-w.getGroundBody = w.gB =w.gGB=function(){  return this.GetGroundBody()  }
-w.queryAABB=w.Q=w.qAB=function(a,b){//= w.q
-    this.QueryAABB(a, b); return this
+
+
+w.count = w.getBodyCount = w.bC = w.gBC=function(){
+    return this.GetBodyCount()
 }
+
+
+
+COUNT=function(){w=b2d.W()
+
+    y= w.ship().XY(200,200)
+    b= w.circ(300,300,50,'r')
+
+    w.show(function(){return w.count()})}
+
+
+
+
+w.getGroundBody = w.gB =w.gGB=function(){  return this.GetGroundBody()  }
+
+w.Q=w.queryAABB=w.qAB=function(func, x1,y1, x2,y2){
+    var AB = b2d.AB(x1,y1,x2,y2),
+        num= 0,
+
+    newFunc = function(fixt){num++
+
+       return func(fixt, fixt.body(), num)
+    }
+
+
+    this.QueryAABB(newFunc, AB)
+    return num}
+
+
+TESTQ=function(){w=b2d.W()
+    _.times(5, function(){w.randRects()})
+
+
+    var func = function(f, b){  b.kill(); return true  }
+
+
+   n= w.Q(func,  400,100,450,150)
+
+    w.ship().XY(425, 125)
+
+    w.pen(n + ' rects removed')
+
+}
+
+
+
+
+
+
 w.getBodyAtPoint=function(x, y){
     var selectedBody = null
 
     this.QueryAABB( queryFunc,
-        AB( x-.001, y-.001, x+.001, y+.001 )
+        b2d.AB( x-.001, y-.001, x+.001, y+.001 )
     )
 
 
@@ -280,7 +331,8 @@ w.getBodyAtPoint=function(x, y){
             cjs.circ(radius, color).XY(x, y)).linDamp(2)
 
     }
-    w.circ = function (x, y, radius, color) {
+
+    w.circ = function (x, y, radius, color) {var ball, w=this
 
         // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
         var wd = this.s.W(), ht = this.s.H()
@@ -289,13 +341,105 @@ w.getBodyAtPoint=function(x, y){
         radius = N(radius) ? radius : _.random(14) + 8
 
 
-        return this.ball(x, y, radius).linDamp(2)
+       ball = this.ball(x, y, radius).linDamp(2)
+
             .bindSprite2(
+
             this.s.cir(x, y, radius, color)
         )
 
 
+        ball.C=function(col){
+
+            this.sprites[0].remove()
+            this.sprites= [ w.s.cir(x, y, radius, col)]
+
+        }
+
+        return ball
+
     }
+
+
+
+    w.queryXY=function(func,x,y){var w=this
+
+        w.QueryAABB(func,
+
+            b2d.AABB01(x,y)
+
+        )
+    return this}
+
+    w.bodyAt =  w.bodyAtPoint=function(x,y,func,kind){
+        var w=this,
+            body= null
+        if(O(x)){
+        kind=func;func=y;y= x.y;x= x.x}
+        this.queryXY(function(f){var b = f.B()
+
+            if(U(kind)||f.beOf(kind)){
+
+                if(f.testPoint(x,y)){
+                    body = b; return false
+                }
+            }
+
+
+
+            return true
+
+        },x,y)
+
+
+        if(!body){return false}
+         if(F(func)){return func(body)||w}
+        return body
+
+    }
+
+
+
+
+    w.dynAt =  w.at =  w.bodyAtPoint=function(x,y){ var body= null,  func
+        func=function(f){
+
+            if( f.isDyn()  &&   f.testPoint(x,y) ){body = f.B(); return false}
+            return true}
+        this.queryXY(func, x,y)
+        return body
+
+    }
+
+    w.bug=w.debugDraw=function(){
+
+         dd = b2d.debugDraw.apply(null, arguments)
+
+        //this.scale = dd.scale()
+        this.SetDebugDraw( dd )
+        return this
+    }
+
+
+
+w.Z=function(scale){
+    if(U(scale)){return this.scale}
+    this.scale = scale
+return this}
+
+    w.got=function(){var args=arguments,
+
+  res = this.beg(function(cx){//trackClasses(cx)
+
+        cx.got.apply(cx, args)
+
+    })
+
+    return this}
+
+
+
+
     w.gradBall = function (x, y, r, col1, col2, stop1, stop2) {
         stop1 = N(stop1) ? stop1 : 0
         stop2 = N(stop2) ? stop2 : 1
@@ -399,9 +543,6 @@ w.rectSensor =  function(x,y, wd,ht, color){
 
 
 
-
-
-
 w.bindShape = function( shape, spr   ){
 
     this.stage.A( shape )
@@ -431,13 +572,18 @@ w.makeWalls=function(walls){
 
     else {
 
-      this.floor=  this.rect(height, width / 2, width, 40,'o').stat().K('floor')
-       this.right= this.rect(0, height / 2, 40, height,'o').stat().K('rightWall')
-
-       this.roof= this.ceiling = this.rect(width / 2, 0, width, 40,'o').stat().K('ceiling')
-      this.left=  this.rect(width, height / 2, 40, height,'o').stat().K('leftWall')
+      this.floor=  this.rect(height, width / 2, width, 40,'o').stat().addClass('wall floor').K('floor')
+       this.right= this.rect(0, height / 2, 40, height,'o').stat().addClass('wall side rightWall right').K('rightWall')
+       this.roof= this.ceiling = this.rect(width / 2, 0, width, 40,'o').stat().addClass('wall ceiling roof').K('ceiling')
+      this.left=  this.rect(width, height / 2, 40, height,'o').stat().addClass('wall side leftWall left').K('leftWall')
     }
 }
+
+
+
+
+
+
 w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
 
     x = N(x) ? x : 60;
@@ -498,7 +644,17 @@ w.pen=function(){
 
     return this}
 
+w.fadeTitle=function(text){text = text || 'no text provided, yo'
 
+    setTimeout(function(){
+
+        t= w.s.text(text, 50, 'white', 600, 100)
+        t.tween([{a:0, sxy:0}, 2000])
+        setTimeout(function(){ t.remove() }, 1000)
+
+    }, 500)
+
+return this}
 w.flash=function(){
 
     this.s.flash.apply(this.s, arguments)
@@ -577,15 +733,26 @@ w.ropePiece = w.distLink=function(x, y){var link
 
 //add random bodies
 
-w.randRects  = function(){var that=this
+w.randRects  = function(ob){var that=this
+
+    ob=ob||{}
+
+    var y = ob.y || 0,
+        z= N(ob.z)?ob.z:1
 
     _.times(30, function(i){that.rect(
-            Math.random()*1100+20,
-            Math.random()*150+40,
-            Math.random()*30+15,
-            Math.random()*30+15
+
+            Math.random() * 1100+20,
+        (Math.random() * 150+40)+y,
+
+
+
+        (Math.random()*30+15)*z,
+            (Math.random()*30+15)*z
+
     ).stat().K('randomRect')})
 return this}
+
 
 
 
@@ -779,6 +946,8 @@ co.remove = function(b){this.RemoveBody(b);return this}
 co.next = function(){return this.GetNext()}
 co.wor=function(){return this.GetWorld()}
 co.bods = co.bodies = co.list= co.bodyList = function(){return this.GetBodyList()}
+
+
 co.step=function(){this.step();return this}
 
 

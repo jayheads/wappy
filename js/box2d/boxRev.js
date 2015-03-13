@@ -631,85 +631,9 @@ ROPEY=function(){w=b2d.W().debug()
 
 
 }
-CUPS2=function(){w=b2d.W()
 
 
 
-    body = w.rect(255,50, 60,15,'g').stat()
-    link = body
-
-    for ( var i = 1; i <= 10; i++ ){
-
-
-        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(0)
-        w.rev(link, body)
-        link = body
-
-    }
-
-
-
-
-    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
-    w.rev(link, body)
-
-
-    w.randRects()
-    isHooked=false
-    distJ=false
-
-
-    hero= w.rect(320,460,20,20,'b')
-
-    $can = superCanvas($(w.s.HUD.canvas))
-
-    $can.MD(function(x,y){w.QueryPoint(function(fixture){
-
-        var touchedBody = fixture.body()
-        if(touchedBody.isStat()){
-            distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
-            isHooked = true}
-        return false
-
-    },  V(x,y).div())
-
-    }) //if(distJ){w.DestroyJoint(distJ)}
-
-    $can.MU(function(){
-        if(distJ){w.DestroyJoint(distJ)}
-    })   // if I release the mouse, I destroy the distance joint
-
-
-    cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
-
-        if(isHooked){
-
-            hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
-            distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
-        }
-    })
-
-    _.times(8, function(){m=w.addMe().den(0).XY(700,400)})
-    _.times(4, function(){m=w.addMe().den(0).XY(700,300)})
-    _.times(1, function(){m=w.addMe().den(0).XY(700,200)})
-
-    y = w.ship()
-    w.debug()
-    f=null
-
-    w.beg(function(cx){var fixt
-
-        if(fixt = cx.with('bul')){f=fixt
-
-            b = fixt.body()
-
-         if(b != y){b.setDestroy()  }
-
-        }
-
-    }).startKilling()
-
-}
 
 BODYREVWORKS= function(){w=b2d.W().startKilling(); w.floor.rest(0)
 

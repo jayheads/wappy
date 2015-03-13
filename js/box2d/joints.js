@@ -69,11 +69,8 @@ jd.coll = jd.collide = jd.cC = function(a){
     this.collideConnected = a; return this}
 
 
-//mouse
-jd.target = j.sT  =function(a,b){
-    if( !O(a) ){ a = b2d.V(a,b) }
-    this.SetTarget(a)
-    return this}
+
+
 
 //distance
 jd.freq=  function(a){
@@ -180,6 +177,12 @@ j.shrink=function(){
 
 
 
+//mouse
+j.target =  function(a,b){
+    if( !O(a) ){ a = V(a,b) }
+    this.SetTarget(a)
+    return this}
+
 
 
 
@@ -207,18 +210,6 @@ j.damp= function(a){if(U(a)){return this.GetDampingRatio()}
 
 
 
-j.target = j.sT  =function(a,b){
-
-    if( !O(a) ){ a = bV(a,b) }
-
-    j.SetTarget(a)
-
-    return j}
-j.target = j.sT    = function(a,b){
-    if(!O(a)){a=V(a,b)}
-    j.SetTarget(a)
-
-    return j}
 
 //motor
 j.maxSpeed=j.maxMotorSpeed=j.mMS=function(a){
@@ -882,4 +873,24 @@ b2d.mouseDef = MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
 
     return j}
 
+
+b2d.mouseJ=function(ground,body,target,damp,maxForce){
+
+    if(U(body)){alert('body required!'); return false}
+
+    var mJD = new b2d.Joints.b2MouseJointDef()
+
+    mJD.bodyA = ground
+
+    if(body){mJD.bodyB = body}
+    if(target){mJD.target =target}
+
+     mJD.dampingRatio = N(damp)?damp: 0
+
+
+    mJD.maxForce = N(maxForce)?maxForce: 1000 * body.GetMass()
+
+    mJD.collideConnected = true
+
+    return mJD}
 

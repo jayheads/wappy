@@ -44,9 +44,19 @@ d.T=d.kind =   function(type){
     if(U(type)){return this.type}
     this.type=type
     return this}
+
 d.linVel = d.lV=function(vel){
-    if(U(vel)){return this.linearVelocity}
-    this.linearVelocity=vel;return this}
+    var v=this.linearVelocity
+    if(U(vel)){  return v }
+    this.linearVelocity = vel
+    return this}
+
+
+
+
+
+
+
 d.angVel = d.aV=function(vel){
     if(U(a)){return this.angularVelocity}
     this.angularVelocity=vel
@@ -131,21 +141,23 @@ b.Y=function(y){var g=G(arguments),pos=this.XY()
 
 
 
-
-
 b.angVel=   p.aV= function(vel){
     if(U(vel)){return this.GetAngularVelocity() }
     this.SetAngularVelocity(vel)
     return this}
+
 b.linVel =p.linearVelocity=p.lV=function(vel, n2){
 
-    if(U(vel)){return this.GetLinearVelocity()}
+    var v=this.GetLinearVelocity()
 
-    if(N(vel)){ vel = V(vel,n2) }
-
+        if(U(vel)){return v}
+    if(N(vel)){ vel = V(vel, n2) }
     this.SetLinearVelocity(vel)
 
     return this}
+
+
+
 b.angDamp=  p.aD= function(damp){
     if(U(damp)){return this.GetAngularDamping()}
     this.SetAngularDamping(damp)
@@ -252,9 +264,30 @@ b.type =p.T= p.ty= p.t= function(a){
     return this}
 
 //huh??? oh can get/set type of body
-b.stat = function(){this.type(0);return this}
+b.stat = function(){var v=this.linVel()
+
+    this._linVel = V(v.x, v.y)
+    this.type(0)
+
+    return this}
+
+
+
+
+
+
 b.kin = function(){return this.type(1)}
-b.dyn = function(){return this.type(2)}
+
+b.dyn = function(resumeVel){this.type(2)
+
+    if(resumeVel==true && O(this._linVel)){
+        this.linVel(this._linVel)
+
+    }
+    this._linVel=null
+
+    return this
+}
 
 
 
@@ -542,7 +575,8 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
     //but when i set up preloader, then i would use this i suppose :)
 
 
-    x=N(x)?x:0; y=N(y)?y:0
+    x=N(x)?x:0;
+    y=N(y)?y:0
 
     var body=this,
 
@@ -557,13 +591,14 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
     body.sprites = body.sprites || []
     body.sprites.push(obj)
     body.sprite = obj
-
     body.sprite.a2(stage)
 
 
             //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
 
-    cjs.tick(function(){if(!body.sprite){return}
+    cjs.tick(function(){
+
+        if(!body.sprite){return}
 
             _.each(body.sprites, function(sprite){
 
@@ -579,6 +614,36 @@ b.bindSprite2=function(obj, startingRotation, x, y ){
         })
 
     return body}
+
+b.mJ = b.mouse = b.mouseJ = b.mouseJoint=function(point){var body=this, mj
+
+           mj = body.wor().mouseJ(body, point)
+
+return mj}
+
+b.damp=function(l,a){
+    this.linDamp(l)
+    if(N(a)){this.angDamp(a)}
+return this}
+
+b.DFR=function(d,f,r){
+    return this.den(d).fric(f).rest(r)
+
+}
+
+b.wakeUp=function(){ this.SetAwake(true); return this}
+b.sleep=function(){ this.SetAwake(false); return this}
+
+b.got=function(thus, func){var body=this
+
+    this.wor().beg(function(cx){
+
+        cx.got(body, thus, func)
+
+    })
+
+    return this}
+
 
 
 
@@ -1061,27 +1126,129 @@ b.marioWarping=function(){var p=this
         })
 
         return this}
-b.addClass = function(clas){
-    this.classes = this.classes || []
-    if(S(clas)){
-        this.classes.push(clas)    }
+
+
+
+b.classCount=function(){
+    if(!A(this.classes)){return 0}
+return this.classes.length
+
 }
-b.hasClass=function(clas){
-    var hasClass
+b.addClass = function(clas){if(U(clas)){alert('need to provide a class!'); return false}
+    this.classes = this.classes || []
+    var that=this,func
+
+    if(F(clas)){
+        func=_.bind(clas, that)
+        this.addClass( func( that.getClasses()) )
+        return this}
+
+    _.each(arguments,  function(clas){if( S(clas) ){clas=clas.trim()
+
+            _.each(clas.split(' '),
+                function(clas){clas=clas.trim()
+
+                    if(clas!='' && !that.hasClass(clas)){
+
+                    that.classes.push(clas)
+                }
+            })
+
+
+        }})
+    return this}
+b.getClass=b.getClasses=function(){this.classes= this.classes||[]
+
+    return this.classes.join(' ')
+
+}
+b.hasClass=b.hasClasses=function(clas){
+    if( U(clas) ){   return false}
+
+    var body = this, hasClass
 
     this.classes = this.classes || []
 
-    if(S(clas)){
+    _.each(arguments, function(clas){
 
-        hasClass = _.contains( this.classes, clas)
+        if( S(clas) && clas ){clas = clas.trim()
+
+            if( _.contains( body.classes, clas)){hasClass = true}
+
+        }
+
+    })
+
+return hasClass
+
+
+
+}
+b.hasAllClasses=function(clas){if(U(clas)||clas==''){return false}
+
+    var body=this,anyYes=null, anyNo=null
+
+    _.each(arguments, function(clas){
+
+
+    if(body.hasClass(clas)){anyYes=true}
+
+   else if(!body.hasClass(clas)){anyNo=true}
+
+
+
+    })
+
+    return (anyYes && !anyNo)
+
+
+}
+b.toggleClass=function(clas){
+    if(U(clas)||clas==''){return false}
+
+    if(this.hasClass(clas)){
+        this.removeClass(clas)
+    } else {this.addClass(clas)}
+
+return this}
+b.removeClass=function(clas){var ix
+    this.classes = this.classes||[]
+    if( S(clas) ){
+
+        if(this.hasClass(clas)){
+
+            ix = this.classes.indexOf(clas)
+
+           this.classes[ix] = null
+
+            this.classes = _.compact( this.classes )
+
+
+        }
+
+
+
     }
-
-
-    return hasClass}
-b.removeClass=function(clas){
-    this.classes=this.classes||[]
-    if(S(clas)){this.classes[clas]=null}
     return this}
+
+b.ofClass=function(){var body= this.body()
+    return this.hasClass.apply(this, arguments) ||
+        body.hasClass.apply(body, arguments)}
+
+b.be=function(kindOrFixt){
+    if(S(kindOrFixt)){return this.hasClass(kindOrFixt)}
+    if(b2d.isFixt(kindOrFixt)){return this == kindOrFixt}
+    return false}
+
+b.beOf=function(){}
+b.beAbove=function(){}
+b.beNear=function(){}
+
+
+
+
+
+
 b.co = function(co){
 
     if(U(co)){

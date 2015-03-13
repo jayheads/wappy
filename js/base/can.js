@@ -189,6 +189,10 @@ var that=this
     }
 
 return this}
+
+
+
+
 x=CanvasRenderingContext2D.prototype
 x.linGrad=function(a,b,c,d){
 return this.createLinearGradient(a,b,c,d)
@@ -202,7 +206,47 @@ x.f =function(fs){
 
     this.fillStyle = fs
 return this}
-LINRAD=function(){z()
+
+x.temp=function(func){var x=this
+
+    func = _.bind(func, x)
+
+    this.save()
+
+    func()
+
+    this.restore()
+
+return this}
+ x.H=function(){
+    return this.canvas.height
+ }
+ x.W=function(){
+     return this.canvas.width
+ }
+
+ x.trans=function(){
+     this.translate.apply(this, arguments)
+ return this}
+
+
+ x.Z=function(){
+     this.scale.apply(this, arguments)
+     return this}
+
+ x.tick=function(func){var x=this
+
+     cjs.tick(function(){
+
+         x.temp(func)
+     })
+
+
+ return this}
+
+
+
+ LINRAD=function(){z()
 
     d= $.canvas('y', 500)
 
@@ -1438,10 +1482,10 @@ superCanvas=function(el){
          return x}
 
 
+    el.tick=function(){var ctx=this.ctx()
 
-
-
-
+         ctx.tick.apply(ctx, arguments)
+        return this}
 
     superCanvasGradient(el)
     superCanvasPixels(el)
@@ -1450,6 +1494,8 @@ superCanvas=function(el){
     superCanvasPath(el)
     superCanvasEvents(el)
     superCanvasShadow(el)
+
+
      return el}
 
 

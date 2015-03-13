@@ -1,7 +1,10 @@
 
 w=p=b2d.World.prototype
 
-w.draw=function(){this.DrawDebugData();return this}
+w.draw=function(num){
+    if(N(num)){this.step(num)}
+    this.DrawDebugData();
+    return this}
 
 w.debug =   function(data){
 
@@ -21,10 +24,19 @@ w.debug =   function(data){
     this.SetDebugDraw(data)
 
     return this}
-w.step =  function(){
-    var args=G(arguments)
-    this.Step.apply(this, args)
+
+w.step=function(time, a, b){
+
+    a=N(a)?a:8
+    b=N(b)?b:3
+    this.Step(time,a,b)
+
     return this}
+
+
+
+
+
 w.clear = p.clearForces = p.cF = function(){  this.ClearForces(); return this }
 
 
@@ -37,7 +49,7 @@ w.rayCast=function(func,v1,v2){
 
 //joints
 
-w.J=w.joint = p.createJoint=p.j=p.cJ=function(a){
+w.J=w.joint = p.createJoint= p.cJ=function(a){
 
     var j=this.CreateJoint(a)
 
@@ -45,7 +57,7 @@ w.J=w.joint = p.createJoint=p.j=p.cJ=function(a){
 
 }
 
-w.destroyJoint=p.dJ=p.dj=function(a){ this.DestroyJoint(a); return this}
+w.j = w.destroyJoint=p.dJ= function(a){ this.DestroyJoint(a); return this}
 
 
 
@@ -117,10 +129,115 @@ w.spring=function(a,b){
 
 
 
+w.mouseJ=function(body,target,damp,maxForce){
+
+    body.wakeUp()
+    var ground = this.GetGroundBody()
+
+    return this.J(b2d.mouseJ(ground,
+            body,target,damp,maxForce)
+    )
+
+}
+
+w.removeMouseJoint=function(){var w=this
+
+    if(O(w._mouseJoint)){
+        w.j(w._mouseJoint)
+        this._mouseJoint = false
+
+    }
+
+
+    return this}
+
+w.updateMouseJoint=function(point, kind){var w=this
+
+    var mJ = w._mouseJoint
+
+    w._mouseJoint = mJ ? mJ.target(point) : this.mouseJAt( point, kind )
+
+return this}
+
+
+w.tripleStage= function(color, wd,ht){
+    var w=this
+    w.s = w.stage = cjs.tripleStage('black', wd, ht).noAutoClear()
+    w.s.back.A()
+    w.s.A()
+    w.s.HUD.A()
+    w.canvas = w.s.canvas
+    w.c = w.can = $(w.canvas)
+    w.ctx =  w.can.ctx()
+
+    return w}
+
+
+w.mouseJoints=function(kind){var w = this,
+    can= (w.s && w.s.HUD)?$(w.s.HUD.canvas):  w.can,
+    scale = this.scale || 1
+    can.mouseup(function(){
+        w.removeMouseJoint()
+    })
+
+    can.pressmove(function (e) {
+        w.updateMouseJoint(
+            can.mousePoint(e, scale), kind
+        )
+    })
+
+    return this}
 
 
 
 
+
+w.tick=function(draw){var w=this,
+    can = w.can,
+    ctx= w.ctx
+    draw= N(draw)? draw: 0.1
+    ctx.tick(function(){
+        this.trans(0,0).Z(1,1);
+        w.draw(draw)
+
+    })
+
+
+    return this}
+
+
+
+w.boxes=function(){var w=this
+
+    _.each(arguments, function(arg){
+
+        w.box.apply(w, arg)
+    })
+
+return this}
+
+w.boxesStat=function(){var w=this
+
+    _.each(arguments, function(arg){
+
+        w.box.apply(w, arg).stat()
+    })
+
+    return this}
+
+w.mouseJAt=function(p, kind){var w=this, mj
+
+    w.bodyAt(p, function(b){
+
+        mj = b.mouseJoint(p)
+
+    }, kind)
+
+
+
+        return mj
+
+}
 
 
 

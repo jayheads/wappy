@@ -62,6 +62,25 @@
 
 
 
+b2d.pollute=function(){
+
+    b2Vec2 = Box2D.Common.Math.b2Vec2
+    b2AABB = Box2D.Collision.b2AABB
+    b2BodyDef = Box2D.Dynamics.b2BodyDef
+    b2Body = Box2D.Dynamics.b2Body
+    b2FixtureDef = Box2D.Dynamics.b2FixtureDef
+    b2Fixture = Box2D.Dynamics.b2Fixture
+    b2World = Box2D.Dynamics.b2World
+    b2MassData = Box2D.Collision.Shapes.b2MassData
+    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape
+    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
+    b2DebugDraw = Box2D.Dynamics.b2DebugDraw
+    b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef
+    b2Shape = Box2D.Collision.Shapes.b2Shape
+    b2Joint = Box2D.Dynamics.Joints.b2Joint
+    b2Settings = Box2D.Common.b2Settings
+
+}
 
 
 
@@ -69,15 +88,32 @@ b2d.isV=function(v){if(v){return v.constructor.name == "b2Vec2"}}
 
 
 
-b2d.AB = AABB = AB=function(a,b,c,d){
+b2d.AB = b2d.AABB= function(x1,y1,x2,y2){
 
-    var ab=new b2AABB() // ??
+    var ab = new b2d.Collision.b2AABB()
 
-    ab.lowerBound.Set(a,b)
-    ab.upperBound.Set(c,d)
+    ab.lowerBound.Set(x1/30, y1/30)
+    ab.upperBound.Set(x2/30, y2/30)
+
     return ab
 
-}//get rectangle by two coords
+}
+
+
+b2d.AABB=function(a,b,c,d){//this is the one that works!
+
+    var  aabb = new b2AABB()
+
+    aabb.lowerBound.Set(a,b)
+
+    aabb.upperBound.Set(c,d)
+
+    return aabb}
+
+
+b2d.AABB01 = function(a,b){return this.AABB( a-.001, b-.001, a+.001, b+.001 )}
+
+
 b2d.AB0001 = AB001 =function(a,b){return AB( a-.001, b-.001, a+.001, b+.001 )}
 
 
@@ -91,3 +127,48 @@ b2d.isShape=function(h){
 
     }
 }
+
+
+
+
+b2d.canWorld=function(color, wd, ht, grav, mJoints){
+ var can = $.can(color, wd, ht).A(),
+    w = can.wor(grav).tick().Z(30)
+    if(mJoints != false){
+        w.mouseJoints()  }
+return w}
+
+
+b2d.stgWorld=function(color, grav, wd, ht, mouseJoints){ var w
+    if(!S(color)){
+        mouseJoints=ht;
+        ht=wd;
+        wd=grav;
+        grav=color;
+        color='black'
+    }
+        grav= N(grav)?grav:10
+        wd = wd||1200
+        ht= ht||600
+
+    w = b2d.world(V(0,grav)).Z(30).tripleStage(color,wd,ht)
+    w.bug(w.ctx, 30, '*', .6 )
+
+    if(S(mouseJoints)){
+        w.mouseJoints(mouseJoints)
+    }
+    else if(mouseJoints!=false){
+        w.mouseJoints()
+    }
+
+
+
+
+        cjs.tick(function(){
+            w.draw(.1)
+            w.s.update()})
+        cjs.watchKeys()
+
+    return w
+    }
+

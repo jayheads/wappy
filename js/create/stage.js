@@ -10,13 +10,30 @@ ct.circle = function(x,y,rad,color){
     )
 
     return this}
+
+
 ct.text = function(text, font, color, x, y){
 
-    var text =  new cjs.Text(text, font, color).XY(x, y)
+
+    var text,
+        centX= this.stg().center().x
+
+    if(N(x) && U(y)){y=x;x=centX}
+    else if(U(x)){x=centX; y=100}
+
+     text = cjs.text(text,font,color).XY(x, y)
 
     this.A(text)
 
-    return this}
+    return text
+
+}
+
+
+ct.center=function(){
+    return V(this.W()/2, this.H()/2)
+}
+
 ct.addContainer = ct.ct =function(func){
     var g=G(arguments),
         f=g[0],
@@ -153,6 +170,36 @@ ct.backgroundColor=function(c){
 
 
 
+ct.each=function(func){
+    var children=[]
+
+   _.each(this.children, function(child){
+        children.push(child)
+    })
+
+
+    _.each(
+
+        children,
+
+        function(child){
+              func(child)
+        }
+    )
+
+return this}
+
+ct.removeAll=function(){
+  this.each(function(child){
+      child.remove()
+  })
+
+return this}
+ct.noAutoClear=function(){
+    this.autoClear = false
+return this}
+
+
 cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
 
     cjs.watchKeys()
@@ -201,18 +248,18 @@ cjs.tripleStage =  function(color, w, h){
 
     var stage, can0, can1, can2
 
-    can0 = $.can(color, w, h).P('a').XY(0, 0)
+    can0 =  can(color)
+    can1 =  can('X')
+    can2 =  can('X')
 
 
+    function can(col){
+        return $.can(col,w,h ).P('a').XY(0,0)
+    }
 
-
-    can1 = $.can('X', w, h).P('a').XY(0, 0)
-
-    can2 = $.can('X', w, h ).P('a').XY(0, 0)//.opacity(.8)
 
     stage = new cjs.Stage(can1[0]).tick()
-    stage.c = can1
-
+    stage.can = stage.c = can1
 
     stage.back = new cjs.Stage( can0[0] ).tick()
 
@@ -220,15 +267,20 @@ cjs.tripleStage =  function(color, w, h){
         col1=oO('c', col1||'b');col2=oO('c', col2||'r')
         var h =this.H(), w=this.W()
         this.shape.linGrad([col1,col2],[0,1],0,0,0,h).dr(0,0,w,h)}
-
-
-
-
     stage.back.shape = stage.back.shape(0,0,'w')
+
 
     stage.HUD = new cjs.Stage( can2[0] ).tick()
 
     return stage}
+
+
+
+
+
+
+
+
 
 
 

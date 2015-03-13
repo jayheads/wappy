@@ -176,7 +176,7 @@ w.bullet=function self(x,y,r){//radius
     y = N(y) ? y : x
     r = r || 10
     bullet= this.dynamic(x, y, b2d.circDef(r))
-    bullet.K('bullet')
+    bullet.addClass('bullet bul').K('bullet')
 
     return bullet}
 
@@ -280,6 +280,8 @@ w.bobom=function(){
     return bobom
 
 }
+
+
 
 
 
@@ -708,7 +710,10 @@ w.yShipEquilateral = function(color, x,y,scale){var halfSide, side, ship
     ship.shoot=function(kind){kind = kind||'bul'
         var vec, bullet, dist, y=this
         dist =  y.dir().mult(100)
-        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').K(kind)
+        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').addClass(kind).K(kind)
+
+            bullet.addClass('bullet bul')
+
         vec = y.GetWorldVector( V(0, -100))
         bullet.impulse(vec.x/4, vec.y/4 )
         setTimeout(function(){ bullet.kill()  }, 400)
@@ -801,7 +806,7 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
     ship.shoot=function(kind){kind = kind||'bul'
         var vec, bullet, dist, y=this
         dist =  y.dir().mult(100)
-        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').K(kind)
+        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').K(kind).addClass('bul bullet')
         vec = y.GetWorldVector( V(0, -100))
         bullet.impulse(vec.x/4, vec.y/4 )
         setTimeout(function(){ bullet.kill()  }, 400)

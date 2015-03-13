@@ -815,84 +815,6 @@ MARIO=function(){
 
 
 
-MARIOBIG=function(){
-
-
-
-
-
-    w = b2.mW({
-        grav:500,
-        walls:0
-
-    })
-
-
-    w.platform  =function(x,y,W,H){//=brk=brick=
-
-        x = N(x) ? x : 60; y = N(y) ? y : x
-        W = N(W) ? W : 30; H = N(H) ? H : W
-
-
-        pd = b2.polyDef(W, H).r(0)
-
-        pd.restitution = .3
-
-        return this.A(
-
-            b2.staticDef(x,y),pd
-
-
-        ).K('platform')
-
-    }
-
-
-
-    w.platform(800,500,600,100)
-
-    w.platform(300, 530,100,100)
-
-
-    w.platform(1400,300,600,100)
-
-    w.platform(1800,500,1000,100)
-
-    w.platform(1900,200,600,100)
-
-
-
-
-    w.footListener()
-    w.startKilling()
-
-
-    p = w.addMe().XY(300,-300)
-
-
-
-    p.angDamp( 10000 )
-
-
-     cjs.tick(function(){
-     p.rot(0)
-
-     w.left(4)
-
-     if(p.Y() > 2000){ p.XY(300,-300) } //comeback
-
-     if(b2d.onGround){
-     if(cjs.Keys.up){p.jumping(180,30)} else {p.byVel(40)}}
-     else { p.byImp(10) }
-     })
-
-
-
-
-    w.box(800,100).bindSprite('guy')
-
-}
-
 coin = function(x,y){
 
     x=N(x)?x:Math.random()* 600
@@ -943,13 +865,3 @@ JUMPRUN=function(){b2d.levelScrollX()
 }
 
 
-
-
-HOOK=function(){
-
-
-
-
-
-
-}

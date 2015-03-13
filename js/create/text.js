@@ -90,23 +90,29 @@ t.C = t.col = function(color){
     return this}
 
 
+cjs.isText=function(t){
+    if(O(t)){
+        return (  t.textBaseline   )
+    }
+}
 
-cjs.text =  function(text, color, font, x, y){
+cjs.text = function(text, font, color,  x, y){
 
+    x=N(x)?x:600
+    y=N(y)?y:100
 
 //var g=G(arguments); if(g.N){text.bl( 'alphabetic' )}   //if(g.p){ TR(text) }
-    x=N(x)? x: 100
-    y=N(y)? y: x
 
-    font=font|| '20px Arial'
-    font=N(font)? font + 'px Arial' : font
+    if(N(font)){ font = font + 'px Arial' }
+    font = font || '50px Arial'
+    color = color||'y'
 
-    color=color||'z'
+    textOb =   new createjs.Text(  text,  font,  oO('c',color)  )
+    textOb.regX = textOb.W()/2
+    textOb.XY(x, y)
 
-    var textOb =   new createjs.Text(  text,  font,  oO('c',color)  ).XY(x, y)
 
     return textOb}
-
 
 cjs.niceText=function(text,x,y){
 

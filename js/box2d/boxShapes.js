@@ -395,29 +395,6 @@ makeWallsLong=function(){
 
 
 
-BILLIARDS=function(){
-
-    b2d.mW({
-
-        g:0,
-        walls: function(){}
-    })
-
-
-    bii(10,300,40,920) //left
-
-    bii(1100, 280, 40, 400)//right
-
-    bii(250, 0, 800, 40)//top
-   bii(730, 0, 800, 40)//top
-   bii(250, 590, 800, 40)//b
-   bii(730, 590, 800, 40)//b
-
-    w.addMe()
-
-    w.addTim(15)
-
-}
 
 MAKEWORLD=function(){return makeWorld()}
 
@@ -438,13 +415,13 @@ b2d.testBounceFrict=function(){
 }
 
 CUPS=function(){
-    b2d.makeWorld()
+    w=wor()
 
-    cup(280,50)
-    cup2(400,50)
-    cup3(700,50)
+    cup(280,500)
+    cup2(400,500)
+    cup3(700,500)
 
-    b2d.fluffy()
+    //b2d.fluffy()
 
     w.ba()
     w.ba()
@@ -511,6 +488,7 @@ ORIENTED=function(){z()
 
 MAZE=function(){w=b2d.W()
 
+    w.ship()
     maze=[
         [1,0,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,1],
@@ -524,44 +502,6 @@ MAZE=function(){w=b2d.W()
 
     w.grid(maze, 100, 200, 20,30)
     w.bump(400, 200, 10)
-}
-
-MARIOMAZE=function(){
-    b2d.levelSpace()
-
- //ceiling.kill(); //right.kill()
-
-   grid= w.grid([
-            [1,0,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,0,1],
-            [1,0,0,0,1,0,0,0,1],
-            [1,0,1,0,1,0,1,1,1],
-            [1,0,1,0,1,0,0,0,1],
-            [1,0,1,1,1,1,1,0,1],
-            [1,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1]
-
-
-        ],  100, -100, 14, 40)
-    score=100
-
-   cjs.tick(function(){
-       grid.angVel(.2)
-       w.s.HUD.pen(score)
-   })
-
-
-    w.begin(function(cx){
-
-        if(cx.with('player', 'grid')){ score--
-
-
-        }})
-
-   // grid.angDamp(1)
-
-    p.XY(220, 70)
 }
 
 RDP=function() {
