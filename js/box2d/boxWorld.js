@@ -183,7 +183,14 @@ TESTPOINT=function(){var tf=null
 
 
 
+w.click=function(func){
 
+    $(w.s.HUD.canvas).click(function(e){
+
+        func(e.pageX, e.pageY)
+
+    })
+return this}
 
 w.getBodyAtPoint=function(x, y){var body = null
 

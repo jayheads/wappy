@@ -667,9 +667,10 @@ b.kill=function(){
 
 
 
-b.count=function(){
+b.num = b.count=function(){
     return this.m_fixtureCount
 }
+
 
 
 b.destroy=function(){

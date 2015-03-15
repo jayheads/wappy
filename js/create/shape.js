@@ -48,9 +48,12 @@ h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
     if(sc){gx.s(fc)}
     gx.dr(x,y,w,h)
     return this}
-h.poly=function(verts, f, s, width){var that = this, gx = this.graphics
-    if(N(verts[0])) //verts passed in directly
-    {
+
+
+h.poly=function(verts, f, s, width){
+    var that = this, gx = this.graphics
+    if(N(verts[0])){ //verts passed in directly
+
         _.each(arguments,
             function(vert){gx.lt(vert[0],vert[1])});
         gx.cp()}
@@ -60,12 +63,12 @@ h.poly=function(verts, f, s, width){var that = this, gx = this.graphics
         {_.each(verts,function(vert){
             gx.lt(vert[0],vert[1])
         }); gx.cp()}
-
     }
 
 
 
 return this}
+
 h.clear=function(){this.graphics.clear();return this}
 h.same=function(){return cjs.shape(this)}
 h.f=function(fill){
@@ -152,54 +155,31 @@ h.lG= h.linGrad=function(){
     this.graphics.beginLinearGradientFill.apply(
         this.graphics, args)
     return this}
-
-
-
 h.mt=function(x,y){
     if(O(x)){y=N(x.y)? x.y: x.Y;
         x= N(x.x)? x.x: x.X}
 
     this.graphics.mt(x,y)
 return this}
-
 h.lt=function(x,y){
         if(O(x)){y= x.y; x= x.x}
         this.graphics.lt(x,y)
         return this}
 
 
-h.drawPolygon = function(poly,color) {var h = this,
-    numVerts=poly.length
-
-
-    if(color){
-        this.s(color)
+h.drawPolygon = h.drawConnectedLines = function(poly, sc){var h=this,
+    numVerts = poly.length
+    _.each(poly,function(v){v.X=v.x;v.Y=v.y})
+    if(sc){this.s(sc)}
+    if(numVerts>=3){
+        //move to the FIRST
+        h.mt(poly[0])
+        //lineTo the REST
+        T(numVerts, function(i){h.lt(poly[i%numVerts])}) //just a clever way to start from 1
     }
-
-
-
-    _.each(poly, function(v){
-
-        v.X = v.x
-         v.Y= v.y
-
-    })
-
-
-
-    if(numVerts < 3){return false}
-
-
-
-    h.mt(poly[0])
-    T(numVerts, function(i){ // T(4,..
-
-        h.lt(poly[i % numVerts])
-
-    })
-
-
     return this}
+
+
 
 
 h.drawPolygons= function(paths, fc, sc){var h=this

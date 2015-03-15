@@ -629,59 +629,61 @@ function sqr(x){return x * x}
 
 }
 
-TERRAIN=function(){z()
+TERRAIN1=function(){z()
 
-    s= stage = cjs.stg(1200, 600).A()
+    s= stage = cjs.stg(1600, 600).A()
 
     h = s.shape()
-
     h.f('b').dc(200, 200, 10)
 
+    h2 = s.shape().X(700)
+    h2.f('b').dc(0,0,10)
 
-    terr  = []
-draw=function() {
-    for (var i = 0; i < 13; i++) {
-        for (var j = 0; j < 8; j++) {
+    tile = function(i,j){
+        return [
+            V(-5+i,130+j),
+            V(-5+i,80+j),
+            V(45+i,80+j),
+            V(45+i,130+j)
+        ]}   // lower left //upper left//upper right//lower right
 
-            terr.push([
 
-                    V(-5 + i * 50, 80 + j * 50),
-                    V(45 + i * 50, 80 + j * 50),
-                    V(45 + i * 50, 130 + j * 50),
-                    V(-5 + i * 50, 130 + j * 50)
+draw=function(){terr=[]
+    _.times(13,function(i){
+        _.times(8,function(j){
+        terr.push(tile(i*50,j*50))
+    })})
 
-                ]
-            )
-        }
-    }
-
-    h.drawPolygons(terr, 'blue', 'red')
-
+    h.drawPolygons(terr,'b','r')
 }
-draw()
 
-      doExplosion= function(e){$l('exp')
+    draw()
 
-          v=V(e.stageX, e.stageY)
+    t= Math.poly(terr[101])
 
-       exP = circ(v, 100 )
+      doExplosion= function(e){
 
+          v = V(e.stageX,e.stageY)
+
+          exP = circ(v,100 )
           h.drawPolygon(exP,'z')
 
+          c  = Math.poly(exP)
     // for each existing terrain polygon, check the difference between the polygon itself and the
     // explosion polygon. This should be optimized in some way, checking only for terrain polygons
     // which are actually affected by the explosion.
     // Then we remove the terrain polygon from the array, and we add the resulting polygon(s) after
     // difference is calculated.
 
+          iX = c.intersection(t)
+          h2.drawPolygon(iX.verts())
     for (var i=terr.length-1; i>=0; i--) {
 
 
-      resultPolygons = Clipper.clipPolygon(terr[i], explosionPolygon,  ClipType.DIFFERENCE)
+     // resultPolygons =   terr[i].intersection(exP)
 
         totalArea=0
        // terr.splice(i,1)
-
        // for (var j =0; j<resultPolygons.length; j++) {terr.push(resultPolygons[j])}
 
     }
@@ -710,7 +712,6 @@ draw()
 
       }
 
-
     // listeners: basically we destroy the terrain with a mouse click or a mouse drag
 
     // stage.on('mousedown', function(){stage.on('mousemove', doExplosion)})
@@ -719,10 +720,31 @@ draw()
 
     stage.on('click', doExplosion)
 
+
+
+   vv= [V(645,480), //lower right
+       V(595,480),  //lower left
+       V(595,430), //upper left
+       V(645,430)] //upper right
+
+    h.drawPolygon(vv, 'z')
+
+
+vvv = [
+
+    V(645,380),
+    V(595,380),
+    V(595,372),
+    V(617,369),
+    V(645,373)
+]
+
+   //h.drawPolygon(vvv, 'z')
+     h.drawPolygon(vvv, 'z')
+
+
+
 }
-
-
-
 
 
 GPCLIB=function(){
@@ -3941,71 +3963,30 @@ GPCLIB=function(){
     StNode = gpcas.geometry.StNode;
     ItNode = gpcas.geometry.ItNode;
 
-}
-
-GPCLIB()
 
 
+    p = gpcas.geometry.PolyDefault.prototype
+    p.addPoints=function(points){var poly=this
+        if(A(points)){
+            _.times(points.length,function(i){
 
-DRAWPOLY=function(){
+                var pt=points[i],x,y
+                if(A(pt)){x=pt[0]; y=pt[1]}
+                else if(O(pt)){x=pt.x; y=pt.y}
+                poly.addPoint(V(x,y))
 
-    canvas =  can = $.can('y', 800, 600).A()
-    context = ctx = can.ctx()
-
-
-    vs = [
-        [61,68],
-        [145,122],
-        [186,94],
-        [224,135],
-        [204,211],
-        [105,200],
-        [141,163],
-        [48,139],
-        [74,117]
-    ]
-
-    ctx.drawPoly(vs)
-}
+            })
+        }
+        return this}
 
 
-p = gpcas.geometry.PolyDefault.prototype
-p.addPoints=function(points){var poly=this
 
-    if(A(points)){
-        _.times(points.length ,function(i){
-            poly.addPoint(V(points[i][0], points[i][1]))})
-    }
+    p.num = p.numPoints=function(){return this.getNumPoints()}
+    p.verts= function(){
 
-    return this}
-p.num = p.numPoints=function(){return this.getNumPoints()}
-p.verts= function(){
+        var poly=this,
 
-    var poly=this,
-
-        verts=[]
-
-    _.times(poly.getNumPoints(), function(i){
-
-        verts.push([
-            poly.getX(i),
-            poly.getY(i)
-        ])
-    })
-
-    return verts
-
-
-}
-
-
-p = gpcas.geometry.PolySimple.prototype
-p.num = p.numPoints=function(){return this.getNumPoints()}
-p.verts= function(){
-
-    var poly=this,
-
-        verts=[]
+            verts=[]
 
         _.times(poly.getNumPoints(), function(i){
 
@@ -4018,7 +3999,278 @@ p.verts= function(){
         return verts
 
 
+    }
+    p = gpcas.geometry.PolySimple.prototype
+    p.num = p.numPoints=function(){return this.getNumPoints()}
+    p.verts= function(){
+
+        var poly=this,
+
+            verts=[]
+
+        _.times(poly.getNumPoints(), function(i){
+
+            verts.push([
+                poly.getX(i),
+                poly.getY(i)
+            ])
+        })
+
+        return verts
+
+
+    }
+
+
+
 }
+GPCLIB()
+
+TERRAINWORKS=function(){w=b2d.W()
+
+    s= stage = cjs.stg(1600, 600).A()
+
+    h = s.shape()
+    h.f('b').dc(200, 200, 10)
+    h2 = s.shape().X(700)
+    h2.f('b').dc(0,0,10)
+
+    tile = function(i,j){
+
+        return [
+
+            V(-5+i,130+j), V(-5+i,80+j), V(45+i,80+j), V(45+i,130+j)
+        ]
+    }
+
+
+    sep = b2d.separator()
+
+
+
+    sep([
+        V(-20,20), V(-20,-20),
+        V(20,-20), V(20,20)
+    ]).XY(20, 300)
+
+
+    w.ball(300,300)
+    draw=function(){terr=[]
+        _.times(13,function(i){
+            _.times(8,function(j){
+
+                til = w.brick( (i*25)+420, (j*25)+200, 20, 20 )
+
+                terr.push( {
+                    bod:til,
+
+                    poly: Math.poly([
+
+
+                        V(  ((i*25)+420)-10,  ((j*25)+200)  +10  ),
+
+                        V(  ((i*25)+420)-10,  ((j*25)+200)  -10  ),
+                        V(  ((i*25)+420)+10,  ((j*25)+200)  -10  ),
+
+                        V(  ((i*25)+420)+10,  ((j*25)+200)  +10  )
+
+
+                    ])
+
+                })
+
+
+               // sep(til).stat()
+
+            })})
+
+
+       // h.drawPolygons(terr,'b','r')
+    }
+
+    draw()
+
+    t=  terr[103]
+
+
+    doExplosion= function(e){$l('explode')
+
+        v = V(e.stageX, e.stageY)
+
+        exP = circ(v,100 )
+        h.drawPolygon(exP,'z')
+
+        c  = Math.poly(exP)
+
+
+        // for each existing terrain polygon, check the difference between the polygon itself and the
+        // explosion polygon. This should be optimized in some way, checking only for terrain polygons
+        // which are actually affected by the explosion.
+        // Then we remove the terrain polygon from the array, and we add the resulting polygon(s) after
+        // difference is calculated.
+
+        iX = c.intersection(t)
+        h2.drawPolygon(iX.verts())
+
+
+        for (var i=terr.length-1; i>=0; i--) {
+
+
+            // resultPolygons =   terr[i].intersection(exP)
+
+            //totalArea=0
+            // terr.splice(i,1)
+            // for (var j =0; j<resultPolygons.length; j++) {terr.push(resultPolygons[j])}
+
+        }
+
+        // draw()
+    }
+
+    circ =function(v,rad,prec){ prec = N(prec)?prec:20
+
+        arr=[]
+
+        ang= 2 * Math.PI/prec
+
+        _.times(prec , function(i){
+
+            pX = v.x+rad  * Math.cos(ang*i)
+            pY = v.y+rad  * Math.sin(ang*i)
+
+            // $l('pX: ' + pX + ', pY: '+ pY)
+
+            arr.push( V(pX, pY) )
+
+        })
+
+        return arr
+
+    }
+
+    // listeners: basically we destroy the terrain with a mouse click or a mouse drag
+
+    // stage.on('mousedown', function(){stage.on('mousemove', doExplosion)})
+    // stage.on('mouseup', function(){stage.off('mousemove', doExplosion)})
+
+
+    w.can.click(doExplosion)
+
+   // w.click(function(x,y){  w.bump(x,y,40)  })
+
+
+    explosion=function(x,y){var cir,bod
+
+          cir= Math.poly( circ(V(x,y),30,5) )
+
+       bod= sep(circ(V(0,0),30,5)).XY(x,y)
+
+    return {
+        cir:cir,
+        bod:bod
+    }}
+
+   exp = explosion(740,395)
+    Math.poly(exp.cir)
+
+
+    dif = t.poly.difference(
+        exp.cir
+    )
+
+    t.bod.fixt().remove()
+
+    bb= sep( t.bod, dif.verts() ).stat().XY(0,0)
+
+
+
+   // sep(dif.verts()).XY(100,100).stat()
+
+    vv= [V(645,480), //lower right
+        V(595,480),  //lower left
+        V(595,430), //upper left
+        V(645,430)] //upper right
+
+    h.drawPolygon(vv, 'z')
+
+
+    vvv = [
+
+        V(645,380),
+        V(595,380),
+        V(595,372),
+        V(617,369),
+        V(645,373)
+    ]
+
+    //h.drawPolygon(vvv, 'z')
+    h.drawPolygon(vvv, 'z')
+
+
+
+}
+
+TERRAIN=function(){w=b2d.W()
+    sep = b2d.separator()
+    terr=[]
+    circ=function(v,rad,prec){ prec = N(prec)?prec:20
+        arr=[]
+        ang= 2 * Math.PI/prec
+        _.times(prec , function(i){
+            pX = v.x+rad  * Math.cos(ang*i)
+            pY = v.y+rad  * Math.sin(ang*i)
+            arr.push(V(pX,pY))})
+        return arr}
+    explosion=function(x,y){var cir,bod
+        cir= Math.poly( circ(V(x,y),30,5) )
+        bod= sep(circ(V(0,0),30,5)).XY(x,y)
+        return {  cir:cir,  bod:bod }}
+    _.times(13,function(i){_.times(8,function(j){
+var bod=w.brick(  i*25 +420,  j*25 +200,     20, 20 )
+        terr.push({
+
+            bod: bod,
+
+            verts:   bod.fixt().verts()  ,
+
+            poly: Math.poly([
+                V(  i*25+410,  j*25+210  ),
+                V(  i*25+410,  j*25+190  ),
+                V(  i*25+430,  j*25+190  ),
+                V(  i*25+430,  j*25+210  )
+            ])
+
+        })
+
+    })})
+    w.dot(420,200)
+    w.dot(410,210)
+
+    t=terr[103]
+
+   s = sep(
+
+       t.bod.fixt().verts()
+
+   ).stat()//.XY(100,100)
+
+
+
+    exp=explosion(740,395)
+
+    Math.poly(exp.cir)
+    dif = t.poly.difference(exp.cir)
+    t.bod.fixt().remove()
+    bb= sep( t.bod, dif.verts() ).stat().XY(0,0)
+
+    setTimeout( function(){ t.bod.X(20) }, 2000)
+}
+
+
+
+
+
+
 
 Math.poly=function(points){
     var poly=new PolyDefault()
@@ -4041,6 +4293,7 @@ GPC=function(){
         [48,139],
         [74,117]
     ])
+
     poly2 = Math.poly([
         [131,84],
         [224,110],
@@ -4049,31 +4302,381 @@ GPC=function(){
         [60,167],
     ])
 
-    reset=function(){
+    reset=(function self(){
+
         ctx.clearRect(0,0,400,400)
         ctx.drawPolys(poly1,'b', 0, -30 )
            .drawPolys(poly2,'r', 0, -30 )
-    }
-    reset()
 
+        return self}())
 
     button=function(name,poly){
         $.button(name, function(e) {
-            reset(); ctx.drawPolys(poly,"green",0,150)
-        }).A()
-
-    }
-
-     button('difference',  poly1.difference(poly2) )
+            reset()
+            ctx.drawPolys(poly,'g', 0,150)
+        }).A()}
 
 
-
+    button('difference',  poly1.difference(poly2) )
     button('intersection', poly1.intersection(poly2) )
-
     button('union', poly1.union(poly2) )
-
     button('xor',  poly1.xor(poly2) )
 
 
 
 }
+
+POLYS=function(){z();s=cjs.stg('y',800,500).A()
+
+    poly = Math.poly([  [61,68],  [145,122],  [186,94],  [224,135],  [204,211],  [105,200],  [141,163],  [48,139],  [74,117]  ])
+
+
+
+
+}
+
+b2d.separator=function(){
+    /*
+     //This class is specifically for non-convex polygons.
+     // If you want to create a convex polygon, you don't need to use this class
+     // - Box2D's <code>b2PolygonShape</code> class allows you to create convex shapes with the <code>setAsArray()</code>/<code>setAsVector()</code> method.</li>
+     //The vertices must be in clockwise order.</li>
+     //No three neighbouring points should lie on the same line segment
+     //There must be no overlapping segments and no "holes"
+
+
+     @param body The b2Body, in which the new fixtures will be stored.
+     * @param fixtureDef A b2FixtureDef, containing all the properties (friction, density, etc.) which the new fixtures will inherit.
+     * @param verticesVec The vertices of the non-convex polygon, in clockwise order.
+     * @param scale <code>[optional]</code> The scale which you use to draw shapes in Box2D. The bigger the scale, the better the precision. The default value is 30.
+     * @see b2PolygonShape
+     * @see b2PolygonShape.SetAsArray()
+     * @see b2PolygonShape.SetAsVector()
+     * @see b2Fixture
+     * */
+    /**
+     * Checks whether the vertices in <code>verticesVec</code> can be properly distributed into the new fixtures (more specifically, it makes sure there are no overlapping segments and the vertices are in clockwise order).
+     * It is recommended that you use this method for debugging only, because it may cost more CPU usage.
+     * <p/>
+     * @param verticesVec The vertices to be validated.
+     * @return An integer which can have the following values:
+     * <ul>
+     * <li>0 if the vertices can be properly processed.</li>
+     * <li>1 If there are overlapping lines.</li>
+     * <li>2 if the points are <b>not</b> in clockwise order.</li>
+     * <li>3 if there are overlapping lines <b>and</b> the points are <b>not</b> in clockwise order.</li>
+     * </ul>
+     * */
+
+
+    Separate=function(body,verts,scale){
+
+        var g=G(arguments)
+        body=g[0]
+        verts=g[1]
+        scale=N(g[2])?g[2]:30
+
+        if(A(body)){
+            scale=verts;
+            verts=body;
+
+            body= g.p? w.ball(300,300,4): w.dyn(300,300)
+        }
+
+
+        var i,j,  m, figsVec,  polyShape,  n
+
+
+        //pass in an array of points
+        //each will get scaled and then, calcShapes is applied to it
+        //and then for EACH OF THE SHAPES!! ....
+
+        _.each(calcShapes(
+
+                _.map(verts, function(vert){
+
+                    return V(vert)
+
+                })
+
+
+            ),
+
+            function(vec){var polyShape= new b2d.Shapes.b2PolygonShape
+
+                polyShape.SetAsVector(_.map(vec,function(v){return V(v).div(scale)}) )
+
+                fixtureDef = b2d.fixt()
+
+                fixtureDef.shape = polyShape
+
+                body.CreateFixture(fixtureDef)
+
+            })
+
+
+        return body.den(1)
+    }
+
+
+
+    Validate=function(verticesVec){
+        var i,n=verticesVec.length,j,j2,i2,i3,d,ret=0;
+        var fl ,fl2 =false
+        _.times(n, function(i){
+            i2= (i<n-1)? i+1: 0
+            i3= (i>0)? i-1: n-1
+            fl=false
+            _.times(n, function(j){
+                if ( j!=i  && j!=i2 ) {
+                    if (! fl) {
+                        d=det(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y);
+                        if  (d>0)  {  fl=true }}
+                    if ((j!=i3)) {
+                        j2=(j<n-1)?j+1:0;
+                        if (hitSegment(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y,verticesVec[j2].x,verticesVec[j2].y)) {
+                            ret=1;
+                        }}}})
+            if (! fl) { fl2=true }})
+        if (fl2){ if(ret==1){ret=3} else {ret=2} }
+        return ret }
+
+    calcShapes=function(verts){
+        var vec
+        var i,n,j
+        var d,t,dx,dy,minLen
+        var i1,i2,i3,p1 ,p2,p3
+        var j1,j2,v1 ,v2 ,k,h
+        var vec1 ,vec2
+        var v ,hitV
+        var isConvex
+        var figsVec =[], queue
+
+
+        queue =[]
+
+        queue.push(verts)
+
+
+        while (queue.length){
+            vec = queue[0]
+
+            n=vec.length
+
+            isConvex=true
+
+            _.times(n, function(i){
+
+                i1 = i
+
+                i2 = (i<n-1)?i+1:i+1-n
+
+                i3=(i<n-2)?i+2:i+2-n
+
+                p1= vec[i1]
+                p2= vec[i2]
+                p3= vec[i3]
+
+                d=det(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y)
+
+
+                if ( d<0)  {
+                    isConvex=false
+                    minLen = Number.MAX_VALUE
+
+                    _.times(n, function(j){
+                        if(j!=i1 &&  j!=i2 ){
+                            j1=j;
+                            j2=(j<n-1)?j+1:0;
+                            v1=vec[j1];
+                            v2=vec[j2];
+                            v=hitRay(p1.x,p1.y,p2.x,p2.y,v1.x,v1.y,v2.x,v2.y);
+
+                            if(v){
+
+                                dx = p2.x-v.x; dy=p2.y-v.y; t=dx*dx+dy*dy
+
+                                if(t<minLen){
+
+                                    h=j1
+                                    k=j2
+                                    hitV=v
+                                    minLen=t
+
+                                }}}
+                    })
+
+                    vec1=[]
+                    vec2=[]
+
+                    j1=h; j2=k;
+                    v1=vec[j1];
+                    v2=vec[j2];
+
+                    if (! pointsMatch( hitV.x, hitV.y,  v2.x,v2.y)) {vec1.push(hitV)}
+                    if (! pointsMatch( hitV.x, hitV.y,  v1.x,v1.y)) {vec2.push(hitV)}
+
+
+                    h=-1
+                    k=i1
+
+
+                    while(true){
+
+                        if(k == j2){ //if( h<0|| h>=n ){err()}
+
+                            if (!isOnSegment(
+                                v2.x,
+                                v2.y,
+                                vec[h].x,
+                                vec[h].y,
+                                p1.x,
+                                p1.y )){  vec1.push( vec[k] )  }
+
+                            break
+
+                        }  else { vec1.push(vec[k]) }
+
+                        h=k
+                        k=(k<1)?n-1:k-1
+                    }
+
+                    vec1=vec1.reverse()
+
+                    h=-1
+                    k=i2
+                    while (true) {
+
+
+                        if ( k==j1 ){//  if   ( h<0  || h>=n)  {  err()   }
+                            if ( k==j1  && ! isOnSegment(v1.x,v1.y,vec[h].x,vec[h].y,p2.x,p2.y)){  vec2.push(vec[k])   }
+                            break}
+
+                        else  {
+                            vec2.push(vec[k]);
+                        }
+                        h=k
+                        if ( k+1 > n-1 ) { k=0 }  else {k++}
+                    }
+
+                    queue.push(vec1,vec2)
+                    queue.shift()
+
+                }
+            })
+
+
+
+            if (isConvex) {figsVec.push(queue.shift())}
+        }
+
+        return figsVec
+    }
+
+    hitRay=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
+        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
+
+        a=(((t5*t2)-t6*t1)/t7);
+        var px=x1+a*t3,py=y1+a*t4;
+        var b1 =isOnSegment(x2,y2,x1,y1,px,py);
+        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
+
+        if ((b1&&b2)) {
+            return V(px,py);
+        }
+
+        return null;
+    }
+
+    hitSegment=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
+        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
+
+        a=(((t5*t2)-t6*t1)/t7);
+        var px=x1+a*t3,py=y1+a*t4;
+        var b1 =isOnSegment(px,py,x1,y1,x2,y2);
+        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
+
+        if ((b1&&b2)) {
+            return V(px,py);
+        }
+
+        return null;
+    }
+
+    isOnSegment=function(px,py,x1,y1,x2,y2) {
+
+        var b1 =   (  (x1+0.1)>=px &&px>=x2-0.1)  ||  (   (x1-0.1)  <= px  &&   px <= x2+0.1   )
+
+        var b2 =  ( (y1+0.1)>=py && py>=y2-0.1)  ||  (   (y1-0.1) <=py   &&   py <= y2+0.1   )
+
+
+        return  b1&&b2  &&   isOnLine(px,py,x1,y1,x2,y2)
+    }
+
+    pointsMatch=function(x1,y1,x2,y2)  {
+        var dx=(x2>=x1)?x2-x1:x1-x2,dy=(y2>=y1)?y2-y1:y1-y2;
+        return   dx<0.1  && dy<0.1
+    }
+
+    isOnLine=function(px,py,x1,y1,x2,y2) {
+        if (  (x2-x1)>0.1    ||    x1-x2>0.1  ) {
+            var a=(y2-y1)/(x2-x1),
+                possibleY=a*(px-x1)+y1,
+                diff=(possibleY>py)? possibleY-py: py-possibleY
+
+            return (diff<0.1)
+        }
+
+        return (((px-x1)<0.1)||x1-px<0.1)
+    }
+
+    det=function(x1,y1,x2,y2,x3,y3) {return x1*y2+x2*y3+x3*y1-y1*x2-y2*x3-y3*x1}
+
+    // err=function(){throw new Error("A problem has occurred. Use the Validate() method to see where the problem is.")}
+
+    return Separate
+}
+
+ SEPARATOR1=function(){
+
+sep = b2d.separator()
+
+     w = b2d.W()
+
+     b = w.ball(300,300,20)
+     sep(b, [
+
+         V(-100,100).div(),
+         V(-100,-100).div(),
+         V(100,100).div(),
+         V(50,0).div(),
+         V(250,20).div(),
+         V(100,100).div()
+
+     ])
+}
+
+SEPARATOR=function(){w = b2d.W();
+
+
+    sep = b2d.separator()
+
+
+    _.times(30, function(i){
+
+        sep([  V(-20,20),  V(0,-80),  V(20,20),  V(0,-40) ]).XY(100+(i*30), 300)})
+
+     sep([
+         V(-20,20), V(-20,-20),
+         V(20,-20), V(20,20)
+     ]).XY(500, 300)
+
+
+}
+
+
+
+cjs.rulers=function() {
+    var d1=$.div('b', 100, 100).drag().opacity(.3)
+    $.div('r', 100, 300).drag().opacity(.3)
+    return d1}
