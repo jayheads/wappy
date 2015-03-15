@@ -171,4 +171,34 @@ b2d.stgWorld=function(color, grav, wd, ht, mouseJoints){ var w
 
     return w
     }
+b2d.mat22=function(v1,v2){
+    var m = new b2d.Mat22()
+    m.SetVV(v1,v2)
+    return m}
 
+
+b2d.tf=function(v1,v2,v3){
+
+    if(U(v1)){
+        return new b2d.Math.b2Transform()
+    }
+    if(A(v1)){
+        return b2d.tf(
+            V(v1[0],v1[1]),
+            V(v1[2],v1[3]),
+            V(v1[4],v1[5]))}
+
+    var tf= new b2d.Math.b2Transform(v1, b2d.mat22(v2,v3))
+
+
+
+    return tf}
+
+b2d.Common.Math.b2Transform.prototype.toArr = function(){var tf=this
+    var pos=tf.position,
+        R=tf.R,
+        col1= R.col1,
+        col2 = R.col2
+
+    return [pos.x,pos.y,col1.x,col1.y, col2.x, col2.y]
+}

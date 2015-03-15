@@ -3,7 +3,8 @@ w=p=b2d.World.prototype
 
 w.draw=function(num){
     if(N(num)){this.step(num)}
-    this.DrawDebugData();
+    this.DrawDebugData()
+    this.clearForces()
     return this}
 
 w.debug =   function(data){

@@ -645,7 +645,13 @@ b.got=function(thus, func){var body=this
     return this}
 
 
+b.hit=function(x,y,dot){var hit
+if(dot==true){this.wor().dot(x,y)}
+    this.eachFixt(function(f){
+        if(f.hit(x,y)){hit=true}
+    })
 
+    return hit}
 
 
 b.kill=function(){

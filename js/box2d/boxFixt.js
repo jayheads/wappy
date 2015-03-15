@@ -383,6 +383,14 @@ f.testPoint= f.tP=function( point, y ){var success
     return __success = success}
 
 
+f.hit=function(x, y, dot){
+    if(dot==true){w.dot(x,y)}
+    if(O(x)){y= x.y;x= x.x}
+    var h = this.shape(),
+        b=this.body(),
+        tf= b.transform(),
+        v = V(x,y).div()
+    return h.TestPoint(tf,v)}
 
 
 f.verts= function(){

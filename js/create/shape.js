@@ -68,7 +68,6 @@ h.poly=function(verts, f, s, width){var that = this, gx = this.graphics
 return this}
 h.clear=function(){this.graphics.clear();return this}
 h.same=function(){return cjs.shape(this)}
-
 h.f=function(fill){
     if(S(fill)){fill = oO('c', fill)}
     this.graphics.f(fill)
@@ -88,22 +87,17 @@ h.dr=function(){
     this.graphics.dr.apply(
         this.graphics, arguments)
     return this}
-
 h.fs=function(){
     this.graphics.fs.apply(
         this.graphics, arguments)
 
 return this}
-
 h.ef=function(){
     this.graphics.endFill.apply(
         this.graphics, arguments)
 
     return this}
-
-
-h.rG= h.radGrad=function(cols, ratios,
-                         x1, y1, r1, x2, y2, r2){
+h.rG= h.radGrad=function(cols, ratios, x1, y1, r1, x2, y2, r2){
 
     var args = _.toArray(arguments),circs,len
 
@@ -149,13 +143,6 @@ h.rG= h.radGrad=function(cols, ratios,
     this.graphics.beginRadialGradientFill( cols, ratios, x1, y1, r1, x2,y2,r2)
 
     return this}
-
-
-
-
-
-
-
 h.lG= h.linGrad=function(){
 
     var args = _.toArray(arguments)
@@ -165,6 +152,68 @@ h.lG= h.linGrad=function(){
     this.graphics.beginLinearGradientFill.apply(
         this.graphics, args)
     return this}
+
+
+
+h.mt=function(x,y){
+    if(O(x)){y=N(x.y)? x.y: x.Y;
+        x= N(x.x)? x.x: x.X}
+
+    this.graphics.mt(x,y)
+return this}
+
+h.lt=function(x,y){
+        if(O(x)){y= x.y; x= x.x}
+        this.graphics.lt(x,y)
+        return this}
+
+
+h.drawPolygon = function(poly,color) {var h = this,
+    numVerts=poly.length
+
+
+    if(color){
+        this.s(color)
+    }
+
+
+
+    _.each(poly, function(v){
+
+        v.X = v.x
+         v.Y= v.y
+
+    })
+
+
+
+    if(numVerts < 3){return false}
+
+
+
+    h.mt(poly[0])
+    T(numVerts, function(i){ // T(4,..
+
+        h.lt(poly[i % numVerts])
+
+    })
+
+
+    return this}
+
+
+h.drawPolygons= function(paths, fc, sc){var h=this
+    h.f(fc).s(sc)
+
+    _.each(paths, function(path){
+        h.drawPolygon(path)
+    })
+
+    return h}
+
+
+
+
 
 
 cjs.isShape=function(h){
@@ -994,9 +1043,5 @@ THREECANS=function(){
 
 
 }
-
-
-
-
 
 

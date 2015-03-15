@@ -131,32 +131,81 @@ TESTQ=function(){w=b2d.W()
 
 
 
+TRANSFORM=function(){var tf=null
+    w = wor().debug()
+
+    b = w.rect(100,100,100,200,'b')
+
+    b2 = w.rect(200,200,100,150,'p')
 
 
 
-w.getBodyAtPoint=function(x, y){
-    var selectedBody = null
+   cjs.tick(function(){
+       var trf = b.transform().toArr()
 
-    this.QueryAABB( queryFunc,
-        b2d.AB( x-.001, y-.001, x+.001, y+.001 )
+       if(tf){
+           b2.SetTransform( b2d.tf(tf)  )
+       }
+
+       setTimeout(function(){
+              tf=trf
+        },1000)
+
+    })
+
+
+
+
+}
+
+TESTPOINT=function(){var tf=null
+    w = wor()
+
+    b = w.rect(100,100,100,200,'b')
+
+
+
+    p = w.rect(200, 200, 100, 150, 'p').stat().rot(20)
+
+    p.fixt(
+
+        b2d.poly(50,50,50,50, 20,'o' )
     )
 
+    f = p.fixt()
+
+    h = f.shape()
+
+    hit=h.testPoint(  p.transform(),  V(200,200).div()) // true
+    hit2= f.hit(200, 200, true)
+
+}
 
 
 
-    return selectedBody? selectedBody: false
 
-    function queryFunc(fxt){
-        var fixtIsStatic =  fxt.getType( b2Body.b2_staticBody )
-        if( !fixtIsStatic &&  fxt.testPoint( mX, mY )){
 
-             // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
+w.getBodyAtPoint=function(x, y){var body = null
 
-            selectedBody = fxt.gB()
+    this.QueryAABB(function queryFunc(fxt){
+
+        if( !fxt.isStat() &&  fxt.testPoint(mX,mY)){
+
+            // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
+            body = fxt.body()
             return false}
-        return true}
+
+        return true},
+
+        b2d.AABB01(x,y))
+
+
+    return body
+
+
 
 };
+
 
 
 

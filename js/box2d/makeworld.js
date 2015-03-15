@@ -17,119 +17,124 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
     var width,height,gravX,gravY
     if(!O(ops)){ops={}}
     if(ops.z!=false){z()}
+
     width = ops.W||1200; height= ops.H||600
+
     if( U(ops.grav) && D(ops.g) ){ops.grav = ops.g}
-    gravX=0; gravY=40
-    if(N(ops.grav)){ gravY = ops.grav }
+
+
+    gravX=0;
+    gravY=40
+    if(N(ops.grav)){gravY = ops.grav }
     else if(A(ops.grav)){gravX = ops.grav[0]; gravY = ops.grav[1]} //else {ops.gravityY = ops.g;ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40;world = w = b2d.world(V(0, ops.gravityY))}
-
-
     w = b2d.world(V(gravX, gravY))
+
+
     cjs.watchKeys()
 
-    w.stage  = w.s =  cjs.tripleStage('black',
+    w.s =  w.stage  =   cjs.tripleStage('black',
         width,
         height)
 
-    w.stage.back.A()
-    w.stage.A()
-    w.stage.HUD.A()
+    w.s.back.A()
+    w.s.A()
+    w.s.HUD.A()
 
       //cjs.Ticker.removeAllEventListeners()
 
 
-    w.stage.autoClear=false
-    w.canvas = w.stage.canvas;
-    w.c =w.can = $(w.canvas)
-    canvas = $(w.canvas).id('canvas')
-    w.context = w.canvas.getContext('2d')
-    if(ops.backgroundImage){stage.bm(ops.backgroundImage)}
-    var canvasPosition = $(w.canvas)._getPosition()
+    w.s.noAutoClear()
+    w.canvas = w.stage.canvas
+    w.can = w.c = $(w.canvas)
+    //canvas = $(w.canvas).id('canvas')
+    w.ctx = w.context = w.can.ctx('2d')
+    if(ops.backgroundImage){
+        w.s.bm(ops.backgroundImage)}
+
+    var canvasPosition = w.can._getPosition()
     w.x = canvasPosition.x
     w.y = canvasPosition.y
 
-    // $.gameController().A();
     $.joystick()
 
-    _mouseJoint = _mouseIsDown = 0
+    w._mouseJoint = null
+    w._mouseIsDown = false
 
-    setInterval( function(){
-        handleMouseJoints(); handleDebug()
-    }, 1000/60 )
+    setInterval(function(){
+        handleMouseJoints()
+        w.draw(1/60)
+        if(F(ops.cb)){ops.cb()}
+        w.stage.update()
+    }, 1000/60)
+
+    //w.mouseJoints()
 
     $.mousedown(function(e){// *** need to change to pagex(so can scroll page?).. but i think it messes up for mobile
-        var x = w.x, y = w.y
-        _mouseIsDown = true
+        var x=w.x,
+            y=w.y
+        w._mouseIsDown = true
+
         recordMouseCoords(e)
         $.mousemove(recordMouseCoords)
-        function recordMouseCoords(e){mX=(e.clientX-x)/30; mY=(e.clientY-y)/30}}).mouseup( function(){   _mouseIsDown = false})
-        .touchstart(function(e){
 
-            _mouseIsDown = true
+
+
+        function recordMouseCoords(e){
+            mX=(e.clientX-x)/30;
+            mY=(e.clientY-y)/30
+        }
+    })
+        .mouseup( function(){w._mouseIsDown = false})
+        .touchstart(function(e){
+            w._mouseIsDown = true
             recordMouseCoords(e)
             $.touchmove(recordMouseCoords)
             function recordMouseCoords(e){
                 var touch = e.originalEvent.touches[0]
-                mX = (touch.clientX- w.x)/30
-                mY = (touch.clientY- w.y)/30}
+                mX = (touch.clientX-w.x)/30
+                mY = (touch.clientY-w.y)/30
+            }
+        }).touchend( function(){w._mouseIsDown = false})
 
-        }).touchend( function(){   _mouseIsDown = false})
+
 
     if(ops.clear !==false) {
 
-        if (ops.debug == false) {
-
             w.debug(
-                b2d.debugDraw(w.context, 30)//.flags(shB || jB).alpha(.6).line(3000)
-            )
-        }
 
-        else {
-            w.debug(
                 b2d.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000)
             )
-        }
+
+
 
     }
-
-
-    w.bD  = b2d.staticDef()//= bD
-    w.fD = fD = b2d.fixtDef().d( 1 ).f( .5 ).r( .8).setShape( b2d.polyDef() )
 
     w.makeWalls(ops.walls )
 
-    //w.startListening()
+    return w
 
-    return w      //if( ! ops.$$ == 0 ){ makeShapeOnDblClk() }
 
-    function handleDebug(){
-        w.step(1/60, 10, 10).draw().clearForces()
-        if(F(ops.cb)){ops.cb()}
-        w.stage.update()
-    }
+
     function handleMouseJoints(){
 
+        if(w._mouseIsDown){
 
-        if(_mouseIsDown){
+         w._mouseJoint = w._mouseJoint ||
+             b2d.mouseJoint( w.getBodyAtPoint(mX,mY) )
 
-         mj =    _mouseJoint = _mouseJoint || b2d.mouseJoint( w.getBodyAtPoint(mX, mY) )
-
-            if(_mouseJoint){_mouseJoint.SetTarget( V(mX, mY) )}
-
-
+            if(w._mouseJoint){ w._mouseJoint.target( V(mX, mY) ) }
         }
 
 
-        else if(_mouseJoint ){_mouseJoint.destroy();
-
-            _mouseJoint=null}
-
+        else {w.removeMouseJoint()}
     }
 
 
 
 
 }
+
+
 
 
 $W =  function(grav,wd,ht){z()

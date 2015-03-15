@@ -1,6 +1,5 @@
 WEBMAN = function(){
 
-
      w = b2d.W({ g:40 })
 
    // w = wor({g:40})
@@ -20,17 +19,18 @@ WEBMAN = function(){
     p = w.webMe(394,530).den(.14).fric(1)
     p.canWeb=true
 
-    $.key(
-
-        {
+    $.key({
 
         right:function(){
+
             if(cjs.Keys.down){
                 p.didShoot = true
                 if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
+
             else {
                 if (p.isConnected()){p.F(100,0)}
                 else {p.I(8, 0)}}},
+
         left:function(){
             if(cjs.Keys.down){
                 p.didShoot = true
@@ -80,11 +80,9 @@ WEBMAN = function(){
             if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
             p.didShoot=false}
 
-    }
+    })
 
-    )
 
- 
 
 
     w.beg(function(cx){var fixt, web
@@ -96,6 +94,8 @@ WEBMAN = function(){
 
     w.s.tickX(function(){return 600- p.X()})
     w.s.tickY(function(){return 510- p.Y()})}
+
+
 SPACEZOOM=function(){
 
 
