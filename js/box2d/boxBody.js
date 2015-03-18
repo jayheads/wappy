@@ -672,6 +672,98 @@ b.num = b.count=function(){
 }
 
 
+b.verts=function(){
+    return this.fixt().verts()
+}
+
+
+b.polygon=function(){
+    return Math.poly (this.verts())
+}
+
+b.rotVerts=function(){//rotated but local
+    newX= function(x, y, rot){
+
+        var rad = Math.toRadians(rot)
+
+
+        x = x *   Math.cos(rad).toFixed(3)
+
+
+        y= y *   Math.sin(rad).toFixed(3)
+
+        return x-y
+    }
+    newY= function(x,y,rot){
+        var rad = Math.toRadians(rot)
+        return (x*Math.sin(rad))+(y*Math.cos(rad))}
+    var verts = this.verts(),  b=this
+    return _.map(verts, function(v){
+        var x= v.x, y= v.y
+        return V(
+            newX(x,y, b.rot()),
+            newY(x,y, b.rot())     )
+    })
+
+}
+
+
+b.V = b.rotWorVerts = function(){var b=this
+    return _.map(b.rotVerts(), function(v){
+        return V(v.x + b.X(), v.y + b.Y()  )
+    })
+}
+
+b.dff=function(b2){var b=this
+    var p = Math.poly(b.V())
+    return p.difference( Math.poly(b2.V()))
+}
+
+
+
+b.DIFF=function(b2){
+
+    var g=G(arguments),
+        b2=g[0],
+        b=this, f=b.fixt(),
+
+        dffV = b.dff(b2).verts()
+
+    b2d.conc(b,
+        _.map(dffV, function(v){
+            return V(v[0] - b.X(), v[1]- b.Y())}))
+    f.kill()
+    b.rot(0)
+
+    if(g.n){b2.kill()}
+    return this}
+
+b.DIF=function(b2){
+    var g=G(arguments),
+        b2=g[0]
+
+    this.eachFixt(function(f){f.DIFF(b2)})
+
+    if(g.n){b2.kill()}
+return this}
+
+
+
+b.wVerts=function(){
+   var p =  this.transform().position.mult()
+
+  return    _.map( this.verts() , function(vert){
+        return vert.add(p)
+    })
+
+
+}
+
+b.wPolygon=function(){
+    return Math.poly (this.wVerts())
+}
+
+
 
 b.destroy=function(){
 
@@ -943,25 +1035,39 @@ b.convex = function( col, arr, arr2){ /// color?
 
 
 
+b.fixts=function(){
+    var fl=this.GetFixtureList(),
+        arr=[]
+
+    while(fl){
+        arr.push(fl)
+        fl = fl.GetNext()
+    }
+
+    arr = arr.sort(function(a, b){
+        return  b.area() -a.area()
+
+    })
+
+    return arr
+}
+
+
 
 b.list=p.fixtList = p.fixtureList=p.gFL=function(){return this.GetFixtureList()}
 b.each = p.eachFixt = function(func){
 
-    var fl = this.GetFixtureList()
+    var fl=this.GetFixtureList(),
+        arr=[]
 
+    while(fl){
+        arr.push(fl)
+        fl = fl.GetNext()
+    }
 
-    var withList = function self(list, func){
+    _.each(arr, func)
 
-        func(list)
-
-        list = list.GetNext()
-
-        if(list){return self(list, func)}}
-
-    withList(fl, func)
-
-
-}
+return this}
 
 
 
@@ -995,6 +1101,23 @@ b.footListenerGreatButIGuessAlreadyDeppedKeepForAWhile=function(){
 
 
 
+b.warp2 = function(p) {var p=this
+    cjs.tick(function () {
+        if (p.Y() < 0) {
+            p.Y(600)
+        }
+        if (p.Y() > 600) {
+            p.Y(0)
+        }
+        if (p.X() < 0) {
+            p.X(1200)
+        }
+        if (p.X() > 1200) {
+            p.X(0)
+        }
+    })
+
+    return this}
 b.warp = function(p) {var p=this
     cjs.tick(function () {
         if (p.Y() < 0) {

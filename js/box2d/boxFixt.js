@@ -392,6 +392,7 @@ f.hit=function(x, y, dot){
         v = V(x,y).div()
     return h.TestPoint(tf,v)}
 
+f.rot=function(rot,g){return this.B().rot(rot,g)}
 
 f.verts= function(){
 
@@ -399,7 +400,220 @@ f.verts= function(){
 
         verts = shape.m_vertices
 
-    return [ verts[0].mult(), verts[1].mult(), verts[2].mult(), verts[3].mult()]}
+    return _.map(verts, function(v){
+        return v.mult()
+    })
+
+}
+
+
+
+
+f.V = f.rotVerts=function(){//rotated but local
+    newX= function(x, y, rot){
+
+        var rad = Math.toRadians(rot)
+
+
+        x = x *   Math.cos(rad).toFixed(3)
+
+
+        y= y *   Math.sin(rad).toFixed(3)
+
+        return x-y
+    }
+    newY= function(x,y,rot){
+        var rad = Math.toRadians(rot)
+        return (x*Math.sin(rad))+(y*Math.cos(rad))}
+    var verts = this.verts(),b=this.B()
+    return _.map(verts, function(v){
+        var x= v.x, y= v.y
+        return V(
+            newX(x,y, b.rot()) + b.X(),
+            newY(x,y, b.rot()) + b.Y())})
+}
+
+f.DIF = f.DIFF=function(b2){
+    var g=G(arguments),
+        b2=g[0],
+        f=this,
+        b=f.B()
+
+        p1 = Math.poly( f.V() )
+
+    p2 = Math.poly(b2.V())
+
+    diff = p1.difference( p2 )
+
+    if(!diff.m_List.get(0) ){f.kill()
+    return}
+
+        diff = diff.verts()
+
+    b2d.conc(b,
+
+        _.map(diff, function(v){
+            return V(v[0] - b.X(), v[1]- b.Y())
+        })
+
+    )
+
+    f.kill()
+
+   if(g.n){b2.kill()}
+
+    return this}
+f.area=function(){
+
+return Math.poly( this.V() ).getArea()
+
+}
+
+VERTS=function(){w=b2d.W()
+
+    b = w.brick(140,140,100,100).rot(20)
+
+    b2 = w.brick(100,100,100,100).rot(45)
+
+
+    t = b.tf()
+     v = b.verts()
+
+    wV = b.wVerts()
+
+
+   //first vertex:  x: -50, y: -50,
+
+   // b2d.conc( b.dff(b2).verts() ).stat().X(500)
+
+     b.DIFF(b2, '-')
+
+     setTimeout(function(){b.dyn()},3000)
+
+
+   // w.dot('b',100,30);w.dot('o',170,100);w.dot('b',30,100); w.dot('p',100,170)
+
+
+}
+
+
+
+
+DEST=function(){w=b2d.W({g:1})
+
+y= w.ship().linDamp(10)
+
+    b = w.brick(800,300,200,800).K('terr')
+
+    can=true
+
+    w.s.X(5000)
+
+
+    w.beg(function(cx){var fixt
+
+        if(fixt=cx.with('bul','terr')){
+
+            bull = fixt[0].B()
+            terr = fixt[1].B()
+            bX= bull.X()
+            bY= bull.Y()
+            bull.kill()
+
+
+            if(can){can=false
+
+                setTimeout(function(){// br =  w.brick(bX,bY,60,60).rot(45)
+
+                    br=b2d.conc(
+
+                        b2d.polyCirc(20,7)
+
+                    ).XY(bX,bY)
+
+                    b.each(function(f){
+
+                    f.DIFF(br)
+
+                })
+
+
+                   br.kill()
+
+
+
+            can=true}, 10)
+
+
+                killIfSmall=function(f){var area=this.area()
+
+                    if( area < 20){
+                        $l('too small: ' +area )
+                        f.kill()  }
+
+                }
+
+}
+
+        }
+
+    })
+    w.show(function(){return b.num()})
+
+
+}
+
+
+
+
+
+
+DEST1=function(){w=b2d.W({g:0})
+    y= w.ship()
+    b = w.brick(400,400,300,300).K('terr')
+
+
+    w.beg(function(cx){var fixt
+
+        if(fixt=cx.with('bul','terr')){
+
+            bull = fixt[0].B()
+            bX= bull.X()
+            bY= bull.Y()
+
+            terrF = fixt[1]
+
+            setTimeout(function(){
+
+                br =  w.brick(bX,bY,100,100).rot(45)
+
+                terrF.DIFF(br)
+
+            },100)
+
+            // w.brick(bull.X(), bull.Y(), 50, 50)
+        }
+
+    })
+
+}
+
+FIXTDIFF=function(){w=b2d.W()
+
+    b= w.stat(300,300)
+    f = b.poly( 100,100  )
+    f2 = b.poly( 100,100, 0, 0, 45  )
+
+    b2= w.brick(400,400,200,200)
+
+   // f.DIFF(b2);f2.DIFF(b2)
+
+    b.DIF(b2,'-')
+
+
+}
+
+
 
 f.radius = function(){
     var shape = this.GetShape(),
@@ -1078,4 +1292,108 @@ PHONEJUMP=function(){b2d.mW({W:300, H:400,
     })
 
 }
+
+
+
+
+
+
+
+
+SEB=function(){w=b2d.W({g:1})
+
+    y= w.ship().linDamp(3).X(1100)
+
+    b = w.brick(800,300,200,800).K('terr')
+
+
+
+    can=true
+
+
+    w.beg(function(cx){var fixt
+
+        if(fixt = cx.with('bul','terr') ){
+
+            bull = fixt[0].B()
+            terr = fixt[1].B()
+            bX= bull.X()
+            bY= bull.Y()
+            bull.kill()
+
+
+            if(can){can=false
+
+                setTimeout(function(){// br =  w.brick(bX,bY,60,60).rot(45)
+
+                    br=b2d.conc(
+
+                        b2d.polyCirc(100, 7)
+
+                    ).XY(bX,bY)
+
+                    b.each(function(f){
+
+                        f.DIFF(br)
+
+                    })
+
+
+                    br.kill()
+
+
+
+                    can=true}, 10)
+
+
+                killIfSmall=function(f){var area=this.area()
+
+                    if( area < 20){
+                        $l('too small: ' +area )
+                        f.kill()  }
+
+                }
+
+            }
+
+        }
+
+    })
+
+    w.show(function(){
+
+        return b.num()
+
+    })
+
+
+   p =  w.player().XY(200,400).K('jason')
+
+
+  setTimeout(function(){
+      p.sprite.sXY(.5)
+  },1000)
+
+
+    w.beg(function(cx){var fixt, j
+
+        if(fixt = cx.with('jason','bul')){
+
+            $l('bullet hit jason!!!!')
+
+
+           j= fixt[0].body()
+
+            j.sprite.tween(
+                [{sxy:20, r:100}, 1000]
+            )
+        }
+
+
+
+
+    })
+}
+
+
 

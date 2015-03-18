@@ -1486,10 +1486,6 @@ TENSORNEVERSETTLE=function(){w=b2d.W({g:0}).pen('welcome to tensor (damping) con
 
 
 
-
-
-
-
 COEDGE=function(){w=b2d.W().debug()
 
     w.rectStat(320,480,640,20)
@@ -1608,3 +1604,98 @@ MESSAGEPASSING=function(){w=b2d.W()
 }
 
 
+
+
+UNION=function(){w=b2d.W()
+
+
+    b = w.brick(300,300,50,50)
+
+
+    b2 = w.brick(320,320,50,50)
+
+
+    _.times(20, function(){
+
+        u= b2d.conc(
+
+            Math.poly(b.V()).union(   Math.poly(b2.V())).verts()
+        ).XY(300,100)
+
+
+    })
+
+
+
+
+}
+
+TANSTAT=function(){w=b2d.W()
+
+
+    b = w.brick(300,300,56,56).rot(45)
+
+
+
+
+    t = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(280,260).rot(90).fixedRot(true).stat()
+
+    t2 = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(342,321).fixedRot(true).stat()
+
+    bt = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(304,220).rot(180).fixedRot(true).stat()
+
+    bt2 = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(346,262).rot(270).fixedRot(true).stat()
+
+    mt = b2d.conc([V(-56,28),V(0,-28),V(56,28)]).XY(237,324).rot(225).fixedRot(true).stat()
+
+    p = b2d.conc([
+        V(-90, 20),V(-45,-20),V(45,-20),V(0,20)
+
+    ]).XY(240,267).rot(90)
+        .fixedRot(true).stat()
+
+}
+
+TAN=function(){w=b2d.W({g:0})
+
+
+    b = w.box(300,300,56,56).rot(45).den(1).damp(1000,1000)
+
+
+    t = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(280,260).rot(90).den(1).damp(1000,1000)
+
+
+    t2 = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(342,321).den(1).damp(1000,1000)
+
+    bt = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(304,220).rot(180).den(1).damp(1000,1000)
+    bt2 = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(346,262).damp(1000,1000)
+        .rot(270).den(1).damp(1000,1000)
+
+    mt = b2d.conc([V(-56,28),V(0,-28),V(56,28)])
+        .XY(237,324).den(1).damp(1000,1000)
+
+    p = b2d.conc([
+        V(-90, 20),V(-45,-20),V(45,-20),V(0,20)
+
+    ]).XY(240,267).den(1).damp(1000,1000)
+
+}
+
+BOOTBALL=function(){w=b2d.W({g:0})
+
+    b = w.ball(270,500,40).rest(.5)
+
+    r = w.brick(300,300,100,20).rot(20)
+
+    r.fixt(b2d.poly(20,40,60,-20))
+
+    r.XY(200,500).rot(100).dyn()//.angVel(200)
+
+    r.den(.1)
+    r.rev(w.ball(200,500,20).damp(1000,1000).den(100))
+    r.damp(1000,1000)
+
+    cjs.tick(function(){
+        b.F(0, 20)
+    })
+}

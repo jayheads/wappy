@@ -1,20 +1,4 @@
-/*
- * Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
- *
- * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
- * arising from the use of this software.
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
- * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
- */
+
 var Box2D = {};
 
 (function (a2j, undefined) {
@@ -1941,7 +1925,7 @@ Box2D.postDefs = [];
         var dX = this.p2.x - this.p1.x;
         var dY = this.p2.y - this.p1.y;
         var lambda = Math.min(dX > 0 ? (aabb.upperBound.x - this.p1.x) / dX : dX < 0 ? (aabb.lowerBound.x - this.p1.x) / dX : Number.POSITIVE_INFINITY,
-            dY > 0 ? (aabb.upperBound.y - this.p1.y) / dY : dY < 0 ? (aabb.lowerBound.y - this.p1.y) / dY : Number.POSITIVE_INFINITY);
+                dY > 0 ? (aabb.upperBound.y - this.p1.y) / dY : dY < 0 ? (aabb.lowerBound.y - this.p1.y) / dY : Number.POSITIVE_INFINITY);
         this.p2.x = this.p1.x + dX * lambda;
         this.p2.y = this.p1.y + dY * lambda;
     }
@@ -1949,7 +1933,7 @@ Box2D.postDefs = [];
         var dX = (-this.p2.x) + this.p1.x;
         var dY = (-this.p2.y) + this.p1.y;
         var lambda = Math.min(dX > 0 ? (aabb.upperBound.x - this.p2.x) / dX : dX < 0 ? (aabb.lowerBound.x - this.p2.x) / dX : Number.POSITIVE_INFINITY,
-            dY > 0 ? (aabb.upperBound.y - this.p2.y) / dY : dY < 0 ? (aabb.lowerBound.y - this.p2.y) / dY : Number.POSITIVE_INFINITY);
+                dY > 0 ? (aabb.upperBound.y - this.p2.y) / dY : dY < 0 ? (aabb.lowerBound.y - this.p2.y) / dY : Number.POSITIVE_INFINITY);
         this.p1.x = this.p2.x + dX * lambda;
         this.p1.y = this.p2.y + dY * lambda;
     }

@@ -672,17 +672,17 @@ BILLIARDS=function(){
 
 GRAVITYRANGE=function(){w=b2d.W({g:10})
 
-    w.circ(100,100,50, 'a')
-    w.circ(100,200,40, 'c')
+    w.circ(100,100,50, 'a').den(1)
+    w.circ(100,200,40, 'c').den(1)
 
-    w.circ(100,100,50, 'd')
-    w.circ(100,200,40, 'e')
-    w.circ(100,100,50, 'f')
-    w.circ(100,200,40, 'h')
-    w.circ(100,100,50, 'i')
-    w.circ(100,200,40, 'j')
-    w.circ(100,100,50, 'k')
-    w.circ(100,200,40, 'l').den(.1)
+    w.circ(100,100,50, 'd').den(1)
+    w.circ(100,200,40, 'e').den(1)
+    w.circ(100,100,50, 'f').den(1)
+    w.circ(100,200,40, 'h').den(1)
+    w.circ(100,100,50, 'i').den(1)
+    w.circ(100,200,40, 'j').den(1)
+    w.circ(100,100,50, 'k').den(1)
+    w.circ(100,200,40, 'l').den(1)
 
     range = w.prism(
         w.rect(600,300,220, 20, 'q').stat(),
@@ -692,14 +692,17 @@ GRAVITYRANGE=function(){w=b2d.W({g:10})
     w.show(function(){return 'Welcome to Gravity Range: Current gravity is ' + range.val()  })
 
 
-    y= w.yShip().thrustControl().angDamp(1).shootOnSpace()
+    y= w.yShip().thrustControl().angDamp(1).shootOnSpace().linDamp(10)
+
 
     cjs.tick(function(){
 
         w.G( range.val() )
-        y.linDamp(10)
 
+        w.each(function(b){b.I(0,.1)})
     })
+
+    w.debug()
 }
 
 STABTRAP=function(){w=wor({g:0}).debug()
