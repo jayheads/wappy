@@ -109,7 +109,7 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
     }
 
-    w.makeWalls(ops.walls )
+    w.makeWalls(D(ops.w)?ops.w:ops.walls )
 
     return w
 
@@ -649,13 +649,6 @@ b2d.mouseJoint = mouseJoint = function(body){
   return w.getBodyAtPoint(mX, mY)}
 
 
-
-
-
-
-b2d.Joints.b2Joint.prototype.destroy=function(){
-    this.GetBodyA().GetWorld().DestroyJoint(this)
-}
 
 
 

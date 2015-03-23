@@ -3,91 +3,112 @@ Array.prototype.sensor=function(kind){
     return this}
 
 
+SENSOR=function(){w=b2d.W().chalk(
+    'box goes up on coll with vortex, and right AFTER',
+    'ball goes up with continued pressure')
+
+    y=w.ship()
+
+
+    b = w.ball(100,100,40)
+    x = w.box(50,100,60,60)
+
+    w.stat(1000, 200, b2d.circ(500).sensor(true)  ).K('vortex')
+
+    moveX = function(){ x.vY(-20) }
+    moveB = function(){ b.vY(-20) }
 
 
 
-VORTEXOK=function(){
+   // w.when('vortex', 'ship', moveX)      //this happens every RE-ENTRY into sensor (when)
+    y.when('vortex', moveX, function(){ x.vX(20)  })      //this happens every RE-ENTRY into sensor (when)
 
-    b2d.levelJet()
+   // w.while('vortex', 'ship', moveB)       //this happens repeadly until sensor exited
+    y.while('vortex',  moveB)
 
-    moveB=function(){  b.linVel(0,-5) }
-    moveX=function(){  bx.linVel(0,-5) }
-
-    b = w.ball(100,100,10)
-    bx = w.box(50,100,14)
-
-    w.stat(600, 200, b2d.circ(200).sensor(true)  ).K('vortex')
-
-    //this happens every RE-ENTRY into sensor (when)
-    w.when('vortex', 'player', moveX)
-
-    //this happens repeadly until sensor exited
-    w.while('vortex',  moveB)
-
-    $l('right now ball goes up on coll with vortex.  but what about continued pressure?',
-        'something with trig?', 'fixed.. (see code)')}
-VORTEX=function(){
-
-    b2d.levelJet()
-
-    w.rectStat(200,250,200,20)
-    floor.kill()
+}
 
 
+
+
+
+
+
+VORTEX=function(){w=b2d.W()
+    y = w.ship()
+    w.rectStat(200,250,400,20)
+    w.rectStat(400,250,20,40)
     _.times(20, function(){w.ball(100,100,10)})
 
     vort = w.stat(600, 200, b2d.circ(200).sensor(true)  ).K('vortex')
+    func=function(){  w.each('ball', function(b){ b.towards(600, 200) } )}
 
-    w.while('vortex','player', function(){
-            w.each('ball',
+    //w.while('vortex', 'ship', func)
+    y.while('vortex', func)
 
-                function(b){ b.towards(600, 200) }
-            )}
-
-
-
-
-
-    )
-
-    $l('game: get rid of balls.  u can leave nest, but must return to claim victory')
 }
-KINGOFMES=function(){z()
+
+
+
+
+
+
+KINGOFMES=function(){  w= b2d.W({g:10}).debug()
 
     //all jumping together???!
 
-    //w= b2d.mW()
 
 
-    b2d.level()
+    w.roof.kill()
+    w.left.kill()
+    w.right.kill()
+    w.s.sXY(.8).X(100)
+    _.times(15, function(){
 
-    _.times(5, function(){
+        w.addMe(900,100, 5).trig('feet', function(){var p=this
 
-        w.addMe(2.5).X(400)
-            .trig('feet', function(){this.I(20, 100)})
+            p.B().rot(0).lV(-2,-10)  }
+        ).angDamp(50)//.fixRot()
 
-        w.addMe(2.5).X(100)
-            .trig('feet', function(){this.I(-20, 100)})
+       w.addMe(300, 100, 5).trig('feet', function(){
+           this.B().rot(0).lV(2,-10) }).angDamp(50)//.fixRot()
 
     })
 
 
+
+    w.C('r')
+
+
 }
+
+
+
+
+
+
 HAT=function(){   // could i automatically have body listen to their sensors?
 
-    b2d.level()
-
+    w=b2d.W()
     w.ball().rest(.3)
+    p=w.addMe(400, 150, 5)
 
-    p.XY(400, 150)
-        .trig('right')
-        .trig('left')
-        .trig('hat', function(){
-            this.bindSprite('guy')
-        })
+    p.trig( 'right' )
+    p.trig( 'left' )
 
     $.space(function(){
-        if(p.trig.right){p.I(100,  -400)}
-        if(p.trig.left){ p.I(-100, -400)}
+        if(p.trig.right){ p.I(100, -400)}
+        if(p.trig.left){  p.I(-100, -400)}
     })
+
+    p.trig('hat',
+        function(){
+            p.bindSprite('guy')
+        })
 }
+
+
+
+
+
+

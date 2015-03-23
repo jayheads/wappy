@@ -1,12 +1,13 @@
-BOXSPRITE=function(){
-
-    b2.mW({debug:false})
+BOXSPRITE=function(){w= b2d.W().debug()
 
 
  meBall=function() {
      spr = meSprite().rCenter().sXY(.4).rXY(230, 260)
-     b = b2.ball(400, 400, 40).bindSprite2(spr, 6)
+
+     b = w.ball(400, 400, 40).bindSprite2(spr, 6)
  }
+
+
     meBall()
 
 
@@ -14,14 +15,15 @@ BOXSPRITE=function(){
 
     w.box().bindSprite('guy')
 
-    w.begin(function(cx){
+    w.beg(function(cx){
 
         if(cx.with('ball', 'box')){
 
             spr.p('explode')
 
             setTimeout(function(){
-                b.kill();
+
+                b.kill()
                 meBall()
 
             }, 1000)
@@ -31,11 +33,9 @@ BOXSPRITE=function(){
 }
 
 
-BOXPACK=function(){
 
-    w=b2d.mW({
-         //debug:false
-    })
+
+BOXPACK=function(){ w=b2d.W({   })
 
     w.platform(500,300,200,200)
 
@@ -128,20 +128,11 @@ EASELBO=function(){
 
 
 }
-EASELBO2=function(){
-
-
-    w = b2d.mW({
-        grav:3
-        //,debug:false
-    })
+EASELBO2=function(){w = b2d.W({   g:3  })
 
     p=w.player('standard')
 
-    cjs.tick(function(){
-
-        p.rot(0)
-    })
+    cjs.tick(function(){  p.rot(0)  })
 
     b = w.brick(300, 300, 300, 100)
     r = cjs.rect(   300, 100).XY(300,300).drag()
@@ -150,9 +141,9 @@ EASELBO2=function(){
    r.tweenLoop([{x:500},1000  ], [{x:300},1000  ] )
 
     bb = w.brick(500, 500, 300, 100)
-    rr = cjs.rectangle(300, 100).XY(500, 500).drag()
+    rr = cjs.rect(300, 100).XY(500, 500).drag()
     w.s.A(rr)
-    cjs.tick(function(){bb.X(rr.X()); bb.Y(rr.Y())})
+    cjs.tick(function(){ bb.X( rr.X() ); bb.Y( rr.Y() )})
 
 }
 

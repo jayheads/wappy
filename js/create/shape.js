@@ -1,25 +1,19 @@
 gx=cjs.Graphics.prototype
+
 gx.poly=function(verts, f, s,width){var that = this
-
-
-
     //  _.each(arguments,function(vert){that.lt(vert[0],vert[1])});this.cp()
-
     if(N(verts[0])){
 
         _.each(arguments,function(vert){
-            that.lt(vert[0],vert[1])}); this.cp()
+            that.lt(vert[0],vert[1])});
+        this.cp()
     }
-
-
     else {
         this.fs(f,s,width)
         _.each(verts,function(vert){
             that.lt(vert[0],vert[1])});
         this.cp()
     }
-
-
     return this}
 
 
@@ -33,15 +27,19 @@ gx.fs=function(f,s,width){
 
     return this
 }
-
-
 h =  cjs.Shape.prototype
+
 h.circ= h.circle= function(x,y,radius,fc, sc){
     var gx=this.graphics
     if(fc){gx.f(fc)}
     if(sc){gx.s(fc)}
     gx.dc(x,y,radius)
     return this}
+
+
+
+
+//******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
 h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
     var gx=this.graphics
     if(fc){gx.f(fc)}
@@ -50,24 +48,33 @@ h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
     return this}
 
 
-h.poly=function(verts, f, s, width){
-    var that = this, gx = this.graphics
+h.poly= function(verts, f, s, width){
+    var that = this,
+        gx = this.graphics
     if(N(verts[0])){ //verts passed in directly
-
         _.each(arguments,
-            function(vert){gx.lt(vert[0],vert[1])});
+            function(vert){
+                gx.lt(vert[0],vert[1])});
         gx.cp()}
+    else {
+        gx.fs(f,s, width)
+        _.each(verts, function(v){
+            gx.lt(v[0],v[1])
+        })
 
+        gx.cp() //close path
 
-    else{this.graphics.fs(f,s,width)
-        {_.each(verts,function(vert){
-            gx.lt(vert[0],vert[1])
-        }); gx.cp()}
     }
 
-
-
 return this}
+
+
+h.shape=function(){
+
+
+
+}
+
 
 h.clear=function(){this.graphics.clear();return this}
 h.same=function(){return cjs.shape(this)}
@@ -83,6 +90,7 @@ h.dc=function(){
     this.graphics.dc.apply(
         this.graphics, arguments)
     return this}
+
 h.c=function(rad){
     return this.dc(0,0,rad)
 }
@@ -166,7 +174,6 @@ h.lt=function(x,y){
         this.graphics.lt(x,y)
         return this}
 
-
 h.drawPolygon = h.drawConnectedLines = function(poly, sc){var h=this,
     numVerts = poly.length
     _.each(poly,function(v){v.X=v.x;v.Y=v.y})
@@ -209,16 +216,32 @@ cjs.isCont=function(cont){
     }
 }
 
+cjs.rulers=function() {
+    var d1=$.div('b', 100, 100).drag().opacity(.3)
+    $.div('r', 100, 300).drag().opacity(.3)
+    return d1}
 
 
- cjs.circ = cjs.circle = function(radius, fc ){
 
-     if(!N(radius)){return cjs.circ(8, radius)}
+cjs.circ = cjs.circle = function(radius, fc ){
+
+     if( !N(radius) ){return cjs.circ(8, radius)}
 
      fc =  oO('c', fc|| 'z')
 
-     return cjs.shape().f(fc).dc(0,0,radius)
+     return cjs.shape().f(fc).dc(0, 0, radius)
  }
+
+
+cjs.cir = function(col, rad, x, y){
+    if(!S(col)){y=x;x=rad;rad=col;col='y'}
+    y=N(y)?y:0
+    x=N(x)?x:0
+    rad=N(rad)?rad:50
+    return cjs.shape().f(col).dc(x,y,rad)
+}
+
+
 
 
 
@@ -278,6 +301,42 @@ cjs.rect= function self(width, height, fc, sc){
         .lt(halfwidth,-halfheight).lt(-halfwidth,-halfheight)
 
     return h}
+
+
+
+
+
+cjs.RECT= function self(col, wd,ht, x, y, rot){var halfW,halfH, h, ct = cjs.ct()
+
+
+    wd=N(wd)?wd:50
+    ht=N(ht)?ht:50
+    x=N(x)?x:0
+    y=N(y)?y:0
+    rot=N(rot)?rot:0
+
+    col= oO('c', col||'g')
+
+
+    halfW = wd/2
+    halfH = ht/2
+
+    h = cjs.shape()
+
+    h.graphics.f(col).s(col)
+        .mt(-halfW, -halfH )
+        .lt(-halfW,halfH )
+        .lt(halfW, halfH )
+        .lt(halfW,-halfH )
+        .lt(-halfW,-halfH )
+
+
+    ct.A( h.rot(rot).XY(x,y)  )
+
+    return ct}
+
+
+
 
 
 //canon
@@ -420,9 +479,6 @@ cjs.ballBox=function(bl,bx,buff){ buff=buff||100
 
 
 
-
-ct = cjs.Container.prototype
-
 cjs.shape= cjs.shp= function(x,y,f,s,width,opt){
     if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
     var h = new cjs.Shape()
@@ -434,10 +490,7 @@ cjs.shape= cjs.shp= function(x,y,f,s,width,opt){
     if(opt=='drag'){h.drag()}
     // use a switch statement here!  i love it!
     return h}
-
-
-
-
+ct = cjs.Container.prototype
 
 
 
@@ -449,7 +502,37 @@ ct.shape = function(){
 
 
 ct.cir=function(x,y,r,f,s,width,opt){
-    return this.shape(x,y,f,s,width,opt).dc(0,0, r)}
+    return this.shape(x,y,f,s,width,opt).dc(0,0, r)
+}
+
+
+
+ct.rect=function(x,y,w,h,f,s,width,opt){
+    return this.shape(x,y,f,s,width,opt).dr(0,0, w,h)
+}
+
+
+ct.circ =function(col,rad,x,y){
+
+    var h = cjs.cir(col,rad,x,y)
+
+    this.A( h )
+
+    return h
+}
+
+
+ct.RECT =function(col, wd, ht, x, y, rot){
+
+    var h = cjs.RECT(col, wd, ht, x, y, rot)
+
+    this.A( h )
+
+    return h
+}
+
+
+
 
 
 
@@ -457,6 +540,7 @@ ct.poly =function(){ // ?
     var h = this.shape()
     h.poly.apply(h, arguments)
     return h}
+
 
 
 ct.art = function(x,y,f,s){var g=G(arguments)
@@ -863,70 +947,47 @@ EASELCONVEX=function(){s=cjs.S()
     s.poly(
       [[-40,40],[-40,-40],[40,-40], [40,30]],
       'blue', 'white').XY(200,200)}
-CONVEX=function(){
-    w=b2d.W({grav:0}).debug()
 
 
-    b = w.dyn(300, 300)
+CONVEX=function(){w=b2d.W({g:0}).debug()
 
-    f =b.convex('green', [[0,0],[0,-200],[100,0]]  )
-    b.convex('blue', [[0,30],[-300,-20],[100,0]] )
-    b.convex('pink', [[0,0],[0,-20],[10,0]],
-        [[0,30],[-30,-20],[10,0]] )
+    // so clearly b.convex lets me specify polygon fixtures by an array of points
+
+    b = w.dyn(300, 300).fixRot()
+    b.convex('green', [  [0,0], [0,-200], [100,0]  ]  )
+    b.convex('blue', [  [0,30], [-300,-20], [100,0]  ] )
+    b.convex('pink',  [ [0,30],[-30,-20],[10,0]  ]  )
 
 
 
+    // verts creates a dyn body and lets u pass in multiple 'convex calls'
+    w.verts( 300, 500,[
+        ['p', [-20,-20],[0,-30],[10,10]],
+        ['n',[0,0],[30,-50],[50,-10]]
+    ])
+
+
+    c = w.dyn(300, 300).fixRot()
+
+
+
+    /*
     b2 = w.dyn(300, 300)
     b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
     b2.convex([[0,30],[-30,-20],[10,0]] )
 
     b3 = w.dyn(300, 300)
-    b3.convex( 'green',[
-        [-150,0],[-120,-20],[-80, -50],[0,-30]
-
-    ] )
-
-    b3.convex('red',
-        [ [-30,-30], [-20,10], [-10,60]
-        ] )
-
-    b3.convex('orange',
-        [ [-30, -30], [-20,-50], [ 10, -20]
-        ] )
+    b3.convex( 'g',[[-150,0],[-120,-20],[-80, -50],[0,-30]] )
+    b3.convex('r',[ [-30,-30], [-20,10], [-10,60]] )
+    b3.convex('o',[ [-30, -30], [-20,-50], [ 10, -20]] )
+     */
 
 
-
-    w.verts( 300, 500,
-        [
-            ['pink', [-20,-20],[0,-30],[10,10]],
-            ['brown',[0,0],[30,-50],[50,-10]]
-        ]
-
-    )
-
-
-
-
-   dot = function(){
-       b.dot()
-       f.dot()
-   }
-    //setTimeout(dot, 5000)
-    //w.convex !!!!
-
-
-
-    _.times(50, function(){
-        w.circ(200, 30, 5)
-    })
-
-    b.fixedRot(true)
-    cjs.tick(function(){
-        b.linVel(0)
-        b.angVel(0)
-    })
 
 }
+
+
+
 VERTS=function(){w=b2d.W().debug()
 
     thingy = [['pink',[-20,-20],[0,-30],[10,10]],
@@ -984,9 +1045,8 @@ PITFALL=function(){
 
 
 
-   t= w.vertsKin(400, 280, turtle).fixedRot(true)
-   t2= w.vertsKin(700, 280, turtle2).fixedRot(true)
-
+   t = w.vertsKin(400, 280, turtle).fixRot()
+   t2 = w.vertsKin(700, 280, turtle2).fixRot()
 
     setInterval(function(){
         t2.linVel(5,0)
@@ -999,29 +1059,29 @@ PITFALL=function(){
 
 
 
-LINGRADBG=function(){w=b2d.W()
-
-   s = w.s
 
 
-   h =  s.shape()
+TURTLE=function(){w=b2d.W({g:0})//.debug()
+
+    y = w.ship()
+
+    turtle = [
+
+        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10]],
+        ['y', [10,-10], [20,-30],[50,-15], [45,-5]],
+        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
+        ['y', [-10,10],[-10,-10],[0,-10],[0,10]]
+
+    ]
 
 
+   // t =  w.verts(400,280,   turtle)
 
+    t =  w.B(400, 280, turtle)
+
+
+    fs = t.fixts()
 }
 
-THREECANS=function(){
-
-
-    c1 = $.can('a', 800, 400)
-
-    c2 = $.can('X', 800, 400)
-
-    c3 = $.can('X', 800, 400)
-
-
-
-
-}
 
 

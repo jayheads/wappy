@@ -637,7 +637,7 @@ MARIOCANNON=function(){
         W = N(W) ? W : 30; H = N(H) ? H : W
 
 
-        pd = b2.polyDef(W, H).r(0)
+        pd = b2d.poly(W, H).r(0)
 
         pd.restitution = .3
 
@@ -834,7 +834,7 @@ __coin = coin
 return coin}
 
 
-  warp = function(p) {
+warp = function(p) {
 
     cjs.tick(function () {
         if (p.Y() < 0) {

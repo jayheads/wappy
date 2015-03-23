@@ -130,9 +130,13 @@ EASING=function(){
     eas(4500,'sO');eas(4700,'sI');eas(4900,'sIO')
     eas(5100,'qdO');eas(5300,'qdI'); eas(5500,'qdIO')}
 
+
 meSprite=function(){
     return $sprite(   SS ).XY(10).drag()
 }
+
+
+
 
 SPRITE=function(sprite){
 

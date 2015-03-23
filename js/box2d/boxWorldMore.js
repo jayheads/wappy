@@ -328,6 +328,13 @@ w.rev = function(body1, body2, c,d, e,f){var g=G(arguments)
     return joint}
 
 
+w.weld = function(){
+
+   return this.J(
+
+        b2d.weld.apply( null, arguments)
+    )
+}
 
 
 w.prism = function(a,b,x,y, rot){
@@ -369,12 +376,185 @@ w.Gear=function(a,b,c){
 
 
 
+
+
+//
+//
+//
+///contacts!!!!
+w.listen = p.setContactListener = p.sCL = p.SetContactListener
+w.startListening = function(){var that=this
+
+    this.listener = this.listener || b2d.listener()
+
+    this.beginHandlers = this.beginHandlers ||[]
+    this.preHandlers = this.preHandlers ||[]
+    this.postHandlers = this.postHandlers ||[]
+    this.endHandlers = this.endHandlers ||[]
+
+    this.listener.BeginContact = function(cx){
+        _.each(that.beginHandlers,
+
+            function(func){
+
+                $.do(function(){
+                    func(cx)
+                })
+
+            })
+    }
+
+    this.listener.PreSolve = function(cx){
+        _.each(that.preHandlers,
+            function(func){
+
+
+                $.do(function(){
+                    func(cx)
+                })
+
+            })}
+
+
+    this.listener.PostSolve = function(cx, pam2){
+
+        _.each(that.postHandlers,
+
+            function(func){
+
+
+
+                $.do(function(){
+                    func(cx,pam2)
+                })  //second arg???????
+
+            })
+    }
+
+
+    this.listener.EndContact = function(cx){
+        _.each(that.endHandlers,
+            function(func){
+                $.do(function(){
+                    func(cx)
+                }) })
+    }
+
+    this.listen(this.listener)
+}
+w.beg = w.begin =  function(what, what2, func){var w = this
+    if(F(what)){
+        _.each(arguments, function(func){
+            w.beginHandlers.push(func)
+        })}
+    else if(F(what2)){func=what2
+        w.beginHandlers.push(function(cx){
+            if(cx.with(what)){ func(cx) }
+        })}
+    else if(F(func)){
+        w.beginHandlers.push(function(cx){
+            if(cx.with(what, what2)){ func(cx) }
+        })}
+    return this}//ADDS one or more handlers to beginHandlers array
+w.pre =  function(){var that = this
+    _.each(arguments, function(func){
+        that.preHandlers.push(func)
+    })
+return this}
+w.post = function(){var that = this
+    _.each(arguments, function(func){
+        that.postHandlers.push(func)
+    })
+return this}
+w.end = function(what, what2, func){var w = this
+    if(F(what)){
+        _.each(arguments, function(func){
+            w.endHandlers.push(func)
+        })}
+    else if(F(what2)){func=what2
+        w.endHandlers.push(function(cx){
+            if(cx.with(what)){ func(cx) }
+        })}
+    else if(F(func)){
+        w.endHandlers.push(function(cx){
+            if(cx.with(what, what2)){ func(cx) }
+        })}
+    return this}
+
+
+
+
+BEG=function(){w=b2d.W({g:0})
+
+    b = w.ball(500,300,50).K('guy')
+
+    w.beg('guy', 'floor',function(){$l('beg')
+
+            w.ball( Math.random()*1000+50, Math.random()*500+50, 5)
+            b.kill()
+    })
+
+}
+
+
+
+
+
+END=function(){w=b2d.W({g:0})
+
+    b = w.ball(500,300,50).K('guy')
+
+
+
+    w.end('guy', function(){$l('end')
+
+        setTimeout(function(){
+
+            w.ball( Math.random()*1000+50, Math.random()*500+50, 5)
+
+            b.kill()
+        },0)
+
+
+    })
+
+}
+
+
+w.collideAny = function(what, func){
+   return this.beg(what, function(cx){
+           $.do(function(){func(cx)})
+    })
+}
+w.coll = function(k1, k2, func){
+
+    var that=this,
+        w=this,
+        name=k1+k2
+
+    if(F(k2)){
+        return this.collideAny(k1,k2)
+    }
+
+    this.beg(function(cx){
+        if(cx.with(k1, k2)){
+            that.flag(name, cx)}
+    })
+
+    cjs.tick(function(){
+        var cx = that.flagged(name)
+        if(cx){ func(cx) }
+    })
+}
+
 //flags!!!!!
 w.flag=function(flag, val){
-    this.flags= this.flags||{}
+    this.flags = this.flags||{}
+
     if(U(val)){val=true}
     this.flags[flag]=val
-    return this}
+    return this
+}
 w.flagged= function(flag){
     this.flags= this.flags||{}
     var wasFlagged = this.flags[flag]
@@ -396,139 +576,35 @@ w.on=function(onWhat, func){
         if(val){ func(val) }
     })
 
-return this}
-
-
-//
-//
-//
-///contacts!!!!
-w.listen = p.setContactListener = p.sCL = p.SetContactListener
-
-w.startListening = function(){var that=this
-
-    this.listener = this.listener || b2d.listener()
-
-    this.beginHandlers = this.beginHandlers ||[]
-    this.preHandlers = this.preHandlers ||[]
-    this.postHandlers = this.postHandlers ||[]
-    this.endHandlers = this.endHandlers ||[]
-
-    this.listener.BeginContact = function(cx){
-        _.each(that.beginHandlers,
-            function(func){func(cx)})
-    }
-
-    this.listener.PreSolve = function(cx){
-        _.each(that.preHandlers,
-            function(func){func(cx)})}
-
-    this.listener.PostSolve = function(cx, pam2){
-
-        _.each(that.postHandlers,
-
-            function(func){
-
-                func(cx, pam2) //second arg???????
-
-            })
-    }
-
-
-    this.listener.EndContact = function(cx){
-        _.each(that.endHandlers,
-            function(func){func(cx)})}
-
-    this.listen(this.listener)
-}
-
-
-//ADDS one or more handlers to beginHandlers array
-
-w.beg = w.begin = w.onBegin=function(){var that = this
-    _.each(arguments, function(func){
-        that.beginHandlers.push(func)
-    })
-return this}
-
-
-
-w.pre = w.onPre=function(){var that = this
-    _.each(arguments, function(func){
-        that.preHandlers.push(func)
-    })
-return this}
-w.post = w.onPost=function(){var that = this
-    _.each(arguments, function(func){
-        that.postHandlers.push(func)
-    })
-return this}
-
-w.end = w.onEnd=function(){var that = this
-    _.each(arguments, function(func){
-        that.endHandlers.push(func)
-    })
-return this}
-
-
-
-w.when = w.coll = w.collide=function(k1,k2,flag){
-
-    var that=this,
-        name=k1+k2
-
-    if(F(k2)){
-        return this.collideAny(k1,k2)}
-
-    this.begin(function(cx){
-        if(cx.with(k1, k2)){
-            that.flag(name, cx)}
-    })
-
-    cjs.tick(function(){
-        var cx = that.flagged(name)
-        if(cx){ flag(cx) }
-    })
-}
-
-
-w.collideAny=function(kind, flag){//can combine this with above
-    var that=this
-    this.begin(function(cx){
-        if(cx.with(kind)){that.flag(kind,cx)}})
-    cjs.tick(function(){
-        var cx=that.flagged(kind)
-        if(cx){flag(cx)}})
-}
-
-
-
-
-
-
-//should deprecate!!!!!
-/// shortcuts.. but each one will completely override the listener
-// only for simple use cases (one type of listener, specified once)
-w.beginX=w.onBeginContact = w.oB=function(func){//=w.contactBegin
-    this.listen(b2d.listener().begin(func))
     return this}
-w.endX=w.onEndContact = w.oE =function(func){
 
-    this.listen( b2d.listener().end( func )  )
 
-    return this}
-w.preX=function(func){
+w.when = function(what, what2, bFunc, eFunc){var w=this
 
-    this.listen( b2d.listener().pre( func )  )
+    if(F(what)){
+        eFunc=what2
+        bFunc=what
+        w.beg(bFunc)
+        if(eFunc){w.end(eFunc)}}
 
-    return this}
-w.postX=function(func){
+    else if(F(what2)){
+        eFunc=bFunc
+        bFunc=what2
+        w.beg(what, bFunc)
+        if(eFunc){w.end(what, eFunc)}}
 
-    this.listen( b2d.listener().post( func )  )
+    else if(F(bFunc)){
+        w.beg(what,what2, bFunc)
+        if(eFunc){w.end(what, what2, eFunc)}}
 
     return this}
 
-//////
+
+
+
+
+
+
 
 
 w.setContactFilter = w.sCF = w.SetContactFilter
@@ -536,67 +612,44 @@ w.setContactFilter = w.sCF = w.SetContactFilter
 //sensor
 
 
-w.while1= w.whileSensor = function(kind, func){
+
+
+
+w.while = function(kind, kind2, func){
+
+    var w=this
 
     var push=false
 
-    this.begin(function(cx){
+    if(F(func)){
 
-        if(cx.with(kind)){
-            push=true
-        }
-    })
+      w.when(kind, kind2,
+            function(){push=true},
+            function(){push=false})
 
-    this.end(function(cx){
-
-        if(cx.with(kind)){
-            push=false
-        }
-    })
-
-
-    cjs.tick(function(){
-        if(push){
-            func()
-        }
-    })
-
-
-return this}
-
-w.while = w.while2 =function(kind, kind2, func){
-
-
-
-    var push=false
-
-    if(F(kind2)){
-        return this.while1(kind, kind2)
+        cjs.tick(function(){
+            if(push){func()}})
     }
 
-    this.begin(function(cx){
-
-        if(cx.with(kind, kind2)){
-            push=true
-        }
-    })
-
-    this.end(function(cx){
-
-        if(cx.with(kind, kind2)){
-            push=false
-        }
-    })
 
 
-    cjs.tick(function(){
-        if(push){
-            func()
-        }
-    })
+    else if(F(kind2)){
+
+       w.when(kind,
+            function(){push=true},
+            function(){push=false})
+
+        cjs.tick(function(){
+            if(push){kind2()}})
+    }
+
+    return this
+
+}
 
 
-    return this}
+
+
 
 
 

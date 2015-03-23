@@ -374,6 +374,10 @@ $.fn._getPosition=function(){
 
 }
 
+$.do=function(func){
+    setTimeout(func,0)
+return 'nada'}
+
 
 
 //

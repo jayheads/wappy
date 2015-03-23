@@ -450,7 +450,13 @@ p.next=function(next){
 
 cjs.chalk=function(text, color){
     color = oO('c', color||'white')
-    return new cjs.Text(text, "26px Arial", "white").XY(50,50)}
+
+    if(O(text)){
+        text = 'x: ' + text.x + ', ' + 'y: ' + text.y
+    }
+    return new cjs.Text(text, "26px Arial", "white").XY(50,50)
+}
+
 
 
 

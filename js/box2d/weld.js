@@ -1,52 +1,106 @@
-//weld seems to hurt mouse drag.  but sJt is ok?!
-//makeWeldJointOnDblClick=mWJ=function(){x.$$(SuperWeldJoint)}
+ b2d.weld=function(a,b, ancA, ancB, ang, c,d){
+
+    var jd =  new b2d.Joints.b2WeldJointDef()
+    jd.bodyA=a
+    jd.bodyB=b
+
+     if(N(ancA)){
+         ancA=V(ancA,ancB)
+         ancB=V(ang,c)
+         ang=d
+     }
+
+    if(ancA){jd.localAnchorA = ancA.div()}
+    if(ancB){jd.localAnchorB = ancB.div()}
+    if(N(ang)){jd.referenceAngle = Math.toRadians(ang) }
+    return jd
+
+ }
+BWELD=function(){w=b2d.W()
 
 
-SuperWeldJoint=sWJ=function( x , y ){
+j = w.weld(
 
-    x = N(x) ? x : 100
+    w.box(100,200, 100,200).rest(1),
+    w.box(200,100, 200,100).rest(1)
 
-    y = N(y) ? y : x
+)
 
-    var b11 = world.addBody( b2d.dynamic( x , y ), b2d.fixt() )
 
-    var b22 = world.addBody( b2d.dynamic( x , y ), b2d.fixt() )
-
-    var joint = wJt( b11, b22, bV( -.5 , -.5 ), V(.5,.5), 9)
-
-    w.createJoint( joint )
+    setInterval(function(){
+        if(j.destroyed){
+            j = j.form()
+        }
+     else { j.destroy() }
+    },2000)
 
 }
 
-WeldJoint= wJt =function(a,b,c,d,e){
-
-    var j =  new b2.Joints.b2WeldJointDef()
-
-    j.i=function(){
-        var g=G(arguments)
-        _a(j.Initialize,g,j)
-        return j}
-
-    if(a){j.bodyA=a}
-    if(b){j.bodyB=b}
-    if(c){j.localAnchorA=c}
-    if(d){j.localAnchorB=d}
-    if(N(e)){j.referenceAngle = tRad(e)}
-
-    return j}
 
 
-b2d.weldJoint = b2.weld = Welding = weld=function(a,b,c,d,e,f,g){
+
+
+WELD = function(){w=b2d.W({
+   // w:0,
+    g:0 })
+
+   //  j= w.weld(    w.ball(200,200,40).den(1),    w.box(200,220,40, 100).den(1)   )
+
+
+
+    w.ball(100, 100, 20)
+    w.ball(200, 100, 20)
+    w.ball(300, 100, 20)
+    w.ball(400, 100, 20)
+
+//    w.ball(500, 100, 20).den(1).warp2()
+
+    w.beg(function(cx){
+      //  w.weld(cx.a(), cx.b(), V(50,50) ,V(-50,-50))
+    })
+    //connect the centers - center in local coordinate - relative to body is 0,0
+   // joint_def.localAnchorA = V(-0.5, -0.5);
+    //joint_def.localAnchorB = V(0.5, 0.5);
+
+    //difference in angle of each body
+  //  joint_def.referenceAngle = 0 * Math.PI/3
+
+    //add the joint to the world
+  //  w.CreateJoint(joint_def)
+
+}
+
+
+
+WELD3 = function(){w=b2d.W()
+
+
+    b= w.bump(500,400,40).den(1)
+    b2= w.ball(500,400,40).den(1)
+
+jd=b2d.weld(b,b2)
+
+    jd.localAnchorA = V(.3,.3)
+   jd.localAnchorB = V(0,0)
+   jd.referenceAngle = Math.toRadians(0)
+
+   j= w.J(jd)
+}
+
+
+
+b2d.weldJoint =   Welding = weld=function(a,b,c,d,e,f,g){
     c=c||0;d=d||0; e=e||0; f=f||0
 
-    return WeldJoint(a,b, V(c/30,d/30), V(e/30 , f/30), g||10)
+    return WeldJoint(a, b, V(c/30,d/30), V(e/30, f/30), g||10)
 
 }
 
 
 
-WELD=function(){b2d.W()
 
+WELD1=function(){w=b2d.W()
+/*
     w.J(
 
         b2d.weld(
@@ -66,31 +120,33 @@ WELD=function(){b2d.W()
 
 
 
-    w.J(weld(baa(500,100),ba(500,100),10,-10))
-    w.J(weld(baa(600,100),ba(600,100),10,-20))
-    w.J(weld(baa(700,100),ba(700,100),10,-30))
-    w.J(weld(baa(800,100),ba(800,100),-10,-40))
-    w.J(weld(baa(900,100),ba(900,100),-10,-50))
+    w.J(weld(w.baa(500,100), w.ba(500,100),10,-10))
+    w.J(weld(w.baa(600,100), w.ba(600,100),10,-20))
+    w.J(weld(w.baa(700,100), w.ba(700,100),10,-30))
+    w.J(weld(w.baa(800,100), w.ba(800,100),-10,-40))
+    w.J(weld(w.baa(900,100), w.ba(900,100),-10,-50))
 
-    w.J(weld(baa(100,200,10),bi(100,200),0,0)) //
-    w.J(weld(baa(200,200),bi(200,200),0,10))
-    w.J(weld(baa(300,200),bi(300,200),0,-10))
-    w.J(weld(baa(400,200),bi(400,200),10,10))
-    w.J(weld(baa(500,200),bi(500,200),10,-10))
-    w.J(weld(baa(600,200),bi(600,200),10,-20))
-    w.J(weld(baa(700,200),bi(700,200),10,-30))
-    w.J(weld(baa(800,200),bi(800,200),-10,-40))
-    w.J(weld(baa(900,200),bi(900,200),-10,-50))
+    w.J(weld(w.baa(100,200,10), w.bi(100,200),0,0)) //
+    w.J(weld(w.baa(200,200), w.bi(200,200),0,10))
+    w.J(weld(w.baa(300,200), w.bi(300,200),0,-10))
+    w.J(weld(w.baa(400,200), w.bi(400,200),10,10))
+    w.J(weld(w.baa(500,200), w.bi(500,200),10,-10))
+    w.J(weld(w.baa(600,200), w.bi(600,200),10,-20))
+    w.J(weld(w.baa(700,200), w.bi(700,200),10,-30))
+    w.J(weld(w.baa(800,200), w.bi(800,200),-10,-40))
+    w.J(weld(w.baa(900,200), w.bi(900,200),-10,-50))
 
-    w.J(weld(ba(100,500),bi(100,500),0,0))
+    w.J(weld(w.ba(100,500), w.bi(100,500),0,0))
+*/
+     w.weld( w.ba(200,500,10), w.bi(200,500) ) //
 
-    w.J(weld(ba(200,500,10),bi(200,500),0,10)) //
-    w.J(weld(ba(300,500),bi(300,500),0,-10))
-    w.J(weld(ba(400,500),bi(400,500),10,10))
-    w.J(weld(ba(500,500),bi(500,500),10,-10))
-    w.J(weld(ba(600,500),bi(600,500),10,-20))
-    w.J(weld(ba(700,500),bi(700,500),10,-30))
-    w.J(weld(ba(800,500),bi(800,500),-10,-40))
-    w.J(weld(ba(900,500),bi(900,500),-10,-50))
+
+    w.weld(w.ba(300,500), w.bi(300,500),V(0,-10))
+   w.weld(w.ba(400,500), w.bi(400,500), V(10,10))
+    w.weld(w.ba(500,500), w.bi(500,500),V(10,-10))
+   w.weld(w.ba(600,500), w.bi(600,500),10,-20)
+   w.weld(w.ba(700,500), w.bi(700,500),10,-30)
+  w.weld(w.ba(800,500), w.bi(800,500),-10,-40)
+   w.weld(w.ba(900,500), w.bi(900,500),-10,-50)
 
 }

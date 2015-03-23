@@ -95,7 +95,6 @@ WEBMAN = function(){
     w.s.tickX(function(){return 600- p.X()})
     w.s.tickY(function(){return 510- p.Y()})}
 
-
 SPACEZOOM=function(){
 
 
@@ -204,7 +203,7 @@ COINWARP=function(){
 
     _.times(2, function() {
 
-        w.greenGuy(Math.random()*600).marioWarping()//.I((Math.random()*20)-10,(Math.random()*20)-10)
+        w.greenGuy(Math.random()*600).marioWarping(  )//.I((Math.random()*20)-10,(Math.random()*20)-10)
 
     })
 
@@ -217,37 +216,42 @@ COINWARP=function(){
     score=0
     badScore=0
 
-    w.begin(function(cx){
+    begFunc=function(cx){var fixt
+    if(fixt = cx.with('coin','bullet')){
+        fixt[0].setDestroy()
+        score++}
+    else if(fixt = cx.with('coin','greenGuy')){
+        fixt[0].setDestroy()
+        badScore++}
+}
+   // w.beg(begFunc)
 
-        if(cx.with('coin')){
 
 
-            if(cx.a().K( )=='coin'){
-                cx.a().setDestroy()
 
-                if(cx.b().K()=='bullet'){score++}
-                if(cx.b().K()=='greenGuy'){badScore++}
-            }
 
-            if(cx.b().K( )=='coin'){
-                if(cx.a().K()=='bullet'){score++}
-                if(cx.a().K()=='greenGuy'){badScore++}
-                cx.b().setDestroy()}
+    //w.with('coin','player', function(c){c.setDestroy();score++})
+   // w.with('coin','greenGuy', function(c){c.setDestroy();badScore++})
 
-        }
 
+
+
+   // w.class('coin')
+     //   .with('player', function(c){c.setDestroy();score++})
+       // .with('greenGuy', function(c){c.setDestroy();badScore++})
+
+
+    w.class('coin').with({
+        player: function(){score++; return true},
+        greenGuy: function(){badScore++; return true}
     })
 
 
-
     w.startKilling()
-
-
-    setInterval(function(){
-
-        w.s.pen( score + ' / '+ badScore)
-    }, 3000)
+    setInterval(function(){w.s.pen( score + ' / '+ badScore)}, 3000)
 }
+
+
 
 
 KILLEVERYTHING=function(){w=wor()
@@ -318,15 +322,15 @@ KILLEVERYTHING=function(){w=wor()
 
     w.beg(function(cx){var fixt
 
-        if(fixt = cx.with('bul')){f=fixt
-
-            b = fixt.body()
-
+        if(fixt=cx.with('bul')){
+            b = fixt[1].body()
             if(b != y){b.setDestroy()  }
 
         }
 
-    }).startKilling()
+    })
+
+    w.startKilling()
 
     cjs.tick(function(){
         w.each(function(b){
@@ -337,8 +341,6 @@ KILLEVERYTHING=function(){w=wor()
     w.show(function(){return w.GetBodyCount()
     })
 }
-
-
 
 CHEMICALS = function self(){
     w=b2d.W({
@@ -384,10 +386,8 @@ gameOver=false
 
     w.beg(function(cx){var fixt,body
 
-
-
             if(fixt = cx.with('bul')){
-                body = fixt.body()
+                body = fixt[1].body()
                 if(body != y){body.setDestroy()}
             }
 
@@ -400,7 +400,6 @@ gameOver=false
             w.pen('you win')
             y.stat()
             w.each(function(b){  if(b!=y){b.kill()} })
-
             setTimeout(self, 1000)
 
         }
@@ -796,3 +795,137 @@ FLOCKING=function(){
     },100)
 
     w.debug()}
+
+
+JAYFALL=function(){w=b2d.W({g:10})
+    w.debug()
+    w.left.kill()
+    w.s.sX(.95)
+    num=0; heads=0
+
+    y=w.ship()//.den(.3)
+
+    setInterval(function(){
+        w.addMe().data('head')
+
+        num++
+    }, 1000)
+
+
+    w.show(function(){return num + ' - ' + heads  })
+
+game=true
+
+    tickFunc=function(){
+/*
+        if(num > 30){
+            $.pop('score: '+heads)
+            num=0
+            heads=0
+            w.each(function(b){
+                if(b.data() == 'head'){
+                    b.kill()
+                    heads++}})}
+                    */
+if(game){
+        if(num > 60){
+            game=false
+            $.pop('score: '+heads) }
+        else {
+
+            w.each(function(b){
+
+                if(b.data() == 'head' && b.Y()>600){b.kill();heads++}
+            })
+        }
+
+
+    }}
+     cjs.tick(tickFunc)
+
+}
+
+
+
+SEB=function(){w=b2d.W({g:1})//w.show(function(){return b.num()})
+    b = w.B(800,300,'r',200, 800).stat().K('terr')
+
+    y = w.ship().linDamp(3).X(1100)
+    p =  w.player().XY(200,400).K('jason'); setTimeout(function(){p.sprite.sXY(.5)},1000)
+    can=true
+
+
+    w.beg(function(cx){var fixt, j,bull,terr,bX,bY,br
+
+        if(fixt = cx.with('bul', 'terr') ){//w.s.flash()
+            bull = fixt[0].B()
+            terr = fixt[1].B()
+            bX = bull.X()
+            bY = bull.Y()
+            bull.kill()
+
+            if(can){can = false
+
+               // b.minusPolyCirc(bX, bY, 100, 7)
+
+               poly = Math.poly(
+                   _.map(b2d.polyCirc(100,7), function(v){return [v.x+ b.X(), v.y+ b.Y()]
+                   }))
+
+              // verts = b.sub(poly)
+
+                br =  w.polyCirc(bX, bY, 100, 7)  // b.sub(br) // b.verts not working :(
+
+
+               b.subtract( br,   '-' ) // br.kill()
+
+              //  b.color('r')
+                can = true
+            }
+        }
+
+
+
+       else if(fixt = cx.with('jason','bul')){
+             $l('bullet hit jason!!!!');j= fixt[0].body(); j.sprite.tween([{sxy:20, r:100}, 1000])}
+    })
+
+
+
+
+    f=function(){
+
+        v = h.verts()
+        v.unshift('b')
+        v.unshift(200)
+        v.unshift(200)
+        w.B.apply(w,v)
+    }
+
+
+
+    killIfSmall=function(f){var area=f.area();if(area<20){$l('too small: '+area); f.kill()}}
+
+   // w.debug()
+}
+
+
+B2DTEST=function(){$l('b2d test!')
+    w=b2d.W()
+    $l('make an edge body..'); w.edge(100,300,500,500)
+    $l('make a ball..');w.ball(150,100,10)
+    $l('make a ball with density..'); w.ball(150,100,10).den(1)
+
+    h=b2d.cH(50)
+}
+
+
+
+POLYCIRC=function(){w = b2d.W()
+
+
+
+    w.polyCirc(400,300,100, 8)
+
+
+}

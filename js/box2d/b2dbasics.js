@@ -1,4 +1,4 @@
-b2d = b2 = Box2D
+b2=b2d = Box2D
 
 
 
@@ -54,6 +54,22 @@ b2d.CircleShape = b2CircleShape= b2d.Shapes.b2CircleShape
 
 
 
+b2d.Segment = b2d.Collision.b2Segment
 
+b2d.Collision.b2Simplex
+b2d.Collision.b2Bound
+b2d.Collision.b2AABB
+b2d.Collision.b2BoundValues
+b2d.Collision.b2ContactID
+b2d.Collision.b2ContactPoint
+b2d.Collision.b2Distance
+b2d.Collision.b2DistanceInput
+b2d.Collision.b2DistanceOutput
+b2d.Collision.b2DistanceProxy
+b2d.Collision.b2DynamicTree
+b2d.Collision.b2DynamicTreeNode
+b2d.Collision.b2DynamicTreePair
+b2d.Collision.b2RayCastInput
+b2d.Collision.b2RayCastOutput
 
 

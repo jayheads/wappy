@@ -1,67 +1,26 @@
-b2d.Controllers = b2d.Dynamics.Controllers
-b2d.Math = b2.Common.Math
-b2d.Mat22 = b2d.Math.b2Mat22
-b2d.Mat33 = b2d.Math.b2Mat33
-
-
-b2d.wor = b2d.world =   function(a, b){
-
-    if(U(a)){a=10}
-
-    if(N(a)){a =  V(0, a) }
-
-    var w = new b2d.World(a,   D(b)?b: true)
-
-   // w.flags={}
-
-   // w.beginHandlers=[]
-   // w.endHandlers=[]
-   // w.preHandlers=[]
-   // w.postHandlers=[]
-
-    w.startListening()
-
-    return w}
-
-
-
-
-
 w= b2d.World.prototype
 
-
+//stage
 w.chalk=function(){
-    this.s.chalk.apply(this.s, arguments)
+    this.s.chalk.apply(this.s,arguments)
     return this}
 
 
 
-//destroy
-w.destroyBody = w.destroy = w.dB=function(a){ this.DestroyBody(a); return this }
-
-
-
-w.destroy = w.destroyAll = w.destroyAllBodies=function(){var that=this
-
+//destroy bodies
+w.destroyBody = w.destroy = w.dB=function(a){
+    this.DestroyBody(a); return this }
+w.destroy = w.destroyAll = w.destroyAllBodies=function(){
+    var that=this
     return this.eachBody(function(b){
-
        that.destroy(b)
-
-    })
-
-}
-
-
-
+    })}
 
 
 
 //fetch all
-w.getBodyList = w.bL =function(){
+w.getBodyList = w.bL =function(){return this.GetBodyList()}
 
-    return this.GetBodyList()
-
-}
 //fetch at point
 w.queryPoint=function(func,x,y){
 
@@ -80,26 +39,10 @@ w.queryPoint=function(func,x,y){
     )
 
     return this}
-
-
 w.count = w.getBodyCount = w.bC = w.gBC=function(){
     return this.GetBodyCount()
 }
-
-
-
-COUNT=function(){w=b2d.W()
-
-    y= w.ship().XY(200,200)
-    b= w.circ(300,300,50,'r')
-
-    w.show(function(){return w.count()})}
-
-
-
-
 w.getGroundBody = w.gB =w.gGB=function(){  return this.GetGroundBody()  }
-
 w.Q=w.queryAABB=w.qAB=function(func, x1,y1, x2,y2){
     var AB = b2d.AB(x1,y1,x2,y2),
         num= 0,
@@ -113,159 +56,61 @@ w.Q=w.queryAABB=w.qAB=function(func, x1,y1, x2,y2){
     this.QueryAABB(newFunc, AB)
     return num}
 
-
-TESTQ=function(){w=b2d.W()
-    _.times(5, function(){w.randRects()})
-
-
-    var func = function(f, b){  b.kill(); return true  }
-
-
-   n= w.Q(func,  400,100,450,150)
-
-    w.ship().XY(425, 125)
-
-    w.pen(n + ' rects removed')
-
-}
-
-
-
-TRANSFORM=function(){var tf=null
-    w = wor().debug()
-
-    b = w.rect(100,100,100,200,'b')
-
-    b2 = w.rect(200,200,100,150,'p')
-
-
-
-   cjs.tick(function(){
-       var trf = b.transform().toArr()
-
-       if(tf){
-           b2.SetTransform( b2d.tf(tf)  )
-       }
-
-       setTimeout(function(){
-              tf=trf
-        },1000)
-
-    })
-
-
-
-
-}
-
-TESTPOINT=function(){var tf=null
-    w = wor()
-
-    b = w.rect(100,100,100,200,'b')
-
-
-
-    p = w.rect(200, 200, 100, 150, 'p').stat().rot(20)
-
-    p.fixt(
-
-        b2d.poly(50,50,50,50, 20,'o' )
-    )
-
-    f = p.fixt()
-
-    h = f.shape()
-
-    hit=h.testPoint(  p.transform(),  V(200,200).div()) // true
-    hit2= f.hit(200, 200, true)
-
-}
-
-
-
-w.click=function(func){
-
+w.$=w.click=function(func){
     $(w.s.HUD.canvas).click(function(e){
-
-        func(e.pageX, e.pageY)
-
-    })
+        func(e.pageX, e.pageY)})
 return this}
 
-w.getBodyAtPoint=function(x, y){var body = null
 
+w.getBodyAtPoint=function(x,y){var body = null
     this.QueryAABB(function queryFunc(fxt){
-
         if( !fxt.isStat() &&  fxt.testPoint(mX,mY)){
-
             // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
             body = fxt.body()
             return false}
-
         return true},
-
         b2d.AABB01(x,y))
-
-
-    return body
-
-
-
-};
+    return body}
 
 
 
 
+;(function worldCreateBodies(){var w=b2d.World.prototype
 
-(function worldCreateBodies(){var w=b2d.World.prototype
+    w.body=w.A=w.addBody=w.createBody= function(bD,fD){
+        var body=this.CreateBody(bD)
+        if(fD){body.fixt(fD)}
+        return body}
 
-    w.body = w.A = w.addBody= w.createBody= function(bodyDef, fixDef){//w.a = w.add   =
+    w.dyn=w.dynamic=function(x,y,fD){var body
+        if(O(x)){fD=y;y=x.y;x=x.x}
+        x =N(x)?x: 500
+        y =N(y)?y: 250
+        body = this.body(b2d.dyn(x,y),fD)
+        return body.den(1)}
 
-        //w.createBody = w.b  = w.cB=function(def){return this.CreateBody( def  || BodyDef()  )}
+    w.ball = w.ba = function(x,y,r){var ball
 
-        var body
+        if(O(x)){ r=N(x.r)? x.r:y; y=x.y; x=x.x}
 
-        body = this.CreateBody(bodyDef)
+        x=N(x)?x:100 //change to center x
+        y=N(y)?y:x
+        r = N(r)?r:30
 
-        if(fixDef){
+        ball = this.dyn(x,y,b2d.circ(r))
 
-            if(A(fixDef)){
-
-
-
-                _.each( b2d.fixtParse(fixDef),
-
-
-
-                    function(fd){
-                        body.createFixture(fd)
-                    } )
-
-            }
-
+        return ball.K('ball')
+    }
 
 
-            else { body.createFixture(fixDef) }
+    w.bul= function(x,y){var def,body
+        def=b2d.dyn(x,y)
+        def.bullet=true
 
-        }
-
+        body=this.createBody(def)
         return body}
 
 
-
-    w.dyn=w.dynamic=function(x, y, fixtDef){var body
-        if( O(x) ){fixtDef=y; y=x.y; x=x.x}
-        x = N(x)?x: 500
-        y = N(y)?y: 250
-        body = this.A(b2d.dynamicDef(x,y), fixtDef)
-        return body}
-
-
-    w.bul= function(x, y ){var def,   body
-        def=b2d.dynamicDef(x,y)
-        def.bullet= true
-        body = this.createBody(def)
-        return body}
 
     w.polyBul=function(x,y, wd, ht, col){
         var bul = this.bul(x,y)
@@ -284,60 +129,37 @@ w.getBodyAtPoint=function(x, y){var body = null
 
 
         return bul}
-
-
-
     w.kin= function(x, y, fixtDef){var body
         if( O(x) ){fixtDef=y; y=x.y; x=x.x}
         x = N(x)?x: 500
         y = N(y)?y: 250
         body = this.A(b2d.kin(x,y), fixtDef)
         return body}
-
     w.stat=function(x, y, fixtDef){var body
         if( O(x) ){fixtDef=y; y=x.y; x=x.x}
         x = N(x)?x: 500
         y = N(y)?y: 250
-        body = this.A(b2d.staticDef(x,y), fixtDef)
+        body = this.A(b2d.stat(x,y), fixtDef)
         return body}
-    w.edge = function (a, b, c, d) {
 
 
-        edgeFixt = function (a, b, c, d) {
-            var f
-            f = b2d.fixtDef()
-            f.shape = new b2d.Shapes.b2PolygonShape()
-            f.shape.SetAsEdge(V(a, b, '-'), V(c, d, '-'))
-
-            return f
-        }
-        var edge = this.CreateBody(b2d.staticDef(0, 0))
-
-        edge.CreateFixture(edgeFixt(a, b, c, d))
-
+    w.edge = function(x1,y1, x2,y2){
+        var edge = this.body(b2d.stat(0,0)),
+            fd=b2d.fixtDef()
+        fd.shape = new b2d.Shapes.b2PolygonShape()
+        fd.shape.SetAsEdge( V(x1,y1,'-'), V(x2,y2,'-'))
+        edge.fixt(fd)
         return edge
+    }
 
-    }
-    w.ball = w.ba = function self(x, y, r) {
-        var ball
-        if (O(x)) {
-            r = y;
-            y = x.y;
-            x = x.x
-        }
-        x = x || 100
-        y = N(y) ? y : x
-        r = r || 30
-        ball = this.dynamic(x, y,
-            b2d.circDef(r))
-        ball.K('ball')
-        return ball
-    }
+
+
+
     w.bump = w.bumper = w.baa = function (x, y, r) {
         x = x || 100
         y = N(y) ? y : x
         r = r || 20
-        return this.A(b2d.staticDef(x, y), b2d.circDef(r)).K('bumper')
+        return this.A(b2d.stat(x, y), b2d.circDef(r)).K('bumper')
     }
     w.box = w.bi = function (x, y, W, H) {//=brk=brick=
 
@@ -346,10 +168,9 @@ w.getBodyAtPoint=function(x, y){var body = null
         W = N(W) ? W : 50;
         H = N(H) ? H : W
 
-        return this.A(b2d.dynamicDef(x, y), b2d.polyDef(W, H)).K('box')
+        return this.A(b2d.dyn(x, y), b2d.poly(W, H)).K('box')
 
     }
-
     w.brick = w.bii = function (x, y, W, H) {//=brk=brick=
 
         x = N(x) ? x : 60;
@@ -357,10 +178,9 @@ w.getBodyAtPoint=function(x, y){var body = null
         W = N(W) ? W : 30;
         H = N(H) ? H : W
 
-        return this.A(b2d.staticDef(x, y), b2d.polyDef(W, H).r(0)).K('brick')
+        return this.A(b2d.stat(x, y), b2d.poly(W, H).r(0)).K('brick')
 
     }
-
     w.brickSensor = function (x, y, W, H) {//=brk=brick=
 
         x = N(x) ? x : 60;
@@ -368,12 +188,12 @@ w.getBodyAtPoint=function(x, y){var body = null
         W = N(W) ? W : 30;
         H = N(H) ? H : W
 
-        return this.A(b2d.staticDef(x, y), b2d.polyDef(W, H).r(0).sensor(true)).K('brickSensor')
+        return this.A(b2d.stat(x, y), b2d.poly(W, H).r(0).sensor(true)).K('brickSensor')
 
     }
-    w.addCirc = function (x, y, radius, color) {
-        //specific to talkjs
 
+
+    w.addCirc = function (x, y, radius, color) {//specific to talkjs
 
         x = N(x) ? x : parseInt(Math.random() * 2200 - 1000)
 
@@ -388,33 +208,27 @@ w.getBodyAtPoint=function(x, y){var body = null
 
     }
 
-    w.circ = function (x, y, radius, color) {var ball, w=this
+
+
+    w.circ = function (x, y, rad, col) {var ball, w=this
 
         // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
-        var wd = this.s.W(), ht = this.s.H()
-        x = N(x) ? x : parseInt(Math.random() * (wd - 100)) + 60
-        y = N(y) ? y : 50
-        radius = N(radius) ? radius : _.random(14) + 8
+        var wd = this.s.W(),
+            ht = this.s.H()
+        x=N(x)?x:parseInt(Math.random()*(wd-100))+60
+        y=N(y)?y:50
+        rad=N(rad)?rad:_.random(14)+8
 
+        ball = w.ball(x,y,rad).linDamp(2)
 
-       ball = this.ball(x, y, radius).linDamp(2)
-
-            .bindSprite2(
-
-            this.s.cir(x, y, radius, color)
-        )
-
-
-        ball.C=function(col){
-
-            this.sprites[0].remove()
-            this.sprites= [ w.s.cir(x, y, radius, col)]
-
-        }
+        ball.bindSprite2( w.s.cir(x,y,rad,col) )
 
         return ball
 
     }
+
+
+
 
 
 
@@ -426,7 +240,6 @@ w.getBodyAtPoint=function(x, y){var body = null
 
         )
     return this}
-
     w.bodyAt =  w.bodyAtPoint=function(x,y,func,kind){
         var w=this,
             body= null
@@ -453,10 +266,6 @@ w.getBodyAtPoint=function(x, y){var body = null
         return body
 
     }
-
-
-
-
     w.dynAt =  w.at =  w.bodyAtPoint=function(x,y){ var body= null,  func
         func=function(f){
 
@@ -466,7 +275,6 @@ w.getBodyAtPoint=function(x, y){var body = null
         return body
 
     }
-
     w.bug=w.debugDraw=function(){
 
          dd = b2d.debugDraw.apply(null, arguments)
@@ -475,25 +283,10 @@ w.getBodyAtPoint=function(x, y){var body = null
         this.SetDebugDraw( dd )
         return this
     }
-
-
-
-w.Z=function(scale){
+    w.Z=function(scale){
     if(U(scale)){return this.scale}
     this.scale = scale
 return this}
-
-    w.got=function(){var args=arguments,
-
-  res = this.beg(function(cx){//trackClasses(cx)
-
-        cx.got.apply(cx, args)
-
-    })
-
-    return this}
-
-
 
 
     w.gradBall = function (x, y, r, col1, col2, stop1, stop2) {
@@ -525,7 +318,6 @@ return this}
         ).linDamp(2)
 
     }
-
     w.rect = function (x, y, wd, ht, color) {var that=this
 
         x = N(x) ? x : 200
@@ -541,62 +333,43 @@ return this}
         ).linDamp(2)
 
     }
+    w.rectStat =  function(x,y, wd,ht, color){
 
+        x= N(x) ?x: 200
 
+        y= N(y)? y: 50
 
+        wd = N(wd)? wd: 50
+
+        ht = N(ht)? ht: wd
+
+        color = oO('c', color||$r())
+
+        return this.brick(x, y, wd,ht).bindSprite2(
+            cjs.rect(   wd,ht,  color ).XY(  x,y)
+
+        ).linDamp(2)
+
+    }
+    w.rectSensor =  function(x,y, wd,ht, color){
+
+        x= N(x) ?x: 200
+
+        y= N(y)? y: 50
+
+        wd = N(wd)? wd: 50
+
+        ht = N(ht)? ht: wd
+
+        color = oO('c', color||$r())
+
+        return this.brickSensor(x, y, wd,ht).bindSprite2(
+            cjs.rect(   wd,ht,  color ).XY(  x,y).opacity(.5)
+
+        ).linDamp(2)
+
+    }
 }())
-
-
-
-
-
-
-
-
-
-w.rectStat =  function(x,y, wd,ht, color){
-
-    x= N(x) ?x: 200
-
-    y= N(y)? y: 50
-
-    wd = N(wd)? wd: 50
-
-    ht = N(ht)? ht: wd
-
-    color = oO('c', color||$r())
-
-    return this.brick(x, y, wd,ht).bindSprite2(
-        cjs.rect(   wd,ht,  color ).XY(  x,y)
-
-    ).linDamp(2)
-
-}
-
-
-
-
-
-
-w.rectSensor =  function(x,y, wd,ht, color){
-
-    x= N(x) ?x: 200
-
-    y= N(y)? y: 50
-
-    wd = N(wd)? wd: 50
-
-    ht = N(ht)? ht: wd
-
-    color = oO('c', color||$r())
-
-    return this.brickSensor(x, y, wd,ht).bindSprite2(
-        cjs.rect(   wd,ht,  color ).XY(  x,y).opacity(.5)
-
-    ).linDamp(2)
-
-}
-
 
 
 w.bindShape = function( shape, spr   ){
@@ -610,9 +383,6 @@ w.bindShape = function( shape, spr   ){
     )
 
 }
-
-
-
 w.makeWalls=function(walls){
 
     var width = this.canvas.width,
@@ -634,12 +404,6 @@ w.makeWalls=function(walls){
       this.left=  this.rect(width, height / 2, 40, height,'o').stat().addClass('wall side leftWall left').K('leftWall')
     }
 }
-
-
-
-
-
-
 w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
 
     x = N(x) ? x : 60;
@@ -650,7 +414,7 @@ w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
 
  var wall= this.stat(
      x, y,
-        b2d.polyDef(W,H).rest(.4)
+        b2d.poly(W,H).rest(.4)
     )
 
 
@@ -660,40 +424,67 @@ return wall}
 
 
 
+w.verts= function(x,y,  arrs ){
 
+    var bod = this.dyn(x, y)
 
-w.verts= function(x, y, arrs){
+    _.each(arrs, function(fixt){
+// bod.convex( arr[0],  _.rest(arr)  )
+      //  bod.convex( fixt )
 
-    var bod = this.dyn(x,y)
-
-    _.each(arrs, function(arr){
-
-        bod.convex( arr[0],  _.rest(arr)  )
+        bod.convex.apply(bod, fixt )
     })
 
 return bod}
+
+
+w.B= function(x,y,fixts){
+    var bod = this.dyn(x, y)
+    if(D(fixts)){
+        bod.H.apply(bod, _.rest(arguments, 2) )
+    }
+
+    return bod}
+
+w.polyCirc=function(x, y, rad, sides){
+    var b = this.dyn(x,y),
+        pc = b2d.polyCirc(rad, sides)
+
+    b.poly.apply(b,pc)
+    return b}
+
+
+
+
+
+
+
+
+
+
+
 w.vertsKin= function(x, y, arrs){
 
     var bod = this.kin(x,y)
 
     _.each(arrs, function(arr){
-
-        bod.convex( arr[0],  _.rest(arr)  )
+        bod.convex(arr[0],  _.rest(arr))
     })
 
     return bod}
 
 
+
+
+
+
 //w.FixBody=function(x,y){return this.addBody(  dBD(x,y),fix())}
-
-
 
 w.dot=function(){
 
     this.s.dot.apply(this.s, arguments)
 
 return this}
-
 w.pen=function(){
 
     this.s.pen.apply(this.s, arguments)
@@ -741,8 +532,6 @@ w.eachBody= w.each= function( func, userData ){//=w.e=w.eB
         }
 
     return this}
-
-
 w.eachDyn=function(func){
     w.eachBody(function(b){
 
@@ -752,13 +541,6 @@ w.eachDyn=function(func){
 
 
 return this}
-
-
-
-
-
-
-
 w.C = function(color){
     this.s.c.C(color)
 return this}
@@ -808,11 +590,6 @@ w.randRects  = function(ob){var that=this
 
     ).stat().K('randomRect')})
 return this}
-
-
-
-
-
 w.addRandomBody = w.randomFixture=function(){
     var body= this.dynamic(Math.random() * 1000, 100,
         b2d.randomFixture())
@@ -831,7 +608,6 @@ w.addHundBalls=function(num){num=num||100;var that=this
     _.times(num, function(i){
         that.circ( 100  +(i*8),  50, 10) })
     return this}
-
 w.G=function(x, y){var v, currGrav = this.GetGravity()
 
     if(U(x)){return  currGrav}
@@ -844,7 +620,6 @@ w.G=function(x, y){var v, currGrav = this.GetGravity()
     w.SetGravity(v)
     return this}
 
-
 w.show=function(showWhat){var world=this, what
 
 
@@ -853,17 +628,110 @@ w.show=function(showWhat){var world=this, what
 
         what =  F(showWhat)?showWhat(world): window[showWhat]
 
-        what = F(what)? what(): what
+        what =   F(what)? what(): what
 
         world.pen( what )
 
+
     }, 200)
+
+
+
+
+
 
    TEST=function(){w=b2d.W()
         num = 0
         w.show( function(){return num} )}
 
 }
+w.co = function(co){
+
+    this.AddController( co )
+return this}
+w.acc = function(){
+
+  var  co  =  b2d.acc.apply(null, arguments)
+
+    this.co(   co  )
+
+return co}
+w.buoy = function(){
+
+    var  co  =  b2d.buoy.apply(null, arguments)
+
+    this.co(   co  )
+
+    return co}
+w.force = function(){
+
+    var  co  =  b2d.force.apply(null, arguments)
+
+    this.co(   co  )
+
+    return co}
+w.tensor = function(){
+
+    var  co  =  b2d.tensor.apply(null, arguments)
+
+    this.co(   co  )
+
+    return co}
+w.grav = function(g, wantFasterR1){
+
+    var  co  =  b2d.grav.apply(null, arguments)
+    if(N(g)){co.g(g)}
+    if(wantFasterR1){co.r1()}
+    this.co(co)
+
+    return co}
+w.bindCo=function(){var args=arguments
+
+    this.beg(function(cx){
+
+    cx.bindCo.apply(cx,args)
+
+    })
+
+return this}
+
+
+
+w.with= w.collWith=function(a,b,c){var w=this
+    w.beg(function(cx){cx.with(a,b,c)})
+return this}
+
+
+
+w.class=function(k){var w=this
+
+    var ob={
+        class:k,k:k,
+        world:w,w:w}
+
+    ob.with=ob.collWith=function(k,func){var ob=this
+
+        if(O(k)){
+            _.each(k, function(fun,k){
+                ob.with(k,fun)}
+            )}
+
+        else {w.with(this.class, k, func)}
+        return this}
+
+    return ob}
+
+w.bods=function(){// a real analog to the jquery obj ?
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -909,58 +777,103 @@ WORLD=function(){w=b2d.W({g:0})
 }
 //  b2d.Dynamics.Controllers.b2ControllerEdge
 
-w.co = function(co){
-
-    this.AddController( co )
-return this}
-w.acc = function(){
-
-  var  co  =  b2d.acc.apply(null, arguments)
-
-    this.co(   co  )
-
-return co}
-w.buoy = function(){
-
-    var  co  =  b2d.buoy.apply(null, arguments)
-
-    this.co(   co  )
-
-    return co}
-w.force = function(){
-
-    var  co  =  b2d.force.apply(null, arguments)
-
-    this.co(   co  )
-
-    return co}
-w.tensor = function(){
-
-    var  co  =  b2d.tensor.apply(null, arguments)
-
-    this.co(   co  )
-
-    return co}
-
-w.grav = function(g, wantFasterR1){
-
-    var  co  =  b2d.grav.apply(null, arguments)
-    if(N(g)){co.g(g)}
-    if(wantFasterR1){co.r1()}
-    this.co(co)
-
-    return co}
+b2d.Controllers = b2d.Dynamics.Controllers
+b2d.Math = b2.Common.Math
+b2d.Mat22 = b2d.Math.b2Mat22
+b2d.Mat33 = b2d.Math.b2Mat33
 
 
-w.bindCo=function(){var args=arguments
+b2d.wor = b2d.world =   function(a, b){
 
-    this.beg(function(cx){
+    if(U(a)){a=10}
 
-    cx.bindCo.apply(cx,args)
+    if(N(a)){a =  V(0, a) }
+
+    var w = new b2d.World(a,   D(b)?b: true)
+
+    // w.flags={}
+
+    // w.beginHandlers=[]
+    // w.endHandlers=[]
+    // w.preHandlers=[]
+    // w.postHandlers=[]
+
+    w.startListening()
+
+    return w}
+
+
+
+TESTQ=function(){w=b2d.W()
+    _.times(5, function(){w.randRects()})
+
+
+    var func = function(f, b){  b.kill(); return true  }
+
+
+    n= w.Q(func,  400,100,450,150)
+
+    w.ship().XY(425, 125)
+
+    w.pen(n + ' rects removed')
+
+}
+TRANSFORM=function(){var tf=null
+    w = wor().debug()
+
+    b = w.rect(100,100,100,200,'b')
+
+    b2 = w.rect(200,200,100,150,'p')
+
+
+
+    cjs.tick(function(){
+        var trf = b.transform().toArr()
+
+        if(tf){
+            b2.SetTransform( b2d.tf(tf)  )
+        }
+
+        setTimeout(function(){
+            tf=trf
+        },1000)
 
     })
 
-return this}
+
+
+
+}
+TESTPOINT=function(){var tf=null
+    w = wor()
+
+    b = w.rect(100,100,100,200,'b')
+
+
+
+    p = w.rect(200, 200, 100, 150, 'p').stat().rot(20)
+
+    p.fixt(
+
+        b2d.poly(50,50,50,50, 20,'o' )
+    )
+
+    f = p.fixt()
+
+    h = f.shape()
+
+    hit=h.testPoint(  p.transform(),  V(200,200).div()) // true
+    hit2= f.hit(200, 200, true)
+
+}
+
+
+COUNT=function(){w=b2d.W()
+
+    y= w.ship().XY(200,200)
+    b= w.circ(300,300,50,'r')
+
+    w.show(function(){return w.count()})}
 
 b2d.acc= function(x,y){
     var co=new b2d.Dynamics.Controllers.b2ConstantAccelController()

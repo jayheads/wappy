@@ -140,6 +140,32 @@ j.A=function(a){
 j.B=function(a){
     if(U(a)){ return this.GetBodyB() }
     else {alert ('j.B cannot set')}}
+j.wor = j.W = function(){return this.A().wor()}
+
+j.T= function(){return this.GetType()}
+
+j.form=function(){
+    var w=this.wor(), a=this.A(), b=this.B()
+
+    if(this.T()==8){
+
+        return w.weld(a  , b  )
+    }
+
+}
+
+
+
+j.destroy=function(){
+
+  var j = this.wor().DestroyJoint(this)
+    this.destroyed=true
+return j}
+
+
+
+
+
 j.a=function(a){
     if(U(a)){ return this.GetAnchorA().mult() }
     else {alert ('j.A cannot set')}}
@@ -1277,30 +1303,3 @@ FRICJ=function(){
          Notice that surface friction is a constant whereas air friction (drag) must be modified each frame according to the object speed (length of velocity vector)
 */}
 
-BUMPWALLS=function(){w=b2d.W()
-    w.debug()
-
-    y=w.ship()
-
-    w.left.kill()
-
-   setInterval(function(){w.player().K('head')},1000)
-
-num=0
-heads=0
-
-    cjs.tick(function(){
-
-        w.each(function(b){
-            if(b.is('head') && b.Y()>600 ){
-                b.kill()
-                heads++
-            }
-        })
-
-    })
-
-    setInterval(function(){num++},1000)
-
-    w.show(function(){return num + ' - ' + heads  })
-}
