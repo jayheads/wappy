@@ -736,7 +736,9 @@ f.bindSprite2=function(obj, startingRotation, x, y ){
 
     return this}
 
-
+f.isCirc=function(){
+   return this.shape().m_type==0
+}
 
 
 
@@ -788,15 +790,22 @@ b2d.fixt = function(shape){
 
     return fixt
 }
+
+
 b2d.poly = function(){var g=G(arguments),
 // SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?
+
         polyH = b2d.polyH.apply(null, g),
+
         fixt = b2d.fixt( polyH  )
+
     fixt.density= 1
     fixt.friction= .2
     fixt.restitution = .2
     if(g.n){ fixt.isSensor = true }
     return  fixt}
+
+
 b2d.circ = function(rad,x,y){
     var g= G(arguments),fixt,circ
     rad = N(g[0])?g[0]:50
@@ -1623,3 +1632,68 @@ BODVERTS=function(){w=b2d.W()
 
 
 }
+
+CLONE=function(){w=b2d.W()
+
+    w.roof.kill()
+
+    // x = w.B(400,400, 50,200).stat().poly(200,20)
+
+
+     b = w.B(400,400, [
+
+         [20],
+         [20,100,0],
+         [20,0,100],
+         [100,200]
+
+     ])
+
+
+    setInterval(function(){
+
+        b.I(0,-1000)
+        b.clone()
+
+    }, 3000)
+
+    w.ship()
+
+
+}
+
+
+PUZZLE=function(){w=b2d.W().debug()
+
+    _.times(10,function(){
+
+        w.B(400,400, [
+
+            ['r',20],
+            ['b',20,100,0],
+            ['y',20,0,100]
+
+
+        ])
+    })
+}
+
+CIRCTOPOLY=function(){w=b2d.W()
+
+    b = w.S(300, 300, 50)
+    r = b.fixt().shape().m_radius*30
+    b2  = w.S(600, 400)
+
+    c = b2d.polyCirc(r, 10)
+
+    c = _.map(c, function(v){return [v.x, v.y]})
+
+    b2.poly.apply(b2, c)
+
+
+    h  = b2.fixt().shape()
+
+    b2.dyn()
+}
+
+

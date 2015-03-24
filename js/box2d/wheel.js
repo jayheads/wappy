@@ -1,3 +1,11 @@
+B2DTEST=function(){$l('b2d test!')
+    w=b2d.W()
+    $l('make an edge body..'); w.edge(100,300,500,500)
+    $l('make a ball..');w.ball(150,100,10)
+    $l('make a ball with density..'); w.ball(150,100,10).den(1)
+
+    h=b2d.cH(50)
+}
 WEBMAN = function(){
 
      w = b2d.W({ g:40 })
@@ -95,99 +103,62 @@ WEBMAN = function(){
     w.s.tickX(function(){return 600- p.X()})
     w.s.tickY(function(){return 510- p.Y()})}
 
+
 SPACEZOOM=function(){
 
 
-    var width=600,
-        height=300,
-        gravity=0
+    keepGuyCentered=function(getScaleFunc){//removed but brought back for spacezoom
+    //used in SCALING LEVEL
+        //*******
 
-    //gotta make guy heavier
-    //thrust is good with grav 10 !!!!
-    // , walls:b2d.miniWalls
+        cjs.tick(function(){ if(O(p.sprite)){
+            var x = p.X(),
+                y = p.Y(), dif,
 
-    w = b2d.mW({
-        W:width,
-        H:height,
-        grav:gravity,
-        walls:0
-    })
-    earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).K('earth') //stat?  why dont i collide?
+                scale = getScaleFunc()
+            w.s.sXY(scale)
+            w.s.X(300 - ((x - 300) * scale)  )
+            w.s.Y(150 - ((y - 150)  ) * scale )}})
 
-    northStar.bindSprite('earth',.13)
+    }
+
+
+
+
+    w = b2d.W({//W:600, H:300,
+        g:0,w:0}).debug()
+    w.s.rXY(300,150)
+    _.times(80, function(){var x,y
+        x= (Math.random() * 2000) - 750
+        y = (Math.random() * 1600) - 600
+        w.circ(x, y, 4, 'white').den(0).rest(2).K('star')}) //stars
+
+
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().den(.4).angDamp(8).linDamp(.8)
+
+
+    earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).bindSprite('earth',.13).K('earth')
+
 
     setTimeout(function(){
+        w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      ) //  w.s.tweenLoop([{r: 360}, 10000])
+        p.coll('star', function(){p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100])})
 
         earth.sprite.tweenLoop([{r: 360}, 10000])
-
         earth.sprite.tweenLoop([{kx:16}, 3000],[{kx:0}, 3000])
-
-        w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      )
-        //  w.s.tweenLoop([{r: 360}, 10000])
-
-
-
-        p.collWithKind('star', function(){
-
-            p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100] )
-
-        })
-
-        earth.collWithKind('star', function(){
-
-            w.s.flash()
-        })
-
-
+        earth.coll('star', function(){w.s.flash()})
     }, 300)
 
-    p= w.player(2.5, 'thrust')
-        .Y(200).horizCenter()
-
-    p.angDamp(8 )
-
-    p.SetLinearDamping(.8)
-
-    w.debug()
-
-    w.s.rXY(300,150)
-
-    _.times(80, function(){var x,y
-
-        x= (Math.random() * 2000) - 750
-
-        y = (Math.random() * 1600) - 600
-
-        w.circ(x, y, 4, 'white').den(0).rest(2).K('star')
-
-    })
-
-
-
-
-
-
-
-
-
-
     w.distColl(p, northStar).freq(.15).damp(0).len(50)
-
-
 
     scaleFunc = function(){var dx,dy,dst
         dx =    northStar.X()-p.X()
         dy =     northStar.Y()-p.Y()
         dst = Math.sqrt( (dx * dx) + (dy * dy) )
-        //$l('distance from star :'+ dst + ' - scale: ' + w.s.scaleX)
         dst =  300 /dst
         return dst>2?2:  dst <.3? .3: dst}
 
     keepGuyCentered(scaleFunc)
-    //instead of distance by diagnal distance, try just adding x and y distances
-
-
-
 
     cjs.tick(function(){
         w.s.alpha =scaleFunc()*2
@@ -195,36 +166,27 @@ SPACEZOOM=function(){
     })
 
 }
-COINWARP=function(){
 
-    b2d.levelWarp()
 
-    p.linDamp(1)
 
-    _.times(2, function() {
 
-        w.greenGuy(Math.random()*600).marioWarping(  )//.I((Math.random()*20)-10,(Math.random()*20)-10)
-
-    })
-
-    p.K('bullet')
-
-    setInterval(coin, 300)
-
-    p.marioWarping()
-
+COINWARP=function(){w = b2d.W({   g:4, w:0}).debug()
     score=0
     badScore=0
 
-    begFunc=function(cx){var fixt
-    if(fixt = cx.with('coin','bullet')){
-        fixt[0].setDestroy()
-        score++}
-    else if(fixt = cx.with('coin','greenGuy')){
-        fixt[0].setDestroy()
-        badScore++}
-}
-   // w.beg(begFunc)
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(1).K('bullet').warp2()
+    _.times(2, function() {w.greenGuy(Math.random()*600).warp2()})
+
+    setInterval(function(){w.coin()},  300)
+
+     w.beg(
+         function(cx){var fixt
+             if(fixt = cx.with('coin','bullet')){
+                 fixt[0].setDestroy()
+                 score++}
+             else if(fixt = cx.with('coin','greenGuy')){
+                 fixt[0].setDestroy()
+                 badScore++}})
 
 
 
@@ -526,10 +488,15 @@ YELLOWGAME=function(){
 
 
 
-MARIOMAZE=function(){
-    b2d.levelSpace()
+MARIOMAZE=function(){w = b2d.W({g:0,w:0}).debug()
 
-    //ceiling.kill(); //right.kill()
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).follow(300, 150)
+    _.times(30, function(){var x,y
+        x= (Math.random() * 1000) - 500
+        y = (Math.random() * 800) - 400
+        w.circ(x, y, 2,'white').den(0).rest(2)
+    })
+
 
     grid= w.grid([
         [1,0,1,1,1,1,1,1,1],
@@ -564,6 +531,8 @@ MARIOMAZE=function(){
     p.XY(220, 70)
 }
 
+
+
 //
 
 MARIOBIG=function(){
@@ -572,7 +541,7 @@ MARIOBIG=function(){
 
 
 
-    w = b2.mW({
+    w = b2d.W({
         grav:500,
         walls:0
 
@@ -643,6 +612,8 @@ MARIOBIG=function(){
     w.box(800,100).bindSprite('guy')
 
 }
+
+
 
 BILLIARDS=function(){
 
@@ -908,17 +879,194 @@ SEB=function(){w=b2d.W({g:1})//w.show(function(){return b.num()})
 
    // w.debug()
 }
+BREAKWALL=function(){w=b2d.W({g:1})
+    y = w.ship().linDamp(3).X(1100).rot(260)
+    terr = w.B(800,300,'r',200, 800).stat()
+    terr.coll('bul', function(bul){
+            var bull=bul.B(),bX=bull.X(),bY=bull.Y()
+            bull.kill()
+            poly = Math.poly(
 
+                _.map(b2d.polyCirc(50,4),
 
-B2DTEST=function(){$l('b2d test!')
-    w=b2d.W()
-    $l('make an edge body..'); w.edge(100,300,500,500)
-    $l('make a ball..');w.ball(150,100,10)
-    $l('make a ball with density..'); w.ball(150,100,10).den(1)
-
-    h=b2d.cH(50)
+                    function(v){return [v.x+ bX, v.y+ bY]}))
+            terr.subtract(poly)
+        })
 }
 
+ARM=function(){w=b2d.W()
+
+    y= w.ship(500,200)
+
+ b=w.S(300,300,20,200)
+
+    a= w.S(300,300,[
+
+        ['b',200,50,100,0]
+    ])
+
+
+    setInterval(function(){
+        a.rot(1,'+')
+    },100)
+
+
+}
+FUNNYBADGUY=function(){w=b2d.W()
+
+    y= w.ship(500,200)
+
+    b=w.B( 300,300, 'r', 20,300)
+
+    a = w.B(300,300,[
+
+        ['b',100 ],
+        ['y', 50,10,100,0]
+    ])
+
+
+   j= w.rev(a,b)
+
+
+j.mot(10)
+    w.debug()
+}
+
+CLIMBER=function(){
+    w=b2d.W({
+
+})
+
+
+    //y= w.ship(500,200)
+
+
+    dir = 10
+
+    car= w.B( 300,300, 'r',  200,20)
+
+
+    w1 = w.rev(
+        w.B(250,300,'b', 40).den(5).bindSprite('me'),
+        car).mot(10)
+
+    w2 = w.rev(w.B(350,300,'b', 40).den(5).bindSprite('me')
+        ,car).mot(10)
+
+
+    x = function(){
+        dir*=-1
+        w1.mot(dir)
+        w2.mot(dir)
+    }
+
+
+
+    w.click(x)
+
+    setInterval(function(){
+        w.B(300,500,'y',20)
+    }, 1000)
+
+    w.debug()}
+
+
+
+STANDMEUP=function(){
+
+
+        w=b2d.W({
+
+        })
+
+
+        //y= w.ship(500,200)
+
+
+        dir = 12
+
+        car= w.B( 300,300, 'r',  200,45)
+
+
+        w1 = w.rev(
+
+            w.B(250,300,'b',  [_.map(b2d.polyCirc(45,10),
+                    function(v){return [v.x, v.y]}
+                )]
+            ).den(5) ,
+
+
+            car).mot(10)
+
+
+
+        w2 = w.rev(w.B(350,300,'b',
+
+               [_.map(b2d.polyCirc(45,10),
+                    function(v){return [v.x, v.y]}
+                )]
+
+
+
+            ).den(5)
+            ,car).mot(10)
+
+
+        x = function(){
+            dir*=-1
+            w1.mot(dir)
+            w2.mot(dir)
+        }
+
+
+
+        w.click(x)
+
+
+}
+
+TANKWHEELS=function(){
+
+
+    w=b2d.W({g:0}).debug()
+
+
+    grv = V( 0, 1000 )
+
+    dir = 12
+
+    car= w.B( 300,300, 'r',  100, 5)
+
+
+    w1 = w.rev(   w.B(250,300,'b',  [_.map(b2d.polyCirc(45,10),
+                function(v){return [v.x, v.y]}
+            )]  ).den(5),   car).mot(10)
+
+
+
+    w2 = w.rev( w.B( 350, 300, 'b', [_.map(b2d.polyCirc(45,10),
+                function(v){return [v.x, v.y]}
+            )]).den(5), car ).mot(10)
+
+
+
+    w.click(function(){
+        dir*=-1
+        w1.mot(dir); w2.mot(dir)
+        grv = V(-grv.x,-grv.y) })
+
+    cjs.tick(function(){car.F( grv )})
+
+    w.right.coll(function(){grv=V(-1000,0)})
+
+    w.left.coll(function(){grv=V(1000,0)})
+
+    w.roof.coll(function(){grv=V(0,-1000)})
+
+    w.floor.coll(function(){grv=V(0,1000)})
+
+
+}
 
 
 POLYCIRC=function(){w = b2d.W()
@@ -929,3 +1077,141 @@ POLYCIRC=function(){w = b2d.W()
 
 
 }
+
+MOVEINCIRC=function(){w=b2d.W({g:0})
+
+
+     w.dot(300,300); w.dot(600,300); w.dot(900,300)
+
+//rad,speed
+     w.B(300,300,50,100).moveInCircle('+') //high oval
+   w.B(600,300,50,100).moveInCircle()
+    w.B(900,300,100,50).moveInCircle('-') //long oval
+
+
+
+
+}
+
+ZILLA=function(){w=b2d.W({g:0,w:0}).debug()
+    health=100
+
+    y = w.ship().warp2().coll(function(){health-=5})
+    z = w.zilla(600, 300).fireBallsAtInt(4000)
+
+    w.show(function(){return 'health: '+ health + ', hits: ' + z.hits})
+}
+
+
+ZILLASCROLL=function(){w=b2d.W({g:0,w:0}).debug()
+    health=100
+
+
+    y = w.ship().coll(function(){
+        health-=5
+    }) // insert message passing here!
+
+
+
+
+    z = w.zilla(600, 300).fireBallsAtInt(4000)
+
+    //w.follow(y)
+    y.cam()
+
+
+    w.show(function(){return 'health: '+ health + ', hits: ' + z.hits})
+
+
+}
+
+
+
+RAYCAST=function(){W=b2d.W(); var p1,p2,line
+    w.addMe()
+    w.brick(200,200,40,20)
+    w.s.HUD.on('stagemousedown',  function(ev){var v=V(ev.rawX,ev.rawY)
+        if(!p1){p1=v; return}
+        if(!p2){p2=v} else {p1=p2;p2=v}
+        w.s.each(function(c){if(c.N() == 'dot'){c.remove()}})
+        w.dot('b',p1); w.dot('r',p2)
+        if(line){line.remove(); line=null}
+        line = w.s.shape().s('w').mt(N(p1.x)?p1.x:0,N(p1.y)?p1.y:0).lt(N(p2.x)?p2.x:100,N(p2.y)?p2.y:100)
+        w.rayCast(function(f){var b=f.B(); w.dot( b.X(),b.Y())},p1,p2)})}
+DENSITYBODYCLICK=function(){ w=b2d.W({g:0,W:600,H:500})
+    w.ball(200,100, 10)
+    w.ball(100,100, 5.65)
+    w.ball(300, 200, 40)
+    w.box(200,200, 10,10)
+    w.box(200,200, 100,100)
+    w.bodyClick(function(){$l('mass: ' + this.mass().toFixed(3))})}
+MINIWORLD = function(){w=  b2d.W({ g:10, W:500, H:400, w:b2d.miniWalls})
+    d = $.div('yellow', 500,40).A().pad(2)
+    p = w.player(2, 'thrust')
+    data=function(str){
+        if(U(str)){str='data'}
+        d.E($.h4(str))}}
+TALKJS=function(){   w = b2d.W({   g:0,   w:0   }).startKilling().debug()
+    score=0
+    shots=0
+
+    p= w.addMe(500,300).stat()
+
+    _.times(100, function(){
+        w.addCirc()
+    })
+
+
+    $.space(function(){//can double on on shots!!!
+        setInterval(function(){
+            p.shoot(); shots++ }, 200)
+    })  //setTimeout(function(){$.pop(score).click(function(){window.location=window.location})}, 10000)
+
+    w.beg(function(cx){
+        if(cx.with('ball','bullet')){
+            score++;
+            cx.destroy()
+        }})
+
+    cjs.tick(function(){
+        p.XY(500, 300)
+        if(cjs.Keys.left){p.rot(8,'-')}
+        if(cjs.Keys.right){p.rot(8,'+')}
+        if(cjs.Keys.up){
+            w.each(function(body){
+                if(body.not('bullet', 'player')){
+                    body.I(p.worldVec(0,-100).div(-50))}})}
+    })
+
+
+}
+
+ORBIT=function(){w = b2d.W({g:0,w:0}).debug()
+    w.stars()
+    w.spring(
+        p = w.thrustPlayer().follow(600, 300),
+        star = w.sun(200,200)
+    ).freq(.2).damp(4)}
+SUNZOOM=function(){w = b2d.W({g:0,w:0}).debug()
+    w.stars(10)
+    w.s.rXY(300,150)
+    w.s.XY(300,150)
+
+
+    p = w.thrustPlayer()
+    sun = w.sun()
+    setTimeout(function(){ sun.sprite.tweenLoop([{r: 360}, 10000]) }, 300) //preload to the rescue ??
+
+
+    w.distColl(p, sun).freq(.2).damp(0).len(150)
+    green(400,100); green(400,200); green(200,100); green(200,200)
+    function green(x,y,freq){freq=N(freq)?freq:.1
+        w.distColl(   w.greenGuy(x,y), sun).freq(freq).damp(0).len(150)}
+    cjs.tick(function(){
+        w.s.sXY( b2d.scaleFunc(sun,p,2) )
+        p.centerScale( b2d.scaleFunc(sun,p,2) )
+    })
+
+}
+
+

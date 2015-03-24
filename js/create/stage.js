@@ -342,7 +342,17 @@ return this}
 
 
 p.dot=function(color, x, y){
-    var that = this,   dot, tween
+    var that = this,
+        dot,
+        tween
+
+
+
+    if(b2d.isGPoly(color)){
+        _.each(color.verts(), function(v){ that.dot(V(v))  })
+
+    return this}
+
 
     if(A(color)){
 
@@ -365,7 +375,7 @@ p.dot=function(color, x, y){
 
      dot = __dot = this.cir(x,y, 6, oO('c', color)).drag()//.opacity(.4)
 
-   tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
+    tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
 
 
      dot.$$(function(){tween.toggle()})

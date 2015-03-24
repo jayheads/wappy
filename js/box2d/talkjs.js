@@ -1,42 +1,131 @@
-TALKJS=function(){   w = b2d.W({   g:0,   w:0   }).startKilling().debug()
-    score=0
-    shots=0
 
-   p= w.addMe(500,300).stat()
 
-    _.times(100, function(){
-        w.addCirc()
+// OLD:
+b2d.marioWorld=function(){
+    return  b2d.W({
+        W: 600,
+        H: 300,
+        g: 400,
+        w:0
+    })
+}
+b2d.miniMarioWorld=function(){
+    return  b2d.W({W: 600, H: 300, g: 400,
+        w:  b2d.miniWalls
+    })
+}
+b2d.level = function(){
+    w = b2d.marioWorld()
+    w.marioWalls()
+    return p= w.mario()
+}
+
+b2d.levelScrollX=function(){
+    b2d.level()
+
+    w.right.kill()
+
+    w.s.XY(300,150)
+    w.s.rXY(300, 150)
+
+    p.followX(600, 400)
+
+
+    w.debug()}
+b2d.levelScrollY=function(){b2d.level()
+
+    w.s.XY(300, 150).rXY(300, 150)
+    p.followY(600, 400)
+    w.debug()
+    right.kill()
+
+}
+b2d.levelScroll=function(){
+    b2d.level()
+    w.s.XY(300, 150).rXY(300, 150)
+    p.follow(600, 400)
+    w.debug()
+}
+b2d.levelWarp=function(){
+
+    w = b2d.W({
+        W:600,
+        H:300,
+        g:4,
+        w:0})
+
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 )
+
+
+    w.debug()
+
+}
+b2d.levelSpace=function(){
+
+    //gotta make guy heavier
+    //thrust is good with grav 10 !!!!
+    // , walls:b2d.miniWalls
+
+    w = b2d.mW({W:600,H:300,g:0,w:0
+    }).debug()
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).follow(300, 150)
+    _.times(30, function(){var x,y
+        x= (Math.random() * 1000) - 500
+        y = (Math.random() * 800) - 400
+        w.circ(x, y, 2,'white').den(0).rest(2)
     })
 
+}
 
-    $.space(function(){//can double on on shots!!!
-        setInterval(function(){
-            p.shoot(); shots++ }, 200)
-    })  //setTimeout(function(){$.pop(score).click(function(){window.location=window.location})}, 10000)
+b2d.levelJet=function(){
 
-    w.beg(function(cx){
-        if(cx.with('ball','bullet')){
-            score++;
-            cx.destroy()
-        }})
+    var width=600,
+        height=300,
+        gravity=10
 
-    cjs.tick(function(){
-        p.XY(500, 300)
-        if(cjs.Keys.left){p.rot(8,'-')}
-        if(cjs.Keys.right){p.rot(8,'+')}
-        if(cjs.Keys.up){
-            w.each(function(body){
-                if(body.not('bullet', 'player')){
-                    body.I(p.worldVec(0,-100).div(-50))}})}
+    w = b2d.mW({
+
+        W:width,
+        H:height,
+        grav:gravity,
+        walls: b2d.miniWalls
+
+
     })
+
+    floor = w.rect(height, width / 2, width*5, 40, 'orange').stat().K('floor').fric(.2).rest(.2)
+    right = w.rect(0, height / 2, 40, height, 'pink').stat().K('rightWall').fric(.5).rest(.5)
+
+
+    p= w.player(2.5,'thrust')
+    //p.angDamp(100)
+
+
+    p.Y(200).horizCenter().den(1).fric(.2).rest(.2)
+
 
 
 }
 
+b2d.levelAutoScroll=function(num){
+    num=num||4
+    b2d.level()
+    right.kill()
 
+    setup=function(){
+        score=0
+        p.XY(150, 100)
+        p.linVel(0,0)
+        w.s.XY(0,0)}
 
+    setup()
+    cjs.tick(function(){
+        w.s.X(num,'-').pen(score++)
+        if( p.relPos() < -100 ){setup()}})
 
-// OLD:
+    w.debug()
+}
+
 
 
 b2d.poly2= function(wd, ht, xy, ang,ang2){//b2d.polyDef=b2d.polyFixt=pFx=
@@ -74,24 +163,4 @@ b2d.poly2= function(wd, ht, xy, ang,ang2){//b2d.polyDef=b2d.polyFixt=pFx=
 
 }
 
-
-b2d.ArrX = b2d.AX = function(){
-    var shape = b2d.AShape.apply( null, arguments ),
-        poly = b2d.fixt( shape ).den(.1)
-    return poly} //DEP FOR b2d.poly
-
-
-b2d.AShapeX=function(){//dep .. use polyH
-
-    var arr = _.map(arguments, function(vert){
-
-            return V(vert[0], vert[1], '-')
-
-        }),
-
-        shape = b2d.polyH()
-
-    shape.sAA( arr )
-
-    return shape}
 

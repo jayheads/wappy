@@ -159,7 +159,7 @@ w.getBodyAtPoint=function(x,y){var body = null
         x = x || 100
         y = N(y) ? y : x
         r = r || 20
-        return this.A(b2d.stat(x, y), b2d.circDef(r)).K('bumper')
+        return this.A(b2d.stat(x, y), b2d.circ(r)).K('bumper')
     }
     w.box = w.bi = function (x, y, W, H) {//=brk=brick=
 
@@ -438,13 +438,20 @@ w.verts= function(x,y,  arrs ){
 return bod}
 
 
-w.B= function(x,y,fixts){
-    var bod = this.dyn(x, y)
+w.D=w.B= function(x,y,fixts){
+    var bod = this.dyn(x,y)
     if(D(fixts)){
         bod.H.apply(bod, _.rest(arguments, 2) )
     }
-
     return bod}
+w.S=function(){
+    return this.B.apply(this,arguments).stat()
+}
+w.K=function(){
+    return this.B.apply(this,arguments).kin()
+}
+
+
 
 w.polyCirc=function(x, y, rad, sides){
     var b = this.dyn(x,y),
@@ -485,6 +492,8 @@ w.dot=function(){
     this.s.dot.apply(this.s, arguments)
 
 return this}
+
+
 w.pen=function(){
 
     this.s.pen.apply(this.s, arguments)

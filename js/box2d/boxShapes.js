@@ -62,23 +62,96 @@ pH.setAsArray = p.sAA=  function(a,b){
     if(U(b)){b=a.length}
     this.SetAsArray(a, b)
     return this}
+
+//makes verts
+b2d.verts=function(verts,more){
+
+    return _.map((more)?arguments:verts,
+
+        function(v){
+            return V(v).div()
+        })
+}
+
+
+
 pH.arr=function(){
 
-    //makes verts
-    b2d.verts=function(verts){
-        return _.map(verts,
-            function(v){return V(v).div()})}
+    var verts = b2d.verts.apply(null,arguments)
 
-
-    var verts = b2d.verts(arguments)
     this.SetAsArray(verts, verts.length)
-    return this}
+
+    return this
+
+}
+
+
+
+
+b2d.AShape=function(pam,pam2){//dep .. use polyH
+    var args=(pam2)?arguments:pam
+    var arr = _.map(args, function(vert){return V(vert).div()}),
+        shape = b2d.polyH()
+    shape.sAA( arr )
+    return shape}
+b2d.Arr = b2d.A = function(){
+    var shape = b2d.AShape.apply( null, arguments ),
+        poly = b2d.fixt( shape ).den(.1)
+    return poly} //DEP FOR b2d.poly
+
+
+PHARR=function(){w=b2d.W()
+
+    y=w.ship()
+    y.poly(100,10)
+
+
+    w.B(400,300).fixt(
+        b2d.Arr([-100,0],[0,-100],[100,-10]))
+
+    w.B(400,300).fixt(
+        b2d.Arr(V(-100,0),V(0,-100),V(100,-10)))
+
+    w.B(400,300).fixt(
+        b2d.Arr([[-100,0],[0,-100],[100,-10]]))
+
+    w.B(400,300).fixt(
+        b2d.Arr([V(-100,0),V(0,-100),V(100,-10)]))
+
+
+    w.B(400,300).poly( [-100,0], [0,-100], [100,-10])
+
+    w.B(400,300).poly( V(-100,0),V(0,-100),V(100,-10))
+
+    w.B(400,300).poly( [[-100,0],[0,-100],[100,-10]])
+
+    w.B(400,300).poly( [V(-100,0),V(0,-100),V(100,-10)])
+
+
+
+
+    b=w.B(400,300)
+
+    }
+
+
+
+
 //this covers all cases for polygons !!!!
 pH.set = function(wd){
-    if( N(wd) ){ this.setAsBox.apply(this, arguments) }
+    if(N(wd)){ this.setAsBox.apply(this, arguments) }
+
     else if( O(wd) ){ this.arr.apply(this, arguments) }
+
     return this} // ******
 // !!!!!!!!
+
+
+
+
+
+
+
 
 pH.setAsVec =   function(vec, scale){
     scale=N(scale)?scale:30
@@ -108,9 +181,22 @@ pH.verts = function(){
 
 //polygonShape // this is all you need for all cases (thanks to pH.set)
 b2d.polyH=b2d.polyShape=b2d.pSh=function(){
-    var poly=new b2d.PolygonShape()
+
+    var poly = new b2d.PolygonShape()
+
       poly.set.apply(poly, arguments)
+
     return poly}
+
+
+
+
+
+
+
+
+
+
 
 //circleShape
 b2d.circH=b2d.cH=b2d.circShape=b2d.circleShape=b2d.cSh=function(rad,x,y){

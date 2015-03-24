@@ -476,6 +476,7 @@ if(dot==true){this.wor().dot(x,y)}
     })
 
     return hit}
+
 b.kill=function(){
 
     if(this.sprite){this.sprite.remove()}
@@ -489,6 +490,7 @@ b.kill=function(){
     this.destroy()
 
 }
+
 
 
 b.num = b.count=function(){
@@ -632,6 +634,7 @@ b.destroy=function(){
     this.wor().DestroyBody(this)
 }
 
+
 b.setDestroy=function(){return this.K('destroy')}
 
 
@@ -640,7 +643,7 @@ b.setDestroy=function(){return this.K('destroy')}
 b.bindKeyboard = function(cont){ //p.moveListener=
     var that=this
 
-    control = (b2.controls[cont] || b2.controls.trickJump )
+    control = (b2d.controls[cont] || b2d.controls.trickJump )
 
     control()
 
@@ -770,6 +773,56 @@ return this}
 
 
 
+
+
+b.moveInCircle = function(rad, speed){
+
+    var g=G(arguments),rad=N(g[0])?g[0]:100,
+        speed=N(g[1])?g[1]:2,
+     toRad=Math.toRadians, cos=Math.cos,  sin=Math.sin,
+        b=this,
+        ang=0,
+        x=b.X(),
+        y=b.Y(),
+        bX,
+        bY
+
+    cjs.tick(function(){
+        ang += toRad(speed)
+
+        bX= rad * cos(ang)
+        bY= rad * sin(ang)
+
+        if(g.p){bY*=2}
+       if(g.n){bX*=2}
+
+
+        b.XY(bX+ x, bY+ y)
+    })
+
+    return this}
+
+
+b.moveInOval = function(rad,speed){
+
+    speed=N(speed)?speed:6
+    rad=N(rad)?rad:100
+
+    var toRad=Math.toRadians, cos=Math.cos,
+        sin=Math.sin,
+        b=this,
+        ang= 0,
+        x= b.X(),
+        y= b.Y()
+
+    cjs.tick(function(){
+        ang += toRad(speed)
+        b.XY(
+                rad*cos(ang)*2 + x,
+                rad*sin(ang) + y)
+    })
+
+    return this}
 
 
 
@@ -918,11 +971,17 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
 
     return fixt}
 
+
 b.poly = function(){
 
-    var fix =  this.fixt(  b2d.poly.apply(null, arguments)   )
+    var fix =  this.fixt(
+
+        b2d.poly.apply(null, arguments)
+
+    )
 
 return fix}
+
 
 
 
@@ -1093,11 +1152,7 @@ b.subtract=function(a){var g=G(arguments),a=g[0]
 
     _.each(this.fixts(),
 
-        function(f){
-
-            f.sub( a )
-
-        })
+        function(f){   f.sub( a )  })
 
     if(g.n){a.kill()}
 
@@ -1255,6 +1310,58 @@ b.glue=function(b2){
 
 }
 
+b.polyClone=function(x,y,rot){
+    x=N(x)?x:this.X()
+    y=N(y)?y:this.Y()
+    rot=N(rot)?rot:this.rot()
+
+    var that=this,
+
+
+        b = w.B(x,y).type(that.type()).rot(rot)
+
+    _.each(that.fixts(), function (f) {
+
+        b.poly.apply(b, _.map(f.verts(), function (v) {
+            return [v.x, v.y]
+        }))
+
+    })
+
+    return b
+
+}
+
+
+b.clone=function(x,y,rot){
+
+
+    x=N(x)?x:this.X()
+    y=N(y)?y:this.Y()
+    rot=N(rot)?rot:this.rot()
+
+    var that=this,
+
+        b = w.B(x,y).type(that.type()).rot(rot)
+
+    _.each(that.fixts(), function (f) {var h, x, y,r
+
+        if(f.isCirc()){
+            h = f.shape()
+            x = h.m_p.x * 30
+            y= h.m_p.y * 30
+            r= h.m_radius * 30
+            b.circ(r,x,y)
+        }
+        else {    b.poly(  f.verts() )   }
+
+    })
+
+    return b
+
+}
+
+
 
 
 b.fixts=function(){
@@ -1305,31 +1412,32 @@ b.centerScale=function(scale){var body=this
 return this}
 
 
+
+
 //game
-b.marioJumping= function(){
+b.marioJumping= function(){var p=this
 
-    var p=this
+    p.trig('feet').fixRot()
 
-
-    p.trig('feet')
     cjs.tick(function(){
-        p.rot(0)
-
         if(p.trig.feet && cjs.Keys.up){
             if(cjs.Keys.right){p.linVel(20, -60) }
             else if(cjs.Keys.left){p.linVel(-20, -60) }
-            else {p.linVel(0, -80)}
-        }
+            else {p.linVel(0, -80)}}
 
-        else{   if (cjs.Keys.right) {p.I(10, -5)}   else if (cjs.Keys.left) {p.I(-10, -5)}      }  // if (cjs.Keys.right) {p.linVel(40, -10)}  // else if (cjs.Keys.left) {p.linVel(-40, 10)}
-
+        if (cjs.Keys.right) {p.linVel(40, -10)}
+        else if (cjs.Keys.left) {p.linVel(-40, 10)}
         if (cjs.Keys.down){
-            p.trig.feet='true'
+            p.trig.feet = 'true'
             p.I(0, 20)}
 
     })
 
 return this}
+
+
+
+
 b.marioWarping=function(){var p=this
         cjs.tick(function () {
             if (p.Y() < 0) {p.Y(300)}

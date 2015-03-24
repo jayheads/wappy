@@ -29,6 +29,40 @@ w.footListener=function(){
     this.listen(listener)
 
     return this}
+
+w.bouncePlat  =function(x,y,W,H){//=brk=brick=
+    x = N(x) ? x : 60; y = N(y) ? y : x
+    W = N(W) ? W : 30; H = N(H) ? H : W
+    return this.S(x,y,W,H).K('plat boucePlat').rest(.8)}
+
+w.coin = function(x,y){var w=this
+    x=N(x)?x:Math.random()* 600
+    y = N(y)?y:Math.random()* 300
+    return w.circ(x, y, 6, 'yellow').K('coin').rest(0).den(0).warp2().linDamp(0).I((Math.random()* 15)-5,(Math.random()* 15)-5)}
+
+w.stars=function(num){var w=this,x,y
+    num=N(num)?num:30
+    _.times(num, function(){
+        x= (Math.random() * 1000) - 500
+        y = (Math.random() * 800) - 400
+        w.circ(x, y, 2,'white').den(0).rest(2)
+    })
+
+return this}
+
+w.thrustPlayer=function(){
+  return this.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(.8)
+
+
+}
+
+w.sun=function(x,y){
+    x=N(x)?x:300
+    y=N(y)?y:150
+   return this.circStat(300,150,10,'pink').den(1).rest(.5).bindSprite('sun',.2)
+
+}
+
 w.addMe=function(x,y, scale){//var bodyDef,head,foot,p
 
     scale = scale || 4   //? -> mini should be 4
@@ -68,6 +102,16 @@ w.addMe=function(x,y, scale){//var bodyDef,head,foot,p
         return p}
 
     return p}
+
+
+w.mario=function(){
+    return this.player(2.5).horizCenter().Y(200)
+        .fixRot().den(1).fric(.2).rest(.2)
+
+        .marioJumping()
+
+}
+
 
 
 w.startKilling=function(){var that=this
@@ -146,6 +190,65 @@ w.bullet=function self(x,y,r){//radius
     bullet.addClass('bullet bul').K('bullet')
 
     return bullet}
+
+
+w.fireBall=function(x,y,vX,vY){
+    var v=8
+    if(vX=='l'){vX=v;vY=0}
+    if(vX=='r'){vX=-v;vY=0}
+    if(vX=='u'){vX=0;vY=-v}
+    if(vX=='d'){vX=0;vY=v}
+    if(vX=='ul'){vX=v;vY=-v}
+    if(vX=='ur'){vX=-v;vY=-v}
+    if(vX=='dl'){vX=v;vY=v}
+    if(vX=='dr'){vX=-v;vY=v}
+    vX=N(vX)?vX:0
+    vY=N(vY)?vY:0
+
+    return this.K(x,y, 'r', 18).bindSprite('sun',.2)
+        .lV(vX,vY)
+}
+
+
+w.zilla=function(x,y){var w=this
+
+    var z= w.K(x,y, 80,140) //make sensor?
+        .fixRot()
+        .bindSprite('guy', [.8,1])
+        .moveInCircle('-')
+        .coll('bul',
+        function(bul){
+            bul.B().kill()
+            z.hits++
+        })
+
+    z.hits=0
+
+    z.fireBalls=function(){
+        var x= this.X(),
+            y= this.Y()
+        w.fireBall(x+50, y-80,'ul')
+        w.fireBall(x+50, y+80,'dl')
+        w.fireBall(x-50, y-80,'ur')
+        w.fireBall(x-50, y+80,'dr')
+        w.fireBall(x, y-80,'u')
+        w.fireBall(x, y+80,'d')
+        w.fireBall(x-50, y,'r')
+        w.fireBall(x+50, y,'l')}
+
+    z.fireBallsAtInt=function(ms){var z=this
+
+        setInterval(function(){
+            z.fireBalls()
+        }, ms)
+    return this}
+
+
+    return z}
+
+
+
+
 w.clouds=function(leftPoint, y){var that=this
 
     leftPoint = N(leftPoint)? leftPoint: 100
