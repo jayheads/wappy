@@ -34,6 +34,8 @@ SENSOR=function(){w=b2d.W().chalk(
 
 
 
+
+
 VORTEX=function(){w=b2d.W()
     y = w.ship()
     w.rectStat(200,250,400,20)

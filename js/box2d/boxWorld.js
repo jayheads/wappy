@@ -399,9 +399,9 @@ w.makeWalls=function(walls){
     else {
 
       this.floor=  this.rect(height, width / 2, width, 40,'o').stat().addClass('wall floor').K('floor')
-       this.right= this.rect(0, height / 2, 40, height,'o').stat().addClass('wall side rightWall right').K('rightWall')
+       this.left= this.rect(0, height / 2, 40, height,'o').stat().addClass('wall side rightWall right').K('rightWall')
        this.roof= this.ceiling = this.rect(width / 2, 0, width, 40,'o').stat().addClass('wall ceiling roof').K('ceiling')
-      this.left=  this.rect(width, height / 2, 40, height,'o').stat().addClass('wall side leftWall left').K('leftWall')
+      this.right=  this.rect(width, height / 2, 40, height,'o').stat().addClass('wall side leftWall left').K('leftWall')
     }
 }
 w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4

@@ -406,25 +406,25 @@ b2d.manager = b2d.contactManager = b2d.cM=function(){//used?
     m.f= m.fNC= m.FindNewContacts
     m.d= m.ds= m.Destroy
     return m}
-b2d.filter = b2d.f= function(){//used?
+
+b2d.cxFilt = b2d.filter = b2d.f= function(){//used?
     var f=new BXD.b2ContactFilter
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
 
 
-b2d.filterData = b2d.fD=function(d){//used?
-
-    var d = new BXD.b2FilterData
+b2d.filt =b2d.filterData =  function(){
+    var d = new b2d.Dynamics.b2FilterData()
     d.gI=function(a){
 
         if(U(a)){return d.groupIndex}
 
         d.groupIndex=a; return d}
-    d.category=d.cB=function(a){
+    d.cat=function(a){
         if(U(a)){return d.categoryBits}
         d.categoryBits=a; return d}
-    d.mask=d.mB=function(a){
+    d.mask=function(a){
 
         if(U(a)){  return d.maskBits}
 
@@ -432,6 +432,9 @@ b2d.filterData = b2d.fD=function(d){//used?
 
     }
     return d}
+
+
+
 
 
 b2d.superManifold =  function(m){//used????
@@ -982,6 +985,29 @@ YELLOWSHIPWTF=function(){
 
 
 
+FILTDAT=function(){w = b2d.W()
+
+    w.B(400,400,30).grp(-1)
+    w.B(400,400,40).grp(-1)
+    w.B(400,400,50).grp(-1)
+
+    w.B(400,400,50,50).grp(-2)
+    w.B(400,400,60,60).grp(-2)
+    w.B(400,400,70,70).grp(-2)
+
+    //w.right.grp(-1)
+
+}
 
 
 
+
+FILTSENS =function(){w = b2d.W()
+
+    b = w.B(400,400,30).sen()
+
+
+
+    //w.right.grp(-1)
+
+}

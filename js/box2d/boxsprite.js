@@ -1,3 +1,15 @@
+JUMPERGRAPHICS=function(){w = b2d.W({g:300})
+    w.platform(800,300,100)
+    w.platform(260,240,40)
+    w.platform(550,250,100)
+    w.platform(1350,550,100)
+    w.platform(300,200,100).bindSprite('guy', [.4,1.2] )
+    w.platform(300,500,60,30).bindSprite('guy',  [.4,1.2] )
+    w.platform(150,400,60,30).bindSprite('guy')
+    p = w.jumper()//w.player('slidey').angDamp(10000)
+    w.s.bm('sun',function(sun){cjs.tick(function(){sun.X(450-p.X())})})
+}
+
 BOXSPRITE=function(){w= b2d.W().debug()
 
 

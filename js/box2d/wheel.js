@@ -6,30 +6,29 @@ B2DTEST=function(){$l('b2d test!')
 
     h=b2d.cH(50)
 }
-WEBMAN = function(){
 
-     w = b2d.W({ g:40 })
+WEBMAN = function(){w = b2d.W({ g:40 }).debug()
 
-   // w = wor({g:40})
-
-
-    w.roof.kill();   w.right.kill();   w.left.kill()
-
+    w.roof.kill();
+    w.right.kill();
+    w.left.kill()
+    w.goal(1800, 0)
     block(400, 100)
     block(800, 0)
     block(1100, -50)
     block(1300, -200)
 
-    function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
+    function block(x,y){
+        return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')
+    }
 
-    w.goal(1800, 0)
+
 
     p = w.webMe(394,530).den(.14).fric(1)
     p.canWeb=true
 
     $.key({
-
-        right:function(){
+        r:function(){
 
             if(cjs.Keys.down){
                 p.didShoot = true
@@ -38,13 +37,12 @@ WEBMAN = function(){
             else {
                 if (p.isConnected()){p.F(100,0)}
                 else {p.I(8, 0)}}},
-
-        left:function(){
+        l:function(){
             if(cjs.Keys.down){
                 p.didShoot = true
                 if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
             if(p.isConnected()){p.F(-250,-50)}else {p.I(-8,0)}},
-        up: function(){
+        u: function(){
             var web, ball, num, firstWeb=_.first(p.webs), iX, iY
             if(p.canWeb) {
                 if (p.isConnected()  && !p.webs[1]){
@@ -73,21 +71,20 @@ WEBMAN = function(){
                     }
                 }}}
             p.canWeb = false},
-        RIGHT:function(){
+        R:function(){
             if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
             if(cjs.Keys.down){p.shootRight()}},
-        LEFT:function(){
+        L:function(){
             if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
             if(cjs.Keys.down){p.shootLeft()}},
-        UP: function(){
+        U: function(){
             var connected = _.reject(p.webs, function(web){return !web.connected})
             if( A(connected) && connected[0] && connected[1]   ){  _.first(connected).die()  }
             p.canWeb = true
             p.shotForce=0},
-        DOWN:function(){
+        D:function(){
             if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
             p.didShoot=false}
-
     })
 
 
@@ -98,10 +95,12 @@ WEBMAN = function(){
             //p.canWeb=true
             var ball= fixt[0].body(), rect = fixt[1].body(),
             web = _.findWhere(p.webs, {ball: ball})
-            if(!web.connected){web.attach(rect)}}}).debug()
+            if(!web.connected){web.attach(rect)}}})
 
     w.s.tickX(function(){return 600- p.X()})
-    w.s.tickY(function(){return 510- p.Y()})}
+    w.s.tickY(function(){return 510- p.Y()}
+
+    )}
 
 
 SPACEZOOM=function(){
@@ -216,7 +215,7 @@ COINWARP=function(){w = b2d.W({   g:4, w:0}).debug()
 
 
 
-KILLEVERYTHING=function(){w=wor()
+KILLEVERYTHING=function(){w=wor().debug()
 
     w.s.XY(120,50).sXY(.8)
 
@@ -274,35 +273,41 @@ KILLEVERYTHING=function(){w=wor()
         }
     })
 
-    _.times(8, function(){m=w.addMe().den(0).XY(700,400)})
-    _.times(4, function(){m=w.addMe().den(0).XY(700,300)})
-    _.times(1, function(){m=w.addMe().den(0).XY(700,200)})
+    _.times(8, function(){
+        w.addMe().den(0).XY(700,400)
+    })
 
-    y = w.ship()
-    w.debug()
+    _.times(4, function(){
+        w.addMe().den(0).XY(700,300)
+    })
+
+    _.times(1, function(){
+        w.addMe().den(0).XY(700,200)
+    })
+
+
+
+
+    y = w.ship().angDamp(1000)
+
     f=null
 
-    w.beg(function(cx){var fixt
+    w.beg(function(cx){
+        cx.with('bul', function(what){
+            if(what.B()!=y){what.B().kill()}})})
 
-        if(fixt=cx.with('bul')){
-            b = fixt[1].body()
-            if(b != y){b.setDestroy()  }
 
-        }
-
-    })
-
-    w.startKilling()
 
     cjs.tick(function(){
-        w.each(function(b){
-            if(b.Y()> 800){b.kill()}
-        })
+        //w.each(function(b){if(b.Y()>800){b.kill()}})
     })
 
-    w.show(function(){return w.GetBodyCount()
-    })
+    //w.show(function(){return w.GetBodyCount()})
 }
+
+
+
+
 
 CHEMICALS = function self(){
     w=b2d.W({
@@ -535,18 +540,7 @@ MARIOMAZE=function(){w = b2d.W({g:0,w:0}).debug()
 
 //
 
-MARIOBIG=function(){
-
-
-
-
-
-    w = b2d.W({
-        grav:500,
-        walls:0
-
-    })
-
+BIG=function(){w = b2d.W({g:300, w:0 })
 
     w.platform  =function(x,y,W,H){//=brk=brick=
 
@@ -566,32 +560,20 @@ MARIOBIG=function(){
         ).K('platform')
 
     }
-
-
-
     w.platform(800,500,600,100)
-
     w.platform(300, 530,100,100)
-
-
     w.platform(1400,300,600,100)
-
     w.platform(1800,500,1000,100)
-
     w.platform(1900,200,600,100)
 
 
 
 
-    w.footListener()
-    w.startKilling()
+    //w.footListener()
+    //w.startKilling()
 
 
-    p = w.addMe().XY(300,-300)
-
-
-
-    p.angDamp( 10000 )
+    p = w.addMe().XY(300,-300).angDamp( 10000 )
 
 
     cjs.tick(function(){
@@ -605,10 +587,6 @@ MARIOBIG=function(){
             if(cjs.Keys.up){p.jumping(180,30)} else {p.byVel(40)}}
         else { p.byImp(10) }
     })
-
-
-
-
     w.box(800,100).bindSprite('guy')
 
 }

@@ -101,6 +101,87 @@ STREETFIGHTER=function(){
 
 
 
+MARIOGROUNDS =function(){w = b2d.W({w:0, g:5}).debug()
+    w.s.XY(300,150)
+    w.s.rXY(300, 150)
+
+    w.ice(30,250, 400)
+    w.grass(450,250,400)
+    w.grass(500,100,4000)
+    w.rubber(880,250,40000)
+
+    p = w.mario().followX(600, 400)
+
+}
+
+SCROLLINGLEVEL=function(){w=b2d.W().debug()
+    w.s.XY(300, 150).rXY(300, 150)
+    w.grass(300,280,500)
+    w.ice(1300, 280, 1000)
+    w.clouds().clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
+    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).follow(600, 400)
+}
+SLIDE=function(){w=b2d.W().debug()
+    w.roof.kill()
+    w.s.XY(300, 150).rXY(300, 150)
+    w.clouds().clouds(1000,-200)
+    w.grass(300,280,500)
+    w.ice(800,280, 5000)
+    p = w.player(2.5, 'thrust').XY(800,-100) .angDamp( 10000 ).follow(600, 400)
+    slide = w.rect(1200, 30, 1200,40, 'blue').den(1).fric(.5).rest(.5)
+}
+
+AUTOSCROLL=function(){w=b2d.W({g:300}).debug()
+    w.right.kill()
+    w.left.kill()
+    w.roof.kill()
+    w.floor.kill()
+    p= w.jumper()
+
+    setup=function(){score=0
+        p.XY(350, 100)
+        p.linVel(0,0)
+        w.s.XY(0,0)
+    }
+
+    setup()
+    cjs.tick(function(){
+        w.s.X(4,'-').pen(score++)
+        if( p.relPos() < -100 ){setup()}})
+    w.ramps()
+}
+
+
+
+RAMPS=function(){w=b2d.W({g:300}).debug()
+    w.right.kill()
+    w.left.kill()
+    w.roof.kill()
+    w.s.XY(300,150)
+    w.s.rXY(300, 150)
+    w.ramps()
+    p= w.jumper(400,100).followX(600, 400)
+    cjs.tick(function(){$l(p.onGround)})
+}
+
+
+SCALINGLEVEL=function(){w=b2d.W({g:300}).debug()
+    w.right.kill()
+    w.left.kill()
+    w.roof.kill()
+    p= w.jumper(1000,0)
+    w.ice(800,280, 10000);
+    w.rubber(50,100,300); w.rubber(-400,100,300)
+    w.rect(1200,30, 600,4).stat();
+    w.clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
+    w.s.XY(300, 150).rXY(300,150)
+    p.calcScale=function(){return 1-((this.X()-300)/300)*.1}
+    cjs.tick(function(){p.centerScale(p.calcScale())})
+}
+
+
+
+
 
 
 

@@ -1,45 +1,347 @@
 w=p=b2d.World.prototype
-w.footListener=function(){
-
-    //footListener?
-//sets b2d.onGround setter
-//requires a body that has userData 'feet', and it simply see if it is colliding with anything
-
-
-    b2d.onGround = false    // if make this local, graphics dissapear!?
+///////////////
+///////////////
 
 
 
-    var listener = b2d.listener()
 
-    listener.begin(function(cx){
-        if(cx.with('feet')){
-            b2d.onGround=true
-        }})
+w.me=   w.addMe=function(x,y,scale){var Z=scale||4
+        p = this.body(b2d.dyn(x,y), [
+            b2d.poly(Z*12.5, Z*25).rest(0).fric(.1).den(.8).K('head'),
+            b2d.poly(Z*10, Z*10, 0, Z*10).K('feet').sensor(true),
+            b2d.poly(Z*2, Z*6, 0, -Z*12).K('hat').sensor(true),
+            b2d.poly(Z*8, Z*2, Z*8, 0).K('right').sensor(true),
+            b2d.poly(Z*8, Z*2, -Z*8, 0).K('left').sensor(true)
+        ]).den(1).rest(0).fixRot()
+    p.bindSprite('me', Z/10)
+    return p.K('p player')
+}
 
 
-    listener.end(function(cx){
-        if(cx.with('feet')){b2d.onGround=false}
 
+w.player = function(x,y,scale, onEachTick, enemy){
+    if(!N(scale)){enemy=onEachTick;onEachTick=scale;scale = 4}
+    var p = this.addMe(x,y,scale), func
+    if(S(onEachTick)){onEachTick = b2d.controls[onEachTick]}
+    if(F(onEachTick)){cjs.tick(function(){onEachTick(p, enemy) })}
+
+
+    p.speed=40
+    p._direction = 'right'
+
+    p.dir = p.direction =  function(dir){
+        if(U(dir)){return this._direction}
+        this._direction = dir
+        return this}
+
+
+
+    p.moveInDir =  function(n){
+        if (n == '-'){  return p.move( - p.speed )}
+        n = N(n) ? n : p.speed
+        if (p.direction()){p.I(3,0)}else{p.I(-3,0)}
+        return p}
+
+
+    p.onGround=false
+    p.right=false
+    p.left=false
+    p.up=false
+
+    $.key({
+
+        u:function(){p.up=true},
+        U:function(){p.up=false},
+        r:function(){p.right=true},
+        R:function(){p.right=false},
+        l:function(){p.left=true},
+        L:function(){p.left=false}
     })
 
+    w.beg(function(cx){
+        cx.with('feet',
+            function(){
+                this.B().onGround=true
+            })})
+
+    w.end(function(cx){cx.with('feet', function(){this.B().onGround=false})})
+    w.floor.rest(0)
+    return p}
+
+w.jumper = function(x,y){x=N(x)?x:200;y=N(y)?y:500
+    var p = this.player(x,y)
+    cjs.tick(function(){b2d.controls.jump(p)})
+    return p}
+
+w.mario=function(){
+    return this.player(0,200,2.5).horizCenter()
+         .fric(.2).rest(.2).marioJumping()
+}
+
+w.thrustPlayer=function(){
+    return this.player(0,200,2.5,'thrust').horizCenter()
+        .linDamp(.8).angDamp(10000)
+}
+
+
+w.yShipEquilateral = function(color, x,y,scale){var halfSide, side, ship
+    if(!S(color)){scale=y;y=x;x=color;color='y'}
+    color=oO('c',color)
+    scale = N(scale)?scale:4
+    halfSide = scale * 4
+    side = halfSide * 2
+    ship = this.dyn(x,y)
+
+    ship.convex(color, [  [ -side , halfSide ],[0, -side ],[side , halfSide ]  ])
+
+    ship.poly(4,20,0,-side )  //w,h,x,y ..is that my preferred pam order? other places have x,y come first.. no?
 
 
 
-    this.listen(listener)
 
+    // ship.bindSprite2(  w.s.poly( 0,-side,   4,20, 'b'))
+
+//        ship.bindSprite2(   cjs.rect(4,20,'o').XY(0,-side)    )
+
+
+
+    /////////////
+
+
+
+
+    ship.dir=function(){return this.GetWorldVector(V(0,-1))}
+    //methods
+    ship.push=function(n){var k,dir
+        n = N(n)?n: 1
+        k = 0.1
+        dir = this.dir()
+        this.I(
+                dir.x * n * k,
+                dir.y * n * k
+        );return this}
+
+    ship.chug=function(n){var that=this
+
+        I(function(){
+            that.push(n)}, 100)
+
+
+
+        return this}
+    ship.going=function(){
+
+        var lv = this.linVel(), x = lv.x, y=lv.y, a = this.angVel()
+
+
+        return   (Math.abs(x) > 0.5) || (Math.abs(y) > 0.5)  || ( Math.abs(a) > 0.5)
+    }
+
+
+
+    ship.shoot=function(kind){kind = kind||'bul'
+        var vec, bullet, dist, y=this
+        dist =  y.dir().mult(100)
+        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').addClass(kind).K(kind)
+
+        bullet.addClass('bullet bul')
+
+        vec = y.GetWorldVector( V(0, -100))
+        bullet.impulse(vec.x/4, vec.y/4 )
+        setTimeout(function(){ bullet.kill()  }, 400)
+        return bullet}
+
+
+    ship.shootOnSpace= function(kind){
+        var y=this
+        $.space(function(){
+            y.shoot(kind)
+        })
+        return this}
+
+
+
+
+    ship.shootOnInt= function(int, kind){
+        var y=this, int = N(int)?int:1000
+
+
+        setInterval(function(){
+
+            if( y.IsActive()) {y.shoot(kind)}
+
+        }, int)
+
+        return this}
+
+
+
+
+
+    return ship}
+w.yShip = function(color, x,y,scale){var halfSide, side, ship
+
+    if(!S(color)){scale=y;y=x;x=color;color='y'}
+
+    color=oO('c',color)
+    scale = N(scale)?scale:4
+    halfSide = scale * 4
+    side = halfSide * 2
+
+    ship = this.dyn(x,y)
+
+    ship.convex(color,[[-halfSide,halfSide],[0,-side*2 ],[halfSide,halfSide]])
+
+    ship.dir = function(){
+        return this.GetWorldVector(V(0,-1))
+    }
+
+    //methods
+    ship.push=function(n){n=N(n)?n:1
+        this.I(this.dir().mult(n * 0.1))
+        return this}
+
+    ship.chug=function(n){var that=this
+        I(function(){that.push(n)}, 100)
+        return this}
+
+    ship.going=function(){
+
+        var lv = this.lV(),
+            x = lv.x,
+            y=lv.y,
+            a = this.angVel(),
+            abs=Math.abs
+
+        return   (abs(x)>0.5)||(abs(y)>0.5)||(abs(a)>0.5)
+    }
+
+
+    ship.shoot=function(kind){kind = kind||'bul'
+        var bullet, dist, y=this
+
+        dist =  y.dir().mult(100)
+
+        bullet=w.circ(
+                y.X() + dist.x,
+                y.Y() + dist.y,
+            6,
+            'w'
+        ).K(kind).addClass('bul bullet')
+
+        bullet.I( y.GetWorldVector( V(0, -100) ).div(4) )
+
+        setTimeout(function(){ bullet.kill()  }, 400)
+
+        return bullet}
+
+
+    ship.shootOnSpace= function(kind){
+        var y=this
+        $.space(function(){
+            y.shoot(kind)
+        })
+        return this}
+    ship.shootOnInt= function(int, kind){
+        var y=this, int = N(int)?int:1000
+
+
+        setInterval(function(){
+
+            if( y.IsActive()) {y.shoot(kind)}
+
+        }, int)
+
+        return this}
+
+    return ship.den(.5).K('ship')
+}
+
+w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
+    return this.yShip(x,y).thrustControl().shootOnSpace()
+}
+
+
+w.webMe=function(x,y){
+
+
+    sw = cjs.stopWatch()
+
+
+    var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixedRot(true).K('player')
+
+
+    p.isConnected=function(){var res, that=this
+        if( !A( this.webs )){ return false }
+        res = _.findWhere( that.webs, {connected:true} )
+        return true && res && true}
+    p.bulRight=function(x,y){
+        var bul = this.wor().circ(this.X()+80, this.Y()-20, 6, 'w')
+        if(N(y)){bul.I(x,y)}
+        return this}
+    p.bulLeft=function(x,y){
+
+        var bul = this.wor().circ(this.X()-80, this.Y()-20, 6, 'w')
+
+        if(N(y)){bul.I(x,y)}
+
+        return this}
+    p.getTime = function(){
+        var time =  this.shotClock()
+        this.shotClock.reset()
+
+        return time}
+    p.getForce = function(){
+
+        var time = p.getTime(),
+
+            force =  (time > 2500) ? 2000 : (time > 500)? time - 500: 0
+
+        force = force  / 30
+
+        if( force > 66){force = 66}
+        return force}
+    p.shootRight=function(){
+        var  force = this.getForce(),
+            iX= 100-(force*1.5),
+            iY= -force
+        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
+        this.bulRight(iX,iY)}
+    p.shootLeft=function(){
+        var  force = this.getForce(),
+            iX= -100 + (force*1.5),
+            iY= -force
+
+        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
+        this.bulLeft(iX, iY)
+
+    }
+
+    return p}
+
+
+
+
+
+
+///////////////
+///////////////
+w.footListener=function(){
+//sets b2d.onGround setter
+//requires a body that has userData 'feet',
+//and it simply see if it is colliding with anything
+    b2d.onGround = false
+    w.beg(function(cx){if(cx.with('feet')){b2d.onGround=true}})
+    w.end(function(cx){if(cx.with('feet')){b2d.onGround=false}})
     return this}
-
 w.bouncePlat  =function(x,y,W,H){//=brk=brick=
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
     return this.S(x,y,W,H).K('plat boucePlat').rest(.8)}
-
 w.coin = function(x,y){var w=this
     x=N(x)?x:Math.random()* 600
     y = N(y)?y:Math.random()* 300
     return w.circ(x, y, 6, 'yellow').K('coin').rest(0).den(0).warp2().linDamp(0).I((Math.random()* 15)-5,(Math.random()* 15)-5)}
-
 w.stars=function(num){var w=this,x,y
     num=N(num)?num:30
     _.times(num, function(){
@@ -49,71 +351,12 @@ w.stars=function(num){var w=this,x,y
     })
 
 return this}
-
-w.thrustPlayer=function(){
-  return this.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(.8)
-
-
-}
-
 w.sun=function(x,y){
     x=N(x)?x:300
     y=N(y)?y:150
    return this.circStat(300,150,10,'pink').den(1).rest(.5).bindSprite('sun',.2)
 
 }
-
-w.addMe=function(x,y, scale){//var bodyDef,head,foot,p
-
-    scale = scale || 4   //? -> mini should be 4
-
-    var bodyDef = b2d.dyn(x,y)
-
-    var head
-
-    var p = this.body(bodyDef , [
-
-        head = b2d.poly(scale * 12.5, scale * 25).rest(0).fric(.1).den(.8),
-
-          b2d.poly(scale*2, scale*10, 0, scale*9).K('feet').sensor(true),
-
-        b2d.poly(scale*2, scale*6, 0, -scale*12).K('hat').sensor(true),
-          b2d.poly(scale*8, scale*2,  scale*8, 0).K('right').sensor(true),
-          b2d.poly(scale*8, scale*2,  -scale*8, 0).K('left').sensor(true)
-
-    ]  ).K('p player')
-
-    //p.fixtList().SetFriction(1)
-
-    p.bindSprite('me', scale/10)
-
-
-    //??
-    p._direction = 'right'
-    p.dir = p.direction =  function(dir){
-        if(U(dir)){return this._direction}
-        this._direction = dir
-        return this}
-    p.speed = 40
-    p.moveInDir =  function(n){
-        if (n == '-'){  return p.move( - p.speed )}
-        n = N(n) ? n : p.speed
-        if ( p.direction() ) {  p.aI(3,0) }  else {  p.aI(-3,0) }
-        return p}
-
-    return p}
-
-
-w.mario=function(){
-    return this.player(2.5).horizCenter().Y(200)
-        .fixRot().den(1).fric(.2).rest(.2)
-
-        .marioJumping()
-
-}
-
-
-
 w.startKilling=function(){var that=this
 
     cjs.tick(function(){
@@ -128,33 +371,12 @@ w.startKilling=function(){var that=this
         })
     })
 
-return this}
+    return this}
 w.addTim=function(num){
     var that=this
     if(U(num)){return that.ball().K('tim').bindSprite('guy', .3)}
     _.times(num, function(){that.addTim()})
     return this}
-w.player=function(scale, onEachTick, enemy){
-    if(!N(scale)){
-        enemy=onEachTick
-        onEachTick=scale
-        scale = 4}
-
-    //cjs.watchKeys()
-
-    //this.footListener()
-     this.startKilling()
-
-    var pl=this.addMe(scale), func
-    if(S(onEachTick)){onEachTick=b2d.controls[onEachTick]}
-
-    if(F(onEachTick)){
-
-        cjs.tick(function(){
-            onEachTick(pl, enemy) })
-    }
-
-    return pl}
 w.platform2  =function(x,y,W,H){//=brk=brick=
 
     x = N(x) ? x : 60; y = N(y) ? y : x
@@ -176,6 +398,10 @@ w.plat = w.platform  =function(x,y,W,H){//=brk=brick=
 w.bullet=function self(x,y,r){//radius
 
 
+
+
+
+
 //p.bullet = function(x,y){return this.ball(x,y,10).K('bullet')}
 
     var bullet
@@ -186,12 +412,12 @@ w.bullet=function self(x,y,r){//radius
     x = x || 100
     y = N(y) ? y : x
     r = r || 10
-    bullet= this.dynamic(x, y, b2d.circDef(r))
+
+    bullet= this.B(x,y,r)
+
     bullet.addClass('bullet bul').K('bullet')
 
     return bullet}
-
-
 w.fireBall=function(x,y,vX,vY){
     var v=8
     if(vX=='l'){vX=v;vY=0}
@@ -208,8 +434,6 @@ w.fireBall=function(x,y,vX,vY){
     return this.K(x,y, 'r', 18).bindSprite('sun',.2)
         .lV(vX,vY)
 }
-
-
 w.zilla=function(x,y){var w=this
 
     var z= w.K(x,y, 80,140) //make sensor?
@@ -245,10 +469,6 @@ w.zilla=function(x,y){var w=this
 
 
     return z}
-
-
-
-
 w.clouds=function(leftPoint, y){var that=this
 
     leftPoint = N(leftPoint)? leftPoint: 100
@@ -594,272 +814,8 @@ w.marioWalls=function(){
     w.ceiling =  ceiling = w.rect(height, 0, width*5, 40, 'orange').stat().K('ceiling').fric(.2).rest(.2)
 
 return this}
-w.yShipEquilateral = function(color, x,y,scale){var halfSide, side, ship
-    if(!S(color)){scale=y;y=x;x=color;color='y'}
-    color=oO('c',color)
-    scale = N(scale)?scale:4
-    halfSide = scale * 4
-    side = halfSide * 2
-    ship = this.dyn(x,y)
 
-    ship.convex(color, [  [ -side , halfSide ],[0, -side ],[side , halfSide ]  ])
 
-    ship.poly(4,20,0,-side )  //w,h,x,y ..is that my preferred pam order? other places have x,y come first.. no?
-
-
-
-
-    // ship.bindSprite2(  w.s.poly( 0,-side,   4,20, 'b'))
-
-//        ship.bindSprite2(   cjs.rect(4,20,'o').XY(0,-side)    )
-
-
-
-    /////////////
-
-
-
-
-    ship.dir=function(){return this.GetWorldVector(V(0,-1))}
-    //methods
-    ship.push=function(n){var k,dir
-        n = N(n)?n: 1
-        k = 0.1
-        dir = this.dir()
-        this.I(
-                dir.x * n * k,
-                dir.y * n * k
-        );return this}
-
-    ship.chug=function(n){var that=this
-
-        I(function(){
-            that.push(n)}, 100)
-
-
-
-        return this}
-    ship.going=function(){
-
-        var lv = this.linVel(), x = lv.x, y=lv.y, a = this.angVel()
-
-
-        return   (Math.abs(x) > 0.5) || (Math.abs(y) > 0.5)  || ( Math.abs(a) > 0.5)
-    }
-
-
-
-    ship.shoot=function(kind){kind = kind||'bul'
-        var vec, bullet, dist, y=this
-        dist =  y.dir().mult(100)
-        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').addClass(kind).K(kind)
-
-            bullet.addClass('bullet bul')
-
-        vec = y.GetWorldVector( V(0, -100))
-        bullet.impulse(vec.x/4, vec.y/4 )
-        setTimeout(function(){ bullet.kill()  }, 400)
-        return bullet}
-
-
-    ship.shootOnSpace= function(kind){
-        var y=this
-        $.space(function(){
-            y.shoot(kind)
-        })
-        return this}
-
-
-
-
-    ship.shootOnInt= function(int, kind){
-        var y=this, int = N(int)?int:1000
-
-
-        setInterval(function(){
-
-            if( y.IsActive()) {y.shoot(kind)}
-
-        }, int)
-
-        return this}
-
-
-
-
-
-    return ship}
-w.yShip = function(color, x,y,scale){var halfSide, side, ship
-    if(!S(color)){scale=y;y=x;x=color;color='y'}
-    color=oO('c',color)
-    scale = N(scale)?scale:4
-    halfSide = scale * 4
-    side = halfSide * 2
-    ship = this.dyn(x,y)
-
-    ship.convex(color, [  [ -halfSide , halfSide ], [0, -side*2 ], [halfSide , halfSide ]  ])
-
-
-
-
-
-   // ship.bindSprite2(  w.s.poly( 0,-side,   4,20, 'b'))
-
-//        ship.bindSprite2(   cjs.rect(4,20,'o').XY(0,-side)    )
-
-
-
-    /////////////
-
-
-
-
-    ship.dir=function(){return this.GetWorldVector(V(0,-1))}
-    //methods
-    ship.push=function(n){var k,dir
-        n = N(n)?n: 1
-        k = 0.1
-        dir = this.dir()
-        this.I(
-                dir.x * n * k,
-                dir.y * n * k
-        );return this}
-
-    ship.chug=function(n){var that=this
-
-        I(function(){
-            that.push(n)}, 100)
-
-
-
-        return this}
-    ship.going=function(){
-
-        var lv = this.linVel(), x = lv.x, y=lv.y, a = this.angVel()
-
-
-        return   (Math.abs(x) > 0.5) || (Math.abs(y) > 0.5)  || ( Math.abs(a) > 0.5)
-    }
-
-
-
-    ship.shoot=function(kind){kind = kind||'bul'
-        var vec, bullet, dist, y=this
-        dist =  y.dir().mult(100)
-        bullet = w.circ(y.X()+dist.x, y.Y()+dist.y,6, 'w').K(kind).addClass('bul bullet')
-        vec = y.GetWorldVector( V(0, -100))
-        bullet.impulse(vec.x/4, vec.y/4 )
-        setTimeout(function(){ bullet.kill()  }, 400)
-    return bullet}
-
-
-    ship.shootOnSpace= function(kind){
-        var y=this
-        $.space(function(){
-            y.shoot(kind)
-        })
-    return this}
-
-
-
-
-    ship.shootOnInt= function(int, kind){
-        var y=this, int = N(int)?int:1000
-
-
-        setInterval(function(){
-
-            if( y.IsActive()) {y.shoot(kind)}
-
-        }, int)
-
-        return this}
-
-
-
-
-
-    return ship.K('ship')
-}
-w.ship = function(x, y){
-
-    x=N(x)?x:300
-    y=N(y)?y:x
-
-  return this.yShip(x, y).thrustControl().shootOnSpace()
-        .den(.5)
-
-}
-w.webMe=function(x,y){
-
-
-    sw = cjs.stopWatch()
-
-
-  var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixedRot(true).K('player')
-
-
-    p.isConnected=function(){var res, that=this
-        if( !A( this.webs )){ return false }
-        res = _.findWhere( that.webs, {connected:true} )
-        return true && res && true}
-
-
-    p.bulRight=function(x,y){
-       var bul = this.wor().circ(this.X()+80, this.Y()-20, 6, 'w')
-        if(N(y)){bul.I(x,y)}
-    return this}
-    p.bulLeft=function(x,y){
-
-        var bul = this.wor().circ(this.X()-80, this.Y()-20, 6, 'w')
-
-        if(N(y)){bul.I(x,y)}
-
-        return this}
-
-
-    p.getTime = function(){
-       var time =  this.shotClock()
-        this.shotClock.reset()
-
-   return time}
-
-
-
-    p.getForce = function(){
-
-       var time = p.getTime(),
-
-            force =  (time > 2500) ? 2000 : (time > 500)? time - 500: 0
-
-        force = force  / 30
-
-        if( force > 66){force = 66}
-    return force}
-
-
-    p.shootRight=function(){
-        var  force = this.getForce(),
-            iX= 100-(force*1.5),
-            iY= -force
-        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
-        this.bulRight(iX,iY)}
-
-    p.shootLeft=function(){
-        var  force = this.getForce(),
-            iX= -100 + (force*1.5),
-            iY= -force
-
-        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
-        this.bulLeft(iX, iY)
-
-    }
-
-
-
-
-
-    return p}
 w.goal=function(x,y){
 
     w.rect(x-20, y-15,  10, 40,  'y').stat()
@@ -882,13 +838,6 @@ w.sensorBucket=function(x,y,kind){
     sens = w.rectSensor(x, y, 280, 170, 'b').K(kind)
 
 return sens}
-
-
-
-
-
-
-
 cjs.stopWatch=function(){
 
 
