@@ -10,6 +10,10 @@ wor = function(ob){ob = ob||{}
     if(walls){w.makeWalls()}
     return w}
 
+
+BALL=function(){b2d.W().ball()}
+
+
 b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
     //make a world with a stage.. well with three stages!!!!
@@ -117,16 +121,17 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 
     function handleMouseJoints(){
 
-        if(w._mouseIsDown){
+        if( w._mouseIsDown ){
 
          w._mouseJoint = w._mouseJoint ||
-             b2d.mouseJoint( w.getBodyAtPoint(mX,mY) )
+
+             b2d.mouseJoint( w.getBodyAtPoint(mX, mY) )
 
             if(w._mouseJoint){ w._mouseJoint.target( V(mX, mY) ) }
         }
 
 
-        else {w.removeMouseJoint()}
+        else { w.removeMouseJoint() }
     }
 
 

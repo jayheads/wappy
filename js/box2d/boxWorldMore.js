@@ -7,7 +7,7 @@ w.draw=function(num){
     this.clearForces()
     return this}
 
-w.debug =   function(data){
+w.db =w.debug =   function(data){
 
     //p.debugDraw  =p.dD= p.sDD=
 
@@ -68,8 +68,8 @@ w.dist=function(a, b, b1OffV, b2OffV, len, freq, damp){
 // note: if you passe them in, pass them as relative(local to body) coords
 //BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
 //there is also distColl for 'collideConnected=true' joints
-    var b1V = a.worldCenter().mult(),
-        b2V = b.worldCenter().mult(),
+    var b1V = a.wCent().mult(),
+        b2V = b.wCent().mult(),
         jd = b2d.dJ(), j
 
     if(O(b1OffV)){b1V =  b1V.add(b1OffV)  }
@@ -101,9 +101,9 @@ w.tightDist=function(piece, newPiece){
 
 w.distColl=function(a, b, b1OffV, b2OffV){
 
-    var b1V = a.worldCenter().mult(),
+    var b1V = a.wCent().mult(),
 
-        b2V = b.worldCenter().mult(),
+        b2V = b.wCent().mult(),
 
         jd = b2d.dJ(), j
 
@@ -279,7 +279,7 @@ w.Revolute = function(a,b, c,d, e,f){var g=G(arguments)
         return joint }
 
 
-    if( U(c) ){ c = a.worldCenter() }
+    if( U(c) ){ c = a.wCent() }
 
     if( O(c) ){  joint.init( a, b, c )}
 
@@ -313,7 +313,7 @@ w.rev = function(body1, body2, c,d, e,f){var g=G(arguments)
     __jd = joint
 
 
-    if( U(c) ){ c = body1.worldCenter() }
+    if( U(c) ){ c = body1.wCent() }
     if( O(c) ){
         joint.init( body1, body2, c )}
     else if(N(e)){

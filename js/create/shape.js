@@ -29,52 +29,6 @@ gx.fs=function(f,s,width){
 }
 h =  cjs.Shape.prototype
 
-h.circ= h.circle= function(x,y,radius,fc, sc){
-    var gx=this.graphics
-    if(fc){gx.f(fc)}
-    if(sc){gx.s(fc)}
-    gx.dc(x,y,radius)
-    return this}
-
-
-
-
-//******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
-h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
-    var gx=this.graphics
-    if(fc){gx.f(fc)}
-    if(sc){gx.s(fc)}
-    gx.dr(x,y,w,h)
-    return this}
-
-
-h.poly= function(verts, f, s, width){
-    var that = this,
-        gx = this.graphics
-    if(N(verts[0])){ //verts passed in directly
-        _.each(arguments,
-            function(vert){
-                gx.lt(vert[0],vert[1])});
-        gx.cp()}
-    else {
-        gx.fs(f,s, width)
-        _.each(verts, function(v){
-            gx.lt(v[0],v[1])
-        })
-
-        gx.cp() //close path
-
-    }
-
-return this}
-
-
-h.shape=function(){
-
-
-
-}
-
 
 h.clear=function(){this.graphics.clear();return this}
 h.same=function(){return cjs.shape(this)}
@@ -86,14 +40,6 @@ h.s=function(fill){
     if(S(fill)){fill = oO('c', fill)}
     this.graphics.s(fill)
     return this}
-h.dc=function(){
-    this.graphics.dc.apply(
-        this.graphics, arguments)
-    return this}
-
-h.c=function(rad){
-    return this.dc(0,0,rad)
-}
 h.dr=function(){
     this.graphics.dr.apply(
         this.graphics, arguments)
@@ -163,16 +109,71 @@ h.lG= h.linGrad=function(){
     this.graphics.beginLinearGradientFill.apply(
         this.graphics, args)
     return this}
-h.mt=function(x,y){
-    if(O(x)){y=N(x.y)? x.y: x.Y;
-        x= N(x.x)? x.x: x.X}
-
-    this.graphics.mt(x,y)
-return this}
+h.cp=function(){this.graphics.cp(); return this}
+h.mt=function(x,y){var v=V(x,y)
+    this.graphics.mt(v.x, v.y)
+    return this}
 h.lt=function(x,y){
-        if(O(x)){y= x.y; x= x.x}
-        this.graphics.lt(x,y)
-        return this}
+    var v=V(x,y)
+    this.graphics.lt(v.x, v.y)
+    return this
+}
+
+
+
+h.dc=function(){var h=this
+    h.graphics.dc.apply(h.graphics, arguments)
+    return this}
+
+h.c=function(rad){ return this.dc(0,0,rad) }
+
+
+h.circ= h.circle= function(x,y, radius, fc, sc){
+    var gx=this.graphics
+    if(fc){gx.f(fc)}
+    if(sc){gx.s(fc)}
+    gx.dc(x,y,radius)
+    return this}
+
+
+
+h.cir2 = function(rad, fc, sc){
+    var gx=this.graphics
+    if(fc){gx.f(fc)}
+    if(sc){gx.s(fc)}
+    gx.dc(0,0,rad)
+    return this}
+
+
+h.cir = function(rad, x,y,fc, sc){
+    var gx=this.graphics
+    x=N(x)?x:0
+    y=N(y)?y:0
+    if(fc){this.fs(fc)}
+    if(sc){this.ss(fc)}
+    gx.dc(x,y,rad)
+    return this}
+
+
+
+//******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
+h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
+    var gx=this.graphics
+    if(fc){gx.f(fc)}
+    if(sc){gx.s(fc)}
+    gx.dr(x,y,w,h)
+    return this}
+h.poly= function(verts, f, s, width){var h=this
+    h.fs(f,s, width)
+    if(A(verts ) && N(verts[0])){_.each(arguments,function(v){h.lt(v[0],v[1])})}//verts passed in directly AS NUMBERS ??
+    else {_.each(verts, function(v){h.lt(v)})}//passed in array
+    h.cp()
+    return this}
+
+
+
+
+
 
 h.drawPolygon = h.drawConnectedLines = function(poly, sc){var h=this,
     numVerts = poly.length
@@ -185,10 +186,6 @@ h.drawPolygon = h.drawConnectedLines = function(poly, sc){var h=this,
         T(numVerts, function(i){h.lt(poly[i%numVerts])}) //just a clever way to start from 1
     }
     return this}
-
-
-
-
 h.drawPolygons= function(paths, fc, sc){var h=this
     h.f(fc).s(sc)
 
@@ -203,10 +200,11 @@ h.drawPolygons= function(paths, fc, sc){var h=this
 
 
 
+
+
 cjs.isShape=function(h){
     return O(h) && h.graphics
 }
-
 cjs.graphics= function(a){return new cjs.Graphics(a)}
 
 cjs.isCont=function(cont){

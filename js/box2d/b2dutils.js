@@ -1,22 +1,34 @@
 (function v(){
+
     V=function(x,y,x2,y2){
 
-        var g=G(arguments),
-            x=g[0],y=g[1],x2=g[2],y2=g[3],
-            vec
+        var g=G(arguments), x=g[0],y=g[1],x2=g[2],y2=g[3],v
 
         if(A(x)){y2=x[3];x2=x[2];y=x[1];x=x[0]}
+
         if(N(y2)){x=(x-x2)/2;y=(y-y2)/2}//for dist difs?
 
         else if(O(x)){
-            y=F(x.Y)?x.Y():x.y
-            x=F(x.X)?x.X():x.x}
+            y= F(x.Y)? x.Y() : x.y
+            x= F(x.X)? x.X() : x.x
+        }
+
         x = N(x) ? x : 0
         y = N(y) ? y : x
-        vec = new b2d.Common.Math.b2Vec2(x, y)
-        if(g.n||g.d){vec=vec.div()}
-        if(g.p||g.m){vec=vec.mult()}
-        return vec}
+
+
+        v = new b2d.Common.Math.b2Vec2(x, y)
+
+        if(g.n||g.d){ v=v.div() }
+
+        if(g.p||g.m){ v=v.mult() }
+
+
+        return v}
+
+
+
+
     var v=b2d.Common.Math.b2Vec2.prototype
     v.mult = function (num) {
         num = N(num) ? num : 30
@@ -28,19 +40,15 @@
         num = N(num) ? num : 30
         return this.mult(1 / num)
     }
-    v.add = function (x, y) {
 
-        if (O(x)) {
-            y = x.y;
-            x = x.x
-        }
 
-        x = N(x) ? x : 1
-        y = N(y) ? y : x
-
-        var v = V(this.x + x, this.y + y)
-        return v
+    v.add = function(vec,y){var v=this
+        vec=U(vec)?V(1,1):V(vec,y)
+        return V(v.x+vec.x, v.y+vec.y)
     }
+
+
+
     v.sub = function (x, y) {
         if (O(x)) {
             y = x.y;
@@ -58,14 +66,19 @@
             Number(this.y.toFixed(n)))
     return v}
 
-
-
-
-
+    v.rot=function(rot){var x=this.x, y=this.y,
+        rot=Math.toRadians(rot),
+        cos=Math.cos, sin=Math.sin
+        return V(
+                x*cos(rot)-y*sin(rot),
+                x*sin(rot)+y*cos(rot)
+        ).dec(3)}
 
 }())
 
 
+b2d.mult = function(v){return v.mult()}
+b2d.div = function(v){return v.div()}
 
 b2d.pollute=function(){
 

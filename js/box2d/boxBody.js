@@ -263,7 +263,7 @@ b.aD = b.angDamp=   function(damp){
 b.damp=function(l,a){
     l=N(l)?l:1000
     a=N(a)?a:l
-   return this.lD(l).aD(a)}}
+   return this.lD(l).aD(a)}
 
 p.I = function self(impulse, point, point2){//p.impulse = p.applyImpulse = p.aI  =
 
@@ -554,6 +554,7 @@ fixts=function(){
         this.DestroyFixture(fixt)
         return this}
 
+
 //fixts
 b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
     var b=this,f;
@@ -562,8 +563,11 @@ b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
 
     // can pass a CODED array of fixts (will get parsed)
     if( A(fD) ){
+
         _.each(b2d.fixtParse(fD),
-            function(fd){b.fixt(fd)})
+
+            function(fd){ b.fixt(fd) })
+
         return b}
 
 
@@ -581,6 +585,9 @@ b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
                 f.K(clas)})}
 
     return f}
+
+
+
 b.fixts = b.each = p.eachFixt = function(func){
 
     var fl=this.fixt(), arr=[],
@@ -647,7 +654,8 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
     fixt.sprite = r
 
     return fixt}
-b.poly = function(){
+
+    b.poly = function(){
 
     var fix =  this.fixt(
 
@@ -656,6 +664,10 @@ b.poly = function(){
     )
 
     return fix}
+
+
+
+
 //takes an array of points (or of one color and a bunch of points)
 b.polyArr = b.convex = function( col, arr ){
     var b=this,   w= b.wor(), h, f,g=G(arguments)
@@ -684,12 +696,14 @@ b.polyArr = b.convex = function( col, arr ){
 
     f = b.poly.apply(b, arr)
 
-    if(col){
-        f.bindSprite2( w.s.poly(arr, col, col)  )
-    }
+    if(col){f.bindSprite2( w.s.poly(arr, col, col)  )}
 
     return f
 }
+
+
+
+
 b.RECT = function(col, wd, ht, x, y, rot){ var g= G(arguments),  fixt, h
 
     col=g[0];
@@ -717,41 +731,67 @@ b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h
     fixt =  this.fixt(  b2d.circ(rad,x,y)   )
     if(S(col)){ fixt.bindSprite2( w.s.circ(col,rad,x,y)) }
     return fixt}
-b.H = function(){
+
+
+b.H = function(arg){
     var b=this,
         g=G(arguments),
-        len = length(g)
+        len=length(g),
+        arg=g[0],
+        test=true
 
-    $l('len: '+len)
+
+   // if(b2d.isFixtDef(g[0]))
+
+
     //passing a single array, suggest MULTIPLE fixts
+      if( A(g[0]) && U(g[1]) ){ if(test){$l(1)}
+          _.each(g[0],  function(a){ b.H.apply(b,a) })
+        return b}
 
-    if( A(g[0]) && U(g[1]) ){
-        _.each(g[0],  function(a){ b.H.apply(b,a) })
-        return b
+
+    // provide a DEFAULT color
+    else if( S(g[0]) && A(g[1]) && U(g[2])){if(test){$l(2)}
+
+
+          _.each(g[1] , function(f){
+
+              if(b2d.isFixtDef(f)){ b.fixt(f).C(g[0]) }
+
+              else{//f=A(f)?f: [f]
+                  if( !S(f[0]) ){ f.unshift(g[0]) }
+                  if(b2d.isFixtDef(f[1])){ b.fixt(f[1]).C(f[0]) }
+                  else { b.H.apply(b, f) }
+              }
+
+
+          })
+
+          return b}
+
+
+
+
+
+    //pass a fixtDef
+    else if( b2d.isFixtDef(g[0])){ if(test){$l(3)}
+          b.fixt(g[0]) }
+
+
+
+    //pass a fixtDef a color and a fixt def
+    else if(  S(g[0]) &&  b2d.isFixtDef( g[1] ) ){
+        b.fixt( g[1] ).C( g[0] )
     }
 
-    // b.polyArr( g )
-    else if( S(g[0]) && A(g[1]) && U(g[2]) ){
-
-        _.each( g[1] ,
-            function(a){
-
-                if(!S(a[0])){  a.unshift( g[0] )  }
-
-                b.H.apply(b, a)
-
-            })
-
-        return b
-    }
-
-
-    else if( A(g[1]) ){   b.convex(g)  }
+    //pass an array of verts
+    else if( O(g[1]) ){ b.convex(g)  }
 
     //circle
     else if(len==1 || len==3){  b.CIRC.apply(b,g)   }
 
-    else {  b.RECT.apply(b,g)  }
+    //rect
+    else { b.RECT.apply(b,g) }
 
     function length(arr){
         var len=arr.length
@@ -759,6 +799,11 @@ b.H = function(){
         return len}
 
     return b}
+
+
+
+
+
 BH=function(){w=b2d.W()
 
     /*
@@ -1135,20 +1180,34 @@ joints=function() {
 
 
  }; joints()
+
+
 controllers = function() {
+
+
      b.cancel = function (cntr) {
-         if (O(cntr)) {
-             cntr.remove(this)
-         }
+
+         if (O(cntr)) { cntr.remove(this) }
+
          else if (O(this.co())) {
+
              this.co().controller.remove(this)
          }
+
      }
+
+
+
      b.switchTo = function (co) {
          this.cancel()
          co.body(this)
          return this
      }
+
+
+
+
+
      b.co = function (co) {
          if (U(co)) {
              return this.GetControllerList()
@@ -1186,6 +1245,10 @@ controllers = function() {
 
 
  }; controllers()
+
+
+
+
 easel = function() {
 
     b.stg = function(){return this.wor().s}
@@ -1957,9 +2020,12 @@ b2d.body = b2d.bodyDef = BodyDef = bDf =function(x,y){
     bodyDef.xy(x,y)
     return bodyDef
 }
-b2d.dyn = function(x,y){      //b2d.dynamic = b2d.dynamicDef=  dBD=
-    return b2d.body(x,y).dyn()
-}
+
+
+b2d.dyn = function(x,y){ return b2d.body(x,y).dyn() }
+
+
+
 b2d.stat = function(x,y){//b2d.staticDef = b2d.staticBodyDef =StaticBodyDef=sBD=
 
     return b2d.body(x,y).stat()
@@ -2142,6 +2208,255 @@ LINVEL=function(){
 
 
     //cjs.tick(function(){})
+
+
+}
+BODVERTS=function(){w=b2d.W()
+
+
+    b = w.B(200,200,100,100).stat()
+
+    b.poly(20,200)
+
+    fs = b.fixts()
+
+    f1=fs[0]
+    f2=fs[1]
+
+    p = f1.polyVerts().union(   f2.polyVerts()  )
+
+    b2d.polyDot(p)
+
+    relP = b.rel(p)
+
+    b2d.polyDot(  relP )
+
+
+
+    w.B(400,200).conc(  relP )
+
+    w.B(500,400, [-100,0],[0,-100],[100,50]  )
+
+    w.B(500,430).conc( [[-100,0],[0,-100],[100,50]]  )
+
+    //make conc happen automatically whenever array of points specified
+    //conCAVE hull??
+    //union of 2 non overlapping fixtures, can just result in a body with two fixtures.. yea, why are unions not just creating bodies with all the fixtures?  no need combine two fixtures into one, right???!
+
+
+}
+
+
+BODMINUS=function(){w=b2d.W()
+
+    b= w.dyn(300,400).stat()
+
+    f = b.fixt( b2d.poly(100,100) )
+
+    b2 = w.B(300, 400, [
+        ['r', [-100,10],[-80, -40],[0,-200],[100,0]],
+        ['b', 20,50]
+    ]).stat()
+
+    w.dyn(500, 400).stat().sep(  b2.minus(b)   )
+
+}
+
+
+REDUCE=function(){w=b2d.W()
+
+    b = w.dyn(300, 400).stat()
+    f = b.poly(100,200)
+    f1 = b.poly(200,100, 100,0)
+    f2 = b.poly(200, 100, 100,0,36)
+    f3 = b.poly(20,20, 200, 0)
+
+    // u =  f.union( [f1,f2] )
+
+    u=b.union()
+
+    b2 = w.stat(600,300).conc(  u).dyn()
+
+    // body.polyVerts() does an automatic union of ALL its verts! i think :)
+
+}
+
+GRAVITY=function(){  w=b2d.W({g:0})
+
+    b = w.ball(100,100,100).constF(5000, -200000 )
+
+}
+
+DEMO_IMPULSE =function(){
+
+    b2d.mW({ grav: 0 })
+
+    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
+
+    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
+
+    test={
+
+
+        impulse: function(){
+
+            body.ApplyImpulse(
+
+                V(10, -30), body.worldCenter()
+
+            )},
+
+
+
+        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
+
+
+
+        force: function(){
+
+            setInterval(
+
+                function(){
+
+                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
+
+                }, 100)
+
+        }
+
+
+
+    }
+
+
+
+
+}
+DEMO_SCALE =function(){b2d.mW()
+
+    var  radius=10, x=400, y=440, v={x:0, y:0}
+
+    //mouse joints messed up
+
+    w.bumper(400,300,40)
+    w.bumper(290,350,40)
+    w.bumper(280,220,40)
+
+
+    addBody()
+
+    cjs.tick( destroyAndAddBody )
+
+
+
+    function addBody(){
+
+        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
+
+
+    function destroyAndAddBody(){
+
+        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
+
+        radius += .1
+
+        x = body.X()
+
+        y = body.Y()
+
+        v = body.lV()
+
+        addBody() }
+
+
+}
+
+
+
+
+UNIONNOTTOUCHING=function(){w=b2d.W()
+
+
+    b = w.B(200,200,100,100).stat()
+    b2 = w.B(400,400,100,100).stat()
+
+    p = b.polyVerts().union( b2.polyVerts()  )
+    _.each(p.verts(), function(v){w.dot(v[0],v[1])})
+    v1=b2.polyVerts().verts()
+    v2=p.verts()
+    _.isEqual(v1,v2) // true
+
+    p2 = b2.polyVerts().union( b.polyVerts()  )
+    _.each(p2.verts(), function(v){w.dot('r',v[0],v[1])})
+
+
+
+    b3 = w.B(500,200,100,100).stat()
+    b4 = w.B(550,250,100,100).stat()
+
+    p3 = b3.polyVerts().union( b4.polyVerts()  )
+
+    _.each(p3.verts(), function(v){w.dot(v[0],v[1])})
+
+
+    b5 = w.B(700,200,100,100).stat()
+    b6 = w.B(800,200,100,100).stat()
+
+    p4 = b5.polyVerts().union( b6.polyVerts()  )
+
+    _.each(p4.verts(),
+        function(v){w.dot(v[0],v[1])})
+
+
+}
+
+
+
+
+CLONE=function(){w=b2d.W()
+
+    w.roof.kill()
+
+    // x = w.B(400,400, 50,200).stat().poly(200,20)
+
+
+    b = w.B(400,400, [
+
+        [20],
+        [20,100,0],
+        [20,0,100],
+        [100,200]
+
+    ])
+
+
+    setInterval(function(){
+
+        b.I(0,-1000)
+        b.clone()
+
+    }, 3000)
+
+    w.ship()
+
+
+}
+
+MASSCLICKJUMP=function(){w=b2d.W({g:100})
+
+
+    a=w.dyn(100,200, b2d.poly(150,100 )).den(.5)
+    b=w.dyn(100,10, b2d.poly(30,60 )).den(.5).rest(2)
+    c=w.dyn(500,400, b2d.poly(50,100 )).den(.5)
+
+
+    _.each([a,b,c], function(b){          // eachClick?
+
+        b.click(function(){this.I(0,-50)})
+
+    })
+
+
 
 
 }

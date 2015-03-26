@@ -62,32 +62,218 @@ w.$=w.click=function(func){
 return this}
 
 
-w.getBodyAtPoint=function(x,y){var body = null
+
+
+w.getBodyAtPoint=function(x, y){var body = null
+
     this.QueryAABB(function queryFunc(fxt){
-        if( !fxt.isStat() &&  fxt.testPoint(mX,mY)){
-            // f.gB().gT() !=sB && f.gSh().tP(f.gB().gTf(), bV(mX,mY))
+
+        if( !fxt.isStat() &&  fxt.testPoint(
+            mX * 30,
+            mY * 30
+        )){
+
+
             body = fxt.body()
+
             return false}
+
         return true},
-        b2d.AABB01(x,y))
+
+
+        b2d.AABB01(x, y))
+
+
     return body}
 
 
 
+w.queryXY=function(func,x,y){var w=this
+
+    w.QueryAABB(func,
+
+        b2d.AABB01(x,y)
+
+    )
+    return this}
+w.bodyAt =  w.bodyAtPoint=function(x,y,func,kind){
+    var w=this,
+        body= null
+    if(O(x)){
+        kind=func;func=y;y= x.y;x= x.x}
+    this.queryXY(function(f){var b = f.B()
+
+        if(U(kind)||f.beOf(kind)){
+
+            if(f.testPoint(x,y)){
+                body = b; return false
+            }
+        }
+
+
+
+        return true
+
+    },x,y)
+
+
+    if(!body){return false}
+    if(F(func)){return func(body)||w}
+    return body
+
+}
+w.dynAt =  w.at =  w.bodyAtPoint=function(x,y){ var body= null,  func
+    func=function(f){
+
+        if( f.isDyn()  &&   f.testPoint(x,y) ){body = f.B(); return false}
+        return true}
+    this.queryXY(func, x,y)
+    return body
+
+}
+
+w.bug=w.debugDraw=function(){
+
+    dd = b2d.debugDraw.apply(null, arguments)
+
+    //this.scale = dd.scale()
+    this.SetDebugDraw( dd )
+    return this
+}
+w.Z=function(scale){
+    if(U(scale)){return this.scale}
+    this.scale = scale
+    return this}
+
+
+b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
+
 
 ;(function worldCreateBodies(){var w=b2d.World.prototype
 
-    w.body=w.A=w.addBody=w.createBody= function(bD,fD){
-        var body=this.CreateBody(bD)
-        if(fD){body.fixt(fD)}
-        return body}
 
-    w.dyn=w.dynamic=function(x,y,fD){var body
+
+
+ w.bodyX=w.AX=function(bD, fD){var w=this, b
+
+     if(b2d.isBDef(bD)){b = w.CreateBody(bD)}
+
+
+
+     if(fD){b.fixt(fD)}
+
+     //b.den(1)
+
+     return b
+ }
+ w.dynX= w.dynamicX=function(x,y, fD ){var w=this, body
+
         if(O(x)){fD=y;y=x.y;x=x.x}
         x =N(x)?x: 500
         y =N(y)?y: 250
-        body = this.body(b2d.dyn(x,y),fD)
-        return body.den(1)}
+
+        return w.body( b2d.dyn(x,y), fD )}
+
+
+
+
+
+    w.dyn=w.body=w.A=function(x,y,fD){var w=this, b,bd
+
+     //pass body def
+     if(b2d.isBDef(x)){ bd=x; fD=y }
+
+     //make body def
+     else {
+            if(O(x)){fD=y; y=x.y; x=x.x}
+            x=N(x)?x:500
+            y=N(y)?y:250
+            bd=b2d.dyn(x,y)
+     }
+
+        b = w.CreateBody(bd)
+
+     // pass in one fixture or an ARRAY( of fixts )
+
+     if(fD){b.fixt( fD )}
+
+     return b}
+
+
+
+
+
+
+BODY=function(){w=b2d.W(); w.brick(600,600, 20,1000)
+
+    //DYN
+    //sensor
+    w.dyn(100,400, [ b2d.circ(50), b2d.poly(10,300,'-') ])
+    w.dyn(100,300, 'b', 50)
+
+
+
+    //B
+    //color
+    w.B(700,300, 'b', 50)
+
+    b=w.B(700, 400, 'y', [
+        [b2d.circ(50)],
+        ['r',b2d.poly(10,300,'-')],
+        ['o',50, 100,0]
+    ])
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+w.B=w.D=function(x,y){var w=this,
+
+        g=G(arguments),
+        x=g[0], y=g[1],
+        bd, b, fixts
+
+    if(N(x)){
+        bd=b2d.dyn(x,y)
+        fixts=_.rest(g,2)}
+    else {
+        if(b2d.isBDef(x)){bd=x}
+        else {x=V(x); bd=b2d.dyn(x.x,x.y)}
+        fixts=_.rest(g)}
+
+    b = w.CreateBody(bd)
+
+    if(fixts.length){
+
+        b.H.apply(b,
+
+
+            fixts
+         //   _.map(fixts, function(f){   return A(f)?f:[f]  })
+
+        )
+
+    }
+
+    return b}
+
+
+
+
+
+
 
     w.ball = w.ba = function(x,y,r){var ball
 
@@ -210,7 +396,7 @@ w.getBodyAtPoint=function(x,y){var body = null
 
 
 
-    w.circ = function (x, y, rad, col) {var ball, w=this
+    w.circX = function (x, y, rad, col) {var ball, w=this
 
         // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
         var wd = this.s.W(),
@@ -232,61 +418,6 @@ w.getBodyAtPoint=function(x,y){var body = null
 
 
 
-    w.queryXY=function(func,x,y){var w=this
-
-        w.QueryAABB(func,
-
-            b2d.AABB01(x,y)
-
-        )
-    return this}
-    w.bodyAt =  w.bodyAtPoint=function(x,y,func,kind){
-        var w=this,
-            body= null
-        if(O(x)){
-        kind=func;func=y;y= x.y;x= x.x}
-        this.queryXY(function(f){var b = f.B()
-
-            if(U(kind)||f.beOf(kind)){
-
-                if(f.testPoint(x,y)){
-                    body = b; return false
-                }
-            }
-
-
-
-            return true
-
-        },x,y)
-
-
-        if(!body){return false}
-         if(F(func)){return func(body)||w}
-        return body
-
-    }
-    w.dynAt =  w.at =  w.bodyAtPoint=function(x,y){ var body= null,  func
-        func=function(f){
-
-            if( f.isDyn()  &&   f.testPoint(x,y) ){body = f.B(); return false}
-            return true}
-        this.queryXY(func, x,y)
-        return body
-
-    }
-    w.bug=w.debugDraw=function(){
-
-         dd = b2d.debugDraw.apply(null, arguments)
-
-        //this.scale = dd.scale()
-        this.SetDebugDraw( dd )
-        return this
-    }
-    w.Z=function(scale){
-    if(U(scale)){return this.scale}
-    this.scale = scale
-return this}
 
 
     w.gradBall = function (x, y, r, col1, col2, stop1, stop2) {
@@ -369,6 +500,58 @@ return this}
         ).linDamp(2)
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    w.polyCirc=function(x, y, rad, sides){
+        var b = this.dyn(x,y),
+            pc = b2d.polyCirc(rad, sides)
+
+        b.poly.apply(b,pc)
+        return b}
+
+
+
+    w.verts= function(x,y,  arrs ){
+
+        var bod = this.dyn(x, y)
+
+        _.each(arrs, function(fixt){
+// bod.convex( arr[0],  _.rest(arr)  )
+            //  bod.convex( fixt )
+
+            bod.convex.apply(bod, fixt )
+        })
+
+        return bod}
+
+
+
+
+
+    w.vertsKin= function(x, y, arrs){
+
+        var bod = this.kin(x,y)
+
+        _.each(arrs, function(arr){
+            bod.convex(arr[0],  _.rest(arr))
+        })
+
+        return bod}
+
+    w.S=function(){return this.B.apply(this,arguments).stat()}
+    w.K=function(){return this.B.apply(this,arguments).kin()}
+
+
 }())
 
 
@@ -423,62 +606,6 @@ w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
 return wall}
 
 
-
-w.verts= function(x,y,  arrs ){
-
-    var bod = this.dyn(x, y)
-
-    _.each(arrs, function(fixt){
-// bod.convex( arr[0],  _.rest(arr)  )
-      //  bod.convex( fixt )
-
-        bod.convex.apply(bod, fixt )
-    })
-
-return bod}
-
-
-w.D=w.B= function(x,y,fixts){
-    var bod = this.dyn(x,y)
-    if(D(fixts)){
-        bod.H.apply(bod, _.rest(arguments, 2) )
-    }
-    return bod}
-w.S=function(){
-    return this.B.apply(this,arguments).stat()
-}
-w.K=function(){
-    return this.B.apply(this,arguments).kin()
-}
-
-
-
-w.polyCirc=function(x, y, rad, sides){
-    var b = this.dyn(x,y),
-        pc = b2d.polyCirc(rad, sides)
-
-    b.poly.apply(b,pc)
-    return b}
-
-
-
-
-
-
-
-
-
-
-
-w.vertsKin= function(x, y, arrs){
-
-    var bod = this.kin(x,y)
-
-    _.each(arrs, function(arr){
-        bod.convex(arr[0],  _.rest(arr))
-    })
-
-    return bod}
 
 
 

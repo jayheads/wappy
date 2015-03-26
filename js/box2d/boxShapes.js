@@ -63,27 +63,34 @@ pH.setAsArray = p.sAA=  function(a,b){
     this.SetAsArray(a, b)
     return this}
 
-//makes verts
-b2d.verts=function(verts,more){
 
-    return _.map((more)?arguments:verts,
+
+//makes verts
+b2d.verts=function(verts, more){
+    var g=G(arguments), verts=g[0], more=g[1]
+
+
+    return _.map(more? g: verts,
 
         function(v){
             return V(v).div()
         })
+
 }
 
 
 
 pH.arr=function(){
 
-    var verts = b2d.verts.apply(null,arguments)
+    var verts = b2d.verts.apply(null, arguments)
 
     this.SetAsArray(verts, verts.length)
 
     return this
 
 }
+
+
 
 
 
@@ -681,6 +688,7 @@ b2d.fluffy=function(){
 
 
     )}
+
 cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
     return w.A(b2d.dyn(x,y),[
         b2d.poly(10,10).d(5),
@@ -697,7 +705,7 @@ cup2=function(x,y){
             b2d.poly(50,20,0,40,0),
             b2d.poly(100,20,-80,-40,260),
             b2d.poly(100,20,80,-40,-80),
-            b2d.circDef(100)
+            b2d.circ(100)
         ])}
 cup3=function(x,y){
 
@@ -707,8 +715,11 @@ cup3=function(x,y){
             b2d.poly(50,20,0,40,0),
             b2d.poly(100,20,-80,-40,260),
             b2d.poly(100,20,80,-40,-80),
-            b2d.circDef(34,-80,-130),
-            b2d.circDef(34,80,-130)])}
+            b2d.circ(34,-80,-130),
+            b2d.circ(34,80,-130)])}
+
+
+
 makeWalls2=function(){
     bii(10, 300, 20, 460) //left
     bii(990,300, 20, 460)//right

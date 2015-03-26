@@ -150,3 +150,75 @@ WELD1=function(){w=b2d.W()
    w.weld(w.ba(900,500), w.bi(900,500),-10,-50)
 
 }
+
+
+ GLUE=function(){w=b2d.W({g:0})
+
+
+     /*
+
+      b= w.B(300,200, 40,140,20,0,20).stat()
+
+      b2= w.B(400,400, 140,40).stat()
+
+      b.glue(b2)
+
+      setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
+
+      */
+
+     w.glueBall = function(x,y){var w=this
+         var bl = w.B(x,y,20).K('bl')
+         w.beg(function(cx){
+             cx.with('bl', function(othF){var bl=this.B()
+                 if(!bl.GetJointList()){
+                     bl.glue( othF.B() )
+                 }
+             })})
+
+         return bl}
+
+
+     bl = w.glueBall(400, 500)
+
+     w.glueBall(300, 500)
+     w.glueBall(400, 300)
+     w.glueBall(300, 100)
+     w.glueBall(400, 200)
+     w.glueBall(100, 300)
+     w.glueBall(300, 300)
+
+     y = w.ship()
+
+ }
+ GLUE2=function(){w=b2d.W({g:0})
+
+
+     /*
+
+      b= w.B(300,200, 40,140,20,0,20).stat()
+
+      b2= w.B(400,400, 140,40).stat()
+
+      b.glue(b2)
+
+      setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
+
+      */
+
+
+
+     y = w.ship()
+
+     w.beg(function(cx){
+
+         cx.with('ship','wall', function(){
+
+             w.B(y.X(), y.Y(), 30).stat()
+
+         })
+
+     })
+
+ }
+

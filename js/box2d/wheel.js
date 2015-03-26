@@ -6,7 +6,20 @@ B2DTEST=function(){$l('b2d test!')
 
     h=b2d.cH(50)
 }
+PUZZLE=function(){w=b2d.W().debug()
 
+    _.times(10,function(){
+
+        w.B(400,400, [
+
+            ['r',20],
+            ['b',20,100,0],
+            ['y',20,0,100]
+
+
+        ])
+    })
+}
 WEBMAN = function(){w = b2d.W({ g:40 }).debug()
 
     w.roof.kill();
@@ -1189,6 +1202,181 @@ SUNZOOM=function(){w = b2d.W({g:0,w:0}).debug()
         w.s.sXY( b2d.scaleFunc(sun,p,2) )
         p.centerScale( b2d.scaleFunc(sun,p,2) )
     })
+
+}
+
+
+SLING=function(){s=cjs.S()
+
+    startpoint={}
+
+    slingshot = cjs.shape().a2(s)
+
+    onMouseDown=function(event){
+
+        if(ball.hitTestPoint(event.x, event.y)){
+            mouseJoint = w.J(
+
+                b2d.createMouseJointDef(
+                    w.ground, //?
+
+                    ball.body,
+                    event.x, event.y, 100000
+                )
+            )
+
+            startpoint.x = event.x
+            startpoint.y = event.y
+
+        }
+    }
+
+
+    onMouseMove=function(event){
+        if(mouseJoint !=null){
+            mouseJoint.setTarget(event.x, event.y)
+            slingshot.clear()
+            slingshot.setLineStyle(5, 0xff0000, 1)
+            slingshot.beginPath()
+            slingshot.mt(self.startpoint.x, self.startpoint.y)
+            slingshot.lt(event.x, event.y)
+            slingshot.ep()
+        }
+    }
+
+
+    onMouseUp=function(event){
+
+
+
+        if (mouseJoint != null){
+            w.dJ( mouseJoint)
+
+            mouseJoint = null
+
+            slingshot.clear()
+
+            strength = 1
+
+            xVect = ( startpoint.x-event.x)*strength
+            yVect = ( startpoint.y-event.y)*strength
+
+            ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
+
+        }
+    }
+
+}
+PHONEJUMP=function(){b2d.W({W:300, H:400,
+    walls:function(){
+        w.brick(10,300, 40, 600).K('leftWall')
+        w.brick(450,300, 40, 600).K('rightWall')
+        w.brick(300, 0, 2400, 40).K('ceiling')
+        w.brick(300, 400, 800, 40).K('floor')}})
+
+    w.brick(200,400, 80,20)
+    w.brick(300,200,80,20)
+
+    p = w.addMe()
+
+    $.joystick()
+
+    cjs.tick(function(){
+
+        if(cjs.Keys.up){     p.I(0,-100)}
+        if(cjs.Keys.left){   p.I(-20, 0)}
+        if(cjs.Keys.right){  p.I(20, 0)}
+
+    })
+
+}
+MEMORY=function(){  s = cjs.S().A(ct= cjs.ct())
+
+
+
+    grid=[
+
+        ['guy','me',0,0],
+        [0,'me',0,0],
+        [0,0,0,0],
+        [0,'me','chicks','me']
+
+    ]
+
+
+    wGuy=function(){
+        var x=0,y=0
+        _.each(grid,  function(row,i){
+            _.each(row,function(cell,j){
+                if(cell=='guy'){ x=j, y=i}})})
+        return {x:x,y:y}}
+
+
+    dGuy=function(){
+
+        var p=wGuy()
+
+        grid[p.y][p.x]=0
+        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
+        else if( grid[p.y+1][p.x]==0){
+            grid[p.y+1][p.x]='guy'
+            playerGrid()
+
+        } else {alert('lose!')}}
+
+
+
+    rGuy=function(){
+        var p=wGuy()
+        grid[p.y][p.x]=0
+        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
+        else if( grid[p.y][p.x+1]==0) {
+            grid[p.y][p.x+1]= 'guy'
+            playerGrid()} else {alert('lose!')}}
+
+
+
+
+    _.each(grid, function(row,i){
+        _.each(row, function(cell,j){
+            ct.A(
+                cjs.rect(30,40).XY(j*100+100,i*100+100))
+            if(cell=='me'){
+                ct.bm('me',
+                    function(b){
+                        b.XY(j*100+100,  i*100+100
+                        ).sXY(.1)})}})})
+
+
+
+
+    playerGrid=function(){
+        _.each(grid, function(row,i){
+
+            _.each(row, function(cell,j){
+
+                ct.A( cjs.rect(30,40).XY(j*100+100, i*100+100))
+
+                if(cell=='guy'||cell=='chicks'){
+                    ct.b(cell, function(b){
+                        b.xy(  j*100+100,  i*100+100 ).sXY(.1)})}
+
+            })})}
+
+
+
+    setTimeout( function(){
+        ct.remove()
+        s.A( ct = cjs.ct())
+        playerGrid()},  3000)
+
+
+
+    $.kD('d', dGuy)
+
+    $.kD('r', rGuy)
+
+
 
 }
 

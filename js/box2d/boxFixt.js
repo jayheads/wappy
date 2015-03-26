@@ -1,34 +1,64 @@
-fd= b2d.Dynamics.b2FixtureDef.prototype
-fd.H=   fd.setShape=function(shape){
-        if(U(shape)){return this.shape}
-        this.shape=shape;
-        return this}
-fd.den =fd.d=function(den){if(U(den)){return this.density}
+fixtDef=function() {
+    fd = b2d.Dynamics.b2FixtureDef.prototype
+    fd.H = fd.setShape = function (shape) {
+        if (U(shape)) {
+            return this.shape
+        }
+        this.shape = shape;
+        return this
+    }
+    fd.den = fd.d = function (den) {
+        if (U(den)) {
+            return this.density
+        }
         this.density = den;
-        return this}
-fd.frc =fd.fric =fd.f=function(fric){if(U(fric)){return this.friction}
-        this.friction=fric;return this}
-fd.rst = fd.rest =fd.r=function(rest){if(U(rest)){return this.restitution}
-        this.restitution=rest;return this}
-fd.grp = fd.group = fd.index=fd.gI=function(a){
-        if(U(a)){return this.filter.groupIndex}
-        this.filter.groupIndex=a; return this}
-fd.cat= fd.category=fd.cB=function(a){
-        if(U(a)){return this.filter.categoryBits}
-        this.filter.categoryBits=a; return this}
-fd.msk =fd.mask=fd.mB=function(a){
-        if(U(a)){return this.filter.maskBits}
-        this.filter.maskBits=a; return this}
-fd.bit = fd.bits=function(cat, mask){
+        return this
+    }
+    fd.frc = fd.fric = fd.f = function (fric) {
+        if (U(fric)) {
+            return this.friction
+        }
+        this.friction = fric;
+        return this
+    }
+    fd.rst = fd.rest = fd.r = function (rest) {
+        if (U(rest)) {
+            return this.restitution
+        }
+        this.restitution = rest;
+        return this
+    }
+    fd.grp = fd.group = fd.index = fd.gI = function (a) {
+        if (U(a)) {
+            return this.filter.groupIndex
+        }
+        this.filter.groupIndex = a;
+        return this
+    }
+    fd.cat = fd.category = fd.cB = function (a) {
+        if (U(a)) {
+            return this.filter.categoryBits
+        }
+        this.filter.categoryBits = a;
+        return this
+    }
+    fd.msk = fd.mask = fd.mB = function (a) {
+        if (U(a)) {
+            return this.filter.maskBits
+        }
+        this.filter.maskBits = a;
+        return this
+    }
+    fd.bit = fd.bits = function (cat, mask) {
         return this.cat(cat).mask(mask)
     }
-fd.vrt= fd.verts =function( ){
+    fd.vrt = fd.verts = function () {
 
         var shape = this.shape,
 
             verts = shape.m_vertices,
 
-            verts= [
+            verts = [
                 verts[0].mult(),
                 verts[1].mult(),
                 verts[2].mult(),
@@ -36,307 +66,295 @@ fd.vrt= fd.verts =function( ){
 
         return $l(verts)
     }
-fd.sen = fd.sensor= fd.iS=function(isSensor){
-        if(U(isSensor)){return this.isSensor}
-        this.isSensor =isSensor?true:false
-        return this}
-fd.box=fd.sAB=function(a,b,p,A){
-    if(!p){this.shape.SetAsBox(a/30, b/30)}
-    else {this.shape.SetAsOrientedBox(a/30, b/30, p, A)}
-    return this}
-/*
- f.set=function(x,y){//dep?
- this.shape.Set(x,y)
- return this
- }
+    fd.sen = fd.sensor = fd.iS = function (isSensor) {
+        if (U(isSensor)) {
+            return this.isSensor
+        }
+        this.isSensor = isSensor ? true : false
+        return this
+    }
+    fd.box = fd.sAB = function (a, b, p, A) {
+        if (!p) {
+            this.shape.SetAsBox(a / 30, b / 30)
+        }
+        else {
+            this.shape.SetAsOrientedBox(a / 30, b / 30, p, A)
+        }
+        return this
+    }
+    /*
+     f.set=function(x,y){//dep?
+     this.shape.Set(x,y)
+     return this
+     }
 
- f.sAB=function(a,b,p,A){//dep?
- if(!p){this.shape.SetAsBox(a/30,b/30)}
- else{ this.shape.SetAsOrientedBox(a/30,b/30,p,A)}
- return this}
- */
+     f.sAB=function(a,b,p,A){//dep?
+     if(!p){this.shape.SetAsBox(a/30,b/30)}
+     else{ this.shape.SetAsOrientedBox(a/30,b/30,p,A)}
+     return this}
+     */
 //fd.sSAP  = fd.setShapeAsAPoly=function(){
 // return this.H( b2d.polyShape())}
-fd.K = fd.addClass = function(clas){
-    if(U(clas)){return this.getClass()
-    }
+    fd.K = fd.addClass = function (clas) {
+        if (U(clas)) {
+            return this.getClass()
+        }
 
-    this.classes = this.classes || []
-    this.classes.push(clas)
-    return this
-}
-
-
-fd.getClasses = fd.getClass=function(){
-    var g=G(arguments),classes
-
-    this.classes= this.classes||[]
-
-    classes=this.classes.join(' ')
-    if(g.p){
-        classes += ' : ' + this.body().getClasses()
+        this.classes = this.classes || []
+        this.classes.push(clas)
+        return this
     }
 
 
-    return classes}
+    fd.getClasses = fd.getClass = function () {
+        var g = G(arguments), classes
 
+        this.classes = this.classes || []
 
-fd.D = fd.data =function(data){
-    if(U(data)){return this.userData }
-    this.userData=data;return this}
-
-
-FDEF=function(){w=b2d.W()
-
-
-x = w.brick(400,400,200,300)
-
-    b = w.dyn(200, 400,
-
-        b2d.poly(100,200).K('fffffff sf')
-
-    )
-
-
-}
-
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-f = b2d.Dynamics.b2Fixture.prototype
-
-f.classCount=function(){
-    if(!A(this.classes)){return 0}
-    return this.classes.length
-
-}
-f.K = f.addClass = function(clas){
-
-
-    this.classes = this.classes || []
-    var that=this,func
-
-
-        if(U(clas)){return this.getClasses()}
-
-
-
-    if(F(clas)){
-        func=_.bind(clas, that)
-        this.addClass( func( that.getClasses()) )
-        return this}
-
-    _.each(arguments,  function(clas){if( S(clas) ){clas=clas.trim()
-
-        _.each(clas.split(' '),
-            function(clas){clas=clas.trim()
-
-                if(clas!='' && !that.hasClass(clas)){
-
-                    that.classes.push(clas)
-                }
-            })
-
-
-    }})
-    return this}
-f.getClasses= f.getClass=function(){
-    var g=G(arguments),classes
-
-    this.classes= this.classes||[]
-
-    classes=this.classes.join(' ')
-    if(g.p){
-        classes += ' : ' + this.body().getClasses()
-    }
-
-
-    return classes}
-f.toggleClass=function(clas){
-    if(U(clas)||clas==''){return false}
-
-    if(this.hasClass(clas)){
-        this.removeClass(clas)
-    } else {this.addClass(clas)}
-
-    return this}
-f.removeClass=function(clas){var ix
-    this.classes = this.classes||[]
-    if( S(clas) ){
-
-        if(this.hasClass(clas)){
-
-            ix = this.classes.indexOf(clas)
-
-            this.classes[ix] = null
-
-            this.classes = _.compact( this.classes )
-
-
+        classes = this.classes.join(' ')
+        if (g.p) {
+            classes += ' : ' + this.body().getClasses()
         }
 
 
+        return classes
+    }
+
+
+    fd.D = fd.data = function (data) {
+        if (U(data)) {
+            return this.userData
+        }
+        this.userData = data;
+        return this
+    }
+
+
+    FDEF=function(){w=b2d.W()
+
+
+        x = w.brick(400,400,200,300)
+
+        b = w.dyn(200, 400,
+
+            b2d.poly(100,200).K('fffffff sf')
+
+        )
+
 
     }
-    return this}
-f.hasClass = f.hasClasses=function self(clas){
-    var fixt=this,
-        hasClass,
-        g=G(arguments)
-
-    fixt.classes=fixt.classes||[]
-
-    if(!clas){return true}
-
-    if( A(clas) ){ g=clas }
-
-    _.each(g, function(clas){
-
-        if(!clas||_.contains(fixt.classes, clas.trim())){
-                hasClass=true}
-    })
-
-    return hasClass}
-f.hasAllClasses=function(clas){if(U(clas)||clas==''){return false}
-
-    var body=this,anyYes=null, anyNo=null
-
-    _.each(arguments, function(clas){
 
 
-        if(body.hasClass(clas)){anyYes=true}
+}; fixtDef()
+f = b2d.Dynamics.b2Fixture.prototype
 
-        else if(!body.hasClass(clas)){anyNo=true}
+classes=function() {
+    f.classCount = function () {
+        if (!A(this.classes)) {
+            return 0
+        }
+        return this.classes.length
 
+    }
 
-
-    })
-
-    return (anyYes && !anyNo)
-
-
-}
-f.is=function(a){return S(a)?this.hasClass(a):this==a }
-f.ofClass=function(clas){    var fixt=this,  body = fixt.body(),
-    g=G(arguments)
+    f.K = f.addClass = function (clas) {
 
 
-    return fixt.hasClass(g) || body.hasClass(g)
+        this.classes = this.classes || []
+        var that = this, func
 
-}
-f.of = function(a){
-    var fixt=this,
-        body=fixt.body()
-    return S(a)? fixt.ofClass(a) : (fixt==a || body==a)}
-f.near= function(what){var body = this.GetBody()
+
+        if (U(clas)) {
+            return this.getClasses()
+        }
+
+
+        if (F(clas)) {
+            func = _.bind(clas, that)
+            this.addClass(func(that.getClasses()))
+            return this
+        }
+
+        _.each(arguments, function (clas) {
+            if (S(clas)) {
+                clas = clas.trim()
+
+                _.each(clas.split(' '),
+                    function (clas) {
+                        clas = clas.trim()
+
+                        if (clas != '' && !that.hasClass(clas)) {
+
+                            that.classes.push(clas)
+                        }
+                    })
+
+
+            }
+        })
+        return this
+    }
+    f.getClasses = f.getClass = function () {
+        var g = G(arguments), classes
+
+        this.classes = this.classes || []
+
+        classes = this.classes.join(' ')
+        if (g.p) {
+            classes += ' : ' + this.body().getClasses()
+        }
+
+
+        return classes
+    }
+    f.toggleClass = function (clas) {
+        if (U(clas) || clas == '') {
+            return false
+        }
+
+        if (this.hasClass(clas)) {
+            this.removeClass(clas)
+        } else {
+            this.addClass(clas)
+        }
+
+        return this
+    }
+    f.removeClass = function (clas) {
+        var ix
+        this.classes = this.classes || []
+        if (S(clas)) {
+
+            if (this.hasClass(clas)) {
+
+                ix = this.classes.indexOf(clas)
+
+                this.classes[ix] = null
+
+                this.classes = _.compact(this.classes)
+
+
+            }
+
+
+        }
+        return this
+    }
+    f.hasClass = f.hasClasses = function self(clas) {
+        var fixt = this,
+            hasClass,
+            g = G(arguments)
+
+        fixt.classes = fixt.classes || []
+
+        if (!clas) {
+            return true
+        }
+
+        if (A(clas)) {
+            g = clas
+        }
+
+        _.each(g, function (clas) {
+
+            if (!clas || _.contains(fixt.classes, clas.trim())) {
+                hasClass = true
+            }
+        })
+
+        return hasClass
+    }
+    f.hasAllClasses = function (clas) {
+        if (U(clas) || clas == '') {
+            return false
+        }
+
+        var body = this, anyYes = null, anyNo = null
+
+        _.each(arguments, function (clas) {
+
+
+            if (body.hasClass(clas)) {
+                anyYes = true
+            }
+
+            else if (!body.hasClass(clas)) {
+                anyNo = true
+            }
+
+
+        })
+
+        return (anyYes && !anyNo)
+
+
+    }
+    f.is = function (a) {
+        return S(a) ? this.hasClass(a) : this == a
+    }
+    f.ofClass = function (clas) {
+        var fixt = this, body = fixt.body(),
+            g = G(arguments)
+
+
+        return fixt.hasClass(g) || body.hasClass(g)
+
+    }
+    f.of = function (a) {
+        var fixt = this,
+            body = fixt.body()
+        return S(a) ? fixt.ofClass(a) : (fixt == a || body == a)
+    }
+    f.near = function (what) {
+        var body = this.GetBody()
         //return (this.K()==what) || (body.K()==what)
         // if has sibling fixture that matches, return IT!
-    return false}
-f.among=function(){}
-f.D = f.data =function(data){
-    if(U(data)){
-        return this.GetUserData() }
-    this.SetUserData(data);return this}
+        return false
+    }
+    f.among = function () {
+    }
+    f.D = f.data = function (data) {
+        if (U(data)) {
+            return this.GetUserData()
+        }
+        this.SetUserData(data);
+        return this
+    }
 
+}; classes()
 
-
-f.H= f.shape=function(shape){
-    if(U(shape)) {return  this.GetShape()}
-    this.m_shape = shape //not sure if this works
+f.next= function(){return this.GetNext()}
+f.den =f.d=function(den){if(U(den)){return this.GetDensity()}
+    this.SetDensity(den)
+    this.body().ResetMassData()
     return this}
-
-
-f.B=  f.body = f.gB = f.getBody=function(){return this.GetBody()}
-f.getType = f.gT=function(someType){// confusing with this matcher
-    var thisType =  this.B().GetType()
-    return  D(someType)?  (thisType == someType) : thisType}
-f.isType = function(typ){return this.getType() == typ}
-
-
-
-
-//get/set
-f.sensor = f.iS = function( isSensor ){
-    if( U(isSensor) ){ return this.m_isSensor }
-    this.m_isSensor = isSensor
+f.fric =f.f=function(fric){if(U(fric)){return this.GetFriction()}
+    this.SetFriction(fric);return this}
+f.rest =f.r=function(rest){if(U(rest)){return this.GetRestitution()}
+    this.SetRestitution(rest);return this}
+f.kill = f.remove = function(){
+    if(this.sprite  ){this.sprite.remove()}
+    this.B().destroyFixt(this)
+//f.setRemove = function(){var f=this; setTimeout(function(){f.B().destroyFixt(f)},10)} //can combine with kill?
+//f.setDestroy=function(){this.B().K('destroy'); return this}
+}
+f.sen = f.sensor = function(sen){var f=this
+    if(U(sen)){sen=!f.m_isSensor}
+    f.m_isSensor = sen
     return this}
-//toggles
-f.sen=function(){return this.sensor(!this.sensor())}
-
-
-
-
-
-
-
-
-//official get/set for groupIndex
+f.isSen=function(isSensor){return this.m_isSensor}
 f.grp =  function(i){
     var fl=this.GetFilterData()
     if(U(i)){return fl.groupIndex}
     fl.groupIndex=i
     this.SetFilterData(fl)
-return this}
-
-
-
-
-
-
-
-f.isStat=function(){return this.B().isStat()}
-f.isDyn=function(){return this.B().isDyn()}
-f.isKin=function(){return this.B().isKin()}
-
-f.dyn=function(){var body = this.body()
-    body.dyn.apply(body, arguments)
-    return this}
-f.kin=function(){var body = this.body()
-    body.kin.apply(body, arguments)
-    return this}
-f.stat=function(){var body = this.body()
-    body.stat.apply(body, arguments)
-    return this}
-f.isCirc=function(){
-    return this.shape().m_type==0
-}
-
-f.den =f.d=function(den){if(U(den)){return this.GetDensity()}
-        this.SetDensity(den)
-        return this}
-f.fric =f.f=function(fric){if(U(fric)){return this.GetFriction()}
-        this.SetFriction(fric);return this}
-f.rest =f.r=function(rest){if(U(rest)){return this.GetRestitution()}
-        this.SetRestitution(rest);return this}
-
-f.remove = function(){this.B().destroyFixt(this)} //can combine with kill?
-f.setRemove = function(){var f=this
-    setTimeout(function(){
-        f.B().destroyFixt(f)
-    },10)
-
-} //can combine with kill?
-f.kill= function(){if(this.sprite  ){this.sprite.remove()}
-    this.remove(); return}
-f.setDestroy=function(){
-
-    this.B().K('destroy')
-
-    return this}
-f.setKill=function(){var that=this
-    var flagNum = Math.random()
-    this.B().W().flag( flagNum )
-    cjs.tick(function(){   if(w.flagged(flagNum)){ that.kill()     }      })}
-
-
-
-
-
+return this} //get/set for groupIndex
+f.cent = f.center = function(){var bounds = this.GetAABB()
+    return Math.lineCenter(bounds.lowerBound, bounds.upperBound).mult()}//center point of its BOUNDING BOX
+f.test = f.hit=f.testPoint= f.tP=function(pt,y){var f=this,b=f.body(), w=b.wor(),
+    g=G(arguments), v=V(g[0],g[1])
+    if(g.p){b.wor().dot(v)}
+    return f.H().testPoint(b.transform(), v.div())}//is a point within the fixture // very accurate
 f.coll = function(what,func){var that=this, fixt=this, beginFunc //ultimate func for FIXTURE COLL
     // you can specify what happens when a fixture hits:
     //ANYTHING
@@ -351,176 +369,34 @@ f.coll = function(what,func){var that=this, fixt=this, beginFunc //ultimate func
     w.beg(function(cx){var fA=cx.A(),fB=cx.B()
         if(fixt.is(fA) && fB.of(what)){func(fB,cx)}
         if(fixt.is(fB) && fA.of(what)){func(fA,cx)}})
-    return this}
-
-
-f.next= function(){return this.GetNext()}
-
-
-f.center=function(){
-
-    var aBounds = this.GetAABB(),
-
-        aLower = aBounds.lowerBound,
-        alx = aLower.x*30,
-        aly = aLower.y*30,
-        aUpper = aBounds.upperBound,
-        aux = aUpper.x*30,
-        auy = aUpper.y*30
-
-    return Math.lineCenter(alx, aly, aux, auy)
+    return this
 }
-
-
-
-f.dot = function(col){
-    if(S(col)){return this.B().W().s.dot(col, this.center() ) }
-    return this.B().W().s.dot( this.center() )}
-
-
-
-f.testPoint= f.tP=function( point, y ){
-
-    if(N(point)){point = V(point, y)}
-
-    return this.H().testPoint(
-        this.B().transform(),
-        point)
- }
-
-
-
-
-f.hit=function(x, y, dot){
-    if(dot==true){w.dot(x,y)}
-    if(O(x)){y= x.y;x= x.x}
-    var h = this.shape(),
-        b=this.body(),
-        tf= b.transform(),
-        v = V(x,y).div()
-    return h.TestPoint(tf,v)}
-
-
-
-
-//for body
-f.rot=function(rot, g){ return this.B().rot(rot, g) }
-f.cancel=function(){
-    this.body().cancel()
-    return this}
-f.switchTo=function(co){
-    this.body().switchTo(co)
-    return this}
-
-
-
-
-
-f.radius = function(){
-    var shape = this.GetShape(),
-        radius = shape.radius
-
-
-        return radius*30}
-
-
-f.color=function(c1,c2){ c1=c1||'b'; c2=c2||c1
-
-shape = this.m_shape
-    verts = shape.m_vertices
-    verts = _.map(verts, function(v){
-        return [v.x*30, v.y*30]
-    })
-
-    // b.bindSprite2(
-    body=this.body()
-    h = w.s.shape().poly(verts, c1,c2, 1)
-    this.bindSprite2(h)
-
-    // )
-
+f.shp = f.H= f.shape=function(h){//should let user specify dimensions of shape, not just have to pass formed shape in
+    if(U(h)) {return  this.GetShape()}
+    this.m_shape = h // it DOES WORK!  but is this much different than just replacing the fixt?
+    return this
 }
+f.hType=function(){return this.shp().m_type}
+f.isCirc=function(){return this.hType()==0}
 
-f.bindSprite2=function(obj, startingRotation, x, y ){
-
-    //takes any display object.  right now, just used for shapes
-    //because bindSprite fetches the bm's by string.
-    //but when i set up preloader, then i would use this i suppose :)
-    x=N(x)?x:0;
-    y=N(y)?y:0
-    var f=this,
-        body=this.body(),
-        stage = body.wor().s
-
-    startingRotation = N( startingRotation) ?  startingRotation : 0
-    f.sprite = obj
-    f.sprite.a2(stage)
-    //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
-    cjs.tick(function(){//if(!f.sprite){return}
-        f.sprite.XY(
-                body.X() + (x||0),
-                body.Y() + (y||0)
-        )
-        f.sprite.rotation=body.rot() + startingRotation
-
-    })
-
-    return this}
-
-f.verts= function(){
-
-    var shape = this.GetShape(),
-
-        verts = shape.m_vertices
-
-    return _.map(verts, function(v){
-        return v.mult()
-    })
-
-}
-f.V = f.rotVerts=function(){//rotated but local
-    newX= function(x, y, rot){
-
-        var rad = Math.toRadians(rot)
+f.rad = function(){return this.shp().m_radius*30}
+f.pos = function(){var h=this.shp()
+    return V(h.m_p.x, h.m_p.y).mult()
+}// for circs
 
 
-        x = x *   Math.cos(rad).toFixed(3)
-
-
-        y= y *   Math.sin(rad).toFixed(3)
-
-        return x-y
-    }
-    newY= function(x,y,rot){
-        var rad = Math.toRadians(rot)
-        return (x*Math.sin(rad))+(y*Math.cos(rad))}
-    var verts = this.verts(),b=this.B()
-    return _.map(verts, function(v){
-        var x= v.x, y= v.y
-        return V(
-                newX(x,y, b.rot()) + b.X(),
-                newY(x,y, b.rot()) + b.Y())})
-}
-f.polyVerts=function(){
-    return  Math.poly( this.V() )
-}
-f.DIFFold=function(b2){
-    var f=this,b=f.B(),g=G(arguments),b2=g[0]//,diff
-
-
-    // diff =  Math.poly( f.V() ).difference(  Math.poly( b2.V() ) )
-
-    diff = f.minus(b2)
-
-    //if( ! b2d.hasVerts(diff) ){ f.kill(); return }
-
-    // b.conc(   b.rel(diff) )
-
-    b.conc(   diff )
-    f.kill()
-    if(g.n){b2.kill()}
-
-    return this}
+f.verts= function(){var f=this, b=this.body(), g=G(arguments)
+    //local verts
+    var verts = _.map(f.shp().m_vertices, b2d.mult)
+    //local verts rotated locally by body's rotation
+    if(g.p){verts = _.map(verts, function(v){ return v.rot(b.rot()) })}
+    return verts}
+f.wVerts = f.V=function(){var f=this, b=f.body(),
+    g=G(arguments)
+    //give world verts of fixt rotated (or optionally, not rotated for some reason)
+    var verts = g.N?  f.verts('+')  : f.verts()
+    return _.map(verts, function(v){return v.add(b)})}
+f.poly = f.polyVerts=function(){return  Math.poly( this.V() )}
 f.sub =f.DIF = f.DIFF=function(b2){
 
     var f=this, g=G(arguments), b2=g[0]
@@ -583,21 +459,210 @@ f.area=function(){
 }
 
 
+//easel
+f.stg = function(){return this.wor().s}
+f.dot = function(col){var f=this, w= f.wor(), cent=f.cent()
+    return S(col)?w.dot(col,cent):w.dot(cent)}
+
+f.dots=function(){
+    b2d.polyDot( this.wVerts() )
+return this}
+
+
+f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
+
+f.C = f.color = function(c1,c2){
+
+     //only for squares right now
+
+    c1=c1||'b';
+    c2=c2||c1
+    var f=this,
+        b=f.body(),
+        w=b.wor(),shape,   rad, pos
+
+    if(f.isCirc()){
+
+
+        rad= f.rad()
+
+            pos= f.pos()
+       // shape = w.s.shape().cir( rad,  c1 )
+
+        shape = w.s.shape().cir( rad, pos.x, pos.y, c1 )
+
+    }
+
+
+
+
+    else {shape = w.s.shape().poly(f.verts(), c1, c2, 1)}
+
+
+
+
+    f.bindSprite2( shape  )
+
+    return this}
+
+
+
+
+f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y ){
+
+    //takes any display object.  right now, just used for shapes
+    //because bindSprite fetches the bm's by string.
+    //but when i set up preloader, then i would use this i suppose :)
+    x=N(x)?x:0;
+    y=N(y)?y:0
+    var f=this,
+        body=this.body(),
+        stage = body.wor().s
+
+    startingRotation = N( startingRotation) ?  startingRotation : 0
+    f.sprite = obj
+    f.sprite.a2(stage)
+    //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
+    cjs.tick(function(){//if(!f.sprite){return}
+        f.sprite.XY(
+                body.X() + (x||0),
+                body.Y() + (y||0))
+        f.sprite.rotation=body.rot() + startingRotation
+    })
+
+    return this}
+
+
+
+
+
+//proxy to BODY methods
+f.B=  f.body = f.gB = f.getBody=function(){return this.GetBody()}
+f.wor = function(){return this.body().wor()}
+f.kin=function(){var b=this.B(); b.kin.apply(b, arguments); return this}
+f.stat=function(){var b=this.B(); b.stat.apply(b,arguments); return this}
+f.isStat=function(){return this.B().isStat()}
+f.isDyn=function(){return this.B().isDyn()}
+f.isKin=function(){return this.B().isKin()}
+f.bType=function(){return this.B().GetType()}
+//f.getType = f.gT = function(someType){var b=this.B(), t=b.GetType(); return  D(someType)?(someType==t):t}
+f.isBType = f.isType = function(t){if(t){return this.bType()==t}}
+f.rot=function(rot, g){ return this.B().rot(rot, g) }
+f.killBody=function(){this.B().kill()}
+
+f.cancel=function(){this.body().cancel(); return this}
+f.switchTo=function(co){this.body().switchTo(co); return this}
 
 
 b2d.isFixtDef=function(fD){return O(fD) && fD.b2FixtureDef}
-
-
+b2d.isFixt=function(fixt){
+    if(!fixt){return false}
+    return fixt.constructor.name=="b2Fixture"}
 b2d.isGPoly=function(a){return O(a) && F(a.isHole)}
-b2d.hasVerts=function(poly){return poly.m_List.get(0)}
-b2d.polySens = function(kind){
+
+
+//make a circ fixture
+b2d.circ = function(rad,x,y,den){// neg-> sensor
+    var g= G(arguments),
+        rad=N(g[0])?g[0]:50,
+        x=N(g[1])?g[1]:0,
+        y=N(g[2])?g[2]:0,
+        den=N(den)?den:1
+
+    fixt=b2d.fixt(
+        b2d.circH(rad).xy(x,y)
+    ).den(den)
+    if(g.n){fixt.isSensor=true}
+    return fixt
+    //hmm.. fixt doesnt have a rel loc.. its shape does
+    //what if u want to change 'shape' of shape, but keep its rel loc?
+}
+
+
+//make a rec (or orientedRec) fixture
+b2d.rec = function(wd, ht, x, y, rot, den){
+    var g=G(arguments),rec,fixt
+    wd=N(g[0])?g[0]:50
+    ht=N(g[1])?g[1]:50
+    x=N(g[2])?g[2]:0
+    y=N(g[3])?g[3]:0
+    rot=N(g[4])?g[4]:0
+    den=N(g[5])?g[5]:1
+    rec = b2d.polyH(wd,ht,x,y,rot),
+    fixt = b2d.fixt(rec).den(den)
+    if(g.n){fixt.isSensor=true}
+    return fixt}
+
+//makes a fixture using b2d.polyH
+b2d.poly = function(){var g=G(arguments),
+    //SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?
+    //but can not pass den? who cares!
+
+    polyH = b2d.polyH.apply(null, g),
+    fixt = b2d.fixt(polyH).den(1).fric(.2).rest(.2)
+    if(g.n){fixt.isSensor=true}
+    return fixt}
+b2d.polySens = function(kind){//necessary?
     var poly= b2d.poly.apply(null, _.rest(arguments))
-        poly.sensor(true).K(kind)
+    poly.sensor(true).K(kind)
     return poly}
+
+
+// compare fixt vs fixtParse
+
+
+b2d.fixt = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
+
+    // simply makes one fixt,
+    // tries to set its shape
+    // and returns it
+
+    //you can pass in a pre-made shape
+    if( b2d.isShape(shape) ){ fixt.shape = shape }
+
+    //or..
+
+    // if you pass it an array, it makes a polyH from it
+    // from verts/arr (confirmed)
+
+    else if( A(shape) ){  fixt.shape = b2d.polyH.apply(b2d, g)  }
+
+    // or if you passed in anything (number(s))
+    // it makes a circle or poly shape, depending on how many numbers you passed
+
+    else if(len==1 || len==3){ fixt.shape = b2d.circH.apply(b2d, g) }
+    else if( len==2 || len > 3 ){ fixt.shape = b2d.polyH.apply(b2d,g) }
+
+    return fixt
+
+}
+
+
+
+b2d.fixtC = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
+
+    if( b2d.isShape(shape) ){ fixt.shape = shape }
+
+    else if( A(shape) ){  fixt.shape = b2d.polyH.apply(b2d, g)  }
+
+    else if(len==1 || len==3){ fixt.shape = b2d.circH.apply(b2d, g) }
+
+    else if( len==2 || len > 3 ){ fixt.shape = b2d.polyH.apply(b2d,g) }
+
+    return fixt
+
+}
+
+
+
+
+
 b2d.fixtParse=function(arr){
 
 //takes array of arrays
+
 //if something in array is NOT array, it assumes it is already a fixt
+
 //but if it IS an array, it makes it into a fixture
 
 
@@ -605,254 +670,106 @@ b2d.fixtParse=function(arr){
 
         if( !A(fixt) ){ return fixt }
 
-        if( fixt.isSensor ){return b2d.polySens.apply(null, fixt)}
 
+        if( fixt.isSensor ){// weird
+            return b2d.polySens.apply(null, fixt)}
 
         len = fixt.length
+
         return (len==1)? b2d.circ(fixt[0])
             :(len==2)? b2d.poly.apply(null,fixt)
             :(len==3)? b2d.circ.apply(null,fixt)
-            :b2d.poly.apply(null, fixt)
-    }
-
+            :b2d.poly.apply(null, fixt)}
 
 
     return _.map(arr, func)
 
-      }
-b2d.fixt = function(shape){
-    var g=G(arguments), len=g.length
-
-    var fixt= new b2d.Dynamics.b2FixtureDef()
-
-    if( b2d.isShape(shape) ){ fixt.shape = shape }
-
-    else if( A(shape) || len==2 || len > 3 ){
-
-        fixt.shape = b2d.polyH.apply(b2d,g)
-    }
-
-    else if(len==1 || len==3){
-        fixt.shape = b2d.circH.apply(b2d, g)
-    }
-
-    return fixt
 }
-b2d.poly = function(){var g=G(arguments),
-// SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?
 
-        polyH = b2d.polyH.apply(null, g),
 
-        fixt = b2d.fixt( polyH  )
 
-    fixt.density= 1
-    fixt.friction= .2
-    fixt.restitution = .2
-    if(g.n){ fixt.isSensor = true }
-    return  fixt}
-b2d.circ = function(rad,x,y){
-    var g= G(arguments),fixt,circ
-    rad = N(g[0])?g[0]:50
-    x=N(g[1])?g[1]:0
-    y=N(g[2])?g[2]:0
-    circ = b2d.circH(rad).xy(x,y)
-    fixt = b2d.fixt(circ)
-    if(g.n){fixt.isSensor=true}
-    return fixt.den(1)
-}
-b2d.rec = function(wd,ht,x,y,rot){
-    var g= G(arguments),fixt,rec
+//
 
-    wd = N(g[0])?g[0]:50
-    ht = N(g[1])?g[1]:50
 
-    x=N(g[2])?g[2]:0
-    y=N(g[3])?g[3]:0
-    rot=N(g[4])?g[4]:0
 
-    rec = b2d.polyH(wd,ht,x,y,rot)
 
-    fixt = b2d.fixt(rec)
-    if(g.n){fixt.isSensor=true}
-    return fixt.den(1)
-}
+b2d.hasVerts=function(poly){return poly.m_List.get(0)}
 b2d.overlapping=function(b1, b2){
     var v1=b1.polyVerts(),
         v2=b2.polyVerts()
     var p = v1.union(  v2 )
-    return !(_.isEqual(p.verts(),v1.verts()) || _.isEqual(p.verts(),v2.verts()))
-}
-b2d.polyDot=function(p){
-    p=A(p)?p: p.verts()
-    _.each(p,
-        function(v){w.dot(V(v) )})
+    return !(_.isEqual(p.verts(),v1.verts()) || _.isEqual(p.verts(),v2.verts()))}
+b2d.polyDot=function(verts){// see f.dots
+
+    var t = 0
+    _.each(
+
+        A(verts)? verts : verts.verts(), //combine with b2d.verts
+
+        function(v){
+          setTimeout(function(){
+              w.dot(V(v))}, t)
+            t+=100
+        }
+    )
 
 }
-b2d.isFixt=function(fixt){
-    if(!fixt){return false}
-    return fixt.constructor.name=="b2Fixture"}
-
-
-
-
-
-SUBPOLYCIRC=function(){w=b2d.W()
-
-    b = w.B(300, 300, 100,100).stat()
 
 
 
 
 
 
-    b.minusPolyCirc(400,300,100,10)
 
 
 
 
-}
 DIF=function(){w=b2d.W()
-    b= w.stat(300,400 , b2d.poly(100,100) )
-    b2 = w.B(300, 400, 'r', [-100,10],[-80, -40],[0,-200],[100,0])
-    b.sub( b2 )}
-MINUS=function(){w=b2d.W()
-
-    b = w.dyn(300,400).stat()
-    f = b.fixt( b2d.poly(100,100) )
 
 
-    b2 = w.B(300, 380, [
-        ['r', [-100,10],[-80, -40],[0,-200],[100,0]],
-
-        ['b', 40, 70, 20, -20],
-
-        ['o', 40, 70, -20,20]
-
-    ]).rot(-20).stat()
+    b = w.brick(140,140,100,100).rot(20).DIFF(w.brick(100,100,100,100).rot(45), '-')
 
 
-    fs = b2.fixts()
+    w.stat(300,400 , b2d.poly(100,100) ).sub( w.B(300, 400, 'r', [-100,10],[-80, -40],[0,-200],[100,0]) )
+
+    w.B(450, 300, 100,100).stat().minusPolyCirc(550,300, 100,20)
 
 
-    p = f.minus( fs[0], fs[1], fs[2] )
+    fs = w.B(600, 380, [
+        ['r', [-100,10],[-80, -40],[0,-200],[100,0]],['b', 40, 70, 20, -20],['o', 40, 70, -20,20]
+    ]).rot(-20).stat().fixts()
+    w.dyn(720, 400).stat().sep(
+        w.dyn(600,400).stat().fixt( b2d.poly(100,100) ).minus(fs[0],fs[1],fs[2]))
 
-    // p = Math.poly(p).difference(  b2.fixts()[1].polyVerts() )
 
-    w.dyn(500, 400).stat().sep( p )
+    b2= w.stat(830,300)
+    b2.poly( 100,100  )
+    b2.poly( 100,100, 0, 0, 45  )
+    b2.DIF(w.brick(930,400,200,200),'-')
 
-}
-BODMINUS=function(){w=b2d.W()
-
-    b= w.dyn(300,400).stat()
-
-    f = b.fixt( b2d.poly(100,100) )
-
-    b2 = w.B(300, 400, [
-        ['r', [-100,10],[-80, -40],[0,-200],[100,0]],
-        ['b', 20,50]
-    ]).stat()
-
-    w.dyn(500, 400).stat().sep(  b2.minus(b)   )
+    ///
+    ///
+    setTimeout(function(){
+        b.dyn(); b2.dyn()
+    },3000)
 
 }
-REDUCE=function(){w=b2d.W()
+CIRCTOPOLY=function(){w=b2d.W()
 
-    b = w.dyn(300, 400).stat()
-    f = b.poly(100,200)
-    f1 = b.poly(200,100, 100,0)
-    f2 = b.poly(200, 100, 100,0,36)
-    f3 = b.poly(20,20, 200, 0)
+    b = w.S(300, 300, 50)
+    r = b.fixt().shape().m_radius*30
+    b2  = w.S(600, 400)
 
-    // u =  f.union( [f1,f2] )
+    c = b2d.polyCirc(r, 10)
 
-    u=b.union()
+    c = _.map(c, function(v){return [v.x, v.y]})
 
-    b2 = w.stat(600,300).conc(  u).dyn()
-
-    // body.polyVerts() does an automatic union of ALL its verts! i think :)
-
-}
-GLUE=function(){w=b2d.W({g:0})
+    b2.poly.apply(b2, c)
 
 
-    /*
+    h  = b2.fixt().shape()
 
-     b= w.B(300,200, 40,140,20,0,20).stat()
-
-     b2= w.B(400,400, 140,40).stat()
-
-     b.glue(b2)
-
-     setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
-
-     */
-
-    w.glueBall = function(x,y){var w=this
-        var bl = w.B(x,y,20).K('bl')
-        w.beg(function(cx){
-            cx.with('bl', function(othF){var bl=this.B()
-                if(!bl.GetJointList()){
-                    bl.glue( othF.B() )
-                }
-            })})
-
-        return bl}
-
-
-    bl = w.glueBall(400, 500)
-
-    w.glueBall(300, 500)
-    w.glueBall(400, 300)
-    w.glueBall(300, 100)
-    w.glueBall(400, 200)
-    w.glueBall(100, 300)
-    w.glueBall(300, 300)
-
-    y = w.ship()
-
-}
-GLUE2=function(){w=b2d.W({g:0})
-
-
-    /*
-
-     b= w.B(300,200, 40,140,20,0,20).stat()
-
-     b2= w.B(400,400, 140,40).stat()
-
-     b.glue(b2)
-
-     setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
-
-     */
-
-
-
-    y = w.ship()
-
-    w.beg(function(cx){
-
-        cx.with('ship','wall', function(){
-
-            w.B(y.X(), y.Y(), 30).stat()
-
-        })
-
-    })
-
-}
-FSPRITE=function(){w = b2d.W()
-
-    b = w.ball(100,200,100)
-
-    f= b.fixts()[0]
-
-    w.s.cir(100,100,50, 'r')
-
-    w.s.rect(400,200,30,50, 'b')
-
-    w.s.poly([[200,100],[300,200],[50,400]],'y')
-
+    b2.dyn()
 }
 CIRCS=function(){ w=b2d.W({g:0})
 
@@ -873,6 +790,19 @@ CIRCS=function(){ w=b2d.W({g:0})
     b2.RECT(  100,100)
     b2.RECT(  100,100, 50, 50)
     b2.RECT(  100,100,-150,-150,45)
+
+}
+FSPRITE=function(){w = b2d.W()
+
+    b = w.ball(100,200,100)
+
+    f= b.fixts()[0]
+
+    w.s.cir(100,100,50, 'r')
+
+    w.s.rect(400,200,30,50, 'b')
+
+    w.s.poly([[200,100],[300,200],[50,400]],'y')
 
 }
 NEWFX1=function(){w=b2d.W()
@@ -912,234 +842,6 @@ NEWFX=function(){w=b2d.W()
 
 
 }
-VERTS=function(){w=b2d.W()
-
-    b = w.brick(140,140,100,100).rot(20)
-
-    b2 = w.brick(100,100,100,100).rot(45)
-
-
-    t = b.tf()
-    v = b.verts()
-
-    wV = b.wVerts()
-
-
-    //first vertex:  x: -50, y: -50,
-
-    // b2d.conc( b.dff(b2).verts() ).stat().X(500)
-
-    b.DIFF(b2, '-')
-
-    setTimeout(function(){b.dyn()},3000)
-
-
-    // w.dot('b',100,30);w.dot('o',170,100);w.dot('b',30,100); w.dot('p',100,170)
-
-
-}
-DEST=function(){w=b2d.W({g:1})
-
-    y= w.ship().linDamp(10)
-
-    b = w.brick(800,300,200,800).K('terr')
-
-    can=true
-
-    w.s.X(5000)
-
-
-    w.beg(function(cx){var fixt
-
-        if(fixt=cx.with('bul','terr')){
-
-            bull = fixt[0].B()
-            terr = fixt[1].B()
-            bX= bull.X()
-            bY= bull.Y()
-            bull.kill()
-
-
-            if(can){can=false
-
-                setTimeout(function(){// br =  w.brick(bX,bY,60,60).rot(45)
-
-                    br=b2d.conc(
-
-                        b2d.polyCirc(20,7)
-
-                    ).XY(bX,bY)
-
-                    b.each(function(f){
-
-                        f.DIFF(br)
-
-                    })
-
-
-                    br.kill()
-
-
-
-                    can=true}, 10)
-
-
-                killIfSmall=function(f){var area=this.area()
-
-                    if( area < 20){
-                        $l('too small: ' +area )
-                        f.kill()  }
-
-                }
-
-            }
-
-        }
-
-    })
-    w.show(function(){return b.num()})
-
-
-}
-DEST1=function(){w=b2d.W({g:0})
-    y= w.ship()
-    b = w.brick(400,400,300,300).K('terr')
-
-
-    w.beg(function(cx){var fixt
-
-        if(fixt=cx.with('bul','terr')){
-
-            bull = fixt[0].B()
-            bX= bull.X()
-            bY= bull.Y()
-
-            terrF = fixt[1]
-
-            setTimeout(function(){
-
-                br =  w.brick(bX,bY,100,100).rot(45)
-
-                terrF.DIFF(br)
-
-            },100)
-
-            // w.brick(bull.X(), bull.Y(), 50, 50)
-        }
-
-    })
-
-}
-FIXTDIFF=function(){w=b2d.W()
-
-    b= w.stat(300,300)
-    f = b.poly( 100,100  )
-    f2 = b.poly( 100,100, 0, 0, 45  )
-
-    b2= w.brick(400,400,200,200)
-
-    // f.DIFF(b2);f2.DIFF(b2)
-
-    b.DIF(b2,'-')
-
-
-}
-FIXVSDEF=function(){
-
-    w=b2d.mW()
-
-    fd = b2d.fixt()
-
-    b =   w.CreateBody( b2d.dyn()  )
-
-    f = b.CreateFixture(fd)
-}
-TESTPOLYF=function(){w=b2d.W(); $l('testpolyf')
-
-    w.dyn(400,400, [
-
-        b2d.circ(20),
-        b2d.circ(5).bits(1, 2), //cat is 1, but will only collide with 2's
-        b2d.circ(10, 100, 100, '-'),
-        b2d.circ(10, 100, -100),
-
-        poly = b2d.poly(10, 300, '-'), //sets as sensor
-        poly2 = b2d.poly(300, 10)
-
-    ])
-
-    body =  w.dyn(300, 400, [
-        polyFD =  b2d.poly(200,100),
-        circFD =  b2d.circ(40)
-    ])
-
-    circF = body.fixt().K('happy')
-    polyF = circF.next()
-
-    $l(circF.is('sad'))  //false
-    $l(circF.is('happy'))  //true
-    $l(circF.is(polyF))  //false
-    $l(circF.is(circF))  //true
-}
-JUMPERS=function(){
-
-
-
-    w=b2d.mW({grav:100})
-
-
-    a=  w.dyn(100,200, b2d.poly(150,100 )).den(.5)
-
-
-
-
-    c=  w.dyn(500,400, b2d.poly(50,100 )).den(.5)
-
-    b=    w.dyn(100,10, b2d.poly(30,60 )).den(.5).rest(2)
-
-
-
-    _.each([a,b,c], function(b){
-
-        b.click(function(){
-
-            this.I(0, -50)})
-    })
-
-
-
-}
-MASS=function(){w = b2d.mW(
-    {
-        grav:0
-    }
-)
-
-
-
-
-    r = w.circ(  200, 200,  50, 'red'  )
-    r.ResetMassData()
-
-
-    b = w.circ(  200, 200,  50, 'blue'  )
-    b.GetFixtureList().SetDensity(1)
-
-
-    y = w.circ(  200, 200,  50, 'yellow'  )
-    y.GetFixtureList().SetDensity(1)
-    y.ResetMassData()
-
-
-
-    p = w.circ(  200, 200,  50, 'pink'  )
-    p.GetFixtureList().SetDensity(10000)
-    p.ResetMassData()
-
-
-
-
-}
 FIXTLIST=function(){//works
 
     w = b2d.mW()
@@ -1154,7 +856,7 @@ FIXTLIST=function(){//works
 
     f = b.GetFixtureList()
 
-    w.startKilling()
+
 
     b.each(
 
@@ -1249,7 +951,7 @@ FIXTURES=function(){w=b2d.W({
     fd = b2d.poly(30,100).sensor(true)
 
 
-     b = w.dyn(300,300, [   [40]  ]).K('man')
+    b = w.dyn(300,300, [   [40]  ]).K('man')
 
     f= b.fixt( fd )
 
@@ -1259,8 +961,8 @@ FIXTURES=function(){w=b2d.W({
 
     w.beg(function(cx){
 
-      //  $l('a body: ' + cx.a().K() + ' - a fixt: ' + cx.A().K()   )
-       // $l('b body: ' + cx.b().K() + ' - b fixt: ' + cx.B().K()   )
+        //  $l('a body: ' + cx.a().K() + ' - a fixt: ' + cx.A().K()   )
+        // $l('b body: ' + cx.b().K() + ' - b fixt: ' + cx.B().K()   )
 
         if( cx.with('arm') ){$l('arm!')
 
@@ -1275,389 +977,233 @@ FIXTURES=function(){w=b2d.W({
     w.brick(500,200,40,40)
 
 }
-GRAVITY=function(){  w=b2d.W({g:0})
+FDOT=function(){w=b2d.W()
 
-    b = w.ball(100,100,100).constF(5000, -200000 )
+    b1 = w.S(400,400,50)
+    f1 = b1.fixt()
+    f1.dot()
 
+    b2 = w.S(800,400,80,80)
+    f2 = b2.fixt()
+    f2.dot()
+    f2.C('p')
+
+
+    verts = [ [-100,0], [0,100], [100,-20] ]
+
+    b=w.S(200, 200, [verts]).rot(25)
+
+    f=b.fixt()
+
+    w.S(400, 200, [f.verts()])
+    w.S(600, 200, [f.verts('+')])
+
+    v = f.wVerts()
+    _.each(v, function(v){w.dot(v)})
+
+    //need a class the represents an array of verts.. is it the gPoly ??? !!!! no cant be neg
+    //its a VertsArr
+
+    b = w.S(100,500, 50,50)
+    f= b.fixt()
+    fh= f.shp()
+
+    h= b2d.polyH(100,50)
+
+    f.shp(h)
 }
-DEMO_IMPULSE =function(){
-
-    b2d.mW({ grav: 0 })
-
-    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
-
-    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
-
-    test={
 
 
-        impulse: function(){
+TESTPOLYF=function(){w=b2d.W(); $l('testpolyf')
 
-            body.ApplyImpulse(
-
-                V(10, -30), body.worldCenter()
-
-            )},
-
-
-
-        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
-
+    b=w.B(400,400, 'o', [
+        b2d.circ(40),
+        b2d.circ(5).bits(1,2), //cat is 1, but will only collide with 2's
+        b2d.circ(10, 100, 100, '-'),
+        ['w', b2d.circ(10, 100, -100) ],
+        poly =b2d.poly(10, 300, '-') , //sets as sensor
+        [ 'b', poly2 =b2d.poly(300, 10) ]
+    ])
 
 
-        force: function(){
+    f= b.fixts()[2]
+    h= f.shp()
 
-            setInterval(
+    body =  w.B(300, 400, 'r', [
+        [polyFD =  b2d.poly(200,100)],
+        ['g', circFD =  b2d.circ(40)]
+    ])
 
-                function(){
+    circF = body.fixt().K('happy')
+    polyF = circF.next()
 
-                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
+    $l(circF.is('sad'))  //false
+    $l(circF.is('happy'))  //true
+    $l(circF.is(polyF))  //false
+    $l(circF.is(circF))  //true
+}
 
-                }, 100)
+
+
+
+
+MASS=function(){w = b2d.W({g:0}).db()
+    y = w.B(400,200, 'y', 50).den(.1).lV(10)
+    r = w.B(200,500, 'r', 40).den(1)
+    b = w.B(200,500, 'b', 25).den(100)
+    p = w.B(800,200, 'p', 10).den(1000).lV(-10)
+}
+
+
+
+
+
+//destructable terrain
+DEST=function(){w=b2d.W({g:1})
+
+    y= w.ship().linDamp(10)
+
+    b = w.brick(800,300,200,800).K('terr')
+
+    can=true
+
+    w.s.X(5000)
+
+
+    w.beg(function(cx){var fixt
+
+        if(fixt=cx.with('bul','terr')){
+
+            bull = fixt[0].B()
+            terr = fixt[1].B()
+            bX= bull.X()
+            bY= bull.Y()
+            bull.kill()
+
+
+            if(can){can=false
+
+                setTimeout(function(){// br =  w.brick(bX,bY,60,60).rot(45)
+
+                    br=b2d.conc(
+
+                        b2d.polyCirc(20,7)
+
+                    ).XY(bX,bY)
+
+                    b.each(function(f){
+
+                        f.DIFF(br)
+
+                    })
+
+
+                    br.kill()
+
+
+
+                    can=true}, 10)
+
+
+                killIfSmall=function(f){var area=this.area()
+
+                    if( area < 20){
+                        $l('too small: ' +area )
+                        f.kill()  }
+
+                }
+
+            }
 
         }
 
-
-
-    }
-
-
+    })
+    w.show(function(){return b.num()})
 
 
 }
-DEMO_SCALE =function(){b2d.mW()
+DEST1=function(){w=b2d.W({g:0})
+    y= w.ship()
+    b = w.brick(400,400,300,300).K('terr')
 
-    var  radius=10, x=400, y=440, v={x:0, y:0}
 
-    //mouse joints messed up
+    w.beg(function(cx){var fixt
 
-    w.bumper(400,300,40)
-    w.bumper(290,350,40)
-    w.bumper(280,220,40)
+        if(fixt=cx.with('bul','terr')){
 
+            bull = fixt[0].B()
+            bX= bull.X()
+            bY= bull.Y()
 
-    addBody()
+            terrF = fixt[1]
 
-    cjs.tick( destroyAndAddBody )
+            setTimeout(function(){
 
+                br =  w.brick(bX,bY,100,100).rot(45)
 
+                terrF.DIFF(br)
 
-    function addBody(){
+            },100)
 
-        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
-
-
-    function destroyAndAddBody(){
-
-        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
-
-        radius += .1
-
-        x = body.X()
-
-        y = body.Y()
-
-        v = body.lV()
-
-        addBody() }
-
-
-}
-MEMORY=function(){  s = cjs.S().A(ct= cjs.ct())
-
-
-
-    grid=[
-
-        ['guy','me',0,0],
-        [0,'me',0,0],
-        [0,0,0,0],
-        [0,'me','chicks','me']
-
-    ]
-
-
-    wGuy=function(){
-        var x=0,y=0
-        _.each(grid,  function(row,i){
-            _.each(row,function(cell,j){
-                if(cell=='guy'){ x=j, y=i}})})
-        return {x:x,y:y}}
-
-
-    dGuy=function(){
-
-        var p=wGuy()
-
-        grid[p.y][p.x]=0
-        if( grid[p.y+1][p.x]=='chicks') {alert('win')}
-        else if( grid[p.y+1][p.x]==0){
-            grid[p.y+1][p.x]='guy'
-            playerGrid()
-
-        } else {alert('lose!')}}
-
-
-
-    rGuy=function(){
-        var p=wGuy()
-        grid[p.y][p.x]=0
-        if( grid[p.y][p.x+1]=='chicks') {alert('win')}
-        else if( grid[p.y][p.x+1]==0) {
-            grid[p.y][p.x+1]= 'guy'
-            playerGrid()} else {alert('lose!')}}
-
-
-
-
-    _.each(grid, function(row,i){
-        _.each(row, function(cell,j){
-            ct.A(
-                cjs.rect(30,40).XY(j*100+100,i*100+100))
-            if(cell=='me'){
-                ct.bm('me',
-                    function(b){
-                        b.XY(j*100+100,  i*100+100
-                        ).sXY(.1)})}})})
-
-
-
-
-    playerGrid=function(){
-        _.each(grid, function(row,i){
-
-            _.each(row, function(cell,j){
-
-                ct.A( cjs.rect(30,40).XY(j*100+100, i*100+100))
-
-                if(cell=='guy'||cell=='chicks'){
-                    ct.b(cell, function(b){
-                        b.xy(  j*100+100,  i*100+100 ).sXY(.1)})}
-
-            })})}
-
-
-
-    setTimeout( function(){
-        ct.remove()
-        s.A( ct = cjs.ct())
-        playerGrid()},  3000)
-
-
-
-    $.kD('d', dGuy)
-
-    $.kD('r', rGuy)
-
-
-
-}
-SLING=function(){s=cjs.S()
-
-    startpoint={}
-
-    slingshot = cjs.shape().a2(s)
-
-    onMouseDown=function(event){
-
-        if(ball.hitTestPoint(event.x, event.y)){
-            mouseJoint = w.J(
-
-                b2d.createMouseJointDef(
-                    w.ground, //?
-
-                    ball.body,
-                    event.x, event.y, 100000
-                )
-            )
-
-            startpoint.x = event.x
-            startpoint.y = event.y
-
+            // w.brick(bull.X(), bull.Y(), 50, 50)
         }
-    }
-
-
-    onMouseMove=function(event){
-        if(mouseJoint !=null){
-            mouseJoint.setTarget(event.x, event.y)
-            slingshot.clear()
-            slingshot.setLineStyle(5, 0xff0000, 1)
-            slingshot.beginPath()
-            slingshot.mt(self.startpoint.x, self.startpoint.y)
-            slingshot.lt(event.x, event.y)
-            slingshot.ep()
-        }
-    }
-
-
-    onMouseUp=function(event){
-
-
-
-        if (mouseJoint != null){
-            w.dJ( mouseJoint)
-
-            mouseJoint = null
-
-            slingshot.clear()
-
-            strength = 1
-
-            xVect = ( startpoint.x-event.x)*strength
-            yVect = ( startpoint.y-event.y)*strength
-
-            ball.body.applyLinearImpulse(  xVect,   yVect, ball.getX(), ball.getY())
-
-        }
-    }
-
-}
-PHONEJUMP=function(){b2d.mW({W:300, H:400,
-    walls:function(){
-        w.brick(10,300, 40, 600).K('leftWall')
-        w.brick(450,300, 40, 600).K('rightWall')
-        w.brick(300, 0, 2400, 40).K('ceiling')
-        w.brick(300, 400, 800, 40).K('floor')}})
-
-    w.brick(200,400, 80,20)
-    w.brick(300,200,80,20)
-
-    p = w.addMe()
-
-    $.joystick()
-
-    cjs.tick(function(){
-
-        if(cjs.Keys.up){     p.I(0,-100)}
-        if(cjs.Keys.left){   p.I(-20, 0)}
-        if(cjs.Keys.right){  p.I(20, 0)}
 
     })
 
 }
-UNIONNOTTOUCHING=function(){w=b2d.W()
-
-
-    b = w.B(200,200,100,100).stat()
-    b2 = w.B(400,400,100,100).stat()
-
-    p = b.polyVerts().union( b2.polyVerts()  )
-    _.each(p.verts(), function(v){w.dot(v[0],v[1])})
-    v1=b2.polyVerts().verts()
-    v2=p.verts()
-    _.isEqual(v1,v2) // true
-
-    p2 = b2.polyVerts().union( b.polyVerts()  )
-    _.each(p2.verts(), function(v){w.dot('r',v[0],v[1])})
 
 
 
-    b3 = w.B(500,200,100,100).stat()
-    b4 = w.B(550,250,100,100).stat()
-
-    p3 = b3.polyVerts().union( b4.polyVerts()  )
-
-    _.each(p3.verts(), function(v){w.dot(v[0],v[1])})
-
-
-    b5 = w.B(700,200,100,100).stat()
-    b6 = w.B(800,200,100,100).stat()
-
-    p4 = b5.polyVerts().union( b6.polyVerts()  )
-
-    _.each(p4.verts(),
-        function(v){w.dot(v[0],v[1])})
-
-
-}
-BODVERTS=function(){w=b2d.W()
-
-
-    b = w.B(200,200,100,100).stat()
-    b.poly(20,200)
-
-    fs = b.fixts()
-
-    f1=fs[0]
-    f2=fs[1]
-
-    p = f1.polyVerts().union(   f2.polyVerts()  )
-
-    b2d.polyDot(p)
-
-    relP = b.rel(p)
-    b2d.polyDot(  relP )
 
 
 
-    w.B(400,200).conc(  relP )
-
-    w.B(500,400, [-100,0],[0,-100],[100,50]  )
-
-    w.B(500,430).conc( [[-100,0],[0,-100],[100,50]]  )
-    //make conc happen automatically whenever array of points specified
-    //conCAVE hull??
-    //union of 2 non overlapping fixtures, can just result in a body with two fixtures.. yea, why are unions not just creating bodies with all the fixtures?  no need combine two fixtures into one, right???!
 
 
-}
-CLONE=function(){w=b2d.W()
-
-    w.roof.kill()
-
-    // x = w.B(400,400, 50,200).stat().poly(200,20)
 
 
-     b = w.B(400,400, [
-
-         [20],
-         [20,100,0],
-         [20,0,100],
-         [100,200]
-
-     ])
 
 
-    setInterval(function(){
+//OLD
+f.setKill=function(){var f=this, b= f.body(), w=b.wor()
+    w.flag( flagNum = Math.random() )
+    cjs.tick(function(){    if(w.flagged(flagNum)){ f.kill()     }      })
+}//clever use of flagging.. but not needed
+f.Vold = function(){//f.rotVerts=
 
-        b.I(0,-1000)
-        b.clone()
+    return this.wVerts()
 
-    }, 3000)
+    newX= function(x,y, rot){
+        rot = Math.toRadians(rot)
+        x *= Math.cos(rot).toFixed(3)
+        y *= Math.sin(rot).toFixed(3)
+        return x - y
+    }
+    newY= function(x,y,rot){
+        rot = Math.toRadians(rot)
+        return (x*Math.sin(rot))+(y*Math.cos(rot))
 
-    w.ship()
-
-
-}
-PUZZLE=function(){w=b2d.W().debug()
-
-    _.times(10,function(){
-
-        w.B(400,400, [
-
-            ['r',20],
-            ['b',20,100,0],
-            ['y',20,0,100]
-
-
-        ])
-    })
-}
-CIRCTOPOLY=function(){w=b2d.W()
-
-    b = w.S(300, 300, 50)
-    r = b.fixt().shape().m_radius*30
-    b2  = w.S(600, 400)
-
-    c = b2d.polyCirc(r, 10)
-
-    c = _.map(c, function(v){return [v.x, v.y]})
-
-    b2.poly.apply(b2, c)
+    }
+    var verts = this.verts(),b=this.B()
+    return _.map(verts, function(v){
+        var x= v.x, y= v.y
+        return V(
+                newX(x,y, b.rot()) + b.X(),
+                newY(x,y, b.rot()) + b.Y())})
+}//this becomes wVerts
+f.DIFFold=function(b2){
+    var f=this,b=f.B(),g=G(arguments),b2=g[0]//,diff
 
 
-    h  = b2.fixt().shape()
+    // diff =  Math.poly( f.V() ).difference(  Math.poly( b2.V() ) )
 
-    b2.dyn()
-}
+    diff = f.minus(b2)
+
+    //if( ! b2d.hasVerts(diff) ){ f.kill(); return }
+
+    // b.conc(   b.rel(diff) )
+
+    b.conc(   diff )
+    f.kill()
+    if(g.n){b2.kill()}
+
+    return this}

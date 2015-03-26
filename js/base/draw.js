@@ -20,7 +20,7 @@ Math.lineCenter=function(x1,y1,x2,y2) {
         x= lowerX + (upperX-lowerX)/2
         y = lowerY + (upperY-lowerY)/2
 
-        return {x:x, y:y}
+        return V(x,y)
     }
 }
 
