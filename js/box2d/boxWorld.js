@@ -178,7 +178,7 @@ b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
 
 
 
-    w.dyn=w.body=w.A=function(x,y,fD){var w=this, b,bd
+    w.dyn=w.body=w.A=function(x, y, fD){var w=this, b,bd
 
      //pass body def
      if(b2d.isBDef(x)){ bd=x; fD=y }
@@ -195,7 +195,7 @@ b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
 
      // pass in one fixture or an ARRAY( of fixts )
 
-     if(fD){b.fixt( fD )}
+     if(fD){ b.fixt( fD ) }
 
      return b}
 
@@ -239,36 +239,67 @@ BODY=function(){w=b2d.W(); w.brick(600,600, 20,1000)
 
 
 
-w.B=w.D=function(x,y){var w=this,
+w.B=w.D=function(x,y){
+    var w=this, bd, b, fixts,
+        g=G(arguments),
+        x=g[0],
+        y=g[1],clas
+    if(S(_.last(g))){clas= g.pop()}
+    if(N(x)){bd=b2d.dyn(x,y); fixts=_.rest(g,2)}
+    else {
+        if(b2d.isBDef(x)){bd=x} else {x=V(x); bd=b2d.dyn(x.x,x.y)}
+        fixts=_.rest(g)}
+    b=w.CreateBody(bd)
+    b.H.apply(b,fixts)
+    if(clas){b.K(clas)}
+    return b
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+w.S=function(x,y){var w=this,
 
         g=G(arguments),
         x=g[0], y=g[1],
-        bd, b, fixts
+        bd, b, fixts,clas
+
+    if(S(_.last(g))){clas= g.pop()}
+
 
     if(N(x)){
-        bd=b2d.dyn(x,y)
-        fixts=_.rest(g,2)}
-    else {
-        if(b2d.isBDef(x)){bd=x}
-        else {x=V(x); bd=b2d.dyn(x.x,x.y)}
-        fixts=_.rest(g)}
+            bd=b2d.stat(x,y)
+            fixts=_.rest(g,2)}
+        else {
+            if(b2d.isBDef(x)){bd=x}
+            else {x=V(x); bd=b2d.stat(x.x,x.y)}
+            fixts=_.rest(g)}
 
-    b = w.CreateBody(bd)
+        b = w.CreateBody(bd)
 
-    if(fixts.length){
+        if(fixts.length){
 
-        b.H.apply(b,
+            b.H.apply(b,
 
 
-            fixts
-         //   _.map(fixts, function(f){   return A(f)?f:[f]  })
+                fixts
+                //   _.map(fixts, function(f){   return A(f)?f:[f]  })
 
-        )
+            )
 
-    }
+        }
 
-    return b}
-
+    if(clas){b.K(clas)}
+        return b}
 
 
 
@@ -396,7 +427,7 @@ w.B=w.D=function(x,y){var w=this,
 
 
 
-    w.circX = function (x, y, rad, col) {var ball, w=this
+    w.circ = function (x, y, rad, col) {var ball, w=this
 
         // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
         var wd = this.s.W(),
@@ -548,7 +579,6 @@ w.B=w.D=function(x,y){var w=this,
 
         return bod}
 
-    w.S=function(){return this.B.apply(this,arguments).stat()}
     w.K=function(){return this.B.apply(this,arguments).kin()}
 
 

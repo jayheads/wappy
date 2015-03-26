@@ -28,6 +28,7 @@ fixtDef=function() {
         this.restitution = rest;
         return this
     }
+
     fd.grp = fd.group = fd.index = fd.gI = function (a) {
         if (U(a)) {
             return this.filter.groupIndex
@@ -462,7 +463,11 @@ f.area=function(){
 //easel
 f.stg = function(){return this.wor().s}
 f.dot = function(col){var f=this, w= f.wor(), cent=f.cent()
-    return S(col)?w.dot(col,cent):w.dot(cent)}
+
+    if(S(col)){   w.dot(col, cent) } else{w.dot(cent)}
+
+return this}
+
 
 f.dots=function(){
     b2d.polyDot( this.wVerts() )
@@ -609,8 +614,6 @@ b2d.polySens = function(kind){//necessary?
 
 
 // compare fixt vs fixtParse
-
-
 b2d.fixt = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
 
     // simply makes one fixt,
@@ -636,9 +639,6 @@ b2d.fixt = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= n
     return fixt
 
 }
-
-
-
 b2d.fixtC = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
 
     if( b2d.isShape(shape) ){ fixt.shape = shape }
@@ -652,11 +652,6 @@ b2d.fixtC = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= 
     return fixt
 
 }
-
-
-
-
-
 b2d.fixtParse=function(arr){
 
 //takes array of arrays
@@ -685,14 +680,7 @@ b2d.fixtParse=function(arr){
     return _.map(arr, func)
 
 }
-
-
-
 //
-
-
-
-
 b2d.hasVerts=function(poly){return poly.m_List.get(0)}
 b2d.overlapping=function(b1, b2){
     var v1=b1.polyVerts(),
@@ -715,37 +703,72 @@ b2d.polyDot=function(verts){// see f.dots
 
 }
 
+FIXTS=function(){ w=b2d.W({g:0})
+    b = w.dyn(300, 300)
+    b.CIRC('o', 20)
+    b.CIRC('b', 100, 140, 0)
+    b.CIRC('r', 20, 100, 100)
+    b.RECT('g', 100,100)
+    b.RECT('y', 100,100,50,50)
+    b.RECT('p', 100,100,-150,-150,45)
+
+    b2 = w.B(800, 300)
+
+    b2.fixt(20).C('r')   //circ
+
+    b2.fixt(20, 100, 100).C('b')  //circ
+
+    b2.fixt(100, 50)   //rect
+    b2.fixt(100, 50, -100,-100)   //rect
+    b2.fixt(100, 50, -100,0,25)   //rect
+
+    b2.fixt([[-100,0], [0,-100], [100,40]]   )   //poly
 
 
+    b3 = w.B(1000, 300)
 
+    b3.fixt(  b2d.fixt(20) ) //circ
+    b3.fixt(  b2d.fixt(20, 100, 100)  ) //circ
+    b3.fixt(  b2d.fixt(100, 50) ) //rect
+    b3.fixt(  b2d.fixt(100, 50, -100,-100) ) //rect
+    b3.fixt(  b2d.fixt(100, 50, -100,0,25) ) //rect
+    b3.fixt(  b2d.fixt( [-100,0],[0,-100],[100,40]   )).C('g') //poly
 
+    w.B(400,500, 'o', [ ['w',[30,30],[20,40],[10,10]] ])
 
-
-
-
-
+}
 DIF=function(){w=b2d.W()
 
 
-    b = w.brick(140,140,100,100).rot(20).DIFF(w.brick(100,100,100,100).rot(45), '-')
+    b = w.S(140,140,100,100).rot(20).DIFF(
+        w.S(100,100,100,100).rot(45), '-')
 
 
-    w.stat(300,400 , b2d.poly(100,100) ).sub( w.B(300, 400, 'r', [-100,10],[-80, -40],[0,-200],[100,0]) )
-
-    w.B(450, 300, 100,100).stat().minusPolyCirc(550,300, 100,20)
 
 
-    fs = w.B(600, 380, [
-        ['r', [-100,10],[-80, -40],[0,-200],[100,0]],['b', 40, 70, 20, -20],['o', 40, 70, -20,20]
-    ]).rot(-20).stat().fixts()
-    w.dyn(720, 400).stat().sep(
-        w.dyn(600,400).stat().fixt( b2d.poly(100,100) ).minus(fs[0],fs[1],fs[2]))
+    b3 = w.S(300,400,'w',100,100)
+    b3.sub(//does not keep color!
+         w.B(300,400, 'r', [-100,10],[-80, -40],[0,-200],[100,0])
+     )
 
 
-    b2= w.stat(830,300)
+    w.S(450,300,'w',100,100).minusPolyCirc(550,300, 100,20)
+
+
+
+
+    fs = w.S(600, 380, [['r', [-100,10],[-80, -40],[0,-200],[100,0]],['b', 40, 70, 20, -20],['o', 40, 70, -20,20]
+    ]).rot(-20).fixts()
+
+    w.S(720,400).sep(
+
+        w.S(600,400).fixt( b2d.poly(100,100) ).minus(fs[0],fs[1],fs[2]))
+
+
+    b2= w.S(830,300)
     b2.poly( 100,100  )
     b2.poly( 100,100, 0, 0, 45  )
-    b2.DIF(w.brick(930,400,200,200),'-')
+    b2.DIF(w.S(930,400,200,200),'-')
 
     ///
     ///
@@ -755,228 +778,49 @@ DIF=function(){w=b2d.W()
 
 }
 CIRCTOPOLY=function(){w=b2d.W()
-
     b = w.S(300, 300, 50)
-    r = b.fixt().shape().m_radius*30
-    b2  = w.S(600, 400)
+    w.B(600,400).poly( b2d.polyCirc(b.fixt().rad(),10))}
+BODYEACH=function(){w = b2d.mW()//works
 
-    c = b2d.polyCirc(r, 10)
-
-    c = _.map(c, function(v){return [v.x, v.y]})
-
-    b2.poly.apply(b2, c)
-
-
-    h  = b2.fixt().shape()
-
-    b2.dyn()
-}
-CIRCS=function(){ w=b2d.W({g:0})
-
-    b = w.dyn(300, 300)
-
-    b.circ('o', 20)
-    b.circ('b', 100, 140, 0)
-    b.circ('r', 20, 100, 100)
-    b.RECT('g', 100,100)
-    b.RECT('y', 100,100,50,50)
-    b.RECT('p', 100,100,-150,-150,45)
-
-    b2 = w.dyn(300, 300)
-
-    b2.circ(  20)
-    b2.circ(  100, 140, 0)
-    b2.circ(  20, 100, 100)
-    b2.RECT(  100,100)
-    b2.RECT(  100,100, 50, 50)
-    b2.RECT(  100,100,-150,-150,45)
-
-}
-FSPRITE=function(){w = b2d.W()
-
-    b = w.ball(100,200,100)
-
-    f= b.fixts()[0]
-
-    w.s.cir(100,100,50, 'r')
-
-    w.s.rect(400,200,30,50, 'b')
-
-    w.s.poly([[200,100],[300,200],[50,400]],'y')
-
-}
-NEWFX1=function(){w=b2d.W()
-
-    b = w.dyn(500, 300)
-    b.fixt(  b2d.fixt(20) ) //circ
-    b.fixt(  b2d.fixt(20, 100, 100)  ) //circ
-    b.fixt(  b2d.fixt(100, 50) ) //rect
-    b.fixt(  b2d.fixt(100, 50, -100,-100) ) //rect
-    b.fixt(  b2d.fixt(100, 50, -100,0,25) ) //rect
-    b.fixt(  b2d.fixt( [-100,0],[0,-100],[100,40]   ) ) //poly
-
-
-    b2 = w.dyn(200, 300)
-
-    b2.shape(20)   //circ
-    b2.shape(20, 100, 100)    //circ
-    b2.shape(100, 50)   //rect
-    b2.shape(100, 50, -100,-100)   //rect
-    b2.shape(100, 50, -100,0,25)   //rect
-    b2.shape([-100,0], [0,-100], [100,40]   )   //poly
-
-
-}
-NEWFX=function(){w=b2d.W()
-
-
-    b = w.dyn(500, 300)
-    b.fixt( [ [20] ] ) //circ
-
-
-  //  b.fixt( [20, 100, 100]  ) //circ
-  //  b.fixt( [100, 50] ) //rect
-  //  b.fixt( [100, 50, -100,-100] ) //rect
-  //  b.fixt( [100, 50, -100,0,25] ) //rect
-   // b.fixt( [ [-100,0],[0,-100],[100,40]   ] ) //poly
-
-
-}
-FIXTLIST=function(){//works
-
-    w = b2d.mW()
-
-
-    b=w.dyn(100,100,[
-
-        [40], [100,200,100], [50,200], [200,200,300,400]
-
-    ])
-
-
-    f = b.GetFixtureList()
-
-
-
-    b.each(
-
-        function(f){ //bind to this.. when u have time
-
+    b= w.B(100,100,[[40], [100,200,100], [50,200], [200,200,300,400]])
+    b.each(function(f){ //bind to this.. when u have time
             //f.SetSensor(true) //works
-
             // f.remove()
-
             // f.K('destroy')
-
-            $l('shape type: ' + f.GetShape().m_type)
-
-        }
-    )
-
-
+            $l('shape type: ' + f.GetShape().m_type)})
 }
-TESTASHAPE=function(){w=b2d.W()
+GUYINBED=function(){w = b2d.W()
 
-//not working
-
-    w.A(
-        w.dyn(400,400, [
-
-            b2d.A([30,30],[20,40],[10,10])
-        ])
-    )
-
-}
-FIXTURES1=function(){z()
-
-    guyInBed= [[30],[20, 30,30],[100,30]]
-
-    dick = [[50, 300, 0,-100],[50, 100, 150],[50, -100, 150]] //[b2d.poly(50, 300, 0,-100), b2d.circ(50, 100, 150), b2d.circ(50, -100, 150)]
-
-    w=b2d.W({
-        //walls:false
-    })
-
-
-    //w.dyn(400,300, b2d.fixtParse(dick) )
-    //w.A(  b2d.dyn(300,300), guyInBed ) // have to fix w.dyn
-
-    w.dyn(100,100, b2d.fixtParse(guyInBed) )
-
-
-    b = w.A(b2d.dyn(300,300), [
-
-        [40],
-
-        b2d.poly(30,100).sensor(true).K('arm')
-
+    dick = [
+        [50, 300, 0, -100],
+        [50, 100, 150],
+        [50, -100, 150]
+    ]
+    guyInBed = [
+        [30],
+        [20, 30, 30],
+        [100, 30]
+    ]
+    w.B(400, 100, 'y', guyInBed)
+    w.B(100, 100, 'r', [
+        [guyInBed]
     ])
-
-    b.K('man')
-
-
-    w.begin(function(cx){
-
-        //$l('a body: ' + cx.a().K() + ' - a fixt: ' + cx.A().K()   )
-
-        if(cx.with('arm')){
-
-            b.I(50,50)
-            $l('arm!') }
-
-        if(cx.with('arm','brick')){ $l('ok this is cool!')}
-    })
-
-
-    w.brick(500,200,40,40)
+    w.B(100, 100, 'b', [
+        [guyInBed],
+        ['w', dick]
+    ])
+    w.B(400, 100, guyInBed)
 
 }
-FIXTURES=function(){w=b2d.W({
-    //walls:false
-})
-
-
-
-    guyInBed= [[30],[20, 30,30],[100,30]]
-
-    dick = [[50, 300, 0,-100],[50, 100, 150],[50, -100, 150]]
-    //[b2d.poly(50, 300, 0,-100), b2d.circ(50, 100, 150), b2d.circ(50, -100, 150)]
-
-
-
-
-    //w.dyn(400,300, b2d.fixtParse(dick) )
-    //w.A(  b2d.dyn(300,300), guyInBed ) // have to fix w.dyn
-
-    fd = b2d.poly(30,100).sensor(true)
-
-
-    b = w.dyn(300,300, [   [40]  ]).K('man')
-
-    f= b.fixt( fd )
-
-    f.K('arm')
-
-
-
+COLSENCLAS=function(){w=b2d.W()
+    b = w.B(300, 300,'r', [[40],['b',30,100,'arm', '-']] ) //BEAUTIFUL !!!
     w.beg(function(cx){
-
-        //  $l('a body: ' + cx.a().K() + ' - a fixt: ' + cx.A().K()   )
-        // $l('b body: ' + cx.b().K() + ' - b fixt: ' + cx.B().K()   )
-
-        if( cx.with('arm') ){$l('arm!')
-
-            b.I(50,50)
-
-        }
-
-        if(cx.with('arm','brick')){ $l('ok this is cool!')}
-    })
+        if(cx.with('arm')){b.I(50,50)}
+        if(cx.with('arm', w.right)){w.C('w')}})}
 
 
-    w.brick(500,200,40,40)
 
-}
+
 FDOT=function(){w=b2d.W()
 
     b1 = w.S(400,400,50)
@@ -1012,41 +856,39 @@ FDOT=function(){w=b2d.W()
 
     f.shp(h)
 }
-
-
 TESTPOLYF=function(){w=b2d.W(); $l('testpolyf')
 
-    b=w.B(400,400, 'o', [
+    w.S(700,200, 'o', [
         b2d.circ(40),
         b2d.circ(5).bits(1,2), //cat is 1, but will only collide with 2's
         b2d.circ(10, 100, 100, '-'),
         ['w', b2d.circ(10, 100, -100) ],
-        poly =b2d.poly(10, 300, '-') , //sets as sensor
-        [ 'b', poly2 =b2d.poly(300, 10) ]
+        b2d.poly(10,300,'-') , //sets as sensor
+        ['b', b2d.poly(300,10)],
+        [ 'w', [100,0], [150,-100], [200,20]  ],
+        [ [200,0], [250,-100], [300,20], 'arr'],
+        [ 'p', 50, 'pink' ]])
+
+    b = w.S(300,400,'r', [
+            b2d.poly(200,100),
+            ['g',b2d.circ(40,100,100).K('excited') ],
+            [5,100, 200,0,'orgasmic excited']
     ])
 
 
-    f= b.fixts()[2]
-    h= f.shp()
+    //apparently b.fixt is LIFO
 
-    body =  w.B(300, 400, 'r', [
-        [polyFD =  b2d.poly(200,100)],
-        ['g', circFD =  b2d.circ(40)]
-    ])
+    f = b.fixt().K('happy').dot('b')
+    $l('f is f: ' + f.is(f))
+    $l('f is happy: ' + f.is('happy'))
+    $l('f.next is excited: ' + f.next().is('excited'))
+    $l('f is orgasmic: ' + f.is('orgasmic'))
 
-    circF = body.fixt().K('happy')
-    polyF = circF.next()
+    w.db()
 
-    $l(circF.is('sad'))  //false
-    $l(circF.is('happy'))  //true
-    $l(circF.is(polyF))  //false
-    $l(circF.is(circF))  //true
+
+
 }
-
-
-
-
-
 MASS=function(){w = b2d.W({g:0}).db()
     y = w.B(400,200, 'y', 50).den(.1).lV(10)
     r = w.B(200,500, 'r', 40).den(1)
@@ -1058,18 +900,14 @@ MASS=function(){w = b2d.W({g:0}).db()
 
 
 
+
+
 //destructable terrain
 DEST=function(){w=b2d.W({g:1})
-
     y= w.ship().linDamp(10)
-
     b = w.brick(800,300,200,800).K('terr')
-
     can=true
-
     w.s.X(5000)
-
-
     w.beg(function(cx){var fixt
 
         if(fixt=cx.with('bul','terr')){

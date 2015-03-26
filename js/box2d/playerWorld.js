@@ -20,6 +20,7 @@ w.me=   w.addMe=function(x,y,scale){var Z=scale||4
 
 
 w.player = function(x,y,scale, onEachTick, enemy){
+    var w=this
     if(!N(scale)){enemy=onEachTick;onEachTick=scale;scale = 4}
     var p = this.addMe(x,y,scale), func
     if(S(onEachTick)){onEachTick = b2d.controls[onEachTick]}
@@ -65,7 +66,10 @@ w.player = function(x,y,scale, onEachTick, enemy){
             })})
 
     w.end(function(cx){cx.with('feet', function(){this.B().onGround=false})})
-    w.floor.rest(0)
+
+   // if(w.floor){  w.floor.rest(0) }
+
+
     return p}
 
 w.jumper = function(x,y){x=N(x)?x:200;y=N(y)?y:500

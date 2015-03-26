@@ -82,7 +82,7 @@ I=function(func, int){int = N(int)?int:1000
 
 
 G=function(a){
-    if(!_.isArguments(a)){return}
+    //if(!_.isArguments(a)){return}
     var p, n, m,d
     a=_.toArray(a)
     if(_.last(a)==='+'){p=a.pop()}

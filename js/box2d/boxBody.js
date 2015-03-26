@@ -301,7 +301,11 @@ b.mass = function(m){
 
 
 //world center
- b.wCent=  p.wC = b.cent =function(){ return this.GetWorldCenter().mult() } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
+ b.wCent=   p.wC = b.cent =function(){ return this.GetWorldCenter().mult() } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
+
+
+  b.worldCenter=  function(){ return this.GetWorldCenter()  } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
+
 
 //world point
 b.wPt = b.wPoint = p.worldPoint = p.wP   =function(x,y){return this.GetWorldPoint(  V(x,y).div()  ).mult()}
@@ -578,6 +582,7 @@ b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
     //create the fixt
     f = this.CreateFixture(fD)
 
+
     //assign it classes specified in the fixt def
     if(A(fD.classes)){
         _.each(fD.classes,
@@ -585,6 +590,9 @@ b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
                 f.K(clas)})}
 
     return f}
+
+
+
 
 
 
@@ -669,34 +677,35 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
 
 
 //takes an array of points (or of one color and a bunch of points)
-b.polyArr = b.convex = function( col, arr ){
-    var b=this,   w= b.wor(), h, f,g=G(arguments)
+b.polyArr = b.convex = function( col, arr, str ){
+
+    var b=this,   w= b.wor(), h, f, g=G(arguments)
 
 
-    if( g.length > 2){
+    if(g.length>2){ //passing points direclty: ([],[],[]) or ('r',[],[],[])
+        if(S(col)){arr=_.rest(g)}
+        else {col = 'p'; arr=g}}
 
-        if( S(col) ){ arr = _.rest(g) }
-        else {col = 'p'; arr =g}
-    }
+// ['c', [[],[]] ]   or [[],[]]
+
 
     if(!S(col) ){
-
         if( S(col[0]) ){
             arr= _.rest(col)
-            col = col[0];
-        }
+            col = col[0]}
 
         else {
             arr=col;
-            col=null
-        }
+            col=null}}
 
-    }
+    //arr= _.map(arr,function(a){return a})
 
+    if(S(_.last(arr))){str = arr.pop()}
 
     f = b.poly.apply(b, arr)
 
-    if(col){f.bindSprite2( w.s.poly(arr, col, col)  )}
+    if(str){f.K(str)}
+    if(col){f.bindSprite( w.s.poly(arr, col, col)  )}
 
     return f
 }
@@ -704,7 +713,13 @@ b.polyArr = b.convex = function( col, arr ){
 
 
 
-b.RECT = function(col, wd, ht, x, y, rot){ var g= G(arguments),  fixt, h
+
+b.RECT = function(col, wd, ht, x, y, rot){
+
+    var g= G(arguments), fd, fixt, h,str
+
+
+
 
     col=g[0];
     wd=g[1];
@@ -713,91 +728,103 @@ b.RECT = function(col, wd, ht, x, y, rot){ var g= G(arguments),  fixt, h
     y=g[4];
     rot=g[5]
 
+    if(S(rot)){str=rot;rot=null}
+    if(S(y)){str=y;y=null}
+    if(S(x)){str=x;x=null}
+    if(S(ht)){str=ht;ht=null}
+
+
     if(!S(col)){rot=y;y=x;x=ht;ht=wd;wd=col}
 
-    fixt =  this.fixt(  b2d.rec(wd,ht,x,y,rot)  )
+    fd=b2d.rec(wd,ht,x,y,rot)
 
-    if(S(col)){ fixt.bindSprite2(
+    if(g.n){$l('sensor!')
+        fd.isSensor=true}
 
-        w.s.RECT(col, wd, ht, x, y, rot)
+    fixt =  this.fixt(  fd  )
 
-    ) }
+    if(str){ fixt.K(str) }
 
 
-    return fixt}
-b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h
-    col=g[0];  rad=g[1];  x=g[2];  y=g[3];
+    if(S(col)){ fixt.bindSprite(w.s.RECT(col, wd, ht, x, y, rot))}
+    return fixt
+
+}
+
+
+
+b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
+    col=g[0];rad=g[1];x=g[2];y=g[3];
+    if(S(y)){str=y;y=null}
+    if(S(x)){str=x;x=null}
+    if(S(rad)){str=rad;rad=null}
     if(!S(col)){y=x;x=rad;rad=col}
     fixt =  this.fixt(  b2d.circ(rad,x,y)   )
-    if(S(col)){ fixt.bindSprite2( w.s.circ(col,rad,x,y)) }
+    if(str){ fixt.K(str) }
+    if(S(col)){ fixt.bindSprite( w.s.circ(col,rad,x,y)) }
     return fixt}
 
 
-b.H = function(arg){
-    var b=this,
-        g=G(arguments),
-        len=length(g),
-        arg=g[0],
-        test=true
 
 
-   // if(b2d.isFixtDef(g[0]))
 
+b.H = function(arg){var b=this,g=G(arguments), arg=g[0],
+        len=length(g)
+
+    if(U(arg)){return b}
 
     //passing a single array, suggest MULTIPLE fixts
-      if( A(g[0]) && U(g[1]) ){ if(test){$l(1)}
-          _.each(g[0],  function(a){ b.H.apply(b,a) })
-        return b}
+    //[f1,f2,..]
+    if(A(g[0])&&U (g[1])) {_.each(g[0],function(a){b.H.apply(b, a)})}
 
 
-    // provide a DEFAULT color
-    else if( S(g[0]) && A(g[1]) && U(g[2])){if(test){$l(2)}
+    //[col,[f1,f2,..]]
+    else if(S(g[0])&&A(g[1])&&U(g[2])){
+        _.each(g[1],function(f){
 
+            if(b2d.isFixtDef(f)){b.fixt(f).C(g[0])}
+            else{if(!S(f[0])){
 
-          _.each(g[1] , function(f){
+                f=_.map(f, function(a){return a})
+                //*** ?
+                f.unshift(g[0])
+            }
 
-              if(b2d.isFixtDef(f)){ b.fixt(f).C(g[0]) }
+                if(b2d.isFixtDef(f[1])){b.fixt(f[1]).C(f[0])}
 
-              else{//f=A(f)?f: [f]
-                  if( !S(f[0]) ){ f.unshift(g[0]) }
-                  if(b2d.isFixtDef(f[1])){ b.fixt(f[1]).C(f[0]) }
-                  else { b.H.apply(b, f) }
-              }
+                else {b.H.apply(b,f)}}})}
+    //fixtDef
+    else if(b2d.isFixtDef(g[0])){b.fixt(g[0])}
+    //['color', fixtDef]
+    else if(S(g[0])&&b2d.isFixtDef(g[1])){b.fixt(g[1]).C(g[0])}
 
+    //verts
+    else if(O(g[1])){
+        if(g.n){g.push('-')}
+        b.convex(g)}
 
-          })
-
-          return b}
-
-
-
-
-
-    //pass a fixtDef
-    else if( b2d.isFixtDef(g[0])){ if(test){$l(3)}
-          b.fixt(g[0]) }
-
-
-
-    //pass a fixtDef a color and a fixt def
-    else if(  S(g[0]) &&  b2d.isFixtDef( g[1] ) ){
-        b.fixt( g[1] ).C( g[0] )
-    }
-
-    //pass an array of verts
-    else if( O(g[1]) ){ b.convex(g)  }
-
-    //circle
-    else if(len==1 || len==3){  b.CIRC.apply(b,g)   }
+    //circ
+    else if(len==1||len==3){
+        if(g.n){g.push('-')}
+        b.CIRC.apply(b,g)}
 
     //rect
-    else { b.RECT.apply(b,g) }
+    else {
+
+        if(g.n){g.push('-')}
+
+         b.RECT.apply(b, g)
+
+    }
+
 
     function length(arr){
         var len=arr.length
         if(S(arr[0])){len--}
-        return len}
+        if(S(_.last(arr)) ){len--}
 
+        return len
+    }
     return b}
 
 
@@ -1080,96 +1107,17 @@ joints=function() {
          })
          return this
      }
-//player body stuff.. weapons, etc
-     b.web = function (shouldKill) {
-         //when a web is created it gets web.connected=false
-//when it hits certain things and forms a joint, then connected->true
-//then it just dies
-//pressing DOWN should release the most recent of the connectedWebs
-//non connected Webs can be shot off!
 
 
-         var p = this, w = this.wor(),
-
-             y = this.Y() - 100, x = this.X(), piece, web
-
-         this.webs = this.webs || []
-         this.webs.push(web = Web(this, shouldKill))
-
-         piece = web.addPiece(p, web.Piece(x, y))   //add first piece to player
-
-         T(9, function (i) {
-             piece = piece.add(web.Piece(x, y - i))
-         })  //add rest to each other
-
-         piece.add(web.ball = w.circ(x, y - 100, 10, 'd').K('webBall').den(1).rest(0).fric(100))
 
 
-         function Web(p, shouldKill) {
 
-
-             var web = {
-                 player: p,
-                 connected: false,
-                 pieces: [],
-                 addPiece: function (toWhat, newPiece) {
-                     w.tightDist(toWhat, newPiece)
-                     this.pieces.push(newPiece)
-                     return newPiece
-                 },
-                 Piece: function (x, y) {
-                     var web = this,
-                         piece = w.ropePiece(x, y).K('webPiece')
-
-                     piece.add = function (newPiece) {
-                         return web.addPiece(this, newPiece)
-                     }
-
-                     return piece
-                 },
-                 delPieces: function () {
-                     _.each(this.pieces, function (piece) {
-                         piece.kill()
-
-                     })
-
-                     this.pieces = []
-                 },
-                 die: function () {
-                     var that = this
-                     this.delPieces()
-                     this.player.webs = _.reject(this.player.webs, function (web) {
-                         return that === web
-                     })
-                 },
-                 attach: function (toWhat) {
-                     this.connected = true
-                     w.tightDist(toWhat, this.ball)
-                     return this
-                 }}
-
-             if (shouldKill) {
-
-                 shouldKill = N(shouldKill) ? shouldKill : 1000
-
-                 setTimeout(function () {
-                     if (!web.connected) {
-                         web.die()
-                     }
-                 }, shouldKill)
-             }
-
-
-             return web
-         }
-
-         return web
-     }
      b.glue = function (b2) {
 
          return this.wor().weld(this, b2, b2.X() - this.X(), b2.Y() - this.Y())
 
      }
+
      b.mJ = b.mouse = b.mouseJ = b.mouseJoint = function (point) {
          var body = this, mj
 
@@ -1180,6 +1128,119 @@ joints=function() {
 
 
  }; joints()
+
+
+
+
+
+
+
+
+
+
+
+b.web = function (shouldKill) {
+
+    //when a web is created it gets web.connected=false
+    //when it hits certain things and forms a joint, then connected->true
+    //then it just dies
+    //pressing DOWN should release the most recent of the connectedWebs
+    //non connected Webs can be shot off!
+
+
+    var p=this, w=p.wor(),
+
+        y=p.Y()-100,
+        x=p.X(),
+        piece,
+        web
+
+    p.webs = p.webs || []
+
+    p.webs.push( web = Web(p,shouldKill))
+
+    piece = web.addPiece(p, web.Piece(x,y))   //add first piece to player
+
+    T(9, function (i) {
+        piece = piece.add(web.Piece(x, y-i))
+    })  //add rest to each other
+
+
+    piece.add(
+        web.ball=w.circ(x,y-100,10,'d').K('webBall').den(1).rest(0).fric(100))
+    return web
+
+
+
+
+    function Web(p, shouldKill){
+
+
+        var web={
+            player: p,
+            connected: false,
+            pieces: [],
+
+            addPiece: function (toWhat, newPiece){
+                w.tightDist(toWhat, newPiece)
+                this.pieces.push(newPiece)
+                return newPiece},
+
+
+            Piece: function(x,y){var web = this,
+                    piece = w.ropePiece(x, y).K('webPiece')
+                piece.add = function (newPiece){return web.addPiece(this, newPiece)}
+                return piece},
+
+            delPieces: function(){_.each(this.pieces, function (piece) {piece.kill()})
+                this.pieces = []},
+
+
+            die: function(){var that = this
+                this.delPieces()
+                this.player.webs = _.reject(this.player.webs, function (web) {
+                    return that === web})},
+
+            attach: function (toWhat) {
+                this.connected = true
+                w.tightDist(toWhat, this.ball)
+                return this}
+
+        }
+
+
+
+
+        if (shouldKill) {
+
+            shouldKill = N(shouldKill) ? shouldKill : 1000
+
+            setTimeout(function () {    if (!web.connected) {  web.die()  }  }, shouldKill)
+
+        }
+
+
+
+
+        return web}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 controllers = function() {

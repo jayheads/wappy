@@ -95,6 +95,7 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
             if( A(connected) && connected[0] && connected[1]   ){  _.first(connected).die()  }
             p.canWeb = true
             p.shotForce=0},
+
         D:function(){
             if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
             p.didShoot=false}
@@ -119,26 +120,9 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
 SPACEZOOM=function(){
 
 
-    keepGuyCentered=function(getScaleFunc){//removed but brought back for spacezoom
-    //used in SCALING LEVEL
-        //*******
-
-        cjs.tick(function(){ if(O(p.sprite)){
-            var x = p.X(),
-                y = p.Y(), dif,
-
-                scale = getScaleFunc()
-            w.s.sXY(scale)
-            w.s.X(300 - ((x - 300) * scale)  )
-            w.s.Y(150 - ((y - 150)  ) * scale )}})
-
-    }
-
-
-
-
     w = b2d.W({//W:600, H:300,
-        g:0,w:0}).debug()
+        g:0,w:0}).db()
+
     w.s.rXY(300,150)
     _.times(80, function(){var x,y
         x= (Math.random() * 2000) - 750
@@ -146,7 +130,7 @@ SPACEZOOM=function(){
         w.circ(x, y, 4, 'white').den(0).rest(2).K('star')}) //stars
 
 
-    p= w.player(2.5, 'thrust').Y(200).horizCenter().den(.4).angDamp(8).linDamp(.8)
+    p= w.player(200,200,2.5, 'thrust').Y(200).horizCenter().den(.4).angDamp(8).linDamp(.8)
 
 
     earth =  northStar= w.bump(200,200,100,'pink').den(1).rest(2).bindSprite('earth',.13).K('earth')
@@ -163,6 +147,7 @@ SPACEZOOM=function(){
 
     w.distColl(p, northStar).freq(.15).damp(0).len(50)
 
+
     scaleFunc = function(){var dx,dy,dst
         dx =    northStar.X()-p.X()
         dy =     northStar.Y()-p.Y()
@@ -170,14 +155,39 @@ SPACEZOOM=function(){
         dst =  300 /dst
         return dst>2?2:  dst <.3? .3: dst}
 
+
+    keepGuyCentered=function(getScaleFunc){//removed but brought back for spacezoom
+        //used in SCALING LEVEL
+        //*******
+
+        cjs.tick(function(){ if(O(p.sprite)){
+            var x = p.X(),
+                y = p.Y(), dif,
+
+                scale = scaleFunc()
+            w.s.sXY(scale)
+            w.s.X(300 - ((x - 300) * scale)  )
+            w.s.Y(150 - ((y - 150)  ) * scale )}})
+
+    }
     keepGuyCentered(scaleFunc)
 
-    cjs.tick(function(){
-        w.s.alpha =scaleFunc()*2
-        earth.sprite.alpha =scaleFunc()
-    })
+    setTimeout(function(){
+        cjs.tick(function(){
+
+            w.s.alpha =scaleFunc()*2
+
+            earth.sprite.alpha = scaleFunc()
+        })
+
+    },1000)
+
 
 }
+
+
+
+
 
 
 

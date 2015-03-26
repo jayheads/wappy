@@ -689,35 +689,6 @@ b2d.fluffy=function(){
 
     )}
 
-cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
-    return w.A(b2d.dyn(x,y),[
-        b2d.poly(10,10).d(5),
-        b2d.poly(50,20,0,40,0),
-        b2d.poly(100,20,-80,-40,260),
-        b2d.poly(100,20,80,-40,-80)])}
-cup2=function(x,y){
-    x=N(x)?x:100//300
-    y=N(y)?y:x//800
-
-    return w.A(
-        b2d.dyn(x,y), [
-            b2d.poly(10,10).d(5),
-            b2d.poly(50,20,0,40,0),
-            b2d.poly(100,20,-80,-40,260),
-            b2d.poly(100,20,80,-40,-80),
-            b2d.circ(100)
-        ])}
-cup3=function(x,y){
-
-    x=N(x)?x:100;y=N(y)?y:x
-    return w.A(b2d.dyn(x,y),
-        [b2d.poly(10,10).d(5),
-            b2d.poly(50,20,0,40,0),
-            b2d.poly(100,20,-80,-40,260),
-            b2d.poly(100,20,80,-40,-80),
-            b2d.circ(34,-80,-130),
-            b2d.circ(34,80,-130)])}
-
 
 
 makeWalls2=function(){
@@ -787,13 +758,58 @@ BOX2D=function(a){b2d.mW()
     b2d.platform()
     w.addTenBalls()
     w.addMe();w.addMe();w.addMe()}
-CUPS=function(){
-    //w=wor()
 
-    w= wor()
 
-    cup(280,500)
-    cup2(400,500)
+CUPS=function(){w= b2d.W()
+
+    cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
+        return w.A(b2d.dyn(x,y),[
+            b2d.poly(10,10).d(5),
+            b2d.poly(50,20,0,40,0),
+            b2d.poly(100,20,-80,-40,260),
+            b2d.poly(100,20,80,-40,-80)])}
+
+    cup2=function(x,y){
+        x=N(x)?x:100//300
+        y=N(y)?y:x//800
+
+        return w.A(
+            b2d.dyn(x,y), [
+                b2d.poly(10,10).d(5),
+                b2d.poly(50,20,0,40,0),
+                b2d.poly(100,20,-80,-40,260),
+                b2d.poly(100,20,80,-40,-80),
+                b2d.circ(100)
+            ])}
+
+
+    cup3=function(x,y){
+
+        x=N(x)?x:100;y=N(y)?y:x
+
+        return w.A(
+            b2d.dyn(x,y),
+            [
+                b2d.poly(20,20).den(5),
+                b2d.poly(100,40,0,40,0),
+                b2d.poly(200,40,-80,-40,260),
+                b2d.poly(200,40,80,-40,-80),
+                b2d.circ(34,-80,-130),
+                b2d.circ(34,80,-130)
+            ]
+        )
+
+
+
+    }
+
+
+
+
+
+
+    //  cup(280,500)
+    // cup2(400,500)
     cup3(700,500)
 
     //b2d.fluffy()
@@ -803,6 +819,10 @@ CUPS=function(){
     w.ba()
     w.bii(150,220,50)
 }
+
+
+
+
 STAIRS=function(){
     w=b2d.W()
     w.bii(500,500,600,100)

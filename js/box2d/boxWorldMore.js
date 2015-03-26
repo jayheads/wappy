@@ -68,8 +68,8 @@ w.dist=function(a, b, b1OffV, b2OffV, len, freq, damp){
 // note: if you passe them in, pass them as relative(local to body) coords
 //BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
 //there is also distColl for 'collideConnected=true' joints
-    var b1V = a.wCent().mult(),
-        b2V = b.wCent().mult(),
+    var b1V = a.wCent(),
+        b2V = b.wCent(),
         jd = b2d.dJ(), j
 
     if(O(b1OffV)){b1V =  b1V.add(b1OffV)  }
@@ -91,6 +91,7 @@ w.dist=function(a, b, b1OffV, b2OffV, len, freq, damp){
 
     return j}
 
+
 w.tightDist=function(piece, newPiece){
     return this.dist(piece, newPiece,1,1000,1000)
 
@@ -99,11 +100,12 @@ w.tightDist=function(piece, newPiece){
 
 
 
+
 w.distColl=function(a, b, b1OffV, b2OffV){
 
-    var b1V = a.wCent().mult(),
+    var b1V = a.wCent(),
 
-        b2V = b.wCent().mult(),
+        b2V = b.wCent(),
 
         jd = b2d.dJ(), j
 

@@ -281,3 +281,15 @@ b2d.debugDraw = function(sprite, scale, flags, alpha,line){
     return dd}
 
 
+b2d.F =  function(k){var arr=[]
+
+    w.each(function(b){
+        b.each(function(f){
+            if(f.is(k)){arr.push(f)}
+        })
+    })
+
+    return arr}
+b2d.B =  function(k){var arr=[]
+    w.each(function(b){if(b.is(k)){arr.push(b)}})
+    return arr}
