@@ -77,8 +77,8 @@
 }())
 
 
-b2d.mult = function(v){return v.mult()}
-b2d.div = function(v){return v.div()}
+b2d.mult = function(v){return V(v).mult()}
+b2d.div = function(v){return V(v).div()}
 
 b2d.pollute=function(){
 
@@ -104,6 +104,18 @@ b2d.pollute=function(){
 
 b2d.isV=function(v){if(v){return v.constructor.name == "b2Vec2"}}
 
+b2d.verts=function(){
+    //all this does is to 'scale down' a series of points
+    //can pass in pts naked OR in an array
+    var g=G(arguments)
+    if(g[1]){//passed in verts ([],[],[])
+        return _.map(g, b2d.div)   }
+    return _.map(g[0], b2d.div) //passed an array [[],[],[]]
+}
+Math.poly=function(points){//gpcas
+    var poly= new PolyDefault()
+    poly.addPoints(points)
+    return poly}
 
 
 b2d.AB = b2d.AABB= function(x1,y1,x2,y2){

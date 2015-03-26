@@ -663,52 +663,92 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
 
     return fixt}
 
-    b.poly = function(){
-
-    var fix =  this.fixt(
-
-        b2d.poly.apply(null, arguments)
-
-    )
-
-    return fix}
 
 
 
 
+
+
+
+b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return fix}
+// b2d.sep = b2d.conc =     func|body,verts,scale
 //takes an array of points (or of one color and a bunch of points)
-b.polyArr = b.convex = function( col, arr, str ){
-
-    var b=this,   w= b.wor(), h, f, g=G(arguments)
 
 
-    if(g.length>2){ //passing points direclty: ([],[],[]) or ('r',[],[],[])
-        if(S(col)){arr=_.rest(g)}
-        else {col = 'p'; arr=g}}
-
-// ['c', [[],[]] ]   or [[],[]]
+    ////
+    ////
+    ////
 
 
-    if(!S(col) ){
-        if( S(col[0]) ){
-            arr= _.rest(col)
-            col = col[0]}
+    // i need a func to check if my points are convex or not ! // can check my current libs first!! :)
 
-        else {
-            arr=col;
-            col=null}}
 
-    //arr= _.map(arr,function(a){return a})
 
-    if(S(_.last(arr))){str = arr.pop()}
 
-    f = b.poly.apply(b, arr)
+    b.polyArr =   b.convex =    function( col, arr, str ){var b=this,   w= b.wor(), h, f,
 
-    if(str){f.K(str)}
-    if(col){f.bindSprite( w.s.poly(arr, col, col)  )}
 
-    return f
-}
+    //when and if should i call .conc/.sep ?
+    // i could auto-conc it.. but ill lose track of the fixts?
+
+
+
+        g=G(arguments)
+
+
+        if(g.length>2){ //passing points direclty: ([],[],[]) or ('r',[],[],[])
+
+            if(S(col)){arr=_.rest(g)}
+
+            else {col='p';arr=g}}
+
+
+
+        if(!S(col)){   // ['c', [[],[]] ]   or [[],[]]
+
+
+            if( S(col[0]) ){
+
+                arr=_.rest(col); col=col[0]
+            }
+
+
+        else {arr=col; col=null}
+
+        }
+
+
+
+        if(S(_.last(arr))){str = arr.pop()}
+
+
+        f = b.poly.apply(b,arr)
+
+
+        if(str){ f.K(str) }
+        if(col){ f.bindSprite( w.s.poly(arr, col, col)  )}
+
+
+        return f
+
+
+    }
+
+
+    ////
+    ////
+    ////
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -801,7 +841,10 @@ b.H = function(arg){var b=this,g=G(arguments), arg=g[0],
     //verts
     else if(O(g[1])){
         if(g.n){g.push('-')}
-        b.convex(g)}
+
+        b.conc(g)
+        //b.convex(g)
+    }
 
     //circ
     else if(len==1||len==3){
@@ -928,14 +971,30 @@ b.sen=function(){return this.sensor(!this.sensor())}
     return this}
 b.shp = b.shape = b.getShape=function(){return this.fixt().shape()}
 b.rad = function(){return this.shp().m_radius * 30}
-b.C=function(col){
-    var rad=this.rad(),
-        x=  this.shape().m_p.x,
-        y= this.shape().m_p.y
 
-    this.sprites[0].remove()
-    this.sprites=[w.s.cir(x,y,rad,col)]
-}
+
+
+
+
+b.C=function(col){
+
+    this.each(function(f){f.C(col)})
+
+return this}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }; fixts()
 contacts =function(){
@@ -1886,6 +1945,7 @@ geometry=function() {
         }
         return this
     }
+
     b.DIF = function (b2) {
         var g = G(arguments),
             b2 = g[0]
@@ -1915,18 +1975,79 @@ geometry=function() {
 
         return  Math.poly(this.V())
     }
-    b.conc = b.sep = function (verts) {
-        var g = G(arguments), verts = g[0]
 
-        if (verts) {
 
-            var a = b2d.sep(this, verts)
 
-            //if(g.n){this.clear() }
-            return a
-        }
 
+    b.conc=  b.sep= function(verts){
+
+
+        var g = G(arguments),
+            verts=g[0],
+            col,
+            b=this,
+            fs, n1,n2, newFixts
+
+        if(U(verts)){return}
+
+        if(S(verts[0])){ col = verts.shift() }
+
+
+
+
+
+
+        if(g.n){b.clear()}
+        n1=b.num()
+        b2d.sep(b, verts)
+
+        if(S(col)){
+            n2=b.num()
+            fs=b.fixts()
+            newFixts=_.first(fs,n2-n1)
+            _.each(newFixts,function(f){f.C(col)})}
+
+        return this
     }
+
+
+
+    b.conc2=   function(col){
+
+
+        var g = G(arguments),col=g[0],verts,
+            b=this, fs, n1,n2, newFixts
+
+        if(U(col)){return}
+        verts=S(col)?_.rest(g):g
+
+        if(g.n){b.clear()}
+        n1=b.num()
+
+        b2d.sep(b, verts)
+
+
+
+        if(S(col)){
+            n2=b.num()
+            fs=b.fixts()
+            newFixts=_.first(fs,n2-n1)
+            _.each(newFixts,function(f){f.C(col)})}
+
+        return this
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     b.minusPolyCirc = function (x, y, rad, sides) {
         var b = this
 
@@ -2098,49 +2219,52 @@ b2d.isBody = isBody=function(b){if(O(b)){return b.constructor.name=='b2Body'}}
 
 
 
-WEB=function(){w=b2d.W()
+DESTROYJOINT= function(){w=b2d.W()
+    //w.startKilling();
 
+    w.floor.rest(0)
 
-p = w.ship().XY(500,300)
-
-
-}
-DESTROYJOINT= function(){w=b2d.W().startKilling(); w.floor.rest(0)
     y = w.ship().XY(400,170).rot(265).stat()
-    w.beg(function(cx){var fixt; if(fixt=cx.with('bul')){if(fixt.body()!=y){
-        fixt.body().setDestroy()}}})
-
-
-    base = w.rect(255,50, 60,15,'r').stat()
-    w.rev(base, body = link(255,60 )  ); prev= body
-    w.rev(prev, body=link(255,90)  ); prev=body
-    w.rev(prev, body=link(255,120)  ); prev=body
 
 
 
+     w.beg(function(cx){
+         cx.with('bul', function(f){var b=f.B()
+     this.B().kill()
+     if(b!=y){b.kill()}
+         })})
 
 
+    base=w.S(255,50, 'r', 60,15)
 
+    body=link(255,60)
+
+    base.rev(body)
+
+
+    /*
+
+    prev= body
+
+    w.rev(prev, body= link(255,90)  ); prev=body
+    w.rev(prev, body= link(255,120)  ); prev=body
 
     bef =  body = link( 255, 150,'b' )
 
-     w.rev(prev, body); prev=body
+    w.rev(prev, body); prev=body
+
 
     red = body = link( 255, 180,'r' )
-   j1= w.rev(prev, body); prev=body
+
+    j1= w.rev(prev, body); prev=body
 
     aft = body = link( 255, 210 ,'a')
-   j2= w.rev(prev, body); prev=body
+
+    j2= w.rev(prev, body); prev=body
 
 
 
     je = aft.GetJointList()
-
-
-
-
-
-
 
     w.rev(prev, body=link(255,240)  ); prev=body
     w.rev(prev, body=link(255,270)  ); prev=body
@@ -2148,11 +2272,13 @@ DESTROYJOINT= function(){w=b2d.W().startKilling(); w.floor.rest(0)
     w.rev(prev, body=link(255,330)  ); prev=body
     ball = w.circ(255, 330, 20, 'd').den(1).rest(0); w.rev(prev, ball)
 
+       */
 
-    function link(x,y,color){color=color||'w'
 
-        return  w.rect(x,y, 10, 15, color).den(1).fric(0).rest(0)
-    }
+    function link(x,y,col){col=col||'w'
+        return w.B(x,y,col,10,15).den(1).fric(0).rest(0)}
+
+
 }
 /*
  A joint edge:
@@ -2171,107 +2297,61 @@ DESTROYJOINT= function(){w=b2d.W().startKilling(); w.floor.rest(0)
  .next(b2JointEdge):the next joint edge in the body's joint list
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TESTBODY=function(){
-
-    b2.mW()
-
-    m = w.ba()
-
-}
-FIXVSDEF=function(){w=b2d.W()
-
-    fd = b2d.poly(10, 40)
-
-    //  b = w.CreateBody( b2d.dyn(100,100)  )
-
-    f = b.CreateFixture(fd)
-}
-TESTBINDBM=function(){z()
-    w=b2.mW()
-    b = w.ba().bindSprite('me')
-    w.ba().bindSprite('me')
-    w.ba().bindSprite('me')
-}
-FORCES=function(){
 
 
-  w = b2d.mW({
-      grav:0
-  })
 
 
-    b = w.box(400, 400, 200, 200).bindSprite('me')
 
-
-  f=function(){
-
-        b.I(0,-400, b.GetWorldPoint( b2d.V(100/30, -100/30) ))
-    }
-
-    f2=function(){
-
-        cjs.tick(f)
-    }
-
+FORCES=function(){w=b2d.W({g:0}).db()
+    b = w.B(400,400,'o',200,200).bindSprite('me')
+    cjs.tick(function(){b.I(0,-400, b.GetWorldPoint(V(100,-100).div()))})
     w.player('thrust')
 }
-LINVEL3=function(){
+LINVEL=function(){w=b2d.W({g:0}).db()
+    _.times(10,function(){w.B(300,300,'y',50)})
+    setInterval(function(){w.each(function(b){b.lV(0,20)})},1000)}
 
+GRAVITY=function(){w=b2d.W({g:0}); w.B(100,100,10).constF(5000,-200000)}
 
-    w = b2d.mW({
-        //grav:0
-    })
+IMP=function(){w=b2d.W({g:0})
+    w.B(100,500,30,30).rot(2)
+    b = w.B(300,500,30,30).rot(1).fixedRot(.2)
 
+    t={i: function(){b.I(V(10, -30), b.worldCenter())},
+        v: function(){b.lV(10,-60)},
+        f: function(){setInterval(function(){b.F(V(0,-3),b.worldCenter())}, 100)}}
 
-    b = w.box(400, 400, 200, 200).bindSprite('me')
-
-
-    f=function(){
-
-        b.SetLinearVelocity(b2d.V(-1,-1))
-
-    }
-
-    f2=function(){
-
-        cjs.tick(f)
-    }
-
-  //  w.player('thrust')
 }
-LINVEL=function(){
+SCALE =function() {w = b2d.W() //hurts mouse joint
+    var x = 400, y = 440, v = {x: 0, y: 0}
+    w.S(400, 300, 40); w.S(290, 350, 40); w.S(280, 220, 40)
+    rad = 10
+    b = w.B(x, y, rad).lV(v)
+    cjs.tick(function () {b.fixt().kill()
+        x = b.X(); y = b.Y();v = b.lV();rad += .1
+        b = w.B(x, y, rad).lV(v)})
+}
+CLONE=function(){w=b2d.W()
+    w.roof.kill()
+    b = w.B(400,400, [[20],[20,100,0],[20,0,100],[100,200]])
+    setInterval(function(){b.I(0,-1000).clone()}, 3000)
+    w.ship()}
+MASSCLICKJUMP=function(){w=b2d.W({g:100}).db() //funny
+    _.each([
+            w.B(100,200,'r',150,100).den(.5),
+            w.B(100,10,'b',30,60).den(.5).rest(2),
+            w.B(500,400,'y',50,100).den(.5)
+        ],
 
-    w = b2d.mW({
-        g:0
+        function(b){b.click(function(){this.I(0,-50)})
+
     })
 
 
-    _.times(10, function(){
-
-        w.ball()
-
-    })
-
-
-   f=function(){
-
-       w.each(function(body){
-
-               body.SetLinearVelocity(b2d.V(0, 20))
-
-           })
-
-   }
-
-
-
-    setInterval( f, 1000 )
-
-
-    //cjs.tick(function(){})
 
 
 }
+//
 BODVERTS=function(){w=b2d.W()
 
 
@@ -2306,8 +2386,6 @@ BODVERTS=function(){w=b2d.W()
 
 
 }
-
-
 BODMINUS=function(){w=b2d.W()
 
     b= w.dyn(300,400).stat()
@@ -2322,8 +2400,6 @@ BODMINUS=function(){w=b2d.W()
     w.dyn(500, 400).stat().sep(  b2.minus(b)   )
 
 }
-
-
 REDUCE=function(){w=b2d.W()
 
     b = w.dyn(300, 400).stat()
@@ -2341,100 +2417,6 @@ REDUCE=function(){w=b2d.W()
     // body.polyVerts() does an automatic union of ALL its verts! i think :)
 
 }
-
-GRAVITY=function(){  w=b2d.W({g:0})
-
-    b = w.ball(100,100,100).constF(5000, -200000 )
-
-}
-
-DEMO_IMPULSE =function(){
-
-    b2d.mW({ grav: 0 })
-
-    w.A( b2d.dynamic(100,500).rot(2).fixedRot(false) , b2d.poly(30,30))
-
-    body = w.A( b2d.dynamic(300,500).rot(1).fixedRot(.2) , b2d.poly(30,30) )
-
-    test={
-
-
-        impulse: function(){
-
-            body.ApplyImpulse(
-
-                V(10, -30), body.worldCenter()
-
-            )},
-
-
-
-        velocity: function(){body.SetLinearVelocity(  V( 10, -60 ) )},
-
-
-
-        force: function(){
-
-            setInterval(
-
-                function(){
-
-                    body.ApplyForce(   V( 0, -3 ),    body.worldCenter()    )
-
-                }, 100)
-
-        }
-
-
-
-    }
-
-
-
-
-}
-DEMO_SCALE =function(){b2d.mW()
-
-    var  radius=10, x=400, y=440, v={x:0, y:0}
-
-    //mouse joints messed up
-
-    w.bumper(400,300,40)
-    w.bumper(290,350,40)
-    w.bumper(280,220,40)
-
-
-    addBody()
-
-    cjs.tick( destroyAndAddBody )
-
-
-
-    function addBody(){
-
-        body = w.A( b2d.dynamic(x,y).linVel(v),  b2d.circ(radius)  ) }
-
-
-    function destroyAndAddBody(){
-
-        body.destroyFixture( body.fixtureList() )//b.destroyFixture(fixture)
-
-        radius += .1
-
-        x = body.X()
-
-        y = body.Y()
-
-        v = body.lV()
-
-        addBody() }
-
-
-}
-
-
-
-
 UNIONNOTTOUCHING=function(){w=b2d.W()
 
 
@@ -2471,53 +2453,3 @@ UNIONNOTTOUCHING=function(){w=b2d.W()
 
 }
 
-
-
-
-CLONE=function(){w=b2d.W()
-
-    w.roof.kill()
-
-    // x = w.B(400,400, 50,200).stat().poly(200,20)
-
-
-    b = w.B(400,400, [
-
-        [20],
-        [20,100,0],
-        [20,0,100],
-        [100,200]
-
-    ])
-
-
-    setInterval(function(){
-
-        b.I(0,-1000)
-        b.clone()
-
-    }, 3000)
-
-    w.ship()
-
-
-}
-
-MASSCLICKJUMP=function(){w=b2d.W({g:100})
-
-
-    a=w.dyn(100,200, b2d.poly(150,100 )).den(.5)
-    b=w.dyn(100,10, b2d.poly(30,60 )).den(.5).rest(2)
-    c=w.dyn(500,400, b2d.poly(50,100 )).den(.5)
-
-
-    _.each([a,b,c], function(b){          // eachClick?
-
-        b.click(function(){this.I(0,-50)})
-
-    })
-
-
-
-
-}

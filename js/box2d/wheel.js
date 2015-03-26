@@ -1391,3 +1391,15 @@ MEMORY=function(){  s = cjs.S().A(ct= cjs.ct())
 }
 
 
+BIRD=function(){w=b2d.W({w:0,g:50}).db()
+    w.S( 800,500,'o',100,600).K('plat')
+    w.S( 1200,0,'o',100,600).K('plat')
+    w.S( 1600,500,'o',100,600).K('plat')
+    w.S( 2000,0,'o',100,600).K('plat')
+    game=true
+    p = w.me(300,0).fixRot().coll('plat',function(){
+        if(game){$.pop('you suck!');game=false}})
+    cjs.tick(function(){  p.lV(3); w.left(4) }) // odd way?  uses 'w.left' ???
+    w.click(function(){p.I(0,-180)})}
+
+

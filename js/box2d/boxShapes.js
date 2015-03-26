@@ -1,1119 +1,3 @@
-h =  b2d.Shapes.b2Shape.prototype
-h.testPoint = h.tP = function(tf, vec){
-    return this.TestPoint(tf, vec)}
-h.test = h.point  = function(tf, vec, y){
-    if(N(vec)){
-        vec=V(vec,y)
-    }
-    return this.TestPoint(tf, vec.div())
-}
-h.seg = h.segment = function(xf, lamb, norm,seg,maxLamb){//Perform a ray cast against this shape.
-
-   return this.TestSegment(xf,
-
-       lamb,//:Array, returns the hit fraction.
-       // You can use this to compute the contact point p = (1 - lambda) segment.p1
-       // + lambda segment.p2.
-
-       norm,//:b2Vec2, returns the normal at the contact point.
-       // If there is no intersection, the normal is not set.
-
-       seg,//:b2Segment, defines the begin and end point of the ray cast
-        maxLamb//:Numbera number typically in the range [0,1]
-    )
-}
-
-
-cH = b2d.CircleShape.prototype
-cH.xy = function(x,y){
-    var v=V(x,y).div()
-    this.SetLocalPosition(v)
-    return this}
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-pH = p = b2d.PolygonShape.prototype
-pH.setAsBox = p.sAB = function(wd,ht, xy, ang, ang2 ){
-
-//handles both box and set as box!
-//w,h -> centered box
-//w,h,xy,ang -> oriented box
-//w,h,x,y,ang ->oriented box
-
-    var g=G(arguments),
-
-        wd = (g[0]||100)/60,
-
-        ht= (g[1]||wd)/60,
-
-        xy=g[2],
-        ang=g[3], ang2=g[4]
-
-
-    if(U(xy)){this.SetAsBox(wd, ht)}
-
-    else if(N(xy)){this.SetAsOrientedBox(wd, ht, V(xy/30,ang/30), Math.toRadians(ang2||0) )}
-    else { this.SetAsOrientedBox(wd, ht, xy.div(), Math.toRadians(ang||0) ) }
-
-    return this}
-pH.setAsArray = p.sAA=  function(a,b){
-    if(U(b)){b=a.length}
-    this.SetAsArray(a, b)
-    return this}
-
-
-
-//makes verts
-b2d.verts=function(verts, more){
-    var g=G(arguments), verts=g[0], more=g[1]
-
-
-    return _.map(more? g: verts,
-
-        function(v){
-            return V(v).div()
-        })
-
-}
-
-
-
-pH.arr=function(){
-
-    var verts = b2d.verts.apply(null, arguments)
-
-    this.SetAsArray(verts, verts.length)
-
-    return this
-
-}
-
-
-
-
-
-
-b2d.AShape=function(pam,pam2){//dep .. use polyH
-    var args=(pam2)?arguments:pam
-    var arr = _.map(args, function(vert){return V(vert).div()}),
-        shape = b2d.polyH()
-    shape.sAA( arr )
-    return shape}
-b2d.Arr = b2d.A = function(){
-    var shape = b2d.AShape.apply( null, arguments ),
-        poly = b2d.fixt( shape ).den(.1)
-    return poly} //DEP FOR b2d.poly
-
-
-PHARR=function(){w=b2d.W()
-
-    y=w.ship()
-    y.poly(100,10)
-
-
-    w.B(400,300).fixt(
-        b2d.Arr([-100,0],[0,-100],[100,-10]))
-
-    w.B(400,300).fixt(
-        b2d.Arr(V(-100,0),V(0,-100),V(100,-10)))
-
-    w.B(400,300).fixt(
-        b2d.Arr([[-100,0],[0,-100],[100,-10]]))
-
-    w.B(400,300).fixt(
-        b2d.Arr([V(-100,0),V(0,-100),V(100,-10)]))
-
-
-    w.B(400,300).poly( [-100,0], [0,-100], [100,-10])
-
-    w.B(400,300).poly( V(-100,0),V(0,-100),V(100,-10))
-
-    w.B(400,300).poly( [[-100,0],[0,-100],[100,-10]])
-
-    w.B(400,300).poly( [V(-100,0),V(0,-100),V(100,-10)])
-
-
-
-
-    b=w.B(400,300)
-
-    }
-
-
-
-
-//this covers all cases for polygons !!!!
-pH.set = function(wd){
-    if(N(wd)){ this.setAsBox.apply(this, arguments) }
-
-    else if( O(wd) ){ this.arr.apply(this, arguments) }
-
-    return this} // ******
-// !!!!!!!!
-
-
-
-
-
-
-
-
-pH.setAsVec =   function(vec, scale){
-    scale=N(scale)?scale:30
-
-   vec = _.map(vec,
-        function(v){
-            return V(v).div(scale)})
-
-    this.SetAsVector(vec)
-    return this}
-
-
-pH.verts = function(){
-
-   var verts= this.m_vertices
-
-    return _.map(verts, function(v){
-
-        return [v.x*30, v.y*30]
-
-    })
-
-}
-
-
-
-
-//polygonShape // this is all you need for all cases (thanks to pH.set)
-b2d.polyH=b2d.polyShape=b2d.pSh=function(){
-
-    var poly = new b2d.PolygonShape()
-
-      poly.set.apply(poly, arguments)
-
-    return poly}
-
-
-
-
-
-
-
-
-
-
-
-//circleShape
-b2d.circH=b2d.cH=b2d.circShape=b2d.circleShape=b2d.cSh=function(rad,x,y){
-
-    rad = N(rad)?rad:25
-
-    return new b2d.CircleShape(rad/30).xy(x,y)
-}
-
-
-
-b2d.H = b2d.shape=function(a,b){
-    if(U(b)){return b2d.circH(a)}
-    return b2d.polyH.apply(b2d, arguments)
-}
-
-
-
-
-
-
-
-
-//classic
-ba = b2d.ba = b2d.ball=function(x,y,rad){
-    x = x || 100
-    y = N(y) ? y : x
-    rad=rad||20
-    return w.dyn(x,y, b2d.circ(rad)
-    ).K('ball')
-}
-
-
-
-
-baa  =b2d.baa =b2d.bumper= function(x,y,r){
-    x=x||100; y=N(y)?y:x; r=r||20
-    return w.stat(x,y, b2d.circ(r) ).K('bumper')
-}
-
-
-
-bi   =b2d.bi = b2d.box=function(x,y,W,H){//=brk=brick=
-
-    x = N(x) ? x : 60; y = N(y) ? y : x
-    W = N(W) ? W : 30; H = N(H) ? H : W
-
-    return w.dyn( x, y, b2d.poly(W,H) ).K('box')
-
-}
-
-
-bii  =b2d.bii = b2d.brick=function(x,y,W,H){
-
-    x=N(x)?x:60;
-    y=N(y)?y:x
-    W=N(W)?W:30; H=N(H)?H:W
-
-    return w.stat(x,y,  b2d.poly(W, H)  ).K('brick')
-
-}
-
-
-
-
-
-// new libs!
-b2d.sep = b2d.conc =   b2d.separator = function(body, verts, scale){
-
-    /*
-     //This class is specifically for non-convex polygons.
-     // If you want to create a convex polygon, you don't need to use this class
-     // - Box2D's <code>b2PolygonShape</code> class allows you to create convex shapes with the
-     <code>setAsArray()</code>/<code>setAsVector()</code> method.</li>
-
-     //The vertices must be in clockwise order.</li>
-     //No three neighbouring points should lie on the same line segment
-     //There must be no overlapping segments and no "holes"
-
-     @param body The b2Body, in which the new fixtures will be stored.
-     * @param fixtureDef A b2FixtureDef, containing all the properties (friction, density, etc.) which the new fixtures will inherit.
-     * @param verticesVec The vertices of the non-convex polygon, in clockwise order.
-     * @param scale <code>[optional]</code> The scale which you use to draw shapes in Box2D. The bigger the scale, the better the precision. The default value is 30.
-     * @see b2PolygonShape
-     * @see b2PolygonShape.SetAsArray()
-     * @see b2PolygonShape.SetAsVector()
-     * @see b2Fixture
-     * */
-    Separate = function(body, verts, scale){
-
-
-
-        var g=G(arguments)
-        body=g[0]
-        verts=g[1]
-        scale=N(g[2])?g[2]:30
-
-        if(A(body)){
-            scale=verts;
-            verts=body;
-            body= g.p? w.ball(300,300,4): w.dyn(300,300)}
-
-        var i,j,  m, figsVec,  polyShape,  n
-
-        //pass in an array of points
-        //each will get scaled and then, calcShapes is applied to it
-        //and then for EACH OF THE SHAPES!! ....
-
-        _.each(calcShapes(_.map(verts, V)),
-
-            function(vec){
-
-                vv = vec
-                vvv = _.map(vv, function(v){return [v.x, v.y]})
-               // b.bindSprite2(
-                  //  w.s.shape(body.X(), body.Y()).poly(vvv, 'r', 'b', 1)
-               // )
-
-
-                var shape = b2d.polyH().setAsVec( vec, scale )
-
-            body.fixt(   b2d.fixt(  h = shape )   )
-
-
-
-
-        })
-
-
-
-
-
-        return body.den(1)
-    }
-
-    Validate=function(verticesVec){
-        /**
-         * Checks whether the vertices in <code>verticesVec</code> can be properly distributed into the new fixtures
-         * (more specifically, it makes sure there are no overlapping segments and the vertices are in clockwise order).
-         * It is recommended that you use this method for debugging only, because it may cost more CPU usage.
-         * <p/>
-         * @param verticesVec The vertices to be validated.
-         * @return An integer which can have the following values:
-         * <ul>
-         * <li>0 if the vertices can be properly processed.</li>
-         * <li>1 If there are overlapping lines.</li>
-         * <li>2 if the points are <b>not</b> in clockwise order.</li>
-         * <li>3 if there are overlapping lines <b>and</b> the points are <b>not</b> in clockwise order.</li>
-         * </ul>
-         * */
-
-        var i,n=verticesVec.length,j,j2,i2,i3,d,ret=0;
-        var fl ,fl2 =false
-        _.times(n, function(i){
-            i2= (i<n-1)? i+1: 0
-            i3= (i>0)? i-1: n-1
-            fl=false
-            _.times(n, function(j){
-                if ( j!=i  && j!=i2 ) {
-                    if (! fl) {
-                        d=det(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y);
-                        if  (d>0)  {  fl=true }}
-                    if ((j!=i3)) {
-                        j2=(j<n-1)?j+1:0;
-                        if (hitSegment(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y,verticesVec[j2].x,verticesVec[j2].y)) {
-                            ret=1;
-                        }}}})
-            if (! fl) { fl2=true }})
-        if (fl2){ if(ret==1){ret=3} else {ret=2} }
-        return ret }
-    calcShapes=function(verts){
-        var vec
-        var i,n,j
-        var d,t,dx,dy,minLen
-        var i1,i2,i3,p1 ,p2,p3
-        var j1,j2,v1 ,v2 ,k,h
-        var vec1 ,vec2
-        var v ,hitV
-        var isConvex
-        var figsVec =[], queue
-
-
-        queue =[]
-
-        queue.push(verts)
-
-
-        while (queue.length){
-            vec = queue[0]
-
-            n=vec.length
-
-            isConvex=true
-
-            _.times(n, function(i){
-
-                i1 = i
-
-                i2 = (i<n-1)?i+1:i+1-n
-
-                i3=(i<n-2)?i+2:i+2-n
-
-                p1= vec[i1]
-                p2= vec[i2]
-                p3= vec[i3]
-
-                d=det(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y)
-
-
-                if ( d<0)  {
-                    isConvex=false
-                    minLen = Number.MAX_VALUE
-
-                    _.times(n, function(j){
-                        if(j!=i1 &&  j!=i2 ){
-                            j1=j;
-                            j2=(j<n-1)?j+1:0;
-                            v1=vec[j1];
-                            v2=vec[j2];
-                            v=hitRay(p1.x,p1.y,p2.x,p2.y,v1.x,v1.y,v2.x,v2.y);
-
-                            if(v){
-
-                                dx = p2.x-v.x; dy=p2.y-v.y; t=dx*dx+dy*dy
-
-                                if(t<minLen){
-
-                                    h=j1
-                                    k=j2
-                                    hitV=v
-                                    minLen=t
-
-                                }}}
-                    })
-
-                    vec1=[]
-                    vec2=[]
-
-                    j1=h; j2=k;
-                    v1=vec[j1];
-                    v2=vec[j2];
-
-                    if (! pointsMatch( hitV.x, hitV.y,  v2.x,v2.y)) {vec1.push(hitV)}
-                    if (! pointsMatch( hitV.x, hitV.y,  v1.x,v1.y)) {vec2.push(hitV)}
-
-
-                    h=-1
-                    k=i1
-
-
-                    while(true){
-
-                        if(k == j2){ //if( h<0|| h>=n ){err()}
-
-                            if (!isOnSegment(
-                                v2.x,
-                                v2.y,
-                                vec[h].x,
-                                vec[h].y,
-                                p1.x,
-                                p1.y )){  vec1.push( vec[k] )  }
-
-                            break
-
-                        }  else { vec1.push(vec[k]) }
-
-                        h=k
-                        k=(k<1)?n-1:k-1
-                    }
-
-                    vec1=vec1.reverse()
-
-                    h=-1
-                    k=i2
-                    while (true) {
-
-
-                        if ( k==j1 ){//  if   ( h<0  || h>=n)  {  err()   }
-                            if ( k==j1  && ! isOnSegment(v1.x,v1.y,vec[h].x,vec[h].y,p2.x,p2.y)){  vec2.push(vec[k])   }
-                            break}
-
-                        else  {
-                            vec2.push(vec[k]);
-                        }
-                        h=k
-                        if ( k+1 > n-1 ) { k=0 }  else {k++}
-                    }
-
-                    queue.push(vec1,vec2)
-                    queue.shift()
-
-                }
-            })
-
-
-
-            if (isConvex) {figsVec.push(queue.shift())}
-        }
-
-        return figsVec
-    }
-
-
-    hitRay=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
-        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
-
-        a=(((t5*t2)-t6*t1)/t7);
-        var px=x1+a*t3,py=y1+a*t4;
-        var b1 =isOnSegment(x2,y2,x1,y1,px,py);
-        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
-
-        if ((b1&&b2)) {
-            return V(px,py);
-        }
-
-        return null;
-    }
-    hitSegment=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
-        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
-
-        a=(((t5*t2)-t6*t1)/t7);
-        var px=x1+a*t3,py=y1+a*t4;
-        var b1 =isOnSegment(px,py,x1,y1,x2,y2);
-        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
-
-        if ((b1&&b2)) {
-            return V(px,py);
-        }
-
-        return null;
-    }
-    isOnSegment=function(px,py,x1,y1,x2,y2) {
-
-        var b1 =   (  (x1+0.1)>=px &&px>=x2-0.1)  ||  (   (x1-0.1)  <= px  &&   px <= x2+0.1   )
-
-        var b2 =  ( (y1+0.1)>=py && py>=y2-0.1)  ||  (   (y1-0.1) <=py   &&   py <= y2+0.1   )
-
-
-        return  b1&&b2  &&   isOnLine(px,py,x1,y1,x2,y2)
-    }
-    pointsMatch=function(x1,y1,x2,y2)  {
-        var dx=(x2>=x1)?x2-x1:x1-x2,dy=(y2>=y1)?y2-y1:y1-y2;
-        return   dx<0.1  && dy<0.1
-    }
-    isOnLine=function(px,py,x1,y1,x2,y2) {
-        if (  (x2-x1)>0.1    ||    x1-x2>0.1  ) {
-            var a=(y2-y1)/(x2-x1),
-                possibleY=a*(px-x1)+y1,
-                diff=(possibleY>py)? possibleY-py: py-possibleY
-
-            return (diff<0.1)
-        }
-
-        return (((px-x1)<0.1)||x1-px<0.1)
-    }
-    det=function(x1,y1,x2,y2,x3,y3) {return x1*y2+x2*y3+x3*y1-y1*x2-y2*x3-y3*x1}
-    // err=function(){throw new Error("A problem has occurred. Use the Validate() method to see where the problem is.")}
-
-    return U(body)? Separate : Separate(body, verts, scale)
-}
-
-
-
-
-
-Math.poly=function(points){//gpcas
-    var poly= new PolyDefault()
-    poly.addPoints(points)
-    return poly}
-
-b2d.polyCirc=function(rad,prec){
-    rad = N(rad)?rad:20
-    prec = N(prec)?prec:20
-    var arr=[],
-        ang= 2 * Math.PI/prec
-    _.times(prec,function(i){
-        arr.push(V( rad*Math.cos(ang*i),
-                rad*Math.sin(ang*i)))})
-    return arr}
-
-
-
-
-
-
-
-//eh
-b2d.somePolyFixt=function(){return b2d.AFixt([-100,0],[0,-100],[100,0],[60,50])}
-b2d.randomCircleFixture = function(){return b2d.circShape(  Math.random()*50+ 8 )}
-b2d.randomPolygonFixture = function(){
-
-
-    var fixt, width, height
-
-
-    width = Math.random() * 100 + 14
-
-    height =Math.random() * 100 + 14 //12000/width
-
-    fixt= b2d.polygonShape(
-        width, height
-
-    )
-
-
-
-    return fixt}
-b2d.randomFixture = function(){
-
-    return fD.setShape(
-
-        _.random(1)?  b2d.randomPolygonFixture()
-
-            : b2d.randomCircleFixture()
-    )
-
-}
-b2d.compoundShape = function(){return world.A(b2d.dyn(300,200), [
-        b2d.poly(50,10),
-        b2d.poly(60,30,0,0,40),
-        b2d.poly(120,30,0,0,29),
-        b2d.poly(60,10,0,50,60),
-        b2d.poly(84,10,15,80,-120)
-
-    ])}
-b2d.compoundShape2 =  function(){
-
-   var body = w.A(
-
-       b2d.dyn(300,200),  [
-
-            b2d.poly(50,10),
-
-            b2d.poly(20,20),
-
-            b2d.poly(20,10, 0,0, 10),
-
-            b2d.poly(40,10, 50,0,  45),
-
-            b2d.poly(84,10, 15,80, -120),
-
-            b2d.poly(60,10, 0,50, 60 )
-
-
-        ]      )
-
-return body}
-b2d.compoundStar=function(){return world.A(
-
-   b2d.dyn(300,200),
-    [
-        b2d.poly(10,10),
-        b2d.circDef(20),
-        b2d.poly(4,80,300, 300,   135),
-        b2d.poly(4,80,0,0,45),
-        b2d.poly(4,80,100,0, 90),
-        b2d.poly(4,80,0,0,180)]
-
-)}
-b2d.platform =  function(){
-    w.bii(300,300,200,20)
-    w.bii(300,300,20,80)}
-b2d.fricky=function(){return w.A(b2d.dyn(300,200),
-    [
-        b2d.poly(10,10),
-        b2d.poly(20,40,0,0, 90).f(0).r(0),
-
-        b2d.poly(20,40,0,0,180).f(0).r(0)])}
-b2d.bouncy=function(){return w.A(b2d.dyn(300,200),[b2d.poly(10,10),
-        b2d.poly(20,40,0,0, 90).r(.9).f(1),
-        b2d.poly(20,40,0,0,180).r(.9).f(1)])}
-b2d.massy=function(){return w.A(b2d.dyn(300,200),
-    [b2d.poly(10,10),
-        b2d.poly(20,40,0,0, 90).d(2).f(1),
-        b2d.poly(20,40,0,0,180).d(2).f(1)])}
-b2d.fluffy=function(){
-    return world.A(
-        b2d.dyn(300,200),[
-            b2d.poly(10,10),
-            b2d.poly(20,40,0,0,90).d(.1).f(1),
-            b2d.poly(20,40,0,0,180).d(.1).f(1)]
-
-
-    )}
-
-
-
-makeWalls2=function(){
-    bii(10, 300, 20, 460) //left
-    bii(990,300, 20, 460)//right
-    bii(250, 0, 400, 20)//top
-    bii(730, 0, 400, 20)//top
-    bii(250, 590, 400, 20)//b
-    bii(730, 590, 400, 20)//b
-} //bas in the canvas size?
-makeWallsTiny=function(){
-
-    bii(10, 300, 20, 600) //left
-    bii(990, 300, 20, 600)//right
-    bii(300, 0, 1200, 20)//top
-    bii(300, 590, 1200, 20)}
-makeWallsFull=function(){
-    bii(10, 300, 20, 1200) //left
-    bii(990, 300, 20, 1200)//right
-    bii(300, 0, 3000, 20)//top
-    bii(300, 590, 3000, 20)}
-makeWallsLong=function(){
-
-
-    bii(10, 300, 20, 1200) //left
-    bii(1600, 300, 20, 1200)//right
-    bii(300, 0, 3000, 20)//top
-    bii(300, 590, 3000, 20)//bottom
-}
-
-
-TESTPOLY=function(){w=b2d.W()
-
-
-    circFixt =  b2d.fixt(  circShape= b2d.circShape(100)   )
-
-    circShape.rad=function(rad){
-        if(U(rad)){ return this.GetRadius() * 30 }
-        this.SetRadius(rad/30)
-        return this}
-
-    cf=  body.fixt( circFixt )
-
-    ch = cf.shape()
-
-    polyFixt =  b2d.fixt( polyShape= b2d.polyShape(100, 200) )
-
-    body = w.dyn(200,100)
-
-    pf =  body.fixt( polyFixt )
-
-    ph = pf.shape()
-
-}
-TRIANGLES=function(){w=b2d.W()
-    b =  w.dyn(400, 400, b2d.circ(30) )
-    f =  b.poly( [-100,0], [0,-100],[100,-20], [50,20] )
-    w.dyn(200, 200, b2d.fixts('tri3') )
-    w.dyn(200, 200, b2d.fixts('c50') )}
-TRIANGLES2 = function(){w=b2d.W()
-    w.stat(100,200, b2d.poly(50,50) )
-    b =  w.dyn(400, 400)
-    f =  b.poly( [-100,0],[0,-100],[100,-20])}
-MAKEWORLD=function(){return makeWorld()}
-BOX2D=function(a){b2d.mW()
-    b2d.compoundShape()
-    b2d.platform()
-    w.addTenBalls()
-    w.addMe();w.addMe();w.addMe()}
-
-
-CUPS=function(){w= b2d.W()
-
-    cup=function(x,y){x=N(x)?x:100;y=N(y)?y:x
-        return w.A(b2d.dyn(x,y),[
-            b2d.poly(10,10).d(5),
-            b2d.poly(50,20,0,40,0),
-            b2d.poly(100,20,-80,-40,260),
-            b2d.poly(100,20,80,-40,-80)])}
-
-    cup2=function(x,y){
-        x=N(x)?x:100//300
-        y=N(y)?y:x//800
-
-        return w.A(
-            b2d.dyn(x,y), [
-                b2d.poly(10,10).d(5),
-                b2d.poly(50,20,0,40,0),
-                b2d.poly(100,20,-80,-40,260),
-                b2d.poly(100,20,80,-40,-80),
-                b2d.circ(100)
-            ])}
-
-
-    cup3=function(x,y){
-
-        x=N(x)?x:100;y=N(y)?y:x
-
-        return w.A(
-            b2d.dyn(x,y),
-            [
-                b2d.poly(20,20).den(5),
-                b2d.poly(100,40,0,40,0),
-                b2d.poly(200,40,-80,-40,260),
-                b2d.poly(200,40,80,-40,-80),
-                b2d.circ(34,-80,-130),
-                b2d.circ(34,80,-130)
-            ]
-        )
-
-
-
-    }
-
-
-
-
-
-
-    //  cup(280,500)
-    // cup2(400,500)
-    cup3(700,500)
-
-    //b2d.fluffy()
-
-    w.ba()
-    w.ba()
-    w.ba()
-    w.bii(150,220,50)
-}
-
-
-
-
-STAIRS=function(){
-    w=b2d.W()
-    w.bii(500,500,600,100)
-    w.bii(500,400,500,100)
-    w.bii(500,300,500,100)
-    w.bii(500,350,450,100)
-    w.bii(320,400,50,600)
-    w.ba()
-
-
-}
-ORIENTED=function(){w=b2d.W()
-
-    body = b2d.dyn(200,200)
-
-    f = b2d.poly()
-
-    foot = b2d.poly(8, 14, 30, 140)
-
-   // f.shape.SetAsOrientedBox(100,200)
-
-   //  w.A(body, [foot, b2d.poly(100,100)] )
-
-    //w.dynamic( 100,200,b2d.circDef(30) )
-
-
-    w.dyn(500,400,[
-        b2d.poly(20,20,-100,50,60),
-        b2d.poly(100,120, 0, 0,100),
-        b2d.poly(100, 20),
-        b2d.poly(10, 300)
-
-    ])
-
-
-
-
-
-}
-MAZE=function(){w=b2d.W()
-
-    w.ship()
-    maze=[
-        [1,0,1,1,1,1,1,1,1],
-        [1,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,0,1],
-        [1,0,0,0,1,0,0,0,1],
-        [1,0,1,0,1,0,1,1,1],
-        [1,0,1,0,1,0,0,0,1],
-        [1,0,1,1,1,1,1,0,1],
-        [1,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1]]
-
-    w.grid(maze, 100, 200, 20,30)
-    w.bump(400, 200, 10)
-}
-RDP=function() {
-
-    function RDPsd(points, epsilon) {
-        var firstPoint = points[0];
-        var lastPoint = points[points.length - 1];
-        if (points.length < 3) {
-            return points;
-        }
-        var index = -1;
-        var dist = 0;
-        for (var i = 1; i < points.length - 1; i++) {
-            var cDist = distanceFromPointToLine(points[i], firstPoint, lastPoint);
-
-            if (cDist > dist) {
-                dist = cDist;
-                index = i;
-            }
-        }
-        if (dist > epsilon) {
-            // iterate
-            var l1 = points.slice(0, index + 1);
-            var l2 = points.slice(index);
-            var r1 = RDPsd(l1, epsilon);
-            var r2 = RDPsd(l2, epsilon);
-            // concat r2 to r1 minus the end/startpoint that will be the same
-            var rs = r1.slice(0, r1.length - 1).concat(r2);
-            return rs;
-        } else {
-            return [firstPoint, lastPoint];
-        }
-    }
-
-
-// this is the implementation with perpendicular Distance
-    function RDPppd(points, epsilon) {
-        var firstPoint = points[0];
-        var lastPoint = points[points.length - 1];
-        if (points.length < 3) {
-            return points;
-        }
-        var index = -1;
-        var dist = 0;
-        for (var i = 1; i < points.length - 1; i++) {
-            var cDist = findPerpendicularDistance(points[i], firstPoint, lastPoint);
-            if (cDist > dist) {
-                dist = cDist;
-                index = i;
-            }
-        }
-        if (dist > epsilon) {
-            // iterate
-            var l1 = points.slice(0, index + 1);
-            var l2 = points.slice(index);
-            var r1 = RDPppd(l1, epsilon);
-            var r2 = RDPppd(l2, epsilon);
-            // concat r2 to r1 minus the end/startpoint that will be the same
-            var rs = r1.slice(0, r1.length - 1).concat(r2);
-            return rs;
-        } else {
-            return [firstPoint, lastPoint];
-        }
-    }
-
-    function findPerpendicularDistance(p, p1, p2) {
-
-        // if start and end point are on the same x the distance is the difference in X.
-        var result;
-        var slope;
-        var intercept;
-        if (p1[0] == p2[0]) {
-            result = Math.abs(p[0] - p1[0]);
-        } else {
-            slope = (p2[1] - p1[1]) / (p2[0] - p1[0]);
-            intercept = p1[1] - (slope * p1[0]);
-            result = Math.abs(slope * p[0] - p[1] + intercept) / Math.sqrt(Math.pow(slope, 2) + 1);
-        }
-
-        return result;
-    }
-
-
-// code as suggested by Edward Lee
-
-    var distanceFromPointToLine = function (p, a, b) {
-        // convert array to object to please Edwards code;
-        p = {x: p[0], y: p[1]};
-        a = {x: a[0], y: a[1]};
-        b = {x: b[0], y: b[1]};
-        return Math.sqrt(distanceFromPointToLineSquared(p, a, b));
-    }
-
-//This is the difficult part. Commenting as we go.
-    var distanceFromPointToLineSquared = function (p, i, j) {
-        var lineLength = pointDistance(i, j);//First, we need the length of the line segment.
-        if (lineLength == 0) {	//if it's 0, the line is actually just a point.
-            return pointDistance(p, a);
-        }
-        var t = ((p.x - i.x) * (j.x - i.x) + (p.y - i.y) * (j.y - i.y)) / lineLength;
-
-        //t is very important. t is a number that essentially compares the individual coordinates
-        //distances between the point and each point on the line.
-
-        if (t < 0) {	//if t is less than 0, the point is behind i, and closest to i.
-            return pointDistance(p, i)}	//if greater than 1, it's closest to j.
-        if (t > 1) {
-            return pointDistance(p, j)}
-        return pointDistance(p, { x: i.x + t * (j.x - i.x), y: i.y + t * (j.y - i.y)});
-        //this figure represents the point on the line that p is closest to.
-    }
-
-//returns distance between two points. Easy geometry.
-    var pointDistance = function (i, j) {return sqr(i.x - j.x) + sqr(i.y - j.y)}
-
-
-function sqr(x){return x * x}
-
-}
-TERRAINEASEL=function(){z()
-
-    s= stage = cjs.stg(1600, 600).A()
-
-    h = s.shape()
-    h.f('b').dc(200, 200, 10)
-
-    h2 = s.shape().X(700)
-    h2.f('b').dc(0,0,10)
-
-    tile = function(i,j){
-        return [
-            V(-5+i,130+j),
-            V(-5+i,80+j),
-            V(45+i,80+j),
-            V(45+i,130+j)
-        ]}   // lower left //upper left//upper right//lower right
-
-
-draw=function(){terr=[]
-    _.times(13,function(i){
-        _.times(8,function(j){
-        terr.push(tile(i*50,j*50))
-    })})
-
-    h.drawPolygons(terr,'b','r')
-}
-
-    draw()
-
-    t= Math.poly(terr[101])
-
-      doExplosion= function(e){
-
-          v = V(e.stageX,e.stageY)
-
-          exP = circ(v,100 )
-          h.drawPolygon(exP,'z')
-
-          c  = Math.poly(exP)
-    // for each existing terrain polygon, check the difference between the polygon itself and the
-    // explosion polygon. This should be optimized in some way, checking only for terrain polygons
-    // which are actually affected by the explosion.
-    // Then we remove the terrain polygon from the array, and we add the resulting polygon(s) after
-    // difference is calculated.
-
-          iX = c.intersection(t)
-          h2.drawPolygon(iX.verts())
-    for (var i=terr.length-1; i>=0; i--) {
-
-
-     // resultPolygons =   terr[i].intersection(exP)
-
-        totalArea=0
-       // terr.splice(i,1)
-       // for (var j =0; j<resultPolygons.length; j++) {terr.push(resultPolygons[j])}
-
-    }
-
-   // draw()
-}
-
-     circ=function(v,rad,prec){ prec = N(prec)?prec:20
-
-        arr=[]
-
-         ang= 2 * Math.PI/prec
-
-          _.times(prec , function(i){
-
-           pX = v.x + rad * Math.cos(ang*i)
-            pY = v.y + rad * Math.sin(ang*i)
-
-           // $l('pX: ' + pX + ', pY: '+ pY)
-
-            arr.push( V(pX,pY) )
-
-          })
-
-          return arr
-
-      }
-
-    // listeners: basically we destroy the terrain with a mouse click or a mouse drag
-
-    // stage.on('mousedown', function(){stage.on('mousemove', doExplosion)})
-    // stage.on('mouseup', function(){stage.off('mousemove', doExplosion)})
-
-
-    stage.on('click', doExplosion)
-
-
-
-   vv= [V(645,480), //lower right
-       V(595,480),  //lower left
-       V(595,430), //upper left
-       V(645,430)] //upper right
-
-    h.drawPolygon(vv, 'z')
-
-
-vvv = [
-
-    V(645,380),
-    V(595,380),
-    V(595,372),
-    V(617,369),
-    V(645,373)
-]
-
-   //h.drawPolygon(vvv, 'z')
-     h.drawPolygon(vvv, 'z')
-
-
-
-}
-
-
 GPCLIB=function(){
     gpcas =  {};
     gpcas.util = {};
@@ -4391,83 +3275,608 @@ GPCLIB=function(){
 
 
 
-}; GPCLIB()
-TERRAIN=function(){w=b2d.W()
-    sep = b2d.separator()
-    terr=[]
-    circ=function(v,rad,prec){ prec = N(prec)?prec:20
-        arr=[]
+}; GPCLIB() //the geometry lib
+//////////////////////////////////////////////////////////////////////////////////////////
+b2d.sep = b2d.conc =   b2d.separator = function(body, verts, scale){
+
+
+
+    /*
+     //This class is specifically for non-convex polygons.
+     // If you want to create a convex polygon, you don't need to use this class
+     // - Box2D's <code>b2PolygonShape</code> class allows you to create convex shapes with the
+     <code>setAsArray()</code>/<code>setAsVector()</code> method.</li>
+
+     //The vertices must be in clockwise order.</li>
+     //No three neighbouring points should lie on the same line segment
+     //There must be no overlapping segments and no "holes"
+
+     @param body The b2Body, in which the new fixtures will be stored.
+     * @param fixtureDef A b2FixtureDef, containing all the properties (friction, density, etc.) which the new fixtures will inherit.
+     * @param verticesVec The vertices of the non-convex polygon, in clockwise order.
+     * @param scale <code>[optional]</code> The scale which you use to draw shapes in Box2D. The bigger the scale, the better the precision. The default value is 30.
+     * @see b2PolygonShape
+     * @see b2PolygonShape.SetAsArray()
+     * @see b2PolygonShape.SetAsVector()
+     * @see b2Fixture
+     * */
+    Separate = function(body, verts, scale){
+
+        var g=G(arguments)
+        body=g[0]
+        verts=g[1]
+        scale=N(g[2])?g[2]:30
+
+        if(A(body)){
+            scale=verts;
+            verts=body;
+            body= g.p? w.ball(300,300,4): w.dyn(300,300)
+        }
+
+        var i,j,  m, figsVec,  polyShape,  n
+
+        //pass in an array of points
+        //each will get scaled and then, calcShapes is applied to it
+        //and then for EACH OF THE SHAPES!! ....
+
+        _.each(calcShapes(
+
+                _.map(verts, V)),
+
+            function(vec){
+
+                vv = vec
+
+                vvv = _.map(vv, function(v){return [v.x, v.y]})
+                // b.bindSprite2(
+                //  w.s.shape(body.X(), body.Y()).poly(vvv, 'r', 'b', 1)
+                // )
+
+                var shape = b2d.polyH().setAsVec( vec, scale )
+
+                body.fixt(   b2d.fixt(  h = shape )   )
+
+
+
+
+            })
+
+
+
+
+
+        return body.den(1)
+    }
+
+
+    Validate=function(verticesVec){
+        /**
+         * Checks whether the vertices in <code>verticesVec</code> can be properly distributed into the new fixtures
+         * (more specifically, it makes sure there are no overlapping segments and the vertices are in clockwise order).
+         * It is recommended that you use this method for debugging only, because it may cost more CPU usage.
+         * <p/>
+         * @param verticesVec The vertices to be validated.
+         * @return An integer which can have the following values:
+         * <ul>
+         * <li>0 if the vertices can be properly processed.</li>
+         * <li>1 If there are overlapping lines.</li>
+         * <li>2 if the points are <b>not</b> in clockwise order.</li>
+         * <li>3 if there are overlapping lines <b>and</b> the points are <b>not</b> in clockwise order.</li>
+         * </ul>
+         * */
+
+        var i,n=verticesVec.length,j,j2,i2,i3,d,ret=0;
+        var fl ,fl2 =false
+        _.times(n, function(i){
+            i2= (i<n-1)? i+1: 0
+            i3= (i>0)? i-1: n-1
+            fl=false
+            _.times(n, function(j){
+                if ( j!=i  && j!=i2 ) {
+                    if (! fl) {
+                        d=det(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y);
+                        if  (d>0)  {  fl=true }}
+                    if ((j!=i3)) {
+                        j2=(j<n-1)?j+1:0;
+                        if (hitSegment(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y,verticesVec[j2].x,verticesVec[j2].y)) {
+                            ret=1;
+                        }}}})
+            if (! fl) { fl2=true }})
+        if (fl2){ if(ret==1){ret=3} else {ret=2} }
+        return ret }
+    calcShapes=function(verts){
+        var vec
+        var i,n,j
+        var d,t,dx,dy,minLen
+        var i1,i2,i3,p1 ,p2,p3
+        var j1,j2,v1 ,v2 ,k,h
+        var vec1 ,vec2
+        var v ,hitV
+        var isConvex
+        var figsVec =[], queue
+
+
+        queue =[]
+
+        queue.push(verts)
+
+
+        while (queue.length){
+            vec = queue[0]
+
+            n=vec.length
+
+            isConvex=true
+
+            _.times(n, function(i){
+
+                i1 = i
+
+                i2 = (i<n-1)?i+1:i+1-n
+
+                i3=(i<n-2)?i+2:i+2-n
+
+                p1= vec[i1]
+                p2= vec[i2]
+                p3= vec[i3]
+
+                d=det(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y)
+
+
+                if ( d<0)  {
+                    isConvex=false
+                    minLen = Number.MAX_VALUE
+
+                    _.times(n, function(j){
+                        if(j!=i1 &&  j!=i2 ){
+                            j1=j;
+                            j2=(j<n-1)?j+1:0;
+                            v1=vec[j1];
+                            v2=vec[j2];
+                            v=hitRay(p1.x,p1.y,p2.x,p2.y,v1.x,v1.y,v2.x,v2.y);
+
+                            if(v){
+
+                                dx = p2.x-v.x; dy=p2.y-v.y; t=dx*dx+dy*dy
+
+                                if(t<minLen){
+
+                                    h=j1
+                                    k=j2
+                                    hitV=v
+                                    minLen=t
+
+                                }}}
+                    })
+
+                    vec1=[]
+                    vec2=[]
+
+                    j1=h; j2=k;
+                    v1=vec[j1];
+                    v2=vec[j2];
+
+                    if (! pointsMatch( hitV.x, hitV.y,  v2.x,v2.y)) {vec1.push(hitV)}
+                    if (! pointsMatch( hitV.x, hitV.y,  v1.x,v1.y)) {vec2.push(hitV)}
+
+
+                    h=-1
+                    k=i1
+
+
+                    while(true){
+
+                        if(k == j2){ //if( h<0|| h>=n ){err()}
+
+                            if (!isOnSegment(
+                                v2.x,
+                                v2.y,
+                                vec[h].x,
+                                vec[h].y,
+                                p1.x,
+                                p1.y )){  vec1.push( vec[k] )  }
+
+                            break
+
+                        }  else { vec1.push(vec[k]) }
+
+                        h=k
+                        k=(k<1)?n-1:k-1
+                    }
+
+                    vec1=vec1.reverse()
+
+                    h=-1
+                    k=i2
+                    while (true) {
+
+
+                        if ( k==j1 ){//  if   ( h<0  || h>=n)  {  err()   }
+                            if ( k==j1  && ! isOnSegment(v1.x,v1.y,vec[h].x,vec[h].y,p2.x,p2.y)){  vec2.push(vec[k])   }
+                            break}
+
+                        else  {
+                            vec2.push(vec[k]);
+                        }
+                        h=k
+                        if ( k+1 > n-1 ) { k=0 }  else {k++}
+                    }
+
+                    queue.push(vec1,vec2)
+                    queue.shift()
+
+                }
+            })
+
+
+
+            if (isConvex) {figsVec.push(queue.shift())}
+        }
+
+        return figsVec
+    }
+    hitRay=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
+        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
+
+        a=(((t5*t2)-t6*t1)/t7);
+        var px=x1+a*t3,py=y1+a*t4;
+        var b1 =isOnSegment(x2,y2,x1,y1,px,py);
+        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
+
+        if ((b1&&b2)) {
+            return V(px,py);
+        }
+
+        return null;
+    }
+    hitSegment=function(x1,y1,x2,y2,x3,y3,x4,y4)  {
+        var t1=x3-x1,t2=y3-y1,t3=x2-x1,t4=y2-y1,t5=x4-x3,t6=y4-y3,t7=t4*t5-t3*t6,a;
+
+        a=(((t5*t2)-t6*t1)/t7);
+        var px=x1+a*t3,py=y1+a*t4;
+        var b1 =isOnSegment(px,py,x1,y1,x2,y2);
+        var b2 =isOnSegment(px,py,x3,y3,x4,y4);
+
+        if ((b1&&b2)) {
+            return V(px,py);
+        }
+
+        return null;
+    }
+    isOnSegment=function(px,py,x1,y1,x2,y2) {
+
+        var b1 =   (  (x1+0.1)>=px &&px>=x2-0.1)  ||  (   (x1-0.1)  <= px  &&   px <= x2+0.1   )
+
+        var b2 =  ( (y1+0.1)>=py && py>=y2-0.1)  ||  (   (y1-0.1) <=py   &&   py <= y2+0.1   )
+
+
+        return  b1&&b2  &&   isOnLine(px,py,x1,y1,x2,y2)
+    }
+    pointsMatch=function(x1,y1,x2,y2)  {
+        var dx=(x2>=x1)?x2-x1:x1-x2,dy=(y2>=y1)?y2-y1:y1-y2;
+        return   dx<0.1  && dy<0.1
+    }
+    isOnLine=function(px,py,x1,y1,x2,y2) {
+        if (  (x2-x1)>0.1    ||    x1-x2>0.1  ) {
+            var a=(y2-y1)/(x2-x1),
+                possibleY=a*(px-x1)+y1,
+                diff=(possibleY>py)? possibleY-py: py-possibleY
+
+            return (diff<0.1)
+        }
+
+        return (((px-x1)<0.1)||x1-px<0.1)
+    }
+    det=function(x1,y1,x2,y2,x3,y3) {return x1*y2+x2*y3+x3*y1-y1*x2-y2*x3-y3*x1}
+    // err=function(){throw new Error("A problem has occurred. Use the Validate() method to see where the problem is.")}
+
+    if(b2d.isGPoly(verts)){
+
+        verts = verts.verts()
+    }
+
+    return U(body)? Separate : Separate(body, verts, scale)
+} // conc-sep lib
+//////////////////////////////////////////////////////////////////////////////////////////
+RDP=function(){
+
+    function RDPsd(points,epsilon) {
+        var firstPoint = points[0];
+        var lastPoint = points[points.length - 1];
+        if (points.length < 3) {
+            return points;
+        }
+        var index = -1;
+        var dist = 0;
+        for (var i = 1; i < points.length - 1; i++) {
+            var cDist = distanceFromPointToLine(points[i],firstPoint,lastPoint);
+
+            if (cDist > dist) {
+                dist = cDist;
+                index = i;
+            }
+        }
+        if (dist > epsilon) {
+            // iterate
+            var l1 = points.slice(0,index + 1);
+            var l2 = points.slice(index);
+            var r1 = RDPsd(l1,epsilon);
+            var r2 = RDPsd(l2,epsilon);
+            // concat r2 to r1 minus the end/startpoint that will be the same
+            var rs = r1.slice(0,r1.length - 1).concat(r2);
+            return rs;
+        } else {
+            return [firstPoint,lastPoint];
+        }
+    }
+
+// this is the implementation with perpendicular Distance
+    function RDPppd(points,epsilon) {
+        var firstPoint = points[0];
+        var lastPoint = points[points.length - 1];
+        if (points.length < 3) {
+            return points;
+        }
+        var index = -1;
+        var dist = 0;
+        for (var i = 1; i < points.length - 1; i++) {
+            var cDist = findPerpendicularDistance(points[i],firstPoint,lastPoint);
+            if (cDist > dist) {
+                dist = cDist;
+                index = i;
+            }
+        }
+        if (dist > epsilon) {
+            // iterate
+            var l1 = points.slice(0,index + 1);
+            var l2 = points.slice(index);
+            var r1 = RDPppd(l1,epsilon);
+            var r2 = RDPppd(l2,epsilon);
+            // concat r2 to r1 minus the end/startpoint that will be the same
+            var rs = r1.slice(0,r1.length - 1).concat(r2);
+            return rs;
+        } else {
+            return [firstPoint,lastPoint];
+        }
+    }
+    function findPerpendicularDistance(p,p1,p2) {
+
+        // if start and end point are on the same x the distance is the difference in X.
+        var result;
+        var slope;
+        var intercept;
+        if (p1[0] == p2[0]) {
+            result = Math.abs(p[0] - p1[0]);
+        } else {
+            slope = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+            intercept = p1[1] - (slope * p1[0]);
+            result = Math.abs(slope * p[0] - p[1] + intercept) / Math.sqrt(Math.pow(slope, 2) + 1);
+        }
+
+        return result;
+    }
+
+// code as suggested by Edward Lee
+    var distanceFromPointToLine = function (p, a, b) {
+        // convert array to object to please Edwards code;
+        p = {x: p[0], y: p[1]};
+        a = {x: a[0], y: a[1]};
+        b = {x: b[0], y: b[1]};
+        return Math.sqrt(distanceFromPointToLineSquared(p, a, b));
+    }
+
+//This is the difficult part. Commenting as we go.
+    var distanceFromPointToLineSquared = function (p, i, j) {
+        var lineLength = pointDistance(i, j);//First, we need the length of the line segment.
+        if (lineLength == 0) {	//if it's 0, the line is actually just a point.
+            return pointDistance(p, a);
+        }
+        var t = ((p.x - i.x) * (j.x - i.x) + (p.y - i.y) * (j.y - i.y)) / lineLength;
+
+        //t is very important. t is a number that essentially compares the individual coordinates
+        //distances between the point and each point on the line.
+
+        if (t < 0) {	//if t is less than 0, the point is behind i, and closest to i.
+            return pointDistance(p, i)}	//if greater than 1, it's closest to j.
+        if (t > 1) {
+            return pointDistance(p, j)}
+        return pointDistance(p, { x: i.x + t * (j.x - i.x), y: i.y + t * (j.y - i.y)});
+        //this figure represents the point on the line that p is closest to.
+    }
+
+//returns distance between two points. Easy geometry.
+    var pointDistance = function (i, j) {return sqr(i.x - j.x) + sqr(i.y - j.y)}
+    function sqr(x){return x * x}
+
+} //not used yet
+//////////////////////////////////////////////////////////////////////////////////////////
+h =  b2d.Shapes.b2Shape.prototype
+//something (important - mJ-related) uses this :(
+h.testPoint = h.tP = function(tf, vec){return this.TestPoint(tf, vec)}
+//
+h.test = h.point  = function(tf,v,y){return this.TestPoint(tf,V(v,y).div())}
+h.seg = h.segment = function(xf, lamb, norm,seg,maxLamb){//Perform a ray cast against this shape.
+
+   return this.TestSegment(xf,
+
+       lamb,//:Array, returns the hit fraction.
+       // You can use this to compute the contact point p = (1 - lambda) segment.p1
+       // + lambda segment.p2.
+
+       norm,//:b2Vec2, returns the normal at the contact point.
+       // If there is no intersection, the normal is not set.
+
+       seg,//:b2Segment, defines the begin and end point of the ray cast
+        maxLamb//:Numbera number typically in the range [0,1]
+    )
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+cH = b2d.CircleShape.prototype
+cH.xy = function(x,y){this.SetLocalPosition(V(x,y).div())
+    return this}
+//////////////////////////////////////////////////////////////////////////////////////////
+pH = p = b2d.PolygonShape.prototype
+pH.setAsBox = p.sAB = function(wd,ht, xy, ang, ang2 ){
+
+//handles both box and set as box!
+//w,h -> centered box
+//w,h,xy,ang -> oriented box
+//w,h,x,y,ang ->oriented box
+
+    var h=this,
+        g=G(arguments),
+
+        wd = (g[0]||100)/60,
+        ht= (g[1]||wd)/60,
+        xy=g[2],
+        ang=g[3],
+        ang2=g[4]
+
+    toR=Math.toRadians
+    h.box=h.SetAsBox
+    h.oBox=h.SetAsOrientedBox
+
+    if(U(xy)){h.box(wd,ht)}
+    else if(N(xy)){h.oBox(wd,ht,V(xy,ang).div(),toR(ang2||0))}
+    else {h.oBox(wd,ht,xy.div(), toR(ang||0))}
+
+    return this}
+pH.arr=function(){var v
+    v = b2d.verts.apply(null, arguments)
+    this.SetAsArray(v,v.length)
+    return this}//pH.setAsArray=p.sAA=function(a,b){if(U(b)){b=a.length}; this.SetAsArray(a, b); return this}
+pH.set = function(wd){
+    if(N(wd)){ this.setAsBox.apply(this, arguments) }
+    else if(O(wd)){
+        this.arr.apply(this, arguments)
+    }
+    return this}//this covers all cases for polygons !!!! // ******// !!!!!!!!
+pH.setAsVec =   function(vec, scale){
+    scale=N(scale)?scale:30
+   vec = _.map(vec,function(v){return V(v).div(scale)})
+    this.SetAsVector(vec)
+    return this}
+pH.verts = function(){
+
+   var verts= this.m_vertices
+
+    return _.map(verts, function(v){
+
+        return [v.x*30, v.y*30]
+
+    })
+
+}
+
+
+
+
+b2d.polyH= function(){//b2d.pSh=//polygonShape // this is all you need for all cases (thanks to pH.set)
+    var poly=new b2d.PolygonShape()
+    poly.set.apply(poly, arguments)
+    return poly}
+b2d.circH=    b2d.cH=b2d.circShape=b2d.circleShape=b2d.cSh=function(rad,x,y){
+
+    rad = N(rad)?rad:25
+
+    return new b2d.CircleShape(rad/30).xy(x,y)
+}
+b2d.AH =b2d.AShape=function(pam,pam2){//dep .. use polyH
+    var args=(pam2)?arguments:pam
+    var arr = _.map(args, function(vert){return V(vert).div()}),
+        shape = b2d.polyH()
+    shape.sAA( arr )
+    return shape}
+b2d.H=    b2d.shape=function(a,b){
+    if(U(b)){return b2d.circH(a)}
+    return b2d.polyH.apply(b2d, arguments)}
+b2d.A= b2d.Arr=function(){return b2d.fixt(b2d.AH.apply(null,arguments)).den(.1)}
+b2d.polyCirc=function(rad,prec){
+    rad = N(rad)?rad:20
+    prec = N(prec)?prec:20
+    var arr=[],
         ang= 2 * Math.PI/prec
-        _.times(prec , function(i){
-            pX = v.x+rad  * Math.cos(ang*i)
-            pY = v.y+rad  * Math.sin(ang*i)
-            arr.push(V(pX,pY))})
-        return arr}
-    explosion=function(x,y){var cir,bod
-        cir= Math.poly( circ(V(x,y),30,5) )
-        bod= sep(circ(V(0,0),30,5)).XY(x,y)
-        return {  cir:cir,  bod:bod }}
-    _.times(13,function(i){_.times(8,function(j){
-var bod=w.brick(  i*25 +420,  j*25 +200,     20, 20 )
-        terr.push({
-
-            bod: bod,
-
-            verts:   bod.fixt().verts()  ,
-
-            poly: Math.poly([
-                V(  i*25+410,  j*25+210  ),
-                V(  i*25+410,  j*25+190  ),
-                V(  i*25+430,  j*25+190  ),
-                V(  i*25+430,  j*25+210  )
-            ])
-
-        })
-
-    })})
-   // w.dot(420,200); w.dot(410,210)
-
-    t=terr[103]
-
-   s = sep(
-
-       t.bod.fixt().verts()
-
-   ).stat()//.XY(100,100)
+    _.times(prec,function(i){
+        arr.push(V( rad*Math.cos(ang*i),rad*Math.sin(ang*i)))})
+    return arr}
 
 
+BOX2D=function(){w=b2d.W()
 
-    exp=explosion(740,395)
+    b2d.somePolyFixt=[ [[-100,0],[0,-100],[100,0],[60,50]]]
+    b2d.compoundShape= [[50,10],[60,30,0,0,40],[120,30,0,0,29],[60,10,0,50,60],[84,10,15,80,-120]]
+    b2d.compoundShape2=[[50,10],[20,20],[20,10,0,0,10],[40,10,50,0,45],[84,10, 15,80, -120], [60,10, 0,50, 60 ]  ]
+    b2d.compoundStar=[
+        [10,10],[20],
+        [4,80,10,30,135],
+        [4,80,0,0,45],
+        [4,80,100,0,90],
+        [4,80,0,0,180]
+    ]
 
-    Math.poly(exp.cir)
-    dif = t.poly.difference(exp.cir)
-    t.bod.fixt().remove()
-    bb= sep( t.bod, dif.verts() ).stat().XY(0,0)
+    w.B(100,100,b2d.somePolyFixt )
+    w.B(200,100,b2d.compoundShape  )
+    w.B(300,100,b2d.compoundShape2  )
+    w.B(400,100,b2d.compoundStar  )
 
-   // setTimeout( function(){ t.bod.X(20) }, 2000)
+    w.S(200, 200, 'w',80,140, 30,140,25)
+    w.S(500,400,'w',[  [20,20,-100,50,60],  [100,120,0,0,100],  [100,20],  [10,300]])
+
+    w.B(400,400,[['b',30],['y',[-100,0],[0,-100],[100,-20],[50,20]]])
+    w.S(100,200,'w',50,50 )
+    w.B(400,400,'p',[-100,0],[0,-100],[100,-20] ) //pass in points alone !!!!
+
+    w.me(400,200)
+    w.me(400,300)
+    w.me(400,400)
+
+    //w.addTenBalls() ..not color yet
+}
+CUPS=function(){w= b2d.W().db()
+
+    cup=[[20,20],[100,40,0,40,0],[200,40,-80,-40,260],[200,40,80,-40,-80] ]
+    cup2=[[100,40,0,40,0],['g',200,40,-80,-40,260],['g',200,40,80,-40,-80],[100] ]
+    cup3=[[100,40,0,40,0],[200,40,-80,-40,260],[200,40,80,-40,-80],[34,-80,-130],[34,80,-130]]
+
+    w.B(280,500,'r',cup)
+    w.B(600,500,'b',cup2)
+    w.B(900,500,'y',cup3)
+
+    //b2d.fluffy()
+
+    w.B(100,100,'o',30)
+    w.B(100,100,'o',30)
+    w.B(100,100,'o',30)
+    w.S(150,220,'u',50,100)
+}
+MAZE=function(){w=b2d.W()
+
+
+
+    maze=[
+        [1,0,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,0,1],
+        [1,0,0,0,1,0,0,0,1],
+        [1,0,1,0,1,0,1,1,1],
+        [1,0,1,0,1,0,0,0,1],
+        [1,0,1,1,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1]]
+
+    y=w.ship()
+
+    w.grid(maze,100,200,20,30)
+
+    w.S(400,200,10)
 }
 GPC=function(){
     canvas =  can = $.can('y', 400,500).A()
     context = ctx = can.ctx()
-    poly1 = Math.poly([
-        [61,68],
-        [145,122],
-        [186,94],
-        [224,135],
-        [204,211],
-        [105,200],
-        [141,163],
-        [48,139],
-        [74,117]
-    ])
 
-    poly2 = Math.poly([
-        [131,84],
-        [224,110],
-        [174,180],
-        [120,136],
-        [60,167],
-    ])
+    poly1 = Math.poly([[61,68],[145,122],[186,94],[224,135],[204,211],[105,200],[141,163],[48,139],[74,117]])
+
+    poly2 = Math.poly([[131,84],[224,110],[174,180],[120,136],[60,167],])
 
     reset=(function self(){
 
@@ -4492,538 +3901,148 @@ GPC=function(){
 
 
 }
-SEPARATOR=function(){w = b2d.W();
+PINS=function(){w=b2d.W().db()//=SEPARATOR=COLORCONC
+    pin=[['o',[-20,20],[0,-80],[20,20],[0,-40]],['w',8,0,-75],['w',8,-20,20],['w',8,20,20]]
+    _.times(15, function(i){w.B(100 + (i*60), 300, pin)})
+    w.ship()}
+TERREASEL=function(){z()
+    s= stage = cjs.stg(1600, 600).A()
+    h = s.shape()
+    h.f('b').dc(200, 200, 10)
+    h2 = s.shape().X(700)
+    h2.f('b').dc(0,0,10)
 
+    tile=function(i,j){return [V(-5+i,130+j),V(-5+i,80+j),V(45+i,80+j),V(45+i,130+j)]}   // lower left //upper left//upper right//lower right
+    draw=function(){terr=[]
+        _.times(13,function(i){_.times(8,function(j){terr.push(tile(i*50,j*50))})})
+        h.drawPolygons(terr,'b','r')}; draw()
+    t=Math.poly(terr[101])
+    doExplosion= function(e){v=V(e.stageX,e.stageY)
+        exP = circ(v,100 )
+        h.drawPolygon(exP,'z')
+        c  = Math.poly(exP) // for each existing terrain polygon, check the difference between the polygon itself and the
+        // explosion polygon. This should be optimized in some way, checking only for terrain polygons
+        // which are actually affected by the explosion.
+        // Then we remove the terrain polygon from the array, and we add the resulting polygon(s) after
+        // difference is calculated.
+        iX = c.intersection(t)
+        h2.drawPolygon(iX.verts())
+        for (var i=terr.length-1; i>=0; i--) {totalArea=0}} // resultPolygons =   terr[i].intersection(exP)// terr.splice(i,1)// for (var j =0; j<resultPolygons.length; j++) {terr.push(resultPolygons[j])}
+    circ=function(v,rad,prec){ prec = N(prec)?prec:20
+        arr=[]; ang= 2 * Math.PI/prec
+        _.times(prec , function(i){
+            pX=v.x+rad*Math.cos(ang*i)
+            pY=v.y+rad*Math.sin(ang*i)
+            arr.push( V(pX,pY))})
+        return arr} // listeners: basically we destroy the terrain with a mouse click or a mouse drag
+    // stage.on('mousedown', function(){stage.on('mousemove', doExplosion)})
+    // stage.on('mouseup', function(){stage.off('mousemove', doExplosion)})
 
-
-    _.times(30, function(i){
-
-        b2d.conc([V(-20,20),V(0,-80),V(20,20),V(0,-40)]).XY(100+(i*30), 300)
-        b2d.conc([V(-20,20),V(0,-80),V(20,20),V(0,-40)]).XY(100+(i*30), 300)
-
-        b2d.conc([V(-20,20),V(0,-80),V(20,20),V(0,-40)]).XY(100+(i*30), 300)
-
-    })
-
-
-w.ship()
-    b2d.conc([
-         V(-20,20), V(-20,-20),
-         V(20,-20), V(20,20)
-     ]).XY(500, 300)
-
-
+    stage.on('click', doExplosion)
+    vv= [V(645,480),V(595,480),V(595,430),V(645,430)] //lower right//lower left//upper left//upper right
+    h.drawPolygon(vv, 'z')
+    vvv = [V(645,380),V(595,380),V(595,372),V(617,369),V(645,373)]
+    h.drawPolygon(vvv, 'z')
 }
-TER=function(){w=b2d.W()
+TERR=function(){w=b2d.W()
+    sep = b2d.separator()
+    terr=[]
+    circ=function(v,rad,prec){ prec = N(prec)?prec:20
+        arr=[]
+        ang= 2 * Math.PI/prec
+        _.times(prec , function(i){
+            pX = v.x+rad  * Math.cos(ang*i)
+            pY = v.y+rad  * Math.sin(ang*i)
+            arr.push(V(pX,pY))})
+        return arr}
+    explosion=function(x,y){var cir,bod
+        cir= Math.poly( circ(V(x,y),30,5) )
+        bod= sep(circ(V(0,0),30,5)).XY(x,y)
+        return {  cir:cir,  bod:bod }}
+    _.times(13,function(i){_.times(8,function(j){
+        var bod=w.brick(  i*25 +420,  j*25 +200,     20, 20 )
+        terr.push({
+
+            bod: bod,
+
+            verts:   bod.fixt().verts()  ,
+
+            poly: Math.poly([
+                V(  i*25+410,  j*25+210  ),
+                V(  i*25+410,  j*25+190  ),
+                V(  i*25+430,  j*25+190  ),
+                V(  i*25+430,  j*25+210  )
+            ])
 
-    p1 = Math.poly([
-        V(-50,50), V(-50,-50), V(50,-50), V(50,50), V(-45,55)
-    ])
-
-
-    b2d.conc(p1.verts()).stat()
-
-
-
-    p2 = Math.poly([
-        V(-100,0),V(-100,-100),V(0,-100),V(0,0),V(-98,2)
-
-    ])
-    b2d.conc(p2.verts()).stat()
-
-
-    d1 = p1.union(p2).verts()
-    c=  b2d.conc(d1).X(500)//.stat()
-
-    d1 = p1.difference(p2).verts()
-    c=  b2d.conc(d1).X(500)//.stat()
-
-    d1 = p1.intersection(p2).verts()
-    c=  b2d.conc(d1).X(500)//.stat()
-
-    d1 = p1.xor(p2).verts()
-    c=  b2d.conc(d1).X(500)//.stat()
-
-}
-OLD=function(){
-
-
-    GPCB=function(){w=b2d.W()
-
-        p1=[
-
-            [200,0],
-            [200,100],
-            [100,100],
-            [100, 0]
-        ]
-
-        p2=[
-            [-20,-20],
-            [120,-20],
-            [120,80],
-            [-20,80]
-        ]
-
-
-        b2d.conc(p1).XY(100,300).stat()
-        b2d.conc(p2).XY(100,300).stat()
-
-
-        poly1 = Math.poly(p1)
-
-        poly2 = Math.poly(p2)
-
-        poly3 = poly1.difference(poly2)
-
-        b2d.conc( poly3.verts() ).XY(500,200).stat()
-
-
-
-
-    }
-    GPCBLOCK=function(){
-        c = canvas =  can = $.can('y', 400,500).A()
-        x = context = ctx = can.ctx()
-        x.translate(200,200);
-
-        poly1 = Math.poly([
-            [-50,50],
-            [-50,-50],
-            [50,-50],
-            [50,50],
-            [-50,50]
-        ])
-
-        poly2 = Math.poly([
-
-            [-100,0],
-            [-100,-100],
-            [0,-100],
-            [0,0],
-            [-100,0]
-        ])
-
-
-
-        reset=(function self(){
-
-            ctx.clearRect(0,0,400,400)
-            ctx.drawPolys(poly1,'b', 0, -30 )
-                .drawPolys(poly2,'r', 0, -30 )
-
-            return self}())
-
-        button=function(name,poly){
-            $.button(name, function(e) {
-                reset()
-                ctx.drawPolys(poly,'g', 0,150)
-            }).A()}
-
-
-        button('difference',  poly1.difference(poly2) )
-        button('intersection', poly1.intersection(poly2) )
-        button('union', poly1.union(poly2) )
-        button('xor',  poly1.xor(poly2) )
-
-
-
-    }
-
-
-    POLYS=function(){z();s=cjs.stg('y',800,500).A()
-
-        poly = Math.poly([  [61,68],  [145,122],  [186,94],  [224,135],  [204,211],  [105,200],  [141,163],  [48,139],  [74,117]  ])
-
-
-
-
-    }
-
-    TERRAINWORKS=function(){w=b2d.W()
-
-        s= stage = cjs.stg(1600, 600).A()
-
-        h = s.shape()
-        h.f('b').dc(200, 200, 10)
-        h2 = s.shape().X(700)
-        h2.f('b').dc(0,0,10)
-
-        tile = function(i,j){
-
-            return [
-
-                V(-5+i,130+j), V(-5+i,80+j), V(45+i,80+j), V(45+i,130+j)
-            ]
-        }
-
-
-        sep = b2d.separator()
-
-
-
-        sep([
-            V(-20,20), V(-20,-20),
-            V(20,-20), V(20,20)
-        ]).XY(20, 300)
-
-
-        w.ball(300,300)
-        draw=function(){terr=[]
-            _.times(13,function(i){
-                _.times(8,function(j){
-
-                    til = w.brick( (i*25)+420, (j*25)+200, 20, 20 )
-
-                    terr.push( {
-                        bod:til,
-
-                        poly: Math.poly([
-
-
-                            V(  ((i*25)+420)-10,  ((j*25)+200)  +10  ),
-
-                            V(  ((i*25)+420)-10,  ((j*25)+200)  -10  ),
-                            V(  ((i*25)+420)+10,  ((j*25)+200)  -10  ),
-
-                            V(  ((i*25)+420)+10,  ((j*25)+200)  +10  )
-
-
-                        ])
-
-                    })
-
-
-                    // sep(til).stat()
-
-                })})
-
-
-            // h.drawPolygons(terr,'b','r')
-        }
-
-        draw()
-
-        t=  terr[103]
-
-
-        doExplosion= function(e){$l('explode')
-
-            v = V(e.stageX, e.stageY)
-
-            exP = circ(v,100 )
-            h.drawPolygon(exP,'z')
-
-            c  = Math.poly(exP)
-
-
-            // for each existing terrain polygon, check the difference between the polygon itself and the
-            // explosion polygon. This should be optimized in some way, checking only for terrain polygons
-            // which are actually affected by the explosion.
-            // Then we remove the terrain polygon from the array, and we add the resulting polygon(s) after
-            // difference is calculated.
-
-            iX = c.intersection(t)
-            h2.drawPolygon(iX.verts())
-
-
-            for (var i=terr.length-1; i>=0; i--) {
-
-
-                // resultPolygons =   terr[i].intersection(exP)
-
-                //totalArea=0
-                // terr.splice(i,1)
-                // for (var j =0; j<resultPolygons.length; j++) {terr.push(resultPolygons[j])}
-
-            }
-
-            // draw()
-        }
-
-        circ =function(v,rad,prec){ prec = N(prec)?prec:20
-
-            arr=[]
-
-            ang= 2 * Math.PI/prec
-
-            _.times(prec , function(i){
-
-                pX = v.x+rad  * Math.cos(ang*i)
-                pY = v.y+rad  * Math.sin(ang*i)
-
-                // $l('pX: ' + pX + ', pY: '+ pY)
-
-                arr.push( V(pX, pY) )
-
-            })
-
-            return arr
-
-        }
-
-        // listeners: basically we destroy the terrain with a mouse click or a mouse drag
-
-        // stage.on('mousedown', function(){stage.on('mousemove', doExplosion)})
-        // stage.on('mouseup', function(){stage.off('mousemove', doExplosion)})
-
-
-        w.can.click(doExplosion)
-
-        // w.click(function(x,y){  w.bump(x,y,40)  })
-
-
-        explosion=function(x,y){var cir,bod
-
-            cir= Math.poly( circ(V(x,y),30,5) )
-
-            bod= sep(circ(V(0,0),30,5)).XY(x,y)
-
-            return {
-                cir:cir,
-                bod:bod
-            }}
-
-        exp = explosion(740,395)
-        Math.poly(exp.cir)
-
-
-        dif = t.poly.difference(
-            exp.cir
-        )
-
-        t.bod.fixt().remove()
-
-        bb= sep( t.bod, dif.verts() ).stat().XY(0,0)
-
-
-
-        // sep(dif.verts()).XY(100,100).stat()
-
-        vv= [V(645,480), //lower right
-            V(595,480),  //lower left
-            V(595,430), //upper left
-            V(645,430)] //upper right
-
-        h.drawPolygon(vv, 'z')
-
-
-        vvv = [
-
-            V(645,380),
-            V(595,380),
-            V(595,372),
-            V(617,369),
-            V(645,373)
-        ]
-
-        //h.drawPolygon(vvv, 'z')
-        h.drawPolygon(vvv, 'z')
-
-
-
-    }
-
-    TERR=function(){w=b2d.W()
-
-
-        b = w.brick(300,300,100,100)
-
-
-        // verts = -50,-50   upL
-        // 50,-50  upR
-        //  50,50 lowL
-        // -50,50  lowR
-
-        p = b.polygon()
-
-        vv= b.verts()
-        v = p.verts()
-
-
-
-
-        b2 = w.brick(250,250,100,100)
-        p2 =b2.polygon()
-
-        v2 = p2.verts()
-
-        nv = p.difference(p2)
-
-
-        diff = V(
-                b.X() - b2.X(),
-                b.Y() - b2.Y()
-        )
-
-        diffV= _.map(v2, function(v){
-
-            return V(v[0]-50, v[1]-50)
         })
 
-        diffP = Math.poly(diffV)
+    })})
+    // w.dot(420,200); w.dot(410,210)
 
+    t=terr[103]
 
-        d = p.difference( diffP )
-        d2 = diffP.difference(p)
+    s = sep(
 
-    }
+        t.bod.fixt().verts()
 
-TR=function(){w=b2d.W()
-
-
-
-    b= w.brick(300,300,200,200)
-
-    b2 = w.brick(200,200,200,200)
-
-
-    b.diff=function(b2){
-
-        var f = b.fixt(),
+    ).stat()//.XY(100,100)
 
 
 
-            verts=_.map( b.wPolygon().difference(
+    exp=explosion(740,395)
 
-                    b2.wPolygon()).verts(),
+    Math.poly(exp.cir)
+    dif = t.poly.difference(exp.cir)
+    t.bod.fixt().remove()
+    bb= sep( t.bod, dif.verts() ).stat().XY(0,0)
 
-            function(v){return V(v[0]- b.X(), v[1]- b.Y())}
+    // setTimeout( function(){ t.bod.X(20) }, 2000)
+}
+POLYOPS=function(){w=b2d.W()
+    p1 = Math.poly([[-50,50],[-50,-50],[50,-50],[50,50],[-45,55]])
+    p2 = Math.poly([[-100,0],[-100,-100],[0,-100],[0,0],[-98,2]])
+    w.S(300,300).conc(p1)
+    w.S(300,300).conc(p2)
+    w.B(500,200).conc(p1.union(p2))
+    w.B(500,200).conc(p1.difference(p2))
+    w.B(500,200).conc(p1.intersection(p2))
+    w.B(500,200).conc(p1.xor(p2))}
 
-        )
+//need work
+STAIRS=function(){w=b2d.W()
+    w.S(0,0,[
+        [500,500,600,100],
+        [500,400,500,100],
+        [500,300,500,100],
+        [500,350,450,100],
+        [320,400,50,600]])
+}
+NAMESPACE=function(){
+// w.B(200,200,b2d.fixts('tri3'))
 
-
-
-
-
-        b = b2d.conc(b, verts  )
-
-       f.kill()
-
-        b2.kill()
-    return b}
-
-
-
-    b.diff( b2 )
-
-
-
-
-
-    /*
-
-        p1=[V(-50,50),V(-50,-50), V(50,-50), V(50,50)]
-        p2=[V(-100,0),V(-100,-100),V(0,-100),V(0,0)]
-
-
-        poly1 = Math.poly(p1)
-        b2d.conc(poly1.verts()).stat()
-        poly2 = Math.poly(p2)
-        b2d.conc(poly2.verts()).stat()
-
-    */
-
+//w.B(200,200,b2d.fixts('c50'))
+    b2d.fixts={}
+    b2d.fixts.tri3=[[-100,0],[0,-50],[400,0]]
+    b2d.fixts.c50=[50]
+}
+FRICKY=function(){w = b2d.W()
+    b2d.fricky= [[10,10],[20,40,0,0,90,[1,0,0]],[20,40,0,0,180,[1,0,0]]]
+    b2d.bouncy= [[10,10],[20,40,0,0,90,[1,.9,1]],[20,40,0,0,180,[1,.9,1]]]
+    b2d.massy=  [[10,10],[20,40,0,0,90,[2,.5,1]],[20,40,0,0,180,[2,.5,1]]]
+    b2d.fluffy =[[10,10],[20,40,0,0,90,[.1,.5,.1]],[20,40,0,0,180,[.1,.5,.1]]]
+    w.S(600,100,b2d.fricky)
+    w.S(700,100,b2d.bouncy)
+    w.S(800,100,b2d.massy)
+    w.S(900,100,b2d.fluffy)
+}
+MAKEWALLS=function(){
+    makeWalls2=[[10,300,20,460],[990,300,20,460],[250,0,400,20],[730,0,400,20],[250,590,400,20],[730,590,400,20]] //bas in the canvas size?
+    makeWallsTiny=[[10,300,20,600],[990,300,20,600],[300,0,1200,20],[300,590,1200,20]]
+    makeWallsFull=[[10,300,20,1200],[990,300,20,1200],[300,0,3000,20],[300,590,3000,20]]
+    makeWallsLong=[[10,300,20,1200],[1600,300,20,1200],[300,0,3000,20],[300,590,3000,20]]
 }
 
-TR1=function() {
-    w = b2d.W()
-
-}
-
-    b= w.brick(300,300,200,200)
-
-    b2 = w.brick(200,200,200,200)
 
 
-    p1=  b.wPolygon()
-
-    p2=  b2.wPolygon()
 
 
-    p3 = p1.difference(p2)
-
-
-    v = _.map(p3.verts(), function(v){
-
-        return V(v[0]- b.X(), v[1]- b.Y())
-
-    })
-
-
-    b.fixt().kill()
-
-    p = b2d.conc(b, v)
-
-    b2.kill()
-
-
-    /*
-
-     p1=[V(-50,50),V(-50,-50), V(50,-50), V(50,50)]
-     p2=[V(-100,0),V(-100,-100),V(0,-100),V(0,0)]
-
-
-     poly1 = Math.poly(p1)
-     b2d.conc(poly1.verts()).stat()
-     poly2 = Math.poly(p2)
-     b2d.conc(poly2.verts()).stat()
-
-     */
-
-}
-BIRD=function(){
-
-    w = b2d.W({ w:0, g:50})
-
-
-    w.plat(800,500,100,600)
-    w.plat(1200,0,100,600)
-    w.plat(1600,500,100,600)
-    w.plat(2000,0,100,600)
-
-
-    p = w.addMe(300,0).fixRot()
-
-
-    w.beg(function(cx){
-
-        if(cx.with('p','plat')){$.pop('you suck!')}
-
-    })
-
-
-    cjs.tick(function(){
-
-
-        p.linVel(3, p.linVel().y )
-
-        w.left(4)
-      //  p.right(4)
-
-    })
-
-
-    $.space(function(){p.I(0,-120)})
-
-}
-BOUNCFRIC=function(){w=b2d.W()
-    b2d.bouncy()
-    b2d.bouncy()
-    b2d.bouncy()
-    b2d.fricky()
-    b2d.fricky()
-    b2d.fricky()}
-SOMEPOLYFIXT = function(x,y){b2d.makeWorld()
-    x=N(x)?x:400
-    y=N(y)?y:400
-
-    world.A(b2d.dyn(x,y),b2d.somePolyFixt())}
-
-
-b2d.fixts=function fixts(str){
-    var fixt=fixts[str], first=fixt[0]
-    if(A(first)){return b2d.A.apply(null, fixt) }
-    else if (N(first)){return b2d.circFixt(first) }}
-b2d.fixts.tri3 = [[-100,0],[0,-50],[400,0]]
-b2d.fixts.c50 = [50]

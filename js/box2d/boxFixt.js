@@ -333,12 +333,35 @@ f.fric =f.f=function(fric){if(U(fric)){return this.GetFriction()}
     this.SetFriction(fric);return this}
 f.rest =f.r=function(rest){if(U(rest)){return this.GetRestitution()}
     this.SetRestitution(rest);return this}
-f.kill = f.remove = function(){
-    if(this.sprite  ){this.sprite.remove()}
+
+f.kill = f.remove = function(){ // if(this.sprite  ){this.sprite.remove()}
+
+    this.removeSprites()
     this.B().destroyFixt(this)
 //f.setRemove = function(){var f=this; setTimeout(function(){f.B().destroyFixt(f)},10)} //can combine with kill?
 //f.setDestroy=function(){this.B().K('destroy'); return this}
 }
+
+
+f.removeSprites=function(){var f=this
+
+    f.sprites = f.sprites||[]
+
+    _.each(f.sprites,
+
+        function(s){
+            if(O(s) && s.parent ){
+                s.remove()
+        }}
+    )
+
+    f.sprites=[]
+    return this}
+
+
+
+
+
 f.sen = f.sensor = function(sen){var f=this
     if(U(sen)){sen=!f.m_isSensor}
     f.m_isSensor = sen
@@ -477,38 +500,29 @@ return this}
 f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
 
 f.C = f.color = function(c1,c2){
-
-     //only for squares right now
-
-    c1=c1||'b';
+    var f=this,b=f.body(),
+        w=b.wor(),shape,rad,pos
+    c1=c1||'b'
     c2=c2||c1
-    var f=this,
-        b=f.body(),
-        w=b.wor(),shape,   rad, pos
 
     if(f.isCirc()){
-
-
         rad= f.rad()
-
-            pos= f.pos()
-       // shape = w.s.shape().cir( rad,  c1 )
-
-        shape = w.s.shape().cir( rad, pos.x, pos.y, c1 )
-
-    }
-
-
-
+        pos= f.pos()
+        shape = w.s.shape().cir( rad, pos.x, pos.y, c1 )}
 
     else {shape = w.s.shape().poly(f.verts(), c1, c2, 1)}
 
 
+    f.removeSprites()
+
+   f.bindSprite(shape)
+
+   // return this
+}
 
 
-    f.bindSprite2( shape  )
 
-    return this}
+
 
 
 
@@ -525,15 +539,28 @@ f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y 
         stage = body.wor().s
 
     startingRotation = N( startingRotation) ?  startingRotation : 0
-    f.sprite = obj
-    f.sprite.a2(stage)
+
+    //f.sprite = obj
+    //f.sprite.a2(stage)
+
+       obj.a2(stage)
+
+    f.sprites= f.sprites||[]
+
+    f.sprites.push(obj)
+
     //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
+
     cjs.tick(function(){//if(!f.sprite){return}
-        f.sprite.XY(
-                body.X() + (x||0),
-                body.Y() + (y||0))
-        f.sprite.rotation=body.rot() + startingRotation
+
+
+            obj.XY( body.X() + (x||0),body.Y() + (y||0))
+             obj.rotation=body.rot() + startingRotation
+
+
+
     })
+
 
     return this}
 
@@ -598,15 +625,27 @@ b2d.rec = function(wd, ht, x, y, rot, den){
     if(g.n){fixt.isSensor=true}
     return fixt}
 
+
+
 //makes a fixture using b2d.polyH
-b2d.poly = function(){var g=G(arguments),
+
+b2d.poly =function(){var g=G(arguments),
     //SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?
     //but can not pass den? who cares!
 
     polyH = b2d.polyH.apply(null, g),
+
     fixt = b2d.fixt(polyH).den(1).fric(.2).rest(.2)
-    if(g.n){fixt.isSensor=true}
+
+    if(g.n){ fixt.isSensor = true }
+
     return fixt}
+
+
+
+
+
+
 b2d.polySens = function(kind){//necessary?
     var poly= b2d.poly.apply(null, _.rest(arguments))
     poly.sensor(true).K(kind)

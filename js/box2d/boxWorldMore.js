@@ -99,7 +99,12 @@ w.tightDist=function(piece, newPiece){
 
 
 
+w.fixts=function(x,y,f){var w=this
 
+    f = b2d.fixts[f]
+
+    return w.B(x,y,f)
+}
 
 w.distColl=function(a, b, b1OffV, b2OffV){
 
@@ -315,7 +320,7 @@ w.rev = function(body1, body2, c,d, e,f){var g=G(arguments)
     __jd = joint
 
 
-    if( U(c) ){ c = body1.wCent() }
+    if( U(c) ){ c = body1.worldCenter() }
     if( O(c) ){
         joint.init( body1, body2, c )}
     else if(N(e)){
@@ -328,6 +333,8 @@ w.rev = function(body1, body2, c,d, e,f){var g=G(arguments)
 
 
     return joint}
+
+
 
 
 w.weld = function(){
