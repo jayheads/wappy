@@ -527,7 +527,16 @@ f.C = f.color = function(c1,c2){
 
 
 
-f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y ){
+f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y, alpha ){
+
+    var g=G(arguments)
+    gg=g
+
+    alpha=N(alpha)? alpha :1
+
+
+
+    obj.opacity(alpha)
 
     //takes any display object.  right now, just used for shapes
     //because bindSprite fetches the bm's by string.
@@ -543,7 +552,11 @@ f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y 
     //f.sprite = obj
     //f.sprite.a2(stage)
 
-       obj.a2(stage)
+      o = obj.a2( stage )
+
+
+
+
 
     f.sprites= f.sprites||[]
 
@@ -852,7 +865,9 @@ GUYINBED=function(){w = b2d.W()
 
 }
 COLSENCLAS=function(){w=b2d.W()
+
     b = w.B(300, 300,'r', [[40],['b',30,100,'arm', '-']] ) //BEAUTIFUL !!!
+
     w.beg(function(cx){
         if(cx.with('arm')){b.I(50,50)}
         if(cx.with('arm', w.right)){w.C('w')}})}

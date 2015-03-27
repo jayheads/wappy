@@ -68,12 +68,12 @@ U = function u(a,b){
 //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-I=function(func, int){int = N(int)?int:1000
+I=function(func,int){var clear
+    var g=G(arguments),func=g[0],int=N(g[1])?g[1]:1000
+    if(g.N){func()}
 
-    func()
-
-    return setInterval(func, int)
-
+    clear=setInterval(func, int)
+    return function(){clearInterval(clear)}
 }
 
 
@@ -673,7 +673,7 @@ _W=function(a,b){
 
 
 
-R=function(a,b){
+RX=function(a,b){
 
     var g=G(arguments)
 
@@ -690,7 +690,18 @@ R=function(a,b){
 
 }
 
+R=function(n,n2){var num
+    n=N(n)?n:1
 
+    n2=N(n2)?n2:0
+
+    num= (Math.random()*n)+n2
+
+    return Math.round(num)}
+
+
+
+$.tap=function(func){this('body').on('keydown mousedown', func); return this}
 
 
 _s=function s(a,b,c){

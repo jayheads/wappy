@@ -1,25 +1,51 @@
-FLIP=function(){b2d.W()
+FLIP=function(){w=b2d.W()
+
     f1 = w.flippers(100,430)
+
     f2 =  w.flippers(100,230)
+
     f3=  w.flippers(300,130)
-    flip = function(){f1();f2();f3()}}
-PINBALL=function(){b2d.W({  walls : 'makeWallsPinball'  }) //canvas.drag()
 
-    ballBumper = w.circStat(215,520,30,'red').den(10).rest(3).fric(0)
-    topShelf = w.rectStat(215,100,100,10,'blue')
-    rightWallForSomeReason = w.rectStat(420,400,20,2000, 'white')
+    flip = function(){f1();f2();f3()}
+}
 
-    sunBall = w.ball(215, 90, 20).bindSprite('sun', .24)
-    setInterval(function(){   sunBall.rot( sunBall.rot() + 10) }, 100)
-    flip = w.flippers(100,430)
-    $('body').on('keydown mousedown', tap)
 
-    function tap(){
-        var ball = w.circ(Math.random()*300+40,160, 20, 'green').den(.1).rest(.6).fric(2)
-        if(oneInTenChance()){ball.bindSprite('me', .24)}
-        flip()}
 
-    function oneInTenChance(){return Math.random()>.9}}
+PINBALL=function(){b2d.WW()
+
+
+    w.S(215, 520,'r', 30).K('bump').DBF(10,.8,0)
+    w.S(215,100,'b',100,10).K('shelf')
+    w.S(420,400,'w',20,2000).K('right')
+    w.B(215,90,20).img('sun',.24).K('sun').rot(10,100)
+
+    flip= w.flips(100,430)
+
+
+    $.tap(function(){
+        var b=w.B(R(300,40),160,'g',20).DBF(1,.2,2)
+        if(!R(10)){b.img('me',.24)}
+        flip()})
+
+}
+
+SUPERPB=function(){b2d.WW()
+
+
+    w.S(215, 520,'r', 30).K('bump').DBF(10,.8,0)
+    w.S(215,100,'b',100,10).K('shelf')
+    w.S(420,400,'w',20,2000).K('right')
+    w.B(215,90,20).img('sun',.24).K('sun').rot(10,100)
+
+    flip= w.flips(100,430)
+
+
+    $.tap(function(){
+        var b=w.B(R(300,40),160,'g',20).DBF(1,.2,2)
+        if(!R(10)){b.img('me',.24)}
+        flip()})
+
+}
 
 
 

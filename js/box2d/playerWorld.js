@@ -61,26 +61,57 @@ w.player = function(x,y,scale, onEachTick, enemy){
 
     w.beg(function(cx){
         cx.with('feet',
-            function(){
-                this.B().onGround=true
+            function(f){
+
+                 if(!f.isSen() )   {
+                     this.B().onGround=true
+
+                 }
+
+
             })})
 
-    w.end(function(cx){cx.with('feet', function(){this.B().onGround=false})})
+    w.end(function(cx){
+        cx.with('feet',
+        function(f){
+            if(!f.isSen() )   {
+            this.B().onGround=false}
+
+        })
+
+    })
+
 
    // if(w.floor){  w.floor.rest(0) }
 
 
     return p}
 
-w.jumper = function(x,y){x=N(x)?x:200;y=N(y)?y:500
+
+
+w.jumper = function(x,y){
+
+    x=N(x)?x:200;y=N(y)?y:500
+
     var p = this.player(x,y)
     cjs.tick(function(){b2d.controls.jump(p)})
     return p}
 
-w.mario=function(){
-    return this.player(0,200,2.5).horizCenter()
+
+
+
+
+
+w.mario=function(x,y,scale){
+
+    x=N(x)?x:100
+    y=N(y)?y:100
+    scale=N(scale)?scale:2.5
+
+    return this.player(x,y,scale).horizCenter()
          .fric(.2).rest(.2).marioJumping()
 }
+
 
 w.thrustPlayer=function(){
     return this.player(0,200,2.5,'thrust').horizCenter()
@@ -262,7 +293,8 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
 }
 
 w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
-    return this.yShip(x,y).thrustControl().shootOnSpace()
+
+    return this.yShip(x,y).thrustControl().shootOnSpace().damp(2)
 }
 
 
@@ -355,12 +387,16 @@ w.stars=function(num){var w=this,x,y
     })
 
 return this}
+
+
 w.sun=function(x,y){
     x=N(x)?x:300
     y=N(y)?y:150
-   return this.circStat(300,150,10,'pink').den(1).rest(.5).bindSprite('sun',.2)
+
+   return this.S(300,150, 20,'p',10).den(1).rest(.5).bindSprite('sun',.2)
 
 }
+
 w.startKilling=function(){var that=this
 
     cjs.tick(function(){
@@ -386,7 +422,7 @@ w.platform2  =function(x,y,W,H){//=brk=brick=
     x = N(x) ? x : 60; y = N(y) ? y : x
     W = N(W) ? W : 30; H = N(H) ? H : W
 
-    return this.A(   b2d.staticDef(x,y),    b2d.poly(W, H).r(0)).K('platform')
+    return this.S(x,y,W,H).r(0).K('platform')
 
 }
 w.plat = w.platform  =function(x,y,W,H){//=brk=brick=
@@ -422,6 +458,7 @@ w.bullet=function self(x,y,r){//radius
     bullet.addClass('bullet bul').K('bullet')
 
     return bullet}
+
 w.fireBall=function(x,y,vX,vY){
     var v=8
     if(vX=='l'){vX=v;vY=0}
@@ -481,7 +518,7 @@ w.clouds=function(leftPoint, y){var that=this
 
     _.times(100,function(){
 
-        that.circStat(
+        that.S(
 
                 Math.random() * 400 + leftPoint,
             y,
@@ -493,11 +530,12 @@ w.clouds=function(leftPoint, y){var that=this
 
 return this}
 w.grass=function(x, y, len){x += len/2
-    var grass = this.rectStat(x,y,len,20,'green').fric(.3).rest(.3)
+    var grass = this.S(x,y,'g',len,20).fric(.3).rest(.3)
     return grass}
 w.ice=function(x, y, len){x += len/2
-    var ice = this.rectStat(  x, y, len, 20, 'white').fric(0).rest(0)
+    var ice = this.S(  x, y, 'w', len, 20).fric(0).rest(0)
     return ice}
+
 w.rubber=function(x, y, len){
     x += len/2
     var rub = this.rectStat(  x, y, len, 20, 'red').fric(.3).rest(.7)
@@ -510,9 +548,11 @@ w.ramp=function(x, y, wd, h, rot){
     h = h || 100
     rot = rot|| 10//Math.toRadians(45)
 
-    var ramp =  this.stat(x, y,  b2d.poly(wd, h) ).rot(rot)
+    var ramp =  this.S(x, y,  wd, h) .rot(rot)
         ramp.bindSprite2( cjs.rect(wd, h,'yellow')).fric(1)
 return ramp}
+
+
 w.ramps=function() {
 
     this.ramp(400, 350, 200, 300, 100)
@@ -533,19 +573,14 @@ w.bobom=function(){
 
     var that=this,
         bobom = this.dyn( 100, 100),
-        body = bobom.circ(20),
+        body = bobom.poly(20).den(1),//.rest(1)
 
         sensor =   bobom.poly(25, 5, 30, 0,'-')
 
 
-            body.den(1)//.rest(1)
-
-    sensor.coll('player',function(){
 
 
-       this.B().setDestroy()
-
-    })
+    sensor.coll('player',function(){this.B().kill()})
 
 
 
@@ -578,38 +613,36 @@ w.vine = function(x,y,len){len=len||10
     this.begin(function(cx){
         if(cx.with('player', 'leaf')){
             var j =  that.rev(l, p.XY(l.X(), l.Y()))
+            $.kD('down', function(){that.DestroyJoint(j)})
 
-            $.kD('down', function(){
-                that.DestroyJoint(j)
-            })
         }})}
+
+
+
+
 w.tramp=function(xloc, rest,freq,damp){
-
-    var bouncer, j
-
+    var bouncer, j,w=this
     xloc= N(xloc)?xloc:290
-
     rest=N(rest)?rest:.75
     freq=N(freq)?freq:6
     damp=N(damp)?damp:0
 
-    bouncer =  this.rect(xloc, 200, 200,20, 'pink')
-        .den(0).fixedRot(true).rest(rest).fric(0)
+    bouncer =  this.B(xloc, 200, 'b',200,20).fixRot()
+        .den(0).rest(rest).fric(0)
 
-
-
-    j = this.dist(
-        this.rectStat(xloc,280, 20, 20,'white'), bouncer  ).len(115).freq(freq).damp(damp)
-
-    this.rectStat(xloc- 120,290,40,300,'blue').fric(0)
-    this.rectStat(xloc+120,290,40,300,'blue').fric(0)
+    j = w.dist(
+        w.S(xloc,280,'w', 20, 20), bouncer  ).len(115).freq(freq).damp(damp)
+    w.S(xloc- 120,290,'b',40,300).fric(0)
+    w.S(xloc+120,290,'b',40,300).fric(0)
 
 return j}
+
+
 w.bridge=function(x,y){var that=this
     x = N( x ) ? x : 400
     y = N( y ) ? y : 100
 
-    var  b1 = this.circStat(x, y, 10),
+    var  b1 = this.S(x, y, 10),
 
         b2 = wood(),
         b3 = wood(),
@@ -712,35 +745,35 @@ w.roller =function(){
     j2 = w.Rev(  w.circ( 200, 150,30,'red'),  car   ).speed(-500).torque(40).motor(true)
 
     return car}
-w.rightFlipper=function(x, y){
-    var rightJoint = w.circStat(x, y,20,'red'),
-        rightFlip = w.rect(x, y, 100,25, 'blue')
-    var flipper = __rightFlipper =  w.rev(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lim(-70, 30)
 
-    flipper.flip=function(){rightFlip.I(-120,0)}
+w.rFlip=w.rightFlipper=function(x, y){var w=this
+    var rightJoint = w.S(x, y,'r', 20),
+        rightFlip = w.B(x, y,'b', 100,25).DBF(1,.5,0)
+    var flipper =  w.rev(  rightJoint ,  rightFlip ,  0, 0, 40, 0  ).lim(-70, 30)
 
-    return flipper
+    flipper.flip=function(){
+        rightFlip.I(-1000,0)}
 
+    return flipper}
 
-
-}
-w.leftFlipper=function(x, y){
-    var  leftFlip = w.rect(x,y, 100,25, 'blue'),
-        leftJoint = w.circStat(x,y,20,'red')
+w.lFlip=w.leftFlipper=function(x, y){var w=this
+    var  leftFlip = w.B(x,y,'b', 100,25).DBF(1,.5,0),
+        leftJoint = w.S(x,y,'r',20)
 
 
 
     var flipper = __leftFlipper =  w.rev(  leftJoint ,  leftFlip ,  0, 0, 40, 0  ).lim(150, 250)
 
-    flipper.flip=function(){leftFlip.I(120,0)}
+    flipper.flip=function(){leftFlip.I(1000,0)}
 
     return flipper}
-w.flippers=function(x,y,x2,y2){
+
+w.flips=w.flippers=function(x,y,x2,y2){
     if(U(y2)){y2 = y  }
     if(U(x2)){ x2 = x + 230 }
 
-    var  lf = w.leftFlipper(x, y),
-        rf =  w.rightFlipper(x2, y2)
+    var  lf = w.lFlip(x, y),
+         rf =  w.rFlip(x2, y2)
 
     var flip = function flip(){lf.flip(); rf.flip(); return flip}
 
@@ -748,6 +781,9 @@ w.flippers=function(x,y,x2,y2){
     flip.right = rf
 
     return flip}
+
+
+
 w.grid = w.drawGrid = function(grid, x,y,len,spacing){
     var that=this, body
 
@@ -768,50 +804,42 @@ w.grid = w.drawGrid = function(grid, x,y,len,spacing){
                 drawWall(row, col)}})})
 
 return body.K('grid')}
-w.badGuy=function(x,y){var that=this,
 
-    b=w.ball(x,y,60)
-        .bindSprite2(this.s.shape(x,y) )
+w.badGuy=function(x,y){var that=this,w=this
+
+    b=w.ball(x,y,60).bindSprite2(this.s.shape(x,y) )
+
 
     b.draw=function(frame){
-        this.sprite
-            .rG(['r','g'], [frame[0],frame[1]], 60)
-            .dc(0,0, 60)}
+        this.sprite.rG(['r','g'], [frame[0],frame[1]], 60).dc(0,0, 60)}
 
-    b.health=100
-
-    b.coll(function(){b.health--})
+    b.h=b.health=100
+    b.coll(function(){b.h--})
     b.K('badGuy')
 
-    funcId = I(update, 300)
-
-    function update(){
-
-        b.draw(frameByHealth(b ) )
-
-
-
-        if(b.health<=0){
+    funcId = I(function update(){
+        b.draw( frameByHealth(b) )
+        if(b.h<=0){
             clearInterval(funcId)
-            b.kill()} //$l('dead')
-
+            b.kill()}
         function frameByHealth(b){
+            if(b.h<0){b.h=0}
+            if(b.h>100){b.h=100}
+            if(b.h<50){ return [ 1-((b.h/50)),1 ] }
+            else {return [0, 1-((b.h-50)/50)  ]}}
+    }, 300)
 
-            if(b.health<0){b.health=0}
-            if(b.health>100){b.health=100}
-            if(b.health<50){ return [ 1-((b.health/50)),1 ] }
-            else {return [0, 1-((b.health-50)/50)  ]}
 
-        }}
 
 
     return b}
 
 
 
-w.marioWalls=function(){
+w.marioWallsX=function(){
 
     var width=600, height=300, gravity=400
+
     w.left =  left = w.rect(0, height / 2, 40, height, 'pink').stat().K('leftWall').fric(.5).rest(.5)
     w.right = right = w.rect(width, height / 2, 40, height).K('rightWall')
     w.floor =  floor = w.rect(height, width / 2, width*5, 40, 'orange').stat().K('floor').fric(.2).rest(.2)
@@ -822,9 +850,9 @@ return this}
 
 w.goal=function(x,y){
 
-    w.rect(x-20, y-15,  10, 40,  'y').stat()
-    w.rect(x, y,  40,10,  'y').stat()
-    w.rect(x+20,y-15,  10, 40,  'y').stat()
+    w.S(x-20,y-15, 'y',10,40)
+    w.S(x,y,'y',40,10)
+    w.S(x+20,y-15,'y',10,40)
 
 }
 w.sensorBucket=function(x,y,kind){
@@ -833,15 +861,15 @@ w.sensorBucket=function(x,y,kind){
     x=N(x)?x:320
     y=N(y)?y:245
     kind=kind||'sensorBucket'
+    w.S(x, y+95 , 'o', 320, 20, 200 )
+    w.S(x-150, y-15, 'o', 20, 200)
+    w.S(x+150, y-15, 'o'), 20, 200
 
-    w.rectStat(x, y+95, 320, 20, 200  , 'o')
-
-    w.rectStat(x-150, y-15, 20, 200, 'o')
-    w.rectStat(x+150, y-15, 20, 200, 'o')
-
-    sens = w.rectSensor(x, y, 280, 170, 'b').K(kind)
+    sens = w.B(x, y, 'b', 280, 170 ,'-').K(kind)
 
 return sens}
+
+
 cjs.stopWatch=function(){
 
 
@@ -866,37 +894,18 @@ cjs.stopWatch=function(){
     return watch
 
 }
-BADDIES=function(){
-    w=b2d.W()
 
-    w.goomba()
 
-    w.bobom(200,200)
-
-}
+BADDIES=function(){w=b2d.W(); w.goomba(); w.bobom(200,200)}
 ROLLERS=function(){b2d.levelScrollX()
-
-
     // _.times(3, function(){w.roller()})
-
-
-    setInterval(  function(){
-        w.roller()
-
-    }, 1000)
-
-
+    setInterval(function(){w.roller()}, 1000)
     p.X(1750)
-
 }
+
 RACE=function(){b2d.levelScrollX()
-
-
     car = w.car()
-
     w.dist(p, car).len(0)
-
-
     floor.fric(.1)
 
 }

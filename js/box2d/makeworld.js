@@ -140,6 +140,197 @@ b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
 }
 
 
+b2d._w = function(){}
+b2d._W = function(){}
+
+
+
+
+
+b2d.w=function(o){o=o||{}
+    cjs.watchKeys()
+    w=b2d.world(V(0,0))
+
+
+    w.s = cjs.tripleStage('b',o.W||1200,o.H||600)
+    w.s.back.A()
+    w.s.A()
+    w.s.HUD.A()
+
+    w.s.noAutoClear()
+
+    w.canvas = w.s.canvas
+    w.can = w.c = $(w.canvas)
+    w.ctx = w.context = w.can.ctx('2d')
+
+    if(o.i){w.s.bm(o.i)}//background img
+
+    var canPos = w.can._getPosition()
+    w.x = canPos.x
+    w.y = canPos.y
+
+    w.makeWalls(o.w)
+
+    w.mouse=null
+    w.mDown=false
+
+
+
+    $.mouseup(function(){w.mDown=false})
+
+
+    $.mousedown(function(e){
+        var x=w.x,
+            y=w.y
+        w.mDown = true
+
+        recordMouseCoords(e)
+        $.mousemove(recordMouseCoords)
+
+        function recordMouseCoords(e){
+            mX=(e.clientX-x)/30;
+            mY=(e.clientY-y)/30
+        }
+    })
+
+
+
+    setInterval(function(){
+
+
+
+        if(w.mDown ){
+            w.mouse=w.mouse||b2d.mouseJoint(w.getBodyAtPoint(mX,mY))
+            if(w.mouse){w.mouse.target(V(mX,mY))} }
+
+
+        else {
+            if(O(w.mouse)){w.j(w.mouse); w.mouse=false}
+        }
+
+
+        w.draw(1/60)
+        w.s.update()
+
+    }, 1000/60)
+
+    $.touchstart(function(e){w.mDown=true
+            logMouse(e)
+            $.touchmove(logMouse)
+            function logMouse(e){
+                var t=e.originalEvent.touches[0]
+                mX=(t.clientX-w.x)/30; mY=(t.clientY-w.y)/30;
+                MM=V(t.clientX-w.x,t.clientY-w.y).div()}}).touchend(function(){w.mDown=false})
+
+
+
+
+
+    w.debug(b2d.debugDraw(w.context, 30)).db()
+
+
+
+    return w
+
+}
+
+b2d.WW=function(o){
+    o=o||{}
+    cjs.watchKeys()
+    w=b2d.world(V(0,300))
+
+    w.s = cjs.tripleStage('z', o.W||600, o.H||900)
+    w.s.back.A()
+    w.s.A()
+    w.s.HUD.A()
+
+    w.s.noAutoClear()
+
+    w.canvas = w.s.canvas
+    w.can = w.c = $(w.canvas)
+    w.ctx = w.context = w.can.ctx('2d')
+
+    if(o.i){w.s.bm(o.i)}//background img
+
+    var canPos = w.can._getPosition()
+    w.x = canPos.x
+    w.y = canPos.y
+
+    w.makeWalls(o.w)
+
+    w.mouse=null
+    w.mDown=false
+
+
+
+    $.mouseup(function(){w.mDown=false})
+
+
+    $.mousedown(function(e){
+        var x=w.x,
+            y=w.y
+        w.mDown = true
+
+        recordMouseCoords(e)
+        $.mousemove(recordMouseCoords)
+
+        function recordMouseCoords(e){
+            mX=(e.clientX-x)/30;
+            mY=(e.clientY-y)/30
+        }
+    })
+
+
+
+    setInterval(function(){
+
+
+
+        if(w.mDown ){
+            w.mouse=w.mouse||b2d.mouseJoint(w.getBodyAtPoint(mX,mY))
+            if(w.mouse){w.mouse.target(V(mX,mY))} }
+
+
+        else {
+            if(O(w.mouse)){w.j(w.mouse); w.mouse=false}
+        }
+
+
+        w.draw(1/60)
+        w.s.update()
+
+    }, 1000/60)
+
+    $.touchstart(function(e){w.mDown=true
+        logMouse(e)
+        $.touchmove(logMouse)
+        function logMouse(e){
+            var t=e.originalEvent.touches[0]
+            mX=(t.clientX-w.x)/30; mY=(t.clientY-w.y)/30;
+            MM=V(t.clientX-w.x,t.clientY-w.y).div()}}).touchend(function(){w.mDown=false})
+
+
+
+
+
+    w.debug(b2d.debugDraw(w.context, 30)).db()
+
+
+
+
+
+
+    return w
+
+}
+
+
+W=function(){w=b2d.WW()
+
+b= w.B(300,500,'g', 40).bo(.5)
+
+}
+
 
 
 $W =  function(grav,wd,ht){z()

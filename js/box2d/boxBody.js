@@ -229,23 +229,25 @@ b.aV=b.angVel= function(vel){
 
 
 
-b.rot =function(angle){   //= p.rT=p.rt=p.rotation=p.angle=p.ang
+b.rot =function(angle,ms){var b=this,g=G(arguments),r=g[0],ms=g[1],
+    a=Math.toDegrees(b.GetAngle()) //currAng
+    if(U(r)){return a}
 
-    var g=G(arguments),
-        ang=g[0],
-        newAng,
-        currAng=Math.toDegrees(this.GetAngle())
+    if(N(ms)){b.stop= I(function(){b.rot(r,'+')}, ms)}
+    else {b.SetAngle(Math.toRadians(g.p?a+r:g.n?a-r:g.m?a*r:g.d?a/r:r))}
+    return b}
 
-    if(U(ang)){return currAng}
 
-    if(g.p){newAng = currAng+ang}
-    else if(g.n){newAng =currAng - ang}
-    else if(g.m){  newAng =currAng * ang}
-    else if(g.d){ newAng =currAng / ang}
-    else {newAng = ang}
+ROT=function(){w=b2d.W()
 
-    this.SetAngle( Math.toRadians(newAng) )
-    return this}
+    y = w.ship().XY(300,300).stat().rot(1,10)
+
+
+}
+
+
+
+
 b.fixedRot= p.sFR= p.fR=function(bool){
     this.SetFixedRotation(bool? true: false)
     return this}
@@ -260,10 +262,12 @@ b.aD = b.angDamp=   function(damp){
     if(U(damp)){return this.GetAngularDamping()}
     this.SetAngularDamping(damp)
     return this}
+
 b.damp=function(l,a){
     l=N(l)?l:1000
     a=N(a)?a:l
-   return this.lD(l).aD(a)}
+    this.lD(l).aD(a)
+return this}
 
 p.I = function self(impulse, point, point2){//p.impulse = p.applyImpulse = p.aI  =
 
@@ -338,7 +342,10 @@ b.XX = b.destroy = b.kill = function(){
     if(this.sprite){this.sprite.remove()}
 
     _.each(this.fixts(), function(f){
-        if(f.sprite){f.sprite.remove()}
+
+        f.removeSprites()
+        //if(f.sprite){f.sprite.remove()}
+
     })
 
     this.sprite=null
@@ -552,7 +559,15 @@ fixts=function(){
     b.num = b.count=function(){return this.m_fixtureCount}
 
 
-    b.DFR=function(d,f,r){return this.den(d).fric(f).rest(r)}
+    b.DFR= b.DFB=function(d,f,r){return this.den(d).fric(f).rest(r)}
+
+    b.DBF=function(d,r,f){var b=this
+        b.den(d)
+        if(N(r)){this.rest(r)}
+        if(N(f)){b.fric(f)}
+        return b}
+
+
 
     b.destroyFixt= p.destroyFixture=p.dF=function(fixt){
         this.DestroyFixture(fixt)
@@ -756,10 +771,11 @@ b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return f
 
 b.RECT = function(col, wd, ht, x, y, rot){
 
-    var g= G(arguments), fd, fixt, h,str
-
-
-
+    var g= G(arguments),
+        fd,
+        fixt,
+        h,
+        str,alpha=1
 
     col=g[0];
     wd=g[1];
@@ -778,18 +794,26 @@ b.RECT = function(col, wd, ht, x, y, rot){
 
     fd=b2d.rec(wd,ht,x,y,rot)
 
-    if(g.n){$l('sensor!')
-        fd.isSensor=true}
+    if(g.n){
+        fd.isSensor=true
+
+        alpha=.2
+    }
 
     fixt =  this.fixt(  fd  )
 
     if(str){ fixt.K(str) }
 
+    if(S(col)){
+        fixt.bindSprite(
+            w.s.RECT(col, wd, ht, x, y, rot), 0, 0, 0,alpha
+        )}
 
-    if(S(col)){ fixt.bindSprite(w.s.RECT(col, wd, ht, x, y, rot))}
     return fixt
 
 }
+
+
 
 
 
@@ -938,7 +962,7 @@ b.fric=function(fric){
     })
     return this
 }
-b.rest=function(rest){
+    b.bo =b.rest=function(rest){
 
 
     if(U(rest)){return this.list().GetRestitution()}
@@ -1195,7 +1219,11 @@ joints=function() {
 
 
 
+b.mid=function(){var b=this,w= b.wor()
 
+ return   b.XY(w.w/2, w.h/2)
+
+}
 
 
 b.web = function (shouldKill) {
@@ -1390,7 +1418,7 @@ easel = function() {
 //move to x-middle of stage
     b.horizCenter=function(){return this.X( this.wor().s.W() / 2  )}
 
-    b.bindSprite = function (img, scale, startingRotation) { //img is an image name  //rotation is in degerees!
+    b.img=b.bindSprite = function (img, scale, startingRotation) { //img is an image name  //rotation is in degerees!
         var body = this, stage = body.wor().s
         scale = scale || .4
         startingRotation = N(startingRotation) ? startingRotation : 6 // why not zero ?????
@@ -1419,6 +1447,7 @@ easel = function() {
 
         return body
     }
+
     b.bindSprite2 = function (obj, startingRotation, x, y) {
         //takes any display object.  right now, just used for shapes
         //because bindSprite fetches the bm's by string.

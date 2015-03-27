@@ -192,6 +192,9 @@ SPACEZOOM=function(){
 
 
 
+
+
+
 COINWARP=function(){w = b2d.W({   g:4, w:0}).debug()
     score=0
     badScore=0

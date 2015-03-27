@@ -252,7 +252,9 @@ w.B=w.D=function(x,y){
     b=w.CreateBody(bd)
     b.H.apply(b,fixts)
     if(clas){b.K(clas)}
+
     return b
+
 }
 
 
@@ -596,44 +598,8 @@ w.bindShape = function( shape, spr   ){
     )
 
 }
-w.makeWalls=function(walls){
-
-    var width = this.canvas.width,
-        height = this.canvas.height
-
-    if(D(walls)){
-
-        if (S(walls)) {
-            window[  walls ]()}
-        if (F(walls)) {
-            walls()}
-    }
-
-    else {
-
-      this.floor=  this.rect(height, width / 2, width, 40,'o').stat().addClass('wall floor').K('floor')
-       this.left= this.rect(0, height / 2, 40, height,'o').stat().addClass('wall side rightWall right').K('rightWall')
-       this.roof= this.ceiling = this.rect(width / 2, 0, width, 40,'o').stat().addClass('wall ceiling roof').K('ceiling')
-      this.right=  this.rect(width, height / 2, 40, height,'o').stat().addClass('wall side leftWall left').K('leftWall')
-    }
-}
-w.wall  =function(x,y,W,H){ /// changed rest 0 -> .4
-
-    x = N(x) ? x : 60;
-    y = N(y) ? y : x
-    W = N(W) ? W : 30;
-    H = N(H) ? H : W
 
 
- var wall= this.stat(
-     x, y,
-        b2d.poly(W,H).rest(.4)
-    )
-
-
-    wall.K('wall')
-
-return wall}
 
 
 
