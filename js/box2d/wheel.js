@@ -1,3 +1,269 @@
+ONTHERIGHTTRACK=function(){
+    w = b2d.G(
+        [
+
+            900,300,3600,300
+            //   1200,600,2400,1200
+
+        ], {  g:0 })
+
+    w.S(1200,300,'r',400,100)
+    w.S(1200,600,'w',[[100,100,'-']])
+    w.S(1200,900,'r',400,100)
+    y = w.ship().XY(0,0).rot(120).damp(1,10).XY(200,200)
+    w.sc(1)
+
+
+
+
+    w.rat=function(){
+        return {x: w.w/w.W(),y: w.h/w.H()}
+    }
+
+
+
+    w.fwNoLim= function(b,x,y){var w=this, n=0  // misnomer has limits now!  and more.. tis is the ultimate!
+
+        cjs.tick(function(){
+
+            var scl = N(w.SCALE)? w.SCALE : 1
+
+            sX=(x - b.X())* scl -  w.W() * (scl/2 - .5)
+            if(sX > 0){ sX = 0 }
+            if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
+            if((w.W()/2 - (w.w/2)* w.sc())>=0) {  sX =   w.W()/2 - (w.w/2)* w.sc()}
+
+
+            sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
+            if(sY>0){sY=0}
+            if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
+            if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
+
+
+            w.s.x= sX
+            w.s.y= sY
+
+        })
+
+        //i can leave the world-centering in fw
+        //can optionally filter it with scale itself
+
+        return w}
+
+
+    w.scLim = function(s){var w=this
+
+
+
+        return s }
+
+
+
+    w.fwNoLim(y, 600,300)
+
+    // setInterval(function(){   w.sc(    ((Math.random() * 5))/2  )   }, 5000)
+
+}
+
+
+ZOOMSCROLLFANTASTICDEMO=function(){
+    w = b2d.G(
+        [
+
+             800,500,2400,500
+
+        ], {  g:0 })
+
+    w.S(400,300,'r',200,100)
+    w.S(800,300,'z',100,100)
+    w.S(1200,300,'b',300,100)
+    w.S(1600,300,'z',100,100)
+    w.S(2000,300,'r',200,100)
+
+
+
+    y = w.ship().XY(0,0).rot(120).damp(1,10).XY(200,200)
+    w.sc(1)
+
+
+
+    w.fwNoLim= function(b,x,y){var w=this, n=0  // misnomer has limits now!  and more.. tis is the ultimate!
+
+        cjs.tick(function(){
+
+            var scl = N(w.SCALE)? w.SCALE : 1
+
+            sX=(x - b.X())* scl -  w.W() * (scl/2 - .5)
+            if(sX > 0){ sX = 0 }
+            if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
+            if((w.W()/2 - (w.w/2)* w.sc())>=0) {  sX =   w.W()/2 - (w.w/2)* w.sc()}
+
+
+            sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
+            if(sY>0){sY=0}
+            if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
+            if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
+
+
+            w.s.x= sX
+            w.s.y= sY
+
+        })
+
+        //i can leave the world-centering in fw
+        //can optionally filter it with scale itself
+
+        return w}
+
+
+    w.scLim = function(s){var w=this
+
+
+
+   return s }
+
+
+
+    w.fwNoLim(y, w.W()/2,   w.H()/2)  // awsome!!! afsjlksfdajladsf;adfjkadsfjkadfdfsdf;sj!!!! *(UUO!!!!!
+
+
+
+    zm=3.2
+
+    up=true
+
+    cjs.tick(function(){
+
+
+        if(zm > 5){  up=false }
+
+        if(zm < 3.5){  up=true }
+
+
+        zm += up? .01 : -.01
+
+        w.zm( zm)
+
+
+    })
+
+}
+
+
+
+
+
+ZSJUMP=function(){
+    w = b2d.G(
+        [
+
+            1200, 600, 2200, 2600
+
+        ], {  g:300 })
+
+    w.S(400,2500,'r',200,100)
+    w.S(800,2300,'z',100,100)
+    w.S(1200,2300,'b',300,100)
+    w.S(1600,2300,'z',100,100)
+    w.S(2000,2300,'r',200,100)
+
+
+
+    //y = w.ship().XY(0,0).rot(120).damp(1,10).XY(200,200)
+    y= w.jumper().Y(100).X(1175)
+
+
+    w.sc(1)
+
+
+    w.zm(2.5)
+
+    w.fwNoLim= function(b,x,y){var w=this, n=0  // misnomer has limits now!  and more.. tis is the ultimate!
+
+        cjs.tick(function(){
+
+            var scl = N(w.SCALE)? w.SCALE : 1
+
+            sX=(x - b.X())* scl -  w.W() * (scl/2 - .5)
+            if(sX > 0){ sX = 0 }
+            if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
+            if((w.W()/2 - (w.w/2)* w.sc())>=0) {  sX =   w.W()/2 - (w.w/2)* w.sc()}
+
+
+            sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
+            if(sY>0){sY=0}
+            if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
+            if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
+
+
+            w.s.x= sX
+            w.s.y= sY
+
+        })
+
+        //i can leave the world-centering in fw
+        //can optionally filter it with scale itself
+
+        return w}
+
+
+    w.scLim = function(s){var w=this
+
+
+
+        return s }
+
+
+
+    w.fwNoLim(y, w.W()/2,   w.H()/2)  // awsome!!! afsjlksfdajladsf;adfjkadsfjkadfdfsdf;sj!!!! *(UUO!!!!!
+
+
+
+}
+
+
+
+
+
+
+
+CRAZYSHIPS=function(){
+
+    w = b2d.G(
+        1200,600
+    )
+
+    w.S(400,2500,'r',200,100)
+    w.S(800,2300,'z',100,100)
+    w.S(1200,2300,'b',300,100)
+    w.S(1600,2300,'z',100,100)
+    w.S(2000,2300,'r',200,100)
+
+
+
+    y = w.ship().XY(0,0).rot(120).damp(1,10).XY(200,200)
+
+
+    setInterval(function(){
+       // w.ship()
+    },1000)
+    _.times(10, function(){w.ship()})
+
+    w.beg(function(cx){
+        cx.with('ship','bul', function(){this.kill()})
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
 B2DTEST=function(){$l('b2d test!')
     w=b2d.W()
     $l('make an edge body..'); w.edge(100,300,500,500)

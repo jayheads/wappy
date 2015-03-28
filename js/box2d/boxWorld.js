@@ -602,6 +602,14 @@ w.bindShape = function( shape, spr   ){
 
 
 
+w.cent=function(){var w=this,g=G(arguments),
+    v=V(w.s.W()/2, w.s.H()/2)
+    if(g.p){w.dot(v)}
+    return v}
+
+
+w.W=function(){return this.canvas.width}
+w.H=function(){return this.canvas.height}
 
 
 
@@ -610,11 +618,26 @@ w.bindShape = function( shape, spr   ){
 
 //w.FixBody=function(x,y){return this.addBody(  dBD(x,y),fix())}
 
-w.dot=function(){
+w.dot=function(col,x,y){var w=this, g=G(arguments)
 
-    this.s.dot.apply(this.s, arguments)
+    if(g.p){
+
+        if(!S(col)){y=x;x=col;col='b'}
+        w.s.HUD.dot(col,x,y)
+        //w.s.HUD.dot.apply(w.s.HUD, arguments) //interesting.. dotting just needs a stage
+    }
+
+    else {
+        if(!S(col)){y=x;x=col;col='w'}
+
+        w.s.dot(col,x,y)
+    }
+
+
+
 
 return this}
+
 
 
 w.pen=function(){

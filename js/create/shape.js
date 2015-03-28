@@ -17,7 +17,7 @@ gx.poly=function(verts, f, s,width){var that = this
     return this}
 
 
-gx.fs=function(f,s,width){
+gx.fC= gx.fs=function(f,s,width){
 
     this.f(O(f)?f: oO('c', f||'black'))
 
@@ -27,6 +27,20 @@ gx.fs=function(f,s,width){
 
     return this
 }
+
+gx.sC=function(s,w){var gx=this
+
+    w=N(w)?w:2
+
+    s=O(s)?s:oO('c', s||null)
+
+    gx.s( s)
+
+    gx.ss(w)
+
+    return gx
+}
+
 h =  cjs.Shape.prototype
 
 
@@ -49,6 +63,13 @@ h.fs=function(){
         this.graphics, arguments)
 
 return this}
+
+h.sC=function(){
+    this.graphics.sC.apply(
+        this.graphics, arguments)
+
+    return this}
+
 h.ef=function(){
     this.graphics.endFill.apply(
         this.graphics, arguments)
@@ -157,12 +178,18 @@ h.cir = function(rad, x,y,fc, sc){
 
 
 //******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
-h.rect=  h.rectangle=function(x,y,w,h,fc,sc){
+h.rect=  function(x,y,w,h,fc,sc){//h.rectangle=
     var gx=this.graphics
+
     if(fc){gx.f(fc)}
     if(sc){gx.s(fc)}
+
     gx.dr(x,y,w,h)
+
     return this}
+
+
+
 h.poly= function(verts, f, s, width){var h=this
     h.fs(f,s, width)
     if(A(verts ) && N(verts[0])){_.each(arguments,function(v){h.lt(v[0],v[1])})}//verts passed in directly AS NUMBERS ??

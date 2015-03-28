@@ -305,7 +305,15 @@ b.mass = function(m){
 
 
 //world center
- b.wCent=   p.wC = b.cent =function(){ return this.GetWorldCenter().mult() } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
+ b.wCent=   p.wC= b.cent=function(){var b=this,w= b.wor()
+     var g=G(arguments)
+
+     if(g.P){return b.GetWorldCenter().mult() }    //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
+
+     b.XY(
+         w.W()/2, w.H()/2
+     )
+ return b}
 
 
   b.worldCenter=  function(){ return this.GetWorldCenter()  } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}

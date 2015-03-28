@@ -212,7 +212,9 @@ w.pYx = w.camYx=function(y){var w=this
 w.pY = w.camY=function(y){var w=this
 
     if(U(y)){return -w.s.y}
+
     w.s.y = -cjs.cap(y,  w._camLimY|| [0,0] )
+
     return w}
 
 w.pXY = function(x,y){var w=this
@@ -380,46 +382,6 @@ w.drag=function(){var w=this, pX=0, pY= 0,pmX,pmY,
 
 
     return this}
-
-w.dragScale=function(){var w=this,
-    pX=0, pY= 0,
-    pmX,
-    pmY,
-
-    c = $(w.s.HUD.canvas)
-
-    c.mousedown(function(e){
-
-        $l('down')
-
-        oScl = w.sc()
-
-        oY = e.clientY
-
-    })
-
-
-    c.pressmove(function(e){
-        var x=e.clientX,
-            y=e.clientY,
-
-
-            newSc = oScl +  (oY - e.clientY)*.005
-
-        newSc = newSc>5?5
-            : newSc<.1?.1
-            : newSc
-
-      $l(newSc )
-
-        w.sc(newSc)
-
-    })
-
-
-
-    return this}
-
 
 
 
@@ -602,7 +564,7 @@ w.HUD=function(){var w=this,
 
 w.lay=function(){var w= this
 
-    w.back().HUD().db()
+    w.back().HUD()
 
 return w}
 
@@ -906,184 +868,6 @@ TINYREDBALLS=function(){
 }
 
 
-w.fwNoLim= function(b,x,y){var w=this, n=0
-    cjs.tick(function(){
-        var scl = N(w.SCALE)? w.SCALE : 1
-
-
-        w.s.x =  (x-b.X())*scl     -   w.W()*(scl/2-.5)
-
-        w.s.y =  (y-b.Y())*scl     -   w.H()*(scl/2-.5)
-
-    })
-
-    return w}
-
-
-
-
-
-
-
-
-w.rat=function(){var w=this
-    return {x: w.w/w.W(),y: w.h/w.H()}
-}
-
-w.df=function(){var w=this
-    return {x:w.W() /w.w,y:  w.H()/ w.h}
-}
-
-
-
-
-w.sc=function(s){var w=this,
-
-    g=G(arguments),
-
-    s=g[0]
-
-
-    if(g.d){
-
-        s = w.df().x  // which is beigger?  .. smaller??
-    }
-
-
-    if(U(s)){
-        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
-
-
-    w.SCALE=s
-
-    w.s.sXY(s)
-
-return w}
-
-
-
-ULT1=function(){
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-    w.S(1200,300,'r',400,100)
-    w.S(1200,600,'w',[[100,100,'-']])
-    w.S(1200,900,'r',400,100)
-    y = w.ship(100, 100).rot(120).damp(1,10)
-    w.sc(5)
-    w.fwNoLim(y, 600,300)
-    w.dragScale()
-}
-
-
-
-// ok this is a brilliant demo of complete scrolling and zooming
-// it has normal wall limits, but also centers the stage if you are zoomed out enough to see the whole thing
-// but actually, i dont really need to allow the user to zoom out that much
-//if you can see the whole 'world'.. zooming out more is pointless!!
-// ok on to zoom min/max!!!
-
-
-
-ULT=function(){
-
-    w.wz = function(){var w=this
-
-        //we never want a positive wz!! means right stage corner is visible
-
-        return (V(   wX= w.s.x, wY= w.s.y ))
-
-
-    }
-
-
-
-
-    w.fwNoLim= function(b,x,y){var w=this, n=0
-        cjs.tick(function(){
-            var scl = N(w.SCALE)? w.SCALE : 1
-
-
-
-
-
-
-            sX=(x - b.X())* scl -  w.W() * (scl/2 - .5)
-
-            if(sX > 0){ sX = 0 }
-
-
-             if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
-
-
-           //  if(w.W() * w.sc() < w.w/2){  sX =   w.W()/2 - (w.w/2)* w.sc()}
-
-
-
-            if((w.W()/2 - (w.w/2)* w.sc())>=0) {  sX =   w.W()/2 - (w.w/2)* w.sc()}
-
-
-            sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
-            if(sY>0){sY=0}
-
-            if(sY < w.H() - w.sc()* w.h  ) {
-                sY= w.H() - w.sc()* w.h
-            }
-
-
-            if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
-
-
-            w.s.x= sX
-            w.s.y= sY
-
-        })
-
-        return w}
-
-
-    w.rOK = function(){var w=this,sc =w.sc(); return  w.s.x + w.W()*w.sc() - 1200}
-
-    w.bOK = function(){var w=this,sc =w.sc(); return  w.s.y + w.H()*w.sc() - 600}
-
-
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-
-    w.S(1200,300,'r',400,100)
-    w.S(1200,600,'w',[[100,100,'-']])
-    w.S(1200,900,'r',400,100)
-
-    y = w.ship().XY(0,0).rot(120).damp(1,10)
-
-    w.sc(.5)
-
-    w.fwNoLim(y, 600,300)
-    w.dragScale()
-
-
-
-    w.dot(2350, 1150)
-
-
-
-
-    w.dot(1150, 550,'+')
-
-    w.sc(3); y.X(2190) //-> -5974
-    w.sc(2); y.X(2088) //-> -3576
-    w.sc(1); y.X(1790) //-> -1190
-
-
-    y.XY(200,200)
-    w.sc(2)
-
-
-
-//setInterval(function(){s=((Math.random() * 5))/2; w.sc(s)}, 5000)
-
-
-}
-
-
-
 
 
 w.wallX  =function(x,y,W,H){var w=this
@@ -1115,17 +899,4 @@ w.wallsX = function(W,H){var w=this, g=G(arguments)
 
     return this
 }
-
-
-w.zm=function(z){var w=this,d=w.df().x
-    if(U(z)){return w.sc()/d}
-    if(!z>0){z=1}
-    w.sc(d*z)
-return w}
-
-
-
-
-
-
 //w.show(function(){})//not working with scroll

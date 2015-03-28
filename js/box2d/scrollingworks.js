@@ -1,43 +1,51 @@
-cjs.cap=function(n,    m,M){
+cjs.cap=function(n,m,M){
 
-    if( U(m) ){ return n }
+    if(U(m)){return n}
 
-
+    // if(U(m)){m=[0,0]} ????
 
     if(A(m)){
         M=m[1]
         m=m[0]
     }
 
-    return n<m? m
-        :n>M?M
-        :n
+    return n<m?m:n>M?M:n
 }
 
 w=b2d.World.prototype
+w.cent=function(){var w=this; return V(w.s.W()/2, w.s.H()/2)}
+w.W=function(){return this.canvas.width}
+w.H=function(){return this.canvas.height}
+
+
 
 w.makeWalls=function(walls){
     var w=this,  can=w.canvas, W=can.width,  H=can.height
 
 
+    if(D(walls)){
+        if (S(walls)) {window[  walls ]()}
+        else if (F(walls)) {walls()}
+        else if (A(walls)){
+            w.boxWalls.apply(w,walls)}
+    }
 
 
-    if (S(walls)) {window[  walls ]()}
-
-    else if (F(walls)) {walls()}
-
-    else if (A(walls)){w.boxWalls.apply(w,walls)}
 
     else {
 
-        w.floor=  w.S(W/2, H,  'o',    W, 40).K('wall floor')
-        w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
+        w.floor=  w.S(
+
+                W/2, H,  'o',    W, 40
+
+        ).K('wall floor')
+        w.left= w.S(0,H/2,'o',40,H).K('wall side right')
         w.roof=  w.S(W/2,0,'o',W,40).K('wall roof')
         w.right=  w.S(W,H/2,'o',40,H).K('wall side left')
     }
 
     return w}
-w.boxWalls=w.xW= function(col,W,h){var w=this
+w.xW= w.boxWalls=function(col,W,h){var w=this
     w.hW =function(col,W,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
 
         if(!S(col)){y=x;x=W;W=col;col='x'}
@@ -128,7 +136,6 @@ w.boxWalls=w.xW= function(col,W,h){var w=this
     // if(g.N){ w.camLims(  0,  w.w-w.s.W(),  0, w.h-w.s.H())}
     return w}
 
-
 w.camLims = function(xm, xM, ym, yM){var w=this
     if(A(xm)){
         w._camLimX = xm
@@ -137,112 +144,42 @@ w.camLims = function(xm, xM, ym, yM){var w=this
         w._camLimX = [xm,xM]
         w._camLimY = [ym,yM]}
     return w}
-b2d.G = function(cW,cH,wW,wH){var ob={}
-    if(A(cW)){
-        ob=cH
-        wH=cW[3]
-        wW=cW[2]
-        cH=cW[1]
-        cW=cW[0]}
-    cW=N(cW)?cW:1200
-    cH=N(cH)?cH:600
-    wW=N(wW)?wW:cW
-    wH=N(wH)?wH:cH
-    w=b2d.W({
-        g:N(ob.g)?ob.g:0,
-        W:cW,
-        H:cH,
-        w:['o',wW,wH]}).db()
-    w.pXY(0,w.H())
-    w.camLims([0,wW-cW], [0,wH-cH])
-    w.SCALE=1
-    return w}
-
-
-w.pX =  function(x){var w=this
+w.pX = w.camX=function(x){var w=this
 
     if(U(x)){ return -w.s.x }
 
 
     if(w._camLimX){
-
-        w.s.x =  -cjs.cap(x,   w._camLimX[0]* w.SCALE,  w._camLimX[1] * w.SCALE  )
+        w.s.x =  -cjs.cap(x, w._camLimX)
     }
 
     else {w.s.x = -x  }
 
 
     return w}
-
-
-
-
-w.pXx =  function(x){var w=this
-
-    if(U(x)){ return -w.s.x }
-
-
-    if(w._camLimX){
-
-
-        w.s.x =  -cjs.cap( x,  [w._camLimX[0]* w.SCALE,w._camLimX[0]* w.SCALE] )
-    }
-
-    else {w.s.x = -x  }
-
-
-    return w}
-
-
-w.pYx = w.camYx=function(y){var w=this
-
-    if(U(y)){return -w.s.y}
-    if(U(w._camLimY)){
-        w.s.y = -y
-    }
-
-   else{
-        w.s.y = -cjs.cap(y,  [w._camLimY[0]* w.SCALE, w._camLimY[1]* w.SCALE   ] )
-
-    }
-
-    return w}
-
-
 w.pY = w.camY=function(y){var w=this
 
     if(U(y)){return -w.s.y}
+
     w.s.y = -cjs.cap(y,  w._camLimY|| [0,0] )
+
     return w}
+w.pXY = w.camXY=function(x,y){var w=this
+    if(U(x)){ return V(w.camX(),w.camY()) }
+    return w.camX(x).camY(y)}
 
-w.pXY = function(x,y){var w=this
-    if(U(x)){ return V(w.pX(),w.pY()) }
-    return w.pX(x).pY(y)}
-
-w.camx=function(x,y){var w=this //<-pXY
+w.cam=function(x,y){var w=this //<-pXY
     if(U(y)){y=x;x=0}
-    w.pXY(x,y)
+    w.camXY(x,y)
     //w._camX=x; w._camY=y
     return w}
 
-w.fol= w.foll= function(b,x,y,pX){var w=this
-
+w.fol= w.foll = function(b,x,y,pX){var w=this
     w.fw=function(b,x,y){var w=this
-
-
-        w.S(x,y,'o', [ [40,400,'-']])
-
-        w.dbCross(x,y)
-        w.dot(x,y,'+')
-
-
+        w.s.HUD.dot('w', x, y)
         cjs.tick(function(){
             w.pX(b.X()-x)
-            w.pY(b.Y()-y)
-        })
-
-    }
-
+            w.pY(b.Y()-y)})}
     w.fwBuf=function(b,x,y, pX,pY,bX,bY){var w=this
 
         w.s.HUD.dot('w', x, y)
@@ -289,10 +226,7 @@ w.scl=function(n){var w=this,hW,hH
     w.s.X((w.cX-hW)*n+hW),
         w.s.Y((w.cY-hH)*n+hH)
     return this
-
 }
-
-
 w.limScl=function(n){var w=this,hW,hH
     w.SCALE=n
     w.cX=w.pX()
@@ -314,8 +248,6 @@ w.pos=function(x,y){var w=this
     w.cY = -y
     if(w.SCALE){w.scl(w.SCALE)}
     return this}
-
-
 w.scale=function(a){var w=this
     w.s.sXY(a)
     if(a<1){w.s.XY(w.W()*(1-a)-w.W()/2,w.H()*(1-a)-w.H()/2)}
@@ -381,47 +313,38 @@ w.drag=function(){var w=this, pX=0, pY= 0,pmX,pmY,
 
     return this}
 
-w.dragScale=function(){var w=this,
-    pX=0, pY= 0,
-    pmX,
-    pmY,
-
-    c = $(w.s.HUD.canvas)
-
-    c.mousedown(function(e){
-
-        $l('down')
-
-        oScl = w.sc()
-
-        oY = e.clientY
-
-    })
-
-
-    c.pressmove(function(e){
-        var x=e.clientX,
-            y=e.clientY,
-
-
-            newSc = oScl +  (oY - e.clientY)*.005
-
-        newSc = newSc>5?5
-            : newSc<.1?.1
-            : newSc
-
-      $l(newSc )
-
-        w.sc(newSc)
-
-    })
 
 
 
-    return this}
+b2d.G = b2d.game=function(cW,cH,wW,wH){var ob={}
+
+    if(A(cW)){
+        ob=cH
+        wH=cW[3]
+        wW=cW[2]
+        cH=cW[1]
+        cW=cW[0]
+    }
+
+    cW=N(cW)?cW:1200
+    cH=N(cH)?cH:600
+    wW=N(wW)?wW:cW
+    wH=N(wH)?wH:cH
+
+    w=b2d.W({
+        g:N(ob.g)?ob.g:0,
+        W:cW,
+        H:cH,
+
+        w:['o', wW, wH]}).db()
 
 
 
+    w.pXY(0,w.H())
+
+    w.camLims([0, wW - cW], [ 0, wH-cH])
+
+    return w}
 
 cjs.adj = cjs.camAdj =  function( income, tax ){//tax ~ deltaLimit ~ buffer
     var income =  income || 0  ,  tax = tax || 0
@@ -491,7 +414,7 @@ WARPSCROLL=function(){
 
             //$l(cX)
 
-            w.pX(w.pX()-pX //w.pX() + cX  // cjs.adj(b.X()-x,   fX  )
+            w.camX(w.pX()-pX //w.pX() + cX  // cjs.adj(b.X()-x,   fX  )
 
             )
 
@@ -524,15 +447,13 @@ WARPSCROLL=function(){
     w.s.HUD.dot('w', 500, 300)
 
 }
-
 CAM=function(){
     w = b2d.G([1200,600,2400,1200], {  g:0 })
-
-    w.dbX()
 
     w.S(1200,300,'r',400,100)
     w.S(1200,900,'r',400,100)
     y = w.ship(100, 500).rot(90).damp(1).mid()
+
     //w.cam(600);
     // w.foll(y,600,500, 300  )
     //w
@@ -540,73 +461,9 @@ CAM=function(){
 
     w.foll(y,600, 300)
 
-    //w.SCALE=1.4
-
-    w.dbLayers()
+    w.SCALE=1.4
 
 }
-
-w.dbLayers=function(){var w=this
-
-    w.dr( 75,75,150,150, '-')
-    w.dr( 140,0,20,300)
-    w.dr( 0,150,300,20)
-    w.dr( 100,100,100,100, '+')
-    return w}
-
-w.dbCross=function(x,y){var w=this, c=w.cent()
-
-
-    x=N(x)?x: c.x
-    y=N(y)?y: c.y
-
-
-    w.dr('t', -10+x,  -140+y, 20,300, '-')
-
-    w.dr('t', -150+x,  -10+y, 300,20, '-')
-
-    w.dot('r', x,y)
-    return w
-
-
-}
-
-w.back=function(){var w=this,
-
-     back = w.s.back
-
-    if(!back.x){
-        back.x=10000
-        back.y=10000
-    }
-    else {
-        back.x=0
-        back.y=0
-    }
-
-return w}
-w.HUD=function(){var w=this,
-
-    back = w.s.HUD
-
-    if(!back.x){
-        back.x=10000
-        back.y=10000
-    }
-    else {
-        back.x=0
-        back.y=0
-    }
-
-    return w}
-
-w.lay=function(){var w= this
-
-    w.back().HUD().db()
-
-return w}
-
-
 CAMLIM=function(){
     w = b2d.G([1200,600,2400,1200], {  g:0 })
 
@@ -783,7 +640,7 @@ SCALEZOOM=function(){w = b2d.W({g:0,w:0}).db()
 
 
 
-    w.cent('+')
+
     function scaleFunc(){var dx,dy,dst
 
         dx =   star.X()-p.X()
@@ -906,184 +763,6 @@ TINYREDBALLS=function(){
 }
 
 
-w.fwNoLim= function(b,x,y){var w=this, n=0
-    cjs.tick(function(){
-        var scl = N(w.SCALE)? w.SCALE : 1
-
-
-        w.s.x =  (x-b.X())*scl     -   w.W()*(scl/2-.5)
-
-        w.s.y =  (y-b.Y())*scl     -   w.H()*(scl/2-.5)
-
-    })
-
-    return w}
-
-
-
-
-
-
-
-
-w.rat=function(){var w=this
-    return {x: w.w/w.W(),y: w.h/w.H()}
-}
-
-w.df=function(){var w=this
-    return {x:w.W() /w.w,y:  w.H()/ w.h}
-}
-
-
-
-
-w.sc=function(s){var w=this,
-
-    g=G(arguments),
-
-    s=g[0]
-
-
-    if(g.d){
-
-        s = w.df().x  // which is beigger?  .. smaller??
-    }
-
-
-    if(U(s)){
-        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
-
-
-    w.SCALE=s
-
-    w.s.sXY(s)
-
-return w}
-
-
-
-ULT1=function(){
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-    w.S(1200,300,'r',400,100)
-    w.S(1200,600,'w',[[100,100,'-']])
-    w.S(1200,900,'r',400,100)
-    y = w.ship(100, 100).rot(120).damp(1,10)
-    w.sc(5)
-    w.fwNoLim(y, 600,300)
-    w.dragScale()
-}
-
-
-
-// ok this is a brilliant demo of complete scrolling and zooming
-// it has normal wall limits, but also centers the stage if you are zoomed out enough to see the whole thing
-// but actually, i dont really need to allow the user to zoom out that much
-//if you can see the whole 'world'.. zooming out more is pointless!!
-// ok on to zoom min/max!!!
-
-
-
-ULT=function(){
-
-    w.wz = function(){var w=this
-
-        //we never want a positive wz!! means right stage corner is visible
-
-        return (V(   wX= w.s.x, wY= w.s.y ))
-
-
-    }
-
-
-
-
-    w.fwNoLim= function(b,x,y){var w=this, n=0
-        cjs.tick(function(){
-            var scl = N(w.SCALE)? w.SCALE : 1
-
-
-
-
-
-
-            sX=(x - b.X())* scl -  w.W() * (scl/2 - .5)
-
-            if(sX > 0){ sX = 0 }
-
-
-             if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
-
-
-           //  if(w.W() * w.sc() < w.w/2){  sX =   w.W()/2 - (w.w/2)* w.sc()}
-
-
-
-            if((w.W()/2 - (w.w/2)* w.sc())>=0) {  sX =   w.W()/2 - (w.w/2)* w.sc()}
-
-
-            sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
-            if(sY>0){sY=0}
-
-            if(sY < w.H() - w.sc()* w.h  ) {
-                sY= w.H() - w.sc()* w.h
-            }
-
-
-            if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
-
-
-            w.s.x= sX
-            w.s.y= sY
-
-        })
-
-        return w}
-
-
-    w.rOK = function(){var w=this,sc =w.sc(); return  w.s.x + w.W()*w.sc() - 1200}
-
-    w.bOK = function(){var w=this,sc =w.sc(); return  w.s.y + w.H()*w.sc() - 600}
-
-
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-
-    w.S(1200,300,'r',400,100)
-    w.S(1200,600,'w',[[100,100,'-']])
-    w.S(1200,900,'r',400,100)
-
-    y = w.ship().XY(0,0).rot(120).damp(1,10)
-
-    w.sc(.5)
-
-    w.fwNoLim(y, 600,300)
-    w.dragScale()
-
-
-
-    w.dot(2350, 1150)
-
-
-
-
-    w.dot(1150, 550,'+')
-
-    w.sc(3); y.X(2190) //-> -5974
-    w.sc(2); y.X(2088) //-> -3576
-    w.sc(1); y.X(1790) //-> -1190
-
-
-    y.XY(200,200)
-    w.sc(2)
-
-
-
-//setInterval(function(){s=((Math.random() * 5))/2; w.sc(s)}, 5000)
-
-
-}
-
-
-
 
 
 w.wallX  =function(x,y,W,H){var w=this
@@ -1115,17 +794,4 @@ w.wallsX = function(W,H){var w=this, g=G(arguments)
 
     return this
 }
-
-
-w.zm=function(z){var w=this,d=w.df().x
-    if(U(z)){return w.sc()/d}
-    if(!z>0){z=1}
-    w.sc(d*z)
-return w}
-
-
-
-
-
-
 //w.show(function(){})//not working with scroll

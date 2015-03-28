@@ -686,3 +686,105 @@ w.spriteBox=function(data, x, y, scale){ //for 400 x 400 flash squares !!!
 }
 
 
+LAYERS=function(){w=b2d.W({g:0})//.db()
+
+   y= w.ship().cent('+')
+
+    w.dr( 100,100,100,100)
+    w.dr( 100,200,100,100, '+')
+
+    l1=w.line(0,100,5000,100,'-')
+
+    l2= w.line(0,200,5000,200)
+
+    l3 = w.line(0, 300, 5000, 300, '+')
+
+    y2= w.ship().cent('+')
+
+
+
+}
+
+
+
+w.dbX=function(){var w=this
+
+   w.line(0,0, w.W(), w.H(),'+')
+
+    w.line(0,w.W(), w.H(),0, '+')
+
+    if(N(w.w) && N(w.h)){
+        w.line(0,0, w.w, w.h)
+        w.line(0,w.W(), w.H(),0 )}}
+
+
+w.dr=function(col,x,y,W,h){
+    var w=this,
+        g=G(arguments),
+        col=g[0],x=g[1],y=g[2],W=g[3],h=g[4]
+
+
+    if(g.p){
+
+        if(!S(col)){h=W;W=y;y=x;x=col; col='b'}
+
+        w.s.HUD.shape().fs(col).rect(x, y, W, h )
+    }
+
+
+    else if(g.n){
+
+        if(!S(col)){h=W;W=y;y=x;x=col; col='r'}
+
+        w.s.back.shape().fs(col).rect(x, y, W, h )
+    }
+
+    else {if(!S(col)){h=W;W=y;y=x;x=col;col='w'}
+
+        w.s.shape().fs(col).rect(x, y, W, h)
+    }
+
+
+}
+
+//w.s.shape().fs('y').rect(100,100,100,100)
+
+//w.s.HUD.shape().fs('o').rect(100,200,100,100)
+
+w.line=function(col,x1,y1,x2,y2){
+    var w=this,
+        g=G(arguments),
+        col=g[0],
+        x1=g[1],y1=g[2],
+        x2=g[3],y2=g[4]
+
+
+
+    if(g.p){
+
+        if(!S(col)){y2=x2; x2=y1;y1=x1;x1=col;col='b'}
+
+       h =w.s.HUD.shape()
+
+
+
+       h.sC(col,8).mt(x1, y1).lt(x2,y2)
+    }
+
+
+    else if(g.n){if(!S(col)){y2=x2; x2=y1;y1=x1;x1=col;col='x'}
+
+        w.s.back.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
+    }
+
+
+     else {if(!S(col)){y2=x2; x2=y1;y1=x1;x1=col;col='w'}
+
+
+    w.s.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
+
+
+   }
+
+
+}

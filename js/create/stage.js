@@ -244,35 +244,37 @@ return s}
      return stage}
 
 
-cjs.tripleStage =  function(color, w, h){
+cjs.tripleStage =  function(col, w, h){
 
-    var stage, can0, can1, can2
+    var g=G(arguments),
+        col=g[0], w=g[1],h=g[2]
 
-    can0 =  can(color)
-    can1 =  can('X')
-    can2 =  can('X')
+    var can1 =  can('X')
+    var s = new cjs.Stage(can1[0]).tick()
+    s.can = s.c = can1
 
 
-    function can(col){
-        return $.can(col,w,h ).P('a').XY(0,0)
+
+    s.back = new cjs.Stage( can(col)[0] ).tick()
+    s.back.linGrad=function(col1,col2){
+        col1=oO('c', col1||'b');col2=oO('c', col2||'r')
+        var h =this.H(), w=this.W()
+        this.SHAPE.linGrad([col1,col2],[0,1],0,0,0,h).dr(0,0,w,h)}
+    s.back.SHAPE = s.back.shape(0,0,'w')
+
+    if(g.N){
+        s.back.linGrad('z',  'w')
     }
 
 
-    stage = new cjs.Stage(can1[0]).tick()
-    stage.can = stage.c = can1
+    s.HUD = new cjs.Stage( can('X')[0] ).tick()
 
-    stage.back = new cjs.Stage( can0[0] ).tick()
+    s.HUD.shape().fs($r()).rect( 0,0,5000,5000).opacity(.3)
 
-    stage.back.linGrad=function(col1,col2){
-        col1=oO('c', col1||'b');col2=oO('c', col2||'r')
-        var h =this.H(), w=this.W()
-        this.shape.linGrad([col1,col2],[0,1],0,0,0,h).dr(0,0,w,h)}
-    stage.back.shape = stage.back.shape(0,0,'w')
+    return s
 
-
-    stage.HUD = new cjs.Stage( can2[0] ).tick()
-
-    return stage}
+    function can(col){return $.can(col,w,h ).P('a').XY(0,0)}
+}
 
 
 
@@ -350,9 +352,7 @@ p.dot=function(color, x, y){
 
     if(b2d.isGPoly(color)){
         _.each(color.verts(), function(v){ that.dot(V(v))  })
-
     return this}
-
 
     if(A(color)){
 
