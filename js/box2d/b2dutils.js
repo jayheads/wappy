@@ -141,7 +141,15 @@ b2d.AABB=function(a,b,c,d){//this is the one that works!
     return aabb}
 
 
-b2d.AABB01 = function(a,b){return this.AABB( a-.001, b-.001, a+.001, b+.001 )}
+b2d.AABB01 = function(x,y){//now used div
+    var v=V(x,y).div(),
+        x=v.x,
+        y=v.y
+    return this.AABB(x-.001, y-.001, x+.001, y+.001 )}
+
+
+
+
 
 
 b2d.AB0001 = AB001 =function(a,b){return AB( a-.001, b-.001, a+.001, b+.001 )}
@@ -161,46 +169,12 @@ b2d.isShape=function(h){
 
 
 
-b2d.canWorld=function(color, wd, ht, grav, mJoints){
- var can = $.can(color, wd, ht).A(),
-    w = can.wor(grav).tick().Z(30)
-    if(mJoints != false){
-        w.mouseJoints()  }
-return w}
-
-
-b2d.stgWorld=function(color, grav, wd, ht, mouseJoints){ var w
-    if(!S(color)){
-        mouseJoints=ht;
-        ht=wd;
-        wd=grav;
-        grav=color;
-        color='black'
-    }
-        grav= N(grav)?grav:10
-        wd = wd||1200
-        ht= ht||600
-
-    w = b2d.world(V(0,grav)).Z(30).tripleStage(color,wd,ht)
-    w.bug(w.ctx, 30, '*', .6 )
-
-    if(S(mouseJoints)){
-        w.mouseJoints(mouseJoints)
-    }
-    else if(mouseJoints!=false){
-        w.mouseJoints()
-    }
 
 
 
 
-        cjs.tick(function(){
-            w.draw(.1)
-            w.s.update()})
-        cjs.watchKeys()
 
-    return w
-    }
+
 b2d.mat22=function(v1,v2){
     var m = new b2d.Mat22()
     m.SetVV(v1,v2)

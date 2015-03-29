@@ -134,87 +134,6 @@ w.rod = function(a,b,len){
 w.spring=function(a,b){
     return this.dist(a,b).len(1).freq(2)//.damp(.1)
 }
-
-
-
-w.mouseJ=function(body,target,damp,maxForce){
-
-    body.wakeUp()
-    var ground = this.GetGroundBody()
-
-    return this.J(b2d.mouseJ(ground,
-            body,target,damp,maxForce)
-    )
-
-}
-
-w.removeMouseJoint=function(){var w=this
-
-    if(O(w._mouseJoint)){
-        w.j(w._mouseJoint)
-        this._mouseJoint = false
-
-    }
-
-
-    return this}
-
-w.updateMouseJoint=function(point, kind){var w=this
-
-    var mJ = w._mouseJoint
-
-    w._mouseJoint = mJ ? mJ.target(point) : this.mouseJAt( point, kind )
-
-return this}
-
-
-w.tripleStage= function(color, wd,ht){
-    var w=this
-    w.s = w.stage = cjs.tripleStage('black', wd, ht).noAutoClear()
-    w.s.back.A()
-    w.s.A()
-    w.s.HUD.A()
-    w.canvas = w.s.canvas
-    w.c = w.can = $(w.canvas)
-    w.ctx =  w.can.ctx()
-
-    return w}
-
-
-w.mouseJoints=function(kind){var w = this,
-    can= (w.s && w.s.HUD)?$(w.s.HUD.canvas):  w.can,
-    scale = this.scale || 1
-    can.mouseup(function(){
-        w.removeMouseJoint()
-    })
-
-    can.pressmove(function (e) {
-        w.updateMouseJoint(
-            can.mousePoint(e, scale), kind
-        )
-    })
-
-    return this}
-
-
-
-
-
-w.tick=function(draw){var w=this,
-    can = w.can,
-    ctx= w.ctx
-    draw= N(draw)? draw: 0.1
-    ctx.tick(function(){
-        this.trans(0,0).Z(1,1);
-        w.draw(draw)
-
-    })
-
-
-    return this}
-
-
-
 w.boxes=function(){var w=this
 
     _.each(arguments, function(arg){
@@ -222,8 +141,7 @@ w.boxes=function(){var w=this
         w.box.apply(w, arg)
     })
 
-return this}
-
+    return this}
 w.boxesStat=function(){var w=this
 
     _.each(arguments, function(arg){
@@ -232,20 +150,6 @@ w.boxesStat=function(){var w=this
     })
 
     return this}
-
-w.mouseJAt=function(p, kind){var w=this, mj
-
-    w.bodyAt(p, function(b){
-
-        mj = b.mouseJoint(p)
-
-    }, kind)
-
-
-
-        return mj
-
-}
 
 
 

@@ -119,14 +119,17 @@ w.boxWalls=w.xW= function(col,W,h){var w=this
     if(!S(col)){h=W;W=col;col='o'}
     W= N(W)?W: w.W()
     h= N(h)?h: w.H()
-    bot=   w.R(col, W,20, 0, h-20)
-    right =  w.R(col, 20, h, W-20, 0)
-    tp = w.R(col, W,  20, 0,0)
-    left = w.R(col, 20,h,0, 0  )
+    bot= w.floor =  w.R(col, W,20, 0, h-20)
+    right = w.right= w.R(col, 20, h, W-20, 0)
+    tp = w.roof= w.R(col, W,  20, 0,0)
+    left = w.left= w.R(col, 20,h,0, 0  )
+
     w.w=W
     w.h=h
     // if(g.N){ w.camLims(  0,  w.w-w.s.W(),  0, w.h-w.s.H())}
     return w}
+
+
 
 
 w.camLims = function(xm, xM, ym, yM){var w=this
@@ -137,26 +140,7 @@ w.camLims = function(xm, xM, ym, yM){var w=this
         w._camLimX = [xm,xM]
         w._camLimY = [ym,yM]}
     return w}
-b2d.G = function(cW,cH,wW,wH){var ob={}
-    if(A(cW)){
-        ob=cH
-        wH=cW[3]
-        wW=cW[2]
-        cH=cW[1]
-        cW=cW[0]}
-    cW=N(cW)?cW:1200
-    cH=N(cH)?cH:600
-    wW=N(wW)?wW:cW
-    wH=N(wH)?wH:cH
-    w=b2d.W({
-        g:N(ob.g)?ob.g:0,
-        W:cW,
-        H:cH,
-        w:['o',wW,wH]}).db()
-    w.pXY(0,w.H())
-    w.camLims([0,wW-cW], [0,wH-cH])
-    w.SCALE=1
-    return w}
+
 
 
 w.pX =  function(x){var w=this
@@ -173,57 +157,26 @@ w.pX =  function(x){var w=this
 
 
     return w}
-
-
-
-
-w.pXx =  function(x){var w=this
-
-    if(U(x)){ return -w.s.x }
-
-
-    if(w._camLimX){
-
-
-        w.s.x =  -cjs.cap( x,  [w._camLimX[0]* w.SCALE,w._camLimX[0]* w.SCALE] )
-    }
-
-    else {w.s.x = -x  }
-
-
-    return w}
-
-
-w.pYx = w.camYx=function(y){var w=this
-
-    if(U(y)){return -w.s.y}
-    if(U(w._camLimY)){
-        w.s.y = -y
-    }
-
-   else{
-        w.s.y = -cjs.cap(y,  [w._camLimY[0]* w.SCALE, w._camLimY[1]* w.SCALE   ] )
-
-    }
-
-    return w}
-
-
 w.pY = w.camY=function(y){var w=this
 
     if(U(y)){return -w.s.y}
     w.s.y = -cjs.cap(y,  w._camLimY|| [0,0] )
     return w}
-
 w.pXY = function(x,y){var w=this
     if(U(x)){ return V(w.pX(),w.pY()) }
     return w.pX(x).pY(y)}
 
-w.camx=function(x,y){var w=this //<-pXY
+w.cam=function(x,y){var w=this //<-pXY
     if(U(y)){y=x;x=0}
     w.pXY(x,y)
-    //w._camX=x; w._camY=y
+    w._camX=x; w._camY=y
     return w}
+w.pos=function(x,y){var w=this
+    w.s.XY(-x,-y)
+    w.cX = -x
+    w.cY = -y
+    if(w.SCALE){w.scl(w.SCALE)}
+    return this}
 
 w.fol= w.foll= function(b,x,y,pX){var w=this
 
@@ -279,49 +232,6 @@ w.fol= w.foll= function(b,x,y,pX){var w=this
 return this}
 
 
-w.scl=function(n){var w=this,hW,hH
-    w.SCALE=n
-    w.s.sXY(n)
-    w.cX=w.cX||0
-    w.cY=w.cY||0
-    hW=w.W()/2
-    hH= w.H()/2
-    w.s.X((w.cX-hW)*n+hW),
-        w.s.Y((w.cY-hH)*n+hH)
-    return this
-
-}
-
-
-w.limScl=function(n){var w=this,hW,hH
-    w.SCALE=n
-    w.cX=w.pX()
-    w.cY=w.pY()
-    w.s.sXY( n )
-
-    hW=w.W()/2
-    hH= w.H()/2
-
-    w.pX( -((w.cX - hW)*n+hW))
-    w.pY( -((w.cY - hH)*n+hH))
-
-    return this
-}
-
-w.pos=function(x,y){var w=this
-    w.s.XY(-x,-y)
-    w.cX = -x
-    w.cY = -y
-    if(w.SCALE){w.scl(w.SCALE)}
-    return this}
-
-
-w.scale=function(a){var w=this
-    w.s.sXY(a)
-    if(a<1){w.s.XY(w.W()*(1-a)-w.W()/2,w.H()*(1-a)-w.H()/2)}
-    else {w.s.XY(w.W()-(w.W()*a)/2, w.H()-(w.H()*a)/2)}}
-
-
 w.inout=function(){var w=this,
     s=1,
     up=true
@@ -353,30 +263,44 @@ w.limInout=function(){var w=this,
     }, 100)
     return w}
 
-w.drag=function(){var w=this, pX=0, pY= 0,pmX,pmY,
-    c=$(w.s.HUD.canvas)
+w.drag=function(){var w=this
 
-    c.mousedown(function(e){pmX=e.clientX; pmY=e.clientY})
+    pX=0
+    pY=0
+
+    c = $(w.s.HUD.canvas)
+
+    c.mousedown(function(e){
+
+        pmX=e.clientX;
+
+        pmY=e.clientY
+
+       // $l(pmX)
+    })
 
 
-    c.pressmove(function(e){var x=e.clientX,y=e.clientY
-        if(U(pmX)){pmX=x}
-        if(U(pmY)){pmY=y}
+    c.pressmove(function(e){
+        var x=e.clientX,
+            y=e.clientY
+        //if(U(pmX)){pmX=x}
+       // if(U(pmY)){pmY=y}
 
-        pX += (pmX-e.x)/w.SCALE
-        pY += (pmY-e.y)/w.SCALE
+        pX = pX + (pmX -x)/ w.SCALE
+        pY = pY +(pmY -y)/ w.SCALE
 
-        pmX=e.x
-        pmY=e.y
+        pmX=x
+        pmY=y
 
+        $l(pX)
     })
 
     w.SCALE=N(w.SCALE)?w.SCALE:1
     w.scl(w.SCALE)
 
-    cjs.tick(function(){w.pos(pX, pY)})
-
-
+    cjs.tick(function(){
+       w.pos(pX, pY)
+    })
 
 
     return this}
@@ -433,118 +357,6 @@ cjs.adj = cjs.camAdj =  function( income, tax ){//tax ~ deltaLimit ~ buffer
 
 
 
-MOVESPACE=function(){w=b2d.G(1000,1000,2000,2000)
-
-
-    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
-
-    y = w.ship(100, 100).rot(200)
-
-
-    w.foll(y, 500, 500, 1000, 1000, 200,200 )
-
-}
-MOVEPLAT=function(){
-
-    w=b2d.G(1000,1000, 2400, 1800).G(300)
-
-
-
-    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
-
-    //y = w.ship(100, 100).rot(200)
-
-   // p = w.mario(100,100, 4)
-
-    p= w.jumper()
-
-    w.foll(p, 500, 600,  1200, 1400,  400, 400 )
-
-}
-WARPSCROLL=function(){
-
-    w=b2d.G(1000, 500,  2000, 1000)
-    w.warpScroll =  function(b, x, y, fX,fY){var w=this
-
-        y = w.H()-y
-
-        bX =  b.X()
-        bY =  b.Y()
-
-
-        cjs.tick(function(){
-
-            dX = bX-b.X()
-
-            pX = cjs.adj(dX, fX)
-
-            $l(pX)
-
-            //  $l(  cjs.adj( b.X()-x,   fX  ) )
-
-
-            //where is y rel to the point?
-
-            rX = w.pX()-(b.X()-x)
-            cX = cjs.adj( -rX, fX)
-
-
-            //$l(cX)
-
-            w.pX(w.pX()-pX //w.pX() + cX  // cjs.adj(b.X()-x,   fX  )
-
-            )
-
-
-            w.camY(    cjs.adj(b.Y()-y,   fY  )  )
-
-
-
-        })
-
-        return this}
-
-
-    y = w.ship(1000, 400)
-
-    w.warpScroll(y, 500, 300  )
-
-
-
-    w.B(700, 300, 'r', [  [4]   ])
-    w.B(800, 300, 'r', [  [4]   ])
-    w.B(900, 300, 'r', [  [4]   ])
-
-    w.B(1000, 300, 'r', [  [4]   ])
-
-    w.B(1100, 300, 'r', [  [4]   ])
-    w.B(1200, 300, 'r', [  [4]   ])
-    w.B(1300, 300, 'r', [  [4]   ])
-
-    w.s.HUD.dot('w', 500, 300)
-
-}
-
-CAM=function(){
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-
-    w.dbX()
-
-    w.S(1200,300,'r',400,100)
-    w.S(1200,900,'r',400,100)
-    y = w.ship(100, 500).rot(90).damp(1).mid()
-    //w.cam(600);
-    // w.foll(y,600,500, 300  )
-    //w
-    //w.platFoll(y,400,300)//, 550//,500,-300
-
-    w.foll(y,600, 300)
-
-    //w.SCALE=1.4
-
-    w.dbLayers()
-
-}
 
 w.dbLayers=function(){var w=this
 
@@ -607,6 +419,140 @@ w.lay=function(){var w= this
 return w}
 
 
+
+
+w.fwNoLim= function(b,x,y){var w=this, n=0
+    cjs.tick(function(){
+        var scl = N(w.SCALE)? w.SCALE : 1
+
+
+        w.s.x =  (x-b.X())*scl     -   w.W()*(scl/2-.5)
+
+        w.s.y =  (y-b.Y())*scl     -   w.H()*(scl/2-.5)
+
+    })
+
+    return w}
+
+
+
+w.df=function(){var w=this
+    return {x:w.W() /w.w,y:  w.H()/ w.h}
+}
+w.scl=function(n){var w=this,hW,hH
+    w.SCALE=n
+    w.s.sXY(n)
+    w.cX=w.cX||0
+    w.cY=w.cY||0
+    hW=w.W()/2
+    hH=w.H()/2
+
+    w.s.X((w.cX-hW)*n + hW),
+        w.s.Y((w.cY-hH)* n+hH)
+    return this
+
+}
+
+w.limScl=function(n){var w=this,hW,hH
+    w.SCALE=n
+    w.cX=w.pX()
+    w.cY=w.pY()
+    w.s.sXY( n )
+
+    hW=w.W()/2
+    hH= w.H()/2
+
+    w.pX( -((w.cX - hW)*n+hW))
+    w.pY( -((w.cY - hH)*n+hH))
+
+    return this
+}
+
+
+
+w.scale=function(a){var w=this
+    w.s.sXY(a)
+    if(a<1){w.s.XY(w.W()*(1-a)-w.W()/2,w.H()*(1-a)-w.H()/2)}
+    else {w.s.XY(w.W()-(w.W()*a)/2, w.H()-(w.H()*a)/2)}}
+
+
+w.sc=function(s){var w=this,
+
+    g=G(arguments),
+
+    s=g[0]
+
+
+    if(g.d){
+
+        s = w.df().x  // which is beigger?  .. smaller??
+    }
+
+
+    if(U(s)){
+        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
+
+
+    w.SCALE=s
+
+    w.s.sXY(s)
+
+return w}
+
+
+
+w.zoom = w.zm=function(z){var w=this,d=w.df().x
+    if(U(z)){return w.sc()/d}
+    if(!z>0){z=1}
+    w.sc(d*z)
+return w}
+w.track =  function(b,x,y){
+    var w=this, k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
+
+    x=N(x)?x: w.W()/2
+    y=N(y)?y: w.H()/2
+    cjs.tick(function(){
+        k=scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
+        K=function(a){return a*k}
+        hW = w.W()/2
+        kW = w.w*k
+        sX=K(x-b.X()-hW)+hW
+        w.s.x= sX>0?0 : sX<w.W()-kW?w.W()-kW: (kW/2)-hW<0?hW-(kW/2):   sX
+
+        sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
+        if(sY>0){sY=0}
+        if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
+        if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
+        w.s.y= sY
+
+    })
+
+    //i can leave the world-centering in fw//can optionally filter it with scale itself
+
+    return w}
+w.rat=function(){return {x: w.w/w.W(), y: w.h/w.H()}}
+
+
+CAM=function(){
+    w = b2d.G([1200,600,2400,1200], {  g:0 })
+
+    w.dbX()
+
+    w.S(1200,300,'r',400,100)
+    w.S(1200,900,'r',400,100)
+    y = w.ship(100, 500).rot(90).damp(1).mid()
+    //w.cam(600);
+    // w.foll(y,600,500, 300  )
+    //w
+    //w.platFoll(y,400,300)//, 550//,500,-300
+
+    w.foll(y,600, 300)
+
+    //w.SCALE=1.4
+
+    w.dbLayers()
+
+}
 CAMLIM=function(){
     w = b2d.G([1200,600,2400,1200], {  g:0 })
 
@@ -649,7 +595,7 @@ CAMLIM=function(){
         else {
             if(w.SCALE > .4){ w.SCALE -= .02   }
             else {up=true}
-           }
+        }
 
     }, 50)
 }
@@ -701,12 +647,12 @@ STREETFIGHTER=function(){
 
     y = w.ship(700, 700 ).linDamp(1)
 
-   // w.cam(100, 600)
+    // w.cam(100, 600)
 
-     w.foll(y, 700,500//,  200,  300
-     )
+    w.foll(y, 700,500//,  200,  300
+    )
 
-   // w.follow(y,700,500,  200,  300 )
+    // w.follow(y,700,500,  200,  300 )
 
 }
 STREETFIGHTERBUFF=function(){
@@ -739,21 +685,24 @@ ZOOM=function(){w=b2d.G(1000,1000,1000,1000)
     w.inout()
     w.drag()
 }
-DRAGZOOM=function() {
-     w = b2d.G(1000, 1000, 1000, 1000)
-     w.s.HUD.dot(500, 500)
-     y = w.ship(100, 100).rot(200)
-     w.S(500, 500, 'o', 200)
-     w.S(500, 500, 'r', 10)
-     w.S(200, 200, 'm', 40)
-     w.S(800, 200, 'b', 60)
-     w.S(800, 800, 'l', 80)
-     w.S(200, 800, 'g', 100)
+
+DRAGZOOM=function(){
+
+    w = b2d.G(1000, 1000, 1000, 1000)
+    w.s.HUD.dot(500, 500)
+    y = w.ship(100, 100).rot(200)
+    w.S(500, 500, 'o', 200)
+    w.S(500, 500, 'r', 10)
+    w.S(200, 200, 'm', 40)
+    w.S(800, 200, 'b', 60)
+    w.S(800, 800, 'l', 80)
+    w.S(200, 800, 'g', 100)
 
 
-     w.drag()
+    w.drag()
 
- }
+}
+
 SCALEZOOM=function(){w = b2d.W({g:0,w:0}).db()
     p= w.player(200,200,2.5, 'thrust')
         .Y(200).horizCenter().den(.4).angDamp(8).linDamp(.8)
@@ -772,14 +721,14 @@ SCALEZOOM=function(){w = b2d.W({g:0,w:0}).db()
 
     cjs.tick(function(){var scale=scaleFunc()
 
-            w.s.sXY(scale)
+        w.s.sXY(scale)
 
-            w.s.X( 300  -     (p.X()-300 )*scale  )
+        w.s.X( 300  -     (p.X()-300 )*scale  )
 
-            w.s.Y(150  -      (p.Y() - 150 )* scale   )
+        w.s.Y(150  -      (p.Y() - 150 )* scale   )
 
 
-        })
+    })
 
 
 
@@ -905,63 +854,97 @@ TINYREDBALLS=function(){
 
 }
 
-
-w.fwNoLim= function(b,x,y){var w=this, n=0
-    cjs.tick(function(){
-        var scl = N(w.SCALE)? w.SCALE : 1
+MOVESPACE=function(){w=b2d.G(1000,1000,2000,2000)
 
 
-        w.s.x =  (x-b.X())*scl     -   w.W()*(scl/2-.5)
+    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
 
-        w.s.y =  (y-b.Y())*scl     -   w.H()*(scl/2-.5)
-
-    })
-
-    return w}
+    y = w.ship(100, 100).rot(200)
 
 
+    w.foll(y, 500, 500, 1000, 1000, 200,200 )
 
-
-
-
-
-
-w.rat=function(){var w=this
-    return {x: w.w/w.W(),y: w.h/w.H()}
 }
+MOVEPLAT=function(){
 
-w.df=function(){var w=this
-    return {x:w.W() /w.w,y:  w.H()/ w.h}
+    w=b2d.G(1000,1000, 2400, 1800).G(300)
+
+
+
+    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
+
+    //y = w.ship(100, 100).rot(200)
+
+    // p = w.mario(100,100, 4)
+
+    p= w.jumper()
+
+    w.foll(p, 500, 600,  1200, 1400,  400, 400 )
+
 }
+WARPSCROLL=function(){
+
+    w=b2d.G(1000, 500,  2000, 1000)
+    w.warpScroll =  function(b, x, y, fX,fY){var w=this
+
+        y = w.H()-y
+
+        bX =  b.X()
+        bY =  b.Y()
+
+
+        cjs.tick(function(){
+
+            dX = bX-b.X()
+
+            pX = cjs.adj(dX, fX)
+
+            $l(pX)
+
+            //  $l(  cjs.adj( b.X()-x,   fX  ) )
+
+
+            //where is y rel to the point?
+
+            rX = w.pX()-(b.X()-x)
+            cX = cjs.adj( -rX, fX)
+
+
+            //$l(cX)
+
+            w.pX(w.pX()-pX //w.pX() + cX  // cjs.adj(b.X()-x,   fX  )
+
+            )
+
+
+            w.camY(    cjs.adj(b.Y()-y,   fY  )  )
 
 
 
+        })
 
-w.sc=function(s){var w=this,
-
-    g=G(arguments),
-
-    s=g[0]
+        return this}
 
 
-    if(g.d){
+    y = w.ship(1000, 400)
 
-        s = w.df().x  // which is beigger?  .. smaller??
-    }
-
-
-    if(U(s)){
-        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
-
-
-    w.SCALE=s
-
-    w.s.sXY(s)
-
-return w}
+    w.warpScroll(y, 500, 300  )
 
 
 
+    w.B(700, 300, 'r', [  [4]   ])
+    w.B(800, 300, 'r', [  [4]   ])
+    w.B(900, 300, 'r', [  [4]   ])
+
+    w.B(1000, 300, 'r', [  [4]   ])
+
+    w.B(1100, 300, 'r', [  [4]   ])
+    w.B(1200, 300, 'r', [  [4]   ])
+    w.B(1300, 300, 'r', [  [4]   ])
+
+    w.s.HUD.dot('w', 500, 300)
+
+}
 ULT1=function(){
     w = b2d.G([1200,600,2400,1200], {  g:0 })
     w.S(1200,300,'r',400,100)
@@ -972,19 +955,13 @@ ULT1=function(){
     w.fwNoLim(y, 600,300)
     w.dragScale()
 }
-
-
+ULT=function(){
 
 // ok this is a brilliant demo of complete scrolling and zooming
 // it has normal wall limits, but also centers the stage if you are zoomed out enough to see the whole thing
 // but actually, i dont really need to allow the user to zoom out that much
 //if you can see the whole 'world'.. zooming out more is pointless!!
 // ok on to zoom min/max!!!
-
-
-
-ULT=function(){
-
     w.wz = function(){var w=this
 
         //we never want a positive wz!! means right stage corner is visible
@@ -1011,10 +988,10 @@ ULT=function(){
             if(sX > 0){ sX = 0 }
 
 
-             if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
+            if(sX < w.W() - w.sc()* w.w   ) {   sX= w.W() - w.sc()* w.w  }
 
 
-           //  if(w.W() * w.sc() < w.w/2){  sX =   w.W()/2 - (w.w/2)* w.sc()}
+            //  if(w.W() * w.sc() < w.w/2){  sX =   w.W()/2 - (w.w/2)* w.sc()}
 
 
 
@@ -1081,7 +1058,35 @@ ULT=function(){
 
 
 }
+RIGHTTRACK=function(){w = b2d.G([900,300,3600,300],{g:0}).zoom(6)
+    w.S(1200,300,'r',400,100)
+    w.S(1200,600,'w',[[100,100,'-']])
+    w.S(1200,900,'r',400,100)
+    y = w.ship(200,200).rot(120).damp(1,10).track()
+}
 
+SLOOM=function(){
+    w = b2d.W([800,500,2400,500],{g:0}).zoom(3)
+    w.S(400,300,'r',200,100)
+    w.S(800,300,'z',100,100)
+    w.S(1200,300,'b',300,100)
+    w.S(1600,300,'z',100,100)
+    w.S(2000,300,'r',200,100)
+    y = w.ship(200,200).rot(120).damp(1,10).track()
+    var z=3.2, up=true
+    cjs.tick(function(){up=z>5?false:z<3.5?true:up
+        w.zoom(z+= up?.01:-.01)})
+
+}
+
+ZJUMP=function(){
+    w = b2d.G([1200,600,2200,2600],{g:300}).zoom(2.5)
+    w.S(400,2500,'r',200,100)
+    w.S(800,2300,'z',100,100)
+    w.S(1200,2300,'b',300,100)
+    w.S(1600,2300,'z',100,100)
+    w.S(2000,2300,'r',200,100)
+    y=w.jumper().Y(100).X(1175).track()}
 
 
 
@@ -1115,17 +1120,6 @@ w.wallsX = function(W,H){var w=this, g=G(arguments)
 
     return this
 }
-
-
-w.zm=function(z){var w=this,d=w.df().x
-    if(U(z)){return w.sc()/d}
-    if(!z>0){z=1}
-    w.sc(d*z)
-return w}
-
-
-
-
 
 
 //w.show(function(){})//not working with scroll

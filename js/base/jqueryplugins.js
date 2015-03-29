@@ -1481,9 +1481,13 @@ $.fn.pressmove=function(func){
 $.fn.ctx=function(){
     return this[0].getContext('2d')
 }
+
+
+
 $.fn.mousePoint=function(e, scale){
     scale=N(scale)?scale:1
-    return V(e.pageX/scale,e.pageY/scale )}
+    return V(e.pageX/scale,e.pageY/scale )
+}
 
 
 $.isCan=function(can){

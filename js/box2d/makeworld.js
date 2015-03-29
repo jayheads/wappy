@@ -1,143 +1,420 @@
-wor = function(ob){ob = ob||{}
-    var color, grav, wd, ht, mouseJoints, walls
-    color = oO('c', ob.C||'z')
-    grav = N(ob.g)?ob.g:10
-    wd = N(ob.W)?ob.W:1200
-    ht = N(ob.H)?ob.H:600
-    walls = D(ob.w)?ob.w:D(ob.walls)?ob.walls: true
-    mouseJoints = D(ob.mJ)? ob.mJ: true
-    w = b2d.stgWorld(color, grav, wd, ht, mouseJoints)
-    if(walls){w.makeWalls()}
-    return w}
+w= b2d.World.prototype
+
+STGW=function(){z()
+
+    w=b2d.stgWorld()
+
+    w.S(500,600,'y',1000, 20)
+
+    w.B(500,200, 'o', 40)
+}
+
+$t = function(a, b){if(b2d.test){
+    var g=G(arguments),
+        a=g[0],
+        b=g[1],str
 
 
-BALL=function(){b2d.W().ball()}
 
 
-b2d.W = b2d.mW = b2d.makeWorld = makeWorld = mW = function(ops){
+         if(D(b)){
 
-    //make a world with a stage.. well with three stages!!!!
+             str='||'
+             _.each(g, function(s){
 
-    var width,height,gravX,gravY
-    if(!O(ops)){ops={}}
-    if(ops.z!=false){z()}
+                 str+=  ' '  + s.toString() + ' |'
 
-    width = ops.W||1200; height= ops.H||600
+             })
 
-    if( U(ops.grav) && D(ops.g) ){ops.grav = ops.g}
+             str += '|'
+         }
 
-
-    gravX=0;
-    gravY=40
-    if(N(ops.grav)){gravY = ops.grav }
-    else if(A(ops.grav)){gravX = ops.grav[0]; gravY = ops.grav[1]} //else {ops.gravityY = ops.g;ops.gravityY = N(ops.gravityY) ? ops.gravityY : 40;world = w = b2d.world(V(0, ops.gravityY))}
-    w = b2d.world(V(gravX, gravY))
+    else {
+             str = a.toString()
+         }
 
 
-    cjs.watchKeys()
-
-    w.s =  w.stage  =   cjs.tripleStage('black',
-        width,
-        height)
-
-    w.s.back.A()
-    w.s.A()
-    w.s.HUD.A()
-
-      //cjs.Ticker.removeAllEventListeners()
+    $l(str)
 
 
-    w.s.noAutoClear()
-    w.canvas = w.stage.canvas
-    w.can = w.c = $(w.canvas)
-    //canvas = $(w.canvas).id('canvas')
-    w.ctx = w.context = w.can.ctx('2d')
-    if(ops.backgroundImage){
-        w.s.bm(ops.backgroundImage)}
 
-    var canvasPosition = w.can._getPosition()
-    w.x = canvasPosition.x
-    w.y = canvasPosition.y
+        }; return a}
 
-    $.joystick()
 
-    w._mouseJoint = null
-    w._mouseIsDown = false
 
-    setInterval(function(){
-        handleMouseJoints()
+TOMAKETOUCHWORKAGAIN=function(){
+
+    /*
+
+    //  w._mouseJoint = null //  w._mouseIsDown = false
+
+    w.mouseJoints()
+
+     $.touchstart(function(e){
+
+     w._mouseIsDown = true
+
+     recordMouseCoords(e)
+     $.touchmove(recordMouseCoords)
+     function recordMouseCoords(e){
+     var touch = e.originalEvent.touches[0]
+     mX = (touch.clientX-w.x)/30
+     mY = (touch.clientY-w.y)/30
+     }
+
+
+     }).touchend( function(){w._mouseIsDown = false})
+
+
+
+    setInterval(function(){//handleMouseJoints()
         w.draw(1/60)
         if(F(ops.cb)){ops.cb()}
         w.stage.update()
+    }, 1000/60) */
+}
+
+W = b2d.W =  function(W,H,wW,wH){ //cjs.Ticker.removeAllEventListeners()
+
+        var o = N(W) ? { W:W, H:H, wW:wW, wH:wH } :
+
+            A(W) ? _.extend(H, { W:W[0], H:W[1], wW:W[2] ,wH:W[3] }) :
+
+                O(W) ? W : {}
+
+
+    __o = o
+
+    o.W=o.W   ||  1200
+    o.H=o.H   ||  600
+    o.wW=o.wW ||  o.W
+    o.wH=o.wH ||  o.H
+    o.w=o.w   ||  ['o', o.wW, o.wH]
+
+    o.g = N(o.g) ? V(0,o.g) : o.g? V(o.g) : V(0, 300)
+
+    if(o.z != false){z()}
+
+
+    w = b2d.world( o.g )
+
+    w.s = w.stage = cjs.tripleStage('z', o.W, o.H).noAutoClear(); w.s.back.A(); w.s.A(); w.s.HUD.A()
+
+    w.canvas = w.stage.canvas; w.can = w.c = $(w.canvas).id('canvas'); w.ctx = w.context = w.can.ctx('2d')
+
+
+    if(o.clear !==false){
+        w.debug( b2d.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000) )} // w.bug(w.ctx, 30, '*', .6 )
+
+    cjs.watchKeys()
+
+
+
+    w.mJ()
+
+    $.oMD(function(x,y){
+
+        w.XY(x,y,
+
+            function(f){
+
+            if(   f.ofClass(o.m)  ){
+
+                w.mj = w.m(f.body(), _ )
+            }
+
+
+
+
+
+        })})
+
+
+    $.oMU(function(){ w.M() })
+
+
+    w.SCALE=1
+
+    setInterval(function(){
+        w.draw(1/60)
+        if(F(o.cb)){o.cb()}
+        w.s.update()
     }, 1000/60)
 
-    //w.mouseJoints()
 
-    $.mousedown(function(e){// *** need to change to pagex(so can scroll page?).. but i think it messes up for mobile
-        var x=w.x,
-            y=w.y
-        w._mouseIsDown = true
+    if(o.i){w.s.bm(o.i)}
 
-        recordMouseCoords(e)
-        $.mousemove(recordMouseCoords)
+    w.makeWalls(o.w)
 
+    w.o = o
 
+    return w.db()
 
-        function recordMouseCoords(e){
-            mX=(e.clientX-x)/30;
-            mY=(e.clientY-y)/30
-        }
-    })
-        .mouseup( function(){w._mouseIsDown = false})
-        .touchstart(function(e){
-            w._mouseIsDown = true
-            recordMouseCoords(e)
-            $.touchmove(recordMouseCoords)
-            function recordMouseCoords(e){
-                var touch = e.originalEvent.touches[0]
-                mX = (touch.clientX-w.x)/30
-                mY = (touch.clientY-w.y)/30
-            }
-        }).touchend( function(){w._mouseIsDown = false})
+}
 
 
-
-    if(ops.clear !==false) {
-
-            w.debug(
-
-                b2d.debugDraw(w.context, 30).flags(shB || jB).alpha(.6).line(3000)
-            )
+b2d.G = function(cW, cH, wW, wH){var ob={}
 
 
-
-    }
-
-    w.makeWalls(D(ops.w)?ops.w:ops.walls )
-
+    if(A(cW)){ob=cH; wH=cW[3]; wW=cW[2]; cH=cW[1]; cW=cW[0]}
+    cW=N(cW)?cW:1200
+    cH=N(cH)?cH:600
+    wW = N(wW) ? wW:cW;
+    wH = N(wH) ? wH:cH
+    w=b2d.W({g:N(ob.g)?ob.g:0,  W:cW,  H:cH,  w:[ 'o', wW, wH ] })
+    w.camLims([0,wW-cW], [0,wH-cH])
     return w
 
+}
 
 
-    function handleMouseJoints(){
-
-        if( w._mouseIsDown ){
-
-         w._mouseJoint = w._mouseJoint ||
-
-             b2d.mouseJoint( w.getBodyAtPoint(mX, mY) )
-
-            if(w._mouseJoint){ w._mouseJoint.target( V(mX, mY) ) }
-        }
 
 
-        else { w.removeMouseJoint() }
+
+
+
+
+
+
+
+b2d.canWorld=function(color, wd, ht, grav, mJoints){
+    var can = $.can(color, wd, ht).A(),
+        w = can.wor(grav).tick().Z(30)
+    if(mJoints != false){
+        w.mouseJoints()  }
+    return w}
+
+
+
+
+
+w.mouseJ=function(b, target, damp, maxForce){var w=this
+
+    b.wakeUp()
+
+    return w.J(
+
+        b2d.mouseJ(
+
+            w.GetGroundBody(),
+
+            b,
+            target,
+            damp,
+            maxForce
+        )
+
+
+    )}
+
+
+
+
+
+w.removeMouseJoint=function(){var w=this
+
+    if(O(w._mouseJoint)){
+        w.j(w._mouseJoint)
+        this._mouseJoint = false
+
     }
 
+
+    return this}
+
+
+w.updateMouseJoint=function(point, kind){var w=this
+
+    var mJ = w._mouseJoint
+
+    w._mouseJoint = mJ ?   mJ.target(point)  :
+
+       w.mouseJAt( point, kind )
+
+
+    return w}
+
+
+
+
+
+w.tripleStage= function(color, wd,ht){
+    var w=this
+
+    w.s = w.stage = cjs.tripleStage('black', wd, ht).noAutoClear()
+    w.s.back.A()
+    w.s.A()
+    w.s.HUD.A()
+    w.canvas = w.s.canvas
+    w.c = w.can = $(w.canvas)
+    w.ctx =  w.can.ctx()
+
+    return w}
+
+
+
+
+cjs.stageHUD = cjs.stageHUD = cjs.HUD=function(a,b,c){var stage, can1, can2
+
+    can1 = $.canvas(a,b,c)
+    can2 = $.canvas('X', Number(can1.W()), Number(can1.H())).P('a').XY(0, 0).opacity(.8)
+    stage=new cjs.Stage(can1[0]).tick()
+    stage.c=can1
+    stage.HUD = new cjs.Stage(can2[0]).tick()
+    return stage}
+
+
+cjs.tripleStage =  function(col, w, h){
+
+    var g=G(arguments),
+        col=g[0],
+        w=g[1],
+        h=g[2]
+
+    var can1 =  can('X')
+
+    s = new cjs.Stage(can1[0]).tick()
+
+    s.can = s.c = can1
+
+    s.back = new cjs.Stage( can(col)[0] ).tick()
+
+    s.back.linGrad=function(c1,c2){var s=this,h =s.H(), w=s.W()
+
+        c1=oO('c', c1||'b')
+        c2=oO('c', c2||'r')
+
+
+        // s.SHAPE.linGrad([$r(),$r()],[0,1],0,h/2,w,h/2).dr(0,0,w,h)
+
+        s.SHAPE.linGrad([c1,c2],[0,1],w,h,0,0).dr(0,0,w,h)
+
+
+
+
+    }
+
+    s.back.SHAPE = s.back.shape(0,0,'w')
+
+    if(g.N){  s.back.linGrad('z','w') }
+
+    s.HUD = new cjs.Stage( can('X')[0] ).tick()
+
+    s.HUD.shape().fs($r()).rect( 0,0,5000,5000).opacity(.3)
+
+    return s
+
+    function can(col){ return $.can(col, w, h ).P('a').XY(0,0) }
+
+}
+
+
+
+
+
+w.mouseJoints=function(kind){
+    var w = this,
+
+        can= (w.s && w.s.HUD)?$(w.s.HUD.canvas):  w.can,
+
+        scale = this.scale || 1
+
+
+    can.mouseup(function(){
+        w.removeMouseJoint()
+    })
+
+
+    can.pressmove(function (e) {
+
+        w.updateMouseJoint(
+
+            can.mousePoint(e, scale),
+            kind
+        )
+    })
+
+    return this}
+
+
+
+
+
+
+
+
+w.tick=function(draw){var w=this,
+    can = w.can,
+    ctx= w.ctx
+    draw= N(draw)? draw: 0.1
+    ctx.tick(function(){
+        this.trans(0,0).Z(1,1);
+        w.draw(draw)
+
+    })
+
+
+    return this}
+
+
+
+
+
+w.mouseJAt=function(p, kind){var w=this, mj
+
+    if(N(p)){p = V(p,kind)}
+
+
+    w.XY(p.x, p.y, function(f){
+
+
+        mj  =   f.body().mouseJoint(p)
+
+    })//, kind
+
+
+
+    return mj
+
+}
+
+
+
+
+
+wor= function(o){o = o||{}
+
+    var color= oO('c', o.C||'z'),
+        grav= N(o.g)?o.g:10,
+        wd= N(o.W)?o.W:1200,
+        ht= N(o.H)?o.H:600,
+
+        mouseJoints = D(o.mJ)? o.mJ: true,
+
+        walls = D(o.w)?o.w:D(o.walls)?o.walls: true
+
+
+    return  b2d.W({C:color, g:grav, W:wd,  H:ht,  m: mouseJoints, w:walls})
 
 
 
 }
+
+
+
+
+
+
+
+
+
+BALL=function(){var w=  b2d.W()
+
+    w.B(400, 300, 'x', 150)
+
+}
+
+
 
 
 b2d._w = function(){}
@@ -325,46 +602,16 @@ b2d.WW=function(o){
 }
 
 
-W=function(){w=b2d.WW()
+Wx=function(){w=b2d.WW();b= w.B(300,500,'g', 40).bo(.5)}
 
-b= w.B(300,500,'g', 40).bo(.5)
-
-}
-
-
-
-$W =  function(grav,wd,ht){z()
-   var w = b2d.stgWorld('black', grav, wd, ht)
-    w.makeWalls()
-return w
-}
-
-
-
-TESTWW=function(){
-
-    w = $W()
-
-    b= w.ball(100,100,100).addClass('ball')
-    b2= w.circ(100,100,100,'o').addClass('ball')
-
-}
-
-
-
-
-
-
-
-MOUSE=function(){w=b2d.W()
-
-b = w.circ(400,400,100,'b')
-    w.show(function(){return _mouseIsDown })
 
 
 b2d.mJ=function(body, tX,tY){
+
     if(O(tX)){tY=tX.y;tX=tX.x}
+
     var md = new b2d.Joints.b2MouseJointDef
+
     md.bodyA = w.GetGroundBody()
     md.bodyB = body
     md.target = V(tX, tY)
@@ -372,18 +619,21 @@ b2d.mJ=function(body, tX,tY){
     md.maxForce = 1000 * body.GetMass()
     md.dampingRatio = 0
 
-return md}
+    return md}
+MOUSE=function(){w=b2d.W()  //mousejoints work for all
+
+b = w.circ(400,400,100,'b')
+
+  // j = w.J( b2d.mJ(b, 500, 0 ) ) //needed?
 
 
-   j = w.J( b2d.mJ(b, 500, 0 ) )
+    b.SetAwake(true) //unnessary?
 
-    b.SetAwake(true)
+
+    w.circ(400,400,100,'r')
 
 }
-
-
-
-MOUSEYSTILLWORKING2=function(){z()
+MOUSEYSTILLWORKING2x=function(){z()  // mouse NOT working
 
     b2d.pollute()
 
@@ -534,10 +784,8 @@ MOUSEYSTILLWORKING2=function(){z()
 
 
 }
-
-
-
-MOUSEYSTILLWORKING=function(){z()
+MOUSEYSTILLWORKINGx=function(){  // but not!
+    z()
 
     w =  b2d.canWorld( 'y', 1200, 600, 10)
     w.box(  200, 120, 60,60).DFR(1,1,.5).damp(0,0)
@@ -546,9 +794,7 @@ MOUSEYSTILLWORKING=function(){z()
     b=w.ball(250 ,100, 100).DFR(1,.5,.5).damp(0,0)
 
 }
-
-
-MOUSEY=function(){z(); b2d.pollute()
+MOUSEYx=function(){z(); b2d.pollute()
 
     w = b2d.canWorld('y', 1200, 600, 10)
 
@@ -565,27 +811,30 @@ MOUSEY=function(){z(); b2d.pollute()
 
 
 
-STACKTHREE= MOUSEGAME=function(){z()
-
-    w = wor({mJ:'ball', w:0})
+STACKTHREE=  function(){W({m:'ball',w:0})
 
 
+
+    w.S(500,600,'y',1000, 20)
+    b =  w.B(500,200, 'o', 40).K('ball')
     w.boxesStat([350, 260, 880, 30])
-    w.box(310,120,60,60)
-    w.box(320,120,60,60)
-    w.box(340,120,60,60)
-    w.box(350,120,60,60)
-    w.box(370,120,60,60)
-    w.box(380,120,60,60)
-    w.box(550,120,60,60)
-    w.box(570,120,60,60)
-    w.box(580,120,60,60)
-    b = w.ball(400, 50, 30).DFR(1,.5,.5).damp(0,0).addClass('ball')
+    w.B(310,120,'t',60,60)
+    w.B(320,120,'t',60,60)
+    w.B(340,120,'t',60,60)
+    w.B(350,120,'t',60,60)
+    w.B(370,120,'t',60,60)
+    w.B(380,120,'t',60,60)
+    w.B(550,120,'t',60,60)
+    w.B(570,120,'t',60,60)
+    w.B(580,120,'t',60,60)
+    w.S( 1000,400,'x',200,200)
+    w.S( 1200,200,'x',200,200)
 
-    w.brick( 1000,400,200,200)
-    w.brick( 1200,200,200,200)
 
-}
+w.db()}
+
+
+
 
 
 BASICWORLD=function(){
@@ -688,8 +937,6 @@ CATAPULT=function(){
 
 
 handleJointsAlt = 0
-
-
 b2d.fullWorld = function(){z()
       canvas = $.canvas('z', 1200, 600 ).A().id( 'canvas' )[0]
 
@@ -727,36 +974,6 @@ b2d.fullWorld = function(){z()
           createjs.Ticker.on('tick', function(){bm.XY(b.x(), b.y())}) })
 
       return world}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 makeStage1=function(X, Y, options){
 
 
@@ -823,14 +1040,13 @@ return $(e)._getPosition()
 }
 
 
-
-
-
 b2d.mouseJoint = mouseJoint = function(body){
     if(!body){return false}
 //create mouse joint from a body
     var mouseDef=b2d.mouseDef(  w.gB(),  body.awake(1)  )
-    mouseDef.target.Set(mX, mY)
+
+    mouseDef.target.Set(mX/30, mY/30)
+
     mouseDef.maxForce=( 300 * body.mass() )
     mouseDef.collideConnected = true
     return w.createJoint(mouseDef)}
@@ -838,17 +1054,9 @@ b2d.mouseJoint = mouseJoint = function(body){
 
 
 
-
-
-  getBodyAtMouse=  function( mX, mY ){
+getBodyAtMouse=  function( mX, mY ){
 
   return w.getBodyAtPoint(mX, mY)}
-
-
-
-
-
-
 handleJoints=function(){
 
     //if mouse is dont.. make a new mouse joint, if there is none
@@ -871,14 +1079,6 @@ handleJoints=function(){
 
         _mouseJoint.destroy(); _mouseJoint = null}}
 }
-
-
-
-
-
-
-
-
 checkMouseDown =function(){
 
 
@@ -908,7 +1108,7 @@ b2d.setupDebugDraw =setupDebugDraw =function(){
 
 
 
-setFixtures =function(){
+setFixturesX =function(){
 
     bD = b2d.staticDef()
 
@@ -922,17 +1122,13 @@ setFixtures =function(){
 
 
 
-makeWalls =function(){
+w.makeWallsX = function(){var w=this
+    w.left = w.bii(10,300, 40, 600).K('leftWall')
+    w.right = w.bii(990,300, 40, 600).K('rightWall')
+    w.roof = w.bii(300, 0, 2400, 40).K('ceiling')
+    w.floor = w.bii(300, 590, 2400, 40).K('floor')
 
-    w.bii(10,300, 40, 600).uD('leftWall')
-
-    w.bii(990,300, 40, 600).uD('rightWall')
-
-    w.bii(300, 0, 2400, 40).uD('ceiling')
-
-    w.bii(300, 590, 2400, 40).uD('floor')
-
-}
+return w}
 
 
 
@@ -1012,43 +1208,5 @@ makeWallsPinball=function(){
 
 
 
-SLINGSHOT=function(){
 
 
- handleJointsAlt = true
-
-
-    mW({
-
-        w: 'makeWallsFull',
-
-        g: 0
-    })
-
-    bbb=ba(300,300,30).lD(4).aD(10)
-
-    ba(300,300,10).lD(4).aD(10);
-    ba(300,300,10).lD(4).aD(10);
-    ba(300,300,10).lD(4).aD(10)
-
-   // ba(300,300,30).lD(4).aD(10)
-
-}
-
-
-
-
-
-
-
-
-b2d.miniWalls=function(){
-    w.brick(200,50, 300,20) //top
-    w.brick(200,360, 300,20) //bottom
-    w.brick(60, 240, 20, 260) //left
-    w.brick(340, 320, 20, 100)} //right
-
-WALLDESIGNER=function(){
-
-
-}

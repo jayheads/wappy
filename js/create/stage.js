@@ -234,58 +234,6 @@ return s}
 
 
 
- cjs.stageHUD = cjs.stageHUD = cjs.HUD=function(a,b,c){var stage, can1, can2
-
-     can1 = $.canvas(a,b,c)
-     can2 = $.canvas('X', Number(can1.W()), Number(can1.H())).P('a').XY(0, 0).opacity(.8)
-     stage=new cjs.Stage(can1[0]).tick()
-     stage.c=can1
-     stage.HUD = new cjs.Stage(can2[0]).tick()
-     return stage}
-
-
-cjs.tripleStage =  function(col, w, h){
-
-    var g=G(arguments),
-        col=g[0], w=g[1],h=g[2]
-
-    var can1 =  can('X')
-    var s = new cjs.Stage(can1[0]).tick()
-    s.can = s.c = can1
-
-
-
-    s.back = new cjs.Stage( can(col)[0] ).tick()
-    s.back.linGrad=function(col1,col2){
-        col1=oO('c', col1||'b');col2=oO('c', col2||'r')
-        var h =this.H(), w=this.W()
-        this.SHAPE.linGrad([col1,col2],[0,1],0,0,0,h).dr(0,0,w,h)}
-    s.back.SHAPE = s.back.shape(0,0,'w')
-
-    if(g.N){
-        s.back.linGrad('z',  'w')
-    }
-
-
-    s.HUD = new cjs.Stage( can('X')[0] ).tick()
-
-    s.HUD.shape().fs($r()).rect( 0,0,5000,5000).opacity(.3)
-
-    return s
-
-    function can(col){return $.can(col,w,h ).P('a').XY(0,0)}
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 

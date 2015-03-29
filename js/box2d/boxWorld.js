@@ -63,12 +63,14 @@ return this}
 
 
 
-
+w.queryXY=function(func, x, y){var w=this  //does not divide
+    w.QueryAABB(func, b2d.AABB01(x, y))
+    return w}
 w.getBodyAtPoint=function(x, y){var body = null
 
     this.QueryAABB(function queryFunc(fxt){
 
-        if( !fxt.isStat() &&  fxt.testPoint(
+        if( !fxt.isStat() &&  fxt.test(
             mX * 30,
             mY * 30
         )){
@@ -86,42 +88,103 @@ w.getBodyAtPoint=function(x, y){var body = null
 
     return body}
 
-
-
-w.queryXY=function(func,x,y){var w=this
-
-    w.QueryAABB(func,
-
-        b2d.AABB01(x,y)
-
-    )
-    return this}
-w.bodyAt =  w.bodyAtPoint=function(x,y,func,kind){
-    var w=this,
-        body= null
-    if(O(x)){
-        kind=func;func=y;y= x.y;x= x.x}
-    this.queryXY(function(f){var b = f.B()
-
-        if(U(kind)||f.beOf(kind)){
-
-            if(f.testPoint(x,y)){
-                body = b; return false
-            }
-        }
-
-
-
+w.bodyAt =  w.bodyAtPoint=function(x,y,fn,k){var w=this,b //does not div
+    if(O(x)){k=fn;fn=y;y= x.y;x= x.x}
+    w.qXY(function(f){
+        if(U(k)||f.of(k)){
+            if(f.test(x,y)){
+                b= f.B()
+                return false}}
         return true
-
     },x,y)
 
+    if(!b){return false}
+    if(F(fn)){return fn(b)||w}
+    return b}
 
-    if(!body){return false}
-    if(F(func)){return func(body)||w}
-    return body
+
+
+
+//**
+
+
+
+
+
+//query a pont
+
+w.qXY=function(x,y,fn){var w=this,v
+    //function on TOPMOST fixt FIRST
+    // then goes down, but only if function returns 'true'
+    //great way to work with fixts/bods at a certain x,y point
+    if(F(x)){v=V(y,fn);fn=x}
+    else if(O(x)){fn=y;v=(V(x))}
+    else(v=V(x,y))
+    w.QueryAABB(fn,b2d.AABB01(v))
+    return w}
+
+//query a point of specific kind,
+// more options on fixts
+w.XY=function(x,y,fn,k){var w=this, fixt=false // - -> bottom, + all ? :)
+    if(O(x)){k=fn;fn=y;y=x.y;x= x.x}
+
+    w.qXY(x,y, function(f){
+
+            if(f.ofClass(k) &&  f.test(x,y)){  //k null -> true // doesnt need to div, because qXY will div
+                fixt = f; return false}
+            return true
+    }) //stops at top most fixt
+
+    if( fixt && F(fn) ){
+
+        fn = _.bind(fn, fixt)
+        return fn(fixt) || w
+    } // or w? //makes sense actually
+
+    return fixt}
+
+//query bodies
+w.bXY=function(x,y,fn,k){var w=this,
+    b=false
+    if(O(x)){k=fn;fn=y;y=x.y;x= x.x}
+
+    w.qXY(x,y,function(f){
+
+            if( f.ofClass(k)  &&  f.test(x,y) ){
+                 b= f.B();
+                 return false} //cycles through all the fixts to find the first
+            return true})
+
+
+    if(F(fn)){return _.bind(fn,b)(fn(b))||w}
+
+    return b
+
+
 
 }
+
+//**
+
+
+
+BODYAT=function(){w=b2d.W({g:0})
+
+    b = w.S(470,270, 'y', 100)
+
+    b1 = w.S(500,300, 'r', 100)
+
+     b2 = w.S(530,330, 'o', 100)
+
+    w.qXY(500, 300,
+        function(f){f.C('w')
+         return true})
+
+
+}
+
+
+
 w.dynAt =  w.at =  w.bodyAtPoint=function(x,y){ var body= null,  func
     func=function(f){
 
@@ -257,6 +320,14 @@ w.B=w.D=function(x,y){
 
 }
 
+    w.perch = w.skyPerch = function(col){var w=this
+        col = col || 't'
+        w.S(200,50, col, 300,20) //top
+        w.S(200,360, col, 300,20) //bottom
+        w.S(60, 240, col, 20, 260) //left
+        w.S(340, 320, col, 20, 100)//right
+
+        return w}
 
 
 
@@ -268,8 +339,7 @@ w.B=w.D=function(x,y){
 
 
 
-
-w.S=function(x,y){var w=this,
+    w.S=function(x,y){var w=this,
 
         g=G(arguments),
         x=g[0], y=g[1],
@@ -763,6 +833,8 @@ w.addHundBalls=function(num){num=num||100;var that=this
     _.times(num, function(i){
         that.circ( 100  +(i*8),  50, 10) })
     return this}
+
+
 w.G=function(x, y){var v, currGrav = this.GetGravity()
 
     if(U(x)){return  currGrav}

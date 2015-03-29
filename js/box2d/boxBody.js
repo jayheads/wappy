@@ -318,7 +318,10 @@ b.mass = function(m){
 
   b.worldCenter=  function(){ return this.GetWorldCenter()  } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
 
+b.track=function(x,y,z){var b=this,w= b.wor()
 
+    w.track(b,x,y,z)
+return b}
 //world point
 b.wPt = b.wPoint = p.worldPoint = p.wP   =function(x,y){return this.GetWorldPoint(  V(x,y).div()  ).mult()}
 
@@ -1209,10 +1212,16 @@ joints=function() {
 
      }
 
-     b.mJ = b.mouse = b.mouseJ = b.mouseJoint = function (point) {
-         var body = this, mj
 
-         mj = body.wor().mouseJ(body, point)
+
+
+
+     b.mJ = b.mouse = b.mouseJ = b.mouseJoint = function(x,y){
+
+         var b = this, w= b.wor(),
+             v=V(x,y),
+
+         mj = w.mouseJ(b,v)
 
          return mj
      }

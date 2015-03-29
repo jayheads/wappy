@@ -375,10 +375,26 @@ f.grp =  function(i){
 return this} //get/set for groupIndex
 f.cent = f.center = function(){var bounds = this.GetAABB()
     return Math.lineCenter(bounds.lowerBound, bounds.upperBound).mult()}//center point of its BOUNDING BOX
-f.test = f.hit=f.testPoint= f.tP=function(pt,y){var f=this,b=f.body(), w=b.wor(),
-    g=G(arguments), v=V(g[0],g[1])
+
+
+
+f.test = f.hit = function(pt,y){//=f.testPoint= f.tP
+
+    var f=this,b=f.body(),w=b.wor(),
+    g=G(arguments),  v=V(g[0],g[1]),
+
+        res= f.H().testPoint(    b.transform(),   v.div()  )
+
+
     if(g.p){b.wor().dot(v)}
-    return f.H().testPoint(b.transform(), v.div())}//is a point within the fixture // very accurate
+    return res
+
+}//is a point within the fixture // very accurate
+
+
+
+
+
 f.coll = function(what,func){var that=this, fixt=this, beginFunc //ultimate func for FIXTURE COLL
     // you can specify what happens when a fixture hits:
     //ANYTHING

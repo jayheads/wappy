@@ -131,11 +131,16 @@ j.shrink=function(){
     this.len(0.97,'*')
 
     return this}
+
+
 //mouse
-j.target =  function(a,b){
-    if( !O(a) ){ a = V(a,b) }
-    this.SetTarget(a)
-    return this}
+j.target = function(a,b){var j=this
+    j.SetTarget(V(a,b))
+    return j}
+
+
+
+
 j.damp= function(a){if(U(a)){return this.GetDampingRatio()}
     this.SetDampingRatio(a)
     return this}
@@ -345,30 +350,192 @@ b2d.mouseDef = MouseJointDef=mJD=function(a,b){//MouseJDef=b2MJD=
     if(b){ j.B(b) }
 
     return j}
-b2d.mouseJ=function(ground,body,target,damp,maxForce){
 
-    if(U(body)){alert('body required!'); return false}
+
+
+b2d.mouseJ=function(ground,b,tg,damp,maxForce){
 
     var mJD = new b2d.Joints.b2MouseJointDef()
-
     mJD.bodyA = ground
+    if(b){mJD.bodyB = b}; if(U(b)){alert('body required!'); return false}
 
-    if(body){mJD.bodyB = body}
-    if(target){mJD.target =target}
-
-     mJD.dampingRatio = N(damp)?damp: 0
-
-
-    mJD.maxForce = N(maxForce)?maxForce: 1000 * body.GetMass()
-
-    mJD.collideConnected = true
-
+    if(tg){mJD.target = tg} //target
+    mJD.dampingRatio = N(damp)?damp: 0
+    mJD.maxForce = N(maxForce)?maxForce: b.GetMass()*1000
+    //mJD.collideConnected = true
     return mJD}
 
+w = w= b2d.World.prototype
+
+w.m = w.mou=function( b,x,y  ){
+    var w=this, j,p
+
+    mJD = new b2d.Joints.b2MouseJointDef()
+    mJD.bodyA = w.GetGroundBody()
+    mJD.bodyB = b
+    mJD.target= V(x,y).div()
+    mJD.dampingRatio = 0
+    mJD.maxForce = 5000
+    mJD.collideConnected = true
+    j = w.J(mJD)
+
+    j.tg=function(x,y){var j=this
+        if(U(x)){return j.GetTarget().mult()}
+        j.SetTarget(V(x,y).div())
+        return j}
+
+return j}
+w.M= function(){var w=this
+    if(w.mj){
+        w.j(w.mj);
+        w.mj=null
+    }
+}
+//***
+MJWORKS=function(){w=b2d.W({
+     //g:0
+})
+b = w.B(600,300,'r', 100).den(1).rest(.5)
+
+    joint=false; $.mousemove(function(e){m(e)
+
+        if(joint){
+
+            j.tg(mx,my)
+        }
+
+    })
+
+
+    $.mousedown(function(e){m(e)
+
+
+        j = w.mou(b, V(mx,my).div()  ); joint=true}); $.mouseup(function(){
+
+
+        w.j(j); joint = false
+
+    })
 
 
 
 
+    function m(e){mx = e.clientX; my = e.clientY}
+
+}
+$.oMM=function(fn){
+    this.mousemove(function(e){
+        fn(e.clientX, e.clientY, e)})
+    return this}
+$.oMD=function(fn){
+    this.mousedown(function(e){
+        fn(e.clientX, e.clientY, e)})
+    return this}
+$.oMU=function(fn){
+    this.mouseup(function(e){
+        fn(e.clientX, e.clientY, e)})
+    return this}
+
+$.M=function(){
+    this.oMD(function(x,y){_.x=x;_.y=y})
+    this.oMM(function(x,y){_.x=x;_.y=y})
+
+
+
+
+    cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
+
+    return this
+}
+
+MJYANOSCRIPT=function(){w=b2d.W()
+    b = w.B(600,300,'r', 50).den(1).rest(.5)
+    $.M()
+    $.oMM(function(){if(w.mj){w.mj.tg(_)}})
+    $.oMU(function(){w.M()})
+    $.oMD(function(x,y){w.mj=w.m(b,_)})}
+
+w.mTrack=function(b){var w=this
+    $.oMM(function(){if(w.mj){w.mj.tg(_)}})
+    $.oMU(function(){w.M()})
+    $.oMD(function(x,y){w.mj=w.m(b,_)})
+return w}
+
+w.mTrackTransport=function(b){var w=this
+    $.oMM(function(){if(w.mj){w.mj.tg(_)}})
+    $.oMU(function(){w.M()})
+
+    $.oMD(function(x,y){
+        b.XY(x,y)
+        w.mj=w.m(b,_)})
+    return w}
+w.mJ=function(){var w=this
+    $.M()
+
+    cjs.tick(function(){
+        if(w.mj){w.mj.tg(_) }
+    })
+
+return w}
+
+BASKETBALLAUTOCANCEL=function(){w=b2d.W(); $.M()
+
+
+
+    w.mTrackTransport(
+        b = w.B(600,300,'r', 50).den(1).rest(.5)
+    )
+}
+
+
+BALANCEGAME=function(){w=b2d.W(); $.M()
+
+    b = w.B(600,300,'r', 50).den(1).rest(.5)
+
+    cjs.tick(function(){
+
+        if(w.mj){ w.mj.tg(_) }
+
+    })
+
+    $.oMU(function(){
+        w.M()})
+    $.oMD(function(x,y){
+        w.mj=w.m(b,_)})
+}
+
+MJOFFICIAL=function(){w=b2d.W().mJ().db()
+
+    _.times(3, function(){
+        b = w.B(600,300,'r', 50).den(1).rest(.5)
+        b = w.B(600,300,'y', 50).den(1).rest(.5)
+        b = w.B(600,300,'u', 50).den(1).rest(.5)
+        b = w.B(600,300,'b', 50).den(1).rest(.5)
+        b = w.B(600,300,'v', 50).den(1).rest(.5)})
+
+    $.oMD(function(x,y){w.XY(x,y, function(f){
+        w.mj = w.m(f.body(),_)
+    })})
+
+    $.oMU(function(){w.M()})
+}
+
+
+MJ=function(){w=b2d.W().mJ().db()
+
+    _.times(3, function(){
+        b = w.B(600,300,'r', 50).den(1).rest(.5)
+        b = w.B(600,300,'y', 50).den(1).rest(.5)
+        b = w.B(600,300,'u', 50).den(1).rest(.5)
+        b = w.B(600,300,'b', 50).den(1).rest(.5)
+        b = w.B(600,300,'v', 50).den(1).rest(.5)})
+
+    $.oMD(function(x,y){w.XY(x,y, function(f){
+        w.mj = w.m(f.body(),_)
+    })})
+
+    $.oMU(function(){w.M()})
+}
 
 
 DENROT=function(){w=b2d.m({g:0})

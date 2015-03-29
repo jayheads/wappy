@@ -300,7 +300,7 @@ oO.V = values=function(a){
 
 
 
-W=function(a){var g=G(arguments)
+Wx=function(a){var g=G(arguments)
     var oW=function(a){if(_.isObject(a=a||$(window))){
         return Q(a).outerWidth()}}
     a=a||$(window);
