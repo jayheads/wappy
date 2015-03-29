@@ -167,6 +167,67 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
     w.s.tickY(function(){return 510- p.Y()}
 
     )}
+CATAPULT=function(){
+
+
+
+    cat = world.a(
+
+        DynamicBodyDef(350,200),[
+
+            pFx(125,20,0,0,0),
+
+            pFx(20,60,-80,-40,200 )
+
+        ])
+
+
+
+
+    cat_arm  = w.a(dBD(210,210),[
+
+        pFx(150, 10,  0,0,0 ,1),
+        pFx(10, 20,  -140,-30 ,0 ,1)
+
+    ])
+
+
+
+    joint=w.cJ( rev(cat,cat_arm,bV(0,0)) )
+
+        .eM(1).eL(1)
+        .lAA(bV(-80,-90))
+        .lAB(bV(60,0))
+        .sMS(1000)
+        .sL(-180,60)
+        .sMMT(1)
+
+    cannonball =w.a(dBD(90,90), cFx(10,20))
+
+    // s.$(fire=function(e){ the_joint.sMMT(10000)})
+
+//  draw_box=function(px,py,w,h,d,ud):void {
+//
+//   ground = new dBD(px,py)
+//
+//ground.position.Set(px, py);
+//if (d) {
+//    ground.type=b2Body.b2_dynamicBody;
+//}
+//
+//my_box = pSh().sAB(w/2, h/2)
+//
+//  my_fixture  = fDf(my_box)
+//
+//
+//
+//the_ground =w.cB(ground);
+//
+//the_ground.sUD(ud);
+//the_ground.cF(my_fixture);
+
+}
+
 
 
 SPACEZOOM=function(){
@@ -293,7 +354,11 @@ COINWARP=function(){w = b2d.W({   g:4, w:0}).debug()
 
 
 
-KILLEVERYTHING=function(){w=wor().debug()
+KILLEVERYTHING=function(){W( //[1200,600,1200,2000],
+    {g:30}
+)
+
+
 
     w.s.XY(120,50).sXY(.8)
 
@@ -308,8 +373,6 @@ KILLEVERYTHING=function(){w=wor().debug()
         link = body
 
     }
-
-
 
 
     body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
@@ -366,7 +429,7 @@ KILLEVERYTHING=function(){w=wor().debug()
 
 
 
-    y = w.ship().angDamp(1000)
+    y = w.ship().angDamp(1000)//.track()
 
     f=null
 

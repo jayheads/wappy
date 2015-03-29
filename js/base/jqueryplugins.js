@@ -1538,3 +1538,37 @@ $.dateAndTime =dtt=function(a){
 $.space=function(func){
     return $.kD('space', func)
 }
+
+
+$.isBodyElement=function(e){
+
+    e = $(e)[0]
+
+    return O(e) && uC( e.tagName ) == 'BODY'
+
+}
+
+
+
+//doesnt work YET
+$.fn.getPosition = $.fn.getTotalOffset = function(){
+
+    var e = this, x=0,  y= 0
+
+    while( E( e ) && e.tagName ){
+
+        y += e.offsetTop
+
+        x += e.offsetLeft
+
+        if( isBodyElement(e)  ){ e = 0 }
+
+        e = e.offsetParent || e
+    }
+
+    return { x: x, y: y }
+
+
+
+
+}//just gets the TOTAL offset of ANY element

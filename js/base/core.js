@@ -299,6 +299,38 @@ oO.V = values=function(a){
 }
 
 
+$t = function(a, b){if(b2d.test){
+    var g=G(arguments),
+        a=g[0],
+        b=g[1],str
+
+
+
+
+    if(D(b)){
+
+        str='||'
+        _.each(g, function(s){
+
+            str+=  ' '  + s.toString() + ' |'
+
+        })
+
+        str += '|'
+    }
+
+    else {
+        str = a.toString()
+    }
+
+
+    $l(str)
+
+
+
+}; return a}
+
+
 
 Wx=function(a){var g=G(arguments)
     var oW=function(a){if(_.isObject(a=a||$(window))){

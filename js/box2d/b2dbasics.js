@@ -73,3 +73,45 @@ b2d.Collision.b2RayCastInput
 b2d.Collision.b2RayCastOutput
 
 
+//  b2d.Dynamics.Controllers.b2ControllerEdge
+b2d.Controllers = b2d.Dynamics.Controllers
+b2d.Math = b2.Common.Math
+b2d.Mat22 = b2d.Math.b2Mat22
+b2d.Mat33 = b2d.Math.b2Mat33
+
+
+
+//
+//
+
+TOMAKETOUCHWORKAGAIN=function(){
+
+    /*
+
+     //  w._mouseJoint = null //  w._mouseIsDown = false
+
+     w.mouseJoints()
+
+     $.touchstart(function(e){
+
+     w._mouseIsDown = true
+
+     recordMouseCoords(e)
+     $.touchmove(recordMouseCoords)
+     function recordMouseCoords(e){
+     var touch = e.originalEvent.touches[0]
+     mX = (touch.clientX-w.x)/30
+     mY = (touch.clientY-w.y)/30
+     }
+
+
+     }).touchend( function(){w._mouseIsDown = false})
+
+
+
+     setInterval(function(){//handleMouseJoints()
+     w.draw(1/60)
+     if(F(ops.cb)){ops.cb()}
+     w.stage.update()
+     }, 1000/60) */
+}

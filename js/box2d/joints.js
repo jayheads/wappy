@@ -469,14 +469,12 @@ w.mTrackTransport=function(b){var w=this
         b.XY(x,y)
         w.mj=w.m(b,_)})
     return w}
-w.mJ=function(){var w=this
-    $.M()
 
-    cjs.tick(function(){
-        if(w.mj){w.mj.tg(_) }
-    })
 
-return w}
+
+
+
+
 
 BASKETBALLAUTOCANCEL=function(){w=b2d.W(); $.M()
 
