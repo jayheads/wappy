@@ -275,8 +275,8 @@ w.setBg=function(o){var w=this;  if(o.i){ w.s.bm(o.i) }; return w}
 
 
 
-w.W=function(){return this.canvas.width}
-w.H=function(){return this.canvas.height}
+w.cW=w.W=function(){return this.canvas.width}
+w.cH=w.H=function(){return this.canvas.height}
 
 
 
@@ -307,20 +307,70 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
 
     if(o.z != false){ z() }
 
-    return w.gx(o).setBg(o).dd(o).db()
+     w.gx(o).setBg(o).dd(o).db()
         .startListening()
         .wMouse()
         .wMouseJ(o)//.mJ(o)
         .walls(o)
         .u(o)
 
+
+w.tracker=function(){var w=this
+
+    w.t = w.trackee =  w.S(
+
+            w.w/2,
+            w.h/2,
+
+        'w', [[10 ,10, '-']]).rest(.8).track()
+
+
+return w}
+
+
+
+    w.tracker()
+
+return w}
+
+
+
+
+
+TRACKEE=function(){
+
+
+    NEWZOOM()
+
+    w.track()
+
+    y.mid()
+
+    var left = 0
+
+    cjs.tick(function(){
+
+
+        if(!left){
+
+            w.t.X(10,'+')
+
+            if(w.t.X() > 2000){left=1}
+        }
+
+
+        else {
+            w.t.X(10,'-')
+            if(w.t.X() < 400){left=0}
+
+        }
+
+
+
+    })
+
+
 }
-
-
-
-
-
-
 
 
 cjs.adj = cjs.camAdj =  function( income, tax ){//tax ~ deltaLimit ~ buffer
@@ -665,17 +715,38 @@ return z
 
 
 
-    w.minZoom=function(){
+ w.minZoom=function(t){
         var w=this,
-            mH=w.h/w.H(),
 
-            mW= w.w/w.W()
+            mH= w.h/ w.H(),
+            mW= w.w/ w.W()
 
-        return mH>mW?mH:mW
+     if(t){$l(mW + ', '+ mH)}
+     return mH>mW? mH: mW
 
     }
 
-// can never zoom less than 1 for EITHER
+
+    w.minZ=function(t){
+        var w=this,
+
+            mH=    w.h/w.H(),
+            mW=    w.w/w.W(),
+            z
+
+        if(t){$l(mW + ', '+ mH)}
+
+        z=mH>mW? mH: mW
+
+        if(z<1){z=1}
+    return z}
+
+
+    w.mz=function(){var w=this
+
+        w.zoom(w.minZ(true),'+')
+    return w}
+
 
 
 
@@ -711,45 +782,90 @@ w.scale=function(a){var w=this
     w.s.sXY(a)
     if(a<1){w.s.XY(w.W()*(1-a)-w.W()/2,w.H()*(1-a)-w.H()/2)}
     else {w.s.XY(w.W()-(w.W()*a)/2, w.H()-(w.H()*a)/2)}}
-w.sc=function(s){var w=this,
+
+    w.MIN=function(){var w=this,z
+        W=   w.cW()/ w.w
+        H=   w.cH()/ w.h
+
+        if(W>H){z = W}
+        else {z=H}
+
+        //w.sc(z)
+    return z}
+
+
+    w.zoomOut=function(){
+
+        var w=this, min = w.MIN(),
+
+
+            z = w.sc()
+
+         w.track.cb= function(){ z*= .98;  w.sc(z)   }
+
+    }
+    w.zoomIn=function(){
+
+        var w=this, max = 4,
+
+
+            z = w.sc()
+
+        w.track.cb= function(){ z*= 1.02;  w.sc(z)   }
+
+    }
+ w.sc=function(s){var w=this,
 
     g=G(arguments),
 
     s=g[0],
     dfx=w.df().x,
-        dfy = w.df().y
+        dfy = w.df().y,
+     min = w.MIN()
 
 
-    if(g.d){
+    if(g.d){ s = dfx>dfy? dfy: dfx}
 
-        s = dfx>dfy? dfy: dfx
+     if(g.n){  s = min  }
 
-    }
+    if(U(s)){w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
 
-    if(U(s)){
-        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE
-    }
+     s = s<min? min: s
 
-
-    w.SCALE=s
+     if(g.P){
+         s = s> 4? 4: s
+     }
+    w.SCALE = s
 
     w.s.sXY(s)
 
     return w}
 
-w.zoom = w.zm=function(z){var w=this,
 
-    dfX =w.df().x,
-    dfY = w.df().y,
 
-    d= dfX >dfY? dfY: dfX,
-    mZ = w.minZoom()
+
+
+
+
+w.zoom= w.zm= function(z){
+
+    var w=this,
+        g=G(arguments),
+        z=g[0],
+        dfX =w.df().x,
+
+        dfY = w.df().y,
+
+        d= dfX > dfY? dfY: dfX,
+
+        mZ = w.minZoom()
+
+    if(g.n){ return w.zoom(mZ) }
 
     if(U(z)){return w.sc()/d}
-
     if(!z>0){z=1} // z must be above 1
 
-    z = z<mZ? mZ: z
+    if(g.P){z = z<mZ? mZ: z}
 
     w.sc(d*z)
     return w}
@@ -757,44 +873,69 @@ w.zoom = w.zm=function(z){var w=this,
 
 
 
-w.track =  function(b,x,y){
-    var w=this, k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
+w.track=  function(b,x,y){
+    var w=this,
+        k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
+
+    if(U(b)){return w.track(w.trackee)}
 
     x=N(x)?x: w.W()/2
     y=N(y)?y: w.H()/2
 
-    func=function(){
+     cjs.tick(function(){
 
-        if(F(w.track.cb)){
-            w.track.cb()
-        }
+         if(F(w.track.cb)){w.track.cb()}
 
 
-        k=scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
+         k = scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
 
-        K=function(a){return a*k}
+         K = function(a){return a*k }
 
-        hW = w.W()/2
-        kW = w.w*k
-        sX=K(x-b.X()-hW)+hW
+         hW = w.W()/2
+         kW = w.w*k
+         sX=K(x-b.X()-hW)+hW
 
-        w.s.x= sX>0?0 : sX<w.W()-kW?w.W()-kW: (kW/2)-hW<0?hW-(kW/2):   sX
+         w.s.x= sX>0?0 : sX<w.W()-kW?w.W()-kW: (kW/2)-hW<0?hW-(kW/2):   sX
 
 
-        sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
-        if(sY>0){sY=0}
-        if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
-        if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
-        w.s.y= sY
+         sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
+         if(sY>0){sY=0}
+         if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
+         if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
+         w.s.y= sY
 
-    }
-
-     cjs.tick(func)
+     } )
 
     //i can leave the world-centering in fw//can optionally filter it with scale itself
 
     return w}
 
+
+
+
+
+FOLLOWERS=function(){W(500, 500, 1600, 1000).G(0)
+
+    a = w.ship().C('b')
+
+    b  = w.ship(400,400).C('o').track()
+
+
+
+    I(5, function(){
+
+        if(w.follA){
+            b.track()
+            w.follA=0
+        }
+        else {a.track()
+            w.follA=1
+        }
+
+    })
+
+
+}
 
 w.rat=function(){return {x: w.w/w.W(), y: w.h/w.H()}}
 }; scrolling()
@@ -3450,7 +3591,9 @@ w.pan=function(o){
     var  w=this,g=G(arguments),
         o=g[0],
         mZ = w.minZoom(),
-        MZ= mZ* 3, z=mZ,
+
+        MZ= mZ* 3,
+        z=mZ,
         up=true, l
     if(g.m){
         l=function(){
@@ -3523,7 +3666,9 @@ WDOWN=function(){
 }
 
 ZJUMP=function(){
-   W([1200,600,2200,2600],{g:300})
+
+   W([1200,600, 2400, 1200],{g:300})
+
     w.S(400,2500,'r',200,100)
     w.S(800,2300,'z',100,100)
     w.S(1200,2300,'b',300,100)
@@ -3531,28 +3676,160 @@ ZJUMP=function(){
     w.S(2000,2300,'r',200,100)
 
 
+    _.times(10, function(i){ w.B(100+i*100, 100,$r(), 35).den(.1)})
 
-    _.times(50, function(i){ w.B(100+i*40, 100,$r(), 15).den(.1)})
 
-    w.zoom(100)
 
-    w.track.cb= function(){
-        var z=w.zoom(),
-            mZ=w.minZoom()
+    //w.zoom(100); w.track.cb= function(){var z=w.zoom(),mZ=w.minZoom(); if(z>mZ ){w.zoom(z*.9)}}
 
-        if(z>mZ ){
-            w.zoom(z*.9)
+
+    w.zoom('-')
+
+    y=w.jumper().Y(100).X(1175).track()
+
+}
+
+NEWZOOM=function(){W([
+
+    1200, 600, 2400, 600
+
+
+],{g:10})
+
+    y=w.ship(50,50).track()//.P(100,1000)
+
+    w.S(400,2500,'r',200,100)
+    w.S(800,2300,'z',100,100)
+    w.S(1200,2300,'b',300,100)
+    w.S(1600,2300,'z',100,100)
+    w.S(2000,2300,'r',200,100)
+
+
+    _.times(10, function(i){ w.B(100+i*100, 100,$r(), 35).den(.1)})
+
+
+
+   // w.s.scaleX=3
+
+
+    w.in=function(z){
+
+        var base = 1
+
+        if(U(z)){
+
+
+
         }
-
-
 
     }
 
-    y=w.jumper().Y(100).X(1175).track()
+
+
 
 
 
 }
+
+
+w.trackMid=function(){
+
+
+
+return w}
+
+w.showOff=function(){var w=this
+
+    zin()
+
+    function zout() {
+        w.zoomOut()
+        setTimeout(zin, 10000)
+    }
+
+    function zin() {
+        w.zoomIn()
+        setTimeout(zout, 4000)
+    }
+
+    return w}
+
+w.sW=function(W){
+    var w=this, wW=w.W()
+    if(U(W)){return wW * w.s.scaleX}
+    w.s.scaleX=W/wW
+return w}
+
+
+w.sWM=function(m){var w=this,cW=w.cW()
+    if(U(m)){return w.sW()/cW}
+    w.sW(  cW * m  )
+return this}
+
+w.fit=function(){var w=this
+
+    w.s.scaleX = w.cW()/ w.w;
+    w.s.scaleY = w.cY()/ w.h;
+}
+
+w.xX=function(X){
+
+    var w=this,
+
+        m = w.sWM()
+
+
+    if(U(X)){return m-1}
+
+    w.sWM(X+1)
+
+return w}
+
+
+w.zX=function(z){var w=this,
+
+    zX=w.s.scaleX - 1
+
+    if(U(z)){return zX}
+
+    if(z>=0){ w.s.scaleX=z+1}
+
+    else {
+
+        cW = w.cW()
+
+        half = cW/2
+
+        newW =  cW + half*( -(z-1) )
+
+        newSc = cW/newW
+
+        w.s.scaleX = newSc
+    }
+
+
+
+
+    return w}
+
+
+
+
+// -1 -> .5
+// -2 ->
+
+
+
+
+w.sH=function(h){var w=this, wH= w.H()
+    if(U(h)){return wH * w.s.scaleY}
+    w.s.scaleY = h/ wH
+return w}
+
+
+
+
+
 
 CONTLIST=function(){//gives u a controller-edge, which is a body-controller pair
     //it is linked both to other bodies for that controller..
@@ -3711,7 +3988,7 @@ GRAVG=function(){
 
 
 }
- 
+
 GRAVGR=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
     'welcome to grav controller - top has g:1,r:1, bottom has g:2,r:2 -- pinks move OUTWARDS only on bottom?')
 

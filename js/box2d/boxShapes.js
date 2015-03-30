@@ -3860,6 +3860,23 @@ CUPS=function(){w= b2d.W({g:20}).db()
     w.B(100,100,'o',30)
     w.S(150,220,'u',50,100)
 //W.fluffy()
+
+
+
+    w.db()}
+
+CUPBALL=function(){//should zoom in when near cup
+    CUPS()
+
+    b = w.D(w.cW()/2, w.cH()/2, 'w', [[10  ]]).rest(.8).track()
+    cjs.tick(function(){
+
+        b.F(0, -20)
+
+    })
+
+    w.showOff()
+
 }
 
 
