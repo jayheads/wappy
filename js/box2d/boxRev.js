@@ -567,17 +567,16 @@ BODYREVWORKS= function(){w=b2d.W().db(); w.floor.rest(0)
 }
 WEBO1=function(){w=b2d.W().randRects()
 
-    p = w.rect(400,500, 40,40,'o').rest(0).den(.1).fric(100).fixedRot(true).K('player')
+    p = w.rect(400,500, 40,40,'o').rest(0).den(.1).fric(100).fixRot().K('player')
 
     p.hanging = false
 
-    p.makeWeb=function(){var piece
-        var p=this, y=this.Y()-1, x=this.X()
-        w=this.wor()
+    p.makeWeb=function(){var p=this, w=p.wor(), y=p.Y()-1, x=p.X(), piece
+
 
         p.ropePieces = []
 
-        piece = w.ropePiece(x,y)
+        piece = w.ropePiece(x, y)
 
         w.tightDist(p, piece )
         p.ropePieces.push(piece)
@@ -588,8 +587,7 @@ WEBO1=function(){w=b2d.W().randRects()
             p.ropePieces.push(newPiece)
             piece = newPiece})
 
-        p.web = w.circ(x, y-10, 10, 'd').K('web')
-            .den(1).rest(0).fric(100)
+        p.web = w.circ(x, y-10, 10, 'd').K('web').den(1).rest(0).fric(100)
 
         w.tightDist(piece, p.web )
 

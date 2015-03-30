@@ -72,26 +72,22 @@ PUZZLE=function(){w=b2d.W().debug()
         ])
     })
 }
-WEBMAN = function(){w = b2d.W({ g:40 }).debug()
+WEBMAN = function(){W({ g:40 })
 
     w.roof.kill();
     w.right.kill();
     w.left.kill()
     w.goal(1800, 0)
+
     block(400, 100)
     block(800, 0)
     block(1100, -50)
     block(1300, -200)
 
-    function block(x,y){
-        return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')
-    }
-
-
+    function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
 
     p = w.webMe(394,530).den(.14).fric(1)
-    p.canWeb=true
-
+    p.canWeb = true
     $.key({
         r:function(){
 
@@ -107,6 +103,8 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
                 p.didShoot = true
                 if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
             if(p.isConnected()){p.F(-250,-50)}else {p.I(-8,0)}},
+
+
         u: function(){
             var web, ball, num, firstWeb=_.first(p.webs), iX, iY
             if(p.canWeb) {
@@ -118,6 +116,7 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
                     iY = -30
                     ball.I(iX, iY)
                 }
+
                 else { if( !p.webs || !p.webs[0] ){
 
 
@@ -153,20 +152,16 @@ WEBMAN = function(){w = b2d.W({ g:40 }).debug()
             p.didShoot=false}
     })
 
-
-
-
     w.beg(function(cx){var fixt, web
         if((fixt = cx.with('webBall','randomRect'))){
             //p.canWeb=true
             var ball= fixt[0].body(), rect = fixt[1].body(),
             web = _.findWhere(p.webs, {ball: ball})
-            if(!web.connected){web.attach(rect)}}})
-
+            if(web && !web.connected){web.attach(rect)}}})
     w.s.tickX(function(){return 600- p.X()})
-    w.s.tickY(function(){return 510- p.Y()}
+    w.s.tickY(function(){return 510- p.Y()})
+    }
 
-    )}
 CATAPULT=function(){
 
 

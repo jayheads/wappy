@@ -1,3 +1,6 @@
+w= p=b2d.World.prototype
+
+
 b2d.world = function(g, sleep){     //b2d.wor =  W ???
 
     g = U(g)? V(0,10): N(g)?V(0, g): g
@@ -10,12 +13,279 @@ b2d.world = function(g, sleep){     //b2d.wor =  W ???
 
     return w
 }
-W = b2d.W =  function(W, H, wW, wH){
 
-//cjs.Ticker.removeAllEventListeners()
-//w.show(function(){})//not working with scroll
+w.mJ=function(o){var w=this
+    if(o.m==0){return w}
 
-    var o = N(W) ? { W:W, H:H, wW:wW, wH:wH } :
+    o=o||{}
+
+    $.M()
+    cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
+    $.oMU(function(){ w.M() })
+    $.oMD(function(x,y){w.XY(x,y,
+        function(f){if(f.ofClass(o.m)){w.mj = w.m(f.body(), _ )}
+        })})
+
+    return w}
+
+
+
+
+
+w.wMouse=function(){var w=this
+
+    $.oMD(function(x, y){
+        var p = w.sToW(x,y)
+        w.mx= p.x;
+        w.my= p.y })
+
+    $.oMM(function(x,y){
+        var p = w.sToW(x,y)
+        w.mx= p.x;
+        w.my= p.y })
+    //  cjs.tick(function(){    if(w.mj){w.mj.tg(w.mx, w.my) }})
+
+    return w}
+w.wMouseJ=function(o){var w=this
+    w.md(function(e){ w.XY(e.x, e.y,function(f){
+        if(f.ofClass(o.m)){w.mj = w.m(f.body(), e.x, e.y )}})})
+    cjs.tick(function(){if(w.mj){w.mj.tg(w.mx, w.my)}})
+    $.oMU(function(){ w.M() })
+    return w}
+
+
+
+w.dd=function(o){var w=this
+    if(o.clear !==false){
+
+        w.debug(
+
+            b2d.debugDraw(
+                w.context, 30).flags(shB || jB).alpha(.6).line(3000) )
+    } // w.bug(w.ctx, 30, '*', .6 )
+
+
+
+    return w}
+w.u = function(o){var w=this
+    setInterval(function(){w.draw(1/60)
+        if(F(o.cb)){o.cb()}
+        w.s.update()}, 1000/60)
+    return w}
+w.vW =function(col,H,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
+
+    if(!S(col)){y=x;x=H;H=col;col='x'}
+
+    H = (H=='+')? cH :N(H)?H: cH/2-10
+    if(U(x)){x= cW/2; y=cH/2-H/2}
+    else if(U(y)){
+        x=(x=='+')? cW-20: (x=='-')? 0: x
+        y=cH/2 - H/2}
+    //x-=10?
+
+    return w.R(col,20,H, x,y).bo(.2).K('wall')
+
+}
+
+w.walls=function(o){
+
+    var w=this,
+        can=w.canvas,
+        W=can.width,
+        H=can.height,
+
+        wa =o.w,
+
+        col,h
+
+    if(wa==0){return w}
+
+    if (F(wa)) {wa()}
+
+    else if ( A(wa) ){
+
+        col = wa[0]
+        W=wa[1]
+        h=wa[2]
+        if(!S(col)){ h=W; W=col; col='o' }
+        W= N(W)?  W: w.W()
+        h= N(h)?  h: w.H()
+        w.floor =  w.R(col, W,20, 0, h-20)
+        w.right =  w.R(col, 20, h, W-20, 0)
+        w.roof  =  w.R(col, W,  20, 0,0)
+        w.left  =  w.R(col, 20,h,0, 0  )
+        w.w = W
+        w.h = h
+
+    }
+
+
+    else if (wa=='_'){
+        w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
+    }
+
+    else if (wa=='L'){
+
+
+        w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
+
+        w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
+    }
+
+    else if (wa=='U'){
+
+        w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
+
+        w.right=  w.S(W,H/2,'o',40,H).K('wall side left')
+
+        w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
+    }
+
+    else {
+
+        w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
+        w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
+
+        w.right=  w.S(W,H/2,'o',40,H).K('wall side left')
+
+        w.roof=   w.S(W/2,0,'o',W,40).K('wall roof')
+
+    }
+
+
+
+    w.$$(function(){
+
+        w.S(w.mx, w.my, 'x',  [[10,10 ,'-']]  )
+    })
+
+    return w}
+
+
+w.gx=function(o){var w=this,W=o.W,H=o.H
+
+    w.bg =   new cjs.Stage($.can(o.C||'z',W,H).P('a').XY(0,0)[0] ).A().tick(); w.bg.linGrad=function(c1,c2){
+        var s=this, H=s.H(), W=s.W()
+        c1=oO('c', c1||'b')
+
+        c2=oO('c', c2||'r')
+
+
+
+
+        if(R()){$l('=')
+
+            if(R()){ s.SHAPE.linGrad([c1,c2],[0,1],0,0,0,H).dr(0,0,W,H)   }
+
+            else { s.SHAPE.linGrad([c1,c2],[0,1],0,0,W,0).dr(0,0,W,H)  }
+
+        }
+
+        else {$l('/')
+
+            if(R()){
+
+                if(R()){   s.SHAPE.linGrad([c1,c2],[0,1],W,H, 0,0).dr(0,0,W,H) }
+
+                else {s.SHAPE.linGrad([c1,c2],[0,1],  0,0, W,H).dr(0,0,W,H)}
+
+            }
+
+            else {
+                if(R()) {
+                    s.SHAPE.linGrad([c1, c2], [0, 1], W,0, 0, H).dr(0, 0, W, H)
+                }
+                else {
+                    s.SHAPE.linGrad([c1,c2],[0,1],0,H, W,0).dr(0,0,W,H)
+                }
+            }
+
+
+        }
+    }
+
+
+
+    w.bg.SHAPE = w.bg.shape(0,0,'w')
+
+    w.bg.linGrad('z', 'w')
+
+
+    w.s =  w.stage =   new cjs.Stage( $.can('X',W,H).P('a').XY(0,0)[0] ).A().noAutoClear().tick()
+    w.canvas = w.s.canvas
+    w.c = w.can=$(w.canvas).id('canvas')
+    w.ctx = w.context = w.c.ctx('2d')
+
+
+    w.hud =   new cjs.Stage($.can('X',W,H).P('a').XY(0,0)[0]).A().tick()
+
+    w.hud.h  = w.hud.shape().fs( $r() ).rect( 0, 0, 5000, 5000).opacity(.3)
+
+
+
+
+    w.s.back = w.bg
+    w.s.HUD = w.hud
+    return w}
+
+w.startListening = function(){var w=this
+    w.listener = w.listener || b2d.listener()
+    w.beginHandlers = w.beginHandlers ||[]
+    w.preHandlers = w.preHandlers ||[]
+    w.postHandlers = w.postHandlers ||[]
+    w.endHandlers = w.endHandlers ||[]
+    w.listener.BeginContact = function(cx){
+        _.each(w.beginHandlers, function(func){$.do(function(){  func(cx) })   })}
+    w.listener.PreSolve = function(cx){
+        _.each(w.preHandlers,
+            function(func){
+
+
+                $.do(function(){
+                    func(cx)
+                })
+
+            })}
+    w.listener.PostSolve = function(cx, pam2){
+
+        _.each(w.postHandlers,
+
+            function(func){
+
+
+
+                $.do(function(){
+                    func(cx,pam2)
+                })  //second arg???????
+
+            })
+    }
+    w.listener.EndContact = function(cx){
+        _.each(w.endHandlers,
+            function(func){
+                $.do(function(){
+                    func(cx)
+                }) })
+    }
+
+    w.SetContactListener(w.listener)
+
+    return w}
+w.setBg=function(o){var w=this;  if(o.i){ w.s.bm(o.i) }; return w}
+
+
+
+w.W=function(){return this.canvas.width}
+w.H=function(){return this.canvas.height}
+
+
+
+W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.show(function(){})//not working with scroll
+
+
+
+    var o = N(H) ? { W:W, H:H, wW:wW, wH:wH } :
+        N(W)? {g: W}  :
         A(W) ? _.extend(H, { W:W[0], H:W[1], wW:W[2] ,wH:W[3] }) :
             O(W) ? W : {}
 
@@ -23,173 +293,36 @@ W = b2d.W =  function(W, H, wW, wH){
     o.H=o.H   ||  600
     o.wW=o.wW ||  o.W
     o.wH=o.wH ||  o.H
-    o.w=o.w   ||  ['o', o.wW, o.wH]
+
+    o.w = o.w==0?0: o.w ? o.w :     ['o', o.wW, o.wH]
+
+
+
     o.g = N(o.g) ? V(0,o.g) : o.g? V(o.g) : V(0, 300)
 
 
     cjs.watchKeys()
     w=b2d.world( o.g ); w.o = o
-    w.mJ=function(o){var w=this, o=o||{}
-        $.M()
-        cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
-        $.oMU(function(){ w.M() })
-        $.oMD(function(x,y){w.XY(x,y,
-            function(f){if(f.ofClass(o.m)){w.mj = w.m(f.body(), _ )}
-            })})
-        return w}
 
-
-    w.dd=function(o){var w=this
-        if(o.clear !==false){
-
-            w.debug(
-
-                b2d.debugDraw(
-                w.context, 30).flags(shB || jB).alpha(.6).line(3000) )
-        } // w.bug(w.ctx, 30, '*', .6 )
-
-
-
-        return w}
-    w.u = function(o){var w=this
-        setInterval(function(){w.draw(1/60)
-            if(F(o.cb)){o.cb()}
-            w.s.update()}, 1000/60)
-        return w}
-    w.vW =function(col,H,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
-
-        if(!S(col)){y=x;x=H;H=col;col='x'}
-
-        H = (H=='+')? cH :N(H)?H: cH/2-10
-        if(U(x)){x= cW/2; y=cH/2-H/2}
-        else if(U(y)){
-            x=(x=='+')? cW-20: (x=='-')? 0: x
-            y=cH/2 - H/2}
-        //x-=10?
-
-        return w.R(col,20,H, x,y).bo(.2).K('wall')
-
-    }
-    w.walls=function(o){var w=this, wa = o.w, col, W, h
-
-
-        var w=this,
-            can=w.canvas,
-            W=can.width,
-            H=can.height
-
-        if (F(wa)) {wa()}
-
-        else if ( A(wa) ){
-
-            col = wa[0]
-            W=wa[1]
-            h=wa[2]
-            if(!S(col)){ h=W; W=col; col='o' }
-            W= N(W)?  W: w.W()
-            h= N(h)?  h: w.H()
-            w.floor =  w.R(col, W,20, 0, h-20)
-            w.right =  w.R(col, 20, h, W-20, 0)
-            w.roof  =  w.R(col, W,  20, 0,0)
-            w.left  =  w.R(col, 20,h,0, 0  )
-            w.w = W
-            w.h = h
-
-        }
-
-        else {
-
-            w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
-            w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
-            w.roof=   w.S(W/2,0,'o',W,40).K('wall roof')
-            w.right=  w.S(W,H/2,'o',40,H).K('wall side left')
-        }
-
-        return w}
-    w.gx=function(o){var w=this,W=o.W,H=o.H
-
-        w.bg =   new cjs.Stage($.can(o.C||'z',W,H).P('a').XY(0,0)[0] ).A().tick(); w.bg.linGrad=function(c1,c2){
-            var s=this, H=s.H(), W=s.W()
-                c1=oO('c', c1||'b')
-
-                c2=oO('c', c2||'r')
-
-                s.SHAPE.linGrad([c1,c2],[0,1],W,H,0,0).dr(0,0,W,H)
-
-            }
-
-        w.bg.SHAPE = w.bg.shape(0,0,'w')
-        w.bg.linGrad('z','w')
-
-
-        w.s =  w.stage =   new cjs.Stage( $.can('X',W,H).P('a').XY(0,0)[0] ).A().noAutoClear().tick()
-        w.canvas = w.s.canvas
-        w.c = w.can=$(w.canvas).id('canvas')
-        w.ctx = w.context = w.c.ctx('2d')
-
-
-        w.hud =   new cjs.Stage($.can('X',W,H).P('a').XY(0,0)[0]).A().tick()
-
-        w.hud.shape().fs($r()).rect( 0,0, 5000, 5000).opacity(.3)
-
-        w.s.back = w.bg
-        w.s.HUD = w.hud
-        return w}
-    w.startListening = function(){var w=this
-        w.listener = w.listener || b2d.listener()
-        w.beginHandlers = w.beginHandlers ||[]
-        w.preHandlers = w.preHandlers ||[]
-        w.postHandlers = w.postHandlers ||[]
-        w.endHandlers = w.endHandlers ||[]
-        w.listener.BeginContact = function(cx){
-            _.each(w.beginHandlers, function(func){$.do(function(){  func(cx) })   })}
-        w.listener.PreSolve = function(cx){
-            _.each(w.preHandlers,
-                function(func){
-
-
-                    $.do(function(){
-                        func(cx)
-                    })
-
-                })}
-        w.listener.PostSolve = function(cx, pam2){
-
-            _.each(w.postHandlers,
-
-                function(func){
-
-
-
-                    $.do(function(){
-                        func(cx,pam2)
-                    })  //second arg???????
-
-                })
-        }
-        w.listener.EndContact = function(cx){
-            _.each(w.endHandlers,
-                function(func){
-                    $.do(function(){
-                        func(cx)
-                    }) })
-        }
-
-        w.SetContactListener(w.listener)
-
-        return w}
-    w.setBg=function(o){var w=this;  if(o.i){ w.s.bm(o.i) }; return w}
 
     if(o.z != false){ z() }
 
-    w.W=function(){return this.canvas.width}
-    w.H=function(){return this.canvas.height}
-
-
-    return w.gx(o).setBg(o).dd(o).db().startListening().mJ(o).walls(o).u(o)
-
+    return w.gx(o).setBg(o).dd(o).db()
+        .startListening()
+        .wMouse()
+        .wMouseJ(o)//.mJ(o)
+        .walls(o)
+        .u(o)
 
 }
+
+
+
+
+
+
+
+
 cjs.adj = cjs.camAdj =  function( income, tax ){//tax ~ deltaLimit ~ buffer
     var income =  income || 0  ,  tax = tax || 0
     if(income > 0){return income > tax ? income - tax : 0}
@@ -219,7 +352,7 @@ b2d.mJ=function(body, tX,tY){
     md.maxForce = 1000 * body.GetMass()
     md.dampingRatio = 0
     return md}
-w= p=b2d.World.prototype
+
 scrolling=function(){
 
 w.camLims = function(xm, xM, ym, yM){var w=this
@@ -492,9 +625,61 @@ w.fwNoLim= function(b,x,y){var w=this, n=0
     })
 
     return w}
+
 w.df=function(){var w=this
     return {x:w.W() /w.w,y:  w.H()/ w.h}
 }
+
+
+  w.minZoomX = function(){
+
+    var w=this, z,
+
+    W=w.W(),  H=w.H(),
+
+    wMin =   W/w.w    ,
+
+    hMin =   H/ w.h
+
+
+
+    $l('wMin: ' + wMin  + ' - '+'hMin: ' + hMin )
+
+
+    if(wMin >  hMin){
+
+        z= wMin
+    }
+
+
+    else {
+
+        z= hMin
+    }
+
+return z
+
+
+
+}
+
+
+
+    w.minZoom=function(){
+        var w=this,
+            mH=w.h/w.H(),
+
+            mW= w.w/w.W()
+
+        return mH>mW?mH:mW
+
+    }
+
+// can never zoom less than 1 for EITHER
+
+
+
+
 w.scl=function(n){var w=this,hW,hH
     w.SCALE=n
     w.s.sXY(n)
@@ -530,17 +715,20 @@ w.sc=function(s){var w=this,
 
     g=G(arguments),
 
-    s=g[0]
+    s=g[0],
+    dfx=w.df().x,
+        dfy = w.df().y
 
 
     if(g.d){
 
-        s = w.df().x  // which is beigger?  .. smaller??
+        s = dfx>dfy? dfy: dfx
+
     }
 
-
     if(U(s)){
-        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE}
+        w.SCALE =  N(w.SCALE)? w.SCALE : 1;return w.SCALE
+    }
 
 
     w.SCALE=s
@@ -548,23 +736,50 @@ w.sc=function(s){var w=this,
     w.s.sXY(s)
 
     return w}
-w.zoom = w.zm=function(z){var w=this,d=w.df().x
+
+w.zoom = w.zm=function(z){var w=this,
+
+    dfX =w.df().x,
+    dfY = w.df().y,
+
+    d= dfX >dfY? dfY: dfX,
+    mZ = w.minZoom()
+
     if(U(z)){return w.sc()/d}
-    if(!z>0){z=1}
+
+    if(!z>0){z=1} // z must be above 1
+
+    z = z<mZ? mZ: z
+
     w.sc(d*z)
     return w}
+
+
+
+
 w.track =  function(b,x,y){
     var w=this, k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
 
     x=N(x)?x: w.W()/2
     y=N(y)?y: w.H()/2
-    cjs.tick(function(){
+
+    func=function(){
+
+        if(F(w.track.cb)){
+            w.track.cb()
+        }
+
+
         k=scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
+
         K=function(a){return a*k}
+
         hW = w.W()/2
         kW = w.w*k
         sX=K(x-b.X()-hW)+hW
+
         w.s.x= sX>0?0 : sX<w.W()-kW?w.W()-kW: (kW/2)-hW<0?hW-(kW/2):   sX
+
 
         sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
         if(sY>0){sY=0}
@@ -572,24 +787,49 @@ w.track =  function(b,x,y){
         if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
         w.s.y= sY
 
-    })
+    }
+
+     cjs.tick(func)
 
     //i can leave the world-centering in fw//can optionally filter it with scale itself
 
     return w}
+
+
 w.rat=function(){return {x: w.w/w.W(), y: w.h/w.H()}}
 }; scrolling()
 w.chalk=function(){
     this.s.chalk.apply(this.s,arguments)
     return this}
-w.destroyBody = w.destroy = w.dB=function(a){
-    this.DestroyBody(a); return this }
-w.destroy = w.destroyAll = w.destroyAllBodies=function(){
-    var that=this
-    return this.eachBody(function(b){
-       that.destroy(b)
-    })}
-w.getBodyList = w.bL =function(){return this.GetBodyList()}
+
+w.getGroundBody = w.gB =w.gGB=function(){  return this.GetGroundBody()  }
+w.getBodyList = w.bL = function(){return this.GetBodyList()}
+w.destroyBody = w.destroy = w.dB=w.destroy = w.destroyAll = w.destroyAllBodies=function(b){var w=this
+    if(U(b)){w.each(function(b){w.destroy(b)})}
+    else {w.DestroyBody(b)}
+    return w}
+
+
+w.count = w.getBodyCount = w.bC = w.gBC=function(){
+    return this.GetBodyCount()
+}
+
+w.qAB = w.Q=w.queryAABB=function(func, x1,y1,x2,y2){
+
+    var w=this,
+        AB = b2d.AB(x1,y1,x2,y2),
+        num= 0
+
+    w.QueryAABB(function(f){num++
+
+        return func(f, f.B(), num)
+
+    }, AB)
+
+    return num}
+
+
+
 w.queryPoint=function(func,x,y){
 
 
@@ -607,29 +847,31 @@ w.queryPoint=function(func,x,y){
     )
 
     return this}
-w.count = w.getBodyCount = w.bC = w.gBC=function(){
-    return this.GetBodyCount()
-}
-w.getGroundBody = w.gB =w.gGB=function(){  return this.GetGroundBody()  }
-w.Q=w.queryAABB=w.qAB=function(func, x1,y1, x2,y2){
-    var AB = b2d.AB(x1,y1,x2,y2),
-        num= 0,
-
-    newFunc = function(fixt){num++
-
-       return func(fixt, fixt.body(), num)
-    }
 
 
-    this.QueryAABB(newFunc, AB)
-    return num}
-w.$=w.click=function(func){
-    $(w.s.HUD.canvas).click(function(e){
-        func(e.pageX, e.pageY)})
-return this}
+w.$=w.click=function(func){var w=this
+
+    $(w.hud.canvas).click(function(e){
+
+        func(e.pageX, e.pageY)
+
+    })
+
+    return w}
+
+w.$$= function(func){var w=this
+
+    $(w.hud.canvas).dblclick(function(e){
+        func(e.pageX, e.pageY)
+    })
+
+    return w}
+
+
 w.queryXY=function(func, x, y){var w=this  //does not divide
     w.QueryAABB(func, b2d.AABB01(x, y))
     return w}
+
 w.getBodyAtPoint=function(x, y){var body = null
 
     this.QueryAABB(function queryFunc(fxt){
@@ -664,7 +906,8 @@ w.bodyAt =  w.bodyAtPoint=function(x,y,fn,k){var w=this,b //does not div
     if(!b){return false}
     if(F(fn)){return fn(b)||w}
     return b}
-//** //query a pont
+
+
 w.qXY=function(x,y,fn){var w=this,v
     //function on TOPMOST fixt FIRST
     // then goes down, but only if function returns 'true'
@@ -676,6 +919,7 @@ w.qXY=function(x,y,fn){var w=this,v
     return w}
 //query a point of specific kind,
 // more options on fixts
+
 w.XY=function(x,y,fn,k){var w=this, fixt=false // - -> bottom, + all ? :)
     if(O(x)){k=fn;fn=y;y=x.y;x= x.x}
 
@@ -713,6 +957,8 @@ w.bXY=function(x,y,fn,k){var w=this,
 
 
 }//**
+
+
 BODYAT=function(){w=b2d.W({g:0})
 
     b = w.S(470,270, 'y', 100)
@@ -793,26 +1039,6 @@ b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
         r = w.S(x+(W/2), y+(H/2),c,W,H)
         return r}
 
-
- w.bodyX=w.AX=function(bD, fD){var w=this, b
-
-     if(b2d.isBDef(bD)){b = w.CreateBody(bD)}
-
-
-
-     if(fD){b.fixt(fD)}
-
-     //b.den(1)
-
-     return b
- }
- w.dynX= w.dynamicX=function(x,y, fD ){var w=this, body
-
-        if(O(x)){fD=y;y=x.y;x=x.x}
-        x =N(x)?x: 500
-        y =N(y)?y: 250
-
-        return w.body( b2d.dyn(x,y), fD )}
 
 
 
@@ -928,18 +1154,31 @@ w.B=w.D=function(x,y){
 
 
 
-    w.ball = w.ba = function(x,y,r){var ball
+    w.ball= w.ba=function(x,y,r){var w=this,
 
-        if(O(x)){ r=N(x.r)? x.r:y; y=x.y; x=x.x}
+        ball
+
+        if(O(x)){
+
+            r=N(x.r)? x.r:y; y=x.y; x=x.x
+        }
 
         x=N(x)?x:100 //change to center x
+
         y=N(y)?y:x
+
         r = N(r)?r:30
 
-        ball = this.dyn(x,y,b2d.circ(r))
+
+        ball = w.dyn(
+
+            x, y, b2d.circ(r)
+        )
 
         return ball.K('ball')
     }
+
+
 
 
     w.bul= function(x,y){var def,body
@@ -968,6 +1207,7 @@ w.B=w.D=function(x,y){
 
 
         return bul}
+
     w.kin= function(x, y, fixtDef){var body
         if( O(x) ){fixtDef=y; y=x.y; x=x.x}
         x = N(x)?x: 500
@@ -980,18 +1220,6 @@ w.B=w.D=function(x,y){
         y = N(y)?y: 250
         body = this.A(b2d.stat(x,y), fixtDef)
         return body}
-
-
-    w.edge = function(x1,y1, x2,y2){
-        var edge = this.body(b2d.stat(0,0)),
-            fd=b2d.fixtDef()
-        fd.shape = new b2d.Shapes.b2PolygonShape()
-        fd.shape.SetAsEdge( V(x1,y1,'-'), V(x2,y2,'-'))
-        edge.fixt(fd)
-        return edge
-    }
-
-
 
 
     w.bump = w.bumper = w.baa = function (x, y, r) {
@@ -1027,9 +1255,12 @@ w.B=w.D=function(x,y){
         W = N(W) ? W : 30;
         H = N(H) ? H : W
 
-        return this.A(b2d.stat(x, y), b2d.poly(W, H).r(0).sensor(true)).K('brickSensor')
+        return this.A(b2d.stat(x, y),
+            b2d.poly(W, H).r(0).sensor(true))
+            .K('brickSensor')
 
     }
+
 
 
     w.addCirc = function (x, y, radius, color) {//specific to talkjs
@@ -1046,9 +1277,6 @@ w.B=w.D=function(x,y){
             cjs.circ(radius, color).XY(x, y)).linDamp(2)
 
     }
-
-
-
     w.circ = function (x, y, rad, col) {var ball, w=this
 
         // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
@@ -1205,11 +1433,9 @@ w.B=w.D=function(x,y){
 
     //link for distance ropes
 
-    w.ropePiece = w.distLink=function(x, y){var link
+    w.ropePiece = w.distLink=function(x, y){var w=this
 
-        link = w.rect(x, y,3,5,'w').angDamp(10).rest(0)
-
-        return link}
+        return w.B(x,y, 'w', 3,5).aD(10).rest(0)}
 
 
 //add random bodies
@@ -1341,44 +1567,41 @@ w.flash=function(){
 
     return this}
 //EACH
-w.eachBody= w.each= function( func, userData ){//=w.e=w.eB
+w.each  = w.eachBody= function(l,uD){//=w.e=w.eB
     //can pass a cb to be run on EACH body
     //can also pass a uD to restrict cb to
     //run only on bodies with that uD
 
-    var bodies = this.GetBodyList(), kind, body
+    var w=this,
+bs = w.GetBodyList(),k, b
 
-    if(S(func)){kind=func; func=userData} else {kind = userData}
+    if(S(l)){k=l; l=uD} else {k = uD}
 
-    while(bodies){
-
-        body = bodies
-        bodies = bodies.next()
-
-            if( !kind || body.is(kind) ){ func(body) }
-
-
-        }
-
-    return this}
-w.eachDyn=function(func){
-    w.eachBody(function(b){
-
-        if(b.isDyn()){func(b)}
-})
+    while(bs){
+        b = bs
+        bs = bs.next()
+        if(b.has(k)){l(b)}}
+    return w}
 
 
+w.eachD = w.eachDyn=function(l){var w=this; w.each(function(b){if(b.isDyn()){l(b)}})
 
-return this}
-w.C = function(color){
-    this.s.c.C(color)
-return this}
+return w}
+
+
+w.C= function(col){var w=this
+    w.c.C(col)
+return w}
+
+
 //events
-w.eachClick = w.bodyClick=function(func){
-    this.each(function(body){
-        body.click(func)
-    })
-    return this}
+w.each$ = w.eachClick = w.bodyClick=function(l){var w=this
+
+    w.each(function(b){b.click(l)})
+
+    return w}
+
+
 //moves all bodies ?!!
 w.left=w.horiz=function(num){
     num=N(num)?num:4
@@ -2245,6 +2468,9 @@ w.dr=function(col,x,y,W,h){
 
 
 }
+
+w.Y=function(x,Y){var w=this; y = w.ship(x,Y); return w}
+
 //w.s.shape().fs('y').rect(100,100,100,100)
 //w.s.HUD.shape().fs('o').rect(100,200,100,100)
 w.line=function(col,x1,y1,x2,y2){
@@ -2262,123 +2488,96 @@ w.line=function(col,x1,y1,x2,y2){
 
         h =w.s.HUD.shape()
 
-
-
-        h.sC(col,8).mt(x1, y1).lt(x2,y2)
+       return h.sC(col,8).mt(x1, y1).lt(x2,y2)
     }
 
 
     else if(g.n){if(!S(col)){y2=x2; x2=y1;y1=x1;x1=col;col='x'}
 
-        w.s.back.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
+      return  w.s.back.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
     }
 
 
     else {if(!S(col)){y2=x2; x2=y1;y1=x1;x1=col;col='w'}
 
 
-        w.s.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
+       return w.s.shape().sC(col,8).mt(x1, y1).lt(x2,y2)
 
 
     }
 
 
 }
-BODY=function(){w=b2d.W(); w.brick(600,600, 20,1000)
-
-    //DYN
-    //sensor
-    w.dyn(100,400, [ b2d.circ(50), b2d.poly(10,300,'-') ])
-    w.dyn(100,300, 'b', 50)
 
 
+BODY=function(){W(10)
 
-    //B
-    //color
-    w.B(700,300, 'b', 50)
+    w.S(600,600, 20,1000)
 
-    b=w.B(700, 400, 'y', [
-        [b2d.circ(50)],
-        ['r',b2d.poly(10,300,'-')],
-        ['o',50, 100,0]
+    w.D(100,400, 'z', [ [50], [10,300,'-'] ])
+
+    w.D(100,300, 'b', 50)
+
+    w.D(700,300, 'b', 50)
+
+
+    b=w.D(700,400,'y', [
+
+         [50] ,
+        ['r',  10, 300,'-' ],
+
+        ['o',50,100,0]
+
     ])
 
-
-
-
-
-
 }
-LAYERS=function(){w=b2d.W({g:0})//.db()
+LAYERS=function(){W(0).Y()
 
-    y= w.ship().cent('+')
+    y.cent('+')
 
     w.dr( 100,100,100,100)
     w.dr( 100,200,100,100, '+')
-
     l1=w.line(0,100,5000,100,'-')
-
     l2= w.line(0,200,5000,200)
-
     l3 = w.line(0, 300, 5000, 300, '+')
 
     y2= w.ship().cent('+')
 
+}
+SHOWCOUNT=function(){ W().Y(200,200)
+
+    b = w.D(300,300,'r', 50)
+
+    w.show(function(){return w.count()})
+}
+BEGEND=function(){W(0)
+
+    b = w.B(500,300,'w', 50)
+
+
+
+
+     w.beg(b,  function(){w.B(R(1000,50),R(500,50),'y',5).rest(.8)} )
+
+    w.end(b,
+        function(){w.B(R(1000,50),R(500,50),'z',5).rest(.8)}
+    )
 
 
 }
-COUNT=function(){w=b2d.W()
-
-    y= w.ship().XY(200,200)
-    b= w.circ(300,300,50,'r')
-
-    w.show(function(){return w.count()})}
-BEG=function(){w=b2d.W({g:0})
-
-    b = w.ball(500,300,50).K('guy')
-
-    w.beg('guy', 'floor',function(){$l('beg')
-
-        w.ball( Math.random()*1000+50, Math.random()*500+50, 5)
-        b.kill()
-    })
-
-}
-END=function(){w=b2d.W({g:0})
-
-    b = w.ball(500,300,50).K('guy')
 
 
+WORLD=function(){W(0)
 
-    w.end('guy', function(){$l('end')
-
-        setTimeout(function(){
-
-            w.ball( Math.random()*1000+50, Math.random()*500+50, 5)
-
-            b.kill()
-        },0)
-
-
-    })
-
-}
-WORLD=function(){w=b2d.W({g:0})
-
-    b = w.ball(100,100,50)
-    b1 = w.ball(100,200,40)
+    b = w.D(100,100,'r',50)
+    b1 = w.D(100,200,'b',40)
 
     // w.grav(-10);setInterval(function(){w.grav('flip') }, 2000)
-
 
     w.AddController
     w.CreateController
     w.DestroyController
-
     w.GetGroundBody
-
-
-
     w.GetProxyCount
     w.SetDestructionListener
     w.SetBroadPhase
@@ -2386,15 +2585,12 @@ WORLD=function(){w=b2d.W({g:0})
     w.SetContinuousPhysics
     w.IsLocked
 
-
     // proxies - represents an AABB in the broad-phase collision algorithm. Each b2Shape has a proxy.
     //  pair - a record created when two proxies overlap.
     //  manifold - the set of contact points for two convex shapes.
 
 
-    w.locked=function(){
-        return b2World.e_locked != 2
-    }
+    w.locked=function(){return b2World.e_locked != 2}
 
     w.m_island
     w.m_flags
@@ -2403,39 +2599,42 @@ WORLD=function(){w=b2d.W({g:0})
 
 
 }
-TESTQ=function(){w=b2d.W()
+
+
+TESTQ = function(){W(2).Y(400,500)
+
     _.times(5, function(){w.randRects()})
 
 
-    var func = function(f, b){  b.kill(); return true  }
+    n = w.qAB(function(f, b){
+
+        b.kill(); return true
+
+    },  400,100,450,150)
 
 
-    n= w.Q(func,  400,100,450,150)
-
-    w.ship().XY(425, 125)
 
     w.pen(n + ' rects removed')
 
 }
-TRANSFORM=function(){var tf=null
-    w = wor().debug()
-
-    b = w.rect(100,100,100,200,'b')
-
-    b2 = w.rect(200,200,100,150,'p')
 
 
 
-    cjs.tick(function(){
-        var trf = b.transform().toArr()
+FOLLOWTF =function(){W()
 
-        if(tf){
-            b2.SetTransform( b2d.tf(tf)  )
-        }
+    var tf = null
+    b = w.D(100,100,'b', 100,200)
+    b2 = w.D(200,200, 'p', 100,150)
+
+    cjs.tick(function(){var trf
+
+        trf = b.transform().toArr()
+
+        if(tf){   b2.SetTransform( b2d.tf(tf)  )   }
 
         setTimeout(function(){
-            tf=trf
-        },1000)
+            tf = trf
+        }, 1000)
 
     })
 
@@ -2443,8 +2642,13 @@ TRANSFORM=function(){var tf=null
 
 
 }
-TESTPOINT=function(){var tf=null
-    w = wor()
+
+
+
+TESTPOINT=function(){W(50)
+
+    var tf=null
+
 
     b = w.rect(100,100,100,200,'b')
 
@@ -2465,7 +2669,10 @@ TESTPOINT=function(){var tf=null
     hit2= f.hit(200, 200, true)
 
 }
-CONTROLCHANGE=CHANGESCONTROLLERBASEDONSENSORBRILLIANT=function() {
+
+COCHANGE=function(){//CHANGESCONTROLLERBASEDONSENSORBRILLIANT=
+
+    W({g:20})
 
     //gives u a controller-edge, which is a body-controller pair
     //it is linked both to other bodies for that controller..
@@ -2473,9 +2680,6 @@ CONTROLCHANGE=CHANGESCONTROLLERBASEDONSENSORBRILLIANT=function() {
 
     //lets focus on other bodies first....
 
-    w = b2d.W({
-        //walls:0
-    })//.debug().C('w')
 
     s1 = w.sensorBucket(320,300, 's1')
     s2 = w.sensorBucket(700,300, 's2')
@@ -2485,12 +2689,14 @@ CONTROLCHANGE=CHANGESCONTROLLERBASEDONSENSORBRILLIANT=function() {
 
     I(function(){
 
-        // aCo.body(
+          aCo.body(
 
-        w.circ(300,100,10,'y')
+        w.D(300,100, 'y', 10),
 
-        w.circ(760,100,10,'b')
-        // )
+        w.D(760,100, 'b', 10)
+
+
+          )
 
     })
 
@@ -2501,106 +2707,119 @@ CONTROLCHANGE=CHANGESCONTROLLERBASEDONSENSORBRILLIANT=function() {
 
 
 
-    w.beg(function(cx){var fixt
-
-        if(fixt = cx.with('s1')){
-
-            $l('s1' + fixt.body().K())
-
-            fixt.body().cancel()
-            co1.body( fixt.body() )
-        }
+    w.beg(function(cx){
 
 
-        if(fixt = cx.with('s2')){
-            $l('s2' + fixt.body().K())
-            fixt.body().cancel()
-            co2.body(fixt.body())}})
+       cx.with('s1', function(){var f=this, b=f.B()
+            b.cancel()
+            co1.body(b)
+        })
 
+        cx.with('s2', function(){var f=this, b=f.B()
+            b.cancel()
+            co2.body(b)
+        })
 
+    })
 
+    w.D(150, 100, 'w', 50).den(1)
+    w.D(200, 100, 'd', 50).den(1)
+    w.D(250, 100, 'r', 50).den(1)
 
-    w.circ(150, 100, 50, 'w').den(1)
-    w.circ(200, 100, 50, 'd').den(1)
-    w.circ(250, 100, 50, 'r').den(1)
     b= w.ship(100,500)
-    w.circ(350, 100, 50, 'g').den(1)
-    w.circ(400, 100, 50, 'o').den(1)
-    w.circ(450, 100, 50, 'w').den(1)
+
+    w.D(350, 100, 'g', 50).den(1)
+    w.D(400, 100, 'o', 50).den(1)
+    w.D(450, 100, 'w', 50).den(1)
 
 }
-ACC=function(){b2d.W({g:0})  // Imagine that you have gusts of wind blowing sideways…  you can add your objects to a Contoller and have them pushed sideways…  then when the wind passes you could remove them from that controller.
+
+
+
+
+
+ACC=function(){W(0).C('z')
+
+
+ // Imagine that you have gusts of wind blowing sideways…  you can add your objects to a Contoller and have them pushed sideways…  then when the wind passes you could remove them from that controller.
+
     // now just add and remove bodies to the controller!!
 
 
-    b = w.box(300, 300, 50, 60).den(1)
+    b = w.D(300, 300,'b', 50, 60).den(1)
 
-    co = w.acc(5,5).body(b)
+    co = w.acc(-5, -5).body(b)
 
-    // co.A = V(x, y)
 
     added = true
 
-    w.C('g')
-
-
-    I(onInt, 2000)
-
-    function onInt(){
-
-        if(shouldChange()){
-            if(added==true){added=false;w.C('u');co.remove(b)}
-            else {added=true;w.C('g');co.body(b)}}
-
-
-
-    }
-
     cjs.tick(function(){
-        b.F(-10,-10)
+        b.F(10,10)
     })
 
-    function shouldChange(){return Math.random()>.5}
+    I(function(){if(R()){
+
+            if(added==true){
+                added=false
+                w.C('r')
+                co.remove(b)
+            }
+
+            else {added=true
+
+                w.C('g')
+                co.body(b)
+            }}
+
+    },2000)
+
+
+
 
 
 
 }
-BUOY=function(){w=b2d.W().debug()
 
-    w.rectStat(320,480,640,20)
-    w.rectStat(320,340,320,20)
-    w.rectStat(170,230,20,200)
-    w.rectStat(470,230,20,200)
-    w.rectSensor(320,245,280,170)
-
-    co=w.buoy(0,-1,5,2).os(-6).den(2)
-
-    cjs.tick(function(){
-
-        w.eachDyn(function(b){
+BUOY=function(){W()
 
 
-            if( b.co() ){ co.remove(  b  ) }
+    w.S(320,480,'r', 640,20)
+    w.S(320,340,'b',320,20)
+    w.S(170,230,'g',20,200)
+    w.S(470,230,'y',20,200)
+
+    w.S(320, 245, 'z', [ [280,170,'-'] ])
+
+    co = w.buoy(0, -1, 5, 2).os(-6).den(2)
 
 
-            for (var c=b.cx();c;c=c.next){
+    cjs.tick(function(){w.eachD(function(b){
+
+
+            if(b.co()){ co.remove(  b  ) }
+
+            for (var c=b.cx(); c; c=c.next){
 
                 var cx=c.contact
                 if(cx.A().IsSensor()&& !cx.b().co() ){
                     co.body(cx.b())}
-                if(cx.B().IsSensor()&&!cx.a().co()){co.body(cx.a())}
+
+                if(cx.B().IsSensor()&& !cx.a().co()){
+                    co.body(cx.a())
+                }
             }
-
-
 
         })})
 
 
 
-    I(function(){w.circ(300,40,8,'r').den(1)})
+    I(function(){w.D(300,40,'r',8).den(1)})
 
 
 }
+
+
+
 BALL=function(){W().B(400,300,'x',150).den(.1)}
 STACKTHREE=function(){W({m:'ball',w:0})
 
@@ -2730,7 +2949,7 @@ CAMNOLIM=function(){
 }
 STREETFIGHTER=function(){
 
-    w = b2d.G([1200,600,1400,800], {})
+    W(1200,600,1400,800)
 
 
     w.S(700,600,'r',400,20)
@@ -2747,18 +2966,21 @@ STREETFIGHTER=function(){
 }
 STREETFIGHTERBUFF=function(){
 
-    w = b2d.G([1200, 600,1400,800], {})
+
+    W([1200, 600,1400,800], {})
 
 
     w.S(700,600,'r',400,20)
 
-    y = w.ship(700, 700 ).linDamp(1)
+    y = w.ship( 700, 700 ).lD(1)
 
 
 
     w.foll(y,600, 500,  700, 800, 350,350 )
 
 }
+
+
 ZOOM=function(){w=b2d.G(1000,1000,1000,1000)
 
     w.s.HUD.dot(500,500)
@@ -2883,21 +3105,42 @@ AUTOSCROLL=function(){w=b2d.W({g:300}).debug()
         if( p.relPos() < -100 ){setup()}})
     w.ramps()
 }
-RAMPS=function(){w=b2d.W({g:300}).debug()
+
+w.P=function(x,y){var w=this
+    x=N(x)?x:300
+    y=N(y)?y:500
+    p= w.jumper(x,y)
+    return w}
+
+
+RAMPS=function(){
+
+    w=W(300).P(300,0)
+
     w.right.kill()
     w.left.kill()
     w.roof.kill()
+
+
+
     w.s.XY(300,150)
     w.s.rXY(300, 150)
     w.ramps()
-    p= w.jumper(400,100).followX(600, 400)
+
+    //.followX(600, 400)
+
+
     cjs.tick(function(){$l(p.onGround)})
+
 }
-SCALINGLEVEL=function(){w=b2d.W({g:300}).debug()
-    w.right.kill()
-    w.left.kill()
-    w.roof.kill()
-    p= w.jumper(1000,0)
+
+
+
+SCALINGLEVEL=function(){
+
+    W({w:'_'}).P(1000,0)
+
+
     w.ice(800,280, 10000);
     w.rubber(50,100,300); w.rubber(-400,100,300)
     w.rect(1200,30, 600,4).stat();
@@ -2906,6 +3149,8 @@ SCALINGLEVEL=function(){w=b2d.W({g:300}).debug()
     p.calcScale=function(){return 1-((this.X()-300)/300)*.1}
     cjs.tick(function(){p.centerScale(p.calcScale())})
 }
+
+
 TINYREDBALLS=function(){
 
     w=b2d.G(1000, 500,  2000, 1000)
@@ -2941,7 +3186,7 @@ TINYREDBALLS=function(){
     w.s.HUD.dot('w', 1100, 300)
 
 }
-MOVESPACE=function(){w=b2d.G(1000,1000,2000,2000)
+MOVESPACE=function(){W(1000,1000,2000,2000)
 
 
     w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
@@ -3042,6 +3287,7 @@ ULT1=function(){
     w.fwNoLim(y, 600,300)
     w.dragScale()
 }
+
 ULT=function(){
 
 // ok this is a brilliant demo of complete scrolling and zooming
@@ -3049,6 +3295,10 @@ ULT=function(){
 // but actually, i dont really need to allow the user to zoom out that much
 //if you can see the whole 'world'.. zooming out more is pointless!!
 // ok on to zoom min/max!!!
+
+
+     W([1200,600,2400,1200],{g:0})
+
     w.wz = function(){var w=this
 
         //we never want a positive wz!! means right stage corner is visible
@@ -3060,13 +3310,9 @@ ULT=function(){
 
 
 
-
     w.fwNoLim= function(b,x,y){var w=this, n=0
         cjs.tick(function(){
             var scl = N(w.SCALE)? w.SCALE : 1
-
-
-
 
 
 
@@ -3108,9 +3354,6 @@ ULT=function(){
 
     w.bOK = function(){var w=this,sc =w.sc(); return  w.s.y + w.H()*w.sc() - 600}
 
-
-    w = b2d.G([1200,600,2400,1200], {  g:0 })
-
     w.S(1200,300,'r',400,100)
     w.S(1200,600,'w',[[100,100,'-']])
     w.S(1200,900,'r',400,100)
@@ -3145,11 +3388,108 @@ ULT=function(){
 
 
 }
+
 RIGHTTRACK=function(){w = b2d.G([900,300,3600,300],{g:0}).zoom(6)
     w.S(1200,300,'r',400,100)
     w.S(1200,600,'w',[[100,100,'-']])
     w.S(1200,900,'r',400,100)
     y = w.ship(200,200).rot(120).damp(1,10).track()
+}
+
+
+
+
+
+w.md= function(l){var w=this
+
+    $(w.hud.canvas).mousedown(function(e){
+
+        l({x:w.mx, y:w.my})
+    })
+
+    return w}
+
+w.mu= function(l){var w=this
+
+    $(w.hud.canvas).mouseup(function(e){
+
+        l({x:w.mx, y:w.my})
+    })
+
+    return w}
+w.mm= function(l){var w=this
+
+    $(w.hud.canvas).mousemove(function(e){
+
+        l({x:w.mx, y:w.my})
+    })
+
+    return w}
+
+w.m$= function(l){var w=this
+
+    $(w.hud.canvas).click(function(e){
+
+        l({x:w.mx, y:w.my})
+    })
+
+    return w}
+
+
+w.m$$= function(l){var w=this
+
+    $(w.hud.canvas).dblclick(function(e){
+
+        l({x:w.mx, y:w.my})
+    })
+
+    return w}
+
+
+w.pan=function(o){
+    var  w=this,g=G(arguments),
+        o=g[0],
+        mZ = w.minZoom(),
+        MZ= mZ* 3, z=mZ,
+        up=true, l
+    if(g.m){
+        l=function(){
+            up = z > MZ? false : z < mZ? true: up
+
+            z *= up? 1.01 : .9
+
+            w.zoom(z)
+        }
+    }
+    else {l=function(){
+        up = z > MZ? false : z < mZ? true: up
+        z += up? .03 : -.03
+        w.zoom(z)}}
+    w.track.cb=l
+    return w}
+
+
+
+WORLDPAN=function(){
+
+    W([1200, 600, 2400, 600],{g:0}).pan('*')
+
+
+    y = w.ship(100,100).rot(120).aD(100)//.stat()
+
+    b= w.D(100,100, 'b', 30).lV(-10,-20).rest(.2)
+    co = w.tensor().body( b.track())
+    _.times(10, function(i){
+        co.body( w.D(100 + 30*i,100, 'r', 30).lV(10,20).rest(.2) ) })
+
+
+
+    w.S(400,300,'r',200,100)
+    w.S(800,300,'z',100,100)
+    w.S(1200,300,'b',300,100)
+    w.S(1600,300,'z',100,100)
+    w.S(2000,300,'r',200,100)
+
 }
 SLOOM=function(){
     w = b2d.W([800,500,2400,500],{g:0}).zoom(3)
@@ -3160,18 +3500,60 @@ SLOOM=function(){
     w.S(2000,300,'r',200,100)
     y = w.ship(200,200).rot(120).damp(1,10).track()
     var z=3.2, up=true
-    cjs.tick(function(){up=z>5?false:z<3.5?true:up
-        w.zoom(z+= up?.01:-.01)})
+
+
+    w.pan()
+
 
 }
+
+
+WDOWN=function(){
+
+    W([1200,600,2400,600],  {g:10, m:'m'  })
+
+    w.B(300,400, 'r', 50,50); w.B(800,400, 'r', 50,50);
+    w.B(1200,400, 'r', 50,50);
+    w.B(1600,400, 'y', 100,100).K('m')
+
+    y= w.ship().track()
+
+
+
+}
+
 ZJUMP=function(){
-    w = b2d.G([1200,600,2200,2600],{g:300}).zoom(2.5)
+   W([1200,600,2200,2600],{g:300})
     w.S(400,2500,'r',200,100)
     w.S(800,2300,'z',100,100)
     w.S(1200,2300,'b',300,100)
     w.S(1600,2300,'z',100,100)
     w.S(2000,2300,'r',200,100)
-    y=w.jumper().Y(100).X(1175).track()}
+
+
+
+    _.times(50, function(i){ w.B(100+i*40, 100,$r(), 15).den(.1)})
+
+    w.zoom(100)
+
+    w.track.cb= function(){
+        var z=w.zoom(),
+            mZ=w.minZoom()
+
+        if(z>mZ ){
+            w.zoom(z*.9)
+        }
+
+
+
+    }
+
+    y=w.jumper().Y(100).X(1175).track()
+
+
+
+}
+
 CONTLIST=function(){//gives u a controller-edge, which is a body-controller pair
     //it is linked both to other bodies for that controller..
     //and to other controllers of that body!!!
@@ -3237,21 +3619,20 @@ UPDOWN=function(){w = b2d.W({g:0}).debug().C('g')
     })
 
 }
-GRAVTRAP=function(){w=b2d.W({g:0,walls:0}).C('e').pen('welcome to grav controller')
 
+GRAVTRAP=function(){W({g:0,w:0}).C('e').Y(300,300).pen('welcome to grav controller')
 
-    y= w.yShip(300,300).thrustControl().shootOnSpace()
-        .den(1).linDamp(10)
 
     gCo = w.grav().body(y,
 
-     w.circ(320,300, 20, 'b').den(1),
-     w.circ(300,320, 30, 'r').den(1),
-     w.circ(340,300, 40, 'x').den(1),
+     w.D(320,300, 'b', 20).den(1),
+     w.D(300,320, 'r', 30).den(1),
+     w.D(340,300, 'x', 40).den(1),
 
-        w.circ(300,340, 50, 'c').den(1),
 
-        w.circ(320,320, 60, 'l').den(1)
+        w.D(300,340, 'c', 50).den(1),
+
+        w.D(320,320, 'l', 60).den(1)
 
     )
 
@@ -3261,33 +3642,32 @@ GRAVTRAP=function(){w=b2d.W({g:0,walls:0}).C('e').pen('welcome to grav controlle
 
 
 }
-GRAVR=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
+
+GRAVR=function(){W({g:0, w:0}).C('e').Y(300,200).pen(
     'welcome to grav controller - top balls r1, bottom r2(default)')
 
 
-    y= w.yShip(300,200).thrustControl().shootOnSpace()
-        .den(1).linDamp(10)
 
     r = 40
 
     gCo = w.grav(1, true).body(
-        w.circ(100,600, r, 'b').den(1),
-        w.circ(200,500, r, 'r').den(1),
-        w.circ(300,400, r, 'x').den(1),
-        w.circ(400,300, r, 'c').den(1),
-        w.circ(500,200, r, 'l').den(1),
-        w.circ(600,100, r, 'l').den(1)
-    )
 
+        w.D(100,600, 'b', r).den(1),
+        w.D(200,500, 'r', r).den(1),
+        w.D(300,400, 'x', r).den(1),
+        w.D(400,300, 'c', r).den(1),
+        w.D(500,200, 'l', r).den(1),
+        w.D(600,100, 'l', r).den(1)
+    )
 
     gCo2 = w.grav().body(
 
-        w.circ(700,600, r, 'b').den(1),
-        w.circ(800,500, r, 'r').den(1),
-        w.circ(900,400, r, 'x').den(1),
-        w.circ(1000,300, r, 'c').den(1),
-        w.circ(1100,200, r, 'l').den(1),
-        w.circ(1200,100, r, 'l').den(1)
+        w.D(100,600, 'b', r).den(1),
+        w.D(200,500, 'r', r).den(1),
+        w.D(300,400, 'x', r).den(1),
+        w.D(400,300, 'c', r).den(1),
+        w.D(500,200, 'l', r).den(1),
+        w.D(600,100, 'l', r).den(1)
 
     )
 
@@ -3295,30 +3675,35 @@ GRAVR=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
 
 
 }
-GRAVG=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
-    'welcome to grav controller - top has g:2, bottom has g:1 (default)')
 
-    y= w.yShip(300,200).thrustControl().shootOnSpace().den(1).linDamp(10)
+GRAVG=function(){
 
-    r=40
+     W({g:0, w:0}).C('e').Y(100,100)
+
+    w.pen(
+
+        'welcome to grav controller - top has g:2, bottom has g:1 (default)')
+
+    r = 40
 
     gCo = w.grav(2).body(
-        w.circ(100,600, r, 'b').den(1),
-        w.circ(200,500, r, 'r').den(1),
-        w.circ(300,400, r, 'x').den(1),
-        w.circ(400,300, r, 'c').den(1),
-        w.circ(500,200, r, 'l').den(1),
-        w.circ(600,100, r, 'l').den(1)
+
+        w.D(100,600, 'b', r).den(1),
+        w.D(200,500, 'r', r).den(1),
+        w.D(300,400, 'x', r).den(1),
+        w.D(400,300, 'c', r).den(1),
+        w.D(500,200, 'l', r).den(1),
+        w.D(600,100, 'l', r).den(1)
     )
 
     gCo2 = w.grav().body(
 
-        w.circ(700,600, r, 'b').den(1),
-        w.circ(800,500, r, 'r').den(1),
-        w.circ(900,400, r, 'x').den(1),
-        w.circ(1000,300, r, 'c').den(1),
-        w.circ(1100,200, r, 'l').den(1),
-        w.circ(1200,100, r, 'l').den(1)
+        w.D(700,600,'b',r).den(1),
+        w.D(800,500,'r',r).den(1),
+        w.D(900,400,'x',r).den(1),
+        w.D(1000,300,'c',r).den(1),
+        w.D(1100,200,'l',r).den(1),
+        w.D(1200,100,'l',r).den(1)
 
     )
 
@@ -3326,6 +3711,7 @@ GRAVG=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
 
 
 }
+ 
 GRAVGR=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
     'welcome to grav controller - top has g:1,r:1, bottom has g:2,r:2 -- pinks move OUTWARDS only on bottom?')
 
@@ -3357,6 +3743,7 @@ GRAVGR=function(){w=b2d.W({g:0,walls:0}).C('e').pen(
 
 
 }
+
 FORCE=function(){w=b2d.W({g:0}).C('e')
     .pen('welcome to (const) force controller')
     fCo = w.force(1,0)
@@ -3405,36 +3792,37 @@ ACCVSFORCE=function(){w=b2d.W({g:0}).C('e')
 
 
 }
-TENSOR=function(){w=b2d.W({g:0}).pen(
-    'welcome to tensor (damping) controller - the timing here is amazing!')
 
-    //AMAZING TIMING!!!!
+TENSOR=function(){W().G(0).pen('welcome to tensor (damping) controller - the timing here is amazing!')
 
     co = w.tensor().body(
-        w.ball(100,100).lV(10,20),
-        w.ball(500,500).lV(-10,-20),
-        w.ball(300,300).lV(-10,-20)
+
+        w.D(100,100, 'r', 30).lV(10,20),
+        w.D(500,500, 'b', 30).lV(-10,-20),
+        w.D(300,300, 'g', 30).lV(-10,-20)
     )
 
 }
-TENSORNEVERSETTLE=function(){w=b2d.W({g:0}).pen('welcome to tensor (damping) controller')
+
+
+
+
+TENSORNEVERSETTLE=function(){
+
+     W().G(0).Y().pen('welcome to tensor (damping) controller')
+
 
     co = w.tensor()
 
-    w.debug()
-    y=w.ship()
-
     _.times(30, function(){
 
-        co.body(
-
-            w.circ(400,300, 20, 'w').lV(10,20).linDamp(0)
-
-        )
+        co.body( w.B(400, 300,'w', 20).L(10,20,0)  )
     })
 
 }
-COEDGE=function(){w=b2d.W().debug()
+
+
+COEDGE=function(){W()
 
     w.rectStat(320,480,640,20)
     w.rectStat(320,340,320,20)
@@ -3479,15 +3867,18 @@ COEDGE=function(){w=b2d.W().debug()
 
 
 }
+
 //waterCanvas = w.s.shape().f('red',.2).dr(180,160,280,170).ef()
-SENSORCONTROL=function(){w = b2d.W({g:3}).debug()
+
+
+SENSORCONTROL=function(){W({g:3})
 
 
 
-    w.rectSensor(300,300, 40,40, 'o')
-    w.rectSensor(540,300, 40,40, 'o')
+    w.S(300,300, 'o', [[40,40,'-']])
+    w.S(540,300, 'o', [[40,40,'-']])
 
-    w.rectSensor(780,300, 40,40, 'o')
+    w.S(780,300, 'o', [[40,40,'-']])
 
 
     y = w.ship(300,100).linDamp(2)
@@ -3495,13 +3886,9 @@ SENSORCONTROL=function(){w = b2d.W({g:3}).debug()
     aCo = w.acc(1000, -1000)
 
 
-    w.beg(function(){
-        aCo.body(y)
-    })
+    w.beg(function(){  aCo.body(y)  })
 
-    w.end(function(){
-        aCo.remove(y)
-    })
+    w.end(function(){  aCo.remove(y)  })
 
   //  The easiest approach to utilize the controllers is to create sensor fixtures
   // that test when a begin/end  event has occurred with a body.
@@ -3513,19 +3900,10 @@ SENSORCONTROL=function(){w = b2d.W({g:3}).debug()
 
 
 }
-ARRAY=function(){
-
-    w=b2d.W()
 
 
-    b = w.ball(100,100,50)
 
-    b1 = w.ball(100,200,40)
 
-    arr = ['hi', 'hello', 'sis']
-
-    arr.indexOf('helloo')
-}
 CLASSES=function(){w=b2d.W()
 
     b=w.ball(100,100,50)
@@ -3537,10 +3915,12 @@ CLASSES=function(){w=b2d.W()
 
 
 }
+
 MESSAGEPASSING=function(){w=b2d.W()
     b = ball(100,100,50)
     b1 = ball(100,200,40)
 }
+
 UNION=function(){w=b2d.W()
 
 
@@ -3564,7 +3944,7 @@ UNION=function(){w=b2d.W()
 
 
 }
-TANSTAT=function(){w=b2d.W()
+TANGRAMSSTAT=function(){w=b2d.W()
 
 
     b = w.brick(300,300,56,56).rot(45)
@@ -3589,11 +3969,10 @@ TANSTAT=function(){w=b2d.W()
         .fixedRot(true).stat()
 
 }
-TAN=function(){w=b2d.W({g:0})
+TANGRAMS=function(){W({g:0})
 
 
-    b = w.box(300,300,56,56).rot(45).den(1).damp(1000,1000)
-
+    b = w.B(300,300,'t',56,56).rot(45).den(1).damp(1000,1000)
 
     t = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(280,260).rot(90).den(1).damp(1000,1000)
 
@@ -3601,6 +3980,7 @@ TAN=function(){w=b2d.W({g:0})
     t2 = b2d.conc([V(-40,20),V(0,-20),V(40,20)]).XY(342,321).den(1).damp(1000,1000)
 
     bt = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(304,220).rot(180).den(1).damp(1000,1000)
+
     bt2 = b2d.conc([V(-80,40),V(0,-40),V(80,40)]).XY(346,262).damp(1000,1000)
         .rot(270).den(1).damp(1000,1000)
 
@@ -3613,24 +3993,19 @@ TAN=function(){w=b2d.W({g:0})
     ]).XY(240,267).den(1).damp(1000,1000)
 
 }
-BOOTBALL=function(){w=b2d.W({g:0})
+BOOTBALL=function(){W({g:0})
 
-    b = w.ball(270,500,40).rest(.5)
+    b = w.B(270, 500, 'o', 40).rest(.5)
 
-    r = w.brick(300,300,100,20).rot(20)
+    r = w.S(300,300, 'g', 100,20).rot(20)
 
     r.fixt(b2d.poly(20,40,60,-20))
+    r.XY(200,500).den(.1).damp(1000,1000).rot(100).dyn()//.angVel(200)
+    r.rev(w.B(200,500, 'w', 20).damp(1000,1000).den(100))
 
-    r.XY(200,500).rot(100).dyn()//.angVel(200)
-
-    r.den(.1)
-    r.rev(w.ball(200,500,20).damp(1000,1000).den(100))
-    r.damp(1000,1000)
-
-    cjs.tick(function(){
-        b.F(0, 20)
-    })
+    cjs.tick(function(){b.F(0,20)})
 }
+
 
 //
 //
@@ -3677,4 +4052,26 @@ b2d.setupDebugDrawx =setupDebugDrawx =function(){
     //debugDraw.SetLineThickness( 3000 )
     debugDraw.SetFlags(  shB||jB   )
     w.dD(  debugDraw )}
+
+
+w.bodyX=w.AX=function(bD, fD){var w=this, b
+
+    if(b2d.isBDef(bD)){b = w.CreateBody(bD)}
+
+
+
+    if(fD){b.fixt(fD)}
+
+    //b.den(1)
+
+    return b
+}
+w.dynX= w.dynamicX=function(x,y, fD ){var w=this, body
+
+    if(O(x)){fD=y;y=x.y;x=x.x}
+    x =N(x)?x: 500
+    y =N(y)?y: 250
+
+    return w.body( b2d.dyn(x,y), fD )}
+
 

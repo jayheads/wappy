@@ -1,236 +1,111 @@
 
-b2d.edge = b2.edgeShape = function(v1, v2){
 
-    v1 = v1 || V(10,10)
+b2d.edge= function(x1,y1, x2,y2) {
+    var fd = b2d.poly()
+    fd.shape.SetAsEdge(V(x1, y1).div(),  V(x2, y2).div())
+    return fd}
+w= b2d.World.prototype
+w.edgeChain = function(){
+    var w=this,
+        g=G(arguments),
+        X=0,
+        Y= 0,
+        x =w.D(X,Y, 'z', [[100,100, 400,400, '-']]),
+        x2 =w.D(2000, 1200, 'z', [[400,400,  '-']])
 
-    v2 = v2 || V(1,100)
+    if(A(g[0])){
+
+        //  b = w.D(g[0][0],g[0][1], 'w',20,  g[0][0],g[0][1] )
+        //  w.weld(x,b)
+        // X=g[0][0]
+        // Y=g[0][1]
+    }
 
 
-    var edge = new b2d.Shapes.b2EdgeShape(v1, v2)
-    return edge}
-
-
-
-
-b2d.chainDef = function(){
-    return new b2d.Shapes.b2EdgeChainDef()
-
-}
-
-
-
-
-
-CHAINDEF=function(){  w = b2d.W({
-        g: 0
+    _.each(g, function(e){
+        if(A(e)){e = w.edgeD.apply(w,e)}
+        w.weld(e,x)
     })
 
+    //  w.weld(x2  , x)
 
-    b = w.ball()
+    w.dot(300, 300)
 
-    chainDef = new b2d.chainDef()
+    return x2}
 
-    //es = new b2d.Shapes.b2EdgeShape()
+w.edge= function(x1,y1,x2,y2){var w=this, e
 
+    // you would always want a single stat?
 
-    chainDef.friction = 0.5
-    chainDef.restitution = 0.0
-    chainDef.isALoop = true
-    chainDef.vertices.length = 0
-    chainDef.userData = "vertex"
-    ratio = 1
+    w.line(x1, y1, x2, y2)
 
-    vertexList = [
-        {x: 120, y: 548},
-        {x: 267, y: 480},
-        {x: 484, y: 561},
-        {x: 532, y: 328},
-        {x: 602, y: 520},
-        {x: 337, y: 608}
-    ]
+    e = w.S(0, 0, b2d.edge(x1,y1,x2,y2))
 
-    _.each(vertexList, function (vertex) {
-        chainDef.vertices.push( V(vertex)  )
-    })
+    return  e}
 
 
+w.edgeD = function(x1,y1,x2,y2){var w=this, l,e
 
-    chainDef.vertexCount = chainDef.vertices.length
+    l = w.line(x1, y1, x2, y2)
 
-    gb=w.GetGroundBody()
+    e = w.D(0, 0, b2d.edge(x1,y1,x2,y2)).den(1)
 
-    edgeshape = gb.CreateShape(chainDef)
+    e.bindSprite2(l)
 
-    w.DestroyBody( edgeshape.GetBody() )
-
-}
-
-
-CHAINDEF2=function(){
-    z()
-
-
-    w = b2d.W({g: 0})
-
-    b = w.ball(600,100)
-
-    ec = new b2d.Shapes.b2EdgeChainDef()
-    ec.vertices.push(V(100,100))
-    ec.vertices.push(V(200,200))
-    ec.friction = 0.5
-    ec.restitution = 0.0
-    ec.isALoop = true
-    ec.vertices.length = 0
-    ec.userData = "vertex"
-
-
-   e = w.dyn(100,100, fd= b2d.fixt(ec)  )
+    return  e}
 
 
 
-}
+w.edges=function(ptArr){var w=this,e
+    ptArr = ptArr || []
+    i = V( ptArr.shift() )
+    i2 = V( ptArr.shift() )
 
+    e = w.edge(i.x, i.y, i2.x, i2.y)
 
-EDGES=function() {
-    z()
+    _.each(ptArr, function(v){
+        i = i2
+        i2 = V(v)
 
-
-    w = b2d.mW({grav: 0})
-
-
-    b = w.ball(600,100)
-
-
-
- //  es = new b2d.Shapes.b2EdgeShape()
-
-  //  edge.Set(v1, v2);
-
-
-
-
-  createEdgeBody=function( world,  bodyType, x1,y1,x2,y2){
-
-
-      bx=(x1+x2)/2
-      by=(y1+ y2)/2
-        bodyDef = b2d.dynamicDef(
-
-            bx,by
+        e.glue(
+            w.edge(i.x, i.y, i2.x, i2.y)
         )
-       
 
-      
-
-
- 
-      len=  Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
+    })}
 
 
 
-        bodyDef.angle=0;
-
-        body = w.createBody(bodyDef)
-
-
-//ADD EDGE FIXTURE TO BODY
-        MakeEdgeShape(body,len,bodyType,1,0,1)
-
-//CALCULATE ANGLE OF THE LINE SEGMENT
-        body.setTransform(bx, by, MathUtils.atan2(y2-y1, x2-x1));
-
-        return body
-    }
-
-
-
-
+w.edgesD=function(ptArr){var w=this
+    ptArr = ptArr || []
+    i = V( ptArr.shift() )
+    i2 = V( ptArr.shift() )
+    w.edge(i.x, i.y, i2.x, i2.y)
+    _.each(ptArr, function(v){
+        i = i2
+        i2 = V(v)
+        w.edge(i.x, i.y, i2.x, i2.y)
+    })}
+w.edgeArr = function(){
+    var w=this,
+        g=G(arguments),
+        X=0,
+        Y= 0,
 
 
-
-  edge = function(body, len, BodyDef, bodyType, density,  restitution,  friction){
-
-       fixtureDef=new FixtureDef()
-        fixtureDef.density=density
-        fixtureDef.restitution=restitution
-        fixtureDef.friction=friction
-
-         es=new EdgeShape()
-
-//SET LENGTH IN BOX COORDINATES
-          boxLen=ConvertToBox(len)
-//SETTING THE POINTS AS OFFSET DISTANCE FROM CENTER
-        es.set(-boxLen/2,0,boxLen/2,0);
-        fixtureDef.shape=es;
-
-        body.createFixture(fixtureDef);
-        fixtureDef.shape.dispose();
-    }
-
-}
+        x =w.D(400, 400,'z', [ [50, 50,  '-']])//.den(10)
 
 
+    _.each(g, function(e){
 
-EDGESHAPE=function(){z()
+        e =  w.edgeD(e[0], e[1], e[2], e[3])
 
-    patch2()
+        w.weld(e,x,V(g[0][0], g[0][1]))
 
-    b2d.mW()
-
-    bd = b2d.staticDef()
-    b = w.CreateBody(bd)
+    })
 
 
-    f = b2d.fixtDef()
+    return x}
 
-   // es = b2d.edge(V(10,10 ,'-'), V(1,100,'-'))
-
-
-    es = new b2d.Shapes.b2EdgeShape(
-
-        V(100,100,'-'),
-
-        V(200,200,'-'),
-
-        V(0,0,'-'),
-
-        V(10,20,'-'),
-        V(250,106,'-'),
-
-        V(10,20,'-')
-
-    ) //m_v1, m_v2
-
-    /*
-    es.m_cornerDir1=V(100,100)
-    es.m_cornerDir2=V(200,10)
-    es.m_coreV1=V(100,100)
-    es.m_coreV2=V(200,10)
-    es.m_v1=V(100,100)
-    es.m_v2=V(200,10)
-
-*/
-
-
-    f.shape =es
-    f.m_shape = es
-
-    //f.shape = b2d.circle()
-
-
-
-    b.CreateFixture(f)
-
-
-    w.ball()
-
-}
-
-
-
-
-
-//***** works!!!!!
 ASEDGE=function(){ b2d.mW()
 
     w.edge(100,500,1000,0)
@@ -241,31 +116,156 @@ ASEDGE=function(){ b2d.mW()
     w.player('standard')
 
 }
-HILLS = function(){z()
+
+HILLS = function(){W().P().db()
 
 
-    b2d.mW()
+    w.edge(100,100, 500,300)
 
-    w.edge(100,100,500,300)
-    w.edge(100,200,500,400)
-    w.edge(100,300,500,500)
+    w.edge(100,200, 500,400)
+    w.edge(100,300, 500,500)
 
-    w.edge(1000,100,600,300)
+    w.edge(1000,100, 600,300)
 
-    w.edge(1000,200,600,400)
-    w.edge(1000,300,600,500)
+    w.edge(1000, 200, 600, 400)
+    w.edge(1000, 300, 600, 500)
+
+    w.D(410,100, 'r', 20)
 
 
 
-    w.ball(410,100)
-    w.player('standard')
 
+}
+
+
+CONEDGE=function(){W(10).Y(450,400)
+
+
+    w.edges([
+
+        [100,300],  [500, 500],   [600,400],   [300,250], [100,300]
+
+    ])
+
+
+
+}
+
+WELDFUN=function() {
+    W(1200, 600, 1600)
+
+      w.weld( w.B(100,200,'x', 100,200).rest(1), w.B(200,100, 'u', 200,100).rest(1))
+
+
+      w.weld( w.D(300,400,'w',50,100), w.D(300,400,'v', 100,50))
+}
+
+
+
+
+WELDEDGE1=function(){
+
+    W({ g:0, w:0  })
+
+   // e  = w.edgeD(600,300,650,100); e1 = w.edgeD(700,300,750,100); e2 = w.edgeD(700,100,750,400); e3 = w.edgeD(500,200,950,10); w.f(e,e1,e2,e3)
+
+
+   // b = w.B(450,350, 'y', 10)
+
+   //  w.ship(450,350)
+
+    x = w.edgeChain(
+        [400,400, 500, 200],
+        [500,200, 550,600]   ,
+        [550,600,400, 400]
+    )
+
+
+
+}
+
+
+WELDEDGE=function(){
+    W([1200,600,2400,600],{
+
+    })
+
+   // W({w:0})
+    w.G(100)//.zm(1)
+
+    w.roof.kill()
+
+
+    w.D(480, 400, 'r', 30)
+    w.D(480, 400, 'b', 30)
+    w.D(480, 400, 'y', 30)
+
+    x = w.edgeArr(
+        [400,400, 500, 200],
+
+        [500,200, 550,600]   ,
+
+        [550,600,400, 400]
+    ).track()
+
+
+
+
+}
+
+
+w.sToW= w.gTL= function(x,y){
+
+    var w=this, sc = w.sc(),  sX= x,   sY= y
+
+   return {x:sX/sc   + w.pX()/sc,  y:sY/sc + w.pY()/sc }
 
 }
 
 
 
 
+
+w.wToS= w.lTG=function(){
+
+}
+
+
+
+WORLDCLICK= function(){W([1200,600,2400,600], {g:100 }) //.zm(1)
+
+    w.roof.kill()
+
+    //w.D(480, 400, 'r', 30); w.D(480, 400, 'b', 30); w.D(480, 400, 'y', 30)
+
+    x = w.edgeArr([400,400, 500, 200],[500,200, 550,600],[550,600,400, 400]).track()
+
+    b = w.D(100,100,'b', 20)
+
+
+    w.$(function(x, y){
+
+       // var sX= x,  sY= y,  wX   , wY
+
+        var v = w.sToW(x,y)
+
+        //w.S(  sX/1.5    + w.pX()/1.5,sY/1.5 + w.pY()/1.5 ,'z',  [  [10,10,'-']]  )
+
+        w.S(v.x, v.y ,'z',  [  [10,10,'-']]  )
+
+    }) // $l('sX: '+ sX +', '+ 'sY: '+ sY + ' - wX: '+ wX +', '+ 'wY: '+ wY)
+
+
+
+
+
+    w.sc(1.5)
+    x.X(1200)
+
+    cjs.tick(function(){
+        $l(w.mx + ', ' + w.my)
+    })
+}
 
 
 // https://developer.chrome.com/devtools/docs/workspaces !!!!!

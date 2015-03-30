@@ -301,10 +301,10 @@ w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
 w.webMe=function(x,y){
 
 
-    sw = cjs.stopWatch()
+   sw = cjs.stopWatch()
 
 
-    var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixedRot(true).K('player')
+    var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixRot().K('player')
 
 
     p.isConnected=function(){var res, that=this
@@ -322,11 +322,12 @@ w.webMe=function(x,y){
         if(N(y)){bul.I(x,y)}
 
         return this}
-    p.getTime = function(){
-        var time =  this.shotClock()
-        this.shotClock.reset()
+
+    p.getTime = function(){var p=this,  time =  p.shotClock()
+        p.shotClock.reset()
 
         return time}
+
     p.getForce = function(){
 
         var time = p.getTime(),
@@ -855,19 +856,29 @@ w.goal=function(x,y){
     w.S(x+20,y-15,'y',10,40)
 
 }
-w.sensorBucket=function(x,y,kind){
-    var w=this,sens
+
+
+
+w.sensorBucket=function(x,y,k){
+    var w=this, sens
 
     x=N(x)?x:320
     y=N(y)?y:245
-    kind=kind||'sensorBucket'
-    w.S(x, y+95 , 'o', 320, 20, 200 )
-    w.S(x-150, y-15, 'o', 20, 200)
-    w.S(x+150, y-15, 'o'), 20, 200
 
-    sens = w.B(x, y, 'b', 280, 170 ,'-').K(kind)
+    k=k||'sensorBucket'
+
+
+    w.S(x-150, y-15, 'r', 20, 200)
+
+    w.S(x+150, y-15, 'r', 20, 200 )
+
+    w.S(x-200, y-120 , 'r', 320, 20, 200,200 )
+
+    sens = w.S(x,y,'d', [[280, 170 ,'-']]).K(k)
 
 return sens}
+
+
 
 
 cjs.stopWatch=function(){

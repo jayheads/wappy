@@ -427,26 +427,52 @@ $.oMM=function(fn){
     this.mousemove(function(e){
         fn(e.clientX, e.clientY, e)})
     return this}
-$.oMD=function(fn){
-    this.mousedown(function(e){
+
+$.oMD=function(fn){var $=this
+
+    $.mousedown(function(e){
+
         fn(e.clientX, e.clientY, e)})
-    return this}
+
+    return $
+}
+
+
 $.oMU=function(fn){
     this.mouseup(function(e){
         fn(e.clientX, e.clientY, e)})
     return this}
 
-$.M=function(){
-    this.oMD(function(x,y){_.x=x;_.y=y})
-    this.oMM(function(x,y){_.x=x;_.y=y})
+$.M=function(){var $=this
 
+    $.oMD(function(x,y){_.x=x;_.y=y})
 
-
+    $.oMM(function(x,y){_.x=x;_.y=y})
 
     cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
 
     return this
 }
+
+
+
+$.M0=function(){var $=this
+
+    $.oMD(function(x,y){
+
+        _.x=x;
+        _.y=y
+
+    })
+
+    $.oMM(function(x,y){_.x=x;_.y=y})
+
+    cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
+
+    return this
+}
+
+
 
 MJYANOSCRIPT=function(){w=b2d.W()
     b = w.B(600,300,'r', 50).den(1).rest(.5)

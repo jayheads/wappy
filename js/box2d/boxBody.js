@@ -346,6 +346,15 @@ b.transform = p.tf=  function(tf){
 b.next = p.n = p.gN =function(){ return  this.GetNext()   }
 
 
+b.L= function linear(vx, vy, damp){var b=this
+    if(U(vx)){b.lV(0,0).lD(0)}
+    else {
+        b.vX(vx)
+        if(N(vy)){b.vY(vy)}
+        if(N(damp)){b.lD(damp)}}
+
+return b}
+
 
 
 b.XX = b.destroy = b.kill = function(){
@@ -430,7 +439,8 @@ classes=function() {
         })
         return this
     }
-    b.hasClass = b.hasClasses = function self(clas) {
+
+    b.has = b.hasClass = b.ofClass = b.hasClasses = function self(clas) {
         var body = this, hasClass;
         body.classes = body.classes || []
         if (!clas) {
@@ -527,13 +537,10 @@ classes=function() {
         }
         return this
     }
-    b.ofClass = function () {
-        var body = this.body()
-        return this.hasClass.apply(this, arguments) ||
-            body.hasClass.apply(body, arguments)
-    }
-    b.of = function () {
-    }
+
+
+
+
     b.contains = function (clas) {
 
         var fs = this.fixts(), contains = false

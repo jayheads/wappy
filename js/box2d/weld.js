@@ -1,8 +1,11 @@
- b2d.weld=function(a,b, ancA, ancB, ang, c,d){
+b2d.weld=function(a,b,   ancA, ancB, ang, c,d){
+
+     // can set 2 local anchor points and a reference angle
 
     var jd =  new b2d.Joints.b2WeldJointDef()
     jd.bodyA=a
     jd.bodyB=b
+
 
      if(N(ancA)){
          ancA=V(ancA,ancB)
@@ -10,165 +13,94 @@
          ang=d
      }
 
-    if(ancA){jd.localAnchorA = ancA.div()}
-    if(ancB){jd.localAnchorB = ancB.div()}
-    if(N(ang)){jd.referenceAngle = Math.toRadians(ang) }
-    return jd
+     if(ancA){jd.localAnchorA = ancA.div()}
+
+     if(ancB){jd.localAnchorB = ancB.div()}
+
+     if(N(ang)){jd.referenceAngle = Math.toRadians(ang) }
+
+     return jd
 
  }
-BWELD=function(){w=b2d.W()
+
+WELDS=function(){W()
 
 
-j = w.weld(
+    w.weld(
 
-    w.box(100,200, 100,200).rest(1),
-    w.box(200,100, 200,100).rest(1)
+            w.S(100,100,'r',30),
 
-)
+            w.D(100,100, 'b', 30),
 
-
-    setInterval(function(){
-        if(j.destroyed){
-            j = j.form()
-        }
-     else { j.destroy() }
-    },2000)
-
-}
+        0,0)
 
 
 
+    w.weld( w.S(200,100,'x',30), w.D(200,100,'v',30),0,10)
+   w.weld( w.S(300,100,'l',30), w.D(300,100,'x',30),0,-10)
 
-
-WELD = function(){w=b2d.W({
-   // w:0,
-    g:0 })
-
-   //  j= w.weld(    w.ball(200,200,40).den(1),    w.box(200,220,40, 100).den(1)   )
+    w.weld( w.S(400,100,'g',30), w.D(400,100,'x',30),10,10)
 
 
 
-    w.ball(100, 100, 20)
-    w.ball(200, 100, 20)
-    w.ball(300, 100, 20)
-    w.ball(400, 100, 20)
-
-//    w.ball(500, 100, 20).den(1).warp2()
-
-    w.beg(function(cx){
-      //  w.weld(cx.a(), cx.b(), V(50,50) ,V(-50,-50))
-    })
-    //connect the centers - center in local coordinate - relative to body is 0,0
-   // joint_def.localAnchorA = V(-0.5, -0.5);
-    //joint_def.localAnchorB = V(0.5, 0.5);
-
-    //difference in angle of each body
-  //  joint_def.referenceAngle = 0 * Math.PI/3
-
-    //add the joint to the world
-  //  w.CreateJoint(joint_def)
-
-}
-
-
-
-WELD3 = function(){w=b2d.W()
-
-
-    b= w.bump(500,400,40).den(1)
-    b2= w.ball(500,400,40).den(1)
-
-jd=b2d.weld(b,b2)
-
-    jd.localAnchorA = V(.3,.3)
-   jd.localAnchorB = V(0,0)
-   jd.referenceAngle = Math.toRadians(0)
-
-   j= w.J(jd)
-}
-
-
-
-b2d.weldJoint =   Welding = weld=function(a,b,c,d,e,f,g){
-    c=c||0;d=d||0; e=e||0; f=f||0
-
-    return WeldJoint(a, b, V(c/30,d/30), V(e/30, f/30), g||10)
-
-}
-
-
-
-
-WELD1=function(){w=b2d.W()
 /*
-    w.J(
+    w.J(weld(w.S(500,100,'x',30), w.D(500,100,'v',30),10,-10))
+    w.J(weld(w.S(600,100,'x',30), w.D(600,100,'v',30),10,-20))
+    w.J(weld(w.S(700,100,'x',30), w.D(700,100,'v',30),10,-30))
+    w.J(weld(w.S(800,100,'x',30), w.D(800,100,'v',30),-10,-40))
+    w.J(weld(w.S(900,100,'x',30), w.D(900,100,'v',30),-10,-50))
 
-        b2d.weld(
+    w.J(weld(w.S(100,200,'x',30), w.S(100,200,'v',30),0,0)) //
+    w.J(weld(w.S(200,200,'x',30), w.S(200,200,'v',30),0,10))
+    w.J(weld(w.S(300,200,'x',30), w.S(300,200,'v',30),0,-10))
+    w.J(weld(w.S(400,200,'x',30), w.S(400,200,'v',30),10,10))
+    w.J(weld(w.S(500,200,'x',30), w.S(500,200,'v',30),10,-10))
+    w.J(weld(w.S(600,200,'x',30), w.S(600,200,'v',30),10,-20))
+    w.J(weld(w.S(700,200,'x',30), w.S(700,200,'v',30),10,-30))
+    w.J(weld(w.S(800,200,'x',30), w.S(800,200,'v',30),-10,-40))
+    w.J(weld(w.S(900,200,'x',30), w.S(900,200,'v',30),-10,-50))
 
-            w.bumper(100,100),
+    w.J(weld(w.D(100,500,'x',30), w.S(100,500,'v',30),0,0))
 
-            w.ball(100,100),0,0
-        )
+     w.weld( w.D(200,500,'x',30), w.S(200,500,'v',30) ) //
+
+
+    w.weld(
+        w.D(300,500, 'o', 30),
+        w.D(300,500,'g', 50,50),
+
+        V(0,-10)
     )
 
-    w.J(b2d.weld( w.circStat(200,100), w.ball(200,100),0,10))
-    w.J(b2d.weld( w.bumper(300,100), w.ball(300,100),0,-10))
-
-    w.J(
-        b2d.weld( w.bumper(400,100), w.ball(400,100),10,10)
-    )
-
-
-
-    w.J(weld(w.baa(500,100), w.ba(500,100),10,-10))
-    w.J(weld(w.baa(600,100), w.ba(600,100),10,-20))
-    w.J(weld(w.baa(700,100), w.ba(700,100),10,-30))
-    w.J(weld(w.baa(800,100), w.ba(800,100),-10,-40))
-    w.J(weld(w.baa(900,100), w.ba(900,100),-10,-50))
-
-    w.J(weld(w.baa(100,200,10), w.bi(100,200),0,0)) //
-    w.J(weld(w.baa(200,200), w.bi(200,200),0,10))
-    w.J(weld(w.baa(300,200), w.bi(300,200),0,-10))
-    w.J(weld(w.baa(400,200), w.bi(400,200),10,10))
-    w.J(weld(w.baa(500,200), w.bi(500,200),10,-10))
-    w.J(weld(w.baa(600,200), w.bi(600,200),10,-20))
-    w.J(weld(w.baa(700,200), w.bi(700,200),10,-30))
-    w.J(weld(w.baa(800,200), w.bi(800,200),-10,-40))
-    w.J(weld(w.baa(900,200), w.bi(900,200),-10,-50))
-
-    w.J(weld(w.ba(100,500), w.bi(100,500),0,0))
+    w.weld(w.D(400,500,'x',30), w.S(400,500,'v',30), V(10,10))
+    w.weld(w.D(500,500,'x',30), w.S(500,500,'v',30),V(10,-10))
+   w.weld(w.D(600,500,'x',30), w.S(600,500,'v',30),10,-20)
+   w.weld(w.D(700,500,'x',30), w.S(700,500,'v',30),10,-30)
+  w.weld(w.D(800,500,'x',30), w.S(800,500,'v',30),-10,-40)
+   w.weld(w.D(900,500,'x',30), w.S(900,500,'v',30),-10,-50)
 */
-     w.weld( w.ba(200,500,10), w.bi(200,500) ) //
-
-
-    w.weld(w.ba(300,500), w.bi(300,500),V(0,-10))
-   w.weld(w.ba(400,500), w.bi(400,500), V(10,10))
-    w.weld(w.ba(500,500), w.bi(500,500),V(10,-10))
-   w.weld(w.ba(600,500), w.bi(600,500),10,-20)
-   w.weld(w.ba(700,500), w.bi(700,500),10,-30)
-  w.weld(w.ba(800,500), w.bi(800,500),-10,-40)
-   w.weld(w.ba(900,500), w.bi(900,500),-10,-50)
-
 }
+REWELDING=function(){W().C('p')
 
+     j = w.weld(
+         w.B(100,200,'x', 100,200).rest(1),
+         w.B(200,100, 'u', 200,100).rest(1)
+     )
 
- GLUE=function(){w=b2d.W({g:0})
+     I(2, function(){
+         if(j.destroyed){  j = j.form() }
+         else { j.destroy() }
+     })
 
+ }
 
-     /*
+GLUEBALLS=function(){w=W(0).Y(500)
 
-      b= w.B(300,200, 40,140,20,0,20).stat()
-
-      b2= w.B(400,400, 140,40).stat()
-
-      b.glue(b2)
-
-      setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
-
-      */
 
      w.glueBall = function(x,y){var w=this
-         var bl = w.B(x,y,20).K('bl')
+
+         var bl = w.B(x,y,'z',20).K('bl')
+
          w.beg(function(cx){
              cx.with('bl', function(othF){var bl=this.B()
                  if(!bl.GetJointList()){
@@ -188,37 +120,18 @@ WELD1=function(){w=b2d.W()
      w.glueBall(100, 300)
      w.glueBall(300, 300)
 
-     y = w.ship()
 
  }
- GLUE2=function(){w=b2d.W({g:0})
+LUMPS=function(){W(0).Y()
 
+     y.coll(w.left, function(){var yx= y.X(),yy= y.Y()
 
-     /*
+             T(function(){w.S(yx, yy, 'b', 10)})
 
-      b= w.B(300,200, 40,140,20,0,20).stat()
-
-      b2= w.B(400,400, 140,40).stat()
-
-      b.glue(b2)
-
-      setTimeout(function(){    b.dyn();  b2.dyn()  },1000)
-
-      */
-
-
-
-     y = w.ship()
-
-     w.beg(function(cx){
-
-         cx.with('ship','wall', function(){
-
-             w.B(y.X(), y.Y(), 30).stat()
 
          })
 
-     })
+
 
  }
 

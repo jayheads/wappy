@@ -68,13 +68,30 @@ U = function u(a,b){
 //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-I=function(func,int){var clear
-    var g=G(arguments),func=g[0],int=N(g[1])?g[1]:1000
-    if(g.N){func()}
+I=function(f, i){var g=G(arguments), clear
 
-    clear=setInterval(func, int)
+
+
+    if(F(g[0])){
+        f=g[0];
+        i=g[1]}
+
+    else { f=g[1]; i=g[0]}
+
+    i= !N(i)? 1000 : i>5? i : i * 1000
+
+
+
+
+    if(g.N){f()}
+
+    clear = setInterval(f,i)
+
     return function(){clearInterval(clear)}
+
 }
+
+
 
 
 
