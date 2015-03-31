@@ -334,7 +334,15 @@ $.textInput = function(widthOrPlaceHolderValue, id){
 
 
 
-$.range =  function(){return $.input().type('range')}
+$.range=function(n, m, M){
+    m=N(m)?m:0
+    M=N(M)?M:100
+    n=n||'r'
+    var r =  $('<input type="range">')
+    r.attr({ name:n,  min:m,  max:M  })
+    return r}
+
+
 
 $.radiobox = $.rb =  function(name, val, label){
     var args=G(arguments),

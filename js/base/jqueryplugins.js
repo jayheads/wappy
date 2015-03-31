@@ -1,4 +1,33 @@
-r = 19
+$.fn.mD=function(l){
+ var c=this
+    c.mousedown(function(e){l(e.clientX, e.clientY)})
+return c}
+
+$.fn.pM=function(l){
+    var c=this
+    c.pressmove(function(e){l(e.clientX, e.clientY)})
+    return c}
+
+
+$.fn.m=function(o){
+
+    var e = this
+
+    if(o.mD){e.mD(o.mD)}
+    if(o.mU){e.mD(o.mU)}
+    if(o.pM){e.pM(o.pM)}
+
+    return e}
+
+
+
+
+
+
+
+
+//
+
 $.fn.col = function(col){
     return this.css('color', oO('c', col))}
 $.fn.C = function(col, c2){

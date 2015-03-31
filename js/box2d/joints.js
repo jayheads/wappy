@@ -139,8 +139,6 @@ j.target = function(a,b){var j=this
     return j}
 
 
-
-
 j.damp= function(a){if(U(a)){return this.GetDampingRatio()}
     this.SetDampingRatio(a)
     return this}
@@ -510,7 +508,6 @@ BASKETBALLAUTOCANCEL=function(){w=b2d.W(); $.M()
         b = w.B(600,300,'r', 50).den(1).rest(.5)
     )
 }
-
 
 BALANCEGAME=function(){w=b2d.W(); $.M()
 
