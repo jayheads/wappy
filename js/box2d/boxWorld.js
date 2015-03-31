@@ -315,21 +315,22 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
         .u(o)
 
 
-w.tracker=function(){var w=this
+w.tracker=function(o){var w=this
 
-    w.t = w.trackee =  w.S(
+    if(o.t!=0){
+        w.t = w.trackee =  w.S(
+                w.w/2,
+                w.h/2,
+            'w', [[10 ,10, '-']]).rest(.8).track()
 
-            w.w/2,
-            w.h/2,
-
-        'w', [[10 ,10, '-']]).rest(.8).track()
+    }
 
 
 return w}
 
 
 
-    w.tracker()
+    w.tracker(o)
 
 return w}
 
@@ -446,7 +447,8 @@ w.pos=function(x,y){var w=this
     w.cY = -y
     if(w.SCALE){w.scl(w.SCALE)}
     return this}
-w.fol= w.foll= function(b,x,y,pX){var w=this
+
+    w.fol= w.foll= function(b,x,y,pX){var w=this
 
     w.fw=function(b,x,y){var w=this
 
@@ -498,7 +500,10 @@ w.fol= w.foll= function(b,x,y,pX){var w=this
         w.fwBuf.apply(w, arguments)
     }
     return this}
-w.inout=function(){var w=this,
+
+
+
+    w.inout=function(){var w=this,
     s=1,
     up=true
 
@@ -783,6 +788,7 @@ w.scale=function(a){var w=this
     if(a<1){w.s.XY(w.W()*(1-a)-w.W()/2,w.H()*(1-a)-w.H()/2)}
     else {w.s.XY(w.W()-(w.W()*a)/2, w.H()-(w.H()*a)/2)}}
 
+
     w.MIN=function(){var w=this,z
         W=   w.cW()/ w.w
         H=   w.cH()/ w.h
@@ -873,48 +879,48 @@ w.zoom= w.zm= function(z){
 
 
 
-w.track=  function(b,x,y){
-    var w=this,
-        k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
+    w.track=  function(b,x,y){
+        var w=this,
+            k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
 
-    if(U(b)){return w.track(w.trackee)}
+        if(U(b)){return w.track(w.trackee)}
 
-    x=N(x)?x: w.W()/2
-    y=N(y)?y: w.H()/2
+        x=N(x)?x: w.W()/2
+        y=N(y)?y: w.H()/2
 
-     cjs.tick(function(){
+        cjs.tick(function(){
 
-         if(F(w.track.cb)){w.track.cb()}
+            if(F(w.track.cb)){w.track.cb()}
 
+            k = scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
+            K = function(a){return a*k }
+            cW = w.cW()
+            wW = w.w
+            sX=K(b.X()-x) + (K(cW)-cW)/2
 
-         k = scl  = w.sc() //N(w.SCALE)? w.SCALE : 1
+            w.s.x=   -cjs.cap(sX,  0, K(wW)-cW  )
 
-         K = function(a){return a*k }
+            sY=  K(y-b.Y())  +  w.H()/2 - K(w.H()/2)
 
-         hW = w.W()/2
-         kW = w.w*k
-         sX=K(x-b.X()-hW)+hW
+            sY = cjs.cap(sY, sY= w.H() -  K(w.h),0  )
 
-         w.s.x= sX>0?0 : sX<w.W()-kW?w.W()-kW: (kW/2)-hW<0?hW-(kW/2):   sX
+            if((w.H()/2 - K(w.h/2) )>=0) {  sY =  w.H()/2 - K(w.h/2) }
 
+            w.s.y= sY
 
-         sY=(y - b.Y())* scl -  w.H() * (scl/2- .5 )
-         if(sY>0){sY=0}
-         if(sY < w.H() - w.sc()* w.h  ) { sY= w.H() - w.sc()* w.h }
-         if((w.H()/2 - (w.h/2)* w.sc())>=0) {  sY =   w.H()/2 - (w.h/2)* w.sc()}
-         w.s.y= sY
+        })
 
-     } )
+        //i can leave the world-centering in fw//can optionally filter it with scale itself
 
-    //i can leave the world-centering in fw//can optionally filter it with scale itself
-
-    return w}
+        return w}
 
 
 
 
 
-FOLLOWERS=function(){W(500, 500, 1600, 1000).G(0)
+
+
+    FOLLOWERS=function(){W(500, 500, 1600, 1000).G(0)
 
     a = w.ship().C('b')
 
@@ -3105,21 +3111,26 @@ STREETFIGHTER=function(){
     // w.follow(y,700,500,  200,  300 )
 
 }
+
 STREETFIGHTERBUFF=function(){
 
 
-    W([1200, 600,1400,800], {})
+    W([1200, 600,1400,1500], {g:0,t:0})
 
 
     w.S(700,600,'r',400,20)
 
-    y = w.ship( 700, 700 ).lD(1)
+    y = w.ship( 700, 400 ).lD(1)
+
+
+    w.foll(y,600, 500,  700, 500, 350,50 )
 
 
 
-    w.foll(y,600, 500,  700, 800, 350,350 )
 
 }
+
+
 
 
 ZOOM=function(){w=b2d.G(1000,1000,1000,1000)
@@ -3338,11 +3349,11 @@ MOVESPACE=function(){W(1000,1000,2000,2000)
     w.foll(y, 500, 500, 1000, 1000, 200,200 )
 
 }
+
+
 MOVEPLAT=function(){
 
-    w=b2d.G(1000,1000, 2400, 1800).G(300)
-
-
+    w=b2d.W([1000,1000, 2400, 1800], {t:0}).G(300)
 
     w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
 
@@ -3352,72 +3363,43 @@ MOVEPLAT=function(){
 
     p= w.jumper()
 
-    w.foll(p, 500, 600,  1200, 1400,  400, 400 )
+    w.fwBuf=function(b,x,y, pX,pY,bX,bY){var w=this
 
-}
-WARPSCROLL=function(){
+        w.s.HUD.dot('w', x, y)
 
-    w=b2d.G(1000, 500,  2000, 1000)
-    w.warpScroll =  function(b, x, y, fX,fY){var w=this
+        w.S(pX, w.h/2, 'b', [ [bX*2, w.h,  '-'] ] )
+        w.S(w.w/2,pY, 'b', [ [w.w, bY*2,  '-'] ] )
+        w.S(pX, pY, 'w',  [  [bX*2+20, bY*2+20, '-'] ] )
+        w.S(pX, pY, 'r',  [  [bX*2, bY*2, '-'] ] )
+        w.S(pX, pY, 'o',  [ [ 10,10, '-' ]  ] )  //sensor works but ony for rect (or at least not for circ)
 
-        y = w.H()-y
 
-        bX =  b.X()
-        bY =  b.Y()
-
+        scale = w.sc()//1
 
         cjs.tick(function(){
 
-            dX = bX-b.X()
-
-            pX = cjs.adj(dX, fX)
-
-            $l(pX)
-
-            //  $l(  cjs.adj( b.X()-x,   fX  ) )
-
-
-            //where is y rel to the point?
-
-            rX = w.pX()-(b.X()-x)
-            cX = cjs.adj( -rX, fX)
-
-
-            //$l(cX)
-
-            w.pX(w.pX()-pX //w.pX() + cX  // cjs.adj(b.X()-x,   fX  )
-
+            w.pX( (pX-x)  +  cjs.adj(b.X()-pX,bX) // * scale
             )
 
-
-            w.camY(    cjs.adj(b.Y()-y,   fY  )  )
+            w.pY( (pY-y)  +  cjs.adj(b.Y()-pY,bY)  //*scale
+            )
 
 
 
         })
 
-        return this}
+    }
 
+    w.fwBuf(p, 500, 600,  1200, 1400, 50,50
+       // 400, 400
+    )
 
-    y = w.ship(1000, 400)
-
-    w.warpScroll(y, 500, 300  )
-
-
-
-    w.B(700, 300, 'r', [  [4]   ])
-    w.B(800, 300, 'r', [  [4]   ])
-    w.B(900, 300, 'r', [  [4]   ])
-
-    w.B(1000, 300, 'r', [  [4]   ])
-
-    w.B(1100, 300, 'r', [  [4]   ])
-    w.B(1200, 300, 'r', [  [4]   ])
-    w.B(1300, 300, 'r', [  [4]   ])
-
-    w.s.HUD.dot('w', 500, 300)
-
+    w.sc(.5)
 }
+
+
+
+
 ULT1=function(){
     w = b2d.G([1200,600,2400,1200], {  g:0 })
     w.S(1200,300,'r',400,100)
@@ -3438,7 +3420,7 @@ ULT=function(){
 // ok on to zoom min/max!!!
 
 
-     W([1200,600,2400,1200],{g:0})
+     W([1200,600,2400,1200],{g:0, t:0})
 
     w.wz = function(){var w=this
 
@@ -3529,6 +3511,8 @@ ULT=function(){
 
 
 }
+
+
 
 RIGHTTRACK=function(){w = b2d.G([900,300,3600,300],{g:0}).zoom(6)
     w.S(1200,300,'r',400,100)
@@ -3641,11 +3625,13 @@ SLOOM=function(){
     w.S(1200,300,'b',300,100)
     w.S(1600,300,'z',100,100)
     w.S(2000,300,'r',200,100)
-    y = w.ship(200,200).rot(120).damp(1,10).track()
-    var z=3.2, up=true
 
+    y = w.ship(200,200).rot(120).damp(1,10)
 
-    w.pan()
+    w.track(y)
+
+    w.showOff()
+   // w.pan()
 
 
 }
