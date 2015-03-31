@@ -64,16 +64,18 @@ w.scl=function(s){var w=this
 
 
 
-TRACKEE=function(){W([  1200, 600, 2400, 600 ],{g:10})
+TRACKEE=function(){
+
+    W([  1200, 600, 2400, 600 ],{g:10})
     w.S(400,2500,'r',200,100)
     w.S(800,2300,'z',100,100)
     w.S(1200,2300,'b',300,100)
     w.S(1600,2300,'z',100,100)
     w.S(2000,2300,'r',200,100)
     _.times(10, function(i){ w.D(100+i*100, 100,$r(), 35).den(.1)})
-    y=w.ship(50,50).mid()
 
-
+    y = w.ship(50,50).mid()
+    y2 = w.ship(100, 300).C('x').rot(180)
     w.tRightLeft=function(){var w=this
         var left
         cjs.tick(function(){
@@ -93,10 +95,22 @@ TRACKEE=function(){W([  1200, 600, 2400, 600 ],{g:10})
     //these funcs can change stage, or the tick can update it every tick based on its value w.tx/ w.ty?
 
     w.tX=function(){    }
-
     w.tY=function(){    }
 
-    w.tRightLeft().showOff()
+    w.tRightLeft()
+
+    w.showOff()
+
+
+    setTimeout(function(){
+        setInterval(function changeT(){
+
+            if( w.t == y2){
+                w.C('b'); w.t=y }
+            else {w.C('z');w.t= y2}
+
+        }, 5000)
+    },5000)
 
 
 }
@@ -227,19 +241,20 @@ w.zoom= w.zm= function(zoom){var w=this,  g=G(arguments),  zoom=g[0]
 
     return w}
 w.zoomOut=function(){
-
-    var w=this, min = w.mS,
-
-
+    var w=this,
+        min = w.mS,
         z = w.z
 
-    w.track.cb= function(){ z*= .98;  w.Z(z)   }
+    w.tCb= function(){ z*= .98;  w.Z(z)   }
 
 }
+
+
 w.zoomIn=function(){
     var w=this, max = 4,
         z = w.z
-    w.track.cb= function(){ z*= 1.02;  w.Z(z)}}
+    w.tCb= function(){ z*= 1.02;  w.Z(z)}}
+
 w.inout=function(){var w=this,
     s=1,
     up=true
@@ -367,44 +382,32 @@ w.fol= w.foll= function(b,x,y,pX){var w=this
         w.fwBuf.apply(w, arguments)
     }
     return this}
-w.track=  function(b,x,y){
-    var w=this,
-        k, K,hW,kW,sX,sY //  has limits now!  and more.. tis is the ultimate!
 
-    if(U(b)){return w.track(w.trackee)}
 
-    x=N(x)?x: w.W/2
-    y=N(y)?y: w.H/2
+w.sXCap=function(s){var w=this; return cjs.cap(s,0,w.w*w.z-w.W)}
+w.sYCap=function(s){var w=this; return cjs.cap(s,0,w.h*w.z-w.H)}
 
+w.track=  function(t,cX,cY){var w=this    //i can leave the world-centering in fw//can optionally filter it with scale itself //  has limits now!  and more.. tis is the ultimate!
+    if(U(t)){t=w._trackee}
+    cX=N(cX)?cX:w.W/2; cY=N(cY)?cY:w.H/2  //option to set based on t's CURRENT X/Y?
     cjs.tick(function(){
-
+        var dX=t.X()-cX, hW= w.W/2,
+            dY=t.Y()-cY, hH= w.H/2
         if(F(w.track.cb)){w.track.cb()}
 
-        k = scl  = w.z //N(w.z)? w.z : 1
-        K = function(a){return a*k }
-        cW = w.W
-        wW = w.w
-
-        sX=K(b.X()-x) + (K(w.W)- w.W)/2
-
-        w.s.x=   -cjs.cap(sX,  0, K(wW)- w.W  )
-
-        sY=  K(y-b.Y())  +  w.H/2 - K(w.H/2)
-
-        sY = cjs.cap(sY, sY= w.H -  K(w.h),0  )
-
-        if((w.H/2 - K(w.h/2) )>=0) {  sY =  w.H/2 - K(w.h/2) }
-
-        w.s.y= sY
-
-    })
-
-
-
-
-    //i can leave the world-centering in fw//can optionally filter it with scale itself
+        w.s.x = -w.sXCap( (dX+hW)*w.z - hW  )
+        w.s.y = -w.sYCap( (dY+hH)*w.z - hH  )})
 
     return w}
+
+
+
+
+
+
+
+
+
 w.rat=function(){return {x: w.w/w.W, y: w.h/w.H}}
 w.follow= function(b,x,y){var w=this, K,cW,wW,cH,wH,sX,sY
 
@@ -581,11 +584,13 @@ w.pan=function(o){
         w.zoom(z)}}
     w.track.cb=l
     return w}
+
 w.showOff=function(){var w=this
     zin()
     function zout(){setTimeout(zin, 10000);w.zoomOut()}
     function zin(){setTimeout(zout, 4000);w.zoomIn()}
     return w}
+
 
 
 ZOOM=function() {

@@ -28,10 +28,6 @@ w.mJ=function(o){var w=this
 
     return w}
 
-
-
-
-
 w.wMouse=function(){var w=this
 
     $.oMD(function(x, y){
@@ -275,25 +271,28 @@ w.startListening = function(){var w=this
     return w}
 w.setBg=function(o){var w=this;  if(o.i){ w.s.bm(o.i) }; return w}
 
-w.tracker=function(o){var w=this
-
-    if(o.t!=0){
-
-        w.t = w.trackee =  w.S(
-                w.w/2,
-                w.h/2,
-            'w', [[10 ,10, '-']]
-        ).rest(.8).track()
-
-    }
 
 
-    return w}
+w.startTracking=function(cX, cY){var w=this
 
+    cX=N(cX)?cX:w.W/2;
+    cY=N(cY)?cY:w.H/2
 
+    cjs.tick(track)
 
+    function track(){var t
+        w._t = w._t || w.S(cX,cY,'w',[[10,10,'-']]).bo(.8)
+        t = w.t = w.t || w._t
+            hW= w.W/2,  hH= w.H/2,
+            dX=t.X()-cX,
+            dY=t.Y()-cY
+        if(F(t.cb)){t.cb()}
+        else if(F(w.tCb)){w.tCb()}
+        w.s.x = -w.sXCap( (dX+hW)*w.z - hW  )
+        w.s.y = -w.sYCap( (dY+hH)*w.z - hH  )}
+    return w
 
-
+}
 
 
 
@@ -373,7 +372,16 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
     w.mS = w.Ww > w.Hh ? w.Ww : w.Hh
     w.z = 1 //scale
 
-
-    w.tracker(o) //relies on some of above prop setting
+     w.startTracking()
+    //w.tracker(o) //relies on some of above prop setting
     return w}
 
+
+w.trackerX=function(o){
+    var w=this, t, x, y
+    if(o.t==0){return w}
+    x=w.w/2; y=w.h/2
+    t = w.S(x,y,'w',[[10,10,'-']]).bo(.8)
+    w.t = w.trackee = w._t = w._trackee = t
+    w.t.track()
+    return w}
