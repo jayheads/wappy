@@ -3834,7 +3834,9 @@ BOX2D=function(){w=b2d.W()
 }
 
 
-CUPS=function(){w= b2d.W({g:20}).db()
+CUPS=function(o){
+
+    w= b2d.W(_.extend({g:20}, o||{})).db()
 
     cup=[[20,20],[100,40,0,40,0],[200,40,-80,-40,260],[200,40,80,-40,-80] ]
     cup2=[[100,40,0,40,0],['g',200,40,-80,-40,260],['g',200,40,80,-40,-80],[100] ]
@@ -3845,9 +3847,6 @@ CUPS=function(){w= b2d.W({g:20}).db()
 
     b = w.B(280,500,'r', cup)
 
-    f = b.fixt().stat()
-
-    f.C('w')
 
 
     w.B(600,500,'b',cup2)
@@ -3865,19 +3864,7 @@ CUPS=function(){w= b2d.W({g:20}).db()
 
     w.db()}
 
-CUPBALL=function(){//should zoom in when near cup
-    CUPS()
 
-    b = w.D(w.cW()/2, w.cH()/2, 'w', [[10  ]]).rest(.8).track()
-    cjs.tick(function(){
-
-        b.F(0, -20)
-
-    })
-
-    w.showOff()
-
-}
 
 
 

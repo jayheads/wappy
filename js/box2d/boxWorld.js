@@ -727,12 +727,21 @@ w.mouseJAt=function(p, kind){var w=this, mj
 
 }
 //w.FixBody=function(x,y){return this.addBody(  dBD(x,y),fix())}
-w.dot=function(col,x,y){var w=this, g=G(arguments)
+
+w.dot=function(col,x,y){
+    var w=this,
+        g=G(arguments),
+        col=g[0], x=g[1], y=g[2]
+
+
+    if(g.m){
+        w.dot(col,x,y); w.dot(col,x,y,'+')
+    }
 
     if(g.p){
 
         if(!S(col)){y=x;x=col;col='b'}
-        w.s.HUD.dot(col,x,y)
+        w.hud.dot(col,x,y)
         //w.s.HUD.dot.apply(w.s.HUD, arguments) //interesting.. dotting just needs a stage
     }
 
@@ -745,7 +754,8 @@ w.dot=function(col,x,y){var w=this, g=G(arguments)
 
 
 
-return this}
+return w}
+
 w.pen=function(){
 
     this.s.pen.apply(this.s, arguments)
@@ -2547,21 +2557,26 @@ BOOTBALL=function(){W({g:0})
 
     cjs.tick(function(){b.F(0,20)})
 }
+ULTMJ=function(){W([1200,600,2400,600],  {g:10, m:'m'  })
 
+    w.B(300,400, 'r', 50,50); w.B(800,400, 'r', 50,50);
+    w.B(1200,400, 'r', 50,50);
+    w.B(1600,400, 'y', 100,100).K('m')
+    y= w.ship().track()}
 
 //
 //
 //
 
-w.rW=function(col,h){var w=this
+w.rWx=function(col,h){var w=this
     if(!S(col)){h=col;col='b'}
     h=N(h)?h:w.H()
     return w.S(10, w.H()- (h), col,20,h)}
-w.bW=function(col,W){var w=this
+w.bWx=function(col,W){var w=this
     if(!S(col)){W=col; col='b'}
     W=N(W)?W:w.W()
     return w.S((W/2), w.H()+(h/2)-10, col,W,20)}
-w.hW =function(col,W,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
+w.hWx =function(col,W,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
 
     if(!S(col)){y=x;x=W;W=col;col='x'}
 

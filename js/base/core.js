@@ -902,14 +902,15 @@ Math.distance = dst =function self(a,b){
 
 
 
-Math.lineDistance= function( point1, point2 ){
-    var xs = 0;
-    var ys = 0;
+Math.dist = Math.lineDistance= function( p1, p2 ){
+    var xs = 0,ys = 0;
 
-    xs = point2.x - point1.x;
+    p1=V(p1)
+    p2=V(p2)
+    xs = p2.x - p1.x;
     xs = xs * xs;
 
-    ys = point2.y - point1.y;
+    ys = p2.y - p1.y;
     ys = ys * ys;
 
     return Math.sqrt( xs + ys );

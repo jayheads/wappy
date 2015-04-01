@@ -69,7 +69,11 @@ ct.bm= function self(img, scale, func){
         var bm = new cjs.Bitmap( image[0] )
         bm.rCenter()
         bm.sXY(scale)
-        bm.XY( that.W()/2, that.H()/2 )
+
+
+
+        //bm.XY( that.W()/2, that.H()/2 )  //works with stage i guess.. but fucks with 'container' - cant check bounds
+
 
         if(args.n){ bm.XY(-1000) }
 

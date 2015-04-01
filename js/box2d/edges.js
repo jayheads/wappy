@@ -214,22 +214,22 @@ WELDEDGE=function(){
 }
 
 
-w.sToW= w.gTL= function(x,y){
 
-    var w=this, sc = w.sc(),  sX= x,   sY= y
+w.sTW=w.sToW= w.gTL= function(x,y){ //works
+    var w=this,
+        x=x/w.z - w.s.x/ w.z,
+        y=y/w.z - w.s.y/w.z
 
-   return {x:sX/sc   + w.pX()/sc,  y:sY/sc + w.pY()/sc }
+    //w.dot(x,y,'*') // cool
+   return {x: x  ,y: y}}
+w.wTS=w.wToS= w.lTG = function(x,y){//also works!
+    var w=this,
 
-}
+        x=  (x +w.s.x/w.z)*   w.z  ,
+        y=  (y+ w.s.y/w.z)*w.z
 
-
-
-
-
-w.wToS= w.lTG=function(){
-
-}
-
+    //w.dot(x,y,'*') // cool
+    return {x: x  ,y: y}}
 
 
 WORLDCLICK= function(){W([1200,600,2400,600], {g:100 }) //.zm(1)
