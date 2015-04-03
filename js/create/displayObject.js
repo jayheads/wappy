@@ -166,9 +166,10 @@ ob.remove=function(){
     this.parent.removeChild(this)
     return this}
 
-ob.opacity=function(alpha){
+ob.op = ob.al=ob.opacity=function(alpha){
     if(U(alpha)){return this.alpha}
     this.alpha=alpha;return this}
+
 ob.N=function(name){
     if(U(name)){return this.name}
     this.name=name;return this}

@@ -1,5 +1,16 @@
 
 
+B2DTEST=function(){
+    $l('b2d test!')
+
+    W({//w:0
+    })
+
+
+
+
+
+}
 
 
 
@@ -50,14 +61,7 @@ CRAZYSHIPS=function(){
 
 
 
-B2DTEST=function(){$l('b2d test!')
-    w=b2d.W()
-    $l('make an edge body..'); w.edge(100,300,500,500)
-    $l('make a ball..');w.ball(150,100,10)
-    $l('make a ball with density..'); w.ball(150,100,10).den(1)
 
-    h=b2d.cH(50)
-}
 PUZZLE=function(){w=b2d.W().debug()
 
     _.times(10,function(){
@@ -303,23 +307,34 @@ SPACEZOOM=function(){
 
 
 
-COINWARP=function(){w = b2d.W({   g:4, w:0}).debug()
+COINWARP=function(){
+    W({   g:0,
+        w:0})
+
     score=0
     badScore=0
 
-    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(1).K('bullet').warp2()
-    _.times(2, function() {w.greenGuy(Math.random()*600).warp2()})
+   // p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(1).K('bullet').warp2()
+
+    p = w.ship().K('player').warp2()
+
+    _.times(2, function(){w.greenGuy(Math.random()*600).warp2()})
 
     setInterval(function(){w.coin()},  300)
 
-     w.beg(
-         function(cx){var fixt
-             if(fixt = cx.with('coin','bullet')){
-                 fixt[0].setDestroy()
-                 score++}
-             else if(fixt = cx.with('coin','greenGuy')){
-                 fixt[0].setDestroy()
-                 badScore++}})
+     w.beg(function(cx){var fixt
+
+
+         cx.with('coin','player', function(){this.B().kill()
+             score++})
+
+         cx.with('coin','greenGuy', function(){
+             this.B().kill()
+             badScore++
+ })
+
+
+     })
 
 
 
@@ -446,19 +461,20 @@ KILLEVERYTHING=function(){W( //[1200,600,1200,2000],
 
 
 CHEMICALS = function self(){
-    w=b2d.W({
-    walls: 0
-}).debug()
+  W({ w: 0,G:0
+})
 
     w.s.sXY(.8).XY(125,50)
 
 _.times(2, function() {
 
     w.randRects({y:0,z:3})
-    w.randRects({y:100,z:3})
-    w.randRects({y:200,z:3})
-    w.randRects({y:300,z:3})
-    w.randRects({y:400,z:3})
+    w.randRects({y:100, z:3})
+
+
+    w.randRects({y:200, z:3})
+    w.randRects({y:300, z:3})
+    w.randRects({y:400, z:3})
 
 })
 
@@ -474,14 +490,19 @@ _.times(2, function() {
 
     y = w.ship().XY(600,300).K('ship')
 
+    w.Q(function(f, b){
+        b.kill(); return true}, 350,  50,    450, 150)
+
+    _.times(50, function(){
+        w.circ(400, 80,8,'r').K('circ')  })
 
 
-    w.Q(function(f, b){  b.kill(); return true}, 350,  50,    450, 150)
-    _.times(80, function(){  w.circ(400, 80,8,'r').K('circ')  })
+    w.Q(function(f, b){
+        b.kill(); return true
+    }, 850,  50, 950, 150)
 
-
-    w.Q(function(f, b){  b.kill(); return true}, 850,  50, 950, 150)
-    _.times(80, function(){   w.rect(900, 100, 14,14,'b').K('rect')  })
+    _.times(50, function(){
+        w.rect(900, 100, 14,14,'b').K('rect')  })
 
 
 gameOver=false
@@ -491,7 +512,7 @@ gameOver=false
 
             if(fixt = cx.with('bul')){
                 body = fixt[1].body()
-                if(body != y){body.setDestroy()}
+                if(body != y){body.kill()}
             }
 
             if(cx.with('ship','circ') || cx.with('ship', 'rect') ) {lose() }
@@ -527,6 +548,8 @@ gameOver=false
 
 
 }
+
+
 TENSORSTAB=function(){w=b2d.W({g:0}).debug();
 
     co = w.tensor()
@@ -1259,12 +1282,24 @@ DENSITYBODYCLICK=function(){ w=b2d.W({g:0,W:600,H:500})
     w.box(200,200, 10,10)
     w.box(200,200, 100,100)
     w.bodyClick(function(){$l('mass: ' + this.mass().toFixed(3))})}
-MINIWORLD = function(){w=  b2d.W({ g:10, W:500, H:400, w:b2d.miniWalls})
-    d = $.div('yellow', 500,40).A().pad(2)
-    p = w.player(2, 'thrust')
+
+MINIWORLD = function(){
+
+    W({ g:10, W:1000, H:800
+    })
+
+    d = $.div('yellow', 1500,40).A().abs(200,200).pad(2)
+    p = w.player(2, 'thrust').X(300)
+
     data=function(str){
         if(U(str)){str='data'}
-        d.E($.h4(str))}}
+        d.E($.h4(str))
+    }
+
+}
+
+
+
 TALKJS=function(){   w = b2d.W({   g:0,   w:0   }).startKilling().debug()
     score=0
     shots=0
@@ -1306,23 +1341,30 @@ ORBIT=function(){w = b2d.W({g:0,w:0}).debug()
         p = w.thrustPlayer().follow(600, 300),
         star = w.sun(200,200)
     ).freq(.2).damp(4)}
-SUNZOOM=function(){w = b2d.W({g:0,w:0}).debug()
+
+SUNZOOM=function(){W({g:0,w:0})
     w.stars(10)
-    w.s.rXY(300,150)
-    w.s.XY(300,150)
+    w.s.rXY(600,300)
+    w.s.XY(600,300)
 
 
     p = w.thrustPlayer()
+
     sun = w.sun()
     setTimeout(function(){ sun.sprite.tweenLoop([{r: 360}, 10000]) }, 300) //preload to the rescue ??
 
 
     w.distColl(p, sun).freq(.2).damp(0).len(150)
     green(400,100); green(400,200); green(200,100); green(200,200)
-    function green(x,y,freq){freq=N(freq)?freq:.1
-        w.distColl(   w.greenGuy(x,y), sun).freq(freq).damp(0).len(150)}
+
+    function green(x,y,freq){
+        freq=N(freq)?freq:.1
+        w.distColl(   w.greenGuy(x,y), sun).freq(freq).damp(0).len(150)
+    }
+
     cjs.tick(function(){
-        w.s.sXY( b2d.scaleFunc(sun,p,2) )
+        w.s.sXY(
+            b2d.scaleFunc(sun,p,2) )
         p.centerScale( b2d.scaleFunc(sun,p,2) )
     })
 

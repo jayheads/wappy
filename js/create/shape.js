@@ -1,226 +1,8 @@
-gx=cjs.Graphics.prototype
 
-gx.poly=function(verts, f, s,width){var that = this
-    //  _.each(arguments,function(vert){that.lt(vert[0],vert[1])});this.cp()
-    if(N(verts[0])){
 
-        _.each(arguments,function(vert){
-            that.lt(vert[0],vert[1])});
-        this.cp()
-    }
-    else {
-        this.fs(f,s,width)
-        _.each(verts,function(vert){
-            that.lt(vert[0],vert[1])});
-        this.cp()
-    }
-    return this}
 
 
-gx.fC= gx.fs=function(f,s,width){
 
-    this.f(O(f)?f: oO('c', f||'black'))
-
-    this.s(O(s)?s: oO('c', s||null))
-
-    this.ss(N(width)?width:2)
-
-    return this
-}
-
-gx.sC=function(s,w){var gx=this
-
-    w=N(w)?w:2
-
-    s=O(s)?s:oO('c', s||null)
-
-    gx.s( s)
-
-    gx.ss(w)
-
-    return gx
-}
-
-h =  cjs.Shape.prototype
-
-
-h.clear=function(){this.graphics.clear();return this}
-h.same=function(){return cjs.shape(this)}
-h.f=function(fill){
-    if(S(fill)){fill = oO('c', fill)}
-    this.graphics.f(fill)
-    return this}
-h.s=function(fill){
-    if(S(fill)){fill = oO('c', fill)}
-    this.graphics.s(fill)
-    return this}
-h.dr=function(){
-    this.graphics.dr.apply(
-        this.graphics, arguments)
-    return this}
-h.fs=function(){
-    this.graphics.fs.apply(
-        this.graphics, arguments)
-
-return this}
-
-h.sC=function(){
-    this.graphics.sC.apply(
-        this.graphics, arguments)
-
-    return this}
-
-h.ef=function(){
-    this.graphics.endFill.apply(
-        this.graphics, arguments)
-
-    return this}
-h.rG= h.radGrad=function(cols, ratios, x1, y1, r1, x2, y2, r2){
-
-    var args = _.toArray(arguments),circs,len
-
-    cols= _.map(cols,
-        function(col){
-            return oO('c',col)
-        })
-
-
-
-    circs = _.rest([1,2,3,4,5], 2)
-    len = circs.len  //use switch!
-
-    x1=0; y1=0; r1=0; x2=0; y2=0; r2=50
-
-    if(len==1){r2 = circs[0]}
-
-    else if(len==2){r1 = circs[0]; r2 = circs[1]}
-
-    else if(len==3){
-        x1 = x2 = circs[0]
-       y1 = y1 = circs[1]
-        r2 = circs[2]
-    }
-
-    else if(len==4){
-        x1 = x2 = circs[0]
-        y1 = y1 = circs[1]
-        r1 = circs[2]
-        r2 = circs[3]
-    }
-
-    else if(len==5){
-        x1=circs[0]; y1=circs[1]; x2 = circs[2]; y2 = circs[3]
-        r2 = circs[4]
-    }
-
-    else if(len==6){
-        x1 = circs[0]; y1 = circs[1]; x2 = circs[2]; y2 = circs[3]
-        r1 = circs[4]; r2 = circs[5]
-    }
-
-    this.graphics.beginRadialGradientFill( cols, ratios, x1, y1, r1, x2,y2,r2)
-
-    return this}
-h.lG= h.linGrad=function(){
-
-    var args = _.toArray(arguments)
-
-    args[0]= _.map(args[0], function(col){ return oO('c',col) })
-
-    this.graphics.beginLinearGradientFill.apply(
-        this.graphics, args)
-    return this}
-h.cp=function(){this.graphics.cp(); return this}
-h.mt=function(x,y){var v=V(x,y)
-    this.graphics.mt(v.x, v.y)
-    return this}
-h.lt=function(x,y){
-    var v=V(x,y)
-    this.graphics.lt(v.x, v.y)
-    return this
-}
-
-
-
-h.dc=function(){var h=this
-    h.graphics.dc.apply(h.graphics, arguments)
-    return this}
-
-h.c=function(rad){ return this.dc(0,0,rad) }
-
-
-h.circ= h.circle= function(x,y, radius, fc, sc){
-    var gx=this.graphics
-    if(fc){gx.f(fc)}
-    if(sc){gx.s(fc)}
-    gx.dc(x,y,radius)
-    return this}
-
-
-
-h.cir2 = function(rad, fc, sc){
-    var gx=this.graphics
-    if(fc){gx.f(fc)}
-    if(sc){gx.s(fc)}
-    gx.dc(0,0,rad)
-    return this}
-
-
-h.cir = function(rad, x,y,fc, sc){
-    var gx=this.graphics
-    x=N(x)?x:0
-    y=N(y)?y:0
-    if(fc){this.fs(fc)}
-    if(sc){this.ss(fc)}
-    gx.dc(x,y,rad)
-    return this}
-
-
-
-//******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
-h.rect=  function(x,y,w,h,fc,sc){//h.rectangle=
-    var gx=this.graphics
-
-    if(fc){gx.f(fc)}
-    if(sc){gx.s(fc)}
-
-    gx.dr(x,y,w,h)
-
-    return this}
-
-
-
-h.poly= function(verts, f, s, width){var h=this
-    h.fs(f,s, width)
-    if(A(verts ) && N(verts[0])){_.each(arguments,function(v){h.lt(v[0],v[1])})}//verts passed in directly AS NUMBERS ??
-    else {_.each(verts, function(v){h.lt(v)})}//passed in array
-    h.cp()
-    return this}
-
-
-
-
-
-
-h.drawPolygon = h.drawConnectedLines = function(poly, sc){var h=this,
-    numVerts = poly.length
-    _.each(poly,function(v){v.X=v.x;v.Y=v.y})
-    if(sc){this.s(sc)}
-    if(numVerts>=3){
-        //move to the FIRST
-        h.mt(poly[0])
-        //lineTo the REST
-        T(numVerts, function(i){h.lt(poly[i%numVerts])}) //just a clever way to start from 1
-    }
-    return this}
-h.drawPolygons= function(paths, fc, sc){var h=this
-    h.f(fc).s(sc)
-
-    _.each(paths, function(path){
-        h.drawPolygon(path)
-    })
-
-    return h}
 
 
 
@@ -248,14 +30,11 @@ cjs.rulers=function() {
 
 
 
-cjs.circ = cjs.circle = function(radius, fc ){
-
-     if( !N(radius) ){return cjs.circ(8, radius)}
-
-     fc =  oO('c', fc|| 'z')
-
-     return cjs.shape().f(fc).dc(0, 0, radius)
- }
+cjs.circ = cjs.circle = function(r,c){
+    if(!N(r)){return cjs.circ(8,r)}
+    c=oO('c',c||'z')
+    return cjs.shape().f(c).dc(0,0,r)
+}
 
 
 cjs.cir = function(col, rad, x, y){
@@ -265,7 +44,6 @@ cjs.cir = function(col, rad, x, y){
     rad=N(rad)?rad:50
     return cjs.shape().f(col).dc(x,y,rad)
 }
-
 
 
 
@@ -309,7 +87,6 @@ cjs.rect2   = function self(width, height, x, y, fc, sc){
         .lt(-halfwidth+x,-halfheight+y)
 
     return h}
-
 cjs.rect= function self(width, height, fc, sc){
     width = width || 100
     height = height || width
@@ -331,34 +108,6 @@ cjs.rect= function self(width, height, fc, sc){
 
 
 
-cjs.RECT= function self(col, wd,ht, x, y, rot){var halfW,halfH, h, ct = cjs.ct()
-
-
-    wd=N(wd)?wd:50
-    ht=N(ht)?ht:50
-    x=N(x)?x:0
-    y=N(y)?y:0
-    rot=N(rot)?rot:0
-
-    col= oO('c', col||'g')
-
-
-    halfW = wd/2
-    halfH = ht/2
-
-    h = cjs.shape()
-
-    h.graphics.f(col).s(col)
-        .mt(-halfW, -halfH )
-        .lt(-halfW,halfH )
-        .lt(halfW, halfH )
-        .lt(halfW,-halfH )
-        .lt(-halfW,-halfH )
-
-
-    ct.A( h.rot(rot).XY(x,y)  )
-
-    return ct}
 
 
 
@@ -504,80 +253,67 @@ cjs.ballBox=function(bl,bx,buff){ buff=buff||100
 
 
 
-cjs.shape= cjs.shp= function(x,y,f,s,width,opt){
+$h = cjs.h= cjs.shape= cjs.shp= function(x,y,c,C,l){
+    var g=G(arguments),
+        x=g[0],y=g[1],
+        c=g[2],C=g[3],
+        l=g[4], h
     if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
-    var h = new cjs.Shape()
+    h = new cjs.Shape()
     if(N(x)){h.X(x)}
     if(N(y)){h.Y(y)}
-
-    h.fs(f,s,width)
-
-    if(opt=='drag'){h.drag()}
-    // use a switch statement here!  i love it!
+    if(N(c)){h.l(c)} else if(c){h.c(c,C,l)}
+    if(g.N){h.drag()}
     return h}
+
+
+
+
+
+
+
+
 ct = cjs.Container.prototype
 
 
 
-ct.shape = function(){
-    return cjs.shape.apply(cjs, arguments).a2(this)
+ct.h=ct.shape = function(x,y,c,C,l,opt){var ct=this
+    return cjs.h(x,y,c,C,l,opt).a2(ct)}
+
+ct.cir=function(x,y,r,c,C,l,opt){var ct=this
+    return ct.shape(x,y,c,C,l,opt).dc(0,0,r)}
+ct.circ =function(c,r,x,y){var ct=this
+    return cjs.cir(c,r,x,y).a2(ct)}
+
+
+ct.rect=function(x,y,w,h,c,C,l,opt){var ct=this
+    return ct.h(x,y,c,C,l,opt).dr(0,0,w,h)}
+
+ct.RECT =function(c, w,h, x,y, ang){
+    var ct=this
+  return cjs.RECT(c, w,h, x,y, ang).a2(ct)
 }
 
 
 
+ct.poly =function(){var ct=this // ?
 
-ct.cir=function(x,y,r,f,s,width,opt){
-    return this.shape(x,y,f,s,width,opt).dc(0,0, r)
-}
-
-
-
-ct.rect=function(x,y,w,h,f,s,width,opt){
-    return this.shape(x,y,f,s,width,opt).dr(0,0, w,h)
-}
-
-
-ct.circ =function(col,rad,x,y){
-
-    var h = cjs.cir(col,rad,x,y)
-
-    this.A( h )
-
-    return h
-}
-
-
-ct.RECT =function(col, wd, ht, x, y, rot){
-
-    var h = cjs.RECT(col, wd, ht, x, y, rot)
-
-    this.A( h )
-
-    return h
-}
-
-
-
-
-
-
-ct.poly =function(){ // ?
-    var h = this.shape()
+    var h = ct.shape()
     h.poly.apply(h, arguments)
     return h}
 
 
 
-ct.art = function(x,y,f,s){var g=G(arguments)
+ct.art = function(x,y,c,C){var g=G(arguments),ct=this,h
     if(U(x)){alert('must at LEAST define x'); return}
     if(!N(x)){alert('x not a number! but must be, lah'); return}
+
     y= N(g[1])?g[1]:x
-    f= S(g[2])?oO('c',g[2]):null
-    s= S(g[2])?oO('c',g[3]):f
-    var shp = cjs.shp(x, y, f, s)
-    this.A(shp)
-    if(g.p){shp.drag()}
-    return shp}
+    c= S(g[2])?oO('c',g[2]):null
+    C= S(g[2])?oO('c',g[3]):c
+    h = cjs.h(x,y,c,C).a2(ct)
+    if(g.p){h.drag()}
+    return h}
 
 
 
@@ -591,20 +327,11 @@ cjs.cirX=function(stg,x,y,r,f,s,width,opt){
 
 
 
-
-
-
-
-
-
 USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
 
     me  = q.bm('me').a2(s).sXY(3)
     guy = q.bm('guy').a2(s).sXY(.5).drag()
-
     $.button('s.sXY(2)', function () {s.sXY(2)}).A()
-
-
     cjs.tick(function(){
         me.X( guy.x * 2.2 - 140)
         me.Y( guy.y * .2 )})
@@ -613,25 +340,6 @@ USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
 
 
 
-
-SHAPES=function(){z()
-    s = cjs.stage(500, 500).A()
-    s.can.P('a').XY(300)
-
-    s.bm('me', 0.2, function(bm){})
-
-    s.A(cjs.circle(100, 'blue','green').XY(100, 100).drag())
-
-    s.circle(100, 100, 10, 'red', 'yellow' )
-        .circle(10,100,100,'black','purple')
-        .circle(100, 10, 100, 'blue', 'red' )
-        .circle(150,150,120,'red','blue')
-        .circle(30,'brown','gray')
-
-
-
-
-}
 
 
 
@@ -678,166 +386,108 @@ EASELART=function(){z()
     p()
 }
 
-CENTERSHAPE=function(){z()
+St=function(){z()
+    s = cjs.stg(1200,600).A()
+    h = cjs.h(0,0).a2(s)
+    SL(h)
+}
 
 
-    stage = cjs.stage(500,600).A()
+CENTERSHAPE=function(){St()
 
-    shape = new cjs.Shape()
+    h.rect(100,100,100,100,'y')
+    h.rect(200,200,100,100,'b')
 
-    SL(shape)
+    h.c('o').polyStar(300,100,
+        50,5,0.6,-90)
 
-    stage.A(shape)
+    h.c('w').C('z')
+        .roundRectComplex(400,300,
+      300,300, 20,20,30,40 )
 
-    shape.graphics.f("orange").drawPolyStar(100, 100, 50, 5, 0.6, -90)
-
-    shape.RECT( 0, 0,  100, 100,   'a' )
-
-    shape.RECT( 0, -75,  25, 50,   'b' )
-
-    shape.RECT( 0, -200,  100, 100,   'r' )
-
-    shape.circle(100,200, 40, 'z','x')
-
-    shape.graphics.drawRoundRectComplex(  0,0, 300,300, 20,20,30,40 )
+    h.circ(500,200,40,'b','z')
+}
 
 
-    shape.XY(200)
 
-    stage.bm('me', function( b ){ me=b
 
-        me.XY(200)
-        me.sXY(.4)
-    })
+SHAPES=function(){St()
+
+    s.can.P('a').XY(300)
+    s.bm('me', 0.2, function(bm){})
+    s.A(cjs.circle(100, 'blue','green').XY(100, 100).drag())
+    s.circle(100, 100, 10, 'red', 'yellow' )
+        .circle(10,100,100,'black','purple')
+        .circle(100, 10, 100, 'blue', 'red' )
+        .circle(150,150,120,'red','blue')
+        .circle(30,'brown','gray')
+
+}
+
+
+cjs.M=function(rot){
+    var m= new cjs.Matrix2D()
+    if(N(rot)){m.rotate(rot)}
+return m}
+
+GRAPHICSTEST=function(){St(); img = $.img('me',function(){s.ct().h().bmS(img).ss(32).dr(20,20,920,360); _.each([
+
+        function recGrF(){return $h(12,10)
+            .lGF('b','g',130).dr(130)},
+
+        function ell(){return $h(40, 10,'b',16)
+                 .lGS('r','w',70,140).de(70,140)},
+
+        function bmF(){return $h(12,10,18)
+            .bf(img, cjs.M(1) ).rGS('b','g',30,130).dr(130)},
+
+
+        function radGrF(){return $h(80,80).C('b',8)
+                 .rGF('w','y',40).dc(40)},
+
+        function roundRec(){return $h(12,12,'g','r',8)
+            .rr(130,30)}, //w(h) and r
+
+
+        function star(){return $h(80,85,'y','b',3)
+            .pStr(0,0,80,5,.8,-95)},
+        function hex(){return $h(80,40,'p')
+            .pStr(40,6).pStr(0,75,40,6).pStr(45,45,20,6)},
+
+        function lt(){return $h().C('o')
+                 .ss(16,'round','round')
+                 .mt([40,10],[90,90],[90,140])}
+
+    ],
+
+         function(cont,i){var W=155, H=155, P= 5, C=4 //pad, cols
+             s.A(tile(cont()).XY(
+                     42+(W+P)*(i%C),
+                     42+(i/C|0)*(H+P)))})})[0]
+
+
+
+
+    tile=createTile=function(x,y){var bg,til
+        bg = $h().c('t').dr(0, 0, 155, 155).ef().op(.2)
+        til = cjs.ct().A(bg)
+        if(N(x)){  til.X(x) }
+        if(N(y)){  til.Y(y)  }
+        if(O(x)){ til.A(x) }
+
+    return til}
+
 
 }
 
 
 
 
-GRAPHICSTEST=function(){
-       stage = cjs.stage(800,500).A()
 
 
-    canvas=stage.canvas
 
 
-        // grab canvas width and height for later calculations:
-        w = canvas.width
-        h = canvas.height
 
-
-   img=$.img('me', layout)[0]
-
-
-    function layout() {
-        var arr = [createStar, createHex, createLineTo, createRadialGradientFill,
-            createEllipse, createRectGradientFill, createBitmapFill, createRoundRect]
-
-        var padding = 5
-        var _width = 155
-        var _height = 155
-        var cols = 4
-        var space = 0
-
-
-        var border = createBorder();
-
-        _.times(arr.length, function(i){
-
-            var tile = arr[i]()
-
-            tile.x=    42 + (_width+padding)*(i%cols)
-
-            tile.y=    42 + (i/cols|0)*(_height+padding)
-
-            stage.A(tile)
-        })
-
-        stage.A(border)
-        stage.update()
-    }
-
-    function createBorder(){
-
-        var s=cjs.shape()
-
-        s.graphics.beginBitmapStroke(img).setStrokeStyle(32).dr(20, 20, 920, 360)
-
-        return cjs.container().A(s)
-    }
-    function createBitmapFill(){
-        var container = createTile();
-        var s = cjs.shape().XY(12,10)
-
-        var mtx = new createjs.Matrix2D().rotate(1)
-        s.graphics.beginBitmapFill(img, null, mtx).setStrokeStyle(8)
-            .beginRadialGradientStroke(["#FFF", "#000"], [0, 1], 0, 0, 0, 0, 30, 130).dr(0, 0, 130, 130)
-
-        return cjs.container().A(s)
-    }
-    function createRectGradientFill(){
-
-        var s = cjs.shape().XY(12,10)
-
-        s.graphics.beginLinearGradientFill(["#FFF", "#000"], [0, 1], 0, 0, 0, 130).dr(0, 0, 130, 130)
-
-        return createTile().A(s)}
-    function createEllipse(){
-
-        var s = cjs.shape().XY(40,10)
-
-        s.graphics.f(createjs.Graphics.getRGB(0, 0x66, 0x99, 0.5))
-            .setStrokeStyle(4).beginLinearGradientStroke(["#F00", "#000"], [0, 1], 0, 0, 70, 140)
-            .drawEllipse(0,0,70,140,8)
-        return createTile().A(s)
-    }
-    function createRadialGradientFill(){
-
-        var s = cjs.shape().XY(80)
-        s.graphics.ss(8).beginStroke("#f0f")
-            .beginRadialGradientFill(["#FFF", "#0FF"], [0, 1], 0, 0, 0, 0, 0, 40).dc(0, 0, 40)
-        return createTile().A(s)}
-    function createLineTo(){
-
-        var s = cjs.shape()
-
-        s.graphics.setStrokeStyle(16,"round","round").beginStroke("#f90")
-            .moveTo(20, 10).lineTo(90, 90).lineTo(90,140)
-
-        return createTile().A(s)}
-    function createHex(){
-
-        var s =  cjs.shape().XY(80,40)
-
-        s.graphics.beginFill("pink")
-            .drawPolyStar(0, 0, 40, 6)
-            .drawPolyStar(0, 75, 40, 6)
-            .drawPolyStar(45, 45, 20, 6)
-
-        return createTile().A(s)}
-    function createStar(){
-        var s = cjs.shape().XY(80,85)
-        s.graphics.setStrokeStyle(1).beginStroke(cjs.Graphics.getRGB(255, 255, 0))
-            .beginFill("yellow").endStroke().drawPolyStar(0, 0, 80, 5, 0.9, -90)
-        return createTile().A(s)
-    }
-    function createRoundRect(){
-        var s = cjs.shape().XY(12)
-        s.graphics.setStrokeStyle(6).beginStroke("red").beginFill("green").drawRoundRect(0, 0, 130, 130, 30);
-        return createTile().A(s)
-    }
-    function createTile(){
-
-        var bg = cjs.shape()
-
-        bg.graphics.beginFill('#CCCCCC').dr(0, 0, 155, 155).endFill()
-
-        bg.alpha = 0.25
-
-        return cjs.container().A(bg)
-    }
-}
 
 
 
@@ -858,11 +508,11 @@ RADIALGRADRECT=function(){s=cjs.S()
     h=cjs.shape(10, 10).a2(s).drag()
 
 
-       change= function(){
+    change= function(){
 
-      //  h.remove()
+        //  h.remove()
 
-       // h=cjs.shape(10, 10).a2(s).drag()
+        // h=cjs.shape(10, 10).a2(s).drag()
 
         h.graphics.beginRadialGradientFill(  ["red", 'blue', "yellow"],  [0, .5, 1],
 
@@ -877,18 +527,18 @@ RADIALGRADRECT=function(){s=cjs.S()
         )
 
 
-        .dr(0,0,400,400)
-        .endFill()
-            // x--
+            .dr(0,0,400,400)
+            .endFill()
+        // x--
 
         r1++
-      r2++
-}
+        r2++
+    }
 
     setInterval(change, 1000)
 
     change()
- }
+}
 
 
 RADIALGRADCIRC=function(){s=cjs.S()
@@ -931,8 +581,8 @@ RADIALGRADCIRC=function(){s=cjs.S()
             .endFill()
         // x--
 
-       // r1++
-       // r2++
+        // r1++
+        // r2++
     }
 
     setInterval(change, 1000)
@@ -953,13 +603,13 @@ nip=function(){
     y2=0
     r2=100
 
-   var h= cjs.shape(10, 10).a2(s).drag().opacity(.8)
-        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
-            x1,   y1,   r1,     x2,    y2,    r2   )
-            .dc(0, 0,100)
-            .endFill()
+    var h= cjs.shape(10, 10).a2(s).drag().opacity(.8)
+    h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
+        x1,   y1,   r1,     x2,    y2,    r2   )
+        .dc(0, 0,100)
+        .endFill()
 
- return h}
+    return h}
 
 
 
@@ -967,11 +617,11 @@ nip=function(){
 
 EASELCONVEX=function(){s=cjs.S()
     s.poly([[-100,-10],[0,100],[100,20]],
-      'red','white',10).XY(200,300)
+        'red','white',10).XY(200,300)
     s.poly([[-20,-80],[-100,-200],[100,5]]).XY(300, 200)
     s.poly(
-      [[-40,40],[-40,-40],[40,-40], [40,30]],
-      'blue', 'white').XY(200,200)}
+        [[-40,40],[-40,-40],[40,-40], [40,30]],
+        'blue', 'white').XY(200,200)}
 
 
 CONVEX=function(){w=b2d.W({g:0}).debug()
@@ -997,14 +647,13 @@ CONVEX=function(){w=b2d.W({g:0}).debug()
 
 
     /*
-    b2 = w.dyn(300, 300)
-    b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
-    b2.convex([[0,30],[-30,-20],[10,0]] )
-
-    b3 = w.dyn(300, 300)
-    b3.convex( 'g',[[-150,0],[-120,-20],[-80, -50],[0,-30]] )
-    b3.convex('r',[ [-30,-30], [-20,10], [-10,60]] )
-    b3.convex('o',[ [-30, -30], [-20,-50], [ 10, -20]] )
+     b2 = w.dyn(300, 300)
+     b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
+     b2.convex([[0,30],[-30,-20],[10,0]] )
+     b3 = w.dyn(300, 300)
+     b3.convex( 'g',[[-150,0],[-120,-20],[-80, -50],[0,-30]] )
+     b3.convex('r',[ [-30,-30], [-20,10], [-10,60]] )
+     b3.convex('o',[ [-30, -30], [-20,-50], [ 10, -20]] )
      */
 
 
@@ -1013,22 +662,19 @@ CONVEX=function(){w=b2d.W({g:0}).debug()
 
 
 
-VERTS=function(){w=b2d.W().debug()
+VERTS=function(){W()
 
-    thingy = [['pink',[-20,-20],[0,-30],[10,10]],
-    ['brown',[0,0],[30,-50],[50,-10]]]
+    thingy = [['p',[-20,-20],[0,-30],[10,10]],
+        ['n',[0,0],[30,-50],[50,-10]]]
 
     _.times(100, function(){
-
-        w.verts(Math.random()*600, Math.random()*300+200, thingy)
-    })
-
+        w.verts(R(600),R(300,200),thingy)})
 
 }
 
 PITFALL=function(){
 
-     b2d.levelScrollX()
+    b2d.levelScrollX()
 
 
     turtle = [
@@ -1070,8 +716,8 @@ PITFALL=function(){
 
 
 
-   t = w.vertsKin(400, 280, turtle).fixRot()
-   t2 = w.vertsKin(700, 280, turtle2).fixRot()
+    t = w.vertsKin(400, 280, turtle).fixRot()
+    t2 = w.vertsKin(700, 280, turtle2).fixRot()
 
     setInterval(function(){
         t2.linVel(5,0)
@@ -1079,11 +725,6 @@ PITFALL=function(){
     }, 2000)
 
 }
-
-
-
-
-
 
 
 TURTLE=function(){w=b2d.W({g:0})//.debug()
@@ -1100,13 +741,140 @@ TURTLE=function(){w=b2d.W({g:0})//.debug()
     ]
 
 
-   // t =  w.verts(400,280,   turtle)
+    // t =  w.verts(400,280,   turtle)
 
     t =  w.B(400, 280, turtle)
 
 
     fs = t.fixts()
+
 }
 
 
+
+
+
+
+
+h.col= h.fs= function(){
+    this.graphics.fs.apply(
+        this.graphics, arguments)
+    return this}
+h.sC=function(){this.graphics.sC.apply(this.graphics, arguments)
+    return this}
+
+h.rGx= h.radGrad=function(cols, ratios, x1, y1, r1, x2, y2, r2){
+
+    var args = _.toArray(arguments),circs,len
+
+    cols= _.map(cols,
+        function(col){
+            return oO('c',col)
+        })
+
+
+
+    circs = _.rest([1,2,3,4,5], 2)
+    len = circs.len  //use switch!
+
+    x1=0; y1=0; r1=0; x2=0; y2=0; r2=50
+
+    if(len==1){r2 = circs[0]}
+
+    else if(len==2){r1 = circs[0]; r2 = circs[1]}
+
+    else if(len==3){
+        x1 = x2 = circs[0]
+        y1 = y1 = circs[1]
+        r2 = circs[2]
+    }
+
+    else if(len==4){
+        x1 = x2 = circs[0]
+        y1 = y1 = circs[1]
+        r1 = circs[2]
+        r2 = circs[3]
+    }
+
+    else if(len==5){
+        x1=circs[0]; y1=circs[1]; x2 = circs[2]; y2 = circs[3]
+        r2 = circs[4]
+    }
+
+    else if(len==6){
+        x1 = circs[0]; y1 = circs[1]; x2 = circs[2]; y2 = circs[3]
+        r1 = circs[4]; r2 = circs[5]
+    }
+
+    this.graphics.beginRadialGradientFill( cols, ratios, x1, y1, r1, x2,y2,r2)
+
+    return this}
+h.lGx= h.linGrad=function(){
+
+    var args = _.toArray(arguments)
+
+    args[0]= _.map(args[0], function(col){ return oO('c',col) })
+
+    this.graphics.beginLinearGradientFill.apply(
+        this.graphics, args)
+    return this}
+
+gx=cjs.Graphics.prototype
+gx.poly=function(verts, f, s,width){var that = this
+    //  _.each(arguments,function(vert){that.lt(vert[0],vert[1])});this.cp()
+    if(N(verts[0])){
+
+        _.each(arguments,function(vert){
+            that.lt(vert[0],vert[1])});
+        this.cp()
+    }
+    else {
+        this.fs(f,s,width)
+        _.each(verts,function(vert){
+            that.lt(vert[0],vert[1])});
+        this.cp()
+    }
+    return this}
+gx.fC= gx.fs=function(c,C,l){var gx=this
+    gx.f(oO('c',c||'z'))
+    gx.s(oO('c',C||null))
+    gx.ss(N(l)?l:2)
+    return gx
+}
+gx.sC=function(s,w){var gx=this
+
+    w=N(w)?w:2
+
+    s=O(s)?s:oO('c', s||null)
+
+    gx.s( s)
+
+    gx.ss(w)
+
+    return gx
+}
+
+
+cjs.RECTx= function self(col, wd,ht, x, y, rot){var halfW,halfH, h, ct = cjs.ct()
+
+    wd=N(wd)?wd:50
+    ht=N(ht)?ht:50
+    x=N(x)?x:0
+    y=N(y)?y:0
+    rot=N(rot)?rot:0
+    col= oO('c', col||'g')
+
+    halfW = wd/2
+    halfH = ht/2
+
+    h = cjs.h().c(col,col)
+        .mt(-halfW, -halfH )
+        .lt(-halfW,halfH )
+        .lt(halfW, halfH )
+        .lt(halfW,-halfH )
+        .lt(-halfW,-halfH )
+
+    ct.A( h.rot(rot).XY(x,y)  )
+
+    return ct}
 

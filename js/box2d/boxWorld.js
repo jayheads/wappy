@@ -278,25 +278,6 @@ b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
 
 
 
-
-w.B=w.D=function(x,y){
-    var w=this, bd, b, fixts,
-        g=G(arguments),
-        x=g[0],
-        y=g[1],clas
-    if(S(_.last(g))){clas= g.pop()}
-    if(N(x)){bd=b2d.dyn(x,y); fixts=_.rest(g,2)}
-    else {
-        if(b2d.isBDef(x)){bd=x} else {x=V(x); bd=b2d.dyn(x.x,x.y)}
-        fixts=_.rest(g)}
-    b=w.CreateBody(bd)
-    b.H.apply(b,fixts)
-    if(clas){b.K(clas)}
-
-    return b
-
-}
-
     w.perch = w.skyPerch = function(col){var w=this
         col = col || 't'
         w.S(200,50, col, 300,20) //top
@@ -305,6 +286,50 @@ w.B=w.D=function(x,y){
         w.S(340, 320, col, 20, 100)//right
 
         return w}
+
+
+w.B=w.D=function(x,y){var g=G(arguments),x=g[0],y=g[1],
+        w=this, bd, b, fixts, clas
+
+
+    //can pass color at END
+    if(S(_.last(g))){
+
+        clas= g.pop()
+    }
+
+
+    if(N(x)){bd=b2d.dyn(x,y); fixts=_.rest(g,2)}
+
+    else {
+
+        if(b2d.isBDef(x)){bd=x}
+
+        else {x=V(x); bd=b2d.dyn(x.x,x.y)}
+
+        fixts = _.rest(g)
+    }
+
+
+    b = w.CreateBody(bd)
+
+    b.H.apply(b, fixts)
+
+    if(clas){b.K(clas)}
+
+    return b
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -611,7 +636,8 @@ w.B=w.D=function(x,y){
 // bod.convex( arr[0],  _.rest(arr)  )
             //  bod.convex( fixt )
 
-            bod.convex.apply(bod, fixt )
+            bod.convex.apply(bod, fixt)
+
         })
 
         return bod}

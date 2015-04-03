@@ -3744,7 +3744,9 @@ pH.setAsBox = p.sAB = function(wd,ht, xy, ang, ang2 ){
 pH.arr=function(){var v
     v = b2d.verts.apply(null, arguments)
     this.SetAsArray(v,v.length)
-    return this}//pH.setAsArray=p.sAA=function(a,b){if(U(b)){b=a.length}; this.SetAsArray(a, b); return this}
+    return this}
+    //pH.setAsArray=p.sAA=function(a,b){if(U(b)){b=a.length}; this.SetAsArray(a, b); return this}
+
 pH.set = function(wd){
     if(N(wd)){ this.setAsBox.apply(this, arguments) }
     else if(O(wd)){

@@ -917,4 +917,9 @@ Math.dist = Math.lineDistance= function( p1, p2 ){
 }
 
 
+_.tN=function(what, aNum){
+    return N(what)? what: aNum||0  }
+_.c=function(c,orC){
+    if(c=='*'){c=$r()}
+    return oO('c',c||orC)}
 

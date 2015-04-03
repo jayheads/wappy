@@ -1,31 +1,210 @@
-SCALESPACEZOOM=function(){w = b2d.W({g:0,w:0})
-
-    w.distColl(
-        p= w.player(200,200,2.5, 'thrust')
-            .Y(200).horizCenter().den(.4).angDamp(8).linDamp(.8),
-
-        star= w.S(200, 200, 'p', 100).den(1).bo(2).bindSprite('earth',.13)
-
-    ).freq(.15).damp(0).len(50)
-
-
-    w.s.rXY(w.hW, w.hH)
-
-    cjs.tick(function(){
-
-        var Z= cjs.cap(
-                300/Math.dist(star, p),  .3, 2)
-
-        w.s.sXY(Z)
-        w.s.X(w.hW -  (p.X()-w.hW)*Z  )
-        w.s.Y(w.hH -  (p.Y()-w.hH)*Z  )})
-
-    w.cent('+')
+b=b2.Dynamics.b2Body.prototype
+b.track=function(x,y,z){var b=this,w= b.wor()
+    w.track(b,x,y,z)
+    return b}
 
 
 
+w = b2d.World.prototype
+w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering in fw//can optionally filter it with scale itself //  has limits now!  and more.. tis is the ultimate!
+
+    if(U(t)){t = w._trackee}
+
+    w.t=t
+    cX=N(cX)?cX:w.W/2;
+    cY=N(cY)?cY:w.H/2  //option to set based on t's CURRENT X/Y?
+
+    if(O(bf)){
+        bf.x = N(bf.x)? bf.x : w.w/2
+        bf.y = N(bf.y)? bf.y: w.h/2
+        bf.w=  N(bf.w)? bf.w:  0
+        bf.h=  N(bf.h)? bf.h:   0
+        bf.mX = N(bf.mX)? bf.mX : 1
+        bf.mY = N(bf.mY)? bf.mY: 1
+//
+
+        //from foll:
+        w.s.HUD.dot('w', bf.x, bf.y)
+        w.s.HUD.dot('w', cX, cY)
+        w.S(bf.x, bf.y, 'r',  [  [bf.w, bf.h, '-'] ] )
+        w.S(bf.x, bf.y, 'w',  [  [bf.w+20, bf.h+20, '-'] ] )
+        w.S(bf.x, bf.y, 'b', [ [bf.w, w.h,  '-'] ] )
+        w.S(bf.x, bf.y, 'b', [ [w.w,  bf.h,  '-'] ] )
+        w.S(bf.x, bf.y, 'z',  [ [ 10,10, '-' ]  ] )  //sensor works but ony for rect (or at least not for circ)
 
 
+
+        //
+
+
+        w.S(bf.x, bf.y,'w',[[bf.w,bf.h,'-']])
+        w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
+        w.dot(bf.x+bf.w/2, bf.y-bf.h/2    ,'+')
+        w.dot(bf.x+bf.w/2, bf.y+bf.h/2         ,'+')
+        w.dot(bf.x-bf.w/2, bf.y+bf.h/2 , '+')
+        w.dot(bf.x, bf.y, '*')
+        w.dot('z', 600,600,'+')
+
+        cjs.tick(function(){var sX,sY
+            // sX = (bf.x-w.hW)   + cjs.adj( (t.X()-bf.x),  bf.w/2)/w.z
+            sX =  bf.x - w.hW  + cjs.adj(t.X()-bf.x, bf.w/2)*bf.mX /// bf.mX //scaling not needed?
+            sY = (bf.y- w.hH)   + cjs.adj( t.Y()-bf.y,  bf.h/2)*bf.mX// /bf.mY
+            w.sXY( sX,  sY)})
+
+    }
+    else if(bf=='!'){
+        cjs.tick(function(){var sX,sY
+            sX = w.z*(t.X()-cX)
+            sX =  sX  *   1  / ( 1 + w.hW/w.w )
+            sY = w.z*(t.Y()-cY)
+            sY = sY /  (1+ w.hH/w.h)
+            w.sXY(sX,sY)})
+    }
+
+    else if(bf=='-'){
+        cjs.tick(function(){
+            w.s.x =  (cX-t.X())* w.z     -   w.W*(w.z/2-.5)
+            w.s.y =  (cY-t.Y())*w.z     -   w.H*(w.z/2-.5)
+        })
+    }
+
+    else {
+
+
+        //w.S(cX,cY,'o',[ [40,400,'-']])
+        // w.dbCross(cX,cY)
+        w.dot(cX,cY,'+')
+
+        cjs.tick(function(){
+            if(F(w.t.cb)){w.t.cb()}
+            else if(F(w.track.cb)){w.track.cb()}
+            var dX=t.X()-cX, dY=t.Y()-cY
+            w.sXY(w.z*w.hW+w.z*dX-w.hW, w.z*(w.hH+dY)-w.hH)})}
+    return w}
+
+
+
+
+SLOOM=function(){
+
+    W([800,500,2400,500],{g:0}).Z(1.5).Y(200,200).showOff().bricks(
+        [400,300,'r',200,100],[800,300,'z',100,100],
+        [1200,300,'b',300,100],[1600,300,'z',100,100],
+        [2000,300,'r',200,100])
+
+    y.damp(1,10)
+    y.track()
+
+   //$.in(10,"y.img('me',.5)")
+
+}
+
+
+
+
+STREETFIGHTER=function(){
+
+
+    W([1200, 600, 1400,1200], {g:300,t:0}).P()
+
+
+    p.XY(700, 600)
+
+    w.S(700,1000,'r',800,20)
+
+    w.S(500, 800,'g',200,20)
+    w.S(900, 600,'x',200,20)
+
+    // y = w.ship( 700, 400 ).lD(1)
+
+
+    // w.foll(y,600, 500,  700, 500, 350,50 )   //this is nice
+
+    w.track(p,
+        600, 400,  {x:700, y:1000, w:700, h:600,
+            mX:1.5//,  mY:1.1
+        }
+    )
+
+
+}
+SPACEBUFF=function(){W(1000,1000,2000,2000).G(0)
+
+
+    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
+
+    y = w.ship(100, 100).rot(200)
+
+
+    w.track(y, 500, 500 ,{x:1000, y:1000, w:400, h:400} )
+
+    BUFFER=function(){
+
+
+        W([1200,600,4800,1600],{g:0,t:0})//.mark()//.dot(600,300,'*').dot(1200,600,'*')
+
+        y=w.ship(100,100).damp(1,10).rot(90).lD(2).aD(2)
+            .rot(120)//.lV(1)
+
+        w.bufFoll (y, 600, 300, {
+            x: 800, y: 300, mX:.8, mY:.8,  w: 200, h: 200  })
+
+
+
+        // w.Z(.8)
+    }
+
+}
+SLIDEROOMS=function(){W([1200, 600,2400, 1000],{g:300}).P()
+    w.right.kill(); w.left.kill()
+    w.track(p,300,400, {
+        x:1200,y:700,
+        w:800,h:500,
+        mX:10,mY:10
+    })
+}
+
+KISS=function(){
+
+    W([  1200, 600, 2400, 600 ],{g:10})
+
+
+    _.times(10, function(i){
+
+        w.D(100+i*100, 100).cir({
+            c:$r(), C:$r(), r:25, lg:1
+        }).den(.1)}) //  w.D(100+i*100, 100, $r(), 35).den(.1)
+
+    _.times(10, function(i){
+        w.D(100+i*140, 160).cir({  c:$r(), C:$r(), r:35, rg:1
+        }).den(.1)
+    })
+
+
+    w.D(800, 300).cir({
+         C:'y', l:2,
+        r:120, bm:1
+    }).den(.1)
+
+
+
+    y = w.ship(50,50).C('d').mid()
+    y2 = w.ship(100, 300).C('x').rot(180)
+
+
+    //i thought i may want t for timer/ticker.. but time has no x and y !
+    //move the stage by manipulating the trackee x,y
+    //these funcs can change stage, or the tick can update it every tick based on its value w.tx/ w.ty?
+
+
+    w.tRightLeft()
+
+    w.showOff()
+
+
+      I(function changeT(){
+            if( w.t == y2){w.C('b'); w.t=y } else {w.C('z');w.t= y2}
+        }, 5000)
 
 
 }
@@ -34,7 +213,7 @@ SCALESPACEZOOM=function(){w = b2d.W({g:0,w:0})
 
 
 
-w = b2d.World.prototype
+
 
 /*
 w.cam=function(x,y){var w=this //<-pXY
@@ -52,7 +231,6 @@ w.camLims = function(xm, xM, ym, yM){var w=this
         w._camLimY = [ym,yM]}
     return w}
 */
-
 
 
 
@@ -143,104 +321,9 @@ w.dragScale=function(){var w=this,
 w.sXCap=function(s){var w=this; return cjs.cap(s,0,w.w*w.z-w.W)}
 w.sYCap=function(s){var w=this; return cjs.cap(s,0,w.h*w.z-w.H)}
 
-w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering in fw//can optionally filter it with scale itself //  has limits now!  and more.. tis is the ultimate!
-
-    if(U(t)){t = w._trackee}
-
-    w.t=t
-    cX=N(cX)?cX:w.W/2;
-    cY=N(cY)?cY:w.H/2  //option to set based on t's CURRENT X/Y?
-
-    if(O(bf)){
-
-        bf.x = N(bf.x)? bf.x : w.w/2
-        bf.y = N(bf.y)? bf.y: w.h/2
-        bf.w=  N(bf.w)? bf.w:  0
-        bf.h=  N(bf.h)? bf.h:   0
-        bf.mX = N(bf.mX)? bf.mX : 1
-        bf.mY = N(bf.mY)? bf.mY: 1
-//
-
-        //from foll:
-
-        w.s.HUD.dot('w', bf.x, bf.y)
-        w.s.HUD.dot('w', cX, cY)
-
-        w.S(bf.x, bf.y, 'r',  [  [bf.w, bf.h, '-'] ] )
-
-        w.S(bf.x, bf.y, 'w',  [  [bf.w+20, bf.h+20, '-'] ] )
-
-
-        w.S(bf.x, bf.y, 'b', [ [bf.w, w.h,  '-'] ] )
-
-
-        w.S(bf.x, bf.y, 'b', [ [w.w,  bf.h,  '-'] ] )
-
-
-        w.S(bf.x, bf.y, 'z',  [ [ 10,10, '-' ]  ] )  //sensor works but ony for rect (or at least not for circ)
 
 
 
-        //
-
-
-        w.S(bf.x, bf.y,'w',[[bf.w,bf.h,'-']])
-
-        w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
-
-        w.dot(bf.x+bf.w/2, bf.y-bf.h/2    ,'+')
-
-        w.dot(bf.x+bf.w/2, bf.y+bf.h/2         ,'+')
-
-        w.dot(bf.x-bf.w/2, bf.y+bf.h/2 , '+')
-
-
-        w.dot(bf.x, bf.y, '*')
-        w.dot('z', 600,600,'+')
-
-        cjs.tick(function(){var sX,sY
-            // sX = (bf.x-w.hW)   + cjs.adj( (t.X()-bf.x),  bf.w/2)/w.z
-            sX =  bf.x - w.hW  + cjs.adj(t.X()-bf.x, bf.w/2)*bf.mX /// bf.mX //scaling not needed?
-            sY = (bf.y- w.hH)   + cjs.adj( t.Y()-bf.y,  bf.h/2)*bf.mX// /bf.mY
-            w.sXY( sX,  sY)})
-
-    }
-    else if(bf=='!'){
-        cjs.tick(function(){var sX,sY
-            sX = w.z*(t.X()-cX)
-            sX =  sX  *   1  / ( 1 + w.hW/w.w )
-            sY = w.z*(t.Y()-cY)
-            sY = sY /  (1+ w.hH/w.h)
-            w.sXY(sX,sY)})
-    }
-    else if (bf=='-'){
-        cjs.tick(function(){
-            w.s.x =  (cX-t.X())* w.z     -   w.W*(w.z/2-.5)
-            w.s.y =  (cY-t.Y())*w.z     -   w.H*(w.z/2-.5)
-        })
-    }
-    else {
-
-        w.S(cX,cY,'o', [ [40,400,'-']])
-       // w.dbCross(cX,cY)
-        w.dot(cX,cY,'+')
-
-        cjs.tick(function(){
-
-            if(F(w.t.cb)){w.t.cb()}
-
-           else if(F(w.track.cb)){w.track.cb()}
-
-            var dX=t.X()-cX, dY=t.Y()-cY
-            w.sXY(   w.z*w.hW + w.z*dX  -w.hW,    w.z*(w.hH+dY)-w.hH)
-        })
-    }
-
-
-
-
-
-    return w}
 w.sX=function(x){
     var w=this;
     if(U(x)){return -w.s.x}
@@ -258,36 +341,52 @@ w.pan=function(o){
         l
     if(g.m){
         l=function(){
-            up = z > w.mZ*3? false : z < w.mZ ? true: up
+
+            up = z > w.mZ*3? false :
+                    z < w.mZ ? true:
+                        up
+
             z *= up? 1.01 : .9
-
-
             w.Z(z / w.mZ)
-
-
         }
     }
     else {l=function(){
 
-        up = z > MZ? false : z < mZ? true: up
+        up = z > w.mZ*3? false : z < mZ? true: up
         z += up? .03 : -.03
         w.Z(z / w.mZ)
     }}
     w.track.cb=l
     return w}
+
 w.showOff=function(){var w=this
     zin()
     function zout(){setTimeout(zin, 10000);w.zoomOut()}
     function zin(){setTimeout(zout, 4000);w.zoomIn()}
     return w}
 
+SCALESPACEZOOM=function(){W({g:0,w:0})
+    w.cent('+')
+    w.s.rXY(w.hW, w.hH)
+    w.distColl(
+        p= w.player(200,200,2.5, 'thrust').horizCenter().den(.4).aD(8).lD(.8),
+        star= w.S(200, 200, 'p', 100).den(1).bo(2).bindSprite('earth',.13)
+    ).freq(.15).damp(0).len(50)
+    cjs.tick(function(){trans(cjs.cap(300/Math.dist(star,p),.3,2))})
+    function trans(Z){w.s.sXY(Z)
+        w.s.XY(w.hW-(p.X()-w.hW)*Z,
+                w.hH-(p.Y()-w.hH)*Z)}}
+
+w.bricks=function(){var w=this
+    _.each(arguments, function(g){w.S.apply(w, g)})
+    return w}
+$.in=function(s,f){return setTimeout(_v(f), s*1000)}
 
 CUPBALL=function(){//should zoom in when near cup
     CUPS()
     b = w.D(w.W/2, w.H/2, 'w', [[10  ]]).rest(.8).track()
     cjs.tick(function(){b.F(0, -20)})
     w.showOff()}
-
 SCROLLNOLIM=function(){W([1200,600,2400,1200], {  g:0 })
     w.S(1200,300,'r',400,100)
     w.S(1200,600,'w',[[100,100,'-']])
@@ -387,8 +486,6 @@ ZOOMSCALE=function(){
     })
 
 }
-
-
 FOLLOWERS=function(){W(500, 500, 1600, 1000).G(0)
     a = w.ship().C('b')
     b  = w.ship(400,400).C('o').track()
@@ -436,7 +533,6 @@ BASICSCROLL=function(){
 
 
 }
-
 SHORTLONG=function(){
     W([900,300,3600,300],{g:0}).Z(3)
     w.S(1200,300,'r',400,100)
@@ -499,143 +595,56 @@ WORLDPAN=function(){W([1200, 600, 2400, 600],{g:0})
     w.pan('*')
 
 }
-SLOOM=function(){
-    W([800,500,2400,500],{g:0}).Z(1.5)
-    w.S(400,300,'r',200,100)
-    w.S(800,300,'z',100,100)
-    w.S(1200,300,'b',300,100)
-    w.S(1600,300,'z',100,100)
-    w.S(2000,300,'r',200,100)
-
-    y = w.ship(200,200).rot(120).damp(1,10)
-    w.track(y)
-    w.showOff()
-    // w.pan()
-
-    setTimeout(function(){y.bindSprite('me',.5)}, 10000)
-
-}
-
-
-
-//buffer
-BUFFER=function(){
-
-
-    W([1200,600,4800,1600],{g:0,t:0})//.mark()//.dot(600,300,'*').dot(1200,600,'*')
-
-    y=w.ship(100,100).damp(1,10).rot(90).lD(2).aD(2)
-        .rot(120)//.lV(1)
-
-    w.bufFoll (y, 600, 300, {
-        x: 800, y: 300, mX:.8, mY:.8,  w: 200, h: 200  })
-
-
-
-    // w.Z(.8)
-}
-STREETFIGHTER=function(){
-
-
-    W([1200, 600, 1400,1200], {g:300,t:0}).P()
-
-
-    p.XY(700, 600)
-
-    w.S(700,1000,'r',800,20)
-
-    w.S(500, 800,'g',200,20)
-    w.S(900, 600,'x',200,20)
-
-    // y = w.ship( 700, 400 ).lD(1)
-
-
-    // w.foll(y,600, 500,  700, 500, 350,50 )   //this is nice
-
-    w.track(p,
-        600, 400,  {x:700, y:1000, w:700, h:600,
-            mX:1.5//,  mY:1.1
-        }
-    )
-
-
-}
-SPACEBUF=function(){W(1000,1000,2000,2000).G(0)
-
-
-    w.S(200,500,'g',100,100); w.S(500, 500,'w', 100,100); w.S(1000, 500,'r', 100,100); w.S(1500, 500,'g', 100,100)
-
-    y = w.ship(100, 100).rot(200)
-
-
-    w.track(y, 500, 500 ,{x:1000, y:1000, w:400, h:400} )
-
-}
-SLICK=function(){ //no buffer to worry about //it lets u gradually move past the target point.. until hits limit
-
-
-
-
-    W([1200,600,4800,1200],{g:0,t:0}).db().dev().mark().dot(600,300,'*').dot(1200,600,'*')
-    w.S(1200,300,'r',400,100)
-    w.S(1200,900,'r',400,100)
-    w.S(1200,600,'w',[[400,500,'-']])
-    y=w.ship(1250,600).damp(1,10).rot(90).lD(0)
-        .rot(120).lV(1)
-    w.track(y, 600, 300, '!')
-    w.click(function(){if(y.lV().x){y.lV(0)} else {y.lV(1)}})
-}
-SLIDEROOMS=function(){
-
-
-    W([1200, 600,2400, 1000],{g:300 })//.mark().dot(600,300,'*').dot(1200,600,'*')
-
-    w.P()
-
-    //y=w.ship(100,100).damp(1,10).rot(90).lD(2).aD(2).rot(120)//.lV(1)
-    w.track(p, 300, 400, {  x: 1200,  y: 700,  mX:10,  mY:10,  w: 800,   h: 500  })
-
-   // w.track(p, 300, 400)
-    w.dot(300,100,'+')
-
-
-
-
-}
 
 
 
 
 
 
-MARIOGROUNDS =function(){w = b2d.W({w:0, g:5}).debug()
-    w.s.XY(300,150)
-    w.s.rXY(300, 150)
+
+
+
+
+MARIOGROUNDS =function(){
+    W([1200,600, 4000,1200], {w:'L',
+        g:200})
+    //w.s.XY(300,150)
+    //w.s.rX(600)
+    w.s.rY(-200)
+
+    w.Z(.5)
 
     w.ice(30,250, 400)
     w.grass(450,250,400)
-    w.grass(500,100,4000)
-    w.rubber(880,250,40000)
+    w.grass(500,100,1000)
+    w.rubber(880,250,1000)
 
-    p = w.mario().followX(600, 400)
+   p= w.jumper(400,-100).track(600,400)
 
 }
-SCROLLINGLEVEL=function(){w=b2d.W().debug()
-    w.s.XY(300, 150).rXY(300, 150)
+
+SCROLLINGLEVEL=function(){W()
+    w.s.XY(300, 150)//.rXY(300, 150)
     w.grass(300,280,500)
     w.ice(1300, 280, 1000)
+
     w.clouds().clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
-    p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).follow(600, 400)
+    //p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 )
+    w.ship().track(600, 400)
 }
-SLIDE=function(){w=b2d.W().debug()
+
+SLIDE=function(){W()
     w.roof.kill()
     w.s.XY(300, 150).rXY(300, 150)
     w.clouds().clouds(1000,-200)
     w.grass(300,280,500)
     w.ice(800,280, 5000)
-    p = w.player(2.5, 'thrust').XY(800,-100) .angDamp( 10000 ).follow(600, 400)
+    p = w.player(2.5, 'thrust').XY(800,-100)
+        .aD( 10000 ).track(600, 400)
     slide = w.rect(1200, 30, 1200,40, 'blue').den(1).fric(.5).rest(.5)
+
 }
+
 AUTOSCROLL=function(){w=b2d.W({g:300}).debug()
     w.right.kill()
     w.left.kill()
@@ -674,18 +683,25 @@ RAMPS=function(){
     cjs.tick(function(){$l(p.onGround)})
 
 }
+
 SCALINGLEVEL=function(){
 
-    W({w:'_'}).P(1000,0)
-
-
+    W({w:'_',g:150}).P(1000,0)
     w.ice(800,280, 10000);
     w.rubber(50,100,300); w.rubber(-400,100,300)
     w.rect(1200,30, 600,4).stat();
     w.clouds(500,-200).clouds(1000,-200).clouds(-500,-200)
     w.s.XY(300, 150).rXY(300,150)
-    p.calcScale=function(){return 1-((this.X()-300)/300)*.1}
-    cjs.tick(function(){p.centerScale(p.calcScale())})
+
+
+
+    cjs.tick(function(){
+
+        p.centerScale(
+                1-( (p.X()- w.hH)/ w.hH)*.1
+        )
+
+    })
 }
 
 

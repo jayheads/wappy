@@ -67,11 +67,17 @@ w.dd=function(o){var w=this
 
 
     return w}
-w.u = function(o){var w=this
+
+
+w.update = w.u = function(o){var w=this
     setInterval(function(){w.draw(1/60)
         if(F(o.cb)){o.cb()}
-        w.s.update()}, 1000/60)
+        w.s.update()
+    }, 1000/60)
     return w}
+
+
+
 w.vW =function(col,H,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
 
     if(!S(col)){y=x;x=H;H=col;col='x'}
@@ -98,7 +104,9 @@ w.walls=function(o){
 
         col,h
 
+
     if(wa==0){return w}
+    if(wa=='@'){w.warp(); return w}
 
     if (F(wa)) {wa()}
 
@@ -138,6 +146,12 @@ w.walls=function(o){
 
         w.right=  w.S(W,H/2,'o',40,H).K('wall side left')
 
+        w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
+    }
+
+    else if (wa=='='){
+
+        w.roof=   w.S(W/2,0,'o',W,40).K('wall roof')
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
     }
 
@@ -354,6 +368,55 @@ b2d.mJ=function(body, tX,tY){
     md.dampingRatio = 0
     return md}
 
+w.eachEvery=function(l){var w=this
+
+    cjs.tick(function(){
+        w.each(l)
+    })
+
+    return w}
+
+w.warp=function(){var w=this
+    $l('warp')
+
+    w.eachEvery(function(b) {
+        if (b.X() < 10) {
+            b.X(w.W-10)
+        }
+        if (b.X() > w.W-10 ) {
+            b.X(10)
+        }
+
+
+        if (b.Y() < 10) {
+            b.Y(w.H-10)
+        }
+        if (b.Y() > w.H-10) {
+            b.Y(10)
+        }
+
+    })
+
+    return w}
+
+
+
+
+w.coords=function(){var w=this
+
+
+    w.eachEvery(function(b){var p
+
+        b.wX = b.X()
+        b.wY= b.Y()
+
+        p = w.wTS(b.wX, b.wY)
+
+        b.sX = p.x;b.sY= p.y
+
+
+    })
+    return w}
 
 W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.show(function(){})//not working with scroll
 
@@ -369,21 +432,34 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
     o.wW=o.wW ||  o.W
     o.wH=o.wH ||  o.H
 
-    o.w = o.w==0?0: o.w ? o.w :     ['o', o.wW, o.wH]
+    o.w = o.w==0 ? 0: o.w ? o.w :     ['o', o.wW, o.wH]
 
     o.g = N(o.g) ? V(0,o.g) : o.g? V(o.g) : V(0, 300)
 
     cjs.watchKeys()
+     w.coords()
+
     w=b2d.world( o.g ); w.o = o
 
-    if(o.z != false){ z() }
+     if(o.z != false){ z() }
 
-    w.gx(o).setBg(o)
-        .dd(o).db()
-        .startListening()
-        .wMouse().wMouseJ(o)
-        .walls(o)
-        .u(o)
+
+
+     w.gx(o)
+
+    w.setBg(o)
+
+    w.dd(o)
+    w.db()
+
+    w.startListening()
+
+     w.wMouse()
+
+     w.wMouseJ(o)
+
+    w.update(o)
+
 
 
     w.w  = o.wW
@@ -394,22 +470,25 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
     w.wW = w.w/w.W
     w.Hh = w.H/ w.h
     w.hH = w.h/ w.H
-
     w.mZ = w.hH > w.wW? w.hH : w.wW
-
     w.mS = w.Ww > w.Hh ? w.Ww : w.Hh // ?
-
     w.z = 1 //scale
     w.hW = w.W/2
     w.hH = w.H/2
 
+     w.walls(o)
+
+
+
     if(o.t!==0){
-        w.startTracking().tGuy()
+         w.startTracking()
+         w.tGuy()
     }
 
-
-    //w.tracker(o) //relies on some of above prop setting
+     //w.tracker(o) //relies on some of above prop setting
     return w}
+
+
 
 
 

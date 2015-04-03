@@ -125,7 +125,7 @@ w.yShipEquilateral = function(color, x,y,scale){var halfSide, side, ship
     scale = N(scale)?scale:4
     halfSide = scale * 4
     side = halfSide * 2
-    ship = this.dyn(x,y)
+    ship =this.D(x,y)
 
     ship.convex(color, [  [ -side , halfSide ],[0, -side ],[side , halfSide ]  ])
 
@@ -254,15 +254,10 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
 
     ship.shoot=function(kind){kind = kind||'bul'
         var bullet, dist, y=this
-
         dist =  y.dir().mult(100)
 
-        bullet=w.circ(
-                y.X() + dist.x,
-                y.Y() + dist.y,
-            6,
-            'w'
-        ).K(kind).addClass('bul bullet')
+        bullet=w.circ(y.X() + dist.x, y.Y() + dist.y,
+            6,'w').K(kind).addClass('bul bullet')
 
         bullet.I( y.GetWorldVector( V(0, -100) ).div(4) )
 
@@ -271,12 +266,10 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
         return bullet}
 
 
-    ship.shootOnSpace= function(kind){
-        var y=this
-        $.space(function(){
-            y.shoot(kind)
-        })
+    ship.shootOnSpace= function(k){var y=this
+        $.space(function(){y.shoot(k)})
         return this}
+
     ship.shootOnInt= function(int, kind){
         var y=this, int = N(int)?int:1000
 
@@ -296,6 +289,8 @@ w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
 
     return this.yShip(x,y).thrustControl().shootOnSpace().damp(2)
 }
+
+
 
 
 w.webMe=function(x,y){
@@ -682,30 +677,10 @@ w.elev= w.elevator =function(x){
         this.j.mot(this.speed*=-1)}, 200, {trailing:false})
 
     return elev}
-w.greenGuy = function(x,y){
-    x=N(x)?x:100; y=N(y)?y:100
 
-    var that=this,
-        size=20,
 
-        b= that.dyn(x,y).K('greenGuy'),
 
-        centFix = b.rect(20,20).K('center').rest(2),
 
-        f = b.rectSensor(size, size)
-
-    setInterval(function(){f.kill(); size += 4; f= b.rectSensor(size, size)}, 500)
-
-    that.begin(function(cx){var fix
-        fix = cx.with('center', 'bullet')
-        if(fix){
-            if(cx.A() == centFix){size=20;b.linVel(0).angVel(0)}
-            if(cx.B() == centFix){size=20;b.linVel(0).angVel(0)}
-        }
-    })
-
-    __greenGuy = b
-    return b}
 w.car =function(){
 
     var car = w.rect(150, 150,90,30, 'black')

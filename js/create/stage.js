@@ -204,7 +204,7 @@ ct.noAutoClear=function(){
 return this}
 
 
-cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
+cjs.s = cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
 
     cjs.watchKeys()
 

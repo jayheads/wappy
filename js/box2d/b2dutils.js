@@ -129,6 +129,7 @@ b2d.AB = b2d.AABB= function(x1,y1,x2,y2){
 
 }
 
+b2d.FixtureDef= b2d.Dynamics.b2FixtureDef
 
 b2d.AABB=function(a,b,c,d){//this is the one that works!
 

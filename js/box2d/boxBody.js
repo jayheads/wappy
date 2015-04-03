@@ -318,10 +318,8 @@ b.mass = function(m){
 
   b.worldCenter=  function(){ return this.GetWorldCenter()  } //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
 
-b.track=function(x,y,z){var b=this,w= b.wor()
 
-    w.track(b,x,y,z)
-return b}
+
 //world point
 b.wPt = b.wPoint = p.worldPoint = p.wP   =function(x,y){return this.GetWorldPoint(  V(x,y).div()  ).mult()}
 
@@ -703,7 +701,16 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
 
 
 
-b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return fix}
+
+
+
+
+
+
+
+
+
+
 // b2d.sep = b2d.conc =     func|body,verts,scale
 //takes an array of points (or of one color and a bunch of points)
 
@@ -759,7 +766,11 @@ b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return f
 
 
         if(str){ f.K(str) }
-        if(col){ f.bindSprite( w.s.poly(arr, col, col)  )}
+        if(col){ f.bindSprite(
+
+            w.s.poly(arr, col, col)
+
+        )}
 
 
         return f
@@ -773,6 +784,15 @@ b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return f
     ////
 
 
+    b2d.poly =function(){var g=G(arguments),
+
+        polyH = b2d.polyH.apply(null, g),
+
+        fixt = b2d.fixt(polyH).den(1).fric(.2).rest(.2)
+
+        if(g.n){ fixt.isSensor = true }
+
+        return fixt}
 
 
 
@@ -784,49 +804,70 @@ b.poly = function(){var fix=this.fixt(b2d.poly.apply(null, arguments)); return f
 
 
 
+    b.poly= function(){var b=this
+        b2d.poly =function(){var g=G(arguments),  //SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?//but can not pass den? who cares!
+            polyH = b2d.polyH.apply(null, g),
+            fixt = b2d.fixt(polyH).den(1).fric(.2).rest(.2)
+            if(g.n){fixt.isSensor = true}
+            return fixt}
+        return b.fixt(
+            b2d.poly.apply(null, arguments)
+        )
+    }
 
+b.RECT= function(col, wd, ht, x, y, rot){
 
-
-b.RECT = function(col, wd, ht, x, y, rot){
-
-    var g= G(arguments),
+    var g= G(arguments),b=this,
         fd,
         fixt,
         h,
-        str,alpha=1
-
+        str,
+        alpha=1
     col=g[0];
     wd=g[1];
     ht=g[2]
     x=g[3];
     y=g[4];
     rot=g[5]
-
     if(S(rot)){str=rot;rot=null}
     if(S(y)){str=y;y=null}
     if(S(x)){str=x;x=null}
     if(S(ht)){str=ht;ht=null}
-
-
     if(!S(col)){rot=y;y=x;x=ht;ht=wd;wd=col}
-
-    fd=b2d.rec(wd,ht,x,y,rot)
-
+    fd = b2d.rec(wd, ht, x, y, rot)
     if(g.n){
         fd.isSensor=true
-
         alpha=.2
     }
-
-    fixt =  this.fixt(  fd  )
-
+    fixt =  b.fixt(  fd  )
     if(str){ fixt.K(str) }
-
     if(S(col)){
-        fixt.bindSprite(
-            w.s.RECT(col, wd, ht, x, y, rot), 0, 0, 0,alpha
-        )}
+        fixt.bS(
+            w.s.RECT(col, wd, ht,
+                x, y, rot),
+            0, 0, 0, alpha)}
+    return fixt
+}
 
+
+
+
+
+
+
+b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
+
+
+    col=g[0];rad=g[1];x=g[2];y=g[3];
+
+    if(S(y)){str=y;y=null}
+    if(S(x)){str=x;x=null}
+    if(S(rad)){str=rad;rad=null}
+    if(!S(col)){y=x;x=rad;rad=col}
+
+    fixt =  this.fixt(  b2d.circ(rad,x,y)   )
+    if(str){ fixt.K(str) }
+    if(S(col)){ fixt.bindSprite( w.s.circ(col,rad,x,y)) }
     return fixt
 
 }
@@ -835,50 +876,51 @@ b.RECT = function(col, wd, ht, x, y, rot){
 
 
 
-b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
-    col=g[0];rad=g[1];x=g[2];y=g[3];
-    if(S(y)){str=y;y=null}
-    if(S(x)){str=x;x=null}
-    if(S(rad)){str=rad;rad=null}
-    if(!S(col)){y=x;x=rad;rad=col}
-    fixt =  this.fixt(  b2d.circ(rad,x,y)   )
-    if(str){ fixt.K(str) }
-    if(S(col)){ fixt.bindSprite( w.s.circ(col,rad,x,y)) }
-    return fixt}
 
 
 
+b.H= function(arg){var g=G(arguments), arg=g[0],
 
-
-b.H = function(arg){var b=this,g=G(arguments), arg=g[0],
+        b=this,
         len=length(g)
 
     if(U(arg)){return b}
 
+
     //passing a single array, suggest MULTIPLE fixts
     //[f1,f2,..]
-    if(A(g[0])&&U (g[1])) {_.each(g[0],function(a){b.H.apply(b, a)})}
+    if( A(g[0]) && U(g[1]) ){
+        _.each(g[0],
+            function(a){
+                b.H.apply(b, a)})}
+
 
 
     //[col,[f1,f2,..]]
-    else if(S(g[0])&&A(g[1])&&U(g[2])){
+    else if( S(g[0]) && A(g[1] ) && U(g[2]) ){
+
         _.each(g[1],function(f){
 
-            if(b2d.isFixtDef(f)){b.fixt(f).C(g[0])}
-            else{if(!S(f[0])){
-
-                f=_.map(f, function(a){return a})
-                //*** ?
-                f.unshift(g[0])
+            if(b2d.isFixtDef(f)){
+                b.fixt(f).C(g[0])
             }
 
-                if(b2d.isFixtDef(f[1])){b.fixt(f[1]).C(f[0])}
+            else {
 
-                else {b.H.apply(b,f)}}})}
+                if(!S(f[0])){f.unshift(g[0])}//f= _.map(f, function(a){return a})
+
+                if(b2d.isFixtDef(f[1])){
+                    b.fixt(f[1]).C(f[0])
+                }
+
+                else {b.H.apply(b,f)}}})
+    }
+
     //fixtDef
-    else if(b2d.isFixtDef(g[0])){b.fixt(g[0])}
+    else if(b2d.isFixtDef(g[0])){ b.fixt(g[0]) }
+
     //['color', fixtDef]
-    else if(S(g[0])&&b2d.isFixtDef(g[1])){b.fixt(g[1]).C(g[0])}
+    else if(S(g[0]) && b2d.isFixtDef(g[1])){ b.fixt(g[1]).C(g[0]) }
 
     //verts
     else if(O(g[1])){
@@ -889,28 +931,31 @@ b.H = function(arg){var b=this,g=G(arguments), arg=g[0],
     }
 
     //circ
-    else if(len==1||len==3){
-        if(g.n){g.push('-')}
-        b.CIRC.apply(b,g)}
+    else if(len == 1 || len == 3){ if(g.n){  g.push('-')  }
+       // b.CIRC.apply(b, g)
+
+        b.cir.apply(b, g)
+
+    }
+
+
 
     //rect
     else {
-
         if(g.n){g.push('-')}
-
          b.RECT.apply(b, g)
-
     }
 
 
     function length(arr){
-        var len=arr.length
-        if(S(arr[0])){len--}
-        if(S(_.last(arr)) ){len--}
+        var len = arr.length
+        if(S(_.first(arr))){len--}
+        if(S(_.last(arr))){len--}
+        return len}
 
-        return len
-    }
     return b}
+
+
 
 
 
@@ -1442,7 +1487,7 @@ easel = function() {
 //move to x-middle of stage
     b.horizCenter=function(){return this.X( this.wor().s.W() / 2  )}
 
-    b.img=b.bindSprite = function (img, scale, startingRotation) { //img is an image name  //rotation is in degerees!
+    b.img= b.bS=b.bindSprite = function (img, scale, startingRotation) { //img is an image name  //rotation is in degerees!
         var body = this, stage = body.wor().s
         scale = scale || .4
         startingRotation = N(startingRotation) ? startingRotation : 6 // why not zero ?????
@@ -1472,7 +1517,9 @@ easel = function() {
         return body
     }
 
-    b.bindSprite2 = function (obj, startingRotation, x, y) {
+
+
+    b.bS2= b.bindSprite2 = function (obj, startingRotation, x, y) {
         //takes any display object.  right now, just used for shapes
         //because bindSprite fetches the bm's by string.
         //but when i set up preloader, then i would use this i suppose :)
@@ -1519,15 +1566,25 @@ easel = function() {
         }
         return this
     }
-    b.centerScale = function (scale) {
-        var body = this
 
-        body.stg().sXY(scale)
-            .X(300 - ((body.X() - 300) * scale))
-            .Y(150 - ((body.Y() - 150)) * scale)
 
-        return this
+    b.centerScale = function(z){var b= this, w=b.wor(),s= b.stg()
+
+       s.sXY(z)
+
+
+        s.X(w.hW - ((b.X() - w.hW) *z))
+
+        s.Y(w.hH - ((b.Y() - w.hH))*z)
+
+
+        return b
     }
+
+
+
+
+
     b.color = function (c1, c2) {
         c1 = c1 || 'b';
         c2 = c2 || c1
@@ -1537,6 +1594,13 @@ easel = function() {
         })
     }
 }; easel()
+
+
+
+
+
+
+
 player=function() {
     b.moveInCircle = function(rad, speed){
 
@@ -1787,25 +1851,16 @@ player=function() {
 
         return this
     }//b.feetListener =function(){return this.listener('feet')}
-    b.warp = b.warp2 = function (p) {
-        var p = this
-        cjs.tick(function () {
-            if (p.Y() < 0) {
-                p.Y(600)
-            }
-            if (p.Y() > 600) {
-                p.Y(0)
-            }
-            if (p.X() < 0) {
-                p.X(1200)
-            }
-            if (p.X() > 1200) {
-                p.X(0)
-            }
-        })
 
-        return this
-    }
+    b.warp =  function(p){
+        var b=this,w=b.W()
+        cjs.tick(function(){
+            if(b.Y()<0){b.Y(w.H)}
+            if(b.Y()>w.W){b.Y(0)}
+            if(b.X()<0){b.X(w.W)}
+            if(b.X()>w.W){b.X(0)}})
+        return b}
+
     b.mario = function () {
         var b = this
         b.canJump = true
@@ -2044,21 +2099,21 @@ geometry=function() {
         if(U(verts)){return}
 
         if(S(verts[0])){ col = verts.shift() }
-
-
-
-
-
-
         if(g.n){b.clear()}
         n1=b.num()
         b2d.sep(b, verts)
 
         if(S(col)){
+
             n2=b.num()
             fs=b.fixts()
             newFixts=_.first(fs,n2-n1)
-            _.each(newFixts,function(f){f.C(col)})}
+
+            _.each(newFixts,
+                function(f){f.C(col)})
+
+        }
+
 
         return this
     }
@@ -2111,9 +2166,10 @@ geometry=function() {
         verts = b.rel(b.polyVerts().difference(poly))
 
         b.clear().conc(verts)
-
         return this
     }
+
+
     b.union = function () {
 
         var num = this.num(),

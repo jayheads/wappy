@@ -515,23 +515,45 @@ return this}
 
 f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
 
-f.C = f.color = function(c1,c2){
+
+f.C= f.color= function(c,C,l){
     var f=this,b=f.body(),
-        w=b.wor(),shape,rad,pos
-    c1=c1||'b'
-    c2=c2||c1
+        w=b.wor(),h,r,p
+
+
+    if(c=='*'){c = $r()}
+    c=c||'b'
+    C=C||c
+
 
     if(f.isCirc()){
-        rad= f.rad()
-        pos= f.pos()
-        shape = w.s.shape().cir( rad, pos.x, pos.y, c1 )}
 
-    else {shape = w.s.shape().poly(f.verts(), c1, c2, 1)}
+        p = f.pos()
+
+        h = w.s.h().cir(
+            f.rad(), p.x, p.y, c, C, l
+        )
+
+    }
+
+
+
+
+    else {
+
+        h = w.s.h().poly(f.verts(),c,C,1)
+
+    }
+
+
+
+
+
 
 
     f.removeSprites()
 
-   f.bindSprite(shape)
+   f.bindSprite(h)
 
    // return this
 }
@@ -543,7 +565,7 @@ f.C = f.color = function(c1,c2){
 
 
 
-f.gx = f.spr = f.bindSprite =f.bindSprite2=function(obj, startingRotation, x, y, alpha ){
+f.bS = f.gx= f.spr= f.bindSprite= f.bindSprite2=function(obj, startingRotation, x, y, alpha ){
 
     var g=G(arguments)
     gg=g
@@ -658,22 +680,6 @@ b2d.rec = function(wd, ht, x, y, rot, den){
 
 //makes a fixture using b2d.polyH
 
-b2d.poly =function(){var g=G(arguments),
-    //SO ONLY ONLY ONLY USE THIS FOR POLYDEFS OF ALL KINDS?
-    //but can not pass den? who cares!
-
-    polyH = b2d.polyH.apply(null, g),
-
-    fixt = b2d.fixt(polyH).den(1).fric(.2).rest(.2)
-
-    if(g.n){ fixt.isSensor = true }
-
-    return fixt}
-
-
-
-
-
 
 b2d.polySens = function(kind){//necessary?
     var poly= b2d.poly.apply(null, _.rest(arguments))
@@ -682,7 +688,7 @@ b2d.polySens = function(kind){//necessary?
 
 
 // compare fixt vs fixtParse
-b2d.fixt = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
+b2d.fixt= function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
 
     // simply makes one fixt,
     // tries to set its shape

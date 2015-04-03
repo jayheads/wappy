@@ -162,3 +162,143 @@ MARK=function(){
 
 
 }
+
+
+
+w.greenGuy = function(x,y){
+    x=N(x)?x:100; y=N(y)?y:100
+
+    var that=this,
+        size=20,
+
+        b= that.dyn(x,y).K('greenGuy'),
+
+        centFix = b.rect(20,20).K('center').rest(2),
+
+        f = b.rectSensor(size, size)
+
+    setInterval(function(){f.kill(); size += 4; f= b.rectSensor(size, size)}, 500)
+
+    that.beg(function(cx){var fix
+
+        fix = cx.with('center', 'bullet')
+
+        if(fix){
+            if(cx.A() == centFix){size=20;b.linVel(0).angVel(0)}
+            if(cx.B() == centFix){size=20;b.linVel(0).angVel(0)}
+        }
+    })
+
+
+    return b}
+SLICK=function(){ //no buffer to worry about //it lets u gradually move past the target point.. until hits limit
+
+
+
+
+    W([1200,600,4800,1200],{g:0,t:0}).db().dev().mark().dot(600,300,'*').dot(1200,600,'*')
+    w.S(1200,300,'r',400,100)
+    w.S(1200,900,'r',400,100)
+    w.S(1200,600,'w',[[400,500,'-']])
+    y=w.ship(1250,600).damp(1,10).rot(90).lD(0)
+        .rot(120).lV(1)
+    w.track(y, 600, 300, '!')
+    w.click(function(){if(y.lV().x){y.lV(0)} else {y.lV(1)}})
+}
+
+/*
+
+
+}*/
+w.front=function(i){var w=this
+    if(b2d.isFixt(i)){
+        i = i.img? i.img:  i.sprites? i.sprites[0] : false}
+    if(i){w.s.setChildIndex(i, w.s.getNumChildren()-1)}
+    return w}
+w.back=function(i){var w=this
+    if(b2d.isFixt(i)){
+        i = i.img? i.img:  i.sprites? i.sprites[0] : false}
+    if(i){w.s.setChildIndex(i,0)}
+    return w}
+
+
+w.gg = w.greenGuy = function(x,y){var w=this,
+    x=N(x)?x: w.hW,
+    y=N(y)?y: w.hH,
+        z = 20,
+        gG = w.D(x,y, 'gg'),
+
+        core = gG.RECT(25,25),
+
+        shell = gG.RECT(z, z, '-')
+
+    shell.bindSprite(
+    shell.img=w.s.RECT('g', z, z))
+
+    core.bindSprite(
+       core.img= w.s.RECT(  'o', 25, 25)
+    )
+
+
+
+
+    // core = gg.rect(20,20).K('core'),
+    // core.C('z')
+    // .K('core')
+
+
+
+    I(500, grow)
+    w.beg(beg)
+
+    return gG
+
+    function beg(cx){
+        cx.with(core, 'pop', function(){
+
+            z=0
+             gG.lV(0).aV(0)
+        })}
+
+    function grow(){z += 4
+
+        shell.kill();
+
+        shell = gG.RECT(z, z, '-')
+
+        shell.bindSprite(
+
+            shell.img = w.s.RECT('g',z,z)
+
+        )
+        w.back(shell)
+    }
+
+
+
+}
+
+
+
+
+GREEN=function(){
+
+
+    W({//w:0,
+    w:'@',
+        g:0
+    }).C('w')
+
+        y= w.ship(400,200).K('pop').img('me')
+
+    //mem leak?
+
+    //I(3000, function(){
+    w.gg(300,300)
+   //})
+
+    w.gg(400,400)
+    w.gg(500,500)
+
+}
+
