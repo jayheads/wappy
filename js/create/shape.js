@@ -1,6 +1,105 @@
+$h = cjs.h= cjs.shape= cjs.shp= function(x,y,c,C,l){
+    var g=G(arguments),
+        x=g[0],
+        y=g[1],
+        c=g[2],
+        C=g[3],
+        l=g[4],
+        h
+
+    if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
+
+    h = new cjs.Shape()
+
+    if(S(x)){ h.c(x,y,c) }
+
+    else {
+
+    if(N(x)){h.X(x)}
+    if(N(y)){h.Y(y)}
+
+        if(S(c)){h.c(c,C,l)}
+
+
+        else if(N(c)){h.l(c)}
+}
+    //if(g.N){h.drag()}
+    return h}
+
+
+b2d.oDef = oDefaults=function(o){
+    o=o||{}
+
+    o.x= _.tN(o.x)
+    o.y= _.tN(o.y)
+    o.a= _.tN(o.a)
+
+    o.c= o.c ||'z'
+    o.C= o.C ||'w'
+
+    o.w= _.tN(o.w,50)
+    o.h= _.tN(o.h,50)
+
+    return o}
+
+b2d.cov = function(x,y,c,C,l,l2){var g=G(arguments),x=g[0],y=g[1],c=g[2],C=g[3],l=g[4],l2=g[5],
+
+    o = N(c)? {x:x, y:y, a:c, c:C, C:l, l:l2}
+         : N(x)? {x:x, y:y, c:c, C:C, l:l}
+         : x,
+    h = new cjs.Shape()
+
+    b2d.oDef(o)
+
+    h.XY(o.x,o.y).rot(o.a).c(o.c,o.C,o.l)
+
+    if(o.d){h.drag()}
+
+    return h
+}
+
+ct = cjs.Container.prototype
+
+ct.h= ct.shape=function(x,y,c,C,l,opt){var ct=this,
+
+
+    h= cjs.h(x,y,c, C, l,opt).a2(ct)
+
+    return h
+}
+
+
+ct.cir=function(x,y,r,c,C,l,opt){var ct=this
+    return ct.shape(x,y,c,C,l,opt).dc(0,0,r)}
+ct.circ =function(c,r,x,y){var ct=this
+    return cjs.cir(c,r,x,y).a2(ct)}
 
 
 
+ct.rec= function(c,W,H,x,y,a){
+    var ct=this, ct2, h,
+        o = O(c)? c:
+            S(c)? {c:c, w:W, h:H, x:x, y:y, a:a}:
+                N(c)? {w:c, h:W, x:H, y:x, a:y}
+            : {}
+
+    oDefaults(o)
+
+    ct2 = ct.ct()
+
+    h = ct2.h()
+        .XY(o.x, o.y)
+        .rot(o.a)
+        .c(o.c, o.C, o.l)
+
+
+
+    if(o.rg){h.rg(o.c,o.C)}
+    if(o.lg){h.lg(o.c,o.C)}
+    if(o.bm){h.bm('me', function(){h.dr2(o.w,o.h)})}
+    else {h.dr2(o.w,o.h)}
+    return ct2
+}
 
 
 
@@ -15,19 +114,16 @@ cjs.isShape=function(h){
     return O(h) && h.graphics
 }
 cjs.graphics= function(a){return new cjs.Graphics(a)}
-
 cjs.isCont=function(cont){
     if(O(cont)){
         if(cont.addContainer){return true}
         else {return false }
     }
 }
-
 cjs.rulers=function() {
     var d1=$.div('b', 100, 100).drag().opacity(.3)
     $.div('r', 100, 300).drag().opacity(.3)
     return d1}
-
 
 
 cjs.circ = cjs.circle = function(r,c){
@@ -35,8 +131,6 @@ cjs.circ = cjs.circle = function(r,c){
     c=oO('c',c||'z')
     return cjs.shape().f(c).dc(0,0,r)
 }
-
-
 cjs.cir = function(col, rad, x, y){
     if(!S(col)){y=x;x=rad;rad=col;col='y'}
     y=N(y)?y:0
@@ -44,10 +138,6 @@ cjs.cir = function(col, rad, x, y){
     rad=N(rad)?rad:50
     return cjs.shape().f(col).dc(x,y,rad)
 }
-
-
-
-
 cjs.diamond = function self(width, height, fc,sc){
 
     fc=fc||'green'
@@ -64,9 +154,6 @@ cjs.diamond = function self(width, height, fc,sc){
         .lt(halfwidth,0).lt(0,-halfheight)
 
     return h}
-
-
-
 cjs.rect2   = function self(width, height, x, y, fc, sc){
     width = width || 100
     height = height || width
@@ -103,18 +190,7 @@ cjs.rect= function self(width, height, fc, sc){
         .lt(halfwidth,-halfheight).lt(-halfwidth,-halfheight)
 
     return h}
-
-
-
-
-
-
-
-
-
-
-//canon
-cjs.ball=function(z,fc,sc){
+cjs.ball=function(z,fc,sc){//canon
 
     var b= cjs.circle(0,0,z,fc,sc)
 
@@ -253,46 +329,31 @@ cjs.ballBox=function(bl,bx,buff){ buff=buff||100
 
 
 
-$h = cjs.h= cjs.shape= cjs.shp= function(x,y,c,C,l){
-    var g=G(arguments),
-        x=g[0],y=g[1],
-        c=g[2],C=g[3],
-        l=g[4], h
-    if(cjs.isShape(x)){return new cjs.Shape(x.graphics)}
-    h = new cjs.Shape()
-    if(N(x)){h.X(x)}
-    if(N(y)){h.Y(y)}
-    if(N(c)){h.l(c)} else if(c){h.c(c,C,l)}
-    if(g.N){h.drag()}
+
+///
+//////
+///////////
+
+
+
+cjs.RECT= function(c, W, H, x, y, a){var  g=G(arguments),    ct = cjs.ct(), h, o; if(O(c)){o=c} else if(S(c)){o={ c:c, w:W, h:H, x:x, y:y, a:a } }
+    o = oDefaults(o)
+
+
+    h = ct.h(o.x, o.y).c(o.c, o.C, o.l).rot( o.a )
+    if(o.bm){h.bm('me', function(){h.dr2(o.x, o.y, o.w, o.h)}); return h}
+    if(o.rg){h.rg(o.c,o.C)}
+    if(o.lg){h.lg(o.c,o.C)}
+    h.dr2(o.x, o.y, o.w, o.h)
+
     return h}
 
 
 
+//////////////
+/////
+///
 
-
-
-
-
-ct = cjs.Container.prototype
-
-
-
-ct.h=ct.shape = function(x,y,c,C,l,opt){var ct=this
-    return cjs.h(x,y,c,C,l,opt).a2(ct)}
-
-ct.cir=function(x,y,r,c,C,l,opt){var ct=this
-    return ct.shape(x,y,c,C,l,opt).dc(0,0,r)}
-ct.circ =function(c,r,x,y){var ct=this
-    return cjs.cir(c,r,x,y).a2(ct)}
-
-
-ct.rect=function(x,y,w,h,c,C,l,opt){var ct=this
-    return ct.h(x,y,c,C,l,opt).dr(0,0,w,h)}
-
-ct.RECT =function(c, w,h, x,y, ang){
-    var ct=this
-  return cjs.RECT(c, w,h, x,y, ang).a2(ct)
-}
 
 
 
@@ -877,4 +938,27 @@ cjs.RECTx= function self(col, wd,ht, x, y, rot){var halfW,halfH, h, ct = cjs.ct(
     ct.A( h.rot(rot).XY(x,y)  )
 
     return ct}
+
+ct.RECTx =function(c, W,H, x,y, a){
+    var ct=this, h
+
+    //return cjs.RECT(c, w, h, x, y, a).a2(ct)
+
+
+    return ct.rec({
+
+        c:c,   w:W,    h:H,   x:x,   y:y,   a:a
+
+    })
+
+
+}
+
+
+ct.rectx=function(x,y,w,h,c,C,l,opt){
+    var ct=this
+
+
+    return ct.h(x,y,c,C,l,opt).dr(0,0,w,h)
+}
 

@@ -370,37 +370,64 @@ vector=function(){
 };vector()
 
 
+/*
+$a1=function(ob, g, c){
+
+    ob.apply(c||ob,  g)
+
+}
+
+
+$a = function(gx, met, g){
+
+    gx[met].apply(gx, g)
+
+}
+
+
+$a(gx, 'dc',  N(y)?[x,y,_.tN(r,100)] : [0,0,N(x)?x:100] )
+
+gx.dc.apply(gx, N(y)?[x,y,_.tN(r,100)] : [0,0,N(x)?x:100] )
+
+gx.app=function(met,g){var gx=this
+
+    gx.dc.apply(gx, N(y)?[x,y,_.tN(r,100)] : [0,0,N(x)?x:100] )
+
+}
+*/
+
+
+
+
 shapes=function(){
 
-    h.dc = function(x,y,r){
-        var h = this, gx = h.graphics
 
-        if (N(r)) {
-            gx.dc(x, y, r)
-        }
-        else if (N(y)) {
-            gx.dc(x, y, 100)
-        }
-        else if (N(x)) {
-            gx.dc(0, 0, x)
-        }
-        else {
-            gx.dc(0, 0, 100)
-        }
+
+    h.dc = function(x, y, r){var h = this, gx = h.graphics
+
+        h.graphics.dc.apply(gx,
+            N(y)?[x,y,_.tN(r,100)]
+                : [0,0,N(x)?x:100] )
+
         return h
     }
-    h.cir = h.circ =function(x,y,r, c,C, l){  //nicely done
+
+
+
+
+
+    h.cir = h.circ =function(x,y,r,c,  C, l){  //nicely done
 
         var h=this, gx=h.graphics, o
 
         h.ef().es()
 
-        if(N(r)){ o = {x:x,y:y, r:r, c:c,C:C,l:l}   }
+        if(N(r)){
+            o = {x:x, y:y, r:r, c:c, C:C, l:l}
+        }
 
         else if(N(y)){ o = {x:x, y:y, r:50,c:r,C:c,l:C}  }
-
         else if(N(x)){  o  = {x:0,y:0,r:x, c:y,C:r,l:c}  }
-
         else if(O(x)){o=x}
         else {o={}}
 
@@ -415,14 +442,9 @@ shapes=function(){
 
         if(o.rg){
             h.rg(o.c,o.C,10, 20, o.r).C('z',2).dc(o.x,o.y,o.r)
-        }
-
-        else if(o.lg){
+        } else if(o.lg){
             h.lg(o.c,o.C, o.r*2).C('z',2).dc(o.x,o.y,o.r)
-        }
-
-
-        else if(o.bm){
+        } else if(o.bm){
 
 
             h.bm('me', function(){
@@ -431,10 +453,11 @@ shapes=function(){
 
 
         }
-
-
         else {
-            h.c(o.c, o.C, o.l).dc(o.x, o.y, o.r)
+
+            h.c(o.c,o.C, o.l)
+
+            h.dc(o.x,o.y,o.r)
         }
 
 
@@ -444,14 +467,19 @@ shapes=function(){
         return h
     }
 
-    h.dr = function () {
+
+
+
+
+
+
+    h.dr= function(){
         var h = this,
             gx = h.graphics,
             g = G(arguments),
             o = N(g[2]) ? {x: g[0], y: g[1], w: g[2], h: g[3]} :
                 N(g[0]) ? {w: g[0], h: g[1]} :
                     O(g[0]) ? g[0] : {}
-
         o.x = _.tN(o.x)
         o.y = _.tN(o.y)
         o.w = _.tN(o.w, 100)
@@ -460,36 +488,21 @@ shapes=function(){
         gx.dr(o.x, o.y, o.w, o.h)
         return h
     }
+    h.dr2= function (x,y,W,H){var h = this
+        if(U(W)){
+            W=x;H=y;x=0;y=0
+        }
 
-    h.dr2 = function (x, y, W, H) {
-        var h = this
-        h.dr(-W / 2 + x, -H / 2 + y, W, H)
+        h.dr(-W/2+x,-H/2+y,W,H)
         return h
     }
 
 
 
-    cjs.RECT= function(c, W, H, x, y, a){
-        var  ct = cjs.ct(), h, o
-        if(O(c)){o=c}
-        else if(S(c)){o={ c:c, w:W, h:H, x:x, y:y, a:a } }
-        o=o||{}
 
-        o.w= _.tN(o.w,50)
-        o.h= _.tN(o.h,50)
-        o.x= _.tN(o.x)
-        o.y= _.tN(o.y)
-        o.a= _.tN(o.a)
-        o.c= o.c ||'z'
-        o.C= o.C ||'w'
 
-        h= ct.h(o.x, o.y).rot( o.a )
-        h.c(o.c, o.C, o.l)
-        if(o.bm){h.bm('me', function(){h.dr2(o.x, o.y, o.w, o.h)}); return h}
-        if(o.rg){h.rg(o.c,o.C)}
-        if(o.lg){h.lg(o.c,o.C)}
-        h.dr2(o.x, o.y, o.w, o.h)
-        return h}
+
+
 
 
 
@@ -565,9 +578,12 @@ shapes=function(){
 
 
 
-    h.rc= h.roundRectComplex= function(){var h=this,gx= h.graphics
+    h.rc= h.roundRectComplex= function(){
+        var h=this,gx= h.graphics
         gx.drawRoundRectComplex.apply(gx,arguments)
         return h}
+
+
     h.pStr = h.dp = h.polyStar = function (x, y, r, sides, ptSiz, ang) {
         var h = this, gx = h.graphics,
 
@@ -643,8 +659,29 @@ shapes=function(){
 
 
 
+ROTREC=function(){St()
 
 
+    //s.B = function(x,y){return this.ct(x,y).drag() }//var s=this,ct
+
+
+    c = s.ct(600,300)
+
+    c.rec({c:'r',C:'o',l:10, w:400, h:400})
+
+    c.rec({w: 100, h:200, a:20, c: 'b', C:'w', l: 20, rg:1})
+
+    h = c.rec({
+        w: 100, h:200, a:20,
+        c: 'b', C:'w', l: 20, bm:1
+    }).X(100) //notice how gradient is seen behind the bm!!!
+
+
+    $.in(2, function(){h.X(0)})
+
+
+
+}
 
 
 
@@ -743,6 +780,25 @@ cjs.RECTx= function(c, W, H, x, y, a){$l('rect!')
 }
 
 
+h.dcWorking = function(x,y,r){var h = this, gx = h.graphics
+
+    if (N(r)) {
+        gx.dc(x,y, r)
+    }
+
+    else if (N(y)) {
+        gx.dc(x,y, 100)
+    }
+
+    else if (N(x)) {
+        gx.dc(0,0,x)
+    }
+    else {
+        gx.dc(0,0,100)
+    }
+
+    return h
+}
 
 h.rrx=  function(x,y,W,H,r){
     var h=this,gx= h.graphics

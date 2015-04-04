@@ -24,8 +24,8 @@ w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering 
 //
 
         //from foll:
-        w.s.HUD.dot('w', bf.x, bf.y)
-        w.s.HUD.dot('w', cX, cY)
+       // w.s.HUD.dot('w', bf.x, bf.y)
+       // w.s.HUD.dot('w', cX, cY)
         w.S(bf.x, bf.y, 'r',  [  [bf.w, bf.h, '-'] ] )
         w.S(bf.x, bf.y, 'w',  [  [bf.w+20, bf.h+20, '-'] ] )
         w.S(bf.x, bf.y, 'b', [ [bf.w, w.h,  '-'] ] )
@@ -38,12 +38,12 @@ w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering 
 
 
         w.S(bf.x, bf.y,'w',[[bf.w,bf.h,'-']])
-        w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
-        w.dot(bf.x+bf.w/2, bf.y-bf.h/2    ,'+')
-        w.dot(bf.x+bf.w/2, bf.y+bf.h/2         ,'+')
-        w.dot(bf.x-bf.w/2, bf.y+bf.h/2 , '+')
-        w.dot(bf.x, bf.y, '*')
-        w.dot('z', 600,600,'+')
+      //  w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
+      //  w.dot(bf.x+bf.w/2, bf.y-bf.h/2    ,'+')
+      //  w.dot(bf.x+bf.w/2, bf.y+bf.h/2         ,'+')
+      //  w.dot(bf.x-bf.w/2, bf.y+bf.h/2 , '+')
+       // w.dot(bf.x, bf.y, '*')
+        //w.dot('z', 600,600,'+')
 
         cjs.tick(function(){var sX,sY
             // sX = (bf.x-w.hW)   + cjs.adj( (t.X()-bf.x),  bf.w/2)/w.z
@@ -73,7 +73,7 @@ w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering 
 
         //w.S(cX,cY,'o',[ [40,400,'-']])
         // w.dbCross(cX,cY)
-        w.dot(cX,cY,'+')
+      //  w.dot(cX,cY,'+')
 
         cjs.tick(function(){
             if(F(w.t.cb)){w.t.cb()}
@@ -92,10 +92,9 @@ SLOOM=function(){
         [1200,300,'b',300,100],[1600,300,'z',100,100],
         [2000,300,'r',200,100])
 
-    y.damp(1,10)
-    y.track()
+    y.damp(1,10).track()
 
-   //$.in(10,"y.img('me',.5)")
+   $.in(4, "y.img('me',.5)" )
 
 }
 
@@ -105,29 +104,25 @@ SLOOM=function(){
 STREETFIGHTER=function(){
 
 
-    W([1200, 600, 1400,1200], {g:300,t:0}).P()
-
+    W([1200, 600, 1400,1200], {g:300, t:0}).P()
 
     p.XY(700, 600)
-
-    w.S(700,1000,'r',800,20)
-
-    w.S(500, 800,'g',200,20)
-    w.S(900, 600,'x',200,20)
-
-    // y = w.ship( 700, 400 ).lD(1)
+    w.track(p, 600, 400,
+        {x:700, y:1000, w:700, h:600, mX:1.5})
 
 
-    // w.foll(y,600, 500,  700, 500, 350,50 )   //this is nice
-
-    w.track(p,
-        600, 400,  {x:700, y:1000, w:700, h:600,
-            mX:1.5//,  mY:1.1
-        }
-    )
+    w.S(700,1000, 'r',  800,20)
+    w.S(500,800,  'g',  200,20)
+    w.S(900,600,  'x',  200,20)
 
 
 }
+
+
+
+
+
+
 SPACEBUFF=function(){W(1000,1000,2000,2000).G(0)
 
 
@@ -459,7 +454,7 @@ ZOOMSCALE=function(){
 
 
 
-    w.s.HUD.dot(500, 500)
+   // w.s.HUD.dot(500, 500)
     y = w.ship(100, 100).rot(200)
     w.S(500, 500, 'o', 200)
     w.S(500, 500, 'r', 10)
@@ -519,12 +514,12 @@ BASICSCROLL=function(){
 
     w.track(y, 600, 300)
 
-    w.dot(600,300)
-    w.hud.dot(600,300)
+   // w.dot(600,300)
+    //w.hud.dot(600,300)
 
 
-    w.dot(1200,600)
-    w.hud.dot(1200,600)
+//    w.dot(1200,600)
+ //   w.hud.dot(1200,600)
 
 
 
@@ -726,7 +721,7 @@ w.folx= w.follx= function(b,x,y,pX){var w=this
         w.S(x,y,'o', [ [40,400,'-']])
 
         w.dbCross(x,y)
-        w.dot(x,y,'+')
+       // w.dot(x,y,'+')
 
 
         cjs.tick(function(){
@@ -738,7 +733,7 @@ w.folx= w.follx= function(b,x,y,pX){var w=this
 
     w.fwBuf=function(b,x,y, pX,pY,bX,bY){var w=this
 
-        w.s.HUD.dot('w', x, y)
+      //  w.s.HUD.dot('w', x, y)
 
         w.S(pX, w.h/2, 'b', [ [bX*2, w.h,  '-'] ] )
         w.S(w.w/2,pY, 'b', [ [w.w, bY*2,  '-'] ] )
@@ -799,7 +794,7 @@ w.bufFoll =function(t,cX,cY,bf){ var w=this
     w.S(bf.x, bf.y,'w',[[bf.w,bf.h,'-']])
 
 
-    w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
+   /* w.dot(bf.x-bf.w/2, bf.y-bf.h/2  ,     '+')
 
     w.dot(bf.x+bf.w/2, bf.y-bf.h/2    ,'+')
 
@@ -810,7 +805,7 @@ w.bufFoll =function(t,cX,cY,bf){ var w=this
 
     w.dot(bf.x, bf.y, '*')
     w.dot('z', 600,600,'+')
-
+*/
     w.track(t,cX,cY,bf)
     /*
      cjs.tick(function(){var sX,sY

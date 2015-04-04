@@ -2,7 +2,9 @@
 
 //CONTAINER ////////////////////////////////////////////////////////////////
 cjs.container = cjs.ct  =function(a){return new cjs.Container(a)}
-ct = cjs.Container.prototype
+
+
+ct= cjs.Container.prototype
 ct.circle = function(x,y,rad,color){
 
     this.A(
@@ -10,8 +12,6 @@ ct.circle = function(x,y,rad,color){
     )
 
     return this}
-
-
 ct.text = function(text, font, color, x, y){
 
 
@@ -28,24 +28,28 @@ ct.text = function(text, font, color, x, y){
     return text
 
 }
-
-
 ct.center=function(){
     return V(this.W()/2, this.H()/2)
 }
 
-ct.addContainer = ct.ct =function(func){
-    var g=G(arguments),
-        f=g[0],
+ct.ct= function(x,y){//=ct.addContainer
 
-        container= new cjs.Container()
+    var c=this,
+        g=G(arguments),
+        x=g[0],
+        y=g[1]
 
-    this.A(container)
+        ct= new cjs.Container()
 
-    if(func){func(container, this)}
+    c.A(ct)
 
-    if(g.p){cjs.bindSlide(container)}
-    return this}
+    if(F(x)){x(ct,c)}
+    else if(N(x)){ ct.XY(x,y) }
+
+    if(g.p){cjs.bindSlide(ct)}
+
+    return ct}
+
 
 ct.bm= function self(img, scale, func){
 
@@ -85,8 +89,6 @@ ct.bm= function self(img, scale, func){
 
 
     return this}
-
-
 ct.mc=function(){
 
   var mc =  cjs.mc.apply(null, arguments)
@@ -94,10 +96,6 @@ ct.mc=function(){
    this.A(mc)
 
 return mc}
-
-
-
-
 ct.bmRegCenterX = ct.bm0X= function(img, func){
 
     var that =this
@@ -169,11 +167,6 @@ ct.backgroundColor=function(c){
 
     $( this.canvas ).C(c)
     return this}
-
-
-
-
-
 ct.each=function(func){
     var children=[]
 
@@ -192,7 +185,6 @@ ct.each=function(func){
     )
 
 return this}
-
 ct.removeAll=function(){
   this.each(function(child){
       child.remove()
@@ -204,7 +196,9 @@ ct.noAutoClear=function(){
 return this}
 
 
-cjs.s = cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
+
+
+cjs.s= cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
 
     cjs.watchKeys()
 
@@ -226,20 +220,12 @@ cjs.s = cjs.stg = cjs.stage =  function(a,b,c,d,e){var stage
 return stage.tick()
 
 }
-
-
 cjs.S= function(col){z()
 
     col=col||'pink'
     s = cjs.stg(col, 800, 500).A()
 
 return s}
-
-
-
-
-
-
 
 
 HUD=function(){z()
@@ -269,6 +255,7 @@ STG = function(){
     z();s = cjs.stage(1000,500).A()
     s.bm('me',
         function(bb){b=bb.drag() })}
+
 s=p = cjs.Stage.prototype
 s.snap = function(f){
 
@@ -295,46 +282,47 @@ return this}
 
 
 
-p.dot=function(color, x, y){
+p.dot=function(c, x, y){
     var that = this,
+        s=this,
         dot,
         tween
 
-
-
-    if(b2d.isGPoly(color)){
-        _.each(color.verts(), function(v){ that.dot(V(v))  })
+    if(b2d.isGPoly(c)){
+        _.each(c.verts(), function(v){ s.dot(V(v))  })
     return this}
 
-    if(A(color)){
+    if(A(c)){
 
-        _.each(color, function(args){
-
-
-            if(A(args)){that.dot.apply(that, args)}
-           else{that.dot(args)}
-
+        _.each(c,
+            function(G){
+            if(A(G)){s.dot.apply(s, G)}
+           else{s.dot(G)}
         })
 
     return }
 
-    if(!S(color)){y=x; x=color; color= 'yellow'}
+    if(!S(c)){y=x; x=c; c='y'}
 
-    if(O(x)){y= x.y;x= x.x  }
+    if(O(x)){y=x.y; x=x.x}
 
-    x=N(x)?x:this.W()/2
-    y=N(y)?y:this.H()/2
+    x = N(x)?x : s.W()/2
+    y = N(y)?y : s.H()/2
 
-     dot = __dot = this.cir(x,y, 6, oO('c', color)).drag()//.opacity(.4)
+     //dot = s.circ(x,y, 6,  oO('c', c)).drag()//.opacity(.4)
+
+    //dot = s.h(x,y).circ(0,0, 6,  oO('c', c)).drag()//.opacity(.4)
+
+    dot =   s.h(x,y).circ(8, c,c).drag()
 
     tween = dot.tweenLoop([{sxy:1.3},100],[{sxy:1},100]).toggle()
-
 
      dot.$$(function(){tween.toggle()})
 
      dot.N('dot')
 
-    return this}
+    return s}
+
 
 
 

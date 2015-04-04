@@ -590,37 +590,38 @@ fixts=function(){
         return this}
 
 
-//fixts
-b.fixt = b.list = function(fD){//p.createFixture = p.cF = b.fixt1 = b.shape =
-    var b=this,f;
 
-    if(U(fD)){return this.GetFixtureList()}
 
-    // can pass a CODED array of fixts (will get parsed)
-    if( A(fD) ){
+    b.fixt= b.list= function(fD){var b=this,f;if(U(fD)){return b.GetFixtureList()}    // can pass a CODED array of fixts (will get parsed)           //p.createFixture = p.cF = b.fixt1 = b.shape =
 
-        _.each(b2d.fixtParse(fD),
-
-            function(fd){ b.fixt(fd) })
-
+        if(A(fD)){_.each(b2d.fixtParse(fD),
+            function(fd){b.fixt(fd)})
         return b}
 
 
-    if(!b2d.isFixtDef(fD)){
-        fD=b2d.fixt.apply(b2d, arguments)
-    }
-
-    //create the fixt
-    f = this.CreateFixture(fD)
+        if(!b2d.isFixtDef(fD)){
+            fD=b2d.fixt.apply(b2d, arguments)}
 
 
-    //assign it classes specified in the fixt def
-    if(A(fD.classes)){
-        _.each(fD.classes,
-            function(clas){
-                f.K(clas)})}
+        f=b.CreateFixture(fD)
 
-    return f}
+
+        if(A(fD.classes)){_.each(fD.classes,
+            function(k){f.K(k)})}//?
+
+
+        return f}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -815,39 +816,30 @@ b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
         )
     }
 
-b.RECT= function(col, wd, ht, x, y, rot){
 
-    var g= G(arguments),b=this,
-        fd,
-        fixt,
-        h,
-        str,
-        alpha=1
-    col=g[0];
-    wd=g[1];
-    ht=g[2]
-    x=g[3];
-    y=g[4];
-    rot=g[5]
-    if(S(rot)){str=rot;rot=null}
-    if(S(y)){str=y;y=null}
-    if(S(x)){str=x;x=null}
-    if(S(ht)){str=ht;ht=null}
-    if(!S(col)){rot=y;y=x;x=ht;ht=wd;wd=col}
-    fd = b2d.rec(wd, ht, x, y, rot)
-    if(g.n){
-        fd.isSensor=true
-        alpha=.2
-    }
-    fixt =  b.fixt(  fd  )
-    if(str){ fixt.K(str) }
-    if(S(col)){
-        fixt.bS(
-            w.s.RECT(col, wd, ht,
-                x, y, rot),
-            0, 0, 0, alpha)}
-    return fixt
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -943,8 +935,11 @@ b.H= function(arg){var g=G(arguments), arg=g[0],
     //rect
     else {
         if(g.n){g.push('-')}
-         b.RECT.apply(b, g)
+
+        b.RECT.apply(b,g)
+
     }
+
 
 
     function length(arr){

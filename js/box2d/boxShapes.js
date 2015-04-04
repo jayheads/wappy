@@ -3716,43 +3716,53 @@ cH.xy = function(x,y){this.SetLocalPosition(V(x,y).div())
     return this}
 //////////////////////////////////////////////////////////////////////////////////////////
 pH = p = b2d.PolygonShape.prototype
-pH.setAsBox = p.sAB = function(wd,ht, xy, ang, ang2 ){
 
-//handles both box and set as box!
-//w,h -> centered box
-//w,h,xy,ang -> oriented box
-//w,h,x,y,ang ->oriented box
 
-    var h=this,
-        g=G(arguments),
 
-        wd = (g[0]||100)/60,
-        ht= (g[1]||wd)/60,
-        xy=g[2],
-        ang=g[3],
-        ang2=g[4]
+pH.box= pH.setAsBox =  function(W,H,xy,a,a2 ){ //to replase setasbox
+    var pH=this, g=G(arguments), o, v
+    if(O(g[0])){o=g[0]}
+    else if(O(g[2])){v=V(g[2]); o = {w:g[0], h:g[1], x:v.x, y:v.y, a:g[3]} }
+    else {o = {w:g[0],h:g[1],x:g[2], y:g[3], a:g[4]} }
+    b2d.oDef(o)
+    pH.SetAsOrientedBox(
+        o.w/60,o.h/60, V(o.x,o.y).div(), Math.toRadians(o.a))
+    return pH}
 
-    toR=Math.toRadians
-    h.box=h.SetAsBox
-    h.oBox=h.SetAsOrientedBox
 
-    if(U(xy)){h.box(wd,ht)}
-    else if(N(xy)){h.oBox(wd,ht,V(xy,ang).div(),toR(ang2||0))}
-    else {h.oBox(wd,ht,xy.div(), toR(ang||0))}
 
-    return this}
-pH.arr=function(){var v
+
+pH.arr=function(){
+    var v
     v = b2d.verts.apply(null, arguments)
     this.SetAsArray(v,v.length)
-    return this}
+    return this
+}
+
+
     //pH.setAsArray=p.sAA=function(a,b){if(U(b)){b=a.length}; this.SetAsArray(a, b); return this}
 
-pH.set = function(wd){
-    if(N(wd)){ this.setAsBox.apply(this, arguments) }
-    else if(O(wd)){
-        this.arr.apply(this, arguments)
-    }
-    return this}//this covers all cases for polygons !!!! // ******// !!!!!!!!
+
+
+
+
+
+pH.set = function(W,H,x,y,a){var pH=this,g=G(arguments)
+    if(N(g[0])){pH.box(W,H,x,y,a)}
+    else if(O(W)){pH.arr.apply(pH,g)}
+    return pH}
+
+
+
+                          //this covers all cases for polygons !!!! // ******// !!!!!!!!
+
+
+
+
+
+
+
+
 pH.setAsVec =   function(vec, scale){
     scale=N(scale)?scale:30
    vec = _.map(vec,function(v){return V(v).div(scale)})
@@ -3773,10 +3783,21 @@ pH.verts = function(){
 
 
 
-b2d.polyH= function(){//b2d.pSh=//polygonShape // this is all you need for all cases (thanks to pH.set)
-    var poly=new b2d.PolygonShape()
-    poly.set.apply(poly, arguments)
-    return poly}
+b2d.polyH= function(W,H,x,y,a){                                  //b2d.pSh=//polygonShape // this is all you need for all cases (thanks to pH.set)
+    var p = new b2d.PolygonShape(),
+        g=G(arguments)
+    if(N(g[0])){p.box(W,H,x,y,a)}
+    else if(O(W)){p.arr.apply(p,g)}
+    return p}
+
+
+
+
+
+
+
+
+
 b2d.circH=    b2d.cH=b2d.circShape=b2d.circleShape=b2d.cSh=function(rad,x,y){
 
     rad = N(rad)?rad:25
@@ -3836,26 +3857,33 @@ BOX2D=function(){w=b2d.W()
 }
 
 
-CUPS=function(o){
 
-    w= b2d.W(_.extend({g:20}, o||{})).db()
 
-    cup=[[20,20],[100,40,0,40,0],[200,40,-80,-40,260],[200,40,80,-40,-80] ]
+
+
+
+
+CUPS=function(o){W(10)
+
+
+
+    cup=[
+
+        [20,20],
+        [100,40,0,40,0],
+        [200,40,-80,-40,260],
+        [200,40,80,-40,-80]
+    ]
+
     cup2=[[100,40,0,40,0],['g',200,40,-80,-40,260],['g',200,40,80,-40,-80],[100] ]
     cup3=[[100,40,0,40,0],[200,40,-80,-40,260],[200,40,80,-40,-80],[34,-80,-130],[34,80,-130]]
-
 
     w.B(280,500,'r',cup)
 
     b = w.B(280,500,'r', cup)
 
-
-
     w.B(600,500,'b',cup2)
     w.B(900,500,'y',cup3)
-
-
-
     w.B(100,100,'o',30)
     w.B(100,100,'o',30)
     w.B(100,100,'o',30)
@@ -3864,7 +3892,9 @@ CUPS=function(o){
 
 
 
-    w.db()}
+
+
+}
 
 
 
@@ -4065,5 +4095,28 @@ MAKEWALLS=function(){
 
 
 
+pH.setAsBoxx = p.sABx = function(W,H,xy,a,a2 ){          //handles both box and set as box! //w,h -> centered box //w,h,xy,ang -> oriented box //w,h,x,y,ang ->oriented box
+    var h=this,pH=this,
+        g=G(arguments),
+
+        W = (g[0]||100)/60,
+        H= (g[1]||W)/60,
+        xy=g[2],
+        a=g[3],
+        a2=g[4]
+
+    toR = Math.toRadians
+
+    if(U(xy)){pH.SetAsBox(W,H)}
+
+    else if(N(xy)){
+
+        pH.SetAsOrientedBox(W,H, V(xy,a).div(),toR(a2||0))
+    }
+
+    else {pH.SetAsOrientedBox(W,H,xy.div(), toR(a||0))}
+
+
+    return pH}
 
 

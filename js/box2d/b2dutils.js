@@ -112,6 +112,7 @@ b2d.verts=function(){
         return _.map(g, b2d.div)   }
     return _.map(g[0], b2d.div) //passed an array [[],[],[]]
 }
+
 Math.poly=function(points){//gpcas
     var poly= new PolyDefault()
     poly.addPoints(points)

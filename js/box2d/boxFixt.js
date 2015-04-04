@@ -565,55 +565,35 @@ f.C= f.color= function(c,C,l){
 
 
 
-f.bS = f.gx= f.spr= f.bindSprite= f.bindSprite2=function(obj, startingRotation, x, y, alpha ){
+f.bS= f.bindSprite=function(j,a,x,y,al){//f.gx= f.spr= f.bindSprite2=
+    var f=this,b=f.B(),s=b.wor().s,g=G(arguments),o
+    f.sprites=f.sprites||[]
 
-    var g=G(arguments)
-    gg=g
+    o = cjs.isDisplayOb(j)? {j:j,a:a,x:x,y:y,o:al}
+        : O(j)? j : {}
 
-    alpha=N(alpha)? alpha :1
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.a = _.tN(o.a)
+    o.o = _.tN(o.o,1)
 
+    f.sprites.push(o.j.op(o.o).a2(s))                      //takes any display object.  right now, just used for shapes//because bindSprite fetches the bm's by string. //but when i set up preloader, then i would use this i suppose :)                                                 //f.sprite = obj  //f.sprite.a2(stage)                                                 //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
+    cjs.tick(function(){
+        o.j.XY(b.X()+o.x,b.Y()+o.y)
+            .rot(b.rot()+o.a)})                                    //if(!f.sprite){return}
 
-
-    obj.opacity(alpha)
-
-    //takes any display object.  right now, just used for shapes
-    //because bindSprite fetches the bm's by string.
-    //but when i set up preloader, then i would use this i suppose :)
-    x=N(x)?x:0;
-    y=N(y)?y:0
-    var f=this,
-        body=this.body(),
-        stage = body.wor().s
-
-    startingRotation = N( startingRotation) ?  startingRotation : 0
-
-    //f.sprite = obj
-    //f.sprite.a2(stage)
-
-      o = obj.a2( stage )
+    return f
+}
 
 
 
 
 
-    f.sprites= f.sprites||[]
-
-    f.sprites.push(obj)
-
-    //updateSprite() //update: now cjs.tick does do an autocall (automatically - automatically automatic!):) //needed to prevent a pause in the graphics until the NEXT tick?  //could have tick+, that calls once before setting up the listener!
-
-    cjs.tick(function(){//if(!f.sprite){return}
-
-
-            obj.XY( body.X() + (x||0),body.Y() + (y||0))
-             obj.rotation=body.rot() + startingRotation
 
 
 
-    })
 
 
-    return this}
 
 
 
@@ -662,19 +642,81 @@ b2d.circ = function(rad,x,y,den){// neg-> sensor
 }
 
 
-//make a rec (or orientedRec) fixture
-b2d.rec = function(wd, ht, x, y, rot, den){
-    var g=G(arguments),rec,fixt
-    wd=N(g[0])?g[0]:50
-    ht=N(g[1])?g[1]:50
-    x=N(g[2])?g[2]:0
-    y=N(g[3])?g[3]:0
-    rot=N(g[4])?g[4]:0
-    den=N(g[5])?g[5]:1
-    rec = b2d.polyH(wd,ht,x,y,rot),
-    fixt = b2d.fixt(rec).den(den)
-    if(g.n){fixt.isSensor=true}
-    return fixt}
+
+
+
+
+b2d.rec1 = function(W,H,x,y,a,d){var g=G(arguments),r,f, o,
+
+    p = new b2d.PolygonShape()
+
+    if(O(g[0])){p.arr.apply(p,g)}
+
+    else if(N(g[0])){
+
+        o = {w:g[0],h:g[1],x:g[2],y:g[3],a:g[4],d:g[5]}
+        o.w = _.tN(o.w, 50)
+        o.h = _.tN(o.h, 50)
+
+        p.box(o.w,o.h, o.x, o.y, o.a)
+
+    }
+
+
+    f = b2d.fixt(p).den(o.d||.5)
+    if(g.n){f.isSensor=true}
+
+    return f
+
+}
+
+
+
+
+b2d.rec = b2d.polyFixt = function(W,H,x,y,a,d){var g=G(arguments),r,f,o,v,
+    p = new b2d.PolygonShape()
+    if( O(g[0]) && O(g[1]) ){
+        v = _.map(g, function(v){return V(v).div()})
+        p.SetAsArray(v, v.length)}
+
+    else {
+        o=O(g[0])?g[0]
+            :{w:g[0],h:g[1],x:g[2],y:g[3],a:g[4],d:g[5]}
+        b2d.oDef(o)//60?
+        p.SetAsOrientedBox(o.w/60,o.h/60,V(o.x,o.y).div(),Math.toRadians(o.a))}
+
+    f=new b2d.Dynamics.b2FixtureDef()
+    f.den(o.d||.5)
+    if(g.n){f.isSensor=true}
+    f.shape = p
+
+    return f
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -687,32 +729,52 @@ b2d.polySens = function(kind){//necessary?
     return poly}
 
 
-// compare fixt vs fixtParse
-b2d.fixt= function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
 
-    // simply makes one fixt,
+
+// compare fixt vs fixtParse
+
+b2d.fixt= function(h){
+    var g=G(arguments),
+
+        l=g.length,
+        f= new b2d.Dynamics.b2FixtureDef()     // simply makes one fixt,
     // tries to set its shape
     // and returns it
-
     //you can pass in a pre-made shape
-    if( b2d.isShape(shape) ){ fixt.shape = shape }
 
-    //or..
-
+    f.shape = b2d.isShape(g[0])? g[0] :    //or..
     // if you pass it an array, it makes a polyH from it
     // from verts/arr (confirmed)
 
-    else if( A(shape) ){  fixt.shape = b2d.polyH.apply(b2d, g)  }
-
-    // or if you passed in anything (number(s))
+      A(g[0])? b2d.polyH.apply(b2d, g) : // or if you passed in anything (number(s))
     // it makes a circle or poly shape, depending on how many numbers you passed
 
-    else if(len==1 || len==3){ fixt.shape = b2d.circH.apply(b2d, g) }
-    else if( len==2 || len > 3 ){ fixt.shape = b2d.polyH.apply(b2d,g) }
+          (l==1 || l==3)? b2d.circH.apply(b2d, g) :
 
-    return fixt
+              b2d.polyH.apply(b2d,g)
 
+    return f
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 b2d.fixtC = function(shape){var g=G(arguments), shape=g[0], len=g.length, fixt= new b2d.Dynamics.b2FixtureDef()
 
     if( b2d.isShape(shape) ){ fixt.shape = shape }

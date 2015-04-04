@@ -17,9 +17,7 @@ B2DTEST=function(){
 
 CRAZYSHIPS=function(){
 
-    w = b2d.G(
-        1200,600
-    )
+   W(   1200,600).G(0)
 
     w.S(400,2500,'r',200,100)
     w.S(800,2300,'z',100,100)
@@ -53,30 +51,17 @@ CRAZYSHIPS=function(){
 
 
 
-
-
-
-
-
-
-
-
-
-PUZZLE=function(){w=b2d.W().debug()
-
+PUZZLE=function(){W()
     _.times(10,function(){
-
         w.B(400,400, [
-
             ['r',20],
             ['b',20,100,0],
             ['y',20,0,100]
+        ])})}
 
 
-        ])
-    })
-}
-WEBMAN = function(){W({ g:40 })
+
+WEBMAN = function(){W({ g:20 })
 
     w.roof.kill();
     w.right.kill();
@@ -91,7 +76,9 @@ WEBMAN = function(){W({ g:40 })
     function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
 
     p = w.webMe(394,530).den(.14).fric(1)
+
     p.canWeb = true
+
     $.key({
         r:function(){
 
@@ -233,7 +220,7 @@ SPACEZOOM=function(){
 
 
     w = b2d.W({//W:600, H:300,
-        g:0,w:0}).db()
+        g:0,w:0})
 
     w.s.rXY(300,150)
     _.times(80, function(){var x,y
@@ -461,7 +448,7 @@ KILLEVERYTHING=function(){W( //[1200,600,1200,2000],
 
 
 CHEMICALS = function self(){
-  W({ w: 0,G:0
+  W({ w: 0,g:20
 })
 
     w.s.sXY(.8).XY(125,50)
@@ -501,8 +488,14 @@ _.times(2, function() {
         b.kill(); return true
     }, 850,  50, 950, 150)
 
+
     _.times(50, function(){
-        w.rect(900, 100, 14,14,'b').K('rect')  })
+
+        w.rect(900, 100, 14,14,'b').K('rect')
+
+    })
+
+
 
 
 gameOver=false
@@ -652,9 +645,10 @@ YELLOWGAME=function(){
 
 
 
-MARIOMAZE=function(){w = b2d.W({g:0,w:0}).debug()
+MARIOMAZE=function(){W({g:0,w:0})
 
     p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).follow(300, 150)
+
     _.times(30, function(){var x,y
         x= (Math.random() * 1000) - 500
         y = (Math.random() * 800) - 400
@@ -683,7 +677,7 @@ MARIOMAZE=function(){w = b2d.W({g:0,w:0}).debug()
     })
 
 
-    w.begin(function(cx){
+    w.beg(function(cx){
 
         if(cx.with('player', 'grid')){ score--
 
@@ -1014,9 +1008,10 @@ SEB=function(){w=b2d.W({g:1})//w.show(function(){return b.num()})
 
     killIfSmall=function(f){var area=f.area();if(area<20){$l('too small: '+area); f.kill()}}
 
-   // w.debug()
+    w.db()
 }
-BREAKWALL=function(){w=b2d.W({g:1})
+
+BREAKWALL=function(){W({g:1}).db()
     y = w.ship().linDamp(3).X(1100).rot(260)
     terr = w.B(800,300,'r',200, 800).stat()
     terr.coll('bul', function(bul){
@@ -1163,57 +1158,29 @@ STANDMEUP=function(){
 }
 
 TANKWHEELS=function(){
-
-
-    w=b2d.W({g:0}).debug()
-
-
+    w=b2d.W({g:0})
     grv = V( 0, 1000 )
-
     dir = 12
-
     car= w.B( 300,300, 'r',  100, 5)
-
-
     w1 = w.rev(   w.B(250,300,'b',  [_.map(b2d.polyCirc(45,10),
                 function(v){return [v.x, v.y]}
             )]  ).den(5),   car).mot(10)
-
-
-
     w2 = w.rev( w.B( 350, 300, 'b', [_.map(b2d.polyCirc(45,10),
                 function(v){return [v.x, v.y]}
             )]).den(5), car ).mot(10)
-
-
-
     w.click(function(){
         dir*=-1
         w1.mot(dir); w2.mot(dir)
         grv = V(-grv.x,-grv.y) })
-
     cjs.tick(function(){car.F( grv )})
-
     w.right.coll(function(){grv=V(-1000,0)})
-
     w.left.coll(function(){grv=V(1000,0)})
-
     w.roof.coll(function(){grv=V(0,-1000)})
-
     w.floor.coll(function(){grv=V(0,1000)})
 
-
 }
 
 
-POLYCIRC=function(){w = b2d.W()
-
-
-
-    w.polyCirc(400,300,100, 8)
-
-
-}
 
 MOVEINCIRC=function(){w=b2d.W({g:0})
 
@@ -1230,15 +1197,14 @@ MOVEINCIRC=function(){w=b2d.W({g:0})
 
 }
 
-ZILLA=function(){w=b2d.W({g:0,w:0}).debug()
+ZILLA=function(){w=b2d.W({g:0,w:0})
     health=100
 
-    y = w.ship().warp2().coll(function(){health-=5})
+    y = w.ship().warp().coll(function(){health-=5})
     z = w.zilla(600, 300).fireBallsAtInt(4000)
 
-    w.show(function(){return 'health: '+ health + ', hits: ' + z.hits})
+     w.show(function(){return 'health: '+ health + ', hits: ' + z.hits})
 }
-
 
 ZILLASCROLL=function(){w=b2d.W({g:0,w:0}).debug()
     health=100
@@ -1285,8 +1251,7 @@ DENSITYBODYCLICK=function(){ w=b2d.W({g:0,W:600,H:500})
 
 MINIWORLD = function(){
 
-    W({ g:10, W:1000, H:800
-    })
+    W({ g:10, W:1000, H:800})
 
     d = $.div('yellow', 1500,40).A().abs(200,200).pad(2)
     p = w.player(2, 'thrust').X(300)
@@ -1546,7 +1511,7 @@ MEMORY=function(){  s = cjs.S().A(ct= cjs.ct())
 }
 
 
-BIRD=function(){w=b2d.W({w:0,g:50}).db()
+BIRD=function(){w=b2d.W({w:0,g:50})
     w.S( 800,500,'o',100,600).K('plat')
     w.S( 1200,0,'o',100,600).K('plat')
     w.S( 1600,500,'o',100,600).K('plat')

@@ -1,5 +1,89 @@
 b=b2.Dynamics.b2Body.prototype
 
+
+
+
+b.RECT000 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+    fd,f,h,k,o
+
+    if(O(c)){o=c}
+
+    else {
+        if(N(c)){a=y;y=x;x=H;H=W;W=c;c=null}
+         o = S(a)? {c:c, w:W, h:H,x:x,y:y, k:a} :
+             S(y)? {c:c, w:W, h:H,x:x, k:y} :
+                 S(x)?{c:c, w:W, h:H, k:x}
+                     :S(H)?{c:c, w:W, k:H}:
+                 {c:c,w:W,h:H,x:x,y:y,a:a}}
+
+    o=o||{}
+    b2d.oDef(o)
+    fd=b2d.rec(o.w, o.h, o.x, o.y, o.a)
+    if(g.n){fd.isSensor=true; o.o=.2}
+    f=b.fixt(fd)
+    if(o.k){f.K(o.k)}
+    if(S(o.c)){
+
+        f.bS(
+            w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),
+
+            0,
+            0,
+            0,
+            o.o
+
+        )}
+    return f
+
+}
+
+
+b.RECT = function(c, W, H, x, y, a){var b=this,w= b.wor(),
+
+    g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+
+    fd,f,h,k,o
+
+    if(O(g[0])){o=g[0]}//passing in object (o)
+
+    else{//passing in pams directly
+        if(N(g[0])){g.unshift(null)}
+         o={c:g[0],w:g[1]}
+        _.extend(o,
+            S(g[2])? {k:g[2]}:
+            S(g[3])? {h:g[2],k:g[3]}:
+            S(g[4])? {h:g[2],x:g[3],k:g[4]}:
+            S(g[5])? {h:g[2],x:g[3],y:g[4],k:g[5]}:
+                     {h:g[2],x:g[3],y:g[4],a:g[5]})}
+
+    o=b2d.oDef(o)
+
+
+    fd = b2d.rec(o.w,o.h,o.x,o.y,o.a)
+
+
+    if(g.n){fd.isSensor=true;o.o=.2}
+
+    f=b.fixt(fd)
+    if(o.k){f.K(o.k)}
+
+
+    if(S(o.c)){f.bS(w.s.rec(o))}
+
+    return f
+}
+
+
+
+
+
+
+
+
+
+
+
+
 b2d.fixtPams=function(o){o=o||{}
 
     o.a = N(o.a)? o.a: 0 //angle
@@ -87,11 +171,8 @@ b.cir=function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
     f = b.fixt(fd)
     if(o.k){f.K(o.k)}
     if(o.c){f.bS(w.s.h().cir(o))}
-    return f}
 
-
-
-
+    return b}
 
 
 
@@ -105,17 +186,8 @@ b.rec=function(o){o=b2d.fixtPams(o); var b=this,fd
     fd.isSensor=o.s?true:false
     f = b.fixt(fd)
     if(o.k){f.K(o.k)}
-    if(o.C){f.bindSprite(
-
-        w.s.RECT(
-
-            o.C, o.w, o.h, o.x, o.y, o.r
-        ),
-
-        0, 0, 0, o.a
-    )}
+    if(o.C){f.bindSprite(w.s.RECT(o.C, o.w, o.h,o.x, o.y, o.r),0, 0, 0, o.a)}
     return f}
-
 
 b.pol=function(o){o=b2d.fixtPams(o); var b=this,v,h,f,fd,n,fs
     if(o.X){b.clear()}
@@ -139,14 +211,8 @@ b.pol=function(o){o=b2d.fixtPams(o); var b=this,v,h,f,fd,n,fs
         f=b.fixt(fd)
         if(o.k){f.K(o.k)}
         if(o.C){f.C(o.C)}
-    }
-return f}
 
-
-
-
-
-b.cirs=function(){var b=this
+    b.cirs=function(){var b=this
     _.each(arguments, function(o){o=V(o)
         b.cir({
             x: o.x,
@@ -155,6 +221,12 @@ b.cirs=function(){var b=this
         })
     })
     return b}
+
+}
+return f}
+
+
+
 
 
 
@@ -218,3 +290,78 @@ b.pols=function(){var b=this
 
 
     return b}
+
+
+
+b.RECT1 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+
+    fd,
+    f,
+    h,
+    k,
+    al= 1
+
+    if(S(a)){k=a;a=null}
+    if(S(y)){k=y;y=null}
+    if(S(x)){k=x;x=null}
+    if(S(H)){k=H;H=null}
+    if(!S(c)){a=y;y=x;x=H;H=W;W=c}
+
+    fd=b2d.rec(W,H,x,y,a)
+
+    if(g.n){fd.isSensor=true; al=.2}
+    f=b.fixt(fd)
+
+    if(k){f.K(k)}
+
+    if(S(c)){f.bS(w.s.rec(c,W,H,x,y,a),0,0,0,al)}
+
+    return f
+
+}
+
+
+
+b.RECT0 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+
+    fd,
+    f,
+    h,
+    k
+
+    if(S(a)){k=a;a=null}
+    if(S(y)){k=y;y=null}
+    if(S(x)){k=x;x=null}
+    if(S(H)){k=H;H=null}
+    if(!S(c)){a=y;y=x;x=H;H=W;W=c}
+
+    o = {c:c, w:W, h:H, x:x,y:y,a:a,k:k }
+    o.o= 1
+    fd=b2d.rec(o.w, o.h, o.x, o.y, o.a)
+    if(g.n){fd.isSensor=true; o.o=.2}
+    f=b.fixt(fd)
+    if(o.k){f.K(o.k)}
+    if(S(o.c)){f.bS(w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),0,0,0, o.o)}
+    return f
+}
+
+
+b.RECT00 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+    fd,  f,  h,  k
+
+    if(N(c)){a=y;y=x;x=H;H=W;W=c;c=null}
+
+    if(S(a)){o = {c:c, w:W, h:H,x:x,y:y, k:a}}
+    else if(S(y)){o = {c:c, w:W, h:H,x:x, k:y}}
+    else if(S(x)){o = {c:c, w:W, h:H, k:x}}
+    else if(S(H)){   o = {c:c, w:W, k:H}}
+    else {o = {c:c, w:W, h:H, x:x, y:y, a:a  }}
+
+    o.o= 1
+    fd=b2d.rec(o.w, o.h, o.x, o.y, o.a)
+    if(g.n){fd.isSensor=true; o.o=.2}
+    f=b.fixt(fd)
+    if(o.k){f.K(o.k)}
+    if(S(o.c)){f.bS(w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),0,0,0, o.o)}
+    return f
+}
