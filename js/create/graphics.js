@@ -1,29 +1,24 @@
 h =  cjs.Shape.prototype
 
-
-
 h.clr=function(){this.graphics.clear();return this}
 h.copy=h.same=function(){return $h(this)}
+h.c=h.f=function(c,C,l){var h = this, gx = h.graphics, g=G(arguments), o
 
-strokeFills=function(){
-    h.c = h.f = function (c, C, l) {
-        var h = this, gx = h.graphics
-        if (U(c)) {
-            return h
-        }
-        if (N(l)) {
-            h.l(l).C(C)
-        }
-        else if (N(C)) {
-            h.l(C)
-        }
-        else if (S(C)) {
-            h.C(C)
-        }
-        gx.f(oO('c', c))
-        return h
-    }
-    h.C = h.s = function (C, l) {
+    o = O(g[0])? g[0]:
+        N(g[1])? {c:g[0],l:g[1]}:
+        N(g[0])? {l:g[0],C:g[1]}://?
+        {c:g[0], C:g[1], l:g[2]}
+
+    if(o.c){gx.f(oO('c',o.c))}
+    if(o.C){h.C(o.C)}
+    if(o.l){h.l(o.l)}
+    if(o.rg){h.rg(o)}
+    if(o.lg){h.lg(o)}
+    return h
+}
+
+
+h.C=h.s=function (C, l) {
         var h = this, gx = h.graphics
         gx.s(oO('c', C))
         if (N(l)) {
@@ -31,58 +26,11 @@ strokeFills=function(){
         }
         return h
     }
-    h.ss = h.l = function (l, b, c) {
+h.l=h.ss=function (l, b, c) {
         var h = this, gx = h.graphics;
         gx.ss(l || 1, b, c)
-        return h
-    }
-    grads = function(){
-        h.bRGS = function (C, S, x, y, r, X, Y, R) {
-            var h = this, gx = h.graphics
-            C = _.map(C, function (c) {
-                return oO('c', c)
-            })
-            gx.beginRadialGradientStroke(C, S, x, y, r, X, Y, R)
-            return h
-        }
-        h.bRGF = function (C, S, x, y, r, X, Y, R) {
-            var h = this, gx = h.graphics
-            C = _.map(C, function (c) {
-                return oO('c', c)
-            })
-            gx.beginRadialGradientFill(
-                C, S, x, y, r, X, Y, R)
-            return h
-        }
-        h.bLGF = h.lf = h.linGrad = function (c, s, x, y, X, Y) {
-            var h = this, gx = h.graphics
-            c = _.map(c, function (c) {
-                return oO('c', c)
-            })
-            gx.beginLinearGradientFill(c, s, x, y, X, Y)
-            return h
-        }
-        h.bLGF = function (C, S, x, y, X, Y) {
-            var h = this, gx = h.graphics
-            C = _.map(C, function (c) {
-                return oO('c', c)
-            })
-            gx.beginLinearGradientFill(
-                C, S, x, y, X, Y)
-            return h
-        }
-        h.bLGS = function (C, S, x, y, X, Y) {
-            var h = this, gx = h.graphics
-            C = _.map(C, function (c) {
-                return oO('c', c)
-            })
-            gx.beginLinearGradientStroke(
-                C, S, x, y, X, Y)
-            return h
-        }
-
-
-        h.lg = h.lGF = function (o) {
+        return h}
+h.lg= h.lGF = function (o) {
             var h = this, gx = h.graphics, g = G(arguments), o = g[0]
             if (S(g[0])) {
                 o = {c: g[0], C: g[1]}
@@ -116,7 +64,7 @@ strokeFills=function(){
             o.Y = _.tN(o.Y, 100)
             return h.bLGF([o.c, o.C], [o.s, o.S], o.x, o.y, o.X, o.Y)
         }
-        h.lG = h.lGS = function (o) {
+h.lG= h.lGS = function (o) {
             var h = this, gx = h.graphics, g = G(arguments), o = g[0]
             if (S(g[0])) {
                 o = {c: g[0], C: g[1]}
@@ -150,7 +98,7 @@ strokeFills=function(){
             o.Y = _.tN(o.Y, 100)
             return h.bLGS([o.c, o.C], [o.s, o.S], o.x, o.y, o.X, o.Y)
         }
-        h.rg = h.rGF = function (o) {
+h.rg= h.rGF = function (o) {
             var h = this, gx = h.graphics,
                 g = G(arguments),
                 o = g[0]
@@ -181,7 +129,7 @@ strokeFills=function(){
             o.R = _.tN(o.R, 100)
             return h.bRGF([o.c, o.C], [o.s, o.S], o.x, o.y, o.r, o.X, o.Y, o.R)
         }
-        h.rG = h.rGS = function (o) {
+h.rG= h.rGS = function (o) {
             var h = this, gx = h.graphics,
                 g = G(arguments), o = g[0]
             if (S(g[1])) {
@@ -209,87 +157,49 @@ strokeFills=function(){
             o.R = _.tN(o.R, 100)
             return h.bRGS([o.c, o.C], [o.s, o.S], o.x, o.y, o.r, o.X, o.Y, o.R)
         }
-    }
-    grads()
+h.bm=   h.bmF=h.bf=function(i,fn,c){var h = this, gx = h.graphics
 
-    h.bm= h.bmF = h.bf = function (i, fn, c) {
-        var h = this, gx = h.graphics
 
-        if (S(i)){
-            $.img(i, function (i) {
 
+        if(S(i)){
+
+            $.img(i,function(i){
                 gx.bf(i[0])
-               if(F(fn)){fn(i[0])}
+                if(F(fn)){fn(i[0])}
+            }) }
 
-            })
-        }
 
         else {
 
-            if (O(fn)) {
-                gx.bf(i, null, fn)
-            }
+            if(O(fn)){gx.bf(i,null,fn)} else{gx.bf(i,fn,c)} }
 
-            else {
-                gx.bf(i, fn, c)
-            }
 
-        }
 
         return h
     }
-    h.bM= h.bmS = function (i) {
+h.bM= h.bmS = function (i) {
         this.graphics.beginBitmapStroke(i)
         return this
     }
-
-}; strokeFills()
-
-vector=function(){
-    h.ef = function () {
+h.ef = function () {
         var h = this, gx = h.graphics
         gx.endFill()
         return h
     }
-    h.es = function () {
+h.es = function () {
         var h = this, gx = h.graphics
         gx.endStroke()
         return h
     }
-    h.e = function () {
-        return this.ef().es()
-    }
-    h.cp=function(){this.graphics.cp(); return this}
-    h.bez= h.bt= function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
-        h.bezierCurveTo(x,y,r,startA,endA,aCW)
-        return h}
-    h.quad= h.qt= function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
-        h.quadraticCurveTo(x,y,r,startA,endA,aCW)
-        return h}
-    h.arc=function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
-        /*
-         Draws an arc defined by the radius, startAngle and endAngle arguments, centered at the position (x, y).
-         For example, to draw a full circle with a radius of 20 centered at (100, 100):
-         arc(100, 100, 20, 0, Math.PI*2)
-         */
-
-        h.arc(x,y,r,startA,endA,aCW)
-
-        return h}
-    h.arc2=function(x,y, X,Y, r){var h=this,gx= h.graphics
-//Draws an arc with the specified control points and radius.
-        gx.arcTo(x,y,X,Y,r)
-        return h}
-
-    h.lt= function(x,y){var h=this, gx=h.graphics, v
+h.cp=function(){this.graphics.cp(); return this}
+h.lt= function(x,y){var h=this, gx=h.graphics, v
         if(A(x) && O(x[0])){
             return h.lt.apply(h, x)}
         if(N(x)){gx.lt(x,y); return h}
         _.each(arguments,function(v){v=V(v)
             h.lt(v.x,v.y)})
         return h}
-
-    h.mt=h.pol=function(x,y){var h=this,
+h.mt=h.pol=function(x,y){var h=this,
         gx= h.graphics, g=arguments, x=g[0], y=g[1], v
         if(N(x)){v=V(x,y)
             gx.mt(v.x, v.y)}
@@ -300,49 +210,203 @@ vector=function(){
                 h.lt(v.x, v.y)})}
         return h}
 
+h.poly= function(V,c,C,l){//***
+    var h=this, g=G(arguments),
+    o = A(g[0])?  {v:g[0],c:g[1],C:g[2],l:g[3]} :           //array must come first b/c its an obj
+        O(g[0])? g[0] : {}
+    b2d.oDef(o)
+
+    h.ef().es().c(o)
+    if(o.bm){h.bm('me',
+            function(){h.lt(o.v).cp()})}
+    else {h.lt(o.v).cp()}
+    return h
+}
 
 
-    h.poly = function(V,  c,C,l){var h=this,o  //great function
-
-        if(A(V)){o={V:V,c:c,C:C,l:l} }
-
-        else if(O(V)){o=V}
-        o=o||{}
-
-        o.c= o.c|| 'z'
-        o.C= o.C|| 'w'
-
-        h.ef().es()
 
 
-        if(o.rg){
-            h.rg(o.c,o.C,10, 20, o.r).C('z',2).lt(o.V) }
 
-        else if(o.lg){
+h.bmCir=function(o){var h=this
+    o=o||{}
+    o.i = o.i || 'me'
+    o.circs= o.circs||[]
+    $.img(o.i,function(i){i=i[0]
+        _.each(o.circs, function(c){
+            h.bm(i)
+            h.dc(c)
+            h.ef()
+        })})
+    return h}
+h.bmV=function(o){var h=this
+    o=o||{}
+    o.i = o.i || 'me'
 
-            h.lg(o.c, o.C,
+    $.img(o.i, function(i){i=i[0]
+        _.each(o.v, function(v){
+            h.bm(i)
+            h.lt(v)
+            h.ef().cp()
+        })})
+    return h}
+h.dc= function(x,y,r){var h = this, gx = h.graphics,g=G(arguments), o
 
-                _.first(o.V).x,
-                _.first(o.V).y,
-                _.last(o.V).x,
-                _.last(o.V).y
+    if(A(g[0])){return h.dc.apply(h,g[0])}
 
-            ).C('z',2).lt(o.V) }
+    o=O(g[0])? g[0]:
+        N(g[2])? {x:g[0],y:g[1],r:g[2]}:
+            N(g[0])? {r:g[0]} : {}
+
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.r = _.tN(o.r,100)
+    h.graphics.dc(o.x, o.y, o.r)
+    return h
+}
+h.cir= h.circ =function(x,y,r,c,  C, l){  //nicely done
+
+    var h=this, gx=h.graphics, o
+
+    h.ef().es()
+
+    if(N(r)){
+        o = {x:x, y:y, r:r, c:c, C:C, l:l}
+    }
+
+    else if(N(y)){ o = {x:x, y:y, r:50,c:r,C:c,l:C}  }
+    else if(N(x)){  o  = {x:0,y:0,r:x, c:y,C:r,l:c}  }
+    else if(O(x)){o=x}
+    else {o={}}
 
 
-        else if(o.bm){
-            h.bm('me', function(){
-                h.C(o.C, o.l).lt(o.V) }) }
+    o.x = _.tN(o.x);
+    o.y = _.tN(o.y);
+    o.r = _.tN(o.r, 50)
+    o.c = o.c || 'z'
+    o.C = o.C || 'w'
+    o.l = _.tN(o.l, 4)
 
-        else {h.c(o.c, o.C, o.l).lt(o.V)}
 
-        h.cp()
-        return h
+    if(o.rg){
+        h.rg(o.c,o.C,10, 20, o.r).C('z',2).dc(o.x,o.y,o.r)
+    } else if(o.lg){
+        h.lg(o.c,o.C, o.r*2).C('z',2).dc(o.x,o.y,o.r)
+    } else if(o.bm){
+
+
+        h.bm('me', function(){
+            h.C(o.C, o.l).dc(o.x, o.y, o.r)
+        })
+
+
+    }
+    else {
+
+        h.c(o.c,o.C, o.l)
+
+        h.dc(o.x,o.y,o.r)
     }
 
 
+    // o = N(y) ?  {x:0,y:0,  r:x,c:y,C:r,l:c} : S(y) ?  {c:x,C:y,x:r,y:c,r:C,l:l} :   S(x) ?    {c:x, x:y, y:r, l:C} :     O(x) ? x : {}
+    // return h.c(o.c, o.C, o.l).dc(o.x, o.y, o.r)
 
-    LT=function(){St()
+    return h
+}
+h.dr= function(){
+    var h = this,
+        gx = h.graphics,
+        g = G(arguments),
+        o = N(g[2]) ? {x: g[0], y: g[1], w: g[2], h: g[3]} :
+            N(g[0]) ? {w: g[0], h: g[1]} :
+                O(g[0]) ? g[0] : {}
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.w = _.tN(o.w, 100)
+    o.h = _.tN(o.h, o.w)
+
+    gx.dr(o.x, o.y, o.w, o.h)
+    return h
+}
+h.dr2= function (x,y,W,H){var h = this
+    if(U(W)){
+        W=x;H=y;x=0;y=0
+    }
+
+    h.dr(-W/2+x,-H/2+y,W,H)
+    return h
+}
+h.rect= function (x, y, W, H, c, C){
+    var h=this
+    h.c(c,C)
+    h.dr2(x,y,W,H)
+    return h}
+
+
+
+
+
+
+
+
+h.rexx= function (c, C, x, y, w, H, l){
+    var h = this, o
+    if (S(C)) {
+        o = {c: c, C: C, x: x, y: y, w: w, h: H, l: l }
+    }
+    else if (S(c)) {
+        o = {
+            c: c, x: C, y: x, w: y, h: w, l: H}
+    }
+    else if (N(c)) {
+        o = {x: c, y: C, w: x, h: y}
+    }
+    else if (O(c)) {
+        o = c
+    }
+    else o = {}
+    if (o.c) {
+        h.c(o.c)
+    }
+    if (o.C) {
+        h.C(o.C)
+    }
+    if (N(o.l)) {
+        h.l(o.l)
+    }
+    if (o.i) {
+        h.bmF(o.i, fun);
+        return
+    }
+    if (o.lG) {
+        h.lG({
+            c: o.c || 'z',
+            C: o.C || 'w',
+            s: 0,
+            S: 1,
+            x: o.x - o.w / 2,
+            y: o.y - o.h / 2,
+            X: o.x - o.w / 2,
+            Y: o.y + o.h / 2
+        })
+    }
+    fun()
+    function fun() {
+        h.mt(
+            [o.x - o.w / 2, o.y + o.h / 2],
+            [o.x - o.w / 2, o.y - o.h / 2],
+            [o.x + o.w / 2, o.y - o.h / 2],
+            [o.x + o.w / 2, o.y + o.h / 2])
+    }
+    return h
+
+
+}
+
+
+
+
+LT=function(){St()
 
         h.c('b')
         h.l(10)
@@ -367,7 +431,6 @@ vector=function(){
     }
 
 
-};vector()
 
 
 /*
@@ -397,193 +460,62 @@ gx.app=function(met,g){var gx=this
 */
 
 
+HPOLY=function(){St()
 
 
-shapes=function(){
+    v=[[-100,0],[0,-100],[100,50]]
 
+    // s.h(200, 300).poly({v:v,rg:1})
 
+    s.h(600, 300).poly({
+        v:v,
+        bm:{}
+    })
 
-    h.dc = function(x, y, r){var h = this, gx = h.graphics
-
-        h.graphics.dc.apply(gx,
-            N(y)?[x,y,_.tN(r,100)]
-                : [0,0,N(x)?x:100] )
-
-        return h
-    }
-
-
-
-
-
-    h.cir = h.circ =function(x,y,r,c,  C, l){  //nicely done
-
-        var h=this, gx=h.graphics, o
-
-        h.ef().es()
-
-        if(N(r)){
-            o = {x:x, y:y, r:r, c:c, C:C, l:l}
-        }
-
-        else if(N(y)){ o = {x:x, y:y, r:50,c:r,C:c,l:C}  }
-        else if(N(x)){  o  = {x:0,y:0,r:x, c:y,C:r,l:c}  }
-        else if(O(x)){o=x}
-        else {o={}}
-
-
-        o.x = _.tN(o.x);
-        o.y = _.tN(o.y);
-        o.r = _.tN(o.r, 50)
-        o.c = o.c || 'z'
-        o.C = o.C || 'w'
-        o.l = _.tN(o.l, 4)
-
-
-        if(o.rg){
-            h.rg(o.c,o.C,10, 20, o.r).C('z',2).dc(o.x,o.y,o.r)
-        } else if(o.lg){
-            h.lg(o.c,o.C, o.r*2).C('z',2).dc(o.x,o.y,o.r)
-        } else if(o.bm){
-
-
-            h.bm('me', function(){
-                h.C(o.C, o.l).dc(o.x, o.y, o.r)
-            })
-
-
-        }
-        else {
-
-            h.c(o.c,o.C, o.l)
-
-            h.dc(o.x,o.y,o.r)
-        }
-
-
-        // o = N(y) ?  {x:0,y:0,  r:x,c:y,C:r,l:c} : S(y) ?  {c:x,C:y,x:r,y:c,r:C,l:l} :   S(x) ?    {c:x, x:y, y:r, l:C} :     O(x) ? x : {}
-        // return h.c(o.c, o.C, o.l).dc(o.x, o.y, o.r)
-
-        return h
-    }
+    s.h(700, 400).poly({
+        v:v,
+        bm:{}
+    })
 
 
 
+    h  = s.h(200,300)
+
+    h.bm('me', function(){
+
+        h.dc(0,0,150)
+        h.dc(200,0,150)
+    })
 
 
+    // s.h(900, 300).poly({   v:v,  lg:1  })
+
+}
+
+BMH=function(){St()
 
 
-    h.dr= function(){
-        var h = this,
-            gx = h.graphics,
-            g = G(arguments),
-            o = N(g[2]) ? {x: g[0], y: g[1], w: g[2], h: g[3]} :
-                N(g[0]) ? {w: g[0], h: g[1]} :
-                    O(g[0]) ? g[0] : {}
-        o.x = _.tN(o.x)
-        o.y = _.tN(o.y)
-        o.w = _.tN(o.w, 100)
-        o.h = _.tN(o.h, o.w)
+    v=[[-100,0],[0,-100],[100,50]]
 
-        gx.dr(o.x, o.y, o.w, o.h)
-        return h
-    }
-    h.dr2= function (x,y,W,H){var h = this
-        if(U(W)){
-            W=x;H=y;x=0;y=0
-        }
-
-        h.dr(-W/2+x,-H/2+y,W,H)
-        return h
-    }
+    h  = s.h(200,300).drag()
+    //h.bmCir({circs:[{r:150},{x:200,r:150},[300,100,100],[400,100,100]]})
 
 
+    h.bmV({v:[
 
+        [[-100,0],[0,-100],[100,50]],
+        [[-200,0],[-100,-100],[0,50]],
 
-
-
-
-
-
-
-    h.rect = function (x, y, W, H, c, C){
-        var h=this
-        h.c(c,C)
-        h.dr2(x,y,W,H)
-        return h}
-
-
-
-
-
-
-    h.rexx = function (c, C, x, y, w, H, l){
-        var h = this, o
-        if (S(C)) {
-            o = {c: c, C: C, x: x, y: y, w: w, h: H, l: l }
-        }
-        else if (S(c)) {
-            o = {
-                c: c, x: C, y: x, w: y, h: w, l: H}
-        }
-        else if (N(c)) {
-            o = {x: c, y: C, w: x, h: y}
-        }
-        else if (O(c)) {
-            o = c
-        }
-        else o = {}
-        if (o.c) {
-            h.c(o.c)
-        }
-        if (o.C) {
-            h.C(o.C)
-        }
-        if (N(o.l)) {
-            h.l(o.l)
-        }
-        if (o.i) {
-            h.bmF(o.i, fun);
-            return
-        }
-        if (o.lG) {
-            h.lG({
-                c: o.c || 'z',
-                C: o.C || 'w',
-                s: 0,
-                S: 1,
-                x: o.x - o.w / 2,
-                y: o.y - o.h / 2,
-                X: o.x - o.w / 2,
-                Y: o.y + o.h / 2
-            })
-        }
-        fun()
-        function fun() {
-            h.mt(
-                [o.x - o.w / 2, o.y + o.h / 2],
-                [o.x - o.w / 2, o.y - o.h / 2],
-                [o.x + o.w / 2, o.y - o.h / 2],
-                [o.x + o.w / 2, o.y + o.h / 2])
-        }
-        return h
-
-
-    }
+        [[0,200],[0,-200],[400,-300],[400,300]]
+    ]})
+}
 
 
     //******** here is the problem.. gotta let h.poly also defer to rect (and circ?)
-
-
-
-
-
     h.rc= h.roundRectComplex= function(){
         var h=this,gx= h.graphics
         gx.drawRoundRectComplex.apply(gx,arguments)
         return h}
-
-
     h.pStr = h.dp = h.polyStar = function (x, y, r, sides, ptSiz, ang) {
         var h = this, gx = h.graphics,
 
@@ -654,10 +586,6 @@ shapes=function(){
         return h
     }
 
-}; shapes()
-
-
-
 
 ROTREC=function(){St()
 
@@ -682,11 +610,6 @@ ROTREC=function(){St()
 
 
 }
-
-
-
-
-
 ARC=function(){s = cjs.stg('p', 1200,600).A()
 
     h = s.h()
@@ -740,8 +663,72 @@ h.drawPolygonYesNo = function(V,c,C,l){var h=this, //h.drawConnectedLines =
 
 
 // h.cir=  function(r,x,y,c,C){var h = this, gx = h.graphics; return N(x) ?  h.c(c,C).dc(x,y,r) : h.c(x,y).dc(r)  } //h.cir2=
+h.bez= h.bt= function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
+    h.bezierCurveTo(x,y,r,startA,endA,aCW)
+    return h}
+h.quad= h.qt= function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
+    h.quadraticCurveTo(x,y,r,startA,endA,aCW)
+    return h}
+h.arc=function(x,y,r,startA,endA,aCW){var h=this,gx= h.graphics
+    /*
+     Draws an arc defined by the radius, startAngle and endAngle arguments, centered at the position (x, y).
+     For example, to draw a full circle with a radius of 20 centered at (100, 100):
+     arc(100, 100, 20, 0, Math.PI*2)
+     */
 
+    h.arc(x,y,r,startA,endA,aCW)
 
+    return h}
+h.arc2=function(x,y, X,Y, r){var h=this,gx= h.graphics
+//Draws an arc with the specified control points and radius.
+    gx.arcTo(x,y,X,Y,r)
+    return h}
+
+h.bRGS = function (C, S, x, y, r, X, Y, R) {
+    var h = this, gx = h.graphics
+    C = _.map(C, function (c) {
+        return oO('c', c)
+    })
+    gx.beginRadialGradientStroke(C, S, x, y, r, X, Y, R)
+    return h
+}
+h.bRGF = function (C, S, x, y, r, X, Y, R) {
+    var h = this, gx = h.graphics
+    C = _.map(C, function (c) {
+        return oO('c', c)
+    })
+    gx.beginRadialGradientFill(
+        C, S, x, y, r, X, Y, R)
+    return h
+}
+h.bLGF = h.lf = h.linGrad = function (c, s, x, y, X, Y) {
+    var h = this, gx = h.graphics
+    c = _.map(c, function (c) {
+        return oO('c', c)
+    })
+    gx.beginLinearGradientFill(c, s, x, y, X, Y)
+    return h
+}
+h.bLGF = function (C, S, x, y, X, Y) {
+    var h = this, gx = h.graphics
+    C = _.map(C, function (c) {
+        return oO('c', c)
+    })
+    gx.beginLinearGradientFill(
+        C, S, x, y, X, Y)
+    return h
+}
+h.bLGS = function (C, S, x, y, X, Y) {
+    var h = this, gx = h.graphics
+    C = _.map(C, function (c) {
+        return oO('c', c)
+    })
+    gx.beginLinearGradientStroke(
+        C, S, x, y, X, Y)
+    return h
+}
+
+///////
 
 cjs.RECTx= function(c, W, H, x, y, a){$l('rect!')
     //hW = W/2; hH = H/2  //.mt(-hW,-hH).lt([-hW,hH],[hW,hH],[hW,-hH],[-hW,-hH])

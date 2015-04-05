@@ -527,15 +527,42 @@ f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
 
 
 
-f.C= f.color= function(c,C,l){var f=this,b=f.B(),w=b.W(),h,r,p
-    c = (c=='*')?$r() : c?c : 'b'
+f.C= f.color= function(c,C,l){var f=this,b=f.B(),w=b.W(),h,r, p, o,g=G(arguments)
+
+    o=O(g[0])?g[0]: {   c:c, C:C, l:l }
+    o.c = (o.c=='*')? $r() : o.c? o.c : 'b'
 
     f.removeSprites()
-    f.bindSprite(f.isCirc()?
-        w.s.h().cir(f.rad(),f.pX(),f.pY(),c,C||c,l)
-        : w.s.h().poly(f.verts(),c,C,1))
 
-return f}
+    h = f.isCirc()?
+
+        w.s.h().cir(
+            f.rad(),
+            f.pX(),
+            f.pY(),
+            o.c,   o.C||o.c,   o.l  )
+        :
+
+        w.s.h().poly( f.verts(), o.c, o.C, o.l       )
+
+    f.bS(h)
+
+
+
+
+
+
+    return f
+
+}
+
+
+
+
+
+
+
+
 
 
 

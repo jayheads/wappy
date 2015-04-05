@@ -79,6 +79,7 @@ b2d.Math = b2.Common.Math
 b2d.Mat22 = b2d.Math.b2Mat22
 b2d.Mat33 = b2d.Math.b2Mat33
 
+b2d.FixtureDef=b2d.Dynamics.b2FixtureDef()
 
 
 //

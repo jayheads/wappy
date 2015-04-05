@@ -871,26 +871,19 @@ b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
 
 
 
-b.H= function(arg){
-    ggg=arguments
-
-    var g = G(arguments),
+b.H= function(arg){var g = G(arguments),
         arg=g[0],
         b=this,
         len=length(g)
 
-    gg=g
-
-
     if(U(arg)){return b}
-
-
 
     if( A(g[0]) && U(g[1]) ){                                       //passing a single array, suggest MULTIPLE fixts //[f1,f2,..]
         _.each(g[0], function(a){
             if(g.n){a.push('-')}
             b.H.apply(b,a)
         })}
+
     else if(S(g[0]) && A(g[1]) && U(g[2])){                                             //[col,[f1,f2,..]]
         _.each(g[1], function(f){
             if(b2d.isFD(f)){b.f(f).C(g[0])}
@@ -907,11 +900,13 @@ b.H= function(arg){
         b.f(g[1]).C(g[0])
     }                               //['color', fixtDef]
 
-
     else if(O(g[1])){  //  if(g.n){g.push('-')}  //  b.fig(g)
         o= S(g[0])? {c: _.first(g), v: _.rest(g)}  : {v: g}
         if(g.n){  o.s = 1}
         b.fig(o)}
+
+   // else if(O(g[0])){$l('o');o=g[0]
+    //    if(o.t=='c'){  b.cir(o) }}
 
 
     else if(len==1||len==3){
@@ -921,12 +916,8 @@ b.H= function(arg){
 
 
     else {
-
         if(g.n){g.push('-')};
-
         b.RECT.apply(b,g)
-
-
     }//rect
 
 
@@ -1502,10 +1493,10 @@ easel = function() {
     b.horizCenter=function(){return this.X( this.wor().s.W() / 2  )}
 
     b.img= b.bS=b.bindSprite = function (img, scale, startingRotation) { //img is an image name  //rotation is in degerees!
-        var body = this, stage = body.wor().s
+        var body = this, b=this, stage = body.wor().s, g=G(arguments)
+        if(!S(g[0])){return b.bS2.apply(b,g)}
         scale = scale || .4
         startingRotation = N(startingRotation) ? startingRotation : 6 // why not zero ?????
-
         stage.bm(img, function (bm) {//b=bm  //bm.rCenter('+')
             if (A(scale)) {
                 bm.sXY(scale[0], scale[1])
@@ -1527,7 +1518,6 @@ easel = function() {
 
 
         }, '-') // what is this negative doing ?????
-
         return body
     }
 
@@ -1568,6 +1558,7 @@ easel = function() {
         })
         return body
     }
+
     b.p = function (a, b, c, d) {
         if (O(this.sprite)) {
             this.sprite.p(a, b, c, d)
