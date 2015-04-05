@@ -159,11 +159,7 @@ SLIDEROOMS=function(){W([1200, 600,2400, 1000],{g:300}).P()
     })
 }
 
-KISS=function(){
-
-    W([  1200, 600, 2400, 600 ],{g:10})
-
-
+KISS=function(){W([  1200, 600, 2400, 600 ],{g:10})
     turtle =[
         ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
         ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
@@ -172,10 +168,7 @@ KISS=function(){
         ['x', 10, 55,-12],
         ['u', 30,40, 75,-12]
     ]
-
     w.B(400, 280,turtle, '-')  //this changes the data object for future uses !!!
-
-
     w.B(600, 280, [
         ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
         ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
@@ -184,43 +177,33 @@ KISS=function(){
         ['x', 10, 55,-12, '-'],
         ['u', 30,40, 75,-12 ,'-']
     ])
-    _.times(10, function(i){
-
-        w.D(100+i*100, 100).cir({
-            c:$r(), C:$r(), r:25, lg:1
-        }).den(.1).K('cir')}) //  w.D(100+i*100, 100, $r(), 35).den(.1)
 
     _.times(10, function(i){
-        w.D(100+i*140, 160).cir({  c:$r(), C:$r(), r:35, rg:1
-        }).den(.1).K('cir')
-    })
+        w.D(100+i*100,100).cir({r:35,
+            c:'*',C:'*',
+            lg:1
+        }).den(.1) })
 
 
-    w.D(800, 300).cir({
-         C:'y', l:2,
-        r:120, bm:1
-    }).den(.1).K('cir')
+    _.times(10, function(i){
+        w.D(100+i*140,160).cir({r:50,
+            c:$r(),
+            C:$r(),
+            rg:1
+   }).den(.1)})
+
+    w.D(800, 300).cir({r:120, C:'y',l:2, bm:1}).den(.1)
 
 
 
     y = w.ship(50,50).C('d').mid()
     y2 = w.ship(100, 300).C('x').rot(180)
-
-  //  w.beg(function(cx){   cx.with('cir', function(){    this.C('y')   }) })
-
     //i thought i may want t for timer/ticker.. but time has no x and y !
     //move the stage by manipulating the trackee x,y
     //these funcs can change stage, or the tick can update it every tick based on its value w.tx/ w.ty?
-
-
     w.tRightLeft()
-
     w.showOff()
-
-
-      I(function changeT(){
-            if( w.t == y2){w.C('b'); w.t=y } else {w.C('z');w.t= y2}
-        }, 5000)
+    I(function changeT(){if( w.t == y2){w.C('b'); w.t=y } else {w.C('z');w.t= y2}}, 5000)
 
 
 }

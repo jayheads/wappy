@@ -904,6 +904,8 @@ _.l= _.last
 _.f= _.first
 _.i = _.initial
 _.r = _.rest
+_.e = _.each
+_.m= _.map
 
 Math.dist = Math.lineDistance= function( p1, p2 ){
     var xs = 0,ys = 0;
