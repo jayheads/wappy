@@ -465,7 +465,7 @@ function SuperImpulses(impulses){
 
 
 //****
-ONEWAYPLATFORM=function(){w=b2d.W()
+ONEWAYPLATFORM=function(){W().P()
     //  Both PreSolve and PostSolve give you a b2Contact pointer,
     // so we have access to the same points and normal information we just looked at for BeginContact.
     // PreSolve gives us a chance to change the characteristics of the contact before the collision response is calculated,
@@ -490,20 +490,22 @@ ONEWAYPLATFORM=function(){w=b2d.W()
     // It's important to note that the contact will revert back to being enabled in the next time step,
     // so if you want to disable contacts like this you'll need to call SetEnable(false) every time step.
 
-    pf = w.platform(300, 300, 500, 40  )
+    pf = w.S(300, 300, 'o', 500, 40).K('platform')
 
-    p = w.player('symmetrical').fixRot()
+   // p = w.player('symmetrical').fixRot()
+    p.K('player')
+   // w.ball()
+    w.pre(function(cx){$l('pre')
 
-    w.ball()
-
-    w.pre(function(cx){if(cx.with('platform','player')){
-
-            if( p.Y() > pf.Y() ){ cx.SetEnabled(false) }
-
-        }
+        cc=cx
+        //if(cx.with('platform','player')){
+         //   if( p.Y() > pf.Y() ){
+                cx.SetEnabled(false)// }
+       // }
     })
-
 }
+
+
 //***
 THROTTLE=function(){ w = b2d.W()
     ball = w.ball(300,300, 100)
@@ -530,6 +532,7 @@ THROTTLE=function(){ w = b2d.W()
 
 
 }
+
 POINTY=function(){w = b2d.W()
 
       w.ball(300,300, 100)
@@ -573,6 +576,7 @@ POINTY=function(){w = b2d.W()
 
 
 }
+
 COLLCENTER=function(){w = b2d.W()
 
     ball = w.ball(300,300, 200)
@@ -593,7 +597,9 @@ w.chalk('here you can clearly see that the center of the two fixtures',
 '..perhaps halfway between this and the actual contact point would be nice')
 
 }
+
 b2d.man=b2d.manifold = b2d.worldManifold = function(){return new b2d.Collision.b2WorldManifold()}
+
 CONTACTPOINT=function(){w=b2d.W()
     w.ball()
     w.ball()
@@ -602,10 +608,6 @@ CONTACTPOINT=function(){w=b2d.W()
     w.brick(200,500,200,50)
     w.beg(function(cx){w.dot(cx.point())})
     w.chalk('so finding the actual contact point aint hard after all..')}
-
-
-
-
 
 VEL=function(){w=b2d.W({g:1})
 

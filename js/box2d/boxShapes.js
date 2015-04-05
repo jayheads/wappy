@@ -3277,7 +3277,7 @@ GPCLIB=function(){
 
 }; GPCLIB() //the geometry lib
 //////////////////////////////////////////////////////////////////////////////////////////
-b2d.sep = b2d.conc =   b2d.separator = function(body, verts, scale){
+b2d.fig=b2d.sep = b2d.conc =   b2d.separator = function(body, verts, scale){
 
 
 

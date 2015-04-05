@@ -1197,14 +1197,29 @@ MOVEINCIRC=function(){w=b2d.W({g:0})
 
 }
 
-ZILLA=function(){w=b2d.W({g:0,w:0})
+
+
+
+ZILLA=function(){$l('zilla')
+    W({g:0,w:0})
     health=100
 
-    y = w.ship().warp().coll(function(){health-=5})
+     y = w.ship().warp().coll(function(){health-=5})
+
+
+
     z = w.zilla(600, 300).fireBallsAtInt(4000)
+
 
      w.show(function(){return 'health: '+ health + ', hits: ' + z.hits})
 }
+
+
+
+
+
+
+
 
 ZILLASCROLL=function(){w=b2d.W({g:0,w:0}).debug()
     health=100

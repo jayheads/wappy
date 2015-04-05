@@ -592,7 +592,7 @@ fixts=function(){
 
 
 
-    b.fixt= b.list= function(fD){var b=this,f;if(U(fD)){return b.GetFixtureList()}    // can pass a CODED array of fixts (will get parsed)           //p.createFixture = p.cF = b.fixt1 = b.shape =
+    b.f=b.fixt= b.list= function(fD){var b=this,f;if(U(fD)){return b.GetFixtureList()}    // can pass a CODED array of fixts (will get parsed)           //p.createFixture = p.cF = b.fixt1 = b.shape =
 
         if(A(fD)){_.each(b2d.fixtParse(fD),
             function(fd){b.fixt(fd)})
@@ -871,74 +871,68 @@ b.CIRC = b.circ = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
 
 
 
-b.H= function(arg){var g=G(arguments), arg=g[0],
+b.H= function(arg){
+    ggg=arguments
 
+    var g = G(arguments),
+        arg=g[0],
         b=this,
         len=length(g)
+
+    gg=g
+
 
     if(U(arg)){return b}
 
 
-    //passing a single array, suggest MULTIPLE fixts
-    //[f1,f2,..]
-    if( A(g[0]) && U(g[1]) ){
-        _.each(g[0],
-            function(a){
-                b.H.apply(b, a)})}
 
-
-
-    //[col,[f1,f2,..]]
-    else if( S(g[0]) && A(g[1] ) && U(g[2]) ){
-
-        _.each(g[1],function(f){
-
-            if(b2d.isFixtDef(f)){
-                b.fixt(f).C(g[0])
-            }
-
+    if( A(g[0]) && U(g[1]) ){                                       //passing a single array, suggest MULTIPLE fixts //[f1,f2,..]
+        _.each(g[0], function(a){
+            if(g.n){a.push('-')}
+            b.H.apply(b,a)
+        })}
+    else if(S(g[0]) && A(g[1]) && U(g[2])){                                             //[col,[f1,f2,..]]
+        _.each(g[1], function(f){
+            if(b2d.isFD(f)){b.f(f).C(g[0])}
             else {
-
-                if(!S(f[0])){f.unshift(g[0])}//f= _.map(f, function(a){return a})
-
-                if(b2d.isFixtDef(f[1])){
-                    b.fixt(f[1]).C(f[0])
-                }
-
-                else {b.H.apply(b,f)}}})
-    }
-
-    //fixtDef
-    else if(b2d.isFixtDef(g[0])){ b.fixt(g[0]) }
-
-    //['color', fixtDef]
-    else if(S(g[0]) && b2d.isFixtDef(g[1])){ b.fixt(g[1]).C(g[0]) }
-
-    //verts
-    else if(O(g[1])){
-        if(g.n){g.push('-')}
-
-        b.conc(g)
-        //b.convex(g)
-    }
-
-    //circ
-    else if(len == 1 || len == 3){ if(g.n){  g.push('-')  }
-       // b.CIRC.apply(b, g)
-
-        b.cir.apply(b, g)
-
+                if(!S(f[0])){f.unshift(g[0])}                                     //f= _.map(f, function(a){return a})
+                if(b2d.isFD(f[1])){b.f(f[1]).C(f[0])} else {b.H.apply(b,f)}}
+        })
     }
 
 
 
-    //rect
+    else if(b2d.isFD(g[0])){b.f(g[0])}                                                   //fixtDef
+    else if(S(g[0]) && b2d.isFD(g[1])){
+        b.f(g[1]).C(g[0])
+    }                               //['color', fixtDef]
+
+
+    else if(O(g[1])){  //  if(g.n){g.push('-')}  //  b.fig(g)
+        o= S(g[0])? {c: _.first(g), v: _.rest(g)}  : {v: g}
+        if(g.n){  o.s = 1}
+        b.fig(o)}
+
+
+    else if(len==1||len==3){
+        o={c:g[0],r:g[1],x:g[2],y:g[4]}
+        if(g.n){o.s=1}
+        b.cir(o)}
+
+
     else {
-        if(g.n){g.push('-')}
+
+        if(g.n){g.push('-')};
 
         b.RECT.apply(b,g)
 
-    }
+
+    }//rect
+
+
+
+
+
 
 
 
@@ -951,6 +945,31 @@ b.H= function(arg){var g=G(arguments), arg=g[0],
     return b}
 
 
+
+
+    b.fig  =b.conc=b.sep=function(V){var b=this,g=G(arguments),
+
+        V=g[0], n=b.num(), c
+
+        if(U(g[0])){return}
+
+         if(A(g[0])){
+             if(g.n){b.clear()}
+             if(S(g[0][0])){c = g[0].shift()}
+             o = {v:V, c:c}}
+
+        else o = g[0]
+        b2d.fig(b, o.v)
+
+        if(S(o.c)){
+            _.each(_.first(b.fixts(),b.num()-n),
+                function(f){
+                    f.C(o.c)})}
+        if(o.s){
+            _.each(_.first(b.fixts(),b.num()-n),
+                function(f){f.SetSensor(true)})}
+
+        return b}
 
 
 
@@ -2082,36 +2101,15 @@ geometry=function() {
 
 
 
-    b.conc=  b.sep= function(verts){
 
 
-        var g = G(arguments),
-            verts=g[0],
-            col,
-            b=this,
-            fs, n1,n2, newFixts
-
-        if(U(verts)){return}
-
-        if(S(verts[0])){ col = verts.shift() }
-        if(g.n){b.clear()}
-        n1=b.num()
-        b2d.sep(b, verts)
-
-        if(S(col)){
-
-            n2=b.num()
-            fs=b.fixts()
-            newFixts=_.first(fs,n2-n1)
-
-            _.each(newFixts,
-                function(f){f.C(col)})
-
-        }
 
 
-        return this
-    }
+
+
+
+
+
 
 
 
@@ -2300,6 +2298,7 @@ geometry=function() {
 
 
 b2d.body = b2d.bodyDef = BodyDef = bDf =function(x,y){
+
     var bodyDef = new b2BodyDef()
     x=N(x)?x:300
     y=N(y)?y:300
@@ -2307,17 +2306,31 @@ b2d.body = b2d.bodyDef = BodyDef = bDf =function(x,y){
     return bodyDef
 }
 
+b2d.body=function(x,y){
 
-b2d.dyn = function(x,y){ return b2d.body(x,y).dyn() }
+    var bD = new b2BodyDef(),
+        v=V(x,y), o
+
+    o={x: _.tN(v.x, 300),
+        y: _.tN(v.y, 300)}
+
+    return bD.xy(o.x, o.y)
+}
 
 
 
-b2d.stat = function(x,y){//b2d.staticDef = b2d.staticBodyDef =StaticBodyDef=sBD=
+
+b2d.D=b2d.dyn = function(x,y){ return b2d.body(x,y).dyn() }
+
+
+
+
+b2d.S=b2d.stat = function(x,y){//b2d.staticDef = b2d.staticBodyDef =StaticBodyDef=sBD=
 
     return b2d.body(x,y).stat()
 }
-b2d.kin = b2d.kinematic = KinematicBodyDef = kBD=function(x,y){return b2d.bodyDef(x,y).T(1)}
-b2d.isBody = isBody=function(b){if(O(b)){return b.constructor.name=='b2Body'}}
+b2d.K=b2d.kin = b2d.kinematic = KinematicBodyDef = kBD=function(x,y){return b2d.bodyDef(x,y).T(1)}
+b2d.iB=b2d.isB=b2d.isBody = isBody=function(b){if(O(b)){return b.constructor.name=='b2Body'}}
 
 
 

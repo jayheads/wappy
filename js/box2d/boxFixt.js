@@ -420,9 +420,19 @@ f.hType=function(){return this.shp().m_type}
 f.isCirc=function(){return this.hType()==0}
 
 f.rad = function(){return this.shp().m_radius*30}
-f.pos = function(){var h=this.shp()
-    return V(h.m_p.x, h.m_p.y).mult()
-}// for circs
+
+
+f.pos = function(){
+
+    var h = this.shp()
+
+    return V( h.m_p.x, h.m_p.y ).mult()
+
+}  // for circs
+
+f.pX=function(){return this.pos().x}
+f.pY=function(){return this.pos().y}
+
 
 
 f.verts= function(){var f=this, b=this.body(), g=G(arguments)
@@ -516,47 +526,17 @@ return this}
 f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
 
 
-f.C= f.color= function(c,C,l){
-    var f=this,b=f.body(),
-        w=b.wor(),h,r,p
 
-
-    if(c=='*'){c = $r()}
-    c=c||'b'
-    C=C||c
-
-
-    if(f.isCirc()){
-
-        p = f.pos()
-
-        h = w.s.h().cir(
-            f.rad(), p.x, p.y, c, C, l
-        )
-
-    }
-
-
-
-
-    else {
-
-        h = w.s.h().poly(f.verts(),c,C,1)
-
-    }
-
-
-
-
-
-
+f.C= f.color= function(c,C,l){var f=this,b=f.B(),w=b.W(),h,r,p
+    c = (c=='*')?$r() : c?c : 'b'
 
     f.removeSprites()
+    f.bindSprite(f.isCirc()?
+        w.s.h().cir(f.rad(),f.pX(),f.pY(),c,C||c,l)
+        : w.s.h().poly(f.verts(),c,C,1))
 
-   f.bindSprite(h)
+return f}
 
-   // return this
-}
 
 
 
@@ -617,7 +597,9 @@ f.cancel=function(){this.body().cancel(); return this}
 f.switchTo=function(co){this.body().switchTo(co); return this}
 
 
-b2d.isFixtDef=function(fD){return O(fD) && fD.b2FixtureDef}
+b2d.isFD=b2d.isFixtDef=function(fD){return O(fD) && fD.b2FixtureDef}
+
+
 b2d.isFixt=function(fixt){
     if(!fixt){return false}
     return fixt.constructor.name=="b2Fixture"}
@@ -673,25 +655,6 @@ b2d.rec1 = function(W,H,x,y,a,d){var g=G(arguments),r,f, o,
 
 
 
-b2d.rec = b2d.polyFixt = function(W,H,x,y,a,d){var g=G(arguments),r,f,o,v,
-    p = new b2d.PolygonShape()
-    if( O(g[0]) && O(g[1]) ){
-        v = _.map(g, function(v){return V(v).div()})
-        p.SetAsArray(v, v.length)}
-
-    else {
-        o=O(g[0])?g[0]
-            :{w:g[0],h:g[1],x:g[2],y:g[3],a:g[4],d:g[5]}
-        b2d.oDef(o)//60?
-        p.SetAsOrientedBox(o.w/60,o.h/60,V(o.x,o.y).div(),Math.toRadians(o.a))}
-
-    f=new b2d.Dynamics.b2FixtureDef()
-    f.den(o.d||.5)
-    if(g.n){f.isSensor=true}
-    f.shape = p
-
-    return f
-}
 
 
 

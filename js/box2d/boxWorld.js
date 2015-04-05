@@ -195,7 +195,7 @@ w.bug=w.debugDraw=function(){
     return this
 }
 
-b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
+b2d.iBD =b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
 ;(function worldCreateBodies(){var w=b2d.World.prototype
 
 
@@ -288,38 +288,48 @@ b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
         return w}
 
 
-w.B=w.D=function(x,y){var g=G(arguments),x=g[0],y=g[1],
-        w=this, bd, b, fixts, clas
+
+w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
 
 
-    //can pass color at END
-    if(S(_.last(g))){
+    if( S(_.l(g)) ){ k=g.pop() }   //can pass color at END  ?  //if(b2d.iBD(x)){bD=x; fs=_.r(g)}
 
-        clas= g.pop()
+    if(O(x)){ bD=b2d.D(x);  fs=_.r(g)}
+
+    else {bD = b2d.D(x,y);  fs=   _.r(g,2)}
+
+    b = w.CreateBody(bD)
+
+
+    if( A( g[0] ) && U(g[1]) ){
+
+        _.each(fs,
+            function(f){
+                if(g.n){b.H(f, '-')} else {b.H(f)}
+            }) //b.H.apply(b,fs)
+
     }
-
-
-    if(N(x)){bd=b2d.dyn(x,y); fixts=_.rest(g,2)}
 
     else {
 
-        if(b2d.isBDef(x)){bd=x}
+        if(g.n){fs.push('-')  }
 
-        else {x=V(x); bd=b2d.dyn(x.x,x.y)}
-
-        fixts = _.rest(g)
+        b.H.apply(b, fs)
     }
 
 
-    b = w.CreateBody(bd)
+    if(k){b.K(k)}
 
-    b.H.apply(b, fixts)
+    return b}
 
-    if(clas){b.K(clas)}
 
-    return b
 
-}
+
+
+
+
+
+
 
 
 
@@ -1466,6 +1476,7 @@ contacts=function() {
         }
         return this
     }//ADDS one or more handlers to beginHandlers array
+
     w.pre = function () {
         var that = this
         _.each(arguments, function (func) {
@@ -1473,6 +1484,7 @@ contacts=function() {
         })
         return this
     }
+
     w.post = function () {
         var that = this
         _.each(arguments, function (func) {

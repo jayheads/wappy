@@ -1,77 +1,45 @@
 b=b2.Dynamics.b2Body.prototype
 
+b2d.rec = b2d.polyFixt = function(W,H,x,y,a,d){var g=G(arguments),r,f,o,v,
+    p = new b2d.PolygonShape()
 
-
-
-b.RECT000 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
-    fd,f,h,k,o
-
-    if(O(c)){o=c}
+    if( O(g[0]) && O(g[1]) ){
+        v = _.map(g, function(v){return V(v).div()})
+        p.SetAsArray(v, v.length)}
 
     else {
-        if(N(c)){a=y;y=x;x=H;H=W;W=c;c=null}
-         o = S(a)? {c:c, w:W, h:H,x:x,y:y, k:a} :
-             S(y)? {c:c, w:W, h:H,x:x, k:y} :
-                 S(x)?{c:c, w:W, h:H, k:x}
-                     :S(H)?{c:c, w:W, k:H}:
-                 {c:c,w:W,h:H,x:x,y:y,a:a}}
-
-    o=o||{}
-    b2d.oDef(o)
-    fd=b2d.rec(o.w, o.h, o.x, o.y, o.a)
-    if(g.n){fd.isSensor=true; o.o=.2}
-    f=b.fixt(fd)
-    if(o.k){f.K(o.k)}
-    if(S(o.c)){
-
-        f.bS(
-            w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),
-
-            0,
-            0,
-            0,
-            o.o
-
-        )}
+        o=O(g[0])?g[0]
+            :{w:g[0],h:g[1],x:g[2],y:g[3],a:g[4],d:g[5]}
+        b2d.oDef(o)//60?
+        p.SetAsOrientedBox(o.w/60,o.h/60,V(o.x,o.y).div(),Math.toRadians(o.a))}
+    f=new b2d.Dynamics.b2FixtureDef()
+    f.den(o.d||.5)
+    if(g.n){f.isSensor=true}
+    f.shape = p
     return f
-
 }
 
 
-b.RECT = function(c, W, H, x, y, a){var b=this,w= b.wor(),
-
+b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
     g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
-
     fd,f,h,k,o
-
-    if(O(g[0])){o=g[0]}//passing in object (o)
-
-    else{//passing in pams directly
-        if(N(g[0])){g.unshift(null)}
-         o={c:g[0],w:g[1]}
-        _.extend(o,
+    if(O(g[0])){o=g[0]}
+    else{if(N(g[0])){g.unshift(null)} //passing in pams directly
+         o=_.extend({c:g[0],w:g[1]},
             S(g[2])? {k:g[2]}:
             S(g[3])? {h:g[2],k:g[3]}:
             S(g[4])? {h:g[2],x:g[3],k:g[4]}:
             S(g[5])? {h:g[2],x:g[3],y:g[4],k:g[5]}:
                      {h:g[2],x:g[3],y:g[4],a:g[5]})}
-
     o=b2d.oDef(o)
-
-
-    fd = b2d.rec(o.w,o.h,o.x,o.y,o.a)
-
-
-    if(g.n){fd.isSensor=true;o.o=.2}
-
-    f=b.fixt(fd)
+    fd = b2d.rec(o); if(g.n){fd.isSensor=true;o.o=.2}
+    f = b.fixt( fd )
     if(o.k){f.K(o.k)}
-
-
     if(S(o.c)){f.bS(w.s.rec(o))}
-
     return f
 }
+
+
 
 
 
@@ -110,7 +78,9 @@ b2d.fixtPams=function(o){o=o||{}
     o.p // layer position
     o.q //query for conc?
     o.r = N(o.r)? o.r: 40//radius
+
     o.s = D(o.s)? o.s: 0//sesor
+
     o.t //type
     o.v = o.v || [] //verts
     o.w = N(o.w)? o.w: 40//width
@@ -156,23 +126,38 @@ TESTB=function(){W(0);cjs.rulers()
 
 
 
-b.cir=function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
-    if(A(g[0])){return b.cir.apply(b, arguments)}
-    if(S(g[1])){o={c:g[0], C:g[1], r:g[2], x:g[3], y:g[4]}}
-    else if(S(g[0])){o={c:g[0], r:g[1], x:g[2], y:g[3]}}
-    else if(S(g[3])){o={r:g[0], x:g[1], y:g[2],c:g[3], C:g[4]}}
-    else if(N(g[0])){
-        o={r:g[0],x:g[1],y:g[2]}}
+b.cir = function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
+    if(A(g[0])){return b.cir.apply(b, g[0])}
 
-    o=b2d.fixtPams(o)
-    fd=new b2d.FixtureDef; fd.den(o.d).rest(o.b).fric(o.f)
-    fd.shape = new b2d.CircleShape(o.r/30); fd.shape.SetLocalPosition(V(o.x, o.y, '-'))
-    fd.isSensor= o.s? true : false
+    if(S(g[1])){ o={c:g[0], C:g[1], r:g[2], x:g[3], y:g[4]}}
+    else if(S(g[0])){ o={c:g[0], r:g[1], x:g[2], y:g[3]}}
+    else if(S(g[3])){ o={r:g[0], x:g[1], y:g[2],c:g[3], C:g[4]}}
+    else if(N(g[0])){ o={r:g[0],x:g[1],y:g[2]}}
+    if(g.n){o.s = 1} //o.s=1
+    b2d.fixtPams(o)
+    fd=new b2d.FixtureDef;
+    fd.den(o.d).rest(o.b).fric(o.f)
+    fd.shape = new b2d.CircleShape(o.r/30);
+    fd.shape.SetLocalPosition(V(o.x, o.y, '-'))
+
+    fd.isSensor = o.s? true : false
+
     f = b.fixt(fd)
+
+    if(g.n){ f.SetSensor(true)}
+
+
     if(o.k){f.K(o.k)}
-    if(o.c){f.bS(w.s.h().cir(o))}
+
+    if(o.c){
+
+        f.bS( w.s.h().cir(o) )
+    }
 
     return b}
+
+
+
 
 
 
@@ -365,3 +350,40 @@ b.RECT00 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[
     if(S(o.c)){f.bS(w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),0,0,0, o.o)}
     return f
 }
+
+
+
+b.RECT000 = function(c, W, H, x, y, a){var b=this,w= b.wor(),g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
+    fd,f,h,k,o
+
+    if(O(c)){o=c}
+
+    else {
+        if(N(c)){a=y;y=x;x=H;H=W;W=c;c=null}
+        o = S(a)? {c:c, w:W, h:H,x:x,y:y, k:a} :
+            S(y)? {c:c, w:W, h:H,x:x, k:y} :
+                S(x)?{c:c, w:W, h:H, k:x}
+                    :S(H)?{c:c, w:W, k:H}:
+                {c:c,w:W,h:H,x:x,y:y,a:a}}
+
+    o=o||{}
+    b2d.oDef(o)
+    fd=b2d.rec(o.w, o.h, o.x, o.y, o.a)
+    if(g.n){fd.isSensor=true; o.o=.2}
+    f=b.fixt(fd)
+    if(o.k){f.K(o.k)}
+    if(S(o.c)){
+
+        f.bS(
+            w.s.rec(o.c, o.w, o.h, o.x, o.y, o.a),
+
+            0,
+            0,
+            0,
+            o.o
+
+        )}
+    return f
+
+}
+

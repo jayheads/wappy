@@ -471,9 +471,12 @@ w.fireBall=function(x,y,vX,vY){
     return this.K(x,y, 'r', 18).bindSprite('sun',.2)
         .lV(vX,vY)
 }
+
+
 w.zilla=function(x,y){var w=this
 
-    var z= w.K(x,y, 80,140) //make sensor?
+    var z= w.K(x, y, 80, 140)  //make sensor?
+
         .fixRot()
         .bindSprite('guy', [.8,1])
         .moveInCircle('-')
@@ -483,7 +486,10 @@ w.zilla=function(x,y){var w=this
             z.hits++
         })
 
+
+
     z.hits=0
+
 
     z.fireBalls=function(){
         var x= this.X(),
@@ -495,17 +501,26 @@ w.zilla=function(x,y){var w=this
         w.fireBall(x, y-80,'u')
         w.fireBall(x, y+80,'d')
         w.fireBall(x-50, y,'r')
-        w.fireBall(x+50, y,'l')}
+        w.fireBall(x+50, y,'l')
+    }
+
 
     z.fireBallsAtInt=function(ms){var z=this
-
-        setInterval(function(){
-            z.fireBalls()
-        }, ms)
-    return this}
+        setInterval(function(){  z.fireBalls()  }, ms)
+    return this
+    }
 
 
     return z}
+
+
+
+
+
+
+
+
+
 w.clouds=function(leftPoint, y){var that=this
 
     leftPoint = N(leftPoint)? leftPoint: 100
