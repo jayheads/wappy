@@ -1,173 +1,660 @@
-ct=cjs.Container.prototype
-h =  cjs.Shape.prototype
-
-b2d.colMap=function(C){return _.map(C,function(c){return oO('c',c)})}
-
-
-b2d.gDf = function(o){o=o||{}
-
-    o.c = o.c || 'z'
-
-    o.C = o.C || 'w'
-
-        o.s = _.tN(o.s);
-        o.S = _.tN(o.S, 1)
-        o.x = _.tN(o.x);
-        o.y = _.tN(o.y)
-        return o
-    }
 
 
 
+LT=function(){St()
 
-b2d.rgDf = function (o) {
-        o = b2d.gDf(o)
-        o.X = _.tN(o.X, o.x);
-        o.Y = _.tN(o.Y, o.y)
-        o.r = _.tN(o.r, 1);
-        o.R = _.tN(o.R, 100)
-        return o
-    }
-
-
-b2d.lgDf=function(o){o=b2d.gDf(o)
-    o.X=_.tN(o.X);
-    o.Y=N(o.Y)?o.Y
-        :N(o.r)?o.r*2
-        :100
-
-        return o}
+    h.c('y').dc(100,100,30)
+        .c('o').dc(100,100,10)
+        .ef()
+        .C('g',8)
+        .mt([[100,100],[300,300],[400,100],
+            [500,300],[450,450]],[[500,0],[600,100]])
 
 
-b2d.lgO=function(){var g=G(arguments),o
-    if(A(g[0])){return b2d.lgO.apply(null, g[0])}
-    if(O(g[0])){o=g[0]}
-    else{o=_.extend({c:g[0],C:g[1]},
-            N(g[5])?{x:g[2],y:g[3],X:g[4],Y:g[5]}
-                :N(g[4])?{y:g[2],X:g[3],Y:g[4]}
-                :N(g[3])?{X:g[2],Y:g[3]}
-                :{Y:g[2]})}
-    return b2d.lgDf(o)
+    h.cir(600,300,'u','g',10)
+
+
+    lgO={c:'b',C:'o',y:200,Y:700}
+    v=[[300,300],[320,200],[640,400],[280,650]]
+
+
+    // h.lg(lgO)//.mt(v)
+
+
+    h.poly({
+
+        v:  v,
+        lg:  lgO,
+        c: 'b',
+        C: 'r'
+    })
+
+
+
+}
+CIRCSTROKE=function(){St()
+
+    gx= h.graphics
+
+    h.c('b', 'r',10).XY(-100,-100)
+
+
+    h.dc([200,200,50],[400,200,50],[600,200,50])
+
+
+
+
+
+
+    /*  h.dc(300,300,50)
+     gx.dc(400,400,50)
+     h.dc(500,500,50)
+     gx.dc(600,600,50)
+     */
+
+}
+ROTREC=function(){St()
+
+    ct = s.ct(600, 300)
+
+    ct.rec({ w:400,h:400, c:'r',C:'o',l:10,a:-5 })
+    ct.rec({ w:100,h:200, c:'b',C:'w',l:20,a:20, rg:1 })
+    h = ct.rec({
+        w: 100, h:200, a:20,
+        c: 'b', C:'w', l: 20, bm:1
+    }).X(100)
+    $.in(8, function(){h.X(0)}) //notice how gradient is seen behind the bm!!!
+
+}
+TWORECS=function(){St()
+
+    ct = s.ct(1000, 300).drag()
+    ct.rec({ w:400,h:200, c:'r',C:'o',l:10,a:-5 })
+    h1 = ct.rec({ w:200, h:400, c:'r', C:'o', l:10, a:5 })
+    // h is another container.. to clr ->  h1.children[0].clr()
+
+    h= s.h().dr2()
+    //.rec({  })
+
+}
+HPOLY=function(){St()
+    v=[[-100,0],[0,-100],[100,50]]
+    s.h(600,300).poly({v:v,bm:1})
+    s.h(700,400).poly({v:v,bm:{}})
+
+    h=s.h(200,300)
+    h.bm('me', function(){
+        h.dc(0,0,150)
+        h.dc(200,0,150)
+    })
+    s.h(800, 300).poly({v:v,rg:1})
+    s.h(900, 300).poly({v:v,lg:1})
+}
+BMH=function(){St()
+    v=[[-100,0],[0,-100],[100,50]]
+    s.h(100,300).drag().bmCir({
+        circs:[{r:150},
+            {x:200,r:150},
+            [300,100,100],[400,100,100]]})
+    s.h(700,300).drag().bmV({v:[
+        [[-100,0],[0,-100],[100,50]],
+        [[-200,0],[-100,-100],[0,50]],
+        [[0,200],[0,-200],[400,-300],[400,300]]
+    ]})
 }
 
 
 
-h.lg=function(){var h=this,gx=h.graphics,g=G(arguments),
-    o=b2d.lgO(g)
+CIRCS=function(){St()
+   // h.dc(100,100,50) -> no color
 
-    h.C('X')
-    h.bLGF=function(c,s,x,y,X,Y){var h=this,gx=h.graphics
-            gx.beginLinearGradientFill(b2d.colMap(c),s,x,y,X,Y); return h}
-    return h.bLGF([o.c,o.C],[o.s,o.S],o.x,o.y,o.X,o.Y)
+
+    h.c().dc(100,100,50) // black fill, l4 white stroke
+    h.c('*').dc(100,200,50).dc(100,250,50)
+    h.c('***').dc(200,200,50).dc(200,250,50)
+    h.c({C:'r'}).dc(300,300,50)
+    h.circle({
+        r:50, x:200, y:200,
+        C:['y',10],
+        lf: {c1:'u',c2:'o',y1:100,x2:100},
+        ls: {c1:'u',c2:'o'}
+    })
+    h.circle({
+        r:50, x:500, y:200,
+        C:['y',2],
+        rf: {c1:'u',c2:'o',x1:10,y1:10,  r2:30}, //, y1:100,x2:100},
+        rs: {c1:'y', c2:'u', x1:-20,  y1:-20,  r1:40, r2:40    }
+    })
+    h = s.h().drag().lf({}).dc()
+        .c('b','g',10).lf({  y2:400  }).dc(300,300,50)
+
+    cjs.me(function(i){
+        h.c({
+            l:200,
+            rf: ['w', 'u', 800],
+            rs: {c1:'w', c2:'x', r2:800}
+        }).dc({x: 0, y:0, r:200})
+
+        s.h().c({
+            l:200,
+            lf: {c1:'w',c2:'u',y2:200},
+            ls: {c1:'u',c2:'w',s1:0,s2:1,x1:0, y1:0,x2:0,y2:200}
+        }).dc({x: 0, y:0, r:200}).drag()
+
+        s.h().lf('y','r',10).dc({r:200}).c({
+            l:0,
+            c:'y',
+            //lf: {c1:'u',c2:'w',s1:0,s2:1,x1:0, y1:0,x2:0,y2:200},
+            bs:i,bf:i
+        }).dc({r:200}).drag()
+        s.h(40,10,'b',8).rf({c1:'r',c2:'d',r2:100}).dc(0,50,40).drag()
+    })
 }
+OVALS=function(){St()
+    h=s.h(40, 10,'b',16).drag()
+    h.c({C:['o',5],lf:{c1:'g',c2:'r',x2:100,y2:400}}).de(100, 400)
+
+    h.c({C:'b',
+        lf:{c1:'g',c2:'r',x2:400, y2:100}}).de(400,100)
+
+    h.l(30).lf({c1:'b',c2:'y', x1:100, y1:100, x2:500,  y2:400 })
+        .de(100, 200, 500,300)
 
 
+    h.ls('r','w',300,100,400,140).de(300,0,300,500)
 
-
-h.lG=function(){var h=this,gx=h.graphics,g=G(arguments),
-
-    o=b2d.lgO(g)
-
-
-
-    h.bLGS=function(C,S,x,y,X,Y){var h=this,gx=h.graphics
-            gx.beginLinearGradientStroke(b2d.colMap(C),S,x,y,X,Y)
-            return h}
-    return h.bLGS([o.c,o.C],[o.s,o.S],o.x,o.y,o.X,o.Y)
 }
+GRAPHTEST=function(){St(); img = $.img('me',function(){s.ct().h().bmS(img).ss(32).dr(20,20,920,360); _.each([
 
+        function(){return $h(12,10)
+            .lf('b','g',130).dr(130)},
 
+        function(){return $h(40, 10,'b',16)
+            .ls('r','w',70,140).de(70,140)},
 
+        function(){return $h(80,80)
+            .C('b',8).rf('w','y',40).dc(40)} ,
 
-h.rg=function (o) {
-        var h = this, gx = h.graphics,
-            g = G(arguments),
-            o = g[0]
-        if (S(g[1])) {
-            o = {c: g[0], C: g[1]}
-            _.extend(o,
-                N(g[5]) ? {X: g[2], Y: g[3], r: g[4], R: g[5]} :
-                    N(g[4]) ? {X: g[2], r: g[3], R: g[4]} :
-                        N(g[3]) ? {r: g[2], R: g[3]} : {R: g[2]})}
-        else if (S(g[0])) {o = {C: g[0]}}
-
-
-
-        b2d.rgDf(o)
-        h.bRGF=function(C,S,x,y,r,X,Y,R){var h=this, gx=h.graphics
-            gx.beginRadialGradientFill(b2d.colMap(C),S,x,y,r,X,Y,R)
-            return h}
-        return h.bRGF([o.c,o.C],[o.s,o.S],o.x,o.y,o.r,o.X,o.Y,o.R)
-
-    }
-
-
-h.rG=function () {
-        var h = this, gx = h.graphics, g = G(arguments),
-            o = O(g[0]) ? g[0] :
-                S(g[1]) ? _.extend({c: g[0], C: g[1]},
-                    N(g[5]) ? {X: g[2], Y: g[3], r: g[4], R: g[5]} :
-                        N(g[4]) ? {X: g[2], r: g[3], R: g[4]} :
-                            N(g[3]) ? {r: g[2], R: g[3]} : {R: g[2]}) :
-                    S(g[0]) ? {C: g[0]} : {}
-
-    b2d.rgDf(o)
-        h.bRGS = function (C, S, x, y, r, X, Y, R) {var h = this, gx = h.graphics
-            gx.beginRadialGradientStroke(b2d.colMap(c), S, x, y, r, X, Y, R)
-            return h}
-        return h.bRGS([o.c, o.C], [o.s, o.S], o.x, o.y, o.r, o.X, o.Y, o.R)
-    }
-
-
-
-REC=function(){St()
-    h=s.h(480,270).drag()
-    h.c('**',40).dr2({ w:900,h:500  })
-    h.lg({x:-100, c:'r',C:'y'})
-    h.dr2(
-        {w:300,h:100,x:0,y:-100},
-        {w:100, h:300})}
+        function(){return $h(12,10,18)
+            .bf(img, cjs.M(1) ).rs('b','g',30,130).dr(130)},
 
 
 
 
 
-MICK=function(){St()
-    ct.mick=function(x,y,lg){var ct=this,
-        h=ct.h(x,y).drag()
 
-        h.lg(lg)
-        h.dc([50],[200,0,100],[100,100,100])
-        return h
-    }
+        function(){return $h(12,12,'g','r',8)
+            .rr(130,30)}, //w(h) and r
+
+
+        function lt(){return $h().C('o')
+            .ss(16,'round','round')
+            .mt([40,10],[90,90],[90,140])},
+
+        function star(){return $h(80,85,'y','b',3)
+            .pStr(0,0,80,5,.8,-95)},
+
+
+
+        function hex(){return $h(80,40,'p')
+            .pStr(40,6).pStr(0,75,40,6).pStr(45,45,20,6)}
+
+
+    ],
+
+    function(cont,i){var W=155, H=155, P= 5, C=4 //pad, cols
+        s.A(tile(cont()).XY(
+                42+(W+P)*(i%C),
+                42+(i/C|0)*(H+P)))})})[0]
+
+
+
+
+    tile=createTile=function(x,y){var bg,til
+        bg = $h().c('t').dr(0, 0, 155, 155).ef().op(.2)
+        til = cjs.ct().A(bg)
+        if(N(x)){  til.X(x) }
+        if(N(y)){  til.Y(y)  }
+        if(O(x)){ til.A(x) }
+
+        return til}
+
+
+}
+LINEAR=function(){St()
+    ct.mick=function(x,y,lf){var ct=this,
+       h= ct.h(x,y).drag()
+        .c({ l:20,  C:0,   lf: lf||1  })
+        .dc([50],[200,0,100],[100,100,100])
+        ct.h(x,y).drag().c({ l:20,  C:0,   ls: lf||1  })
+            .dc([50],[200,0,100],[100,100,100])
+        return h}
 
     s.mick(500,200)
-    s.mick(700,100,{c:'b',C:'X'})
-    s.mick(700,300,{C:'b'})
-    s.mick(100,100,{Y:10})
-    s.mick(100,200,{Y:200})
-    s.mick(100,300,{X:100})
+    s.mick(700,100, { c1:'b', c2:'X' })
+    s.mick(700,300, { c2:'b' })
+    s.mick(100,100, { y2:10 })
+    s.mick(100,200, { y2:200 })
+    s.mick(100,300, { x2:100 })
+
 
 }
-
-LGSTROKE=function(){
-
-
+REC=function(){
     St()
     h=s.h(480,270).drag()
+    h.C('z',2).lf({x:-100, c1:'r',c2:'y'})
+        .dr2({w:300,h:100,x:0,y:-100},
+        {w:100, h:300})
 
-    h.c('**',40)
-        .dr2({ w:900,h:500  })
+    s.h(180,270).drag()
 
-
-    h.lG({x:-100, c:'r',C:'y'})
-
-    h.c('g')
-
-    h.dr2(
+        .lf({c1:'r', c2:'y', x1:-100}).dr2(
         {w:300,h:100,x:0,y:-100},
         {w:100, h:300})
 
+}
+
+
+EASELCONVEX=function(){s=cjs.S()
+    s.poly([[-100,-10],[0,100],[100,20]],
+        'red','white',10).XY(200,300)
+    s.poly([[-20,-80],[-100,-200],[100,5]]).XY(300, 200)
+    s.poly(
+        [[-40,40],[-40,-40],[40,-40], [40,30]],
+        'blue', 'white').XY(200,200)}
+
+
+CONVEX=function(){w=b2d.W({g:0}).debug()
+
+    // so clearly b.convex lets me specify polygon fixtures by an array of points
+
+    b = w.dyn(300, 300).fixRot()
+    b.convex('green', [  [0,0], [0,-200], [100,0]  ]  )
+    b.convex('blue', [  [0,30], [-300,-20], [100,0]  ] )
+    b.convex('pink',  [ [0,30],[-30,-20],[10,0]  ]  )
+
+
+
+    // verts creates a dyn body and lets u pass in multiple 'convex calls'
+    w.verts( 300, 500,[
+        ['p', [-20,-20],[0,-30],[10,10]],
+        ['n',[0,0],[30,-50],[50,-10]]
+    ])
+
+
+    c = w.dyn(300, 300).fixRot()
+
+
+
+    /*
+     b2 = w.dyn(300, 300)
+     b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
+     b2.convex([[0,30],[-30,-20],[10,0]] )
+     b3 = w.dyn(300, 300)
+     b3.convex( 'g',[[-150,0],[-120,-20],[-80, -50],[0,-30]] )
+     b3.convex('r',[ [-30,-30], [-20,10], [-10,60]] )
+     b3.convex('o',[ [-30, -30], [-20,-50], [ 10, -20]] )
+     */
+
+
 
 }
 
+
+
+VERTS=function(){W()
+
+    thingy = [['p',[-20,-20],[0,-30],[10,10]],
+        ['n',[0,0],[30,-50],[50,-10]]]
+
+    _.times(100, function(){
+        w.verts(R(600),R(300,200),thingy)})
+
+}
+
+PITFALL=function(){
+
+    b2d.levelScrollX()
+
+
+    turtle = [
+        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
+
+        ,  ['yellow',[10,-10],[20,-30],[50,-15], [45,-5]]
+
+        , ['yellow',
+
+            [-50,10],[-50,-10],[-40,-10],[-40,10]
+        ]
+
+        , ['yellow',
+
+            [-10,10],[-10,-10],[0,-10],[0,10]
+        ]
+    ]
+
+
+
+    turtle2 = [
+        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
+
+        ,  ['yellow',[-60, -30], [-50,-60], [-20,-45], [-15,-35] ]
+
+
+
+        , ['yellow',
+
+            [-50,10],[-50,-10],[-40,-10],[-40,10]
+        ]
+
+        , ['yellow',
+
+            [-10,10],[-10,-10],[0,-10],[0,10]
+        ]
+    ]
+
+
+
+
+    t = w.vertsKin(400, 280, turtle).fixRot()
+    t2 = w.vertsKin(700, 280, turtle2).fixRot()
+
+    setInterval(function(){
+        t2.linVel(5,0)
+        setTimeout(function(){  t2.linVel(-5,0) },1000)
+    }, 2000)
+
+}
+
+
+
+CENTERSHAPE=function(){St()
+
+    h.rect(100,100,100,100,'y')
+    h.rect(200,200,100,100,'b')
+
+    h.c('o').polyStar(300,100,
+        50,5,0.6,-90)
+
+    h.c('w').C('z')
+        .roundRectComplex(400,300,
+        300,300, 20,20,30,40 )
+
+    h.circ(500,200,40,'b','z')
+}
+
+
+
+
+SHAPES=function(){St()
+
+    s.can.P('a').XY(300)
+    s.bm('me', 0.2, function(bm){})
+    s.A(cjs.circle(100, 'blue','green').XY(100, 100).drag())
+    s.circle(100, 100, 10, 'red', 'yellow' )
+        .circle(10,100,100,'black','purple')
+        .circle(100, 10, 100, 'blue', 'red' )
+        .circle(150,150,120,'red','blue')
+        .circle(30,'brown','gray')
+
+}
+TURTLE=function(){W(0).Y()
+
+    turtle =[
+        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
+        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
+        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
+        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
+        ['x', 10, 55,-12],
+        ['u', 30,40, 75,-12]
+    ]
+
+    w.B(400, 280,turtle, '-')  //this changes the data object for future uses !!!
+
+
+    w.B(600, 280, [
+        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
+        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
+        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
+        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
+        ['x', 10, 55,-12, '-'],
+        ['u', 30,40, 75,-12 ,'-']
+    ])
+
+    w.S(300,300,'o', 10)
+
+    w.B(300,100,'b',50)
+    w.B(300,200,'y',50,'-')
+    w.B(300,400,[['b',50,50,0,'-'],['y',50]])
+    w.B(700,100,'b',50,50)
+    w.B(700,200,'y',50,50,'-')
+    w.B(700,400,[['b',50,50,50,0,'-'],['y',50,50]])
+
+
+    // t =  w.verts(400,280,   turtle) // fs = t.fixts()
+
+
+    r = w.S(600,300,'r',12 ,'-')
+
+    b = w.dyn(300,400)
+    b.cir({r:100, c:'w', rg:1})
+    b.cir({r:100, x:500, c:'w', lg:1, s:1})
+
+
+
+
+    b = w.B(500,400,  {r:100, c:'y', t:'c'}  )
+
+
+    //  {r:100, x:100, c:'w', lg:1, s:1, t:'c'}  ])
+
+
+
+
+
+    f = r.fixt()
+
+
+    /*
+     r.cir('b', 30, 100,200,'-')
+     r.cir({  c:'g', r:30, x:100 ,s:1 }, '-')
+     r.cir({  c:'w', r:30  })
+     r.cir({  c:'z', y:-100  })
+     r.cir(['y', 30, 200, 100])
+     */
+
+
+}
+
+
+
+
+
+CURTLE=function(){W(0).Y()
+
+    turtle =[
+        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
+        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
+        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
+        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
+        ['x', 10, 55,-12],
+        ['u', 30,40, 75,-12]]
+
+    /*
+     w.B(400, 280,turtle )
+
+     w.dyn(400,300).rec(
+     {w:300,h:300, x:100,y:100, bm:1},
+     {w:200,h:200, lg:1, l:15},
+
+     {w:10,h:40,c:'r'},
+
+     {w:40, h:40, x: 100, c:'z'  },
+     {w:40, h:40, x: 200, c:'b', C:'o', l:10  },
+     {w:200, h:20, c:'g', y: 200, s:1 , lg:1 })
+
+
+     */
+
+
+    w.dyn(300,200).cir(
+        {r:20,y:-20},
+        {r:20},
+        {r:20, x:20, lg:1, c:'b',y:30},
+        {x:50, s:1, rg:1},
+        {x:100,r:50,c:'r',C:'x',l:10, s:1},
+        {y:-100, r:50, bm:1})
+
+
+
+    b= w.dyn(800, 300)
+
+
+    b.pol({
+        c:'x',  C:'o',
+        //l:5,
+
+        bm:1,
+
+        v:[  [-100,0],[0,-100],[100,50]   ]
+
+    })
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RADIALGRADRECT=function(){s=cjs.S()
+
+
+
+
+
+    x1=100
+    y1=150
+    r1=20
+    x2=100
+    y2=150
+    r2=100
+
+
+    h=cjs.shape(10, 10).a2(s).drag()
+
+
+    change= function(){
+
+        //  h.remove()
+
+        // h=cjs.shape(10, 10).a2(s).drag()
+
+        h.graphics.beginRadialGradientFill(  ["red", 'blue', "yellow"],  [0, .5, 1],
+
+            x1,
+            y1,
+            r1,
+            x2,
+            y2,
+            r2
+
+
+        )
+
+
+            .dr(0,0,400,400)
+            .endFill()
+        // x--
+
+        r1++
+        r2++
+    }
+
+    setInterval(change, 1000)
+
+    change()
+}
+
+
+RADIALGRADCIRC=function(){s=cjs.S()
+
+
+
+
+
+    x1=0
+    y1=0
+    r1=10
+    x2=0
+    y2=0
+    r2=100
+
+
+    h=cjs.shape(10, 10).a2(s).drag()
+
+
+    change= function(){
+
+        //  h.remove()
+
+        // h=cjs.shape(10, 10).a2(s).drag()
+
+        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
+
+            x1,
+            y1,
+            r1,
+            x2,
+            y2,
+            r2
+
+
+        )
+
+
+            .dc(0, 0,100)
+            .endFill()
+        // x--
+
+        // r1++
+        // r2++
+    }
+
+    setInterval(change, 1000)
+
+    change()
+
+    n = nip()
+    //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
+}
+
+
+USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
+
+    me  = q.bm('me').a2(s).sXY(3)
+    guy = q.bm('guy').a2(s).sXY(.5).drag()
+    $.button('s.sXY(2)', function () {s.sXY(2)}).A()
+    cjs.tick(function(){
+        me.X( guy.x * 2.2 - 140)
+        me.Y( guy.y * .2 )})
+
+})}
+
+
+
+
+
+//b2d.colMap=function(C){return _.map(C,function(c){return oO('c',c)})}

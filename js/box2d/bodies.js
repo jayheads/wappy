@@ -23,49 +23,64 @@ b2d.rec = b2d.polyFixt = function(W,H,x,y,a,d){var g=G(arguments),r,f,o,v,
 
 b2d.fixtPams=function(o){o=o||{}
 
-    o.a=_.tN(o.a)
-    o.b=_.tN(o.b,0.5)
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.r = _.tN(o.r,40)
+    o.w = _.tN(o.w,50)
+    o.h = _.tN(o.h, o.w||100)
+    o.a = _.tN(o.a)
 
 
-    //o.cc = D(o.cc)? o.cc: true //separate
-
-    o.c = o.c==0?null : o.c=='*'? $r(): (o.c||'w')
-    o.C = o.C==0?null : o.c=='*'? $r():(o.C||'z')
 
 
-    
-    o.d = N(o.d)? o.d: 0.5//density
+    //will set cols unless you pass in 0
+    if(o.c==0){o.c=null}
+    if(o.c==00){o.c=null;o.C=null}
+    if(o.c=='*'){o.c=$r()}
+    if(o.c=='**'){o.c=$r();o.C=$r()}
+    o.c =o.c||'z'
+    o.C =o.C||'w'
+    o.l = _.tN(o.l,4)
+    o.o = _.tN(o.o,1)
 
-    o.f = N(o.f)? o.f: 0.5//fric   o.x = N(o.x)? o.x: 0//x
 
-    o.g// gradient
-    o.h = N(o.h)? o.h: 30//height
+
+    o.c1=o.c1||'z'
+    o.c2=o.c2||'w'
+    o.s1=_.tN(o.s1)
+    o.s2=_.tN(o.s2,1)
+    //
+    o.x1 = _.tN(o.x1)
+    o.y1 = _.tN(o.y1)
+
+    o.x2 =_.tN(o.x2);
+    o.y2 = N(o.y2)?o.y2:N(o.r)? o.r*2:100
+
+
+    o.r1=_.tN(o.r1)
+    o.r2=_.tN(o.r2,200)
+
+    o.s = D(o.s)? o.s: 0//sesor
+    o.q = D(q)? o.q: true //separate
+    o.d = _.tN(o.d, 0.5)
+    o.b = _.tN(o.b, 0.5)
+    o.f = _.tN(o.f, 0.5)
+
+
 
     o.i //image
-
-    o.k // kind
-
-    o.l = N(o.l)? o.l: 4 // line thickness
-
-    o.m //mass
-
-    o.o = N(o.o)? o.o: 1 //opacity
+    o.k //kind
     o.p // layer position
-    o.q //query for conc?
 
-    o.r = N(o.r)? o.r: 40//radius
-    o.s = D(o.s)? o.s: 0//sesor
-    o.t //type
 
-   // o.v = o.v || [] //verts
+    //o.bm//o.bM
+    //o.g gradient
 
-    o.w = N(o.w)? o.w: 40//width
-    o.X
-
-    o.x = N(o.x)? o.x: 0
-    o.y = N(o.y)? o.y: 0//y
-
-    o.z  //clr
+    //o.m mass
+    //o.t type
+    // o.v = o.v || [] //verts
+    //o.X
+    //o.z clr
 
     return o
 }
@@ -89,22 +104,18 @@ b.cir = function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
         :N(g[0])? {r:g[0],x:g[1],y:g[2]}
         :g[0]
 
-
     if(g.n){o.s=1}
 
-
     b2d.fixtPams(o)
-
 
     fd = new b2d.FixtureDef
     fd.den(o.d).rest(o.b).fric(o.f)
     fd.shape = new b2d.CircleShape(o.r/30);
     fd.shape.SetLocalPosition(V(o.x, o.y, '-'))
     fd.isSensor = o.s? true : g.n? true: false
-
     f = b.fixt(fd)
-
     if(o.k){  f.K(o.k)  }
+
     if(o.c){  f.bS(  w.s.h().cir(o)  )  }
 
     return b

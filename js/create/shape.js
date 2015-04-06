@@ -1,133 +1,39 @@
+h =  cjs.Shape.prototype
+ct=cjs.Container.prototype
+gx=cjs.Graphics.prototype
+gx.poly=function(verts, f, s,width){var that = this
+    //  _.each(arguments,function(vert){that.lt(vert[0],vert[1])});this.cp()
+    if(N(verts[0])){
 
-
-TURTLE=function(){W(0).Y()
-
-    turtle =[
-        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
-        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
-        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
-        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
-        ['x', 10, 55,-12],
-        ['u', 30,40, 75,-12]
-    ]
-
-    w.B(400, 280,turtle, '-')  //this changes the data object for future uses !!!
-
-
-    w.B(600, 280, [
-        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
-        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
-        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
-        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
-        ['x', 10, 55,-12, '-'],
-        ['u', 30,40, 75,-12 ,'-']
-    ])
-
-    w.S(300,300,'o', 10)
-
-    w.B(300,100,'b',50)
-    w.B(300,200,'y',50,'-')
-    w.B(300,400,[['b',50,50,0,'-'],['y',50]])
-    w.B(700,100,'b',50,50)
-    w.B(700,200,'y',50,50,'-')
-    w.B(700,400,[['b',50,50,50,0,'-'],['y',50,50]])
-
-
-    // t =  w.verts(400,280,   turtle) // fs = t.fixts()
-
-
-    r = w.S(600,300,'r',12 ,'-')
-
-    b = w.dyn(300,400)
-    b.cir({r:100, c:'w', rg:1})
-    b.cir({r:100, x:500, c:'w', lg:1, s:1})
-
-
-
-
-    b = w.B(500,400,  {r:100, c:'y', t:'c'}  )
-
-
-    //  {r:100, x:100, c:'w', lg:1, s:1, t:'c'}  ])
-
-
-
-
-
-    f = r.fixt()
-
-
-/*
-    r.cir('b', 30, 100,200,'-')
-    r.cir({  c:'g', r:30, x:100 ,s:1 }, '-')
-    r.cir({  c:'w', r:30  })
-    r.cir({  c:'z', y:-100  })
-    r.cir(['y', 30, 200, 100])
-*/
-
-
+        _.each(arguments,function(vert){
+            that.lt(vert[0],vert[1])});
+        this.cp()
+    }
+    else {
+        this.fs(f,s,width)
+        _.each(verts,function(vert){
+            that.lt(vert[0],vert[1])});
+        this.cp()
+    }
+    return this}
+gx.fC= gx.fs=function(c,C,l){var gx=this
+    gx.f(oO('c',c||'z'))
+    gx.s(oO('c',C||null))
+    gx.ss(N(l)?l:2)
+    return gx
 }
+gx.sC=function(s,w){var gx=this
 
+    w=N(w)?w:2
 
+    s=O(s)?s:oO('c', s||null)
 
+    gx.s( s)
 
+    gx.ss(w)
 
-CURTLE=function(){W(0).Y()
-
-    turtle =[
-        ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
-        ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
-        ['y', [-50,10],[-50,-10],[-40,-10],[-40,10] ],
-        ['y', [-10,10],[-10,-10],[0,-10],[0,10] ],
-        ['x', 10, 55,-12],
-        ['u', 30,40, 75,-12]]
-
-    /*
-    w.B(400, 280,turtle )
-
-     w.dyn(400,300).rec(
-     {w:300,h:300, x:100,y:100, bm:1},
-     {w:200,h:200, lg:1, l:15},
-
-     {w:10,h:40,c:'r'},
-
-     {w:40, h:40, x: 100, c:'z'  },
-     {w:40, h:40, x: 200, c:'b', C:'o', l:10  },
-     {w:200, h:20, c:'g', y: 200, s:1 , lg:1 })
-
-
-*/
-
-
-    w.dyn(300,200).cir(
-        {r:20,y:-20},
-        {r:20},
-        {r:20, x:20, lg:1, c:'b',y:30},
-        {x:50, s:1, rg:1},
-        {x:100,r:50,c:'r',C:'x',l:10, s:1},
-        {y:-100, r:50, bm:1})
-
-
-
-    b= w.dyn(800, 300)
-
-
-    b.pol({
-        c:'x',  C:'o',
-        //l:5,
-
-        bm:1,
-
-        v:[  [-100,0],[0,-100],[100,50]   ]
-
-    })
-
-
-
+    return gx
 }
-
-
-
 
 
 
@@ -174,7 +80,6 @@ b2d.oDef = oDefaults=function(o){
     o.h= _.tN(o.h,50)
 
     return o}
-
 b2d.cov = function(x,y,c,C,l,l2){var g=G(arguments),x=g[0],y=g[1],c=g[2],C=g[3],l=g[4],l2=g[5],
 
     o = N(c)? {x:x, y:y, a:c, c:C, C:l, l:l2}
@@ -191,7 +96,6 @@ b2d.cov = function(x,y,c,C,l,l2){var g=G(arguments),x=g[0],y=g[1],c=g[2],C=g[3],
     return h
 }
 
-ct = cjs.Container.prototype
 
 ct.h= ct.shape=function(x,y,c,C,l,opt){var ct=this,
 
@@ -200,15 +104,10 @@ ct.h= ct.shape=function(x,y,c,C,l,opt){var ct=this,
 
     return h
 }
-
-
 ct.cir=function(x,y,r,c,C,l,opt){var ct=this
     return ct.shape(x,y,c,C,l,opt).dc(0,0,r)}
 ct.circ =function(c,r,x,y){var ct=this
     return cjs.cir(c,r,x,y).a2(ct)}
-
-
-
 ct.rec= function(c,W,H,x,y,a){
     var ct=this, ct2, h,
         o = O(c)? c:
@@ -235,14 +134,6 @@ ct.rec= function(c,W,H,x,y,a){
 }
 
 
-
-
-
-
-
-
-
-
 cjs.isShape=function(h){
     return O(h) && h.graphics
 }
@@ -257,8 +148,6 @@ cjs.rulers=function() {
     var d1=$.div('b', 100, 100).drag().opacity(.3)
     $.div('r', 100, 300).drag().opacity(.3)
     return d1}
-
-
 cjs.circ = cjs.circle = function(r,c){
     if(!N(r)){return cjs.circ(8,r)}
     c=oO('c',c||'z')
@@ -520,24 +409,7 @@ cjs.cirX=function(stg,x,y,r,f,s,width,opt){
 
 
 
-
-USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
-
-    me  = q.bm('me').a2(s).sXY(3)
-    guy = q.bm('guy').a2(s).sXY(.5).drag()
-    $.button('s.sXY(2)', function () {s.sXY(2)}).A()
-    cjs.tick(function(){
-        me.X( guy.x * 2.2 - 140)
-        me.Y( guy.y * .2 )})
-
-})}
-
-
-
-
-
-
-EASELART=function(){z()
+ T=function(){z()
 
     s=stage = cjs.stage(500,600).A()
 
@@ -587,206 +459,11 @@ St=function(){z()
 }
 
 
-CENTERSHAPE=function(){St()
-
-    h.rect(100,100,100,100,'y')
-    h.rect(200,200,100,100,'b')
-
-    h.c('o').polyStar(300,100,
-        50,5,0.6,-90)
-
-    h.c('w').C('z')
-        .roundRectComplex(400,300,
-      300,300, 20,20,30,40 )
-
-    h.circ(500,200,40,'b','z')
-}
-
-
-
-
-SHAPES=function(){St()
-
-    s.can.P('a').XY(300)
-    s.bm('me', 0.2, function(bm){})
-    s.A(cjs.circle(100, 'blue','green').XY(100, 100).drag())
-    s.circle(100, 100, 10, 'red', 'yellow' )
-        .circle(10,100,100,'black','purple')
-        .circle(100, 10, 100, 'blue', 'red' )
-        .circle(150,150,120,'red','blue')
-        .circle(30,'brown','gray')
-
-}
-
 
 cjs.M=function(rot){
     var m= new cjs.Matrix2D()
     if(N(rot)){m.rotate(rot)}
-return m}
-
-GRAPHICSTEST=function(){St(); img = $.img('me',function(){s.ct().h().bmS(img).ss(32).dr(20,20,920,360); _.each([
-
-        function recGrF(){return $h(12,10)
-            .lGF('b','g',130).dr(130)},
-
-        function ell(){return $h(40, 10,'b',16)
-                 .lGS('r','w',70,140).de(70,140)},
-
-        function bmF(){return $h(12,10,18)
-            .bf(img, cjs.M(1) ).rGS('b','g',30,130).dr(130)},
-
-
-        function radGrF(){return $h(80,80).C('b',8)
-                 .rGF('w','y',40).dc(40)},
-
-        function roundRec(){return $h(12,12,'g','r',8)
-            .rr(130,30)}, //w(h) and r
-
-
-        function star(){return $h(80,85,'y','b',3)
-            .pStr(0,0,80,5,.8,-95)},
-        function hex(){return $h(80,40,'p')
-            .pStr(40,6).pStr(0,75,40,6).pStr(45,45,20,6)},
-
-        function lt(){return $h().C('o')
-                 .ss(16,'round','round')
-                 .mt([40,10],[90,90],[90,140])}
-
-    ],
-
-         function(cont,i){var W=155, H=155, P= 5, C=4 //pad, cols
-             s.A(tile(cont()).XY(
-                     42+(W+P)*(i%C),
-                     42+(i/C|0)*(H+P)))})})[0]
-
-
-
-
-    tile=createTile=function(x,y){var bg,til
-        bg = $h().c('t').dr(0, 0, 155, 155).ef().op(.2)
-        til = cjs.ct().A(bg)
-        if(N(x)){  til.X(x) }
-        if(N(y)){  til.Y(y)  }
-        if(O(x)){ til.A(x) }
-
-    return til}
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-RADIALGRADRECT=function(){s=cjs.S()
-
-
-
-
-
-    x1=100
-    y1=150
-    r1=20
-    x2=100
-    y2=150
-    r2=100
-
-
-    h=cjs.shape(10, 10).a2(s).drag()
-
-
-    change= function(){
-
-        //  h.remove()
-
-        // h=cjs.shape(10, 10).a2(s).drag()
-
-        h.graphics.beginRadialGradientFill(  ["red", 'blue', "yellow"],  [0, .5, 1],
-
-            x1,
-            y1,
-            r1,
-            x2,
-            y2,
-            r2
-
-
-        )
-
-
-            .dr(0,0,400,400)
-            .endFill()
-        // x--
-
-        r1++
-        r2++
-    }
-
-    setInterval(change, 1000)
-
-    change()
-}
-
-
-RADIALGRADCIRC=function(){s=cjs.S()
-
-
-
-
-
-    x1=0
-    y1=0
-    r1=10
-    x2=0
-    y2=0
-    r2=100
-
-
-    h=cjs.shape(10, 10).a2(s).drag()
-
-
-    change= function(){
-
-        //  h.remove()
-
-        // h=cjs.shape(10, 10).a2(s).drag()
-
-        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
-
-            x1,
-            y1,
-            r1,
-            x2,
-            y2,
-            r2
-
-
-        )
-
-
-            .dc(0, 0,100)
-            .endFill()
-        // x--
-
-        // r1++
-        // r2++
-    }
-
-    setInterval(change, 1000)
-
-    change()
-
-    n = nip()
-    //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
-}
-
+    return m}
 
 
 nip=function(){
@@ -804,128 +481,6 @@ nip=function(){
         .endFill()
 
     return h}
-
-
-
-
-
-EASELCONVEX=function(){s=cjs.S()
-    s.poly([[-100,-10],[0,100],[100,20]],
-        'red','white',10).XY(200,300)
-    s.poly([[-20,-80],[-100,-200],[100,5]]).XY(300, 200)
-    s.poly(
-        [[-40,40],[-40,-40],[40,-40], [40,30]],
-        'blue', 'white').XY(200,200)}
-
-
-CONVEX=function(){w=b2d.W({g:0}).debug()
-
-    // so clearly b.convex lets me specify polygon fixtures by an array of points
-
-    b = w.dyn(300, 300).fixRot()
-    b.convex('green', [  [0,0], [0,-200], [100,0]  ]  )
-    b.convex('blue', [  [0,30], [-300,-20], [100,0]  ] )
-    b.convex('pink',  [ [0,30],[-30,-20],[10,0]  ]  )
-
-
-
-    // verts creates a dyn body and lets u pass in multiple 'convex calls'
-    w.verts( 300, 500,[
-        ['p', [-20,-20],[0,-30],[10,10]],
-        ['n',[0,0],[30,-50],[50,-10]]
-    ])
-
-
-    c = w.dyn(300, 300).fixRot()
-
-
-
-    /*
-     b2 = w.dyn(300, 300)
-     b2.convex('red', [ [0,0],[0,-20],[10,0] ] )
-     b2.convex([[0,30],[-30,-20],[10,0]] )
-     b3 = w.dyn(300, 300)
-     b3.convex( 'g',[[-150,0],[-120,-20],[-80, -50],[0,-30]] )
-     b3.convex('r',[ [-30,-30], [-20,10], [-10,60]] )
-     b3.convex('o',[ [-30, -30], [-20,-50], [ 10, -20]] )
-     */
-
-
-
-}
-
-
-
-VERTS=function(){W()
-
-    thingy = [['p',[-20,-20],[0,-30],[10,10]],
-        ['n',[0,0],[30,-50],[50,-10]]]
-
-    _.times(100, function(){
-        w.verts(R(600),R(300,200),thingy)})
-
-}
-
-PITFALL=function(){
-
-    b2d.levelScrollX()
-
-
-    turtle = [
-        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
-
-        ,  ['yellow',[10,-10],[20,-30],[50,-15], [45,-5]]
-
-        , ['yellow',
-
-            [-50,10],[-50,-10],[-40,-10],[-40,10]
-        ]
-
-        , ['yellow',
-
-            [-10,10],[-10,-10],[0,-10],[0,10]
-        ]
-    ]
-
-
-
-    turtle2 = [
-        ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
-
-        ,  ['yellow',[-60, -30], [-50,-60], [-20,-45], [-15,-35] ]
-
-
-
-        , ['yellow',
-
-            [-50,10],[-50,-10],[-40,-10],[-40,10]
-        ]
-
-        , ['yellow',
-
-            [-10,10],[-10,-10],[0,-10],[0,10]
-        ]
-    ]
-
-
-
-
-    t = w.vertsKin(400, 280, turtle).fixRot()
-    t2 = w.vertsKin(700, 280, turtle2).fixRot()
-
-    setInterval(function(){
-        t2.linVel(5,0)
-        setTimeout(function(){  t2.linVel(-5,0) },1000)
-    }, 2000)
-
-}
-
-
-
-
-
-
-
 
 
 
@@ -992,40 +547,6 @@ h.lGx= h.linGrad=function(){
         this.graphics, args)
     return this}
 
-gx=cjs.Graphics.prototype
-gx.poly=function(verts, f, s,width){var that = this
-    //  _.each(arguments,function(vert){that.lt(vert[0],vert[1])});this.cp()
-    if(N(verts[0])){
-
-        _.each(arguments,function(vert){
-            that.lt(vert[0],vert[1])});
-        this.cp()
-    }
-    else {
-        this.fs(f,s,width)
-        _.each(verts,function(vert){
-            that.lt(vert[0],vert[1])});
-        this.cp()
-    }
-    return this}
-gx.fC= gx.fs=function(c,C,l){var gx=this
-    gx.f(oO('c',c||'z'))
-    gx.s(oO('c',C||null))
-    gx.ss(N(l)?l:2)
-    return gx
-}
-gx.sC=function(s,w){var gx=this
-
-    w=N(w)?w:2
-
-    s=O(s)?s:oO('c', s||null)
-
-    gx.s( s)
-
-    gx.ss(w)
-
-    return gx
-}
 
 
 cjs.RECTx= function self(col, wd,ht, x, y, rot){var halfW,halfH, h, ct = cjs.ct()

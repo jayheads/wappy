@@ -1,24 +1,158 @@
 h =  cjs.Shape.prototype
-h.clr=function(){this.graphics.clear();return this}
+ct=cjs.Container.prototype
 
-h.c= h.f=function(c,C,l){var h = this, gx = h.graphics, g=G(arguments), o
+b2d.grad=function(o){o=o||{}
+    o.c1 = oO('c', o.c1 || 'z'); o.c2 = oO('c', o.c2 || 'w')
+    o.s1 = _.tN(o.s1); o.s2 = _.tN(o.s2, 1)
+    o.x1 = _.tN(o.x1); o.y1 = _.tN(o.y1)
+    return o}
+h.lg=function me(){var h=this,gx=h.graphics,g=G(arguments),o
+    if(A(g[0])){return me.apply(null, g[0])}
 
-    o = O(g[0])? g[0]:
-        N(g[1])? {c:g[0],l:g[1]}:
-        N(g[0])? {l:g[0],C:g[1]}://?
-        {c:g[0], C:g[1], l:g[2]}
+    o = O(g[0]) ? g[0]
+        :_.extend({c1:g[0], c2:g[1]},
+        N(g[5])?{x1:g[2],y1:g[3],x2:g[4],y2:g[5]}
+            :N(g[4])?{y1:g[2],x2:g[3],y2:g[4]}
+            :N(g[3])?{x2:g[2],y2:g[3]}:{y2:g[2]})
 
-    if(o.c=='*'){o.c=$r()}
-    if(o.c=='**'){o.c=$r();o.C=$r()}
-    if(o.c){gx.f(oO('c',o.c))}
-    if(o.C){h.C(o.C)}
-    if(o.l){h.l(o.l)}
-    if(o.rg){h.rg(o)}
-    if(o.lg){ h.lg(o) }
-    return h
+    o.c1 = oO('c', o.c1 || 'z'); o.c2 = oO('c', o.c2 || 'w')
+    o.s1 = _.tN(o.s1); o.s2 = _.tN(o.s2, 1)
+    o.x1 = _.tN(o.x1); o.y1 = _.tN(o.y1)
+    o.x2 =_.tN(o.x2);
+    o.y2 = N(o.y2)?o.y2:N(o.r)?o.r*2:100
+
+    return o
+}
+h.rg=function(o){ var h = this, gx = h.graphics,  g = G(arguments),
+    o = O(g[0]) ? g[0] :
+        S(g[1]) ? _.extend({c1: g[0], c2: g[1]},
+            N(g[5]) ? {x2: g[2], y2: g[3], r1: g[4], r2: g[5]} :
+                N(g[4]) ? {x2: g[2], r1: g[3], r2: g[4]} :
+                    N(g[3]) ? {r1: g[2], r2: g[3]} : {r2: g[2]}) :
+            S(g[0]) ? {c2: g[0]} : {}
+    b2d.grad(o)
+    o.x2 = _.tN(o.x2, o.x1)
+    o.y2 = _.tN(o.y2, o.y1)
+    o.r1 = _.tN(o.r1, 1);
+    o.r2 = _.tN(o.r2, 100)
+    return o}
+cjs.me=function(fn){
+    Q(['me'],
+        function(q){
+            fn(q.getResult('me'))})
 }
 
+h.z = h.clr=function(){this.graphics.clear();return this}
+h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments), o
 
+
+    o = O(g[0])? g[0]:
+
+        g[0]=='*'? {c:'*'}:
+                g[0]=='**'? {c:'**'}:
+                        g[0]=='*'? {c:'***'}:
+            U(g[0])? {c:'z',C:'w',l:6}:
+
+                N(g[1])? {c:g[0],l:g[1]}:
+                    N(g[0])? {l:g[0],C:g[1]}://?
+                    {c:g[0], C:g[1], l:g[2]}
+
+
+
+    if(A(o.c)){
+        if( N(o.c[1]) ){o.l = o.c[1]; o.c  = o.c[0]}
+        else if (N(o.c[0])){o.l=o.c[0]; o.C= o.c[1]}
+        else {o.l=o.c[2]; o.C=o.c[1]; o.c=o.c[0]}}
+
+    if(A(o.C)){
+        o.l= o.C[1];o.C= o.C[0]
+    }
+
+    if(o.c==0){gx.f(null);o.c='X'}
+    if(o.C==0){gx.s(null);o.C='X'}
+
+    if(o.c==00){gx.f(null);gx.s(null);o.c='X';o.C='X'}
+
+
+    if(o.c=='*'){o.c=$r()}
+    if(o.C=='*'){o.C=$r()}
+    if(o.c=='**'){o.c=$r();o.C=$r()}
+
+    if(o.c=='***'){$l('***')
+
+        o.c = $r(); o.C=$r(); o.l = R(20)}
+
+    if(S(o.c)){gx.f(oO('c', o.c))}
+    if(S(o.C)){gx.s(oO('c', o.C))}
+    if(N(o.l)){h.l(o.l)}
+
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.r = _.tN(o.r)
+
+    if(o.lf){
+
+        o.lf = O(o.lf)? o.lf : {}
+
+        if(o.r){
+            o.lf.x1 = _.tN(o.lf.x1) + o.x - o.r
+            o.lf.y1 = _.tN(o.lf.y1) + o.y - o.r
+            o.lf.x2 = _.tN(o.lf.x2) + o.x - o.r
+            o.lf.y2 = _.tN(o.lf.y2) + o.y + o.r
+            /*
+            $l('r: ' + o.r)
+            $l('x: ' + o.x)
+            $l('y: ' + o.y)
+            $l('x1: '+ o.lf.x1)
+            $l('y1: '+ o.lf.y1)
+            $l('x2: '+ o.lf.x2)
+            $l('y2: '+ o.lf.y2)
+
+            */
+        }
+
+        h.lf(o.lf)
+    }
+
+
+
+    if(o.ls){o.ls = O(o.ls)? o.ls : {}
+        if(o.r){
+            o.ls.x1 = _.tN(o.ls.x1) + o.x - o.r
+            o.ls.y1 = _.tN(o.ls.y1) + o.y - o.r
+            o.ls.x2 = _.tN(o.ls.x2) + o.x - o.r
+            o.ls.y2 = _.tN(o.ls.y2) + o.y + o.r}
+        h.ls(o.ls)}
+
+    if(o.rf){o.rf = O(o.rf)? o.rf : {}
+        if(o.r){
+            o.rf.x1 = _.tN(o.rf.x1) + o.x
+            o.rf.y1 = _.tN(o.rf.y1) + o.y
+            o.rf.x2 = _.tN(o.rf.x2) + o.x
+            o.rf.y2 = _.tN(o.rf.y2) + o.y
+            o.rf.r2 = _.tN(o.rf.r2) + o.r}
+        h.rf(o.rf)}
+
+
+
+    if(o.rs){o.rs = O(o.rs)? o.rs : {}
+        if(o.r){
+            o.rs.x1 = _.tN(o.rs.x1) + o.x
+            o.rs.y1 = _.tN(o.rs.y1) + o.y
+            o.rs.x2 = _.tN(o.rs.x2) + o.x
+            o.rs.y2 = _.tN(o.rs.y2) + o.y
+            o.rs.r2 = _.tN(o.rs.r2) + o.r}
+        h.rs(o.rs)}
+
+
+
+    if(o.bs){h.bs(o.bs)}
+
+    if(o.bf){h.bf(o.bf)}
+
+    return h
+
+}
 h.C= h.s=function (C, l) {var h=this,gx=h.graphics
 
     gx.s(oO('c', C))
@@ -32,15 +166,7 @@ h.l= h.ss=function (l, b, c) {
         var h = this, gx = h.graphics;
         gx.ss(l || 1, b, c)
         return h}
-
-
-
-
-
-
-
-
-h.bm=   h.bf=function(i,fn,c){var h = this, gx = h.graphics
+h.bf=  function(i,fn,c){var h = this, gx = h.graphics
 
 
 
@@ -60,7 +186,7 @@ h.bm=   h.bf=function(i,fn,c){var h = this, gx = h.graphics
 
         return h
     }
-h.bM= h.bmS = function (i) {
+h.bs=  function (i) {
         this.graphics.beginBitmapStroke(i)
         return this
     }
@@ -115,34 +241,37 @@ h.poly= function(V,c,C,l){//***
     h.c(o)
 
 
-    if(o.bm){h.bm('me', function(){   h.lt(o.v).cp()  })}
+    if(o.bf){h.bf('me', function(){   h.lt(o.v).cp()  })}
 
     else {h.lt(o.v).cp()}
 
     return h
 }
+
 h.bmCir=function(o){var h=this
     o=o||{}
     o.i = o.i || 'me'
     o.circs= o.circs||[]
     $.img(o.i,function(i){i=i[0]
         _.each(o.circs, function(c){
-            h.bm(i)
+            h.bf(i)
             h.dc(c)
             h.ef()
         })})
     return h}
+
 h.bmV=function(o){var h=this
     o=o||{}
     o.i = o.i || 'me'
 
     $.img(o.i, function(i){i=i[0]
         _.each(o.v, function(v){
-            h.bm(i)
+            h.bf(i)
             h.lt(v)
             h.ef().cp()
         })})
     return h}
+
 h.dc= function(x,y,r){var h=this,gx=h.graphics,
     g=G(arguments),o
 
@@ -172,16 +301,16 @@ h.dc= function(x,y,r){var h=this,gx=h.graphics,
     return h
 
 }
-h.cir= h.circ =function(x,y,r,c,C,l){  //nicely done
+
+h.cir= function(x,y,r,c,C,l){  //h.circ =
+
+//nicely done
 
     var h=this, gx=h.graphics, o
 
     h.ef().es()
 
-    if(N(r)){
-        o = {x:x, y:y, r:r, c:c, C:C, l:l}
-    }
-
+    if(N(r)){o = {x:x, y:y, r:r, c:c, C:C, l:l}}
     else if(N(y)){ o = {x:x, y:y, r:50,c:r,C:c,l:C}  }
     else if(N(x)){  o  = {x:0,y:0,r:x, c:y,C:r,l:c}  }
     else if(O(x)){o=x}
@@ -196,37 +325,24 @@ h.cir= h.circ =function(x,y,r,c,C,l){  //nicely done
     o.l = _.tN(o.l, 4)
 
 
-    if(o.rg){
-        h.rg(o.c, o.C, 10, 20, o.r).C('z',2).dc(o)
-    }
+    if(o.rf){h.rf(o.c, o.C, 10, 20, o.r).C('z',2).dc(o)}
 
-    else if(o.lg){
-        h.lg(
-
-            o.c,
-
-            o.C,
+    else if(o.lf){
+        h.lf(o.c,  o.C,
                 -o.r *.5,
                 -o.r *.5,
                 -o.r *.5,
                 o.r *.5
-
         ).C('z',2).dc(o)
     }
 
-    else if(o.bm){
 
+    else if(o.bf){
+        h.bf('me', function(){h.C(o.C, o.l)
+            .dc(o.x, o.y, o.r)})}
 
-        h.bm('me', function(){
-            h.C(o.C, o.l).dc(o.x, o.y, o.r)
-        })
-
-
-    }
     else {
-
         h.c(o.c,o.C, o.l)
-
         h.dc(o.x,o.y,o.r)
     }
 
@@ -236,6 +352,10 @@ h.cir= h.circ =function(x,y,r,c,C,l){  //nicely done
 
     return h
 }
+h.circle=function(o){var h=this
+    h.c(o).dc(o)
+    return h}
+
 
 h.dr= function(){
     var h = this,
@@ -255,7 +375,6 @@ h.dr= function(){
     return h
 
 }
-
 h.dr2=function(x,y,W,H){var h=this,g=G(arguments),o
 
 
@@ -278,7 +397,6 @@ h.dr2=function(x,y,W,H){var h=this,g=G(arguments),o
     h.dr(-o.w/2+o.x,-o.h/2+o.y,o.w,o.h)
     return h
 }
-
 h.rect= function(x,y,W,H,c,C){
 
 
@@ -289,7 +407,6 @@ h.rect= function(x,y,W,H,c,C){
     return this.c(o).dr2(o.x, o.y, o.W, o.H)
 
 }
-
 h.rec=function(c,C,x,y,w,H,l){var h=this,g=G(arguments)//h.rexx=
     o=O(c)? c:
         S(C)? {c:c, C:C, x:x, y:y, w:w, h:H, l:l}:
@@ -315,109 +432,38 @@ h.rec=function(c,C,x,y,w,H,l){var h=this,g=G(arguments)//h.rexx=
 }
 
 
+h.lf=function me(){var h=this,gx= h.graphics,g=G(arguments),o
 
+    if(A(g[0])){return me.apply(h,g[0])}
 
-LT=function(){St()
+    o = h.lg.apply(h,g)
 
-       h.c('y').dc(100,100,30)
-        .c('o').dc(100,100,10)
-        .ef()
-           .C('g',8)
-           .mt([[100,100],[300,300],[400,100],
-            [500,300],[450,450]],[[500,0],[600,100]])
+    gx.lf([o.c1, o.c2],[o.s1,o.s2],o.x1,o.y1,o.x2,o.y2)
 
-
-    h.cir(600,300,'u','g',10)
-
-
-    lgO={c:'b',C:'o',y:200,Y:700}
-    v=[[300,300],[320,200],[640,400],[280,650]]
-
-
-   // h.lg(lgO)//.mt(v)
-
-
-    h.poly({
-
-        v:  v,
-       lg:  lgO,
-        c: 'b',
-        C: 'r'
-    })
-
-
-
+    return h
 }
-CIRCSTROKE=function(){St()
+h.ls=function me(){var h=this, gx= h.graphics, g=G(arguments),o
+    if(A(g[0])){return me.apply(h,g[0])}
+    o= h.lg.apply(h, g)
+    gx.ls([o.c1, o.c2],[o.s1,o.s2],o.x1,o.y1,o.x2,o.y2)
+    return h}
+h.rs=function me(){var h=this, gx=h.graphics, g=G(arguments),o
+    if(A(g[0])){return me.apply(h,g[0])}
+    o=h.rg.apply(h,g)
+    gx.rs([o.c1,o.c2],[o.s1,o.s2], o.x1,o.y1,o.r1,o.x2,o.y2,o.r2)
+    return h}
+h.rf=function me(){var h=this, gx=h.graphics,g=G(arguments),o
+    if(A(g[0])){return me.apply(h,g[0])}
+    o = h.rg.apply(h, g)
+    gx.rf([o.c1,o.c2],[o.s1,o.s2],o.x1, o.y1, o.r1,o.x2, o.y2, o.r2)
+    return h}
 
-    gx= h.graphics
-
-    h.c('b', 'r',10).XY(-100,-100)
-
-
-    h.dc([200,200,50],[400,200,50],[600,200,50])
 
 
 
 
 
 
-  /*  h.dc(300,300,50)
-    gx.dc(400,400,50)
-    h.dc(500,500,50)
-    gx.dc(600,600,50)
-*/
-
-}
-ROTREC=function(){St()
-
-    ct = s.ct(600, 300)
-
-    ct.rec({ w:400,h:400, c:'r',C:'o',l:10,a:-5 })
-    ct.rec({ w:100,h:200, c:'b',C:'w',l:20,a:20, rg:1 })
-    h = ct.rec({
-        w: 100, h:200, a:20,
-        c: 'b', C:'w', l: 20, bm:1
-    }).X(100)
-    $.in(8, function(){h.X(0)}) //notice how gradient is seen behind the bm!!!
-
-}
-TWORECS=function(){St()
-
-    ct = s.ct(1000, 300).drag()
-    ct.rec({ w:400,h:200, c:'r',C:'o',l:10,a:-5 })
-    h1 = ct.rec({ w:200, h:400, c:'r', C:'o', l:10, a:5 })
-    // h is another container.. to clr ->  h1.children[0].clr()
-
-    h= s.h().dr2()
-   //.rec({  })
-
-}
-HPOLY=function(){St()
-    v=[[-100,0],[0,-100],[100,50]]
-    s.h(600,300).poly({v:v,bm:1})
-    s.h(700,400).poly({v:v,bm:{}})
-
-    h=s.h(200,300)
-    h.bm('me', function(){
-        h.dc(0,0,150)
-        h.dc(200,0,150)
-    })
-    s.h(800, 300).poly({v:v,rg:1})
-    s.h(900, 300).poly({v:v,lg:1})
-}
-BMH=function(){St()
-    v=[[-100,0],[0,-100],[100,50]]
-    s.h(100,300).drag().bmCir({
-        circs:[{r:150},
-        {x:200,r:150},
-        [300,100,100],[400,100,100]]})
-    s.h(700,300).drag().bmV({v:[
-        [[-100,0],[0,-100],[100,50]],
-        [[-200,0],[-100,-100],[0,50]],
-        [[0,200],[0,-200],[400,-300],[400,300]]
-    ]})
-}
 
 
 
