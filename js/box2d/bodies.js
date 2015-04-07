@@ -22,91 +22,82 @@ b2d.rec = b2d.polyFixt = function(W,H,x,y,a,d){var g=G(arguments),r,f,o,v,
 
 
 b2d.fixtPams=function(o){o=o||{}
-
+    o.q = D(q)? o.q: true
     o.x = _.tN(o.x)
     o.y = _.tN(o.y)
     o.r = _.tN(o.r,40)
     o.w = _.tN(o.w,50)
     o.h = _.tN(o.h, o.w||100)
     o.a = _.tN(o.a)
-
-
-
-
-    //will set cols unless you pass in 0
-    if(o.c==0){o.c=null}
-    if(o.c==00){o.c=null;o.C=null}
-    if(o.c=='*'){o.c=$r()}
-    if(o.c=='**'){o.c=$r();o.C=$r()}
-    o.c =o.c||'z'
-    o.C =o.C||'w'
-    o.l = _.tN(o.l,4)
-    o.o = _.tN(o.o,1)
-
-
-
-    o.c1=o.c1||'z'
-    o.c2=o.c2||'w'
-    o.s1=_.tN(o.s1)
-    o.s2=_.tN(o.s2,1)
-    //
-    o.x1 = _.tN(o.x1)
-    o.y1 = _.tN(o.y1)
-
-    o.x2 =_.tN(o.x2);
-    o.y2 = N(o.y2)?o.y2:N(o.r)? o.r*2:100
-
-
-    o.r1=_.tN(o.r1)
-    o.r2=_.tN(o.r2,200)
-
-    o.s = D(o.s)? o.s: 0//sesor
-    o.q = D(q)? o.q: true //separate
     o.d = _.tN(o.d, 0.5)
     o.b = _.tN(o.b, 0.5)
     o.f = _.tN(o.f, 0.5)
+    o.s = D(o.s)? o.s: 0
+    o.o = _.tN(o.o,1)
+    return o} /*
+
+     //will set cols unless you pass in 0
+     if(o.c==0){o.c=null}
+     if(o.c==00){o.c=null;o.C=null}
+     if(o.c=='*'){o.c=$r()}
+     if(o.c=='**'){o.c=$r();o.C=$r()}
+
+     o.c =o.c||'z'
+     o.C =o.C||'w'
+     o.l = _.tN(o.l,4)
+
+     o.c1 = o.c1||'z'
+     o.c2 = o.c2||'w'
+     o.s1= _.tN(o.s1)
+     o.s2= _.tN(o.s2,1)
+     //
+     o.x1 = _.tN(o.x1)
+     o.y1 = _.tN(o.y1)
+     o.x2 =_.tN(o.x2);
+     o.y2 = N(o.y2)?o.y2:N(o.r)? o.r*2:100
+     o.r1=_.tN(o.r1)
+     o.r2=_.tN(o.r2,200)
+     // o.i image
+     //o.k kind
+     // o.p  layer position
+
+
+     //o.bm//o.bM
+     //o.g gradient
+
+     //o.m mass
+     //o.t type
+     // o.v = o.v || [] //verts
+     //o.X
+     //o.z clr
+     */
 
 
 
-    o.i //image
-    o.k //kind
-    o.p // layer position
-
-
-    //o.bm//o.bM
-    //o.g gradient
-
-    //o.m mass
-    //o.t type
-    // o.v = o.v || [] //verts
-    //o.X
-    //o.z clr
-
-    return o
-}
-
-
-
-
-
-
-
-
-b.cir = function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
-
+b.cir= function(o){
+    var b=this,fd,h,f,g=G(arguments),o=g[0]
     if(A(g[0])){return b.cir.apply(b,g[0])}
     if(O(g[1])){_.each(g, function(c){b.cir(c)}); return b}
 
+    o = O(g[0])?g[0]
+        :S(g[1])?{c:g[0],C:g[1],r:g[2],x:g[3],y:g[4]}
+        :S(g[0])?{c:g[0],r:g[1],x:g[2],y:g[3]}
+        :{r:g[0],x:g[1],y:g[2],c:g[3],C:g[4]}
 
-    o = S(g[1])?  {c:g[0],C:g[1],r:g[2],x:g[3],y:g[4]}
-        :S(g[0])? {c:g[0],r:g[1],x:g[2],y:g[3]}
-        :S(g[3])? {r:g[0],x:g[1],y:g[2],c:g[3],C:g[4]}
-        :N(g[0])? {r:g[0],x:g[1],y:g[2]}
-        :g[0]
 
-    if(g.n){o.s=1}
 
-    b2d.fixtPams(o)
+    o.q = D(q)? o.q: true
+    o.x = _.tN(o.x)
+    o.y = _.tN(o.y)
+    o.r = _.tN(o.r,40)
+    o.w = _.tN(o.w,50)
+    o.h = _.tN(o.h, o.w||100)
+    o.a = _.tN(o.a)
+    o.d = _.tN(o.d, 0.5)
+    o.b = _.tN(o.b, 0.5)
+    o.f = _.tN(o.f, 0.5)
+    o.s = D(o.s)? o.s: 0; if(g.n){o.s=1}
+
 
     fd = new b2d.FixtureDef
     fd.den(o.d).rest(o.b).fric(o.f)
@@ -116,7 +107,13 @@ b.cir = function(o){var b=this,fd,h,f,g=G(arguments),o=g[0]
     f = b.fixt(fd)
     if(o.k){  f.K(o.k)  }
 
-    if(o.c){  f.bS(  w.s.h().cir(o)  )  }
+    if(o.c!=0){
+        f.bS(
+
+            w.s.h().cir(o) //.circle(o)
+
+
+        )}
 
     return b
 }
@@ -183,11 +180,15 @@ b.rec = b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
 
 
 
+
+
 b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
 
     o=b2d.fixtPams(o)
+
     if(o.X){b.clear()}
-    if(o.q==false) {
+
+    if(o.q==false){
         h= new b2d.PolygonShape()
         v=_.map(o.v, b2d.div)
         h.SetAsArray(v,v.length)
@@ -219,10 +220,17 @@ b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
         if(o.c){
 
             f.C(o.c,o.C,o.l)
-
         }
-        if(o.lg){f.bS(w.s.h().lg(o).lt(o.v))}
-        if(o.rg){f.bS(w.s.h().rg(o).lt(o.v))}
+
+
+        if(o.lf){f.bS(
+            w.s.h().lf(o).lt(o.v)
+        )}
+
+        if(o.rf){f.bS(
+            w.s.h().rf(o).lt(o.v)
+        )}
+
     })
 
     if(o.bm){b.bS(w.s.h().bmV(o))}
@@ -245,11 +253,10 @@ b.cirs=function(){var b=this
         })
     })
     return b}
+
+
 b._rec=function(o){var b=this,fd, f,h
-
     o=b2d.fixtPams(o)
-
-
     fd = new b2d.Dynamics.b2FixtureDef()
     fd.den(o.d).rest(o.b).fric(o.f)
     h = new b2d.PolygonShape()
@@ -277,52 +284,35 @@ TESTB=function(){W(0);cjs.rulers()
 
 }
 
-POL=function(){W(0).Y()
 
+POL=function(){
+    W([1200,600,2400,600],{g:0}).C('z').Y()
+
+    y.track()
     cjs.rulers()
-
-    /*
+    b=w.D(100,300)
     pf = b.pol({s:1, C:'y',v:[[-200,-100],[0,-200],[100, -100]] })
     pfs =  b.pol({s:1, C: 'o',  v: [  [-100, 0],  [0, -200],  [100, 20],    [0, -150] ]})
     cf = b.cir({k:'cir', r:100, x:200, y:-100, d:.2, b:.8, f:100, C:'x'})
     rf = b.rec({x:100, y:100,w:10,  h:100,   C:'x'})
-*/
+
 
     w.D(200,300).pol({
-        c:'y',
-        C:'w',
-        l:5,
-        bm:1,
-        v:[ [0,100],[0,-100],[200,-150],[200,150] ]
+        v:[[0,100],[0,-100],[200,-150],[200,150]],
+        c:'y',C:'w',l:5,
+        bm:1
     })
-
     w.D(800,300).pol({
-        c:'y',
-        C:'w',
-        l:5,
-        //bm:1,
-        rg:1,
-        v: [
+        v:[
             [[5,100],[0,-100],[200,-150],[200,150]],
             [[-50,50],[-50,-100],[450,-50],[450,50]]
-        ]
-
-
-
-
+        ],
+        c:'b',C:'X',
+        bm:1
     })
-
-
-
-
-
-
-    //    [[-100,0],[0,-100],[100,50]],
-     //   [[-200,0],[-100,-100],[0,50]],
-
-      //  [[0,200],[0,-200],[400,-300],[400,300]]
-
 }
+
+
 
 
 

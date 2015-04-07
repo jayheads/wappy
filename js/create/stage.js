@@ -5,6 +5,18 @@ cjs.container = cjs.ct  =function(a){return new cjs.Container(a)}
 
 
 ct= cjs.Container.prototype
+
+ct.clr=function(){var ct=this,arr=[]
+
+    ct.each(function(x){ x.remove()})
+
+
+    return ct}
+
+
+
+
+
 ct.circle = function(x,y,rad,color){
 
     this.A(

@@ -43,19 +43,20 @@ cjs.me=function(fn){
 }
 
 h.z = h.clr=function(){this.graphics.clear();return this}
-h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments), o
 
+h.c= h.f=function(c,C,l){
+    var h=this,  gx=h.graphics,
+        g= _.toArray(arguments), o
 
     o = O(g[0])? g[0]:
-
         g[0]=='*'? {c:'*'}:
                 g[0]=='**'? {c:'**'}:
                         g[0]=='*'? {c:'***'}:
-            U(g[0])? {c:'z',C:'w',l:6}:
-
-                N(g[1])? {c:g[0],l:g[1]}:
+                            U(g[0])? {c:'z',C:'w',l:6}:
+                                N(g[1])? {c:g[0],l:g[1]}:
                     N(g[0])? {l:g[0],C:g[1]}://?
                     {c:g[0], C:g[1], l:g[2]}
+
 
 
 
@@ -63,43 +64,30 @@ h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments),
         if( N(o.c[1]) ){o.l = o.c[1]; o.c  = o.c[0]}
         else if (N(o.c[0])){o.l=o.c[0]; o.C= o.c[1]}
         else {o.l=o.c[2]; o.C=o.c[1]; o.c=o.c[0]}}
-
-    if(A(o.C)){
-        o.l= o.C[1];o.C= o.C[0]
-    }
+    if(A(o.C)){o.l= o.C[1];o.C= o.C[0]}
 
     if(o.c==0){gx.f(null);o.c='X'}
     if(o.C==0){gx.s(null);o.C='X'}
-
     if(o.c==00){gx.f(null);gx.s(null);o.c='X';o.C='X'}
-
-
     if(o.c=='*'){o.c=$r()}
     if(o.C=='*'){o.C=$r()}
     if(o.c=='**'){o.c=$r();o.C=$r()}
-
     if(o.c=='***'){$l('***')
 
         o.c = $r(); o.C=$r(); o.l = R(20)}
-
     if(S(o.c)){gx.f(oO('c', o.c))}
     if(S(o.C)){gx.s(oO('c', o.C))}
     if(N(o.l)){h.l(o.l)}
-
-    o.x = _.tN(o.x)
-    o.y = _.tN(o.y)
-    o.r = _.tN(o.r)
-
     if(o.lf){
-
         o.lf = O(o.lf)? o.lf : {}
-
         if(o.r){
-            o.lf.x1 = _.tN(o.lf.x1) + o.x - o.r
-            o.lf.y1 = _.tN(o.lf.y1) + o.y - o.r
-            o.lf.x2 = _.tN(o.lf.x2) + o.x - o.r
-            o.lf.y2 = _.tN(o.lf.y2) + o.y + o.r
-            /*
+            o.r = _.tN(o.r)//?
+            o.x = _.tN(o.x)
+            o.y = _.tN(o.y)
+            o.lf.x1 = N(o.lf.X1)? o.lf.X1 :_.tN(o.lf.x1)+o.x-o.r
+            o.lf.y1 = N(o.lf.Y1)? o.lf.Y1 :_.tN(o.lf.y1)+o.y-o.r
+            o.lf.x2 = N(o.lf.X2)? o.lf.X2 :_.tN(o.lf.x2)+o.x-o.r
+            o.lf.y2 = N(o.lf.Y2)? o.lf.Y2 :_.tN(o.lf.y2)+o.y+o.r}/*
             $l('r: ' + o.r)
             $l('x: ' + o.x)
             $l('y: ' + o.y)
@@ -109,13 +97,23 @@ h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments),
             $l('y2: '+ o.lf.y2)
 
             */
-        }
-
         h.lf(o.lf)
     }
+    if(o.rf){
+        o.rf = O(o.rf)? o.rf : {}
 
+        o.c=[2,'z']
+        if(o.r){
+            o.rf.x1 = N(o.rf.X1)? o.rf.X1 : _.tN(o.rf.x1) + o.x
+            o.rf.y1 = N(o.rf.Y1)? o.rf.Y1 :_.tN(o.rf.y1) + o.y
 
+            o.rf.x2 = N(o.rf.X2)? o.rf.X2 :_.tN(o.rf.x2) + o.x + 20
+            o.rf.y2 = N(o.rf.Y2)? o.rf.Y2 :_.tN(o.rf.y2) + o.y + 20
 
+            o.rf.r2 = N(o.rf.R2)? o.rf.R2 :_.tN(o.rf.r2) + o.r
+        }
+
+        h.rf(o.rf)}
     if(o.ls){o.ls = O(o.ls)? o.ls : {}
         if(o.r){
             o.ls.x1 = _.tN(o.ls.x1) + o.x - o.r
@@ -123,18 +121,6 @@ h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments),
             o.ls.x2 = _.tN(o.ls.x2) + o.x - o.r
             o.ls.y2 = _.tN(o.ls.y2) + o.y + o.r}
         h.ls(o.ls)}
-
-    if(o.rf){o.rf = O(o.rf)? o.rf : {}
-        if(o.r){
-            o.rf.x1 = _.tN(o.rf.x1) + o.x
-            o.rf.y1 = _.tN(o.rf.y1) + o.y
-            o.rf.x2 = _.tN(o.rf.x2) + o.x
-            o.rf.y2 = _.tN(o.rf.y2) + o.y
-            o.rf.r2 = _.tN(o.rf.r2) + o.r}
-        h.rf(o.rf)}
-
-
-
     if(o.rs){o.rs = O(o.rs)? o.rs : {}
         if(o.r){
             o.rs.x1 = _.tN(o.rs.x1) + o.x
@@ -153,6 +139,41 @@ h.c= h.f=function(c,C,l){  var h=this,  gx=h.graphics,  g= _.toArray(arguments),
     return h
 
 }
+
+
+h.cir=function(x,y,r,c,C,l){//= h.circle
+    var h=this,  gx=h.graphics,
+        g=G(arguments), o   //h.ef().es()
+
+    if( O(g[0]) && A(g[1]) ){
+
+        _.e(g[1], function(c){
+
+            h.cir(_.extend(c,g[0]))
+
+        })
+    return h}
+
+    o = O(g[0])? g[0]
+        :N(g[2])?{x:g[0], y:g[1], r:g[2], c:g[3], C:g[4], l:g[5]}
+        :N(g[1])?{x:g[0], y:g[1], r:50, c:g[2],C:g[3],l:g[4]}
+        :{x:0,y:0,r:g[0],c:g[1],C:g[2],l:g[3]}
+
+    o.x = _.tN(o.x); o.y = _.tN(o.y); o.r = _.tN(o.r, 50)
+    o.c = o.c || 'z'; o.C = o.C || 'w'
+    if(N(o.bf)){o.bm='me'}
+
+    h.c(o)
+    if(o.bf){h.bf('me',function(){h.dc(o)})} else {h.dc(o)}
+    return h}
+
+
+
+
+
+//h.circle=function(o){var h=this; h.c(o).dc(o); return h}
+
+
 h.C= h.s=function (C, l) {var h=this,gx=h.graphics
 
     gx.s(oO('c', C))
@@ -186,18 +207,15 @@ h.bf=  function(i,fn,c){var h = this, gx = h.graphics
 
         return h
     }
-h.bs=  function (i) {
-        this.graphics.beginBitmapStroke(i)
-        return this
-    }
+h.bs=  function(i){var h=this; h.graphics.bs(i); return h}
 h.ef = function () {
         var h = this, gx = h.graphics
-        gx.endFill()
+        gx.f()
         return h
     }
 h.es = function () {
         var h = this, gx = h.graphics
-        gx.endStroke()
+        gx.es()
         return h
     }
 h.cp=function(){this.graphics.cp(); return this}
@@ -205,14 +223,13 @@ h.lt= function(x,y){var h=this, gx=h.graphics, v
         if(A(x) && O(x[0])){
             return h.lt.apply(h, x)}
         if(N(x)){gx.lt(x,y); return h}
-        _.each(arguments,function(v){v=V(v)
+        _.e(arguments,function(v){v=V(v)
             h.lt(v.x,v.y)})
         return h}
+
 h.mt=function(x,y){//h.pol=
     var h=this,
         gx= h.graphics, g=arguments, x=g[0], y=g[1], v
-
-
     if(A(g[0]) && O(g[0][0])){
         _.e(g,function(v){
         h.mt.apply(h,v)
@@ -222,13 +239,14 @@ h.mt=function(x,y){//h.pol=
 
     if(N(x)){v=V(x,y); gx.mt(v.x, v.y)}
 
-    else {v=V(_.first(g))
+    else {v=V(_.f(g))
             h.mt(v.x,v.y)
             _.e(_.r(g),function(v){v=V(v)
                 h.lt(v.x, v.y)})}
 
     return h
 }
+
 h.poly= function(V,c,C,l){//***
 
     var h=this, g=G(arguments),
@@ -237,8 +255,7 @@ h.poly= function(V,c,C,l){//***
 
     b2d.oDef(o)
 
-    h.ef().es()
-    h.c(o)
+    h.ef().es().c(o)
 
 
     if(o.bf){h.bf('me', function(){   h.lt(o.v).cp()  })}
@@ -260,17 +277,27 @@ h.bmCir=function(o){var h=this
         })})
     return h}
 
+
 h.bmV=function(o){var h=this
     o=o||{}
     o.i = o.i || 'me'
 
     $.img(o.i, function(i){i=i[0]
-        _.each(o.v, function(v){
+        _.e(o.v, function(v){
+
             h.bf(i)
             h.lt(v)
             h.ef().cp()
+
         })})
+
     return h}
+
+
+
+
+
+
 
 h.dc= function(x,y,r){var h=this,gx=h.graphics,
     g=G(arguments),o
@@ -302,59 +329,12 @@ h.dc= function(x,y,r){var h=this,gx=h.graphics,
 
 }
 
-h.cir= function(x,y,r,c,C,l){  //h.circ =
 
-//nicely done
-
-    var h=this, gx=h.graphics, o
-
-    h.ef().es()
-
-    if(N(r)){o = {x:x, y:y, r:r, c:c, C:C, l:l}}
-    else if(N(y)){ o = {x:x, y:y, r:50,c:r,C:c,l:C}  }
-    else if(N(x)){  o  = {x:0,y:0,r:x, c:y,C:r,l:c}  }
-    else if(O(x)){o=x}
-    else {o={}}
+//GOAL CIRCLE MUST BECOME CIR
 
 
-    o.x = _.tN(o.x);
-    o.y = _.tN(o.y);
-    o.r = _.tN(o.r, 50)
-    o.c = o.c || 'z'
-    o.C = o.C || 'w'
-    o.l = _.tN(o.l, 4)
 
 
-    if(o.rf){h.rf(o.c, o.C, 10, 20, o.r).C('z',2).dc(o)}
-
-    else if(o.lf){
-        h.lf(o.c,  o.C,
-                -o.r *.5,
-                -o.r *.5,
-                -o.r *.5,
-                o.r *.5
-        ).C('z',2).dc(o)
-    }
-
-
-    else if(o.bf){
-        h.bf('me', function(){h.C(o.C, o.l)
-            .dc(o.x, o.y, o.r)})}
-
-    else {
-        h.c(o.c,o.C, o.l)
-        h.dc(o.x,o.y,o.r)
-    }
-
-
-    // o = N(y) ?  {x:0,y:0,  r:x,c:y,C:r,l:c} : S(y) ?  {c:x,C:y,x:r,y:c,r:C,l:l} :   S(x) ?    {c:x, x:y, y:r, l:C} :     O(x) ? x : {}
-    // return h.c(o.c, o.C, o.l).dc(o.x, o.y, o.r)
-
-    return h
-}
-h.circle=function(o){var h=this
-    h.c(o).dc(o)
-    return h}
 
 
 h.dr= function(){
@@ -375,60 +355,54 @@ h.dr= function(){
     return h
 
 }
+
 h.dr2=function(x,y,W,H){var h=this,g=G(arguments),o
 
-
-    if( O(g[0]) && O(g[1]) ){
-        _.each(g, function(r){
-            h.dr2(r)
-        })
+    if( O(g[0]) && O(g[1]) ){ _.e(g, function(r){ h.dr2(r) })
     return h}
 
-    o= O(g[0])?g[0]:
-        U(g[2])?{w:g[0],h:g[1]}:
+    o= O(g[0])? g[0]:
+        U(g[2])? {w:g[0],h:g[1]}:
         {x:g[0],y:g[1],w:g[2],h:g[3]}
-
     o.x = _.tN(o.x)
     o.y = _.tN(o.y)
     o.w = _.tN(o.w,50)
     o.h = _.tN(o.h,o.w)
-
-
     h.dr(-o.w/2+o.x,-o.h/2+o.y,o.w,o.h)
-    return h
-}
-h.rect= function(x,y,W,H,c,C){
+    return h}
+
+h.rectx= function(x,y,W,H,c,C){var h=this
 
 
     var o = {
         x:x, y:y, w:W, h:H, c:c,C:C
     }
 
-    return this.c(o).dr2(o.x, o.y, o.W, o.H)
+    return h.c(o).dr2(o.x, o.y, o.w, o.h)
 
 }
-h.rec=function(c,C,x,y,w,H,l){var h=this,g=G(arguments)//h.rexx=
+
+h.rec=h.rect= function(c,C,x,y,w,H,l){var h=this,g=G(arguments)//h.rexx=
     o=O(c)? c:
         S(C)? {c:c, C:C, x:x, y:y, w:w, h:H, l:l}:
             S(c)? {c:c, x:C, y:x, w:y, h:w, l:H}:
-            {x:c, y:C, w:x, h:y}
+            {x:c, y:C, w:x, h:y,c:w,C:H}
     h.c(o)
     if(o.i){h.bmF(o.i,fun); return}
-    if(o.lG){
-        h.lG({
+    if(o.lf){
+        h.lf({
             c:o.c||'z',C:o.C||'w',s:0,S:1,
             x:o.x-o.w/2,
             y:o.y-o.h/2,
             X:o.x-o.w/2,
             Y:o.y+o.h/2
         })}
-    fun()
+    h.dr2(o)
     return h
-    function fun(){h.mt( // same as dr2??
-            [o.x-o.w/2, o.y+o.h/2],
-            [o.x-o.w/2, o.y-o.h/2],
-            [o.x+o.w/2, o.y-o.h/2],
-            [o.x+o.w/2, o.y+o.h/2])}
+    function fun(){h.dr2(o)
+
+     //   h.mt(  [o.x-o.w/2, o.y+o.h/2],   [o.x-o.w/2, o.y-o.h/2],    [o.x+o.w/2, o.y-o.h/2],  [o.x+o.w/2, o.y+o.h/2])
+    }
 }
 
 

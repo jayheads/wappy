@@ -1,3 +1,30 @@
+CIRCTEST=function(){St()
+
+    s.h().drag().cir({r:100,c:'b',C:'X',l:20,lf:1}, //why cant set lf to {}?
+        [{x:250,y:300 }, {x:450,y:300 }, {x:250,y:500}])
+
+    s.h().drag().cir({C:'X',lf:{X1:650,X2:220,Y1:950,Y2:520},r:100},
+        [{x:750,y:300},{x:950,y:300 },{x:750,y:500}])
+
+}
+
+
+
+CIRS=function(){W(10).Y()
+   w.D(200,160).cir(   {r:120, rf:{c1:'r',c2:'b'}},  {r:100, C:'y', l:2, bf:'me'})
+
+    w.D(100,100).cir({r:35,lf:{c1:'o',c2:'y'}})
+
+
+    w.D(300,200).cir({r:50,  x:0,   y:0,   lf: {c1:'o', c2:'b', X1:400 } })
+        .cir({r:100, x:200, y:0,   lf: {c1:'o', c2:'b'} })
+        .cir({r:100, x:100, y:100, lf: {c1:'o', c2:'b'} })
+
+
+    w.s.h().dc([50],[200,0,100],[100,100,100]).c({ l:20,C:0,ls:1}).dc([50],[200,0,100],[100,100,100])
+
+}
+
 
 
 
@@ -10,9 +37,7 @@ LT=function(){St()
         .mt([[100,100],[300,300],[400,100],
             [500,300],[450,450]],[[500,0],[600,100]])
 
-
     h.cir(600,300,'u','g',10)
-
 
     lgO={c:'b',C:'o',y:200,Y:700}
     v=[[300,300],[320,200],[640,400],[280,650]]
@@ -32,6 +57,8 @@ LT=function(){St()
 
 
 }
+
+
 CIRCSTROKE=function(){St()
 
     gx= h.graphics
@@ -79,29 +106,36 @@ TWORECS=function(){St()
 }
 HPOLY=function(){St()
     v=[[-100,0],[0,-100],[100,50]]
-    s.h(600,300).poly({v:v,bm:1})
-    s.h(700,400).poly({v:v,bm:{}})
+    s.h(600,300).poly({v:v,bm:'me'})
+    s.h(700,400).poly({v:v,bm:'me'})
 
     h=s.h(200,300)
-    h.bm('me', function(){
+    h.bf('me', function(){
         h.dc(0,0,150)
         h.dc(200,0,150)
     })
-    s.h(800, 300).poly({v:v,rg:1})
-    s.h(900, 300).poly({v:v,lg:1})
+
+    s.h(800, 300).poly({v:v,rf:1})
+    s.h(900, 300).poly({v:v,lf:1})
 }
+
+
 BMH=function(){St()
     v=[[-100,0],[0,-100],[100,50]]
+
     s.h(100,300).drag().bmCir({
         circs:[{r:150},
             {x:200,r:150},
             [300,100,100],[400,100,100]]})
+
     s.h(700,300).drag().bmV({v:[
         [[-100,0],[0,-100],[100,50]],
         [[-200,0],[-100,-100],[0,50]],
-        [[0,200],[0,-200],[400,-300],[400,300]]
-    ]})
+        [[0,200],[0,-200],[400,-300],[400,300]]]})
+
 }
+
+
 
 
 
@@ -125,14 +159,18 @@ CIRCS=function(){St()
         rf: {c1:'u',c2:'o',x1:10,y1:10,  r2:30}, //, y1:100,x2:100},
         rs: {c1:'y', c2:'u', x1:-20,  y1:-20,  r1:40, r2:40    }
     })
+
     h = s.h().drag().lf({}).dc()
         .c('b','g',10).lf({  y2:400  }).dc(300,300,50)
 
+
     cjs.me(function(i){
         h.c({
+
             l:200,
             rf: ['w', 'u', 800],
             rs: {c1:'w', c2:'x', r2:800}
+
         }).dc({x: 0, y:0, r:200})
 
         s.h().c({
@@ -150,6 +188,8 @@ CIRCS=function(){St()
         s.h(40,10,'b',8).rf({c1:'r',c2:'d',r2:100}).dc(0,50,40).drag()
     })
 }
+
+
 OVALS=function(){St()
     h=s.h(40, 10,'b',16).drag()
     h.c({C:['o',5],lf:{c1:'g',c2:'r',x2:100,y2:400}}).de(100, 400)
@@ -221,14 +261,17 @@ GRAPHTEST=function(){St(); img = $.img('me',function(){s.ct().h().bmS(img).ss(32
 
 
 }
-LINEAR=function(){St()
+
+MICK=function(){St()
     ct.mick=function(x,y,lf){var ct=this,
-       h= ct.h(x,y).drag()
+
+        h= ct.h(x,y).drag()
         .c({ l:20,  C:0,   lf: lf||1  })
         .dc([50],[200,0,100],[100,100,100])
-        ct.h(x,y).drag().c({ l:20,  C:0,   ls: lf||1  })
-            .dc([50],[200,0,100],[100,100,100])
+
+        ct.h(x,y).drag().c({ l:20,  C:0,   ls: lf||1 }).dc([50],[200,0,100],[100,100,100])
         return h}
+
 
     s.mick(500,200)
     s.mick(700,100, { c1:'b', c2:'X' })
@@ -239,6 +282,8 @@ LINEAR=function(){St()
 
 
 }
+
+
 REC=function(){
     St()
     h=s.h(480,270).drag()
@@ -264,14 +309,17 @@ EASELCONVEX=function(){s=cjs.S()
         'blue', 'white').XY(200,200)}
 
 
-CONVEX=function(){w=b2d.W({g:0}).debug()
+CONVEX=function(){W(0)
 
     // so clearly b.convex lets me specify polygon fixtures by an array of points
 
-    b = w.dyn(300, 300).fixRot()
-    b.convex('green', [  [0,0], [0,-200], [100,0]  ]  )
-    b.convex('blue', [  [0,30], [-300,-20], [100,0]  ] )
-    b.convex('pink',  [ [0,30],[-30,-20],[10,0]  ]  )
+    b = w.D(300, 300).fixRot()
+
+    b.convex('g', [  [0,0], [0,-200], [100,0]  ]  )
+
+    b.convex('b', [  [0,30], [-300,-20], [100,0]  ] )
+
+    b.convex('p',  [ [0,30],[-30,-20],[10,0]  ]  )
 
 
 
@@ -304,13 +352,17 @@ CONVEX=function(){w=b2d.W({g:0}).debug()
 
 VERTS=function(){W()
 
-    thingy = [['p',[-20,-20],[0,-30],[10,10]],
+    thingy =
+        [['p',[-20,-20],[0,-30],[10,10]],
         ['n',[0,0],[30,-50],[50,-10]]]
 
     _.times(100, function(){
-        w.verts(R(600),R(300,200),thingy)})
+        w.verts(R(600),R(300,200),thingy)
+    })
 
 }
+
+
 
 PITFALL=function(){
 
@@ -382,10 +434,6 @@ CENTERSHAPE=function(){St()
 
     h.circ(500,200,40,'b','z')
 }
-
-
-
-
 SHAPES=function(){St()
 
     s.can.P('a').XY(300)
@@ -465,11 +513,6 @@ TURTLE=function(){W(0).Y()
 
 
 }
-
-
-
-
-
 CURTLE=function(){W(0).Y()
 
     turtle =[
@@ -480,39 +523,35 @@ CURTLE=function(){W(0).Y()
         ['x', 10, 55,-12],
         ['u', 30,40, 75,-12]]
 
-    /*
-     w.B(400, 280,turtle )
+    w.D(400, 280,turtle )
 
-     w.dyn(400,300).rec(
-     {w:300,h:300, x:100,y:100, bm:1},
+
+
+     w.D(400,300).rec(
+     {w:300,h:300, x:100,y:100, bf:'me'},
      {w:200,h:200, lg:1, l:15},
-
      {w:10,h:40,c:'r'},
-
-     {w:40, h:40, x: 100, c:'z'  },
+     {w:40, h:40, x: 100, c:'y'  },
      {w:40, h:40, x: 200, c:'b', C:'o', l:10  },
-     {w:200, h:20, c:'g', y: 200, s:1 , lg:1 })
+     {w:200, h:20,  y: 200, s:1 , lf:{c1:'g',c2:'y'} })
 
 
-     */
 
-
-    w.dyn(300,200).cir(
+    w.D(300,200).cir(
         {r:20,y:-20},
         {r:20},
-        {r:20, x:20, lg:1, c:'b',y:30},
-        {x:50, s:1, rg:1},
+        {r:20, x:20, lf:{ c1:'b' },y:30},
+        {x:50, s:1, rf:1},
         {x:100,r:50,c:'r',C:'x',l:10, s:1},
-        {y:-100, r:50, bm:1})
+        {y:-100, r:50, bf:'me'})
 
 
 
-    b= w.dyn(800, 300)
+    b= w.D(800, 300)
 
 
     b.pol({
-        c:'x',  C:'o',
-        //l:5,
+        c:'x',  C:'o',  l:5,
 
         bm:1,
 
@@ -523,26 +562,7 @@ CURTLE=function(){W(0).Y()
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 RADIALGRADRECT=function(){s=cjs.S()
-
-
-
 
 
     x1=100
@@ -562,22 +582,8 @@ RADIALGRADRECT=function(){s=cjs.S()
 
         // h=cjs.shape(10, 10).a2(s).drag()
 
-        h.graphics.beginRadialGradientFill(  ["red", 'blue', "yellow"],  [0, .5, 1],
+        h.graphics.rf(["red", 'blue', "yellow"],[0,.5,1],x1,y1,r1,x2,y2,r2).dr(0,0,400,400).ef()
 
-            x1,
-            y1,
-            r1,
-            x2,
-            y2,
-            r2
-
-
-        )
-
-
-            .dr(0,0,400,400)
-            .endFill()
-        // x--
 
         r1++
         r2++
@@ -587,8 +593,6 @@ RADIALGRADRECT=function(){s=cjs.S()
 
     change()
 }
-
-
 RADIALGRADCIRC=function(){s=cjs.S()
 
 
@@ -612,21 +616,16 @@ RADIALGRADCIRC=function(){s=cjs.S()
 
         // h=cjs.shape(10, 10).a2(s).drag()
 
-        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
-
-            x1,
+        h.rf( 'b', "o",  x1,
             y1,
             r1,
             x2,
             y2,
-            r2
-
-
-        )
+            r2     )
 
 
             .dc(0, 0,100)
-            .endFill()
+            .ef()
         // x--
 
         // r1++
@@ -640,8 +639,6 @@ RADIALGRADCIRC=function(){s=cjs.S()
     n = nip()
     //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
 }
-
-
 USINGLAYERSINEASEL=function(){Q(['me','guy'],function(q){s=cjs.S()
 
     me  = q.bm('me').a2(s).sXY(3)
