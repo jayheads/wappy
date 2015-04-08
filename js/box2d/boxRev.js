@@ -6,12 +6,6 @@ jd.init =joint.i=function(){var jd=this
     jd.Initialize.apply(jd, G(arguments))
     return jd}
 
-
-
-
-
-
-
 //convenience functions
 jd.mot = jd.motor =  function(speed, torque, enable){
     this.speed(speed)
@@ -19,12 +13,15 @@ jd.mot = jd.motor =  function(speed, torque, enable){
     if( enable != '-' ){
         this.enableMotor=true }
     return this }
+
 jd.limits = joint.lm = function( lowAng, upAng, enable ){
     this.lowAng( lowAng ).upAng( upAng )
     if( enable != '-' ){
         this.enableLimit = true}
     return this }
+
 j = b2d.Joints.b2RevoluteJoint.prototype
+
 j.lim = j.limits =  function(a, b){var g=G(arguments);
 
     a=g[0], b=g[1]
@@ -35,12 +32,17 @@ j.lim = j.limits =  function(a, b){var g=G(arguments);
     if(g.N){this.EnableLimit(true)}
 
     return this}
+
+
 j.mot = j.motor =   function(speed, torque, enable){
     this.SetMotorSpeed(speed)
     this.SetMaxMotorTorque( N(torque)? torque : 100000)
-    if( enable != '-' ){
-        this.EnableMotor(true) }
-    return this }
+    if( enable != '-' ){this.EnableMotor(true) }
+    return this
+}
+
+
+
 
 $.inASec=function(func){return setTimeout(func, 1000)}
 cjs.waitFor=function(time){time=N(time)?time:1000
@@ -92,33 +94,125 @@ w.link = function self(x,y){var that=this, l
         return l.K('leaf')}
 
     return l}
+w =   b2d.World.prototype
+w.Revolute = function (a, b, c, d, e, f) {
+    var g = G(arguments)
+
+    //pass in body1, body2, world-bV = body1-center
+    //can also pass body1, body2, world-x, world-y
+    //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
+
+
+    var j = SuperJointDef(new b2d.Joints.b2RevoluteJointDef())
+
+    var joint = j
+
+    joint.init = joint.i = function () {
+        joint.Initialize.apply(joint, G(arguments))
+        return joint
+    }
+
+    //convenience functions
+    joint.motor = joint.mt = function (speed, torque, enable) {
+
+        joint.speed(speed)
+
+        joint.maxTorque(N(torque) ? torque : 100)
+
+        if (enable != '-') {
+            joint.enableMotor(1)
+        }
+
+        return joint
+    }
+
+
+    joint.limits = joint.lm = function (lowAng, upAng, enable) {
+
+        joint.lowAng(lowAng).upAng(upAng)
+
+        if (enable != '-') {
+            joint.enableLimits(1)
+        }
+
+        return joint
+    }
+
+
+    if (U(c)) {
+        c = a.wCent()
+    }
+
+    if (O(c)) {
+        joint.init(a, b, c)
+    }
+
+    else if (N(e)) {
+        joint.A(a).B(b).lAA(bV(c / 30, d / 30)).lAB(bV(e / 30, f / 30))
+    }
+
+    else if (N(c)) {
+        joint.init(a, b, bV(c / 30, d / 30))
+    }
+
+
+    this.createJoint(joint)
+    return joint
+}
+w.Rev = function (a, b, c, d) {
+
+    return this.createJoint(
+        RevoluteJointDef(a, b, c, d)
+    )
+}
+w.rev = function (body1, body2, c, d, e, f) {
+    var g = G(arguments)
+
+    //pass in body1, body2, world-bV = body1-center
+    //can also pass body1, body2, world-x, world-y
+    //or body1, body2, local-axis-A-x, local-axis-A-y, local-axis-B-x,local-axis-B-y
+
+    var joint = new BXJ.b2RevoluteJointDef()
+
+    __jd = joint
+
+
+    if (U(c)) {
+        c = body1.worldCenter()
+    }
+    if (O(c)) {
+        joint.init(body1, body2, c)
+    }
+    else if (N(e)) {
+        joint.A(body1).B(body2).lAA(V(c / 30, d / 30)).lAB(V(e / 30, f / 30))
+    }
+    else if (N(c)) {
+        joint.init(body1, body2, V(c / 30, d / 30))
+    }
+
+    //SuperJointDef( joint )
+    __joint = joint = this.J(joint)
+
+
+    return joint
+}
+
+
 
 makeCar=function(){
-
     var car = w.rect(240,350,90,30)
-
     w.rev(    w.circ( 300, 400, 30  ),  car  ).mot(4)
-
     w.rev(  w.circ( 200, 400,30),  car    ).mot(4)
-
     return car}
+
 shrink = function(){_.each(ropeJoints, function(j){j.shrink()})}
 
-REVJ=function(){w=b2d.W().db()
-
-
+REVJ=function(){W()
     revJoint=function(){return w.rev(w.B(300,300,'d', 20), w.B(300,300,'h',20,20))}
     revJoint()
-
     box = w.B(150,150,'n', 40)
-
     w.rev(w.S(20,20,'w',20), box)
-
-
-
     w.rev(box, w.B(130,130,'p',50))
-
-
     j=w.rev(
         w.S(400,200,'o',100).den(1),
         w.B(400,200,'o',100,100).den(1)
@@ -134,29 +228,22 @@ REVJ=function(){w=b2d.W().db()
         w.B( 100, 50, 'x', 50,50)
     ).motor(2)
 
-
-
     w.rev(
         w.B(400,30,'g',30,50),
         w.B(400,30,'g',30,50)).motor(3)
-
 
     fido =w.rev(
         w.B( 400,30,'u',10,80),
         w.B( 400,30,'r',20,160 )
     ).motor(10)
 
-
-
     w.rev(
         w.B( 400,30,'p', 50  ),
         w.B( 400,30, 'o', 20,160 )
     ).motor(7)
-
-
-
-
 }
+
+
 ROULETTE=function(){w=b2d.W().db()
 
     b = w.B(300,300, 'r',[ [50], [10,80, 20,160] ])
@@ -166,8 +253,8 @@ ROULETTE=function(){w=b2d.W().db()
     j  = w.rev(b,b2)
 
 }
-DEMOREV=function(){w=b2d.W()
 
+DEMOREV=function(){w=b2d.W()
 
 
     w.rev(
@@ -225,35 +312,31 @@ DEMOREV=function(){w=b2d.W()
 
 
 }
-CHANGELIMITS=function(){w=b2d.W()
+
+
+REVCHANGE=function(){w=b2d.W()
 
     j=w.rev(
         w.S(400,220,20),
-        w.B(500,220,200,40) )
-
+        w.B(500,220,200,40)
+    )
     j.limits(0, 30)
     j.EnableLimit(true)
-
     setTimeout(function(){ j.limits(0,200) }, 2000)
 
+    j2 = w.rev(
+        w.S(700,280,20),
+        w.B(800,280,200,40))
+    j2.speed(4).torque(1000000).motor(1)
+    setInterval(function(){j2.speed( -j2.speed()  )}, 4000)
 
+    //w.player('thrustgrav')
 }
-CHANGEMOTOR=function(){w=b2d.W()
-
-    j = w.rev(
-        w.S(400,280,20),
-        w.B(500,280,200,40))
-
-    j.speed(4).torque(1000000).motor(1)
-
-    setInterval(function(){
-        j.speed( -j.speed()  )
-    }, 4000)
 
 
 
-    w.player('thrustgrav')
-}
+
+
 CARS=function(){w=b2d.W()
 
     car= function (x,y, wheel1, wheel2){
@@ -290,19 +373,10 @@ CARS=function(){w=b2d.W()
 
 
 }
-DEMOGEAR=function(){
-    makeWorld()
-
-    world.Gear(
+DEMOGEAR=function(){W()
+    w.Gear(
         w.rev( w.baa(100,220,40), w.bi(100,220,100,20) ),
-        w.rev( w.baa(250,220), w.bi(250,220,100,20) ),
-        .5
-    )
-}
-REVPRISMGEAR=function(){
-
-
-}
+        w.rev( w.baa(250,220), w.bi(250,220,100,20) ),.5)}
 LEASH=function(){ w=b2d.W()
     p= w.player(300,200)
 
@@ -322,7 +396,7 @@ LEASH=function(){ w=b2d.W()
     l =  base.l(10)
 
     w.rev(l,p)}
-TRAPEZE=function(){ w=b2d.W().db() //marionette game?
+TRAPEZE=function(){W()  //marionette game?
     p= w.player(300,200)
     link = function(x,y){
         var l= w.rect(x,y, 5, 10,'y').den(4).rest(2)
@@ -336,11 +410,9 @@ TRAPEZE=function(){ w=b2d.W().db() //marionette game?
             return l}
         return l}
 
-
     base = link(300, 20).stat()
     l =  base.l(10)
     w.rev(l, p.XY(l.X(), l.Y()))
-
 
     base = link(100, 20).stat()
     l =  base.l(10)
@@ -397,12 +469,10 @@ BLINDS=function(){ w=b2d.W()
         return l}
     base = link(100, 20).stat()
     l =  base.l(10)
-
     w.rev(l, p.XY(l.X(), l.Y()))
 
-
 }
-VINE=function(){w=b2d.W()
+VINE=function(){W()
     p= w.player(300,200)
     p.SetFixedRotation(true)
     w.vine(100,10,15)
@@ -410,10 +480,7 @@ VINE=function(){w=b2d.W()
     w.vine(500,10)}
 VINETRAP=function() {w=b2d.W()
 
-    p= w.player(300,200)
-
-    p.X(60)
-
+    p= w.player(300,200).X(60)
     trap=function(x) {
         w.vine(x, 10, 12)
         w.vine(x+10, 10, 4)
@@ -424,12 +491,9 @@ VINETRAP=function() {w=b2d.W()
         w.vine(x+60, 10, 10)
         w.vine(x+70, 10, 8)
         w.vine(x+80, 10, 6)
-        w.vine(x+90, 10, 4)
-    }
+        w.vine(x+90, 10, 4)}
 
-    trap(200)
-    //trap(300)
-
+    trap(250)
 }
 BOXCANNON=function(){w=b2d.W() // hmm.. want to matchs screen size
 
@@ -477,102 +541,23 @@ EASELBOXCANNON=function(){w=b2d.W()
 
 
 }
-BIONIC=function(){
-
-    w=b2d.W().randRects()
-
-    isHooked=false
-    distJ=false
-
-
-    hero= w.rect(320,460,20,20,'b')
-
-    $can = superCanvas($(w.s.HUD.canvas))
-
-    $can.MD(function(x,y){w.QueryPoint(function(fixture){
-
-        var touchedBody = fixture.body()
-        if(touchedBody.isStat()){
-            distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
-            isHooked = true}
-        return false
-
-    },  V(x,y).div())
-
-    }) //if(distJ){w.DestroyJoint(distJ)}
-
-    $can.MU(function(){
-        if(distJ){w.DestroyJoint(distJ)}
-    })   // if I release the mouse, I destroy the distance joint
-
-
-    cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
-
-        if(isHooked){
-
-            hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
-            distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
-        }
-    })
-
-
-}
-ROPEY=function(){w=b2d.W().dg()
-
-    w.roof.kill()
-
-
-
-    body = w.rect(255,50, 60,15,'g').stat()
-    link = body
-    for ( var i = 1; i <= 10; i++ ){func(i)}
-    function func(i){
-        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(2)
-        w.rev(link, body)//, V(255,i*30-15))
-        link = body}
-    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
-    w.rev(link, body)
-
-
-}
-BODYREVWORKS= function(){w=b2d.W().db(); w.floor.rest(0)
-
-    prev = top = w.B(255,50,'g', 60,15).stat()
-
-    _.times(10, function(i){
-        var next = link( 255, (i+1)*30 )
-        prev = prev.rev(next)
-
-    })
-
-
-
-
+ROPEY=function(){W('U')
+    l=b=w.rect(255,50,60,15,'g').stat()
+    for(var i=1;i<=10;i++){
+        w.rev(l,l=w.rect(255,i*30,3,15,'w').DFB(1,0,1.1))}
+    w.rev(l, w.circ(255,330,20,'d').DFB(1,0,1.1))}
+BODYREVWORKS= function(){W()
+    w.floor.rest(0)
+    prev = top = w.S(255,50,'g', 60,15)
+    _.times(10, function(i){var next=link(255,(i+1)*30)
+        prev = prev.rev(next)})
     //body.rev(body2) returns body2 !!!!!
-
-
-
-    function link(x,y){
-        return  w.B(x,y, 'w', 3, 15).den(1).fric(0).rest(0)
-    }
-
-
-
-    w.rev(prev,
-        w.B(255, 330, 'd',20).den(1).rest(0)
-    )
-
-
-
-
+    function link(x,y){return w.B(x,y, 'w', 3, 15).DF(1,0,0)}
+    w.rev(prev,w.B(255, 330, 'd',20).den(1).rest(0))
     //ship
     y = w.ship().XY(400,170).rot(265).stat()
-
     w.beg(function(cx){var fixt
-        if(fixt=cx.with('bul')){if(fixt.body()!=y){
-            fixt.body().kill()
-        }}})
-
+        if(fixt=cx.with('bul')){if(fixt.body()!=y){fixt.body().kill()}}})
 }
 WEBO1=function(){w=b2d.W().randRects()
 
@@ -792,51 +777,163 @@ cjs.tick(function(){
 })
 
 
-w.debug()}
+w.debug()
+}
+BIONIC=function(){
 
+    w=b2d.W().randRects()
 
-KILLEVERYTHING=function(){W(30)
-    body = w.rect(255,50, 60,15,'g').stat()
-    link = body
-    for(var i=1; i <= 10; i++){
-        body = w.rect(255, i*30, 3, 15, 'w').den(1).fric(0).rest(0)
-        w.rev(link, body)
-        link = body}
-    body = w.circ(255, 330, 20, 'd').den(1).fric(0).rest(2)
-    w.rev(link, body)
-    w.randRects()
     isHooked=false
     distJ=false
+
+
     hero= w.rect(320,460,20,20,'b')
+
     $can = superCanvas($(w.s.HUD.canvas))
+
     $can.MD(function(x,y){w.QueryPoint(function(fixture){
+
         var touchedBody = fixture.body()
         if(touchedBody.isStat()){
             distJ=w.dist( hero, touchedBody, hero.GetWorldCenter(), V(x,y).div() ) //collideConnected=true
             isHooked = true}
-        return false},  V(x,y).div())
+        return false
+
+    },  V(x,y).div())
+
     }) //if(distJ){w.DestroyJoint(distJ)}
+
     $can.MU(function(){
         if(distJ){w.DestroyJoint(distJ)}
     })   // if I release the mouse, I destroy the distance joint
+
+
     cjs.tick(function(){// as long as the hook is active, I shorten a bit joint distance
+
         if(isHooked){
+
             hero.SetAwake(true) // BODY MUST BE AWAKE!!!!!!
             distJ.SetLength(distJ.GetLength() * 0.97)  //distJ.len(97,'%') //len('97%')
-        }})
+        }
+    })
+
+
+}
+KILLEVERYTHING=function(){W(30)
+
+    link=body=w.S(255,50,'g', 60,15)
+    for(var i=1;i<=10;i++){
+        w.rev(
+            link,
+            body=w.D(255,i*30,'w',3,15).DFB(1,0,0))
+        link=body}
+
+    w.rev(link, w.D(255,330,'d',20).DFB(1,0,1.1))
+
+
+    w.randRects()
     _.times(8, function(){w.addMe().den(0).XY(700,400)})
     _.times(4, function(){w.addMe().den(0).XY(700,300)})
-    _.times(1, function(){
-        w.addMe().den(0).XY(700,200)})
-    y = w.ship().angDamp(1000)//.track()
-    f=null
-    w.beg(function(cx){
-        cx.with('bul', function(what){
-            if(what.B()!=y){what.B().kill()}})})
-    cjs.tick(function(){
-        //w.each(function(b){if(b.Y()>800){b.kill()}})
+    _.times(1, function(){w.addMe().den(0).XY(700,200)})
+
+    y=w.ship().aD(1000)
+    w.beg(function(cx){cx.with('bul',function(f){if(f.B()!=y){f.B().kill()}})})
+
+
+
+
+}
+
+FLIP=function(){W()
+    f1 = w.flippers(100,430)
+    f2 =  w.flippers(100,230)
+    f3=  w.flippers(300,130)
+    flip = function(){f1();f2();f3()}
+}
+
+
+
+PINBALL=function(){W()
+    w.S(215, 520,'r', 30).K('bump').DBF(10,.8,0)
+    w.S(215,100,'b',100,10).K('shelf')
+    w.S(420,400,'w',20,2000).K('right')
+    w.B(215,90,20).img('sun',.24).K('sun').rot(10,100)
+    flip= w.flips(100,430)
+
+    $.tap(function(){
+        var b=w.B(R(300,40),160,'g',20).DBF(1,.2,2)
+        if(!R(10)){b.img('me',.24)}
+        flip()})
+
+}
+
+
+
+SUPERPB=function(){W()
+
+
+    w.S(215, 520,'r', 30).K('bump').DBF(10,.8,0)
+    w.S(215,100,'b',100,10).K('shelf')
+    w.S(420,400,'w',20,2000).K('right')
+    w.B(215,90,20).img('sun',.24).K('sun').rot(10,100)
+
+    flip= w.flips(100,430)
+
+
+    $.tap(function(){
+        var b=w.B(R(300,40),160,'g',20).DBF(1,.2,2)
+        if(!R(10)){b.img('me',.24)}
+        flip()})
+
+}
+
+
+
+BALLS=function(){W({g:100,w:0})
+
+
+    ramp=function(x,y,wd,h,rot){
+        return w.ramp(x,y,wd,h,rot).DFB(1,0,0)
+    }
+
+    ramp(250, 700, 500, 200, -40)
+    ramp(250, 640, 500, 200, -20)
+    ramp(270, 620, 500, 200, -10)
+    ramp(200, 600, 500, 200, 11)
+    ramp(-70, 350, 500, 200, 85)
+    ramp(-70, 375, 500, 200, 75)
+    ramp(-70, 400, 500, 200, 65)
+    ramp(-70, 425, 500, 200, 55)
+    ramp(-70, 450, 500, 200, 45)
+    ramp(-70, 475, 500, 200, 35)
+    ramp(-70, 500, 500, 200, 25)
+    ramp(-70, 525, 500, 200, 17)
+
+    force = 0
+
+    $.kD({
+        down: function(){ if(force == 0){force = 10} },
+        DOWN : function(){
+            b = w.ball(20,300,12).DFB(1,0,0).bS('me', .2)
+
+            b.I(0, force)                   // why was it 'heavier' when i changed it to circ???
+
+            force=0}
     })
-    //w.show(function(){return w.GetBodyCount()})
+
+    setInterval(function(){
+        if(force!=0){force *= 1.2}
+    }, 100)
+
+
+    w.S(900,550,'w',120,15).fric(0).K('ledge')
+
+    w.beg(function(cx){
+        if(cx.with('ledge')){
+            if(cx.a().is('ledge')){  cx.b().lV(0)  }
+            else {cx.a().lV(0)}
+        }
+    })
 }
 
 
