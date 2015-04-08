@@ -1,49 +1,14 @@
+CRAZYSHIPS=function(){W(1200,600).G(0)
 
+    _.t(10,function(){
 
-B2DTEST=function(){
-    $l('b2d test!')
+        w.ship(R(500,50), R(500,50))
 
-    W({//w:0
     })
-
-
-
-
-
-}
-
-
-
-
-CRAZYSHIPS=function(){
-
-   W(   1200,600).G(0)
-
-    w.S(400,2500,'r',200,100)
-    w.S(800,2300,'z',100,100)
-    w.S(1200,2300,'b',300,100)
-    w.S(1600,2300,'z',100,100)
-    w.S(2000,2300,'r',200,100)
-
-
-
-    y = w.ship().XY(0,0).rot(120).damp(1,10).XY(200,200)
-
-
-    setInterval(function(){
-
-       // w.ship()
-
-    },1000)
-
-
-
-    _.times(10, function(){w.ship()})
-
-
 
     w.beg(function(cx){
-        cx.with('ship','bul', function(bul,cx){this.kill()})
+        cx.with('ship','bul', function(bul,cx){
+            this.kill()})
     })
 
 
@@ -51,107 +16,26 @@ CRAZYSHIPS=function(){
 
 
 
-PUZZLE=function(){W()
-    _.times(10,function(){
-        w.B(400,400, [
-            ['r',20],
-            ['b',20,100,0],
-            ['y',20,0,100]
-        ])})}
+PUZZLE=function(){W(0)
+
+    w.ship().track()
+
+     _.t(10,function(){
+
+         w.D(400,400,
+             [
+                 ['r', 20,0,0],
+                 ['b', 20, 100, 0],
+                 ['y', 20, 0, 100]   ])})
+
+
+}
 
 
 
-WEBMAN = function(){W({ g:20 })
-
-    w.roof.kill();
-    w.right.kill();
-    w.left.kill()
-    w.goal(1800, 0)
-
-    block(400, 100)
-    block(800, 0)
-    block(1100, -50)
-    block(1300, -200)
-
-    function block(x,y){return  w.rect(  x,  y,    50, 50 ,'t' ).stat().K('randomRect')}
-
-    p = w.webMe(394,530).den(.14).fric(1)
-
-    p.canWeb = true
-
-    $.key({
-        r:function(){
-
-            if(cjs.Keys.down){
-                p.didShoot = true
-                if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
-
-            else {
-                if (p.isConnected()){p.F(100,0)}
-                else {p.I(8, 0)}}},
-        l:function(){
-            if(cjs.Keys.down){
-                p.didShoot = true
-                if(!F(p.shotClock)) {p.shotClock=cjs.stopWatch()}}
-            if(p.isConnected()){p.F(-250,-50)}else {p.I(-8,0)}},
-
-
-        u: function(){
-            var web, ball, num, firstWeb=_.first(p.webs), iX, iY
-            if(p.canWeb) {
-                if (p.isConnected()  && !p.webs[1]){
-                    web = p.web(3000)
-                    ball = web.ball.XY(p.X(), p.Y() - 100)
-                    num = Math.abs(p.linVel().x * 2) // p.vX | vY | vR
-                    iX = cjs.Keys.right ? num : cjs.Keys.left ? -num : 0
-                    iY = -30
-                    ball.I(iX, iY)
-                }
-
-                else { if( !p.webs || !p.webs[0] ){
 
 
 
-                    web = p.web(3000)
-                    ball = web.ball.XY(p.X(), p.Y() - 100)
-
-                    if (cjs.Keys.left) {
-                        ball.I(-30, -40)
-                    }
-                    else if (cjs.Keys.right) {
-                        ball.I(30, -40)
-                    }
-                    else {
-                        ball.I(0, -70)
-                    }
-                }}}
-            p.canWeb = false},
-        R:function(){
-            if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
-            if(cjs.Keys.down){p.shootRight()}},
-        L:function(){
-            if( A(p.webs) && p.webs[1] ){  p.webs[1].die()   }
-            if(cjs.Keys.down){p.shootLeft()}},
-        U: function(){
-            var connected = _.reject(p.webs, function(web){return !web.connected})
-            if( A(connected) && connected[0] && connected[1]   ){  _.first(connected).die()  }
-            p.canWeb = true
-            p.shotForce=0},
-
-        D:function(){
-            if(!p.didShoot){if(p.webs[0]){_.first(p.webs).die()}}
-            p.didShoot=false}
-    })
-
-    w.beg(function(cx){var fixt, web
-        if((fixt = cx.with('webBall','randomRect'))){
-            //p.canWeb=true
-            var ball= fixt[0].body(), rect = fixt[1].body(),
-            web = _.findWhere(p.webs, {ball: ball})
-            if(web && !web.connected){web.attach(rect)}}})
-    w.s.tickX(function(){return 600- p.X()})
-    w.s.tickY(function(){return 510- p.Y()})
-    }
 
 CATAPULT=function(){
 

@@ -102,12 +102,25 @@ ct.h= ct.shape=function(x,y,c,C,l,opt){var ct=this,
 
     h= cjs.h(x,y,c, C, l,opt).a2(ct)
 
-    return h
+    return h.drag()
 }
-ct.cir=function(x,y,r,c,C,l,opt){var ct=this
-    return ct.shape(x,y,c,C,l,opt).dc(0,0,r)}
+
+
+
+
+
+
+ct.cir=function(x,y,r,c,C,l,opt){
+    var ct=this
+    return ct.h(x,y,c,C,l,opt).dc(r)
+}
+
 ct.circ =function(c,r,x,y){var ct=this
-    return cjs.cir(c,r,x,y).a2(ct)}
+
+    return cjs.cir(c,r,x,y).a2(ct)
+}
+
+
 ct.rec= function(c,W,H,x,y,a){
     var ct=this, ct2, h,
         o = O(c)? c:
@@ -132,8 +145,6 @@ ct.rec= function(c,W,H,x,y,a){
     else {h.dr2(o.w,o.h)}
     return ct2
 }
-
-
 cjs.isShape=function(h){
     return O(h) && h.graphics
 }
@@ -148,18 +159,86 @@ cjs.rulers=function() {
     var d1=$.div('b', 100, 100).drag().opacity(.3)
     $.div('r', 100, 300).drag().opacity(.3)
     return d1}
+
 cjs.circ = cjs.circle = function(r,c){
-    if(!N(r)){return cjs.circ(8,r)}
-    c=oO('c',c||'z')
-    return cjs.shape().f(c).dc(0,0,r)
+    if(!N(r)){c=r;r=8}
+    c = oO('c', c||'z')
+    return cjs.h().c(c).dc(r)
 }
-cjs.cir = function(col, rad, x, y){
-    if(!S(col)){y=x;x=rad;rad=col;col='y'}
-    y=N(y)?y:0
-    x=N(x)?x:0
-    rad=N(rad)?rad:50
-    return cjs.shape().f(col).dc(x,y,rad)
+
+
+cjs.cir = function(c,r,x,y){
+    if(!S(c)){
+        y=x;x=r;r=c;c='y'
+    }
+    y= _.tN(y)
+    x= _.tN(x)
+    r= _.tN(r,50)
+    return cjs.h().c(c).dc(x,y,r)
 }
+
+
+cjs.circle2=function(r,z,x,y){
+    gx= new cjs.Graphics()
+    if( !S( r ) ){  return cjs.circle2( 'red', r, z, x )}
+    z = _.tN(z,32)
+    x = _.tN(x,100)
+    y = _.tN(y,100)
+    gx.ss( z/8 ).f(r,'black').dc(z)
+    return cjs.h( gx).XY(x,y)
+}
+
+cjs.circle3 = function( x, y, r, c,C ){
+
+    var   h = cjs.shape()
+    if(O(x)){
+        return cjs.circle3(x.x,x.y,x.r,x.c,x.C)}
+
+    x=_.tN(x)
+    y=_.tN(y)
+    r=_.tN(r,8)
+
+    h.cir(x,y,r, c||'w', C||'z')
+    SL(h)
+    return h}
+
+cjs.ball=function(r,c,C){//canon
+
+    var b= cjs.circle(0,0,r,c,C)
+
+    b.d=r+r
+
+    b.T=function(a){
+        if(U(a)){return b.y()-b.r}
+        b.y(a+ b.r);return b}
+
+    b.B=function(a){
+
+        if(U(a)){return b.y()+b.r}
+
+        b.y(a-b.r)
+
+        return b
+    }
+
+
+    b.L=function(a){if(U(a)){return b.x()-b.r}
+        b.x(a+b.r);return b}
+    b.R=function(a){if(U(a)){return b.x()+b.r}
+        b.x(a- b.r);return b}
+    b.F=1
+    b.fall=function(r){b.t(function(){
+        if(r){if(ballBox(b,r)){b.F=0}else{b.F=1}}
+        if(b.F){b.y(10,'+')}
+    })}
+
+    return b}
+
+
+
+
+
+
 cjs.diamond = function self(width, height, fc,sc){
 
     fc=fc||'green'
@@ -212,71 +291,14 @@ cjs.rect= function self(width, height, fc, sc){
         .lt(halfwidth,-halfheight).lt(-halfwidth,-halfheight)
 
     return h}
-cjs.ball=function(z,fc,sc){//canon
 
-    var b= cjs.circle(0,0,z,fc,sc)
-
-    b.r=z
-    b.d=z+z
-
-    b.T=function(a){
-        if(U(a)){return b.y()-b.r}
-        b.y(a+ b.r);return b}
-    b.B=function(a){if(U(a)){return b.y()+b.r}
-        b.y(a-b.r);return b}
-    b.L=function(a){if(U(a)){return b.x()-b.r}
-        b.x(a+b.r);return b}
-    b.R=function(a){if(U(a)){return b.x()+b.r}
-        b.x(a- b.r);return b}
-    b.F=1
-    b.fall=function(r){b.t(function(){
-        if(r){if(ballBox(b,r)){b.F=0}else{b.F=1}}
-        if(b.F){b.y(10,'+')}
-    })}
-    return b}
-cjs.circle2=function(r,z,x,y){
-
-    graphics = new cjs.Graphics()
-    if( !S( r ) ){  return circle2( 'red', r, z, x )}
-    z = N(z) ? z : 32
-    x = N(x) ? x : 100
-    y = N(y) ? y : 100
-    graphics.ss( z/8 ).f( r, 'black' ).dc( 0, 0, z )
-    return cjs.shape( graphics ).XY( x || 100, y || 100 )
-
-}
-cjs.circle3 = function( x, y, r, fc, sc ){
-
-    var shape, h
-
-    shape = h = cjs.shape()
-
-    if( O(x) ){
-
-        return cir0(   x.x,    x.y,   x.r,    x.fc,   x.sc  ) }
-
-    x = x || 0
-
-    y = y || 0
-
-    r = r || 8
-
-    fc = fc || 'w'
-
-    sc = sc || 'z'
-
-    shape.circle( x, y, r, fc, sc )
-
-    SL( shape )
-
-    return shape }
 cjs.box=function( w, h, fc, sc ){
 
     w = w||200
 
     h = h||w
 
-    var b=rct(
+    var b= rct(
 
             0 - w/2, 0-h/2, w, h, fc, sc
     )
@@ -290,14 +312,12 @@ cjs.box=function( w, h, fc, sc ){
     b.hd = h
 
 
-    b.top = b.T = function( a ){
-
-        if( U(a) ){ return b.y() - b.hr }
+    b.top = b.T = function(a){
+        if(U(a)){ return b.y() - b.hr }
 
         b.y( a + b.hr )
 
         return b }
-
 
     b.bottom = b.B = function(a){
 
@@ -309,7 +329,6 @@ cjs.box=function( w, h, fc, sc ){
         return b
     }
 
-
     b.left =b.L = function(a){
 
         if( U(a) ){ return b.x() - b.wr }
@@ -319,31 +338,25 @@ cjs.box=function( w, h, fc, sc ){
         return b
     }
 
-
     b.right =b.R = function(a){
 
         if(U(a)){ return b.x() + b.wr }
         b.x(a- b.wr);return b}
 
-
     b.fall=function(){
-
         b.t(function(){
-
             if(b.F){b.y(40,'+')}  //****
-
             if(ballBox(b,r)){b.F=0}
-
         })}
 
     return b}
+
+
+
 cjs.ballBox=function(bl,bx,buff){ buff=buff||100
-    var b= bl.bottom() >= bx.top()  && bl.top()<=bx.top()+buff  &&
-
+    var b = bl.bottom() >= bx.top()  && bl.top()<=bx.top()+buff  &&
         bl.x()>=bx.left()  &&   bl.x()<=bx.right()
-
     if(b){bl.bottom(bx.top())}
-
     return b}
 
 
@@ -466,7 +479,22 @@ cjs.M=function(rot){
     return m}
 
 
-nip=function(){
+
+CIRCRG=function(){St()
+    nip=function(){
+        x1=0
+        y1=0
+        r1=10
+        x2=0
+        y2=0
+        r2=100
+        var h= cjs.shape(10, 10).a2(s).drag().opacity(.8)
+        h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
+            x1,   y1,   r1,     x2,    y2,    r2   )
+            .dc(0, 0,100)
+            .endFill()
+        return h}
+
     x1=0
     y1=0
     r1=10
@@ -474,13 +502,54 @@ nip=function(){
     y2=0
     r2=100
 
-    var h= cjs.shape(10, 10).a2(s).drag().opacity(.8)
-    h.graphics.beginRadialGradientFill(  [ 'blue', "orange"],  [0,  1],
-        x1,   y1,   r1,     x2,    y2,    r2   )
-        .dc(0, 0,100)
-        .endFill()
+    h=cjs.shape(10, 10).a2(s).drag()
 
-    return h}
+    change= function(){
+        //  h.remove()
+        // h=cjs.shape(10, 10).a2(s).drag()
+
+        h.graphics.rf(   [ 'blue', "orange"],  [0,  1],   x1,  y1,  r1,   x2,  y2,  r2  ).dc(0, 0,100).endFill()
+
+        // x--
+
+        // r1++
+        // r2++
+    }
+
+
+    setInterval(change, 1000)
+
+    change()
+
+    n = nip()
+
+    //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
+}
+
+RAD1=function(){St()
+
+    s.h(600,300).graphics.rf(
+        ['blue',"orange"],  [0,1],  0,0,10,   0,0,100
+    ).dc(0, 0,100).ef()
+
+    s.h(600,100).graphics.rf(
+        ['CornflowerBlue',"orange"],  [0,1],  0,0,10,   0,0,100
+    ).dc(0, 0,100).ef()
+
+    s.h(800,300).rf(
+        ['blue',"orange"],  [0,1],  0,0,10,   0,0,100
+    ).dc(0, 0,100).ef()
+
+    s.h(400,300).rf(
+        ['b','o'],  [0,1],  0,0,10,   0,0,100
+    ).dc(0, 0,100).ef()
+
+
+
+
+    s.h().cir(0,0,10)
+}
+
 
 
 

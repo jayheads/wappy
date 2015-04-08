@@ -5,6 +5,8 @@ w=p=b2d.World.prototype
 
 
 
+
+
 w.me=   w.addMe=function(x,y,scale){var Z=scale||4
         p = this.body(b2d.dyn(x,y), [
             b2d.poly(Z*12.5, Z*25).rest(0).fric(.1).den(.8).K('head'),
@@ -290,66 +292,6 @@ w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
     return this.yShip(x,y).thrustControl().shootOnSpace().damp(2)
 }
 
-
-
-
-w.webMe=function(x,y){
-
-
-   sw = cjs.stopWatch()
-
-
-    var p= this.addMe(4).XY(x,y).rest(0).den(.1).fric(100).fixRot().K('player')
-
-
-    p.isConnected=function(){var res, that=this
-        if( !A( this.webs )){ return false }
-        res = _.findWhere( that.webs, {connected:true} )
-        return true && res && true}
-    p.bulRight=function(x,y){
-        var bul = this.wor().circ(this.X()+80, this.Y()-20, 6, 'w')
-        if(N(y)){bul.I(x,y)}
-        return this}
-    p.bulLeft=function(x,y){
-
-        var bul = this.wor().circ(this.X()-80, this.Y()-20, 6, 'w')
-
-        if(N(y)){bul.I(x,y)}
-
-        return this}
-
-    p.getTime = function(){var p=this,  time =  p.shotClock()
-        p.shotClock.reset()
-
-        return time}
-
-    p.getForce = function(){
-
-        var time = p.getTime(),
-
-            force =  (time > 2500) ? 2000 : (time > 500)? time - 500: 0
-
-        force = force  / 30
-
-        if( force > 66){force = 66}
-        return force}
-    p.shootRight=function(){
-        var  force = this.getForce(),
-            iX= 100-(force*1.5),
-            iY= -force
-        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
-        this.bulRight(iX,iY)}
-    p.shootLeft=function(){
-        var  force = this.getForce(),
-            iX= -100 + (force*1.5),
-            iY= -force
-
-        //$l('time: ' + time + ' - force: ' + force.toFixed(2) + '- iX: ' + iX.toFixed(2) + ', iY: '+ iY.toFixed(2))
-        this.bulLeft(iX, iY)
-
-    }
-
-    return p}
 
 
 

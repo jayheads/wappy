@@ -122,10 +122,6 @@ b.cir= function(o){
 
 
 
-
-
-
-
 b.rec = b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
     g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
 
@@ -183,16 +179,13 @@ b.rec = b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
 
 
 b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
-
     o=b2d.fixtPams(o)
-
     if(o.X){b.clear()}
-
     if(o.q==false){
         h= new b2d.PolygonShape()
-        v=_.map(o.v, b2d.div)
-        h.SetAsArray(v,v.length)
-        fd=new b2d.Dynamics.b2FixtureDef()
+        v = _.map(o.v, b2d.div)
+        h.SetAsArray(v, v.length)
+        fd = new b2d.Dynamics.b2FixtureDef()
         fd.shape = h
         fd.den(o.d).rest(o.b).fric(o.f)
         f=b.fixt(fd)
@@ -202,44 +195,42 @@ b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
 
     n = b.num()
 
-
     if(O(o.v[0][0])){
-        _.each(o.v, function(v){b2d.sep(b,v)})}
+        _.e(o.v,function(v){b2d.fig(b,v)}) }
+    else {b2d.fig(b, o.v); o.v=[o.v]}
 
-    else {
-        b2d.sep(b, o.v); o.v=[o.v]}
+    fs = _.f(b.fixts(),b.num()-n)
 
-
-    fs = _.first(b.fixts(), b.num() - n)
-
-    _.each(fs,function(f){
+    _.e(fs,function(f){
         f.den(o.d).rest(o.b).fric(o.f)
+
         f.m_isSensor = sen = o.s ? true : false
+
         if(o.k){f.K(o.k)}
 
+        ///////////////////////////////
+
+        // should be: f.c(o).lt(o.v)
+        // w.s.h() ?
+
         if(o.c){
-
-            f.C(o.c,o.C,o.l)
-        }
-
-
+            f.C(o.c,o.C,o.l)}
         if(o.lf){f.bS(
-            w.s.h().lf(o).lt(o.v)
-        )}
+            w.s.h().lf(o).lt(o.v))}
 
         if(o.rf){f.bS(
+
+            //w.s.h().c(o).lt(o.v) // w.s.h().poly(o)
             w.s.h().rf(o).lt(o.v)
         )}
+
+        ///////////////////////////////
 
     })
 
     if(o.bm){b.bS(w.s.h().bmV(o))}
 
-
-
-
-    f = fs.length > 1 ? fs : fs[0]
-    return f}
+    return fs.length>1?fs:fs[0]}
 
 
 

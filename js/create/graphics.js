@@ -1,6 +1,41 @@
 h =  cjs.Shape.prototype
 ct=cjs.Container.prototype
 
+
+
+/////////////////////////////////
+/////////////////////////////////
+/////////////////////////////////
+/////////////////////////////////
+
+h.poly= function(V,c,C,l){//***
+    var h=this, g=G(arguments),
+        o=A(g[0])?{v:g[0],c:g[1],C:g[2],l:g[3]}//array must come first b/c its an obj
+            :O(g[0])?g[0]:{}
+
+    //?
+    b2d.oDef(o); h.ef().es() // ???
+    //?
+    h.c(o)
+    if(o.bf){h.bf('me', function(){h.lt(o.v).cp()})} else {h.lt(o.v).cp()}
+    return h
+}
+
+
+//this is s.poly.. not h.poly !
+EASELCONVEX=function(){s=cjs.S()
+    s.poly([[-100,-10],[0,100],[100,20]],'red','white',10).XY(200,300)
+    s.poly([[-20,-80],[-100,-200],[100,5]]).XY(300, 200)
+    s.poly([[-40,40],[-40,-40],[40,-40], [40,30]],'blue', 'white').XY(200,200)}
+
+
+/////////////////////////////////
+/////////////////////////////////
+/////////////////////////////////
+/////////////////////////////////
+
+
+
 b2d.grad=function(o){o=o||{}
     o.c1 = oO('c', o.c1 || 'z'); o.c2 = oO('c', o.c2 || 'w')
     o.s1 = _.tN(o.s1); o.s2 = _.tN(o.s2, 1)
@@ -23,19 +58,58 @@ h.lg=function me(){var h=this,gx=h.graphics,g=G(arguments),o
 
     return o
 }
-h.rg=function(o){ var h = this, gx = h.graphics,  g = G(arguments),
-    o = O(g[0]) ? g[0] :
-        S(g[1]) ? _.extend({c1: g[0], c2: g[1]},
-            N(g[5]) ? {x2: g[2], y2: g[3], r1: g[4], r2: g[5]} :
-                N(g[4]) ? {x2: g[2], r1: g[3], r2: g[4]} :
-                    N(g[3]) ? {r1: g[2], r2: g[3]} : {r2: g[2]}) :
-            S(g[0]) ? {c2: g[0]} : {}
+
+
+h.rg=function(o){ var h = this, gx = h.graphics,  g = G(arguments),o
+
+    if(A(g[0]) && A(g[1])){$l('AA')
+        h.graphics.rf(
+            [oO('c', g[0][0]), oO('c', g[0][1])], g[1],  g[2],  g[3], g[4], g[5], g[6] ,g[7])
+        return h
+    }
+
+
+    o = O(g[0])?g[0]:
+        S(g[1])? _.extend({c1:g[0], c2:g[1]},
+            N(g[7])? {x1:g[2], y1:g[3], r1:g[4], x2:g[5],y2:g[6],r2:g[7]}
+            :N(g[5])? {x2:g[2],y2:g[3],r1:g[4],r2:g[5]}
+                :N(g[4])? {x2:g[2],r1:g[3],r2:g[4]}
+                    :N(g[3])?{r1:g[2],r2:g[3]}:{r2:g[2]})
+
+            :S(g[0])? {c2:g[0]}: {}
+
+
     b2d.grad(o)
+
     o.x2 = _.tN(o.x2, o.x1)
     o.y2 = _.tN(o.y2, o.y1)
     o.r1 = _.tN(o.r1, 1);
     o.r2 = _.tN(o.r2, 100)
     return o}
+
+
+h.rf=function me(){var h=this, gx=h.graphics, g=G(arguments), o
+
+    if(A(g[0])){return me.apply(h, g[0])}
+
+
+    o = h.rg.apply(h,g)
+
+    gx.rf(
+        [o.c1,o.c2],
+        [o.s1,o.s2],
+        o.x1, o.y1, o.r1,o.x2, o.y2, o.r2)
+
+    return h
+
+
+}
+
+
+
+
+
+
 cjs.me=function(fn){
     Q(['me'],
         function(q){
@@ -141,7 +215,7 @@ h.c= h.f=function(c,C,l){
 }
 
 
-h.cir=function(x,y,r,c,C,l){//= h.circle
+h.cir= h.circ=function(x,y,r,c,C,l){//= h.circle
     var h=this,  gx=h.graphics,
         g=G(arguments), o   //h.ef().es()
 
@@ -243,24 +317,6 @@ h.mt=function(x,y){//h.pol=
             h.mt(v.x,v.y)
             _.e(_.r(g),function(v){v=V(v)
                 h.lt(v.x, v.y)})}
-
-    return h
-}
-
-h.poly= function(V,c,C,l){//***
-
-    var h=this, g=G(arguments),
-        o = A(g[0])?  {v:g[0],c:g[1],C:g[2],l:g[3]} :           //array must come first b/c its an obj
-        O(g[0])? g[0] : {}
-
-    b2d.oDef(o)
-
-    h.ef().es().c(o)
-
-
-    if(o.bf){h.bf('me', function(){   h.lt(o.v).cp()  })}
-
-    else {h.lt(o.v).cp()}
 
     return h
 }
@@ -426,12 +482,6 @@ h.rs=function me(){var h=this, gx=h.graphics, g=G(arguments),o
     o=h.rg.apply(h,g)
     gx.rs([o.c1,o.c2],[o.s1,o.s2], o.x1,o.y1,o.r1,o.x2,o.y2,o.r2)
     return h}
-h.rf=function me(){var h=this, gx=h.graphics,g=G(arguments),o
-    if(A(g[0])){return me.apply(h,g[0])}
-    o = h.rg.apply(h, g)
-    gx.rf([o.c1,o.c2],[o.s1,o.s2],o.x1, o.y1, o.r1,o.x2, o.y2, o.r2)
-    return h}
-
 
 
 

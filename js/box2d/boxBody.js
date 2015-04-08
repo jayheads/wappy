@@ -305,13 +305,13 @@ b.mass = function(m){
 
 
 //world center
- b.wCent=   p.wC= b.cent=function(){var b=this,w= b.wor()
+ b.wCent=   p.wC=b.cent=function(){var b=this,w= b.wor()
      var g=G(arguments)
 
      if(g.P){return b.GetWorldCenter().mult() }    //  p.worldCenter= p.gWC= function(){return this.GetWorldCenter()}
 
      b.XY(
-         w.W()/2, w.H()/2
+         w.W/2, w.H/2
      )
  return b}
 
@@ -833,7 +833,7 @@ b.H= function(arg){var g = G(arguments),
     //    if(o.t=='c'){  b.cir(o) }}
 
     else if(len==1||len==3){
-        o={c:g[0],r:g[1],x:g[2],y:g[4]}
+        o={c:g[0],r:g[1],x:g[2],y:g[3]}
         if(g.n){o.s=1}
         b.cir(o)}
 
@@ -843,18 +843,12 @@ b.H= function(arg){var g = G(arguments),
         b.RECT.apply(b,g)
     }//rect
 
-
-
-
-
-
-
-
     function length(arr){
         var len = arr.length
         if(S(_.first(arr))){len--}
         if(S(_.last(arr))){len--}
         return len}
+
     return b}
 
 
@@ -1212,103 +1206,6 @@ b.mid=function(){var b=this,w= b.wor()
  return   b.XY(w.w/2, w.h/2)
 
 }
-
-
-b.web = function (shouldKill) {
-
-    //when a web is created it gets web.connected=false
-    //when it hits certain things and forms a joint, then connected->true
-    //then it just dies
-    //pressing DOWN should release the most recent of the connectedWebs
-    //non connected Webs can be shot off!
-
-
-    var p=this, w=p.wor(),
-
-        y=p.Y()-100,
-        x=p.X(),
-        piece,
-        web
-
-    p.webs = p.webs || []
-
-    p.webs.push( web = Web(p,shouldKill))
-
-    piece = web.addPiece(p, web.Piece(x,y))   //add first piece to player
-
-    T(9, function (i) {
-        piece = piece.add(web.Piece(x, y-i))
-    })  //add rest to each other
-
-
-    piece.add(
-        web.ball=w.circ(x,y-100,10,'d').K('webBall').den(1).rest(0).fric(100))
-    return web
-
-
-
-
-    function Web(p, shouldKill){
-
-
-        var web={
-            player: p,
-            connected: false,
-            pieces: [],
-
-            addPiece: function (toWhat, newPiece){
-                w.tightDist(toWhat, newPiece)
-                this.pieces.push(newPiece)
-                return newPiece},
-
-
-            Piece: function(x,y){var web = this,
-                    piece = w.ropePiece(x, y).K('webPiece')
-                piece.add = function (newPiece){return web.addPiece(this, newPiece)}
-                return piece},
-
-            delPieces: function(){_.each(this.pieces, function (piece) {piece.kill()})
-                this.pieces = []},
-
-
-            die: function(){var that = this
-                this.delPieces()
-                this.player.webs = _.reject(this.player.webs, function (web) {
-                    return that === web})},
-
-            attach: function (toWhat) {
-                this.connected = true
-                w.tightDist(toWhat, this.ball)
-                return this}
-
-        }
-
-
-
-
-        if (shouldKill) {
-
-            shouldKill = N(shouldKill) ? shouldKill : 1000
-
-            setTimeout(function () {    if (!web.connected) {  web.die()  }  }, shouldKill)
-
-        }
-
-
-
-
-        return web}
-
-
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -2054,7 +1951,7 @@ geometry=function() {
 
 
 
-    b.minusPolyCirc = function (x, y, rad, sides) {
+    b.minusPolyCirc= function (x, y, rad, sides) {
         var b = this
 
         poly = Math.poly(_.map(b2d.polyCirc(rad, sides),

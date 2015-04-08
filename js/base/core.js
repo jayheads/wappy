@@ -906,6 +906,7 @@ _.i = _.initial
 _.r = _.rest
 _.e = _.each
 _.m= _.map
+_.t=_.times
 
 Math.dist = Math.lineDistance= function( p1, p2 ){
     var xs = 0,ys = 0;
@@ -924,6 +925,11 @@ Math.dist = Math.lineDistance= function( p1, p2 ){
 
 _.tN=function(what, aNum){
     return N(what)? what: aNum||0  }
+
+_.tI=function(a,b){
+    return parseInt(_.tN(a,b))
+}
+
 _.c=function(c,orC){
     if(c=='*'){c=$r()}
     return oO('c',c||orC)}

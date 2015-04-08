@@ -844,8 +844,6 @@ nip=function(){
     return h}
 
 
-
-
 USINGLAYERSINEASEL=function(){
 
     Q(['me','guy'], function(q){
@@ -868,10 +866,6 @@ USINGLAYERSINEASEL=function(){
 
 
 }
-
-
-
-
 SHAPES=function(){z()
     s = cjs.stage(500, 500).A()
     s.can.P('a').XY(300)
@@ -932,8 +926,6 @@ EASELART=function(){z()
         )}
     p()
 }
-
-
 CENTERSHAPE=function(){z()
 
     s = cjs.stage(500,600).A()
@@ -959,8 +951,6 @@ CENTERSHAPE=function(){z()
     //stage.bm('me', function( b ){ me=b; me.XY(200); me.sXY(.4)})
 */
 }
-
-
 GRAPHICSTEST=function(){
        stage = cjs.stage(800,500).A()
 
@@ -1132,65 +1122,6 @@ RADIALGRADRECT=function(){s=cjs.S()
 
     change()
  }
-
-CIRCRG=function(){
-
-    s=cjs.S()
-
-
-    x1=0
-    y1=0
-    r1=10
-    x2=0
-    y2=0
-    r2=100
-
-
-    h=cjs.shape(10, 10).a2(s).drag()
-
-
-    change= function(){
-
-        //  h.remove()
-
-        // h=cjs.shape(10, 10).a2(s).drag()
-
-
-
-        h.graphics.beginRadialGradientFill(
-
-            [ 'blue', "orange"],
-            [0,  1],
-            x1,  y1,  r1,
-            x2,  y2,  r2
-        )
-
-
-            .dc(0, 0,100)
-            .endFill()
-        // x--
-
-       // r1++
-       // r2++
-    }
-
-
-    setInterval(change, 1000)
-
-    change()
-
-    n = nip()
-
-    //h2 =cjs.shape(500,100).a2(s);h2.graphics.beginRadialGradientFill(["red","yellow"],  [0, 1],100, 100, 0, 100, 100, 50).dc(50,50, 100)
-}
-
-
-
-
-
-
-
-
 EASELCONVEX=function(){s=cjs.S()
     s.poly([[-100,-10],[0,100],[100,20]],
       'red','white',10).XY(200,300)

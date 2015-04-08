@@ -24,39 +24,37 @@ CIRS=function(){W(10).Y()
     w.s.h().dc([50],[200,0,100],[100,100,100]).c({ l:20,C:0,ls:1}).dc([50],[200,0,100],[100,100,100])
 
 }
-
-
-
-
 LT=function(){St()
 
-    h.c('y').dc(100,100,30)
-        .c('o').dc(100,100,10)
-        .ef()
-        .C('g',8)
-        .mt([[100,100],[300,300],[400,100],
-            [500,300],[450,450]],[[500,0],[600,100]])
 
-    h.cir(600,300,'u','g',10)
+    h.c('y').dc(100,100,30).c('o').dc(100,100,10)
+         .c('X','g',8)
+         .mt([
+             [100,100],[300,300],[400,100],
+             [500,300],[450,450]],[[500,0],[600,100]
+         ])
+    h.cir(600,300, 'u', 'g', 10)
 
-    lgO={c:'b',C:'o',y:200,Y:700}
+
+    lf={c1:'b',c2:'o',y1:200,y2:700}
     v=[[300,300],[320,200],[640,400],[280,650]]
-
-
-    // h.lg(lgO)//.mt(v)
-
-
-    h.poly({
-
-        v:  v,
-        lg:  lgO,
-        c: 'b',
-        C: 'r'
+    //two ways to make the same thing
+    s.h().poly({
+        v:v,
+        lf:lf
     })
-
-
-
+    s.h(250,50).lf(lf).mt(v)
 }
+HPOLY=function(){St()
+    v=[[-100,0],[0,-100],[100,50]]
+    s.h(600, 300).poly({v:v, bf:'me'})
+    s.h(900, 300).poly({v:v, lf:1})
+    s.h(800, 300).poly({v:v, rf:1})
+    h=s.h(200,300).drag().bf('me', function(){
+        h.dc([150],[200,0,150])
+    })
+}
+
 
 
 CIRCSTROKE=function(){St()
@@ -104,20 +102,7 @@ TWORECS=function(){St()
     //.rec({  })
 
 }
-HPOLY=function(){St()
-    v=[[-100,0],[0,-100],[100,50]]
-    s.h(600,300).poly({v:v,bm:'me'})
-    s.h(700,400).poly({v:v,bm:'me'})
 
-    h=s.h(200,300)
-    h.bf('me', function(){
-        h.dc(0,0,150)
-        h.dc(200,0,150)
-    })
-
-    s.h(800, 300).poly({v:v,rf:1})
-    s.h(900, 300).poly({v:v,lf:1})
-}
 
 
 BMH=function(){St()
@@ -300,13 +285,6 @@ REC=function(){
 }
 
 
-EASELCONVEX=function(){s=cjs.S()
-    s.poly([[-100,-10],[0,100],[100,20]],
-        'red','white',10).XY(200,300)
-    s.poly([[-20,-80],[-100,-200],[100,5]]).XY(300, 200)
-    s.poly(
-        [[-40,40],[-40,-40],[40,-40], [40,30]],
-        'blue', 'white').XY(200,200)}
 
 
 CONVEX=function(){W(0)
@@ -352,22 +330,20 @@ CONVEX=function(){W(0)
 
 VERTS=function(){W()
 
-    thingy =
-        [['p',[-20,-20],[0,-30],[10,10]],
-        ['n',[0,0],[30,-50],[50,-10]]]
 
     _.times(100, function(){
-        w.verts(R(600),R(300,200),thingy)
+        w.verts(R(600), R(300,200), [['p',[-20,-20],[0,-30],[10,10]],
+            ['n',[0,0],[30,-50],[50,-10]]])
     })
 
 }
 
 
 
-PITFALL=function(){
+PITFALL=function(){W([1200,600,3400,600],{}).P()
 
-    b2d.levelScrollX()
-
+    //b2d.levelScrollX()
+    p.track()
 
     turtle = [
         ['green',[0,0],[-50,-10],[-40,-20],[0,-40],[20,-10]]
@@ -407,14 +383,14 @@ PITFALL=function(){
 
 
 
+    t = w.vertsKin(400, 570, turtle).fixRot()
+    t2 = w.vertsKin(700, 570, turtle2).fixRot()
 
-    t = w.vertsKin(400, 280, turtle).fixRot()
-    t2 = w.vertsKin(700, 280, turtle2).fixRot()
-
-    setInterval(function(){
-        t2.linVel(5,0)
-        setTimeout(function(){  t2.linVel(-5,0) },1000)
+    I(1, function(){
+        t2.lV(5,0)
+        setTimeout(function(){t2.lV(-5,0)})
     }, 2000)
+
 
 }
 
@@ -422,23 +398,27 @@ PITFALL=function(){
 
 CENTERSHAPE=function(){St()
 
-    h.rect(100,100,100,100,'y')
-    h.rect(200,200,100,100,'b')
+    h.rec(100,100,100,100,'y')
+    h.rec(200,200,100,100,'b')
 
     h.c('o').polyStar(300,100,
         50,5,0.6,-90)
 
-    h.c('w').C('z')
+    h.c('w','z')
         .roundRectComplex(400,300,
         300,300, 20,20,30,40 )
 
-    h.circ(500,200,40,'b','z')
+    h.cir(500,200,40,'b','x',10)
 }
+
 SHAPES=function(){St()
 
     s.can.P('a').XY(300)
+
     s.bm('me', 0.2, function(bm){})
+
     s.A(cjs.circle(100, 'blue','green').XY(100, 100).drag())
+
     s.circle(100, 100, 10, 'red', 'yellow' )
         .circle(10,100,100,'black','purple')
         .circle(100, 10, 100, 'blue', 'red' )
@@ -446,6 +426,9 @@ SHAPES=function(){St()
         .circle(30,'brown','gray')
 
 }
+
+
+
 TURTLE=function(){W(0).Y()
 
     turtle =[

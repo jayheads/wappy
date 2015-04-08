@@ -289,37 +289,42 @@ b2d.iBD =b2d.isBDef=function(bd){return O(bd) && F(bd.b2BodyDef)}
 
 
 
-w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
+
+    w.D=w.B=function(x,y){var w=this,
+        g=G(arguments), x=g[0],y=g[1],
+        bD, b, fs, k
 
 
-    if( S(_.l(g)) ){ k=g.pop() }   //can pass color at END  ?  //if(b2d.iBD(x)){bD=x; fs=_.r(g)}
+    if(S(_.l(g))){
+        k=g.pop()} //can pass color at END  ?  //if(b2d.iBD(x)){bD=x; fs=_.r(g)}
 
-    if(O(x)){ bD=b2d.D(x);  fs=_.r(g)}
+    if(O(x)){$l('O(x)')
 
-    else {bD = b2d.D(x,y);  fs=   _.r(g,2)}
+        bD=b2d.D(x); fs=_.r(g)}
+    else {
+
+        bD = b2d.D(x,y);
+        fs= _.r(g, 2)
+    }
+
+       // w.D(600,300, [
+       //   ['b', 40,0, 100]
+       // ])
 
     b = w.CreateBody(bD)
 
-
-    if( A( g[0] ) && U(g[1]) ){
-
-        _.each(fs,
-            function(f){
+    if(A(g[0]) && U(g[1])){$l('A(g[0]) && U(g[1])')
+        _.e(fs,function(f){
                 if(g.n){b.H(f, '-')} else {b.H(f)}
-            }) //b.H.apply(b,fs)
-
-    }
-
+            })} //b.H.apply(b,fs)
     else {
+        if(g.n){fs.push('-')}
 
-        if(g.n){fs.push('-')  }
-
-        b.H.apply(b, fs)
+        fss=fs
+        b.H.apply(b,fs)
     }
-
 
     if(k){b.K(k)}
-
     return b}
 
 
@@ -499,7 +504,7 @@ w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
 
 
 
-    w.addCirc = function (x, y, radius, color) {//specific to talkjs
+    w.addCirc= function (x, y, radius, color) {//specific to talkjs
 
         x = N(x) ? x : parseInt(Math.random() * 2200 - 1000)
 
@@ -513,24 +518,6 @@ w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
             cjs.circ(radius, color).XY(x, y)).linDamp(2)
 
     }
-    w.circ = function (x, y, rad, col) {var ball, w=this
-
-        // will err on random x,y.. dont like it. that should be with '*' (explicityly ONLY for something like this)
-        var wd = this.s.W(),
-            ht = this.s.H()
-        x=N(x)?x:parseInt(Math.random()*(wd-100))+60
-        y=N(y)?y:50
-        rad=N(rad)?rad:_.random(14)+8
-
-        ball = w.ball(x,y,rad).linDamp(2)
-
-        ball.bindSprite2( w.s.cir(x,y,rad,col) )
-
-        return ball
-
-    }
-
-
 
 
 
@@ -668,11 +655,7 @@ w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
 
     w.K=function(){return this.B.apply(this,arguments).kin()}
 
-    //link for distance ropes
 
-    w.ropePiece = w.distLink=function(x, y){var w=this
-
-        return w.B(x,y, 'w', 3,5).aD(10).rest(0)}
 
 
 //add random bodies
@@ -718,6 +701,49 @@ w.B=w.D=function(x,y){var w=this, g=G(arguments), x=g[0], y=g[1], bD, b, fs, k
 
 
 }())
+
+w.cir= w.circ= function(x,y,r,c){
+    //takes x,y before r?
+    //try and avoid this func for now
+    // will err on random x,y.. dont like it.
+    // that should be with '*'
+    // (explicityly ONLY for something like this)
+
+    var w=this,g=G(arguments),
+        b,
+        H= w.s.H(),
+        W= w.s.W(),o
+    o=O(g[0])?g[0]: {x:x,y:y,r:r,c:c}
+    o.x= _.tI(o.x, R(W-100,60))
+    o.y= _.tN(o.y, 50)
+    o.r= _.tN(o.r, R(14,8))
+    b = w.D(o.x, o.y).cir({r: o.r, c:o.c})
+    b.lD(2)
+
+    return b}
+
+
+
+
+
+
+
+WCIR=function(){W(0)
+
+    _.t(3,function(){
+
+        w.cir(100,100,'r')
+
+    })
+
+    w.cir(100, 100, 100,'b')
+
+    w.cir(400,100,10,'g')
+}
+
+
+
+
 w.bindShape = function( shape, spr   ){
 
     this.stage.A( shape )
@@ -1172,21 +1198,30 @@ joints=function() {
         this.DestroyJoint(a);
         return this
     }
-    w.dist = function (a, b, b1OffV, b2OffV, len, freq, damp) {
+
+
+    w.dist = function(a,b,
+                      b1OffV, b2OffV,
+
+                      len, freq, damp) {
+
+
 //location pams are optional, and be default to their center ponts
 // note: if you passe them in, pass them as relative(local to body) coords
 //BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
 //there is also distColl for 'collideConnected=true' joints
-        var b1V = a.wCent(),
-            b2V = b.wCent(),
-            jd = b2d.dJ(), j
 
-        if (O(b1OffV)) {
-            b1V = b1V.add(b1OffV)
-        }
-        if (O(b2OffV)) {
-            b2V = b2V.add(b2OffV)
-        }
+
+        var b1V = a.wCent(),  b2V = b.wCent(),
+
+            jd = b2d.dJ(),
+
+            j
+
+
+
+        if (O(b1OffV)){b1V = b1V.add(b1OffV)}
+        if (O(b2OffV)){b2V = b2V.add(b2OffV)}
 
         jd.init(a, b, b1V.div(), b2V.div())
         j = w.J(jd)
@@ -1194,29 +1229,27 @@ joints=function() {
         if (N(b1OffV)) {
             damp = len;
             freq = b2OffV;
-            len = b1OffV
-        }
+            len = b1OffV}
 
 
-        if (N(len)) {
-            j.len(len)
-        }
-
-        if (N(freq)) {
-            j.freq(freq)
-        }
-
-        if (N(damp)) {
-            j.damp(damp)
-        }
+        if (N(len)) {j.len(len)}
+        if (N(freq)) {j.freq(freq)}
+        if (N(damp)) {j.damp(damp)}
 
 
         return j
     }
-    w.tightDist = function (piece, newPiece) {
+
+
+
+    w.tightDist = function(piece, newPiece){
+
         return this.dist(piece, newPiece, 1, 1000, 1000)
 
     }
+
+
+
     w.fixts = function (x, y, f) {
         var w = this
 
