@@ -1,97 +1,43 @@
 w=b2d.World.prototype
 
-
-b2d.dJ = b2d.distJ = b2d.distDef =b2d.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(o){
-
-    var jd = new b2d.Joints.b2DistanceJointDef()
-
-    //this initialize function for distance, not revolute
-
-    jd.init = function(b1, b2, b1V, b2V){
-        if( U(b1V) ){ b1V = b1.worldCenter()}
-        if( U(b2V) ){ b2V = b2.worldCenter()}
-        this.Initialize(b1, b2, b1V, b2V)
-        return this}
-
-    if( O(o) ){ // ever used?
-        if(o.init){ j.init.apply(j, o.init)  }
-        if(N(o.len) ){ j.len( o.len ) } else { j.len(1) }
-        if(N(o.freq) ){ j.freq( o.freq ) } else { j.freq(3) }
-        if(N(o.damp) ){  j.dampRat( o.damp) } else { j.dampRat( .1 ) }
-        if((o.coll) ){ j.collide( true ) }  else { j.collide( false ) }
-
-        return w.J( jd )
-    }
 // dont ever set a dJ().len(0)
-    return jd }
+//location pams are optional,
+// and be default to their center points
+// note: if you passe them in,
+// pass them as relative(local to body) coords
+//BOX2D requires them as WORLD points
+// - for some reason..
+// (but i think my way has more use cases)
+//pass coll:true -> 'collideConnected=true'
 
 
 
+b2d.dJ= b2d.distJ= function(){var g=G(arguments),
+    jd=new b2d.Joints.b2DistanceJointDef()
+    jd.init = function(a, b, aV, bV){var jd=this, g=G(arguments),o
+        o=(O(g[0]) && !b2d.isBody(g[0]))?g[0]
+            :{a:g[0], b:g[1], aV:g[2], bV:g[3]}
+        o.aV=o.av?o.a.wC().add(o.av||V()):(o.aV||o.a.wC())
+        if(o.bv){o.bV= o.b.wC().add(o.bv||V())} else {o.bV=o.bV||o.b.wC()}
+        if(g.n){o.aV=o.aV.div(); o.bV= o.bV.div()}
+        jd.Initialize(o.a,o.b,o.aV,o.bV); return jd}
+    if(g[0]){jd.init(g[0],'-')}
+    if(o.coll){jd.coll(true)}
+    return jd}
 
-//location pams are optional, and be default to their center ponts
-// note: if you passe them in, pass them as relative(local to body) coords
-//BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
-//there is also distColl for 'collideConnected=true' joints
-
-
-w.dist = function(a,b, aXY,bXY, l,f,d) {var w=this,g=G(arguments),
-
-    aC= g[0].wCent(),
-    bC= g[1].wCent(),
-
-    aV,bV,jd, j, o
-
-    o = (O(g[0]) && !b2d.isBody(g[0])) ? g[0]
-        : _.extend({a:g[0],b:g[1]},
-          O(g[3])? {aV: aC.add(g[2]), bV:bC.add(g[3]), l:g[4],f:g[5],d:g[6]}
-            :O(g[2])? {  aV:aC.add(g[2]) ,bV:bC,l:g[3],f:g[4],d:g[5]}
-            : {aV:aC, bV:bC, l:g[2], f:g[3], d:g[4]})
-
-    jd = b2d.dJ()
-    jd.init( o.a, o.b, o.aV.div(), o.bV.div() )
-    o.f= _.tN(o.f)
-    o.d= _.tN(o.d)
-    j=w.J( jd )
-
+w.dist = function(a,b, aXY,bXY, l,f,d){
+    var w=this,g=G(arguments),jd,j,o
+    o = (O(g[0]) && !b2d.isBody(g[0]))? g[0]
+        :_.x({a:g[0],b:g[1]},O(g[3])?
+    {av:g[2],bv:g[3],l:g[4],f:g[5],d:g[6]}
+        :O(g[2])?{av:g[2],l:g[3],f:g[4],d:g[5]}
+        :{l:g[2],f:g[3],d:g[4]})
+    jd=b2d.dJ(o)
+    if(o.coll){jd.coll(true)}
+    j=w.J(jd).freq(_.tN(o.f)).damp(_.tN(o.d))
     if(N(o.l)){j.len(o.l)}
-    j.freq(o.f).damp(o.d)
-    return j
-}
-
-w.distColl=function(a,b,aV,bV){var w=this,g=G(arguments),
-
-
-    jd=b2d.dJ().init(
-        a,
-        b,
-        a.wCent().add(g[0]||V()).div(),
-        b.wCent().add(g[1]||V()).div()
-    ).coll(true),
-
-
-    j=w.J(jd)
-    return j
-}
-
-
-w.rod = function(a,b,l){var w=this,j
-
-    a = a || w.ball(150,150)
-    b = b || w.brick(180,150)
-    l = _.tN(len,200)
-
-    j = w.distColl({a:a, b:b, l:l})
-
     return j}
-w.spring = function (a, b) {var w=this,
 
-    j = w.dist({
-        a:a, b:b,
-        l:1, f:2
-    })
-
-
-return j}
 
 
 DIST=function(){W()
@@ -386,16 +332,14 @@ SPACEZOOM=function(){
     setTimeout(function(){
         w.s.tweenLoop([{kx:8}, 1000], [{kx:0}, 1000] , [{ky:8}, 1000], [{ky:0}, 1000]      ) //  w.s.tweenLoop([{r: 360}, 10000])
         p.coll('star', function(){p.sprite.tween([{kx:40},100],[{ky:40},100],[{kx:0,ky:0},100])})
-
         earth.sprite.tweenLoop([{r: 360}, 10000])
         earth.sprite.tweenLoop([{kx:16}, 3000],[{kx:0}, 3000])
         earth.coll('star', function(){w.s.flash()})
     }, 300)
 
-
-
-    w.distColl(p, northStar).freq(.15).damp(0).len(50)
-
+    w.dist({a:p, b:northStar,
+        l:50, f:0.15,
+        coll:true})
 
     scaleFunc = function(){var dx,dy,dst
         dx =    northStar.X()-p.X()
@@ -404,11 +348,9 @@ SPACEZOOM=function(){
         dst =  300 /dst
         return dst>2?2:  dst <.3? .3: dst}
 
-
     keepGuyCentered=function(getScaleFunc){//removed but brought back for spacezoom
         //used in SCALING LEVEL
         //*******
-
         cjs.tick(function(){ if(O(p.sprite)){
             var x = p.X(),
                 y = p.Y(), dif,
@@ -416,9 +358,7 @@ SPACEZOOM=function(){
                 scale = scaleFunc()
             w.s.sXY(scale)
             w.s.X(300 - ((x - 300) * scale)  )
-            w.s.Y(150 - ((y - 150)  ) * scale )}})
-
-    }
+            w.s.Y(150 - ((y - 150)  ) * scale )}})}
 
     keepGuyCentered(scaleFunc)
 
@@ -434,3 +374,26 @@ SPACEZOOM=function(){
 
 
 }
+
+
+w.distCollx=function(){var w=this, g=G(arguments)
+    return w.dist({a:g[0],b:g[1],av:g[2],bv:g[3],coll:true})}
+w.distCollxx=function(){var w=this,
+    g=G(arguments)
+
+    return w.J(b2d.dJ({
+        a:g[0],  b:g[1],  av:g[2],   bv:g[3]
+    }).coll(true))
+
+}
+w.rodx = function(a,b,l){var w=this
+    return w.dist({
+        a: a|| w.D(150,150,'b',50),
+        b: b|| w.S(180,150,'w',50,50),
+        l: _.tN(l, 200),
+        coll:true
+    })}
+
+
+w.springx = function(a,b){var w=this;
+    return w.dist({a:a|| w.D(150,150,'b',50),b:b|| w.S(180,150,'w',50,50), l:1, f:2 })}

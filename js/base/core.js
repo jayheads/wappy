@@ -934,3 +934,4 @@ _.c=function(c,orC){
     if(c=='*'){c=$r()}
     return oO('c',c||orC)}
 
+_.x=_.extend
