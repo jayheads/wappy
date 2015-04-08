@@ -68,13 +68,16 @@ ob.Y=function(y,duration){//make same same x
     else{this.y=y}
     return this}
 
+
+
 ob.tickX=function(func){var ob=this
 
-    cjs.tick(function(){ob.X(
-        func()
-    )})
+    cjs.tick(function(){ob.X( func() )})
 
     return this}
+
+
+
 
 ob.tickY=function(func){var ob=this
 

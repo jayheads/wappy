@@ -286,6 +286,8 @@ drag = drg=function(element){
 
 }
 
+
+
 cjs.Keys = function(o){
 
     if(O(o)){
@@ -318,10 +320,6 @@ cjs.watchKeys=function(){
     cjs.Keys.r = cjs.Keys.right = false
     cjs.Keys.u = cjs.Keys.up = false
     cjs.Keys.d = cjs.Keys.down = false
-
-
-
-
 
     $.kD('l',function(){
         if($.test){$l('left pressed')}

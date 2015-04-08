@@ -269,19 +269,33 @@ b.damp=function(l,a){
     this.lD(l).aD(a)
 return this}
 
-p.I = function self(impulse, point, point2){//p.impulse = p.applyImpulse = p.aI  =
+b.I= function me(i, v, v2){var b=this, o,g=G(arguments)
 
-    if(U(impulse)){ impulse =  this.worldVec().div(40) }
+    if(A(g[0])){
 
-    if(N(point)){
-        impulse = V(impulse, point)
-        point = point2
+        $l('arrrr')
+        return b.I.apply(b, g[0])
     }
 
-    if(U(point)){  point = this.GetWorldCenter()}
 
-    this.ApplyImpulse(impulse, point)
-    return this}//apply impulse. pass impulse as two nums, or obj //and pass in location, defaults to body center
+
+
+    o= N(g[1])?{i:V(g[0],g[1]),v:g[2]}
+        :{i:g[0],v:g[1]}
+    o.i=o.i||b.worldVec().div(40)
+    o.v=o.v||b.GetWorldCenter()
+
+    b.ApplyImpulse(o.i, o.v)
+    return b}//apply impulse. pass impulse as two nums, or obj //and pass in location, defaults to body center
+
+
+
+
+
+
+
+
+
 b.F = b.constF= function(v, c, c2){//b.applyForce = p.aF  =
     var b=this, g=G(arguments), v=g[0],c=g[1],c2=g[2]
 
@@ -1449,12 +1463,12 @@ player=function() {
 
 
 
-    b.byI =b.byImp=function(i){var k=cjs.Keys
+    b.byI=b.byImp=function(i){var k=cjs.Keys
         if(k.right){this.I(i,0)}
         else if(k.left){this.I(-i,0)}
         return this}
 
-    b.byV =b.byVel=function(v){var k = cjs.Keys
+    b.byV=b.byVel=function(v){var k = cjs.Keys
         if (k.right) { p.lV(v,0) }
         else  if (k.left) { p.lV(-v,0) }
         return this}
