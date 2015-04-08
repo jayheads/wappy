@@ -1,8 +1,17 @@
 jd = joint = b2d.Joints.b2RevoluteJointDef.prototype
 //just a shortcut to call initialze.  have i ever even done that?  laaaame waaah waaaaah
-jd.init =joint.i=function(){
-    this.Initialize.apply(this,  G(arguments) )
-    return this}
+
+
+jd.init =joint.i=function(){var jd=this
+    jd.Initialize.apply(jd, G(arguments))
+    return jd}
+
+
+
+
+
+
+
 //convenience functions
 jd.mot = jd.motor =  function(speed, torque, enable){
     this.speed(speed)

@@ -231,32 +231,6 @@ j.wind=function(){var that=this, wound=false
 
 
 
-
-b2d.dJ = b2d.distJ = b2d.distDef =b2d.distanceDef = DistanceJoint  =  Joints.distance =  dJt =function(o){
-
-    var jd = new b2d.Joints.b2DistanceJointDef()
-
-    //this initialize function for distance, not revolute
-
-    jd.init = function(b1, b2, b1V, b2V){
-
-        if( U(b1V) ){ b1V = b1.worldCenter()}
-        if( U(b2V) ){ b2V = b2.worldCenter()}
-        this.Initialize(b1, b2, b1V, b2V)
-        return this}
-
-    if( O(o) ){ // ever used?
-        if(o.init){ j.init.apply(j, o.init)  }
-        if(N(o.len) ){ j.len( o.len ) } else { j.len(1) }
-        if(N(o.freq) ){ j.freq( o.freq ) } else { j.freq(3) }
-        if(N(o.damp) ){  j.dampRat( o.damp) } else { j.dampRat( .1 ) }
-        if((o.coll) ){ j.collide( true ) }  else { j.collide( false ) }
-
-        return w.J( jd )
-    }
-// dont ever set a dJ().len(0)
-    return jd }
-
 PulleyJoint =pJt =function(){
 
     bPJD =BXJ.b2PulleyJointDef

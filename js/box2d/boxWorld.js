@@ -1200,55 +1200,6 @@ joints=function() {
     }
 
 
-    w.dist = function(a,b,
-                      b1OffV, b2OffV,
-
-                      len, freq, damp) {
-
-
-//location pams are optional, and be default to their center ponts
-// note: if you passe them in, pass them as relative(local to body) coords
-//BOX2D requires them as WORLD points - for some reason.. (but i think my way has more use cases)
-//there is also distColl for 'collideConnected=true' joints
-
-
-        var b1V = a.wCent(),  b2V = b.wCent(),
-
-            jd = b2d.dJ(),
-
-            j
-
-
-
-        if (O(b1OffV)){b1V = b1V.add(b1OffV)}
-        if (O(b2OffV)){b2V = b2V.add(b2OffV)}
-
-        jd.init(a, b, b1V.div(), b2V.div())
-        j = w.J(jd)
-
-        if (N(b1OffV)) {
-            damp = len;
-            freq = b2OffV;
-            len = b1OffV}
-
-
-        if (N(len)) {j.len(len)}
-        if (N(freq)) {j.freq(freq)}
-        if (N(damp)) {j.damp(damp)}
-
-
-        return j
-    }
-
-
-
-    w.tightDist = function(piece, newPiece){
-
-        return this.dist(piece, newPiece, 1, 1000, 1000)
-
-    }
-
-
 
     w.fixts = function (x, y, f) {
         var w = this
@@ -1257,38 +1208,8 @@ joints=function() {
 
         return w.B(x, y, f)
     }
-    w.distColl = function (a, b, b1OffV, b2OffV) {
-
-        var b1V = a.wCent(),
-
-            b2V = b.wCent(),
-
-            jd = b2d.dJ(), j
 
 
-        if (O(b1OffV)) {
-            b1V = b1V.add(b1OffV)
-        }
-
-        if (O(b2OffV)) {
-            b2V = b2V.add(b2OffV)
-        }
-
-        jd.init(a, b, b1V.div(), b2V.div()).coll(true)
-
-        j = w.J(jd)
-
-        return j
-    }
-    w.rod = function (a, b, len) {
-        a = a || this.ball(150, 150)
-        b = b || this.brick(180, 150)
-        len = N(len) ? len : 200
-        return this.distColl(a, b).len(len)
-    }
-    w.spring = function (a, b) {
-        return this.dist(a, b).len(1).freq(2)//.damp(.1)
-    }
     w.boxes = function () {
         var w = this
 
