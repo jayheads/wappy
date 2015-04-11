@@ -386,6 +386,19 @@ b.cir= function(o){
 
     return b
 }
+b.CIRCx = b.circx = function(col, rad, x, y){ var g= G(arguments),  fixt, h,str
+    col=g[0];rad=g[1];x=g[2];y=g[3];
+    if(S(y)){str=y;y=null}
+    if(S(x)){str=x;x=null}
+    if(S(rad)){str=rad;rad=null}
+    if(!S(col)){y=x;x=rad;rad=col}
+    fixt =  this.fixt(  b2d.circ(rad,x,y)   )
+    if(str){ fixt.K(str) }
+    if(S(col)){ fixt.bindSprite( w.s.circ(col,rad,x,y)) }
+    return fixt
+
+}
+
 b.rec = b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
     g= G(arguments),c=g[0],W=g[1],H=g[2],x=g[3],y=g[4],a=g[5],
     fD,f,h,k, o,p
@@ -424,6 +437,51 @@ b.rec = b.RECT= function(c, W, H, x, y, a){var b=this,w= b.wor(),
     return f
 
 }
+b.rect = function(wd, ht, x, y){
+    x=N(x)?x:0;
+    y=N(y)?y:0
+    var that=this,
+        rect = b2d.poly(wd,ht, x, y),
+        fixt = this.fixt(rect).den(1),
+        r = cjs.rect2(wd, ht, x, y).XY(this.X(), this.Y())
+
+    w.s.A(r)
+    cjs.tick(function(){
+        r.rot( that.rot() )
+        r.XY(that.X(), that.Y()  )
+    })
+
+    return fixt}
+b.rectSensor = function(wd, ht, x, y){x=N(x)?x:0; y=N(y)?y:0
+    var that=this
+
+    var rect = b2d.poly(wd, ht, x, y)
+
+    rect.isSensor = true
+
+
+    var fixt = this.fixt(rect)
+
+    fixt.den(.00000001)
+
+
+    var r = cjs.rect2(wd, ht, x, y)
+
+
+    r.XY(this.X(), this.Y())
+
+    w.s.A(r)
+
+    r.opacity(.3)
+
+    cjs.tick(function(){
+        r.rot( that.rot() )
+        r.XY(that.X(), that.Y()  )
+    })
+
+    fixt.sprite = r
+
+    return fixt}
 
 
 b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
@@ -479,6 +537,10 @@ b.pol=function(o){var b=this,v,h,f,fd,n,fs, h,mult
     if(o.bm){b.bS(w.s.h().bmV(o))}
 
     return fs.length>1?fs:fs[0]}
+
+
+
+
 
 CIR=function(){W().C('y'); cjs.rulers()
     b = w.ball(600,300,10)

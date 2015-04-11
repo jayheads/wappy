@@ -90,9 +90,10 @@ b2d.Body = b2d.Dynamics.b2Body
 b2d.Fixture = b2d.Dynamics.b2Fixture
 
 
-b2d.ConstantAccelController= b2d.Dynamics.Controllers.b2ConstantAccelController()
-b2d.BuoyancyController=new b2d.Dynamics.Controllers.b2BuoyancyController()
-
+b2d.ConstantAccelController= b2d.Dynamics.Controllers.b2ConstantAccelController
+b2d.BuoyancyController=new b2d.Dynamics.Controllers.b2BuoyancyController
+b2d.Fixture = b2d.Dynamics.b2Fixture
+b2d.FixtureDef = b2d.Dynamics.b2FixtureDef
 //
 //
 

@@ -1,6 +1,6 @@
-
-
-
+M=Math
+M.c= M.cos
+M.s= M.sin
 
 
 
@@ -483,7 +483,7 @@ _wX=function(a,b){
         return a}}
 
 
-M=nN=function(w){return Boolean(Number(w))}
+nN=function(w){return Boolean(Number(w))}//M=
 
 Nn = _.isNan
 
@@ -907,6 +907,8 @@ _.r = _.rest
 _.e = _.each
 _.m= _.map
 _.t=_.times
+_.b= _.bind
+
 $.ev=function(n, fn){setInterval(fn, n*1000)}
 
 

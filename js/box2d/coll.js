@@ -597,11 +597,14 @@ b2d.manager = b2d.contactManager = b2d.cM=function(){//used?
     m.d= m.ds= m.Destroy
     return m}
 
-b2d.cxFilt = b2d.filter = b2d.f= function(){//used?
+b2d.cxFilt = b2d.filter =   function(){//used?
     var f=new BXD.b2ContactFilter
     f.rC =f.RayCollide
     f.sC =f.ShouldCollide
     return f}
+
+
+
 
 
 b2d.filt =b2d.filterData =  function(){

@@ -187,32 +187,36 @@ w.yShipEquilateral = function(color, x,y,scale){var halfSide, side, ship
 
 
     return ship}
-w.yShip = function(color, x,y,scale){var halfSide, side, ship
 
-    if(!S(color)){scale=y;y=x;x=color;color='y'}
+w.yShip = function(c, x, y, sc){var w=this, hS, side, ship
 
-    color=oO('c',color)
-    scale = N(scale)?scale:4
-    halfSide = scale * 4
-    side = halfSide * 2
+    if(!S(c)){sc=y;y=x;x=c;c='y'}
 
-    ship = this.dyn(x,y)
 
-    ship.convex(color,[[-halfSide,halfSide],[0,-side*2 ],[halfSide,halfSide]])
+    hS =  _.tN(sc, 4) * 4;  side = hS * 2
+
+    ship = w.dyn(x,y)
+
+
+    ship.poly(oO('c', c), [
+
+        [-hS,hS], [0,-side*2], [hS,hS]
+
+    ] )
+
+
+
+
 
     ship.dir = function(){
         return this.GetWorldVector(V(0,-1))
     }
-
-    //methods
     ship.push=function(n){n=N(n)?n:1
         this.I(this.dir().mult(n * 0.1))
         return this}
-
     ship.chug=function(n){var that=this
         I(function(){that.push(n)}, 100)
         return this}
-
     ship.going=function(){
 
         var lv = this.lV(),
@@ -223,8 +227,6 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
 
         return   (abs(x)>0.5)||(abs(y)>0.5)||(abs(a)>0.5)
     }
-
-
     ship.shoot=function(kind){kind = kind||'bul'
         var bullet, dist, y=this
         dist =  y.dir().mult(100)
@@ -237,12 +239,9 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
         setTimeout(function(){ bullet.kill()  }, 400)
 
         return bullet}
-
-
     ship.shootOnSpace= function(k){var y=this
         $.space(function(){y.shoot(k)})
         return this}
-
     ship.shootOnInt= function(int, kind){
         var y=this, int = N(int)?int:1000
 
@@ -256,11 +255,26 @@ w.yShip = function(color, x,y,scale){var halfSide, side, ship
         return this}
 
     return ship.den(.5).K('ship')
-}
-w.ship = function(x,y){x=N(x)?x:300; y=N(y)?y:x
 
-    return this.yShip(x,y).thrustControl().shootOnSpace().damp(2)
 }
+
+
+
+
+w.ship= function(x, y){var w=this
+
+
+    x= _.tN(x,300)
+
+    y= _.tN(y,x)
+
+    return w.yShip(x,y).thrustControl().shootOnSpace().damp(2)
+
+}
+
+
+
+
 
 
 ///////////////

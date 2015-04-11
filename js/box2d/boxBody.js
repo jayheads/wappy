@@ -146,10 +146,17 @@ b.X=function(x){var g=G(arguments),pos=this.XY()
     if(U(x=g[0])){return pos.x}
     this.XY($.update(pos.x,x,g),pos.y)
     return this}
+
 b.Y=function(y){var g=G(arguments),pos=this.XY()
+
     if(U(y=g[0])){return pos.y}
+
     this.XY(pos.x, $.update(pos.y,y,g))
-    return this}
+
+    return this
+}
+
+
 b.XY=function(x,y){var newPos
     if(x==='*'){x =Math.random()*10 }
     if(y==='*'){y =Math.random()*10 }
@@ -356,10 +363,11 @@ b.wV = b.worldVec=function(v, y){
 }
 
 //transform
-b.transform = p.tf=  function(tf){
+p.tf =b.transform=function(tf){
     if(U(tf)){return this.GetTransform() }
     this.SetTransform(tf)
     return this}
+
 
 //next
 b.next = p.n = p.gN =function(){ return  this.GetNext()   }
@@ -1412,4 +1420,23 @@ UNIONNOTTOUCHING=function(){w=b2d.W()
 
 
 }
+
+
+
+f = b2d.Fixture.prototype
+
+f.B=  f.body = f.gB = f.getBody=function(){return this.GetBody()}
+f.wor = function(){return this.body().wor()}
+f.kin=function(){var b=this.B(); b.kin.apply(b, arguments); return this}
+f.stat=function(){var b=this.B(); b.stat.apply(b,arguments); return this}
+f.isStat=function(){return this.B().isStat()}
+f.isDyn=function(){return this.B().isDyn()}
+f.isKin=function(){return this.B().isKin()}
+f.bType=function(){return this.B().GetType()}
+//f.getType = f.gT = function(someType){var b=this.B(), t=b.GetType(); return  D(someType)?(someType==t):t}
+f.isBType = f.isType = function(t){if(t){return this.bType()==t}}
+f.rot=function(rot, g){ return this.B().rot(rot, g) }
+f.killBody=function(){this.B().kill()}
+f.cancel=function(){this.body().cancel(); return this}
+f.switchTo=function(co){this.body().switchTo(co); return this}
 

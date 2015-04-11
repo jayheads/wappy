@@ -45,6 +45,7 @@ w.rC=w.rayCast=function(func,v1,v2){
 
 
 w.Y=function(x,Y){var w=this; y = w.ship(x,Y); return w}
+
 w.P=function(x,y){var w=this
     x=N(x)?x:300
     y=N(y)?y:500
