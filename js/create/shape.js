@@ -138,6 +138,11 @@ ct.rec= function(c,W,H,x,y,a){
         .c(o.c, o.C, o.l)
 
 
+    if(N(o.o)){
+
+        $l('op: '+ o.o)
+        h.opacity(o.o)
+    }
 
     if(o.rg){h.rg(o.c,o.C)}
     if(o.lg){h.lg(o.c,o.C)}
@@ -145,6 +150,9 @@ ct.rec= function(c,W,H,x,y,a){
     else {h.dr2(o.w,o.h)}
     return ct2
 }
+
+
+
 cjs.isShape=function(h){
     return O(h) && h.graphics
 }

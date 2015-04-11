@@ -90,8 +90,9 @@ timeStamp2 = function(s, j, pxPerSec){
 
             j.y((j.ts/1000) * pxPerSec,'-')  }}
     return s.t(fn)}
-cjs.tick =function(func){func();
+cjs.t = cjs.tick=function(func){func();
     cjs.Ticker.on('tick', func)}
+
 
 cjs.tick2 = function(func){
     cjs.Ticker.addEventListener('tick', func)

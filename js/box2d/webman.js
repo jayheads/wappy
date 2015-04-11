@@ -41,13 +41,40 @@ w.dist = function(){var w=this,g=G(arguments),jd,j,o
 
 
 
-DIST=function(){W()
-    b = w.S(500,200,'r', 10)
-    b2 = w.D(500,400,'g',100)
-    j=w.dist(b,b2)
+DIST=function(){W(0).Y()
+
+    b = w.S(500,200,'r', 40)
+
+
+
+
+    b2 = w.D(500,300,'w',20,200)
+
+    j=w.dist(b,
+        b2)
+
+    w.dist(b2,w.D(500,400,'g',100)
+    )
+
+
+
+    w.dist(
+        y.XY(200,200),
+       x= w.D(200,220, 'r', 12)
+    )
+
+
+    w.dist(x,x=w.D(200,250, 'r', 12))
+    w.dist(x,x=w.D(200,280, 'b', 12))
+    w.dist(x,x=w.D(200,320, 'g', 12))
+    w.dist(x,x=w.D(200,360, 'u', 12))
+    w.dist(x,x=w.D(200,420, 'g', 12))
+    w.dist(x,x=w.D(200,500, 'u', 12))
+
+
+
+
 }
-
-
 
 
 
@@ -115,11 +142,6 @@ b.shootRight=function(){var b=this, F = b.getForce()
 b.shootLeft=function(){var b=this, F=b.getForce()
     b.bulLeft(F*1.5-100, -F)}
 
-
-
-
-
-
 b.web=function(K){
     //when a web is created it gets web.connected=false
     //when it hits certain things and forms a joint, then connected->true
@@ -153,20 +175,6 @@ b.web=function(K){
 }
 
 
-
-
-
-TESTWB=function(){W()
-
-    $l('testwb')
-
-    b = w.D(600,300)
-    web=w.web(b)
-    p=web.Piece()
-    web.addPiece(b, p)
-
-
-}
 TWEB=function(){W()
 
     b  = w.S(600,300, 100)
@@ -237,9 +245,6 @@ WEBMAN = function(){W({ g:30 ,w:'_'}); blocks=function() {
     })
 
 }
-
-
-
 SPACEZOOM=function(){
 
 
@@ -305,7 +310,7 @@ SPACEZOOM=function(){
 
 }
 
-distJoints=function() {
+
     DISTPOINTS = function () {
         W()
 
@@ -399,7 +404,8 @@ distJoints=function() {
             }
         })
     }
-    SPRINGS3 = function () {
+
+SPRINGS3 = function () {
         b2d.levelScroll()
 
         softPlat = function (x, y) {
@@ -420,7 +426,9 @@ distJoints=function() {
         softPlat(900, 120)
 
     }
-    SPRINGINSPACE = function () {
+
+
+SPRINGINSPACE = function () {
         b2d.mW({grav: 0})
         var spring = function (bx, by) {
             var x, b, j
@@ -461,8 +469,11 @@ distJoints=function() {
 
 
     }
-    BOUNCESPRING = function () {
-        b2d.levelScrollX()
+
+BOUNCESPRING = function () {
+       W(1200, 600, 2400, 600).P()
+    w.roof.kill()
+    p.XY(285, 0).track(600,200)
 
 //default freq is 0.  but thats like freq 10000000
 //freq is tightness.  the default (0) is all the way tight.
@@ -478,66 +489,73 @@ distJoints=function() {
         // it makes you less stretchy?
         // just leave damp at 0 for now, and play with freq
 
-        w.tramp(200, 0, 6)// not bouncy
-        w.tramp(500, 1.2, 6)// too bouncy
-        w.tramp(800, .75, 6)// mid bouncy, mid freq
-        w.tramp(1100, .75, 2)//low freq
-        w.tramp(1400, .75, 12)//high freq
+    w.tramp(200, 0, 6)// not bouncy
 
-        p.XY(285, 0)
+    w.tramp(500, 1.2, 6)// too bouncy
+
+    w.tramp(800, .75, 6)// mid bouncy, mid freq
+
+    w.tramp(1100, .75, 2)//low freq
+
+    w.tramp(1400, .75, 12)//high freq
 
         setInterval(function () {
             p.I(0, -150)
         }, 1000)//game:: he autojumps.  u jump to give him a double jump!
         setTimeout(function () {
-            w.s.flash();
+           // w.s.flash();
             w.addHundBalls()
         }, 30000)
     }
-    SPRINGS2 = function () {
-
-        z()
-
-        b2d.mW()
 
 
-        j1 = w.J(
-            jd = b2d.distDef().init(
-                w.circ(30, 200, 20, 'red'), w.box()
-            ).len(200).freq(5).damp(.1)
-        )
+
+SPRINGS2 = function(){W()
+
+    j1 = w.dist(
+        w.circ(30, 200, 20, 'red'),
+        w.box()
+    ).len(200).freq(5).damp(.1)
 
 
-        cjs.tick(function () {
+    j2 = w.dist(
+        w.circ(100, 300, 30, 'white'),
+        w.box()
+
+    ).len(20).freq(5).damp(.1).coll(false)
+
+
+    j3 = w.dist(
+
+                w.circ(130, 250, 30, 'blue'),
+                w.brick()
+            ).len(120).freq(5).damp(0).coll(true)
+
+
+    cjs.tick(
+        function () {
             if (j1.len() > 1) {
                 j1.len(j1.len() - 1)
             }
         })
 
 
-        j2 = w.J(
-            b2d.spring(
-                w.circ(100, 300, 30, 'white'), w.box()
-            ).len(20).freq(5).damp(.1).coll(false)
-        )
+}
 
-        j3 = w.J(
-            b2d.spring(
-                w.circ(130, 250, 30, 'blue'),
-                w.brick()
-            ).len(120).freq(5).damp(0).coll(true)
-        )
 
-    }
-    BRIDGE = function () {
+
+BRIDGE = function () {
         W().P()
-        w.bridge(100, 10)
-        setTimeout(function () {
-            w.s.flash()
+
+    w.bridge(100, 10)
+
+    setTimeout(function () {
+            //w.s.flash()
             p.XY(500, 0)
         }, 5000)
     }
-    JCOLL = function () {
+
+JCOLL = function () {
         W()
         w.dist(
             w.D(200, 200, 'r', 50),
@@ -561,28 +579,42 @@ distJoints=function() {
             b: w.rect(300, 200, 60),
             l: 50, f: 3, d: .1, coll: 1
         })
-
-
     }
-    RAGD = function () {
+
+RAGD = function () {
         W()
         // world.Spring =
-        w.J(
+
+    w.J(
             b2d.spring(
                 b1 = w.ball(100, 100, 30),
-                w.ball(100, 200, 40)))
+                w.ball(100, 200, 40)
+            )
+
+    )
+
         //world.Rod =
-        w.J(
+
+    w.J(
             b2d.rod(
+
                 b2 = w.box(100, 400, 30),
-                w.box(100, 500, 40)))
-        p = w.addMe()
-        w.J(b2d.spring(b1, p))
-        w.J(b2d.spring(b2, p))
-    }
+                w.box(100, 500, 40)
+
+            )
+    )
 
 
-};distJoints()
+    p = w.addMe()
+       // w.J(b2d.spring(b1, p))
+       // w.J(b2d.spring(b2, p))
+
+}
+
+
+
+
+
 
 w.distCollx=function(){var w=this, g=G(arguments)
     return w.dist({a:g[0],b:g[1],av:g[2],bv:g[3],coll:true})}
@@ -601,8 +633,6 @@ w.rodx = function(a,b,l){var w=this
         l: _.tN(l, 200),
         coll:true
     })}
-
-
 w.springx = function(a,b){var w=this;
     return w.dist({a:a|| w.D(150,150,'b',50),b:b|| w.S(180,150,'w',50,50), l:1, f:2 })}
 w.distLinkX=w.ropePiece = function(x, y){var w=this; return w.D(x,y,'w',3,5).bo(0).aD(10)} //link for distance ropes

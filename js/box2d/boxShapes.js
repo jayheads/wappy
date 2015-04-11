@@ -3783,14 +3783,6 @@ pH.verts = function(){
 
 
 
-b2d.polyH= function(W,H,x,y,a){                                  //b2d.pSh=//polygonShape // this is all you need for all cases (thanks to pH.set)
-    var p = new b2d.PolygonShape(),
-        g=G(arguments)
-    if(N(g[0])){p.box(W,H,x,y,a)}
-    else if(O(W)){p.arr.apply(p,g)}
-    return p}
-
-
 
 
 
@@ -4068,14 +4060,25 @@ STAIRS=function(){w=b2d.W()
         [500,350,450,100],
         [320,400,50,600]])
 }
+
+w = b2d.World.prototype
+
+w.fixts=function(x,y,f){var w=this
+    f=b2d.fixts[f]
+    return w.B(x,y,f)
+}
+
 NAMESPACE=function(){
 // w.B(200,200,b2d.fixts('tri3'))
-
 //w.B(200,200,b2d.fixts('c50'))
     b2d.fixts={}
     b2d.fixts.tri3=[[-100,0],[0,-50],[400,0]]
     b2d.fixts.c50=[50]
 }
+
+
+
+
 FRICKY=function(){w = b2d.W()
     b2d.fricky= [[10,10],[20,40,0,0,90,[1,0,0]],[20,40,0,0,180,[1,0,0]]]
     b2d.bouncy= [[10,10],[20,40,0,0,90,[1,.9,1]],[20,40,0,0,180,[1,.9,1]]]

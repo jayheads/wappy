@@ -22,17 +22,6 @@ jd.len=function(len){
 jd.damp = function(a){if(U(a)){return this.dampingRatio}
     this.dampingRatio=a;return this}
 
-//revolute
-jd.refAng=j.rA=function(a){j.referenceAngle= tRad(a); return this}
-jd.maxTorque=j.mMT=function(a){
-    this.maxMotorTorque=a
-    return this}
-jd.lowAng= j.lA = function(a){this.lowerAngle=tRad(a); return this}
-jd.upAng= j.uA = function(a){this.upperAngle=tRad(a); return this}
-jd.localA =j.lAA=function(a){ this.localAnchorA = a; return this}
-jd.localB =j.lAB=function(a){ this.localAnchorB = a; return this}
-jd.rat = j.r=function(a){this.ratio = a; return this}
-jd.axis = j.lXA=function(a){ this.localAxisA=a; return this}
 
 //slider
 jd.maxForce= j.mMF=function(a){
@@ -117,6 +106,7 @@ j.len= function(a){var g=G(arguments),
 
 
     return this}
+
 j.shrink=function(){
 
     this.len(0.97,'*')
@@ -240,27 +230,7 @@ w.dJ = w.j = w.destroyJoint = function (a) {
 
 
 
-w.Gear = function (a, b, c) {
 
-        return world.createJoint(Gear(a, b, c))
-        function Gear(bA, bB, ratio) {
-            var gearJoint = new b2d.Joints.b2GearJointDef()
-            gearJoint.joint1 = bA
-            gearJoint.joint2 = bB
-            gearJoint.bodyA = bA.GetBodyA()
-            gearJoint.bodyB = bB.GetBodyA()
-            gearJoint.ratio = N(ratio) ? ratio : 1
-            return gearJoint
-        }
-    }
-
-
-w.weld = function () {
-
-    return this.J(
-        b2d.weld.apply(null, arguments)
-    )
-}
 
 
 mouseJoints=function() {
@@ -593,7 +563,20 @@ mouseJoints=function() {
 
     };mouseJoints()
 
-advancedJoints=function() {
+advancedJoints=function() {w.Gear = function (a, b, c) {
+
+    return world.createJoint(Gear(a, b, c))
+    function Gear(bA, bB, ratio) {
+        var gearJoint = new b2d.Joints.b2GearJointDef()
+        gearJoint.joint1 = bA
+        gearJoint.joint2 = bB
+        gearJoint.bodyA = bA.GetBodyA()
+        gearJoint.bodyB = bB.GetBodyA()
+        gearJoint.ratio = N(ratio) ? ratio : 1
+        return gearJoint
+    }
+}
+
     PulleyJoint = pJt = function () {
 
         bPJD = BXJ.b2PulleyJointDef
@@ -1068,10 +1051,6 @@ w.colBalls=function(){var w=this
 return w}
 
 
-
-
-
-
 DENROT=function(){W(0) //w=b2d.m({g:0})
 
 
@@ -1103,3 +1082,62 @@ DENROT=function(){W(0) //w=b2d.m({g:0})
     }, 6000)
 
 }
+
+b=b2d.Body.prototype
+
+
+
+
+
+b.joint = function(){ return this.GetJointList().joint }
+
+b.rev = function (nextBody) {
+    var body = this
+
+    this.wor().rev(body, nextBody)
+
+    return nextBody
+}
+b.dist = function (nextBody) {
+    var body = this
+
+    this.wor().dist(body, nextBody)
+
+    return nextBody
+}
+
+
+b.destroyAllJoints = function () {
+    var b = this, toDestroy = [],
+        je = b.GetJointList()
+    while (je) {
+        toDestroy.push(je.joint)
+        je = je.next
+    }
+    _.each(toDestroy, function (j) {
+        w.DestroyJoint(j)
+    })
+    return this
+}
+
+
+
+
+
+b.glue = function (b2) {
+
+    return this.wor().weld(this, b2, b2.X() - this.X(), b2.Y() - this.Y())
+
+}
+
+b.mJ = b.mouse = b.mouseJ = b.mouseJoint = function(x,y){
+
+    var b = this, w= b.wor(),
+        v=V(x,y),
+
+        mj = w.mouseJ(b,v)
+
+    return mj
+}
+
+

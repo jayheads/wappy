@@ -111,64 +111,6 @@ CATAPULT=function(){
 
 
 
-COINWARP=function(){
-    W({   g:0,
-        w:0})
-
-    score=0
-    badScore=0
-
-   // p= w.player(2.5, 'thrust').Y(200).horizCenter().angDamp( 10000 ).linDamp(1).K('bullet').warp2()
-
-    p = w.ship().K('player').warp2()
-
-    _.times(2, function(){w.greenGuy(Math.random()*600).warp2()})
-
-    setInterval(function(){w.coin()},  300)
-
-     w.beg(function(cx){var fixt
-
-
-         cx.with('coin','player', function(){this.B().kill()
-             score++})
-
-         cx.with('coin','greenGuy', function(){
-             this.B().kill()
-             badScore++
- })
-
-
-     })
-
-
-
-
-
-    //w.with('coin','player', function(c){c.setDestroy();score++})
-   // w.with('coin','greenGuy', function(c){c.setDestroy();badScore++})
-
-
-
-
-   // w.class('coin')
-     //   .with('player', function(c){c.setDestroy();score++})
-       // .with('greenGuy', function(c){c.setDestroy();badScore++})
-
-
-    w.class('coin').with({
-        player: function(){score++; return true},
-        greenGuy: function(){badScore++; return true}
-    })
-
-
-    w.startKilling()
-    setInterval(function(){w.s.pen( score + ' / '+ badScore)}, 3000)
-}
-
-
-
-
-
 
 
 
@@ -510,10 +452,12 @@ GRAVITYRANGE=function(){w=b2d.W({g:10})
     w.circ(100,100,50, 'k').den(1)
     w.circ(100,200,40, 'l').den(1)
 
+
     range = w.prism(
         w.rect(600,300,220, 20, 'q').stat(),
-        w.rect(600, 300,20, 250, 's').linDamp(10)
+        w.rect(600, 300,20, 250, 's').lD(10)
     ).lm(-100,100)
+
 
     w.show(function(){return 'Welcome to Gravity Range: Current gravity is ' + range.val()  })
 
@@ -522,14 +466,12 @@ GRAVITYRANGE=function(){w=b2d.W({g:10})
 
 
     cjs.tick(function(){
-
-        w.G( range.val() )
-
+        w.G(range.val())
         w.each(function(b){b.I(0,.1)})
     })
 
-    w.debug()
 }
+
 
 STABTRAP=function(){w=wor({g:0}).debug()
 
@@ -564,33 +506,6 @@ STABTRAP=function(){w=wor({g:0}).debug()
 }
 
 
-
-SHIPSPRITE=function(){
-
-//look, no vars!
-    b2d.W({g:3})
-        .chalk('spritebox example')
-        .spriteBox({
-            "framerate":24,
-            "images":["thrusty.png"],
-            "frames":[
-                [0, 0, 512, 512, 0, -53, -36],
-                [512, 0, 512, 512, 0, -53, -36],
-                [1024, 0, 512, 512, 0, -53, -36],
-                [0, 512, 512, 512, 0, -53, -36],
-                [512, 512, 512, 512, 0, -53, -36],
-                [1024, 512, 512, 512, 0, -53, -36],
-                [0, 1024, 512, 512, 0, -53, -36],
-                [512, 1024, 512, 512, 0, -53, -36],
-                [1024, 1024, 512, 512, 0, -53, -36],
-                [0, 1536, 512, 512, 0, -53, -36],
-                [512, 1536, 512, 512, 0, -53, -36]],
-            "animations":{
-                "die": {"speed": 1, "frames": [8, 9, 10], next:false},
-                "shoot": {"speed": 1, "frames": [1,2,3,4,0], next:false},
-                "thrust": {"speed": 1, "frames": [5, 6, 7,0], next:false}}
-        }).thrustify()
-}
 
 
 FLOCKING=function(){
@@ -1011,8 +926,21 @@ TALKJS=function(){   w = b2d.W({   g:0,   w:0   }).startKilling().debug()
 
     p= w.addMe(500,300).stat()
 
+
+    w.addCirc= function (x, y, radius, color) {//specific to talkjs
+        x = N(x) ? x : parseInt(Math.random() * 2200 - 1000)
+        y = N(y) ? y : parseInt(Math.random() * 1600 - 1000)
+        radius = N(radius) ? radius : _.random(14) + 8
+        color = oO('c', color || $r())
+        this.ball(x, y, radius).bindSprite2(
+            cjs.circ(radius, color).XY(x, y)).linDamp(2)
+
+    }
     _.times(100, function(){
+
         w.addCirc()
+
+
     })
 
 
@@ -1039,6 +967,8 @@ TALKJS=function(){   w = b2d.W({   g:0,   w:0   }).startKilling().debug()
 
 
 }
+
+
 
 ORBIT=function(){w = b2d.W({g:0,w:0}).debug()
     w.stars()

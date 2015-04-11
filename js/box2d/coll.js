@@ -1,3 +1,209 @@
+w= p=b2d.World.prototype
+w.listen = w.setContactListener = w.sCL = w.SetContactListener
+
+w.beg=w.begin=function(k,k2,fn){var w=this,
+
+        bH=w.beginHandlers
+
+    //ADDS one or more handlers to beginHandlers array
+
+    //most common use, usually just need one func.
+    // would i ever need more?
+    if(F(k)){_.e(arguments, function(fn){bH.push(fn)})}
+
+    else if(F(fn)){
+            bH.push(function(cx){
+                if(cx.with(k,k2)){fn(cx)}})}
+
+    else if(F(k2)){
+        bH.push(function(cx){if(cx.with(k)){k2(cx)}})}
+    return w
+
+}
+
+
+
+w.pre = function(){var w = this
+        _.e(arguments, function (fn){
+            w.preHandlers.push(fn)})
+        return w
+}
+
+
+
+w.post = function () {
+        var that = this
+        _.each(arguments, function (func) {
+            that.postHandlers.push(func)
+        })
+        return this
+    }
+w.end = function (what, what2, func) {
+        var w = this
+        if (F(what)) {
+            _.each(arguments, function (func) {
+                w.endHandlers.push(func)
+            })
+        }
+        else if (F(what2)) {
+            func = what2
+            w.endHandlers.push(function (cx) {
+                if (cx.with(what)) {
+                    func(cx)
+                }
+            })
+        }
+        else if (F(func)) {
+            w.endHandlers.push(function (cx) {
+                if (cx.with(what, what2)) {
+                    func(cx)
+                }
+            })
+        }
+        return this
+    }
+
+
+w.with= w.collWith=function(a,b,c){var w=this
+    w.beg(function(cx){cx.with(a,b,c)})
+    return w}
+
+w.class=function(k){var w=this
+    var ob={class:k,  k:k,  world:w, w:w}
+    ob.with=ob.collWith=function(k,func){var ob=this
+        if(O(k)){_.e(k, function(fn,k){ob.with(k,fn)})}
+        else {w.with(w.class, k, fn)}
+        return w}
+    return ob}
+
+w.collideAny = function(a, fn){var w=this
+    w.beg(a, function(cx){$.do(function(){fn(cx)})})
+return w}
+
+w.coll= function(k1, k2, func){var w=this, name=k1+k2
+        if(F(k2)){return w.collideAny(k1,k2)}
+        w.beg(function(cx){if(cx.with(k1, k2)){w.flag(name, cx)}})
+        cjs.tick(function(){
+            var cx = w.flagged(name)
+            if(cx){func(cx)}})
+}
+
+
+
+
+
+
+
+w.flag = function (flag, val) {
+        this.flags = this.flags || {}
+
+        if (U(val)) {
+            val = true
+        }
+        this.flags[flag] = val
+        return this
+    }
+w.flagged = function (flag) {
+        this.flags = this.flags || {}
+        var wasFlagged = this.flags[flag]
+        if (wasFlagged) {
+            this.flags[flag] = false
+        }
+        return wasFlagged
+    }
+w.on = function (onWhat, fn){var w=this
+        //this lets you specify a function to be run,
+//immediately whenever a specific flag is set
+//(and it is passed the value)
+
+        //interesting default !!!!!!!
+        //func=func||function(val){val()}
+
+        cjs.tick(function(){var val=w.flagged(onWhat)
+            if(val){fn(val)}
+        })
+
+        return w
+    }
+w.when = function (what, what2, bFunc, eFunc){
+        var w = this
+
+        if (F(what)) {
+            eFunc = what2
+            bFunc = what
+            w.beg(bFunc)
+            if (eFunc) {
+                w.end(eFunc)
+            }
+        }
+
+        else if (F(what2)) {
+            eFunc = bFunc
+            bFunc = what2
+            w.beg(what, bFunc)
+            if (eFunc) {
+                w.end(what, eFunc)
+            }
+        }
+
+        else if (F(bFunc)) {
+            w.beg(what, what2, bFunc)
+            if (eFunc) {
+                w.end(what, what2, eFunc)
+            }
+        }
+
+        return this
+    }
+w.setContactFilter = w.sCF = w.SetContactFilter
+w.while = function (kind, kind2, func) {
+
+        var w = this
+
+        var push = false
+
+        if (F(func)) {
+
+            w.when(kind, kind2,
+                function () {
+                    push = true
+                },
+                function () {
+                    push = false
+                })
+
+            cjs.tick(function () {
+                if (push) {
+                    func()
+                }
+            })
+        }
+
+
+        else if (F(kind2)) {
+
+            w.when(kind,
+                function () {
+                    push = true
+                },
+                function () {
+                    push = false
+                })
+
+            cjs.tick(function () {
+                if (push) {
+                    kind2()
+                }
+            })
+        }
+
+        return this
+
+    }
+
+
+
+
 l = b2d.Dynamics.b2ContactListener.prototype
 l.begin = l.beginContact= l.b =function(func){
     this.BeginContact = func
@@ -221,37 +427,40 @@ b2d.either = function(body1, body2){
 
 
 
-COLLIDE=  function(){w=b2d.W()
+COLLIDE=  function(){W({w:'U'})
 
     w.platform(400,500,40,20)
-    w.ball(440,100,50).K('dot')
 
-    w.coll('ball', 'platform', function(){ w.box(300,20) })
-    w.coll('box', 'platform', function(){w.ball(300, 20 )})
-    w.coll('dot',   function(cx){ cx.b().dot() })
+    w.D(440,100,'y', 50).K('dot ball')
 
-    // w.collide('box', 'platform')
-    //  cjs.tick(function(){if(w.flagged('boxplatform')){ $l('boxHit');w.box(300,40,20,20)}})
-}
-
-
-
-BEGIN=function(){w=b2d.W()
-
-    w.ball()
-
-    w.on('new',
-        function(){
-            w.ball(300,100,2)
-        })
-
-    w.beg(function(){
-
-        w.flag('new')
-
+    w.with('ball', 'platform', function(){
+        w.D(300,20,'w',40,40).K('box')
     })
 
-}
+    w.with('box', 'platform', function(){
+        w.D(300, 20,'b',40).K('ball')})
+
+    w.with('dot',   function(cx){ this.B().dot() })
+
+
+
+}//
+BEGIN=function(){W({w: 'L'})
+
+    w.D(300,100,'y',10)
+
+   // w.on('new',  function(){ w.D(300,100,'r',5) })
+
+  //  w.beg(_.throttle( function(){  w.flag('new')  }, 200) )
+
+    w.beg(_.throttle( function(){
+        w.D(300,100,'r',5)
+    }, 500) )
+
+    //this shows u dont need to flag.. though without throttle, the non-flag version freezes
+    //oh, also an example of throttle
+} //
+
 
 
 
@@ -260,40 +469,28 @@ BEGIN=function(){w=b2d.W()
 //post
 POSTSOLVE=function(){//only breaks at high impulse
 
-    w=b2d.mW()
+     W()
 
-    b = w.ball()
+    b = w.D(600, 300, 'r', 30).K('ball')
 
-    cjs.tick(function(){
-
-        if(w.flagged('newBall')){
-            w.ball()
-        }
-
-
-    })
-
+    //cjs.tick(function(){if(w.flagged('newBall')){w.D(600, 300, 'r', 30).K('ball')}})
 
     w.post(
+        function(cx, cxI){ //second arg??
+        n = normalImpulses = cxI.normalImpulses
+            nX =  Math.floor(normalImpulses[0])
 
-        function(contact, contactImpulse){ //second arg??
+            nY =  Math.floor(normalImpulses[1])
+            t = tangentImpulses = contactImpulse.tangentImpulses
+            tX = Math.floor( t[0])
+            tY = Math.floor(t[1]  )
 
+            $l('normal: '+ tX + ', '+ tY + ' tangent: ' + nX + ', '+ nY  )
 
-            d = contactImpulse
-
-        n = normalImpulses = contactImpulse.normalImpulses
-        nX =  Math.floor(normalImpulses[0])
-        nY =  Math.floor(normalImpulses[1])
-
-        t = tangentImpulses = contactImpulse.tangentImpulses
-       tX = Math.floor( t[0])
-        tY = Math.floor(t[1]  )
-
-
-         $l('normal: '+ tX + ', '+ tY + ' tangent: ' + nX + ', '+ nY  )
+            if(nX > 200){w.D(600, 300, 'r', 30).K('ball')}
+               // w.flag('newBall')
 
 
-        if(nX > 200){w.flag('newBall') }
 
     }
 
@@ -305,24 +502,23 @@ POSTSOLVE=function(){//only breaks at high impulse
 }
 
 
-CONTACTS=function(){makeWorld()
+
+CONTACTS=function(){W()
 
     var centerFx = b2d.circ(80).K('center')
 
-    w.dyn(500,300,[
+    w.D(500,300,'r',[
             centerFx,
             b2d.poly(60,90,0,40,10).sensor(true).K('sensor1')
         ]).angVel(100)
 
-    w.dyn(700,300,[
+    w.D(700,300,'p',[
         centerFx,
         b2d.circ(100).sensor(true).K('sensor2')
     ]).angVel(100)
 
     w.coll('sensor1','sensor2',
-        function(){
-            w.ball(100,100,100)
-        })  //w.begin(function(cx){if(cx.with('sensor1','sensor2')){w.flag('new')}}) //w.on('new', function(){w.ball()})
+        function(){ w.D(100,100,'w', 100) })  //w.begin(function(cx){if(cx.with('sensor1','sensor2')){w.flag('new')}}) //w.on('new', function(){w.ball()})
 
 }
 
@@ -340,18 +536,12 @@ BITS=function(){b2d.mW()
     w.dyn(400,300, rec)
 
 }
-
-
-
 GROUP=function(){b2d.mW()
     w.dyn(300,300, b2d.circ(80).bits(2, 5))  // colls 4,1
     w.dyn(300,300, b2d.poly(60,90,0,40,10).bits(8, 3)) //colls 2,1
     w.dyn(400,300 ,  b2d.circ(80).cat(2).group(-3)) //cat 1
     w.dyn(400,300 ,  b2d.poly( 60, 90, 0, 40, 10 ).group( -3 )) //cat 1
 }
-
-
-
 DYNAMICFILTER=function(){w=b2d.W().debug()
 
     //Changing the collision filter at run-time
@@ -392,12 +582,12 @@ PRESOLVE =function(){
         function(){
             if(STATE.newBall){w.ba()}
             STATE.newBall=false})
-
     w.pre( function( contact, manifest ){  c=contact;  m=manifest })
 
     //second pam is really info about previous collision manfest?  may be usesless?!!!!
 
 }
+
 //do any of these get used? i think filterData does
 b2d.manager = b2d.contactManager = b2d.cM=function(){//used?
     var m= new BXD.b2ContactManager
@@ -460,12 +650,13 @@ function SuperImpulses(impulses){
 
 
 
-
-
-
-
 //****
-ONEWAYPLATFORM=function(){W().P()
+ONEWAYPLATFORM=function(){
+
+
+W([1200,600,1200,2000],{}).P()
+
+    p.XY(600,1800).track()
     //  Both PreSolve and PostSolve give you a b2Contact pointer,
     // so we have access to the same points and normal information we just looked at for BeginContact.
     // PreSolve gives us a chance to change the characteristics of the contact before the collision response is calculated,
@@ -492,18 +683,33 @@ ONEWAYPLATFORM=function(){W().P()
 
     pf = w.S(300, 300, 'o', 500, 40).K('platform')
 
-   // p = w.player('symmetrical').fixRot()
+    pf = w.S(900, 600, 'o', 500, 40).K('platform')
+    pf = w.S(300, 900, 'o', 500, 40).K('platform')
+    pf = w.S(300, 1000, 'o', 500, 40).K('platform')
+
+    pf = w.S(1000, 1200, 'o', 500, 40).K('platform')
+
+    pf = w.S(500, 1400, 'o', 500, 40).K('platform')
+    pf = w.S(900, 1700, 'o', 500, 40).K('platform')
+
+    // p = w.player('symmetrical').fixRot()
     p.K('player')
    // w.ball()
-    w.pre(function(cx){$l('pre')
 
-        cc=cx
-        //if(cx.with('platform','player')){
-         //   if( p.Y() > pf.Y() ){
-                cx.SetEnabled(false)// }
-       // }
+    w.pre(function(cx){
+
+     cx.with(p,'platform',function(pf){
+         if( p.Y() > pf.B().Y()-40 ){
+             cx.SetEnabled(false)  }
+     })
+
+
+
     })
+
 }
+
+
 
 
 //***
@@ -599,6 +805,7 @@ w.chalk('here you can clearly see that the center of the two fixtures',
 }
 
 b2d.man=b2d.manifold = b2d.worldManifold = function(){return new b2d.Collision.b2WorldManifold()}
+
 
 CONTACTPOINT=function(){w=b2d.W()
     w.ball()
@@ -696,8 +903,6 @@ NORM=function(){w=b2d.W({g:0}).startKilling()
 
 }
 
-
-
 IMPACTVELSTAT=function(){w=b2d.W({g:0}).startKilling()
 
     n = V()
@@ -729,8 +934,6 @@ IMPACTVELSTAT=function(){w=b2d.W({g:0}).startKilling()
     })
 
 }
-
-
 IMPACTVEL=function(){w=b2d.W({g:0}).startKilling()
 
     n = V()
@@ -770,7 +973,6 @@ IMPACTVEL=function(){w=b2d.W({g:0}).startKilling()
     })
 
 }
-
 WORLDVEL=function(){
     w=wor({
         mJ:false,
@@ -806,16 +1008,6 @@ b2=w.ball(300,300,10)
 
     b.angVel(1)
 }
-
-
-
-
-
-
-
-
-
-
 YELLOWSHIP=function(){
 
         var w=b2d.W({g:4}).debug()
@@ -846,9 +1038,6 @@ YELLOWSHIP=function(){
 
 
     }
-
-
-
 YELLOWSHIPWATCH=function(){
 
 //ok this is crazy cool.. but something is wrong.  something is not getting reset, because force gets bigger each time
@@ -857,60 +1046,44 @@ YELLOWSHIPWATCH=function(){
 
 
 
-TOURNEY=function(){var n = 0, x=50, Y=50
+BIGBLUESHIP=function(){W({g:0})
 
-   w=b2d.W({g:0})
-    .startKilling()//.debug()
-    .beg(function(cx){
+    var n = 0, x=50, Y=50
+
+    w.beg(function(cx){
 
         if(cx.with('guyBul','bad')){
-
-            cx.a().K('destroy')
-            cx.b().K('destroy')
+            cx.a().kill()
+            cx.b().kill()
         }
 
 
-
         if(cx.with('badBul','guy')){
-
-
-
-             cx.a().K('destroy')
-             cx.b().K('destroy')
+             cx.a().kill()
+             cx.b().kill()
 
         }})
-
-
 
     y = w.yShip('blue', 100, 200, 6).angDamp(1).linDamp(1)
         .rest(0).fric(1).K('guy')
         .shootOnSpace('guyBul')
         .thrustControl()
 
-
-    _.times(6, function(){
-
+    _.t(6, function(){
         window['y'+ n++] =  w.yShip(x+=50, Y+=50,3).chug(5)
             .K('bad').shootOnInt(1000, 'badBul').rot(45)
-
     })
 
 
 
 }
 
-SPACEBALL=function(){
+SPACEBALL=function(){W({g:0})
 
-    w=b2d.W({g:0})
-        .startKilling().debug()
-        .beg(function(cx){
-
-            if(cx.with('guyBul','bad')){
-
-                cx.a().K('destroy')
-                cx.b().K('destroy')
-            }})
-
+     w.with('guyBul','bad', function(b){
+         this.B().kill();
+         b.B().kill()
+     })
 
     y = w.yShip('blue', 100, 200, 6).angDamp(1).linDamp(1)
         .rest(0).fric(1).K('guy')
@@ -925,27 +1098,16 @@ SPACEBALL=function(){
 }
 
 
-WAR=function(){var n = 0, x=50, Y=50
+WAR=function(){W({g:0})
 
-    w=b2d.W({g:0}).debug().startKilling().beg(function(cx){
+    var n = 0, x=50, Y=50
 
-            if(cx.with('bul','bad')){
-                cx.a().K('destroy')
-                cx.b().K('destroy')
-            }
+    w.with('bul','bad', function(bad){this.B().kill(); bad.B().kill()})
 
-    })
-
-
-    _.times(100, function(){
-
+    _.t(10, function(){
         window['y'+ n++] =  w.yShip(x+=4,Y+=2, 3).chug(5)
-            .K('bad').shootOnInt(300, 'bul').rot(45)
-
+            .K('bad').shootOnInt(300, 'bul').rot(R(90))
     })
-
-
-
 }
 
 
@@ -983,10 +1145,6 @@ YELLOWSHIPWTF=function(){
 
 }
 
-
-
-
-
 FILTDAT=function(){w = b2d.W()
 
     w.B(400,400,30).grp(-1)
@@ -1001,15 +1159,148 @@ FILTDAT=function(){w = b2d.W()
 
 }
 
-
-
-
 FILTSENS =function(){w = b2d.W()
 
     b = w.B(400,400,30).sen()
-
-
-
     //w.right.grp(-1)
 
 }
+
+
+b=b2d.Body.prototype
+
+    b.contacts = b.cx = function(){return this.GetContactList()}
+    b.coll =  function(clas, func){var body=this, w= body.wor()    //merged these 2, but the the fixt 'coll' met is more complete/flexible  //b.collWithKind =
+        // if body collides with ANYTHING
+        // if body collides with body/fixt of specific kind
+        // if body collides with specific body
+        // if body collides with specific fixt
+        // but always pass fixt into the cb
+        if(F(clas)){func=clas; clas=''} //if clas NOT passed in
+        w.beg(function(cx){var fA=cx.A(),fB=cx.B(),bA=cx.a(),bB=cx.b()
+            if(body.is(bA) && fB.of(clas)){_.bind(func,fA)(fB,cx)}
+            if(body.is(bB) && fA.of(clas)){_.bind(func,fB)(fA,cx)}})
+        return this}
+// uses contact list
+    b.col2 =   function(func){ //brilliant   =b.eachCx =b.withFixtsCollidingWithMe
+        //uses the OTHER way to check contacts !!!!!!
+        var body = this, contacts  = body.cx(),
+            next, fixt, notMyFixt, fA,fB
+        if(!contacts){ $l('no contacts'); return false }
+        c=contacts = contacts.contact
+        n=0
+        while(contacts){n++
+            next = contacts.GetNext()
+            fA=contacts.A()
+            fB=contacts.B()
+            bA=contacts.a()
+            notMyFixt = body.is(bA)?fB:fA  //find the fixture whose body is not me
+            $l(notMyFixt.K() + ' - '+ notMyFixt.B().K())
+            _.bind(func,body)(notMyFixt,contacts)   //and call func on IT (along with the actual cx)
+            contacts=next}
+    }
+    BCOL2=function(){w=b2d.W().startKilling()
+
+
+
+        y= w.ship()
+        _.times(10, function(){
+
+            w.ball(100,100,20).K('ball')
+        })
+
+        b = w.ball(400,300,20).K('ball').stat()
+
+
+        y.coll('ball', function(b){ $l('coll with ball')
+
+            y.col2( function(a){
+                if( a != b ){  a.B().dot()  }
+            })
+
+
+        })
+
+        // cjs.tick(function(){ y.col2( function(a){    a.B().setDestroy()   })  })
+
+    }
+    b.when1=function(){var body =this, w=body.wor(),ob={}
+
+        ob.contacts=function(kind, func){
+            w.beg(kind,func)
+            return { after: function(func){w.end(kind,func)} }
+        }
+
+        return ob}
+    b.when=function(what, bFunc, eFunc){
+        var b=this,
+            w=b.wor()
+        w.when(b,what,bFunc,eFunc)
+        return this}
+    WHEN=function(){w=b2d.W()
+
+        b = w.ball(500,200,30).K('z')
+        b.when('z',
+            function(){$l('beg')},
+            function(){$l('end')}
+        )
+
+    }
+    b.trig2=function(act, func){var body=this,
+        w=body.wor()
+
+        w.when(body,
+            function(){ body.trig[act] = true },
+            function(){ body.trig[act] = false}
+        )
+
+        if(F(func)){
+            func=_.bind(func, body)
+            cjs.tick(function(){
+                if(body.trig[act]){func()}
+            })}
+
+
+        return this
+
+
+    }
+    b.trig=function(fixtKind, func){var b=this,w= b.wor()
+
+
+        var touching = false
+
+        w.beg(function(cx){
+
+            cx.with(b, function(){
+
+                if( this.hasClass(fixtKind) ){
+
+                    if(F(func)) { _.bind(func, this)() }
+                }
+
+                //$l('BODY: ' + this.B().K() + ' |FIXT: '+ this.K() )
+            })
+        })
+
+        cjs.tick(function(){
+            if(touching){func()}
+        })
+
+
+        return this}
+    b.while=function(what, func){
+        var body=this,
+            w=body.wor()
+        w.while(body, what, func)
+        return this}
+    WHILE=function(){w=b2d.W({g:0}).debug()
+
+        y = w.ship()
+
+        //  w.beg(y, function(){$l('aha')}
+
+        y.while( function(){ $l('aha')  }  )
+
+    }
+

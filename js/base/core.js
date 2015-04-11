@@ -907,6 +907,8 @@ _.r = _.rest
 _.e = _.each
 _.m= _.map
 _.t=_.times
+$.ev=function(n, fn){setInterval(fn, n*1000)}
+
 
 Math.dist = Math.lineDistance= function( p1, p2 ){
     var xs = 0,ys = 0;
@@ -921,6 +923,10 @@ Math.dist = Math.lineDistance= function( p1, p2 ){
 
     return Math.sqrt( xs + ys );
 }
+$.inASec=function(func){return setTimeout(func, 1000)}
+cjs.waitFor=function(time){time=N(time)?time:1000
+    cjs.wait = true
+    setTimeout(function(){cjs.wait = false}, time)}
 
 
 _.tN=function(what, aNum){

@@ -89,23 +89,31 @@ KINGOFMES=function(){  w= b2d.W({g:10}).debug()
 
 
 
-HAT=function(){   // could i automatically have body listen to their sensors?
+HAT=function(){
 
-    w=b2d.W()
+// could i automatically have body listen to their sensors?
+
+
+    W()
+
     w.ball().rest(.3)
+
     p=w.addMe(400, 150, 5)
 
     p.trig( 'right' )
     p.trig( 'left' )
 
     $.space(function(){
+
         if(p.trig.right){ p.I(100, -400)}
+
         if(p.trig.left){  p.I(-100, -400)}
+
     })
 
     p.trig('hat',
         function(){
-            p.bindSprite('guy')
+            p.bS('guy')
         })
 }
 

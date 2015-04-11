@@ -46,14 +46,13 @@ w.wMouse=function(){var w=this
     //  cjs.tick(function(){    if(w.mj){w.mj.tg(w.mx, w.my) }})
 
     return w}
+
 w.wMouseJ=function(o){var w=this
     w.md(function(e){ w.XY(e.x, e.y,function(f){
         if(f.ofClass(o.m)){w.mj = w.m(f.body(), e.x, e.y )}})})
     cjs.tick(function(){if(w.mj){w.mj.tg(w.mx, w.my)}})
     $.oMU(function(){ w.M() })
     return w}
-
-
 
 w.dd=function(o){var w=this
     if(o.clear !==false){
@@ -75,8 +74,6 @@ w.update = w.u = function(o){var w=this
         w.s.update()
     }, 1000/60)
     return w}
-
-
 
 w.vW =function(col,H,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
 
@@ -178,21 +175,16 @@ w.walls=function(o){
 
 w.gx=function(o){var w=this,W=o.W,H=o.H
 
-    w.bg =   new cjs.Stage($.can(o.C||'z',W,H).P('a').XY(0,0)[0] ).A().tick(); w.bg.linGrad=function(c1,c2){
+    w.bg =   new cjs.Stage($.can(o.C||'z',W,H).P('a').XY(0,0)[0] ).A().tick();
+    w.bg.linGrad=function(c1,c2){
         var s=this, H=s.H(), W=s.W()
         c1=oO('c', c1||'b')
 
         c2=oO('c', c2||'r')
 
-
-
-
         if(R()){$l('=')
-
-            if(R()){ s.SHAPE.linGrad([c1,c2],[0,1],0,0,0,H).dr(0,0,W,H)   }
-
-            else { s.SHAPE.linGrad([c1,c2],[0,1],0,0,W,0).dr(0,0,W,H)  }
-
+            if(R()){ s.SHAPE.lf([c1,c2],[0,1],0,0,0,H).dr(0,0,W,H)   }
+            else { s.SHAPE.lf([c1,c2],[0,1],0,0,W,0).dr(0,0,W,H)  }
         }
 
         else {$l('/')
@@ -217,32 +209,21 @@ w.gx=function(o){var w=this,W=o.W,H=o.H
 
         }
     }
-
-
-
     w.bg.SHAPE = w.bg.shape(0,0,'w')
-
     w.bg.linGrad('z', 'w')
-
-
     w.s =  w.stage =   new cjs.Stage( $.can('X',W,H).P('a').XY(0,0)[0] ).A().noAutoClear().tick()
     w.canvas = w.s.canvas
     w.c = w.can=$(w.canvas).id('canvas')
     w.ctx = w.context = w.c.ctx('2d')
-
-
     w.hud = new cjs.Stage($.can('X',W,H).P('a').XY(0,0)[0]).A().tick()
-
-
     w.hud.h  = w.hud.shape().fs( $r() ).rect( 0, 0, 5000, 5000).opacity(.3)
-
     w.hud.c = $(w.hud.canvas)
-
-
-
     w.s.back = w.bg
     w.s.HUD = w.hud
-    return w}
+    return w
+}
+
+
 
 w.startListening = function(){var w=this
     w.listener = w.listener || b2d.listener()
@@ -252,16 +233,18 @@ w.startListening = function(){var w=this
     w.endHandlers = w.endHandlers ||[]
     w.listener.BeginContact = function(cx){
         _.each(w.beginHandlers, function(func){$.do(function(){  func(cx) })   })}
+
     w.listener.PreSolve = function(cx){
-        _.each(w.preHandlers,
-            function(func){
+        _.e(w.preHandlers,
+            function(fn){
 
 
-                $.do(function(){
-                    func(cx)
-                })
+               // $.do(function(){
+                    fn(cx)
+               // })
 
             })}
+
     w.listener.PostSolve = function(cx, pam2){
 
         _.each(w.postHandlers,
@@ -287,9 +270,8 @@ w.startListening = function(){var w=this
     w.SetContactListener(w.listener)
 
     return w}
+
 w.setBg=function(o){var w=this;  if(o.i){ w.s.bm(o.i) }; return w}
-
-
 
 w.startTracking=function(cX, cY){
     var w=this,
@@ -333,10 +315,6 @@ w.tGuy=function(){var w=this
     })
 
     return w}
-
-
-
-
 
 cjs.adj = cjs.camAdj =  function( income, tax ){//tax ~ deltaLimit ~ buffer
     var income =  income || 0  ,  tax = tax || 0
@@ -399,9 +377,6 @@ w.warp=function(){var w=this
 
     return w}
 
-
-
-
 w.coords=function(){var w=this
 
 
@@ -417,6 +392,7 @@ w.coords=function(){var w=this
 
     })
     return w}
+
 
 W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.show(function(){})//not working with scroll
 

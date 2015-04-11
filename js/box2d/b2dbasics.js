@@ -79,8 +79,19 @@ b2d.Math = b2.Common.Math
 b2d.Mat22 = b2d.Math.b2Mat22
 b2d.Mat33 = b2d.Math.b2Mat33
 
-b2d.FixtureDef=b2d.Dynamics.b2FixtureDef()
+b2d.FixtureDef = b2d.Dynamics.b2FixtureDef
 
+
+b2d.PrismaticJointDef=  b2d.Joints.b2PrismaticJointDef
+b2d.RevoluteJointDef=  b2d.Joints.b2RevoluteJointDef
+b2d.RevoluteJoint=b2d.Joints.b2RevoluteJoint
+
+b2d.Body = b2d.Dynamics.b2Body
+b2d.Fixture = b2d.Dynamics.b2Fixture
+
+
+b2d.ConstantAccelController= b2d.Dynamics.Controllers.b2ConstantAccelController()
+b2d.BuoyancyController=new b2d.Dynamics.Controllers.b2BuoyancyController()
 
 //
 //

@@ -149,180 +149,10 @@ fixtDef=function() {
 }; fixtDef()
 f = b2d.Dynamics.b2Fixture.prototype
 
-classes=function() {
-    f.classCount = function () {
-        if (!A(this.classes)) {
-            return 0
-        }
-        return this.classes.length
-
-    }
-
-    f.K = f.addClass = function (clas) {
 
 
-        this.classes = this.classes || []
-        var that = this, func
 
 
-        if (U(clas)) {
-            return this.getClasses()
-        }
-
-
-        if (F(clas)) {
-            func = _.bind(clas, that)
-            this.addClass(func(that.getClasses()))
-            return this
-        }
-
-        _.each(arguments, function (clas) {
-            if (S(clas)) {
-                clas = clas.trim()
-
-                _.each(clas.split(' '),
-                    function (clas) {
-                        clas = clas.trim()
-
-                        if (clas != '' && !that.hasClass(clas)) {
-
-                            that.classes.push(clas)
-                        }
-                    })
-
-
-            }
-        })
-        return this
-    }
-    f.getClasses = f.getClass = function () {
-        var g = G(arguments), classes
-
-        this.classes = this.classes || []
-
-        classes = this.classes.join(' ')
-        if (g.p) {
-            classes += ' : ' + this.body().getClasses()
-        }
-
-
-        return classes
-    }
-    f.toggleClass = function (clas) {
-        if (U(clas) || clas == '') {
-            return false
-        }
-
-        if (this.hasClass(clas)) {
-            this.removeClass(clas)
-        } else {
-            this.addClass(clas)
-        }
-
-        return this
-    }
-    f.removeClass = function (clas) {
-        var ix
-        this.classes = this.classes || []
-        if (S(clas)) {
-
-            if (this.hasClass(clas)) {
-
-                ix = this.classes.indexOf(clas)
-
-                this.classes[ix] = null
-
-                this.classes = _.compact(this.classes)
-
-
-            }
-
-
-        }
-        return this
-    }
-    f.hasClass = f.hasClasses = function self(clas) {
-        var fixt = this,
-            hasClass,
-            g = G(arguments)
-
-        fixt.classes = fixt.classes || []
-
-        if (!clas) {
-            return true
-        }
-
-        if (A(clas)) {
-            g = clas
-        }
-
-        _.each(g, function (clas) {
-
-            if (!clas || _.contains(fixt.classes, clas.trim())) {
-                hasClass = true
-            }
-        })
-
-        return hasClass
-    }
-    f.hasAllClasses = function (clas) {
-        if (U(clas) || clas == '') {
-            return false
-        }
-
-        var body = this, anyYes = null, anyNo = null
-
-        _.each(arguments, function (clas) {
-
-
-            if (body.hasClass(clas)) {
-                anyYes = true
-            }
-
-            else if (!body.hasClass(clas)) {
-                anyNo = true
-            }
-
-
-        })
-
-        return (anyYes && !anyNo)
-
-
-    }
-    f.is = function (a) {
-        return S(a) ? this.hasClass(a) : this == a
-    }
-    f.ofClass = function (clas) {
-        var fixt = this, body = fixt.body(),
-            g = G(arguments)
-
-
-        return fixt.hasClass(g) || body.hasClass(g)
-
-    }
-    f.of = function (a) {
-        var fixt = this,
-            body = fixt.body()
-        return S(a) ? fixt.ofClass(a) : (fixt == a || body == a)
-    }
-    f.near = function (what) {
-        var body = this.GetBody()
-        //return (this.K()==what) || (body.K()==what)
-        // if has sibling fixture that matches, return IT!
-        return false
-    }
-    f.among = function () {
-    }
-    f.D = f.data = function (data) {
-        if (U(data)) {
-            return this.GetUserData()
-        }
-        this.SetUserData(data);
-        return this
-    }
-
-}; classes()
 
 f.next= function(){return this.GetNext()}
 f.den =f.d=function(den){if(U(den)){return this.GetDensity()}
@@ -357,9 +187,6 @@ f.removeSprites=function(){var f=this
 
     f.sprites=[]
     return this}
-
-
-
 
 
 f.sen = f.sensor = function(sen){var f=this
@@ -527,36 +354,50 @@ f.dyn=function(){var b=this.B(); b.dyn.apply(b,arguments); return this}
 
 
 
-f.C= f.color= function(c,C,l){var f=this,b=f.B(),w=b.W(),h,r, p, o,g=G(arguments)
+f.C= f.color= function(c,C,l){var f=this,b=f.B(),w=b.W(),g=G(arguments),
 
-    o=O(g[0])?g[0]: {   c:c, C:C, l:l }
-    o.c = (o.c=='*')? $r() : o.c? o.c : 'b'
+    r, p, o
 
+    o = O(g[0])? g[0] : {c:c,C:C,l:l}
+
+    o.c= (o.c=='*')? $r() :o.c||'b'
+    o.C=o.C||o.c
     f.removeSprites()
+    h=w.s.h()
 
-    h = f.isCirc()?
+    if(f.isCirc()){$l('isCir')
 
-        w.s.h().cir(
-            f.rad(),
-            f.pX(),
-            f.pY(),
-            o.c,   o.C||o.c,   o.l  )
-        :
+        h.cir(
 
-        w.s.h().poly( f.verts(), o.c, o.C, o.l       )
+             f.pX(), f.pY(),f.rad(),
+            o.c,o.C,o.l
+
+        )}
+
+
+    else {h.poly(f.verts(),o.c,o.C,o.l)}
+
 
     f.bS(h)
-
-
-
-
-
-
     return f
-
 }
 
 
+COL=function(){W().C('z')
+
+    b = w.bump({c:'w', r:100})
+
+    f=b.f()
+
+
+    f.C('y')
+
+
+   // f.removeSprites(); h=w.s.h().cir(0,0,100,'y'); f.bS(h)
+
+
+    setTimeout( function(){b.dyn()}, 1000)
+}
 
 
 
@@ -680,36 +521,6 @@ b2d.rec1 = function(W,H,x,y,a,d){var g=G(arguments),r,f, o,
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //makes a fixture using b2d.polyH
 
 
@@ -745,23 +556,6 @@ b2d.fixt= function(h){
 
     return f
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1023,101 +817,6 @@ MASS=function(){w = b2d.W({g:0}).db()
     b = w.B(200,500, 'b', 25).den(100)
     p = w.B(800,200, 'p', 10).den(1000).lV(-10)
 }
-
-
-
-
-
-
-
-//destructable terrain
-DEST=function(){w=b2d.W({g:1})
-    y= w.ship().linDamp(10)
-    b = w.brick(800,300,200,800).K('terr')
-    can=true
-    w.s.X(5000)
-    w.beg(function(cx){var fixt
-
-        if(fixt=cx.with('bul','terr')){
-
-            bull = fixt[0].B()
-            terr = fixt[1].B()
-            bX= bull.X()
-            bY= bull.Y()
-            bull.kill()
-
-
-            if(can){can=false
-
-                setTimeout(function(){// br =  w.brick(bX,bY,60,60).rot(45)
-
-                    br=b2d.conc(
-
-                        b2d.polyCirc(20,7)
-
-                    ).XY(bX,bY)
-
-                    b.each(function(f){
-
-                        f.DIFF(br)
-
-                    })
-
-
-                    br.kill()
-
-
-
-                    can=true}, 10)
-
-
-                killIfSmall=function(f){var area=this.area()
-
-                    if( area < 20){
-                        $l('too small: ' +area )
-                        f.kill()  }
-
-                }
-
-            }
-
-        }
-
-    })
-    w.show(function(){return b.num()})
-
-
-}
-DEST1=function(){w=b2d.W({g:0})
-    y= w.ship()
-    b = w.brick(400,400,300,300).K('terr')
-
-
-    w.beg(function(cx){var fixt
-
-        if(fixt=cx.with('bul','terr')){
-
-            bull = fixt[0].B()
-            bX= bull.X()
-            bY= bull.Y()
-
-            terrF = fixt[1]
-
-            setTimeout(function(){
-
-                br =  w.brick(bX,bY,100,100).rot(45)
-
-                terrF.DIFF(br)
-
-            },100)
-
-            // w.brick(bull.X(), bull.Y(), 50, 50)
-        }
-
-    })
-
-}
-
 
 
 

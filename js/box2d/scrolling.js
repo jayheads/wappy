@@ -81,6 +81,18 @@ w.track=  function(t,cX,cY, bf){var w=this    //i can leave the world-centering 
             var dX=t.X()-cX, dY=t.Y()-cY
             w.sXY(w.z*w.hW+w.z*dX-w.hW, w.z*(w.hH+dY)-w.hH)})}
     return w}
+w.ramps=function(){var w=this
+    w.ramp(
+        [400, 350, 200, 300, 100],
+        [500, 350, 300, 300, 60],
+        [600, 350, 200, 300, 100],
+        [700, 350, 300, 300, 60],
+        [800, 350, 200, 300, 100],
+        [1000, 350, 300, 300, 60],
+        [1030, 350, 200, 300, 100],
+        [1200, 350, 300, 300, 60])
+    return w}
+
 
 SLOOM=function(){
 
@@ -148,7 +160,9 @@ SLIDEROOMS=function(){W([1200, 600,2400, 1000],{g:300}).P()
     })
 }
 
-KISS=function(){W([  1200, 600, 2400, 600 ],{g:10})
+KISS=function(){
+    W([  1200, 600, 2400, 600 ],{g:10})
+
     turtle =[
         ['g', [0,0], [-50,-10], [-40,-20],[0,-40],[20,-10] ],
         ['y', [10,-10], [20,-30],[50,-15], [45,-5] ],
