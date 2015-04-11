@@ -4534,9 +4534,10 @@ b2d.isFixt=function(fixt){
 b2d.isGPoly=function(a){return O(a) && F(a.isHole)}
 
 //
-b2d.H=   b2d.shape=function(){var g=G(arguments)
-    return g[1]? b2d.pH(g) :b2d.cH(g[0])
-}
+
+}; before()
+
+
 
 b2d.AH=  b2d.AShape=function(pam, p2){//dep .. use polyH
 
@@ -4552,31 +4553,45 @@ b2d.AH=  b2d.AShape=function(pam, p2){//dep .. use polyH
 
     return h}
 
-}; before()
 
-b2d.pH=  b2d.polyH=function me(W,H,x,y,a){var g=G(arguments), p
-
-     //if(A(g[0] )){return me.apply(b2d, g[0])}
-
-    p=new b2d.PolygonShape()
-
-    if(N(g[0])){p.box(W,H,x,y,a)}
-
-    else if(O(g[0])){p.arr.apply(p,g)}
-
-    return p}
-b2d.cH=  b2d.circH=b2d.circShape=b2d.circleShape=b2d.cSh=function me(r,x,y){var g=G(arguments),
-
-    h
-
-    if(A(g[0])){return me.apply(b2d, g[0])}
-
+//make a circle SHAPE
+b2d.cH=  b2d.circH=b2d.circShape=b2d.circleShape=b2d.cSh=function me(r, x, y){
+    var g=G(arguments), h
+    if(A(g[0])){return me.apply(b2d, g[0])} //?
     r = _.tN(r, 25)
-
     h = new b2d.CircleShape(r/30); h.xy(x, y)
-
     return h}
+
+
+
+b2d.H=   b2d.shape=function(){var g=G(arguments)
+    return g[1]?
+         b2d.pH(g)
+        :b2d.cH(g[0])
+}
+
+
+//make a circle FIXTURE
+b2d.cir=  b2d.circ=function(r,x,y, d){//hmm.. fixt doesnt have a rel loc.. its shape does
+    //what if u want to change 'shape' of shape, but keep its rel loc?
+
+    var g= G(arguments),
+        x=_.tN(g[1]), y=_.tN(g[2]),
+        r= _.tN(g[0],50),
+        d=_.tN(d,1),
+        f
+
+    f=b2d.f( b2d.cH(r).xy(x,y)  ).den(d)
+
+    if(g.n){f.isSensor=true}
+    return f
+
+}
+
+
+//MAKES A FIXTURE AND A SHAPE FOR IT
 b2d.f=  b2d.fixt=b2d.fixtC=function(h){var g=G(arguments),
+
     l=g.length, f=new b2d.FixtureDef, h  // simply makes one fixt,
     // tries to set its shape
     // and returns it
@@ -4586,50 +4601,56 @@ b2d.f=  b2d.fixt=b2d.fixtC=function(h){var g=G(arguments),
     // from verts/arr (confirmed)
     // or if you passed in anything (number(s))
     // it makes a circle or poly shape, depending on how many numbers you passed
-
-    if(b2d.isShape(g[0])){h=g[0] }
-
+    if(b2d.isShape(g[0])){h=g[0]}
     else {
 
-        h = A(g[0])? b2d.pH.apply(b2d, g)
-            :(l==1||l==3)? b2d.cH.apply(b2d, g)
-            :b2d.pH.apply(b2d,g)
+  h =   A(g[0])? b2d.pH.apply(b2d, g)
+  :(l==1||l==3)? b2d.cH.apply(b2d, g)
+                :b2d.pH.apply(b2d, g)
     }
 
     f.shape = h
-
     return f
 }
 
-b2d.cir=  b2d.circ=function(r,x,y, d){
 
-    var g= G(arguments),
-        r= _.tN(g[0],50),
-        x=_.tN(g[1]),
-        y=_.tN(g[2]),
-        d=_.tN(d,1),
-        f
-    f=b2d.f(
-        b2d.cH(r).xy(x,y)
-    ).den(d)
-    if(g.n){f.isSensor=true}
-    return f
-    //hmm.. fixt doesnt have a rel loc.. its shape does
-    //what if u want to change 'shape' of shape, but keep its rel loc?
-}
+
+
+
+
+//make a rec or arr SHAPE
+b2d.pH=  b2d.polyH=function me(W,H,x,y,a){var g=G(arguments), p
+
+    //if(A(g[0] )){return me.apply(b2d, g[0])}
+
+    p=new b2d.PolygonShape()
+
+    if(N(g[0])){ p.box(W,H,x,y,a) }
+
+    else if(O(g[0])){ p.arr.apply(p,g) }
+
+    return p}
+
+
+
+//make a rec or arr FIXTURE
 b2d.poly=  function(){var g=G(arguments),
 
-    pH=b2d.pH.apply(null, g),
+    pH = b2d.pH.apply(null, g),
 
     f = b2d.f(pH).den(1).fric(.2).rest(.2)
 
     if(g.n){f.isSensor = true}
 
     return f}
+//make a rec or arr FIXTURE (SENSOR = TRUE)
 b2d.polySens=  function(k){var g=G(arguments)//necessary?
     var p=b2d.poly.apply(null, _.r(g))
     p.sensor(true).K(k)
     return p}
+
+
+
 b2d.fixtParse= function(arr){var g=G(arguments)
 //takes array of arrays
 //if something in array is NOT array, it assumes it is already a fixt
@@ -4638,13 +4659,18 @@ b2d.fixtParse= function(arr){var g=G(arguments)
 
     function fn(f){var l
         if(!A(f)){return f}
+
         if(f.isSensor){return b2d.polySens.apply(null, f)}// weird
         l = f.length
+
         return (l==1)? b2d.circ(f[0])
             :(l==2)? b2d.poly.apply(null,f)
             :(l==3)? b2d.circ.apply(null,f)
             :b2d.poly.apply(null, f)}
 }
+
+
+
 
 after=function() {
 

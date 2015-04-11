@@ -284,9 +284,6 @@ REC=function(){
 
 }
 
-
-
-
 CONVEX=function(){W(0)
 
     // so clearly b.convex lets me specify polygon fixtures by an array of points
@@ -325,9 +322,6 @@ CONVEX=function(){W(0)
 
 
 }
-
-
-
 VERTS=function(){W()
 
 
