@@ -1,72 +1,23 @@
-w= p=b2d.World.prototype
+w=p=b2d.World.prototype
 
 
 b2d.world = function(g, sleep){     //b2d.wor =  W ???
-
     g = U(g)? V(0,10): N(g)?V(0, g): g
-
     s = U(sleep)? true: sleep
-
     var w = new b2d.World(g, sleep)
-
     w.SCALE = 1
-
     return w
 }
 
-w.mJ=function(o){var w=this
-    if(o.m==0){return w}
-
-    o=o||{}
-
-    $.M()
-    cjs.tick(function(){if(w.mj){w.mj.tg(_) }})
-    $.oMU(function(){ w.M() })
-    $.oMD(function(x,y){w.XY(x,y,
-        function(f){if(f.ofClass(o.m)){w.mj = w.m(f.body(), _ )}
-        })})
-
-    return w}
-
-w.wMouse=function(){var w=this
-
-
-    $.oMD(function(x, y){
-        var p = w.sToW(x,y)
-        w.mx= p.x;
-        w.my= p.y
-    })
-
-
-
-    $.oMM(function(x,y){
-        var p = w.sToW(x,y)
-        w.mx= p.x;
-        w.my= p.y })
-    //  cjs.tick(function(){    if(w.mj){w.mj.tg(w.mx, w.my) }})
-
-    return w}
-
-w.wMouseJ=function(o){var w=this
-    w.md(function(e){ w.XY(e.x, e.y,function(f){
-        if(f.ofClass(o.m)){w.mj = w.m(f.body(), e.x, e.y )}})})
-    cjs.tick(function(){if(w.mj){w.mj.tg(w.mx, w.my)}})
-    $.oMU(function(){ w.M() })
-    return w}
 
 w.dd=function(o){var w=this
     if(o.clear !==false){
-
         w.debug(
 
             b2d.debugDraw(
                 w.context, 30).flags(shB || jB).alpha(.6).line(3000) )
     } // w.bug(w.ctx, 30, '*', .6 )
-
-
-
     return w}
-
 
 w.update = w.u = function(o){var w=this
     setInterval(function(){w.draw(1/60)
@@ -76,37 +27,27 @@ w.update = w.u = function(o){var w=this
     return w}
 
 w.vW =function(col,H,x,y){var w=this,g=G(arguments), cW=w.canvas.width, cH=w.canvas.height
-
     if(!S(col)){y=x;x=H;H=col;col='x'}
-
     H = (H=='+')? cH :N(H)?H: cH/2-10
     if(U(x)){x= cW/2; y=cH/2-H/2}
     else if(U(y)){
         x=(x=='+')? cW-20: (x=='-')? 0: x
         y=cH/2 - H/2}
     //x-=10?
-
     return w.R(col,20,H, x,y).bo(.2).K('wall')
 
 }
 
 w.walls=function(o){
-
     var w=this,
         can=w.canvas,
         W=can.width,
         H=can.height,
-
         wa =o.w,
-
         col,h
-
-
     if(wa==0){return w}
     if(wa=='@'){w.warp(); return w}
-
     if (F(wa)) {wa()}
-
     else if ( A(wa) ){
 
         col = wa[0]
@@ -123,12 +64,9 @@ w.walls=function(o){
 
 
     }
-
-
     else if (wa=='_'){
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
     }
-
     else if (wa=='L'){
 
 
@@ -136,7 +74,6 @@ w.walls=function(o){
 
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
     }
-
     else if (wa=='U'){
 
         w.left=   w.S(0,H/2,'o',40,H).K('wall side right')
@@ -145,13 +82,11 @@ w.walls=function(o){
 
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
     }
-
     else if (wa=='='){
 
         w.roof=   w.S(W/2,0,'o',W,40).K('wall roof')
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
     }
-
     else {
 
         w.floor=  w.S(W/2, H, 'o', W, 40).K('wall floor')
@@ -162,19 +97,12 @@ w.walls=function(o){
         w.roof=   w.S(W/2,0,'o',W,40).K('wall roof')
 
     }
-
-
-
-    w.$$(function(){
-
-        w.S(w.mx, w.my, 'x',  [[10,10 ,'-']]  )
-    })
+    w.$$(function(){w.S(w.mx, w.my, 'x',  [[10,10 ,'-']])})
 
     return w}
 
 
 w.gx=function(o){var w=this,W=o.W,H=o.H
-
     w.bg =   new cjs.Stage($.can(o.C||'z',W,H).P('a').XY(0,0)[0] ).A().tick();
     w.bg.linGrad=function(c1,c2){
         var s=this, H=s.H(), W=s.W()
@@ -335,68 +263,33 @@ cjs.cap=function(n,m,M){
         :n>M?M
         :n
 }
-b2d.mJ=function(body, tX,tY){
-    if(O(tX)){tY=tX.y;tX=tX.x}
-    var md = new b2d.Joints.b2MouseJointDef
-    md.bodyA = w.GetGroundBody()
-    md.bodyB = body
-    md.target = V(tX, tY)
-    md.collideConnected = true
-    md.maxForce = 1000 * body.GetMass()
-    md.dampingRatio = 0
-    return md}
+
 
 w.eachEvery=function(l){var w=this
-
-    cjs.tick(function(){
-        w.each(l)
-    })
-
+    cjs.tick(function(){w.each(l)})
     return w}
 
 w.warp=function(){var w=this
     $l('warp')
-
     w.eachEvery(function(b) {
-        if (b.X() < 10) {
-            b.X(w.W-10)
-        }
-        if (b.X() > w.W-10 ) {
-            b.X(10)
-        }
-
-
-        if (b.Y() < 10) {
-            b.Y(w.H-10)
-        }
-        if (b.Y() > w.H-10) {
-            b.Y(10)
-        }
-
+        if (b.X() < 10) { b.X(w.W-10)}
+        if (b.X() > w.W-10 ) {b.X(10)}
+        if (b.Y() < 10) {b.Y(w.H-10)}
+        if (b.Y() > w.H-10) {b.Y(10)}
     })
-
     return w}
 
 w.coords=function(){var w=this
-
-
     w.eachEvery(function(b){var p
-
-        b.wX = b.X()
+        b.wX= b.X()
         b.wY= b.Y()
-
         p = w.wTS(b.wX, b.wY)
-
-        b.sX = p.x;b.sY= p.y
-
-
+        b.sX=p.x; b.sY=p.y
     })
     return w}
 
 
-W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.show(function(){})//not working with scroll
-
-
+W=b2d.W=function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.show(function(){})//not working with scroll
 
     var o = N(H) ? { W:W, H:H, wW:wW, wH:wH } :
         N(W)? {g: W}  :
@@ -407,17 +300,20 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
     o.H=o.H   ||  600
     o.wW=o.wW ||  o.W
     o.wH=o.wH ||  o.H
-
     o.w = o.w==0 ? 0: o.w ? o.w :     ['o', o.wW, o.wH]
-
     o.g = N(o.g) ? V(0,o.g) : o.g? V(o.g) : V(0, 300)
 
+
     cjs.watchKeys()
-     w.coords()
 
-    w=b2d.world( o.g ); w.o = o
+    // w.coords() ?
 
-     if(o.z != false){ z() }
+    w = b2d.world( o.g );
+
+    w.o = o
+
+
+    if(o.z != false){ z() }
 
 
 
@@ -430,9 +326,9 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
 
     w.startListening()
 
-     w.wMouse()
 
-     w.wMouseJ(o)
+    w.wMouse()
+    w.wMouseJ(o)
 
     w.update(o)
 
@@ -468,11 +364,17 @@ W= b2d.W=  function(W, H, wW, wH){//cjs.Ticker.removeAllEventListeners() //w.sho
 
 
 
-w.trackerX=function(o){
-    var w=this, t, x, y
-    if(o.t==0){return w}
-    x=w.w/2; y=w.h/2
-    t = w.S(x,y,'w',[[10,10,'-']]).bo(.8)
-    w.t = w.trackee = w._t = w._trackee = t
-    w.t.track()
-    return w}
+
+old=function(){
+
+    w.trackerX=function(o){
+        var w=this, t, x, y
+        if(o.t==0){return w}
+        x=w.w/2; y=w.h/2
+        t = w.S(x,y,'w',[[10,10,'-']]).bo(.8)
+        w.t = w.trackee = w._t = w._trackee = t
+        w.t.track()
+        return w}
+
+}
+

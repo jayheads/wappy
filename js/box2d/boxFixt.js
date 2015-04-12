@@ -3982,7 +3982,7 @@ TERR=function(){w=b2d.W()
         cir= Math.poly( circ(V(x,y),30,5) )
         bod= sep(circ(V(0,0),30,5)).XY(x,y)
         return {  cir:cir,  bod:bod }}
-    _.times(13,function(i){_.times(8,function(j){
+    _.t(13,function(i){_.times(8,function(j){
         var bod=w.brick(  i*25 +420,  j*25 +200,     20, 20 )
         terr.push({
 
@@ -4351,7 +4351,7 @@ f.mid= f.cen=f.cent=f.center=function(){var f=this,b= f.B(),w= b.W(), g=G(argume
     return  v
 }//center point of its BOUNDING BOX
 
-f.hit= f.test= function(){var f=this,b=f.B(),w=b.W(),g=G(arguments),     //=f.testPoint= f.tP
+f.hit=f.testPoint= f.tP= f.test= function(){var f=this,b=f.B(),w=b.W(),g=G(arguments),     //
     v=V(g[0],g[1])
     if(g.p){ w.dot(v) }
     return f.H().tP( b.tf(), v.div() ) //is a point within the fixture // very accurate

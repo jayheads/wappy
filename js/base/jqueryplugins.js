@@ -645,7 +645,6 @@ $.mousedown=function(func){
 
     $('body').on('mousedown', func)
 return this}
-
 $.mouseup=function(func){
 
     $('body').on('mouseup', func)
@@ -654,15 +653,30 @@ $.mousemove=function(func){
 
     $('body').on('mousemove', func)
     return this}
+
 $.touchstart=function(func){
 
     $('body').on('touchstart', func)
     return this}
-
 $.touchend=function(func){
 
     $('body').on('touchend', func)
     return this}
+
+$.oMD=function(fn){
+    $.mousedown(function(e){
+        fn(e.clientX,e.clientY,e)})
+    return $}
+$.oMM=function(fn){
+    $.mousemove(function(e){
+        fn(e.clientX, e.clientY, e)})
+    return $}
+$.oMU = function (fn) {
+    $.mouseup(function (e) {
+        fn(e.clientX, e.clientY, e)
+    })
+    return $}
+
 
 
 
